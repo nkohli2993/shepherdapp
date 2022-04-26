@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="relationship">
+        <item>Relationship</item>
+        <item>Father</item>
+        <item>Mother</item>
+        <item>Grandmother</item>
+        <item>Grandfather</item>
+    </string-array>
+</resources>

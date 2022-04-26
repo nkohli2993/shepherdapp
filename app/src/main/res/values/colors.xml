@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#cdCAD7</color>
+    <color name="colorPrimaryDark">#767f9c</color>
+    <color name="colorAccent">#009bb5</color>
+    <color name="colorGreyDark">#123</color>
+    <color name="colorBlueDark">#454f63</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorBlackFF">#FF000000</color>
+    <color name="colorBlackTrans50">#50000000</color>
+    <color name="colorViewPagerInactive">#A7AFAF</color>
+    <color name="colorGreyLight">#F5F4F8</color>
+
+</resources>
