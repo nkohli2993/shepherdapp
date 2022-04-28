@@ -7,6 +7,7 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.databinding.ActivityOnboardingBinding
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
+import com.app.shepherd.ui.component.createAccount.CreateAccountActivity
 import com.app.shepherd.ui.component.onBoarding.adapter.OnBoardingImagesAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
@@ -61,7 +62,7 @@ class OnBoardingActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToCreateAccountScreen() {
-        startActivity<AddLovedOneActivity>()
+        startActivity<CreateAccountActivity>()
     }
 
     private fun navigateToLoginScreen() {

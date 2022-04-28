@@ -79,7 +79,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_centerHorizontal="true"
                             android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/_8sdp"
+                            android:layout_marginBottom="@dimen/_12sdp"
                             android:onClick="@{listener::onClick}"
                             android:text="@string/upload_photo"
                             android:textColor="@color/colorWhite" />

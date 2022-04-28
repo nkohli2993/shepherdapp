@@ -34,7 +34,7 @@ class AddLovedOneConditionAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ContentViewHolder -> holder.bind(requestList[position])
+            //is ContentViewHolder -> holder.bind(requestList[position])
         }
     }
 

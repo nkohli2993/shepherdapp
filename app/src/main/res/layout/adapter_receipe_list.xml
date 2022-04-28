@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/space_8x">
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_recipe_item_image"
                 android:layout_width="@dimen/image_view_width"
                 android:layout_height="@dimen/image_view_height"

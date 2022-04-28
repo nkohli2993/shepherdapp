@@ -37,7 +37,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_name"
             tools:text="@string/recipe_title_preview" />
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_recipe_Image"
             android:layout_width="match_parent"
             android:layout_height="@dimen/image_details_height"

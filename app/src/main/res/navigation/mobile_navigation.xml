@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_dashboard">
+
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.app.shepherd.ui.component.dashboard.DashboardFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_dashboard">
+
+        <action
+            android:id="@+id/action_dashboard_to_care_team_members"
+            app:destination="@+id/nav_care_team_members" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.app.shepherd.ui.component.home.ui.gallery.GalleryFragment"
+        android:label="@string/menu_gallery"
+        tools:layout="@layout/fragment_gallery" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.app.shepherd.ui.component.home.ui.slideshow.SlideshowFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_care_team_members"
+        android:name="com.app.shepherd.ui.component.careTeamMembers.CareTeamMembersFragment"
+        android:label="@string/menu_care_team_members"
+        tools:layout="@layout/fragment_care_team_members" >
+
+    <action
+        android:id="@+id/action_care_team_members_to_add_team_member"
+        app:destination="@+id/nav_add_care_team_member" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_care_team_member"
+        android:name="com.app.shepherd.ui.component.addMember.AddMemberFragment"
+        android:label="@string/menu_add_new_care_team_member"
+        tools:layout="@layout/fragment_add_member" />
+</navigation>

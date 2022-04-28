@@ -10,7 +10,7 @@ import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.databinding.ActivityLoginBinding
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.recipes.RecipesListActivity
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.resetPassword.ResetPasswordActivity
 import com.app.shepherd.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +54,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {
-                navigateToMainScreen()
+                navigateToHomeScreen()
             }
             is Resource.DataError -> {
                 status.errorCode?.let { loginViewModel.showToastMessage(it) }
@@ -62,8 +62,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun navigateToMainScreen() {
-        startActivityWithFinish<RecipesListActivity>()
+    private fun navigateToHomeScreen() {
+        startActivityWithFinish<HomeActivity>()
     }
 
     private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
@@ -77,7 +77,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.buttonLogin -> {
-                doLogin()
+                //  doLogin()
+                navigateToHomeScreen()
             }
             R.id.textViewResetPassword -> {
                 navigateToResetPasswordScreen()

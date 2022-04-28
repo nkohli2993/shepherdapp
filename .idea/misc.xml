@@ -3,39 +3,72 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_back_white.xml" value="0.255" />
+        <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_checked_media.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_image_placeholder.xml" value="0.255" />
+        <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/shape_circle_white.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/button_primary.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/circle_white.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_arrow_drop_down.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_group.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_healthy_food.xml" value="0.2515" />
+        <entry key="app/src/main/res/drawable/ic_heart_outline.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_navigation_icon.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_outline_info.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_outline_person.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_resources.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_star_24.xml" value="0.2515" />
+        <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/switch_track_selector.xml" value="0.255" />
         <entry key="app/src/main/res/font/roboto_bold.xml" value="0.38645833333333335" />
         <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_care_team_members.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.534375" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/activity_join_care_team.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/activity_join_team.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_recipes_list.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.8486352357320099" />
-        <entry key="app/src/main/res/layout/activity_reset_password.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_reset_password.xml" value="0.75" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/adapter_add_loved_one_condition.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_add_member_role.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_dashboard.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/adapter_join_care_team.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_loved_one_condition.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/adapter_menu_item.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_receipe_list.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/adapter_restriction_modules.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_sub_menu_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_welcome_pager.xml" value="0.25948406676783003" />
+        <entry key="app/src/main/res/layout/app_bar_dashboard.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/details_layout.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/dialog_progress_bar.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/fragment_add_member.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/home_activity.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/include_home_toolbar.xml" value="0.178125" />
         <entry key="app/src/main/res/layout/include_toolbar.xml" value="0.33" />
         <entry key="app/src/main/res/layout/login_activity.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/recipe_item.xml" value="0.56875" />
         <entry key="app/src/main/res/layout/splash_layout.xml" value="0.35625" />
+        <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/menu/dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/menu/details_menu.xml" value="0.35625" />
+        <entry key="app/src/main/res/menu/main_actions.xml" value="0.29243266353142366" />
       </map>
     </option>
   </component>

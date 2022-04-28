@@ -11,6 +11,7 @@ import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.databinding.ActivityCreateAccountBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
+import com.app.shepherd.ui.component.welcome.WelcomeActivity
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +36,7 @@ class CreateAccountActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.toolBar.listener = this
         binding.listener = this
-        
+
         setPhoneNumberFormat()
     }
 
@@ -89,7 +90,7 @@ class CreateAccountActivity : BaseActivity(), View.OnClickListener {
                 finishActivity()
             }
             R.id.buttonCreateAccount -> {
-                navigateToAddLovedOneScreen()
+                navigateToWelcomeScreen()
             }
             R.id.imageViewLovedOne -> {
                 openImagePicker()
@@ -109,8 +110,8 @@ class CreateAccountActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    private fun navigateToAddLovedOneScreen() {
-        startActivity<AddLovedOneActivity>()
+    private fun navigateToWelcomeScreen() {
+        startActivity<WelcomeActivity>()
     }
 
 }

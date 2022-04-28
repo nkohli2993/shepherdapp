@@ -6,9 +6,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
 import com.app.shepherd.R
@@ -48,6 +52,7 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
 
+
     inline fun <reified T : Activity> Context.startActivity(block: Intent.() -> Unit = {}) {
         startActivity(Intent(this, T::class.java).apply(block))
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
@@ -56,6 +61,11 @@ abstract class BaseActivity : AppCompatActivity() {
     inline fun <reified T : Activity> Context.startActivityWithFinish(block: Intent.() -> Unit = {}) {
         startActivity(Intent(this, T::class.java).apply(block))
         finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
+    }
+    inline fun <reified T : Activity> Context.startActivityWithFinishAffinity(block: Intent.() -> Unit = {}) {
+        startActivity(Intent(this, T::class.java).apply(block))
+        finishAffinity()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
     }
 

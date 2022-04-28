@@ -70,8 +70,8 @@ constructor(private val dataRepositoryRepository: DataRepositorySource) : BaseVi
         }
     }
 
-    fun openRecipeDetails(recipe: RecipesItem) {
-        openRecipeDetailsPrivate.value = SingleEvent(recipe)
+    fun openRecipeDetails(vararg itemData: Any) {
+        openRecipeDetailsPrivate.value = SingleEvent(itemData[0] as RecipesItem)
     }
 
     fun showToastMessage(errorCode: Int) {
