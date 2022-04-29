@@ -41,7 +41,7 @@ class RestrictionsModuleAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 6
+        return 4
     }
 
     override fun onBindViewHolder(holder: RestrictionModulesViewHolder, position: Int) {

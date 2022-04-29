@@ -1,4 +1,4 @@
-package com.app.shepherd.ui.component.careTeamMembers
+package com.app.shepherd.ui.component.eventDetails
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.login.LoginRequest
 import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.data.error.CHECK_YOUR_FIELDS
@@ -26,7 +25,7 @@ import javax.inject.Inject
  * Created by Sumit Kumar
  */
 @HiltViewModel
-class CareTeamMembersViewModel @Inject constructor(private val dataRepository: DataRepository) :
+class EventDetailsViewModel @Inject constructor(private val dataRepository: DataRepository) :
     BaseViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -43,15 +42,6 @@ class CareTeamMembersViewModel @Inject constructor(private val dataRepository: D
     private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val openMemberDetailsPrivate = MutableLiveData<SingleEvent<Int>>()
-    val openMemberDetails: LiveData<SingleEvent<Int>> get() = openMemberDetailsPrivate
-
-
-    fun openMemberDetails(item: Int) {
-        openMemberDetailsPrivate.value = SingleEvent(item)
-    }
 
     fun doLogin(context: Context, userName: String, passWord: String) {
         val isUsernameValid = isValidEmail(userName)

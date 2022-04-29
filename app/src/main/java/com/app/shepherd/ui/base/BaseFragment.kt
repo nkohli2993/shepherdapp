@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -16,7 +17,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
+
 
 abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
 
@@ -105,7 +109,10 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
     }
 
 
-    open fun backPress() {}
+
+    open fun backPress() {
+        findNavController().popBackStack()
+    }
 
     inline fun <reified T : Activity> Context.startActivity(block: Intent.() -> Unit = {}) {
         startActivity(Intent(this, T::class.java).apply(block))

@@ -1,59 +1,62 @@
-package com.app.shepherd.ui.component.careTeamMembers.adapter
+package com.app.shepherd.ui.component.memberDetails.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.dashboard.DashboardModel
-import com.app.shepherd.databinding.AdapterCareTeamMembersBinding
+import com.app.shepherd.databinding.AdapterMemberModulesBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.careTeamMembers.CareTeamMembersViewModel
+import com.app.shepherd.ui.component.memberDetails.MemberDetailsViewModel
 
 
-class CareTeamMembersAdapter(
-    private val viewModel: CareTeamMembersViewModel,
-    var requestList: MutableList<String> = ArrayList()
+class MemberModulesAdapter(
+    private val viewModel: MemberDetailsViewModel,
+    var requestList: MutableList<DashboardModel> = ArrayList()
 ) :
-    RecyclerView.Adapter<CareTeamMembersAdapter.CareTeamViewHolder>() {
-    lateinit var binding: AdapterCareTeamMembersBinding
+    RecyclerView.Adapter<MemberModulesAdapter.MemberModulesViewHolder>() {
+    lateinit var binding: AdapterMemberModulesBinding
     lateinit var context: Context
 
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-           viewModel.openMemberDetails(itemData[0] as Int)
+            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CareTeamViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MemberModulesViewHolder {
         context = parent.context
         binding =
-            AdapterCareTeamMembersBinding.inflate(
+            AdapterMemberModulesBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return CareTeamViewHolder(binding)
+        return MemberModulesViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 6
+        return 4
     }
 
-    override fun onBindViewHolder(holder: CareTeamViewHolder, position: Int) {
-        holder.bind(position, onItemClickListener)
+    override fun onBindViewHolder(holder: MemberModulesViewHolder, position: Int) {
+        //holder.bind(requestList[position], onItemClickListener)
     }
 
 
-    class CareTeamViewHolder(private val itemBinding: AdapterCareTeamMembersBinding) :
+    class MemberModulesViewHolder(private val itemBinding: AdapterMemberModulesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
-           // itemBinding.data = dashboard
+        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
+            // itemBinding.data = dashboard
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    position
+                    dashboard
                 )
             }
         }
@@ -68,7 +71,7 @@ class CareTeamMembersAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
+    fun addData(dashboard: MutableList<DashboardModel>) {
         this.requestList.clear()
         this.requestList.addAll(dashboard)
         notifyDataSetChanged()

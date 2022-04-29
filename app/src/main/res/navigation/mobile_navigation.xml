@@ -14,6 +14,14 @@
         <action
             android:id="@+id/action_dashboard_to_care_team_members"
             app:destination="@+id/nav_care_team_members" />
+
+        <action
+            android:id="@+id/action_dashboard_to_add_new_event"
+            app:destination="@+id/nav_add_new_event" />
+
+        <action
+            android:id="@+id/action_dashboard_to_event_details"
+            app:destination="@+id/nav_event_details" />
     </fragment>
 
     <fragment
@@ -32,11 +40,14 @@
         android:id="@+id/nav_care_team_members"
         android:name="com.app.shepherd.ui.component.careTeamMembers.CareTeamMembersFragment"
         android:label="@string/menu_care_team_members"
-        tools:layout="@layout/fragment_care_team_members" >
+        tools:layout="@layout/fragment_care_team_members">
 
-    <action
-        android:id="@+id/action_care_team_members_to_add_team_member"
-        app:destination="@+id/nav_add_care_team_member" />
+        <action
+            android:id="@+id/action_care_team_members_to_add_team_member"
+            app:destination="@+id/nav_add_care_team_member" />
+        <action
+            android:id="@+id/action_care_team_members_to_member_details"
+            app:destination="@+id/nav_team_member_details" />
 
     </fragment>
 
@@ -45,4 +56,20 @@
         android:name="com.app.shepherd.ui.component.addMember.AddMemberFragment"
         android:label="@string/menu_add_new_care_team_member"
         tools:layout="@layout/fragment_add_member" />
+    <fragment
+        android:id="@+id/nav_team_member_details"
+        android:name="com.app.shepherd.ui.component.memberDetails.MemberDetailsFragment"
+        android:label="@string/menu_member_details"
+        tools:layout="@layout/fragment_member_details" />
+
+    <fragment
+        android:id="@+id/nav_add_new_event"
+        android:name="com.app.shepherd.ui.component.addNewEvent.AddNewEventFragment"
+        android:label="@string/menu_add_new_event"
+        tools:layout="@layout/fragment_add_new_event" />
+    <fragment
+        android:id="@+id/nav_event_details"
+        android:name="com.app.shepherd.ui.component.eventDetails.EventDetailsFragment"
+        android:label="@string/menu_event_details"
+        tools:layout="@layout/fragment_event_details" />
 </navigation>

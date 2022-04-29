@@ -7,5 +7,5 @@ import com.app.shepherd.data.dto.recipes.RecipesItem
  */
 
 interface RecyclerItemListener {
-    fun     onItemSelected(vararg itemData: Any)
+    fun onItemSelected(vararg itemData: Any)
 }

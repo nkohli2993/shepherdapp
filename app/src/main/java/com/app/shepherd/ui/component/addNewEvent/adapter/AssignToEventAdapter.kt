@@ -1,39 +1,39 @@
-package com.app.shepherd.ui.component.careTeamMembers.adapter
+package com.app.shepherd.ui.component.addNewEvent.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.dashboard.DashboardModel
-import com.app.shepherd.databinding.AdapterCareTeamMembersBinding
+import com.app.shepherd.databinding.AdapterAssignToEventBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.careTeamMembers.CareTeamMembersViewModel
+import com.app.shepherd.ui.component.addNewEvent.AddNewEventViewModel
 
 
-class CareTeamMembersAdapter(
-    private val viewModel: CareTeamMembersViewModel,
-    var requestList: MutableList<String> = ArrayList()
+class AssignToEventAdapter(
+    private val viewModel: AddNewEventViewModel,
+    var requestList: MutableList<DashboardModel> = ArrayList()
 ) :
-    RecyclerView.Adapter<CareTeamMembersAdapter.CareTeamViewHolder>() {
-    lateinit var binding: AdapterCareTeamMembersBinding
+    RecyclerView.Adapter<AssignToEventAdapter.AssignToEventViewHolder>() {
+    lateinit var binding: AdapterAssignToEventBinding
     lateinit var context: Context
 
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-           viewModel.openMemberDetails(itemData[0] as Int)
+           // viewModel.openDashboardItems(itemData[0] as DashboardModel)
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CareTeamViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssignToEventViewHolder {
         context = parent.context
         binding =
-            AdapterCareTeamMembersBinding.inflate(
+            AdapterAssignToEventBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return CareTeamViewHolder(binding)
+        return AssignToEventViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -41,19 +41,19 @@ class CareTeamMembersAdapter(
         return 6
     }
 
-    override fun onBindViewHolder(holder: CareTeamViewHolder, position: Int) {
-        holder.bind(position, onItemClickListener)
+    override fun onBindViewHolder(holder: AssignToEventViewHolder, position: Int) {
+        //holder.bind(requestList[position], onItemClickListener)
     }
 
 
-    class CareTeamViewHolder(private val itemBinding: AdapterCareTeamMembersBinding) :
+    class AssignToEventViewHolder(private val itemBinding: AdapterAssignToEventBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
+        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
            // itemBinding.data = dashboard
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    position
+                    dashboard
                 )
             }
         }
@@ -68,7 +68,7 @@ class CareTeamMembersAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
+    fun addData(dashboard: MutableList<DashboardModel>) {
         this.requestList.clear()
         this.requestList.addAll(dashboard)
         notifyDataSetChanged()

@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorGreyLight"
+        android:orientation="vertical"
+        tools:context="com.app.shepherd.ui.component.addLovedOne.Hilt_CreateAccountActivity">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutToolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:background="@color/colorPrimaryDark"
+                    android:gravity="end"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ic_calendar"
+                        android:tint="@color/colorWhite" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextViewPoppinsSemiBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:gravity="end|center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="@string/care_points"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_15ssp" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/topView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_4sdp"
+                    android:background="@color/colorDarkBlue"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewDetails"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="@dimen/_6sdp"
+                    app:cardElevation="0dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="@dimen/_12sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/topView">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_8sdp">
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/textViewTitle"
+                            style="@style/TextViewPoppinsTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/test_title"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/textViewDoctor"
+                            style="@style/TextViewPoppinsRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_12sdp"
+                            android:text="@string/test_doctor"
+                            android:textSize="@dimen/_11ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/constraintLayoutImages"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/textViewDoctor">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imageViewUserOne"
+                                android:layout_width="@dimen/_24sdp"
+                                android:layout_height="@dimen/_24sdp"
+                                android:src="@drawable/test_image"
+                                app:civ_border_color="@color/colorWhite"
+                                app:civ_border_width="@dimen/_1sdp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imageViewUserTwo"
+                                android:layout_width="@dimen/_24sdp"
+                                android:layout_height="@dimen/_24sdp"
+                                android:layout_marginStart="@dimen/_18sdp"
+                                android:src="@drawable/test_image"
+                                app:civ_border_color="@color/colorWhite"
+                                app:civ_border_width="@dimen/_1sdp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/imageViewUserOne"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/imageViewUserThree"
+                                android:layout_width="@dimen/_24sdp"
+                                android:layout_height="@dimen/_24sdp"
+                                android:layout_marginStart="@dimen/_18sdp"
+                                android:src="@drawable/test_image"
+                                app:civ_border_color="@color/colorWhite"
+                                app:civ_border_width="@dimen/_1sdp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="@+id/imageViewUserTwo"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        <View
+                            android:id="@+id/viewDivider"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:background="@color/colorPrimary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/constraintLayoutImages" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/appCompatTextViewDate"
+                            style="@style/TextViewPoppinsSemiBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text="@string/test_date"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/_15ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/viewDivider" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/appCompatTextViewTime"
+                            style="@style/TextViewPoppinsSemiBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:text="@string/test_time"
+                            android:textColor="@color/colorPeach"
+                            android:textSize="@dimen/_15ssp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/viewDivider" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/appCompatTextViewDateTime"
+                            style="@style/TextViewPoppinsSemiBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_24sdp"
+                            android:text="@string/test_date_time"
+                            android:textColor="@color/colorPrimary"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/appCompatTextViewDate" />
+
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/textViewDescription"
+                            style="@style/TextViewPoppinsRegular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_12sdp"
+                            android:background="@drawable/rounded_box_12"
+                            android:includeFontPadding="false"
+                            android:padding="@dimen/_16sdp"
+                            android:text="@string/test_text"
+                            android:textSize="@dimen/_11ssp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/appCompatTextViewDateTime" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/imageViewUser"
+                            android:layout_width="@dimen/_28sdp"
+                            android:layout_height="@dimen/_28sdp"
+                            android:src="@drawable/test_image"
+                            app:civ_border_color="@color/colorWhite"
+                            app:civ_border_width="@dimen/_1sdp"
+                            app:layout_constraintBottom_toTopOf="@+id/textViewDescription"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/textViewDescription" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewEventChat"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cardViewDetails"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/adapter_event_chat" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewYourMessage"
+                    style="@style/TextViewPoppinsRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_24sdp"
+                    android:text="@string/your_message"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewEventChat" />
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/editTextMessage"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:background="@drawable/rounded_box_6"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:backgroundTint="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="@+id/cardViewDetails"
+                    app:layout_constraintStart_toStartOf="@+id/textViewYourMessage"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewYourMessage" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonReply"
+                    style="@style/ButtonPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_marginVertical="@dimen/_24sdp"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:onClick="@{listener::onClick}"
+                    android:text="@string/reply"
+                    android:textAllCaps="false"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/editTextMessage" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

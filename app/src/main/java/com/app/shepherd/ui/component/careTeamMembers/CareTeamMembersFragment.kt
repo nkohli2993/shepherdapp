@@ -19,6 +19,8 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_care_team_members.*
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.app.shepherd.RECIPE_ITEM_KEY
+import com.app.shepherd.ui.component.details.DetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -52,6 +54,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
 
     override fun observeViewModel() {
         observe(careTeamViewModel.loginLiveData, ::handleLoginResult)
+        observe(careTeamViewModel.openMemberDetails, ::openMemberDetails)
         observeSnackBarMessages(careTeamViewModel.showSnackBar)
         observeToast(careTeamViewModel.showToast)
     }
@@ -80,12 +83,19 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private fun setCareTeamAdapters() {
         val careTeamAdapter = CareTeamMembersAdapter(careTeamViewModel)
         fragmentCareTeamMembersBinding.recyclerViewCareTeam.adapter = careTeamAdapter
+
+    }
+
+    private fun openMemberDetails(navigateEvent: SingleEvent<Int>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            findNavController().navigate(R.id.action_care_team_members_to_member_details)
+        }
+
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.buttonAddNewMember -> {
-                showToast("Hiiii")
                 findNavController().navigate(R.id.action_care_team_members_to_add_team_member)
             }
         }
@@ -95,7 +105,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun getLayoutRes(): Int {
         return R.layout.fragment_care_team_members
     }
-
 
 
 }

@@ -48,7 +48,7 @@ class DashboardViewModel @Inject constructor(private val dataRepository: DataRep
             DashboardModel(
                 icon = ContextCompat.getDrawable(context, R.drawable.ic_calendar)!!,
                 title = context.getString(R.string.care_points),
-                subTitle = context.getString(R.string.discusstions),
+                subTitle = context.getString(R.string.discussions),
                 membersCount = "0",
                 showImages = false,
                 showTasks = true,

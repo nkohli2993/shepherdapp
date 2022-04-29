@@ -63,6 +63,10 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
         navigateEvent.getContentIfNotHandled()?.let {
             if (it.title == resources.getString(R.string.care_team)) {
                 findNavController().navigate(R.id.action_dashboard_to_care_team_members)
+            } else if (it.title == resources.getString(R.string.care_points)) {
+                findNavController().navigate(R.id.action_dashboard_to_add_new_event)
+            } else if (it.title == resources.getString(R.string.lock_box)) {
+                findNavController().navigate(R.id.action_dashboard_to_event_details)
             }
 
         }
