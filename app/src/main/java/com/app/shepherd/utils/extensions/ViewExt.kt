@@ -1,29 +1,20 @@
 package com.app.shepherd.utils
 
-import android.app.Activity
 import android.app.Service
+import android.app.TimePickerDialog
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Typeface
-import android.os.Build
 import android.text.Editable
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.PrecomputedTextCompat
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.FragmentManager
@@ -37,6 +28,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.TextInputEditText
 import java.io.File
+import java.util.*
 
 fun View.showKeyboard() {
     (this.context.getSystemService(Service.INPUT_METHOD_SERVICE) as? InputMethodManager)
@@ -233,30 +225,38 @@ fun TextInputEditText.datePicker(fm: FragmentManager, tag: String) {
     }
 }
 
+fun AppCompatTextView.datePicker(fm: FragmentManager, tag: String) {
+    val datePicker =
+        MaterialDatePicker.Builder.datePicker()
+            .setTitleText(context.getString(R.string.select_date))
+            .build()
 
-fun Context.toast(message: () -> String) {
-    Toast.makeText(this, message(), Toast.LENGTH_LONG).show()
-}
 
-fun Context.colorList(id: Int): ColorStateList {
-    return ColorStateList.valueOf(ContextCompat.getColor(this, id))
-}
+    setOnClickListener {
+        datePicker.show(fm, tag)
+    }
 
-fun Context.showKeyboard() {
-    val imm = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
-}
-
-fun Context.hideKeyboard() {
-    val imm = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    imm.toggleSoftInput(0, InputMethodManager.HIDE_IMPLICIT_ONLY)
-}
-
-fun Context.toggleKeyboard() {
-    val imm = this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-    if (imm.isActive) {
-        hideKeyboard()
-    } else {
-        showKeyboard()
+    datePicker.addOnPositiveButtonClickListener {
+        text = datePicker.headerText
     }
 }
+
+fun AppCompatTextView.timePicker(context: Context) {
+    val mCurrentTime = Calendar.getInstance()
+    val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
+    val minute = mCurrentTime.get(Calendar.MINUTE)
+
+        val mTimePicker = TimePickerDialog(
+        context,
+        { view, hourOfDay, selectedMinute ->
+            text = String.format("%02d : %02d", hourOfDay, selectedMinute)
+        }, hour,
+        minute, true
+    )
+
+    setOnClickListener { v ->
+        mTimePicker.show()
+    }
+}
+
+

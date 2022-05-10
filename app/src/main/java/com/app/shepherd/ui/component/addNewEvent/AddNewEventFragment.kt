@@ -6,19 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.databinding.FragmentAddNewEventBinding
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.addMember.adapter.AddMemberRoleAdapter
-import com.app.shepherd.ui.component.addMember.adapter.RestrictionsModuleAdapter
+import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_add_loved_one.*
+import kotlinx.android.synthetic.main.fragment_add_new_event.*
 
 
 /**
@@ -47,6 +47,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddMemberBinding>(),
     override fun initViewBinding() {
         fragmentAddNewEventBinding.listener = this
 
+
+        initDatePicker()
+        initTimePicker()
         setAssignMembersAdapter()
 
 
@@ -88,9 +91,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.textViewSelectDate -> {
-                
-            }
             R.id.buttonAdd -> {
                 backPress()
             }
@@ -98,13 +98,23 @@ class AddNewEventFragment : BaseFragment<FragmentAddMemberBinding>(),
     }
 
 
+    private fun initDatePicker() {
+        textViewSelectDate.datePicker(
+            childFragmentManager,
+            AddLovedOneActivity::class.java.simpleName
+        )
+    }
+
+    private fun initTimePicker() {
+        textViewSelectTime.timePicker(
+            requireContext()
+        )
+    }
 
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_add_new_event
     }
-
-
 
 
 }

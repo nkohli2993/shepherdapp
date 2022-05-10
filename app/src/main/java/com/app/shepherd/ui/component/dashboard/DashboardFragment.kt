@@ -61,12 +61,19 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
 
     private fun navigateToDashboardItems(navigateEvent: SingleEvent<DashboardModel>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            if (it.title == resources.getString(R.string.care_team)) {
-                findNavController().navigate(R.id.action_dashboard_to_care_team_members)
-            } else if (it.title == resources.getString(R.string.care_points)) {
-                findNavController().navigate(R.id.action_dashboard_to_add_new_event)
-            } else if (it.title == resources.getString(R.string.lock_box)) {
-                findNavController().navigate(R.id.action_dashboard_to_event_details)
+            when (it.title) {
+                resources.getString(R.string.care_team) -> {
+                    findNavController().navigate(R.id.action_dashboard_to_care_team_members)
+                }
+                resources.getString(R.string.care_points) -> {
+                    findNavController().navigate(R.id.action_dashboard_to_add_new_event)
+                }
+                resources.getString(R.string.lock_box) -> {
+                    findNavController().navigate(R.id.action_dashboard_to_event_details)
+                }
+                resources.getString(R.string.medlist) -> {
+                    findNavController().navigate(R.id.action_dashboard_to_medication_list)
+                }
             }
 
         }

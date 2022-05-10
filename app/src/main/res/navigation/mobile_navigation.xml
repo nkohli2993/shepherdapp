@@ -22,6 +22,10 @@
         <action
             android:id="@+id/action_dashboard_to_event_details"
             app:destination="@+id/nav_event_details" />
+
+        <action
+            android:id="@+id/action_dashboard_to_medication_list"
+            app:destination="@+id/nav_add_new_medication" />
     </fragment>
 
     <fragment
@@ -72,4 +76,23 @@
         android:name="com.app.shepherd.ui.component.eventDetails.EventDetailsFragment"
         android:label="@string/menu_event_details"
         tools:layout="@layout/fragment_event_details" />
+
+    <fragment
+        android:id="@+id/nav_add_new_medication"
+        android:name="com.app.shepherd.ui.component.addNewMedication.AddNewMedicationFragment"
+        android:label="@string/menu_add_new_medication"
+        tools:layout="@layout/fragment_add_new_medication">
+
+        <action
+            android:id="@+id/action_add_new_medication_to_add_medication_details"
+            app:destination="@+id/nav_medication_details" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_medication_details"
+        android:name="com.app.shepherd.ui.component.addMedicationDetails.AddMedicationDetailsFragment"
+        android:label="@string/menu_medication_details"
+        tools:layout="@layout/fragment_add_medication_details" />
+
 </navigation>

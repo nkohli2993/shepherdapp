@@ -215,7 +215,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toStartOf="@+id/textViewSelectedDate"
-                            android:onClick="@{listener::onClick}"
                             android:padding="@dimen/_12sdp"
                             android:text="@string/select_date" />
 
@@ -266,7 +265,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_toStartOf="@+id/textViewSelectedTime"
-                            android:onClick="@{listener::onClick}"
                             android:padding="@dimen/_12sdp"
                             android:text="@string/select_time" />
 

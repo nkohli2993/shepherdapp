@@ -5,6 +5,8 @@
       <map>
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_back_white.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_checked_media.xml" value="0.255" />
+        <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_crop_image_menu_flip.xml" value="0.255" />
+        <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_crop_image_menu_rotate_left.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_image_placeholder.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/shape_circle_white.xml" value="0.255" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_12.xml" value="0.255" />
@@ -19,6 +21,8 @@
         <entry key="app/src/main/res/drawable/ic_group.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_healthy_food.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/ic_heart_outline.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_medlist.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_more_vert.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_navigate_next.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_navigation_icon.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_outline_email.xml" value="0.255" />
@@ -32,9 +36,13 @@
         <entry key="app/src/main/res/drawable/ic_star_24.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/switch_track_selector.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/test_ic_baseline_medication_24.xml" value="0.255" />
         <entry key="app/src/main/res/font/roboto_bold.xml" value="0.38645833333333335" />
+        <entry key="app/src/main/res/layout-v23/adapter_care_points_events.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout-v23/adapter_events.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_team_members.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.534375" />
@@ -42,6 +50,7 @@
         <entry key="app/src/main/res/layout/activity_join_care_team.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_join_team.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_my_medlist.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_recipes_list.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.8486352357320099" />
@@ -49,31 +58,52 @@
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_add_loved_one_condition.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_add_medication_days.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_add_medication_dose.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_add_medication_frequency.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_add_medicine_list.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_add_member_role.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_assign_to_event.xml" value="0.25948406676783003" />
+        <entry key="app/src/main/res/layout/adapter_care_points.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_care_points_events.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_dashboard.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/adapter_date_picker.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_documents.xml" value="0.855" />
         <entry key="app/src/main/res/layout/adapter_event_chat.xml" value="0.638121546961326" />
+        <entry key="app/src/main/res/layout/adapter_events.xml" value="0.855" />
+        <entry key="app/src/main/res/layout/adapter_events_days.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_events_members.xml" value="0.855" />
         <entry key="app/src/main/res/layout/adapter_join_care_team.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_loved_one_condition.xml" value="0.33" />
         <entry key="app/src/main/res/layout/adapter_member_modules.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/adapter_menu_item.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_my_medications_list.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_other_documents.xml" value="0.855" />
         <entry key="app/src/main/res/layout/adapter_receipe_list.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/adapter_recommended_documents.xml" value="0.855" />
         <entry key="app/src/main/res/layout/adapter_restriction_modules.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_selected_day_medicine.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_sub_menu_item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_welcome_pager.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/app_bar_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/details_layout.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/dialog_progress_bar.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/fragment_add_member.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_add_medication_details.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_add_medicine_details.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_add_member.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_add_new_event.xml" value="0.25948406676783003" />
-        <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_add_new_medication.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_event_details.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_lockbox.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_lockbox_doc_info.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_member_details.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_my_medlist.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/home_activity.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/include_home_toolbar.xml" value="0.178125" />

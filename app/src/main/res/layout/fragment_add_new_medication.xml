@@ -21,6 +21,7 @@
         tools:context="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity">
 
 
+
         <LinearLayout
             android:id="@+id/linearLayoutToolbar"
             android:layout_width="match_parent"
@@ -37,7 +38,9 @@
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_group" />
+                android:src="@drawable/ic_medlist"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:tint="@color/colorWhite" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/TextViewPoppinsSemiBold"
@@ -46,7 +49,7 @@
                 android:layout_gravity="end|center_vertical"
                 android:gravity="end|center_vertical"
                 android:includeFontPadding="false"
-                android:text="@string/care_team"
+                android:text="@string/medlist"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_15ssp" />
 
@@ -54,23 +57,23 @@
 
         <View
             android:id="@+id/topView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="@dimen/_4sdp"
-            android:background="@color/colorDarkBlue"
+            android:background="@color/colorPeach"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
-
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSearch"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_24sdp"
-            android:layout_marginEnd="@dimen/_4sdp"
             android:orientation="horizontal"
             app:cardCornerRadius="@dimen/_18sdp"
             app:cardElevation="@dimen/_5sdp"
-            app:layout_constraintEnd_toStartOf="@+id/guidelineSearch"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/topView">
 
@@ -87,7 +90,7 @@
                     android:layout_toStartOf="@+id/viewDivider"
                     android:background="@null"
                     android:gravity="center_vertical"
-                    android:hint="@string/start_typing"
+                    android:hint="@string/start_typing_condition"
                     android:imeOptions="actionDone"
                     android:inputType="textCapSentences"
                     android:maxLines="1"
@@ -123,74 +126,54 @@
         </androidx.cardview.widget.CardView>
 
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonAddNewMember"
-            style="@style/ButtonPrimary"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_4sdp"
-            android:layout_marginEnd="@dimen/_12sdp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:onClick="@{listener::onClick}"
-            android:paddingHorizontal="@dimen/_1sdp"
-            android:text="@string/add_new_member"
-            android:textAllCaps="false"
-            android:textSize="@dimen/_11ssp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardViewSearch"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.25"
-            app:layout_constraintStart_toStartOf="@+id/guidelineSearch"
-            app:layout_constraintTop_toTopOf="@+id/cardViewSearch" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineSearch"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.55" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guidelineButton"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="1" />
-
-
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView3"
+            android:id="@+id/cardViewDetails"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginVertical="@dimen/_24sdp"
+            android:layout_marginVertical="@dimen/_16sdp"
             app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="@dimen/_6sdp"
             app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/buttonAddNewMedication"
+            app:layout_constraintEnd_toEndOf="@+id/cardViewSearch"
+            app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
             app:layout_constraintTop_toBottomOf="@+id/cardViewSearch">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/Id_const_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="@dimen/_4sdp">
+                android:layout_marginStart="@dimen/_16sdp"
+                android:layout_marginEnd="@dimen/_12sdp">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewCareTeam"
+                    android:id="@+id/recyclerViewMedicine"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    tools:listitem="@layout/adapter_add_medicine_list"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_max="@dimen/_400sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:itemCount="7"
-                    tools:listitem="@layout/adapter_care_team_members" />
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.cardview.widget.CardView>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonAddNewMedication"
+            style="@style/ButtonPrimary"
+            android:layout_width="wrap_content"
+            android:layout_marginVertical="@dimen/_24sdp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:onClick="@{listener::onClick}"
+            android:text="@string/add_new_medication"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
