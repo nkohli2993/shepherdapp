@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponse
@@ -16,11 +18,6 @@ import com.app.shepherd.utils.observe
 import com.app.shepherd.utils.setupSnackbar
 import com.app.shepherd.utils.showToast
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_care_team_members.*
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.app.shepherd.RECIPE_ITEM_KEY
-import com.app.shepherd.ui.component.details.DetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 

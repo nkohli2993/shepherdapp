@@ -170,6 +170,16 @@
     <string name="days">Days</string>
     <string name="test_day">Monday</string>
     <string name="menu_medication_details">Medication Details</string>
+    <string name="menu_notifications">Notifications</string>
     <string name="test_day_short">Mon</string>
     <string name="test_date_day">18</string>
+    <string name="personal_details">Personal Details</string>
+    <string name="edit">Edit</string>
+    <string name="loved_ones">Loved Ones</string>
+    <string name="pending_invitations">Pending Invitations</string>
+    <string name="menu_profile">Profile</string>
+    <string name="menu_care_points">CarePoints</string>
+    <string name="menu_lock_box">LockBox</string>
+    <string name="menu_lock_box_info">LockBox Doc Info</string>
+    <string name="menu_my_med_list">My MedList</string>
 </resources>

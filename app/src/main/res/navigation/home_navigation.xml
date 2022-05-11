@@ -95,4 +95,37 @@
         android:label="@string/menu_medication_details"
         tools:layout="@layout/fragment_add_medication_details" />
 
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="com.app.shepherd.ui.component.notifications.NotificationsFragment"
+        android:label="@string/menu_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.app.shepherd.ui.component.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/nav_care_points"
+        android:name="com.app.shepherd.ui.component.carePoints.CarePointsFragment"
+        android:label="@string/menu_care_points"
+        tools:layout="@layout/fragment_care_points" />
+
+    <fragment
+        android:id="@+id/nav_lock_box"
+        android:name="com.app.shepherd.ui.component.lockBox.LockBoxFragment"
+        android:label="@string/menu_lock_box"
+        tools:layout="@layout/fragment_lockbox" />
+
+    <fragment
+        android:id="@+id/nav_lock_box_doc_info"
+        android:name="com.app.shepherd.ui.component.lockBoxDocInfo.LockBoxDocInfoFragment"
+        android:label="@string/menu_lock_box_info"
+        tools:layout="@layout/fragment_lockbox_doc_info" />
+    <fragment
+        android:id="@+id/nav_my_medlist"
+        android:name="com.app.shepherd.ui.component.myMedList.MyMedListFragment"
+        android:label="@string/menu_my_med_list"
+        tools:layout="@layout/fragment_my_medlist" />
+
 </navigation>

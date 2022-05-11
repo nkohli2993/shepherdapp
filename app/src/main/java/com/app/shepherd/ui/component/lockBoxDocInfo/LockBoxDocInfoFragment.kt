@@ -44,8 +44,6 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentLockboxBinding>(),
 
     override fun initViewBinding() {
         fragmentLockboxDocInfoBinding.listener = this
-
-
     }
 
     override fun observeViewModel() {
