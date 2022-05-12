@@ -28,17 +28,6 @@
             app:destination="@+id/nav_add_new_medication" />
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.app.shepherd.ui.component.home.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
-
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.app.shepherd.ui.component.home.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
 
     <fragment
         android:id="@+id/nav_care_team_members"
@@ -122,10 +111,34 @@
         android:name="com.app.shepherd.ui.component.lockBoxDocInfo.LockBoxDocInfoFragment"
         android:label="@string/menu_lock_box_info"
         tools:layout="@layout/fragment_lockbox_doc_info" />
+
     <fragment
         android:id="@+id/nav_my_medlist"
         android:name="com.app.shepherd.ui.component.myMedList.MyMedListFragment"
         android:label="@string/menu_my_med_list"
         tools:layout="@layout/fragment_my_medlist" />
+
+    <fragment
+        android:id="@+id/nav_messages"
+        android:name="com.app.shepherd.ui.component.messages.MessagesFragment"
+        android:label="@string/menu_messages"
+        tools:layout="@layout/fragment_messages" />
+
+    <fragment
+        android:id="@+id/nav_new_message"
+        android:name="com.app.shepherd.ui.component.newMessage.NewMessageFragment"
+        android:label="@string/menu_new_message"
+        tools:layout="@layout/fragment_new_message" />
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.app.shepherd.ui.component.chat.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout="@layout/fragment_chat" />
+    <fragment
+        android:id="@+id/nav_resources"
+        android:name="com.app.shepherd.ui.component.resources.ResourcesFragment"
+        android:label="@string/menu_resources"
+        tools:layout="@layout/fragment_resources" />
 
 </navigation>

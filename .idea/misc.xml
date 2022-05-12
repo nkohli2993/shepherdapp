@@ -34,6 +34,7 @@
         <entry key="app/src/main/res/drawable/ic_phone_iphone.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_resources.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_restore_from_trash.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_round_cancel.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_star_24.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.255" />
@@ -70,8 +71,11 @@
         <entry key="app/src/main/res/layout/adapter_care_points_day.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_points_events.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_chat.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_date_picker.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_direct_messages.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_discussion_groups.xml" value="0.67" />
         <entry key="app/src/main/res/layout/adapter_documents.xml" value="0.855" />
         <entry key="app/src/main/res/layout/adapter_event_chat.xml" value="0.638121546961326" />
         <entry key="app/src/main/res/layout/adapter_events.xml" value="0.855" />
@@ -80,6 +84,8 @@
         <entry key="app/src/main/res/layout/adapter_join_care_team.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_loved_one_condition.xml" value="0.33" />
         <entry key="app/src/main/res/layout/adapter_loved_ones.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_medical_history.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_medical_history_topics.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_member_modules.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/adapter_menu_item.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_my_medications_list.xml" value="0.29243266353142366" />
@@ -93,6 +99,8 @@
         <entry key="app/src/main/res/layout/adapter_restriction_modules.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_selected_day_medicine.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_sub_menu_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/adapter_topics.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_users.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_welcome_pager.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/app_bar_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.29243266353142366" />
@@ -105,15 +113,19 @@
         <entry key="app/src/main/res/layout/fragment_add_new_medication.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_care_points.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_event_details.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_lockbox.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_lockbox_doc_info.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_member_details.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_my_medlist.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_new_message.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_resources.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/home_activity.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/include_home_toolbar.xml" value="0.178125" />

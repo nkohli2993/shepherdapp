@@ -18,5 +18,7 @@
     <color name="colorOrange">#e9a571</color>
     <color name="colorYellow">#f0c859</color>
     <color name="colorDarkBlue">#0479cd</color>
+    <color name="colorDivider">#cdcdd8</color>
+    <color name="colorOrangeLight">#f3e7de</color>
 
 </resources>
