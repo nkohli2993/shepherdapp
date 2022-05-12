@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.addMedicationDetails
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,7 @@ import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.addMedicationDetails.adapter.AddMedicationDaysAdapter
 import com.app.shepherd.ui.component.addMedicationDetails.adapter.AddMedicationDoseAdapter
 import com.app.shepherd.ui.component.addMedicationDetails.adapter.AddMedicationFrequencyAdapter
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -107,6 +109,9 @@ class AddMedicationDetailsFragment : BaseFragment<FragmentAddNewMedicationBindin
         when (p0?.id) {
             R.id.imageViewBack -> {
                 backPress()
+            }
+            R.id.buttonAddNewMedication -> {
+                startActivity(Intent(requireContext(), HomeActivity::class.java))
             }
             R.id.textViewDose -> {
                 manageVisibility(fragmentAddMedicationDetailsBinding.recyclerViewDose)

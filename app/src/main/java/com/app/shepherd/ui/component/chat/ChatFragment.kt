@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.chat
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.app.shepherd.databinding.FragmentChatBinding
 import com.app.shepherd.databinding.FragmentMessagesBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.chat.adapter.ChatAdapter
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.messages.adapter.DirectMessagesAdapter
 import com.app.shepherd.ui.component.messages.adapter.DiscussionGroupsAdapter
 import com.app.shepherd.utils.*
@@ -87,8 +89,9 @@ class ChatFragment : BaseFragment<FragmentMessagesBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonSubmit -> {
-                backPress()
+            R.id.buttonSubmit,R.id.imageViewBack -> {
+               //backPress()
+                startActivity(Intent(requireContext(), HomeActivity::class.java))
             }
         }
     }

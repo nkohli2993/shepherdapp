@@ -8,15 +8,18 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.app.shepherd.R
+import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.ActivityHomeBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.adapter.MenuItemAdapter
 import com.app.shepherd.ui.component.home.viewModel.HomeViewModel
+import com.app.shepherd.utils.SingleEvent
+import com.app.shepherd.utils.observeEvent
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,6 +48,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
 
     override fun observeViewModel() {
+        observeEvent(viewModel.selectedDrawerItem, ::navigateToDashboardItems)
     }
 
 
@@ -72,7 +76,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_dashboard, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_dashboard, R.id.nav_notifications, R.id.nav_profile,
+                R.id.nav_care_team, R.id.nav_care_points, R.id.nav_lock_box,
+                R.id.nav_my_medlist, R.id.nav_messages, R.id.nav_resources,
             ), drawerLayout
         )
 
@@ -82,21 +88,63 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         NavigationUI.setupActionBarWithNavController(this, navController)
         NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
-        binding.appBarDashboard.toolbar.setupWithNavController(navController,drawerLayout)
+        binding.appBarDashboard.toolbar.setupWithNavController(navController, drawerLayout)
 
     }
 
     private fun setMenuItemAdapter() {
         viewModel.inflateDashboardList(this)
 
-        val adapter = MenuItemAdapter(viewModel.menuItemList, viewModel.menuItemMap)
+        val adapter = MenuItemAdapter(viewModel, viewModel.menuItemList, viewModel.menuItemMap)
         binding.recyclerViewMenu.adapter = adapter
     }
 
 
-    override fun onSupportNavigateUp(): Boolean {
-        return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp()
+    private fun navigateToDashboardItems(navigateEvent: SingleEvent<String>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            when (it) {
+                resources.getString(R.string.care_team) -> {
+                    navController.navigate(R.id.nav_care_team)
+                }
+                resources.getString(R.string.care_points) -> {
+                    navController.navigate(R.id.nav_care_points)
+                }
+                resources.getString(R.string.lock_box) -> {
+                    navController.navigate(R.id.nav_lock_box)
+                }
+                resources.getString(R.string.medlist) -> {
+                    navController.navigate(R.id.nav_my_medlist)
+                }
+                resources.getString(R.string.messages) -> {
+                    navController.navigate(R.id.nav_messages)
+                }
+                resources.getString(R.string.resources) -> {
+                    navController.navigate(R.id.nav_resources)
+                }
+                resources.getString(R.string.profile) -> {
+                    navController.navigate(R.id.nav_profile)
+                }
+                resources.getString(R.string.notifications) -> {
+                    navController.navigate(R.id.nav_notifications)
+                }
+
+                resources.getString(R.string.add_loved_one) -> {
+                    navController.navigate(R.id.nav_add_loved_one)
+                }
+            }
+
+        }
+        drawerLayout?.closeDrawer(GravityCompat.START)
     }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(
+            navController,
+            appBarConfiguration
+        ) || super.onSupportNavigateUp()
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         drawerLayout?.closeDrawer(GravityCompat.START)
         return true

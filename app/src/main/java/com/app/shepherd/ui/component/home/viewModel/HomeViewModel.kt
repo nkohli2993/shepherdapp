@@ -1,13 +1,17 @@
 package com.app.shepherd.ui.component.home.viewModel
 
 import android.content.Context
+import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.app.shepherd.R
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.menuItem.MenuItemModel
 import com.app.shepherd.ui.base.BaseViewModel
+import com.app.shepherd.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -17,6 +21,10 @@ class HomeViewModel  @Inject constructor(private val dataRepository: DataReposit
 
     var menuItemList: ArrayList<MenuItemModel> = ArrayList()
     var menuItemMap: HashMap<String, ArrayList<MenuItemModel>> = HashMap()
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val selectedDrawerItemPrivate = MutableLiveData<SingleEvent<String>>()
+    val selectedDrawerItem: LiveData<SingleEvent<String>> get() = selectedDrawerItemPrivate
 
     fun inflateDashboardList(context: Context) {
         menuItemList.add(
@@ -102,6 +110,10 @@ class HomeViewModel  @Inject constructor(private val dataRepository: DataReposit
         menuItemMap[context.getString(R.string.logout)] = ArrayList()
 
 
+    }
+
+    fun onDrawerItemSelected(title: String) {
+        selectedDrawerItemPrivate.value = SingleEvent(title)
     }
 
 }

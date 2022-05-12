@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.lockBoxDocInfo
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.databinding.FragmentLockboxBinding
 import com.app.shepherd.databinding.FragmentLockboxDocInfoBinding
 import com.app.shepherd.ui.base.BaseFragment
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.lockBox.adapter.OtherDocumentsAdapter
 import com.app.shepherd.ui.component.lockBox.adapter.RecommendedDocumentsAdapter
 import com.app.shepherd.utils.*
@@ -76,8 +78,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentLockboxBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonSave -> {
-                backPress()
+            R.id.buttonRename,R.id.buttonCancel -> {
+                startActivity(Intent(requireContext(), HomeActivity::class.java))
             }
         }
     }

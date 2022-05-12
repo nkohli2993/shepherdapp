@@ -10,15 +10,24 @@ import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.menuItem.MenuItemModel
 import com.app.shepherd.databinding.AdapterDashboardBinding
 import com.app.shepherd.databinding.AdapterSubMenuItemBinding
+import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.ui.component.dashboard.DashboardViewModel
+import com.app.shepherd.ui.component.home.viewModel.HomeViewModel
 
 
 class SubMenuItemAdapter(
+    var viewModel: HomeViewModel,
     var requestList: MutableList<MenuItemModel> = ArrayList()
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     lateinit var binding: AdapterSubMenuItemBinding
     lateinit var context: Context
+
+    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
+        override fun onItemSelected(vararg itemData: Any) {
+             viewModel.onDrawerItemSelected(itemData[0] as String)
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
         context = parent.context
@@ -39,15 +48,22 @@ class SubMenuItemAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ContentViewHolder -> holder.bind(requestList[position])
+            is ContentViewHolder -> holder.bind(requestList[position],onItemClickListener)
         }
     }
 
     inner class ContentViewHolder constructor(private var binding: AdapterSubMenuItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: MenuItemModel) {
+        fun bind(data: MenuItemModel, recyclerItemListener: RecyclerItemListener) {
             binding.data = data
+
+            binding.root.setOnClickListener {
+                recyclerItemListener.onItemSelected(
+                    data.title
+                )
+            }
+
         }
 
     }

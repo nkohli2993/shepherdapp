@@ -201,4 +201,5 @@
     <string name="based_on_medical_history">Based on your Medical History</string>
     <string name="test_diabetes">Diabetes</string>
     <string name="menu_resources">Resources</string>
+    <string name="menu_add_loved_one">Add Loved One</string>
 </resources>

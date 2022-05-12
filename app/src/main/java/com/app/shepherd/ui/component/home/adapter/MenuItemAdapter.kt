@@ -10,16 +10,26 @@ import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.menuItem.MenuItemModel
 import com.app.shepherd.databinding.AdapterDashboardBinding
 import com.app.shepherd.databinding.AdapterMenuItemBinding
+import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.ui.component.dashboard.DashboardViewModel
+import com.app.shepherd.ui.component.home.viewModel.HomeViewModel
 
 
 class MenuItemAdapter(
+    var viewModel: HomeViewModel,
     var requestList: MutableList<MenuItemModel> = ArrayList(),
     var menuItemMap: HashMap<String, ArrayList<MenuItemModel>> = HashMap()
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     lateinit var binding: AdapterMenuItemBinding
     lateinit var context: Context
+
+    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
+        override fun onItemSelected(vararg itemData: Any) {
+            viewModel.onDrawerItemSelected(itemData[0] as String)
+        }
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
         context = parent.context
@@ -40,25 +50,32 @@ class MenuItemAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is ContentViewHolder -> holder.bind(requestList[position])
+            is ContentViewHolder -> holder.bind(requestList[position],onItemClickListener)
         }
     }
 
     inner class ContentViewHolder constructor(private var binding: AdapterMenuItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: MenuItemModel) {
+        fun bind(data: MenuItemModel, recyclerItemListener: RecyclerItemListener) {
             binding.data = data
             if (menuItemMap[requestList[bindingAdapterPosition].title]!=null
                 &&menuItemMap[requestList[bindingAdapterPosition].title]?.size!! > 0) {
                 setSubMenuItemAdapter(menuItemMap[requestList[bindingAdapterPosition].title])
             }
+
+            binding.root.setOnClickListener {
+                recyclerItemListener.onItemSelected(
+                    data.title
+                )
+            }
+
         }
 
     }
 
     private fun setSubMenuItemAdapter(arrayList: java.util.ArrayList<MenuItemModel>?) {
-        binding.recyclerViewSubMenu.adapter = SubMenuItemAdapter(arrayList!!)
+        binding.recyclerViewSubMenu.adapter = SubMenuItemAdapter(viewModel,arrayList!!)
     }
 
 

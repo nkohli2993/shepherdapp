@@ -44,7 +44,6 @@
                     android:includeFontPadding="false"
                     android:text="@string/test_name"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_15ssp"
                     app:layout_constraintStart_toEndOf="@+id/imageViewMedicine"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,8 +74,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:maxLines="2"
                     android:includeFontPadding="false"
+                    android:maxLines="2"
                     android:text="@string/test_text_small"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_11ssp"

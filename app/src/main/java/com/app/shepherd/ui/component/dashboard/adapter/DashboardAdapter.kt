@@ -9,11 +9,8 @@ import com.app.shepherd.R
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.recipes.RecipesItem
 import com.app.shepherd.databinding.AdapterDashboardBinding
-import com.app.shepherd.databinding.AdapterReceipeListBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.ui.component.dashboard.DashboardViewModel
-import com.app.shepherd.ui.component.recipes.adapter.RecipeViewHolder
-import com.app.shepherd.utils.loadImage
 
 
 class DashboardAdapter(

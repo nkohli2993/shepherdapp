@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.eventDetails
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.app.shepherd.databinding.FragmentEventDetailsBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.app.shepherd.ui.component.eventDetails.adapter.EventChatAdapter
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -87,7 +89,8 @@ class EventDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.buttonReply -> {
-                backPress()
+                //backPress()
+                startActivity(Intent(requireContext(), HomeActivity::class.java))
             }
         }
     }

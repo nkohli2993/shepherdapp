@@ -13,24 +13,32 @@
 
         <action
             android:id="@+id/action_dashboard_to_care_team_members"
-            app:destination="@+id/nav_care_team_members" />
+            app:destination="@+id/nav_care_team" />
 
         <action
-            android:id="@+id/action_dashboard_to_add_new_event"
-            app:destination="@+id/nav_add_new_event" />
+            android:id="@+id/action_dashboard_to_care_points"
+            app:destination="@+id/nav_care_points" />
 
         <action
-            android:id="@+id/action_dashboard_to_event_details"
-            app:destination="@+id/nav_event_details" />
+            android:id="@+id/action_dashboard_to_lock_box"
+            app:destination="@+id/nav_lock_box" />
 
         <action
             android:id="@+id/action_dashboard_to_medication_list"
-            app:destination="@+id/nav_add_new_medication" />
+            app:destination="@+id/nav_my_medlist" />
+
+        <action
+            android:id="@+id/action_dashboard_to_messages"
+            app:destination="@+id/nav_messages" />
+
+        <action
+            android:id="@+id/action_dashboard_to_resources"
+            app:destination="@+id/nav_resources" />
     </fragment>
 
 
     <fragment
-        android:id="@+id/nav_care_team_members"
+        android:id="@+id/nav_care_team"
         android:name="com.app.shepherd.ui.component.careTeamMembers.CareTeamMembersFragment"
         android:label="@string/menu_care_team_members"
         tools:layout="@layout/fragment_care_team_members">
@@ -59,7 +67,13 @@
         android:id="@+id/nav_add_new_event"
         android:name="com.app.shepherd.ui.component.addNewEvent.AddNewEventFragment"
         android:label="@string/menu_add_new_event"
-        tools:layout="@layout/fragment_add_new_event" />
+        tools:layout="@layout/fragment_add_new_event">
+
+        <action
+            android:id="@+id/action_add_new_event_to_event_details"
+            app:destination="@+id/nav_event_details" />
+
+    </fragment>
     <fragment
         android:id="@+id/nav_event_details"
         android:name="com.app.shepherd.ui.component.eventDetails.EventDetailsFragment"
@@ -98,13 +112,25 @@
         android:id="@+id/nav_care_points"
         android:name="com.app.shepherd.ui.component.carePoints.CarePointsFragment"
         android:label="@string/menu_care_points"
-        tools:layout="@layout/fragment_care_points" />
+        tools:layout="@layout/fragment_care_points">
+
+        <action
+            android:id="@+id/action_care_points_to_add_new_task"
+            app:destination="@+id/nav_add_new_event" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_lock_box"
         android:name="com.app.shepherd.ui.component.lockBox.LockBoxFragment"
         android:label="@string/menu_lock_box"
-        tools:layout="@layout/fragment_lockbox" />
+        tools:layout="@layout/fragment_lockbox">
+
+        <action
+            android:id="@+id/action_lock_box_to_lock_box_doc_info"
+            app:destination="@+id/nav_lock_box_doc_info" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_lock_box_doc_info"
@@ -116,29 +142,56 @@
         android:id="@+id/nav_my_medlist"
         android:name="com.app.shepherd.ui.component.myMedList.MyMedListFragment"
         android:label="@string/menu_my_med_list"
-        tools:layout="@layout/fragment_my_medlist" />
+        tools:layout="@layout/fragment_my_medlist">
+
+        <action
+            android:id="@+id/action_my_medlist_to_add_new_medication"
+            app:destination="@+id/nav_add_new_medication" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_messages"
         android:name="com.app.shepherd.ui.component.messages.MessagesFragment"
         android:label="@string/menu_messages"
-        tools:layout="@layout/fragment_messages" />
+        tools:layout="@layout/fragment_messages">
+
+        <action
+            android:id="@+id/action_messages_to_new_message"
+            app:destination="@+id/nav_new_message" />
+
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_new_message"
         android:name="com.app.shepherd.ui.component.newMessage.NewMessageFragment"
         android:label="@string/menu_new_message"
-        tools:layout="@layout/fragment_new_message" />
+        tools:layout="@layout/fragment_new_message">
+
+        <action
+            android:id="@+id/action_new_message_to_chat"
+            app:destination="@+id/nav_chat" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/nav_chat"
         android:name="com.app.shepherd.ui.component.chat.ChatFragment"
         android:label="@string/menu_chat"
         tools:layout="@layout/fragment_chat" />
+
+
     <fragment
         android:id="@+id/nav_resources"
         android:name="com.app.shepherd.ui.component.resources.ResourcesFragment"
         android:label="@string/menu_resources"
         tools:layout="@layout/fragment_resources" />
+
+    <activity
+        android:id="@+id/nav_add_loved_one"
+        android:name="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity"
+        android:label="@string/add_loved_one"
+        tools:layout="@layout/activity_add_loved_one" />
 
 </navigation>

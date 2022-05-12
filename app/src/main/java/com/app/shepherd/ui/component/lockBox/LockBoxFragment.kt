@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponse
@@ -96,8 +97,8 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonSave -> {
-                backPress()
+            R.id.buttonNewDocument -> {
+                p0.findNavController().navigate(R.id.action_lock_box_to_lock_box_doc_info)
             }
         }
     }

@@ -53,8 +53,8 @@
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_chat_bubble"
                         android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:src="@drawable/ic_chat_bubble"
                         android:tint="@color/colorWhite" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -92,7 +92,9 @@
                         android:layout_width="@dimen/_24sdp"
                         android:layout_height="@dimen/_24sdp"
                         android:layout_gravity="center"
+                        android:onClick="@{listener.onClick}"
                         android:rotation="180"
+                        android:id="@+id/imageViewBack"
                         android:src="@drawable/ic_navigate_next"
                         app:tint="@color/colorBlack" />
 
@@ -110,8 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/test_name"
-                        android:textColor="@color/colorBlack"
-                         />
+                        android:textColor="@color/colorBlack" />
                 </LinearLayout>
 
 
@@ -119,13 +120,13 @@
                     android:id="@+id/recyclerViewChat"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/_8sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toTopOf="@+id/textViewYourMessage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/linearLayoutTopView"
                     tools:itemCount="3"
-                    android:layout_marginBottom="@dimen/_8sdp"
                     tools:listitem="@layout/adapter_chat" />
 
 
@@ -135,8 +136,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:text="@string/your_message"
                     android:layout_marginBottom="@dimen/_8sdp"
+                    android:text="@string/your_message"
                     android:textSize="@dimen/_11ssp"
                     app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -147,9 +148,9 @@
                     android:id="@+id/editTextMessage"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/_100sdp"
+                    android:layout_marginBottom="@dimen/_12sdp"
                     android:background="@drawable/rounded_box_6"
                     android:backgroundTint="@color/colorWhite"
-                    android:layout_marginBottom="@dimen/_12sdp"
                     app:layout_constraintBottom_toTopOf="@+id/buttonSubmit"
                     app:layout_constraintEnd_toEndOf="@+id/textViewYourMessage"
                     app:layout_constraintStart_toStartOf="@+id/textViewYourMessage" />

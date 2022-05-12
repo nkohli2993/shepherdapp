@@ -227,7 +227,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonCreateAccount"
+                    android:id="@+id/buttonSubmit"
                     style="@style/ButtonPrimary"
                     android:layout_width="wrap_content"
                     android:layout_marginVertical="@dimen/_24sdp"

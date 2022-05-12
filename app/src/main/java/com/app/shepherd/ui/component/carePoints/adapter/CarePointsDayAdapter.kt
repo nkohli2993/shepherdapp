@@ -42,8 +42,13 @@ class CarePointsDayAdapter(
 
     override fun onBindViewHolder(holder: CarePointsDayViewHolder, position: Int) {
        // holder.bind(position, onItemClickListener)
+        setCarePointsAdapter(binding.recyclerViewEvents)
     }
 
+    private fun setCarePointsAdapter(recyclerViewEvents: RecyclerView) {
+        val carePointsEventAdapter = CarePointsEventAdapter()
+        recyclerViewEvents.adapter = carePointsEventAdapter
+    }
 
 
     class CarePointsDayViewHolder(private val itemBinding: AdapterCarePointsDayBinding) :
@@ -51,7 +56,6 @@ class CarePointsDayAdapter(
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
            // itemBinding.data = dashboard
-            setCarePointsAdapter(itemBinding.recyclerViewEvents)
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     position
@@ -59,10 +63,6 @@ class CarePointsDayAdapter(
             }
         }
 
-        private fun setCarePointsAdapter(recyclerViewEvents: RecyclerView) {
-            val carePointsEventAdapter = CarePointsEventAdapter()
-            recyclerViewEvents.adapter = carePointsEventAdapter
-        }
 
     }
 
