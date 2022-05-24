@@ -18,5 +18,12 @@
     <color name="colorOrange">#e9a571</color>
     <color name="colorYellow">#f0c859</color>
     <color name="colorDarkBlue">#0479cd</color>
+    <color name="colorDivider">#cdcdd8</color>
+    <color name="colorOrangeLight">#f3e7de</color>
+    <color name="_192032">#192032</color>
+    <color name="_A3A5AD">#A3A5AD</color>
+    <color name="_399282">#399282</color>
+    <color name="_A26DCB">#A26DCB</color>
+    <color name="_33A26ECA">#33A26ECA</color>
 
 </resources>

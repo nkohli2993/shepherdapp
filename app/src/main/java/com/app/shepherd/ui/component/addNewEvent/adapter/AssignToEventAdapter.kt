@@ -38,7 +38,7 @@ class AssignToEventAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 6
+        return 4
     }
 
     override fun onBindViewHolder(holder: AssignToEventViewHolder, position: Int) {

@@ -66,13 +66,19 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
                     findNavController().navigate(R.id.action_dashboard_to_care_team_members)
                 }
                 resources.getString(R.string.care_points) -> {
-                    findNavController().navigate(R.id.action_dashboard_to_add_new_event)
+                    findNavController().navigate(R.id.action_dashboard_to_care_points)
                 }
                 resources.getString(R.string.lock_box) -> {
-                    findNavController().navigate(R.id.action_dashboard_to_event_details)
+                    findNavController().navigate(R.id.action_dashboard_to_lock_box)
                 }
                 resources.getString(R.string.medlist) -> {
                     findNavController().navigate(R.id.action_dashboard_to_medication_list)
+                }
+                resources.getString(R.string.messages) -> {
+                    findNavController().navigate(R.id.action_dashboard_to_messages)
+                }
+                resources.getString(R.string.resources) -> {
+                    findNavController().navigate(R.id.action_dashboard_to_resources)
                 }
             }
 

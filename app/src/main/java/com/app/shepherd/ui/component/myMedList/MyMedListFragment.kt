@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
@@ -103,8 +104,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonSave -> {
-                backPress()
+            R.id.buttonNewMedication -> {
+                p0.findNavController().navigate(R.id.action_my_medlist_to_add_new_medication)
             }
         }
     }

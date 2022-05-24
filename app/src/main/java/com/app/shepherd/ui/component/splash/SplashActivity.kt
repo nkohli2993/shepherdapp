@@ -7,6 +7,7 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.SPLASH_DELAY
 import com.app.shepherd.databinding.ActivitySplashBinding
 import com.app.shepherd.ui.component.onBoarding.OnBoardingActivity
+import com.app.shepherd.ui.component.walkThrough.WalkThroughActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -33,7 +34,7 @@ class SplashActivity : BaseActivity() {
 
     private fun navigateToOnBoardingScreen() {
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivityWithFinish<OnBoardingActivity>()
+            startActivityWithFinish<WalkThroughActivity>()
         }, SPLASH_DELAY.toLong())
     }
 }

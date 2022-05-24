@@ -34,7 +34,7 @@
                     android:text="@string/test_2_15_pm"
                     android:includeFontPadding="false"
                     android:textColor="@color/colorPeach"
-                    android:textSize="@dimen/_18ssp"
+                    android:textSize="@dimen/_16ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +48,7 @@
                     style="@style/TextViewPoppinsMedium"
                     android:text="@string/test_title"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_15ssp"
+                    android:textSize="@dimen/_14ssp"
                     android:ellipsize="end"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/textViewTime"

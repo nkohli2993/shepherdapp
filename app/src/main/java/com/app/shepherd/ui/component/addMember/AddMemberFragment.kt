@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.addMember
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -17,6 +18,7 @@ import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.addMember.adapter.AddMemberRoleAdapter
 import com.app.shepherd.ui.component.addMember.adapter.RestrictionsModuleAdapter
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.utils.*
 import com.app.shepherd.utils.RegexUtils.isValidEmail
 import com.google.android.material.snackbar.Snackbar
@@ -115,7 +117,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 backPress()
             }
             R.id.buttonInvite -> {
-                backPress()
+                //backPress()
+                startActivity(Intent(requireContext(), HomeActivity::class.java))
             }
             R.id.textViewRole -> {
                 manageRoleViewVisibility()
@@ -145,12 +148,9 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
     }
 
 
-
     override fun getLayoutRes(): Int {
         return R.layout.fragment_add_member
     }
-
-
 
 
 }

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_dashboard">
+
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.app.shepherd.ui.component.dashboard.DashboardFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_dashboard">
+
+        <action
+            android:id="@+id/action_dashboard_to_care_team_members"
+            app:destination="@+id/nav_care_team" />
+
+        <action
+            android:id="@+id/action_dashboard_to_care_points"
+            app:destination="@+id/nav_care_points" />
+
+        <action
+            android:id="@+id/action_dashboard_to_lock_box"
+            app:destination="@+id/nav_lock_box" />
+
+        <action
+            android:id="@+id/action_dashboard_to_medication_list"
+            app:destination="@+id/nav_my_medlist" />
+
+        <action
+            android:id="@+id/action_dashboard_to_messages"
+            app:destination="@+id/nav_messages" />
+
+        <action
+            android:id="@+id/action_dashboard_to_resources"
+            app:destination="@+id/nav_resources" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_care_team"
+        android:name="com.app.shepherd.ui.component.careTeamMembers.CareTeamMembersFragment"
+        android:label="@string/menu_care_team_members"
+        tools:layout="@layout/fragment_care_team_members">
+
+        <action
+            android:id="@+id/action_care_team_members_to_add_team_member"
+            app:destination="@+id/nav_add_care_team_member" />
+        <action
+            android:id="@+id/action_care_team_members_to_member_details"
+            app:destination="@+id/nav_team_member_details" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_add_care_team_member"
+        android:name="com.app.shepherd.ui.component.addMember.AddMemberFragment"
+        android:label="@string/menu_add_new_care_team_member"
+        tools:layout="@layout/fragment_add_member" />
+    <fragment
+        android:id="@+id/nav_team_member_details"
+        android:name="com.app.shepherd.ui.component.memberDetails.MemberDetailsFragment"
+        android:label="@string/menu_member_details"
+        tools:layout="@layout/fragment_member_details" />
+
+    <fragment
+        android:id="@+id/nav_add_new_event"
+        android:name="com.app.shepherd.ui.component.addNewEvent.AddNewEventFragment"
+        android:label="@string/menu_add_new_event"
+        tools:layout="@layout/fragment_add_new_event">
+
+        <action
+            android:id="@+id/action_add_new_event_to_event_details"
+            app:destination="@+id/nav_event_details" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/nav_event_details"
+        android:name="com.app.shepherd.ui.component.eventDetails.EventDetailsFragment"
+        android:label="@string/menu_event_details"
+        tools:layout="@layout/fragment_event_details" />
+
+    <fragment
+        android:id="@+id/nav_add_new_medication"
+        android:name="com.app.shepherd.ui.component.addNewMedication.AddNewMedicationFragment"
+        android:label="@string/menu_add_new_medication"
+        tools:layout="@layout/fragment_add_new_medication">
+
+        <action
+            android:id="@+id/action_add_new_medication_to_add_medication_details"
+            app:destination="@+id/nav_medication_details" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_medication_details"
+        android:name="com.app.shepherd.ui.component.addMedicationDetails.AddMedicationDetailsFragment"
+        android:label="@string/menu_medication_details"
+        tools:layout="@layout/fragment_add_medication_details" />
+
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="com.app.shepherd.ui.component.notifications.NotificationsFragment"
+        android:label="@string/menu_notifications"
+        tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.app.shepherd.ui.component.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/nav_care_points"
+        android:name="com.app.shepherd.ui.component.carePoints.CarePointsFragment"
+        android:label="@string/menu_care_points"
+        tools:layout="@layout/fragment_care_points">
+
+        <action
+            android:id="@+id/action_care_points_to_add_new_task"
+            app:destination="@+id/nav_add_new_event" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_lock_box"
+        android:name="com.app.shepherd.ui.component.lockBox.LockBoxFragment"
+        android:label="@string/menu_lock_box"
+        tools:layout="@layout/fragment_lockbox">
+
+        <action
+            android:id="@+id/action_lock_box_to_lock_box_doc_info"
+            app:destination="@+id/nav_lock_box_doc_info" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_lock_box_doc_info"
+        android:name="com.app.shepherd.ui.component.lockBoxDocInfo.LockBoxDocInfoFragment"
+        android:label="@string/menu_lock_box_info"
+        tools:layout="@layout/fragment_lockbox_doc_info" />
+
+    <fragment
+        android:id="@+id/nav_my_medlist"
+        android:name="com.app.shepherd.ui.component.myMedList.MyMedListFragment"
+        android:label="@string/menu_my_med_list"
+        tools:layout="@layout/fragment_my_medlist">
+
+        <action
+            android:id="@+id/action_my_medlist_to_add_new_medication"
+            app:destination="@+id/nav_add_new_medication" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_messages"
+        android:name="com.app.shepherd.ui.component.messages.MessagesFragment"
+        android:label="@string/menu_messages"
+        tools:layout="@layout/fragment_messages">
+
+        <action
+            android:id="@+id/action_messages_to_new_message"
+            app:destination="@+id/nav_new_message" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_new_message"
+        android:name="com.app.shepherd.ui.component.newMessage.NewMessageFragment"
+        android:label="@string/menu_new_message"
+        tools:layout="@layout/fragment_new_message">
+
+        <action
+            android:id="@+id/action_new_message_to_chat"
+            app:destination="@+id/nav_chat" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="com.app.shepherd.ui.component.chat.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout="@layout/fragment_chat" />
+
+
+    <fragment
+        android:id="@+id/nav_resources"
+        android:name="com.app.shepherd.ui.component.resources.ResourcesFragment"
+        android:label="@string/menu_resources"
+        tools:layout="@layout/fragment_resources" />
+
+    <activity
+        android:id="@+id/nav_add_loved_one"
+        android:name="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity"
+        android:label="@string/add_loved_one"
+        tools:layout="@layout/activity_add_loved_one" />
+
+</navigation>

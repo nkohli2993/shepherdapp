@@ -19,7 +19,6 @@ import kotlinx.android.synthetic.main.activity_onboarding.*
 class OnBoardingActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityOnboardingBinding
-    private var mOnBoardingImagesAdapter: OnBoardingImagesAdapter? = null
 
     override fun initViewBinding() {
         binding = ActivityOnboardingBinding.inflate(layoutInflater)
@@ -30,24 +29,12 @@ class OnBoardingActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-
-        setImagesAdapter()
     }
 
 
     override fun observeViewModel() {
     }
 
-    private fun setImagesAdapter() {
-        val list: ArrayList<Int> = ArrayList()
-        list.add(R.drawable.onboarding_01)
-        list.add(R.drawable.onboarding_02)
-        list.add(R.drawable.onboarding_03)
-        list.add(R.drawable.onboarding_04)
-        mOnBoardingImagesAdapter =
-            OnBoardingImagesAdapter(this, list)
-        viewPager.adapter = mOnBoardingImagesAdapter
-    }
 
 
     override fun onClick(p0: View?) {
