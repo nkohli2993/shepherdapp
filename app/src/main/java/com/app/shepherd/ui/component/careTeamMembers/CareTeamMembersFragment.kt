@@ -16,11 +16,8 @@ import com.app.shepherd.utils.observe
 import com.app.shepherd.utils.setupSnackbar
 import com.app.shepherd.utils.showToast
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_care_team_members.*
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.app.shepherd.RECIPE_ITEM_KEY
-import com.app.shepherd.ui.component.details.DetailsActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
