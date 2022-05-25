@@ -206,4 +206,7 @@
     <string name="v1_0_all_rights_reserved">v1.0 All Rights Reserved</string>
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
+    <string name="create_new">Create New</string>
+    <string name="welcome">Welcome</string>
+    <string name="desc_text">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</string>
 </resources>

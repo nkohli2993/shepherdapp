@@ -8,7 +8,7 @@ import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.databinding.ActivityJoinCareTeamBinding
-import com.app.shepherd.databinding.ActivityWelcomeBinding
+import com.app.shepherd.databinding.ActivityWelcomeUserBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.addLovedOneCondition.adapter.JoinCareTeamAdapter
@@ -22,10 +22,10 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class WelcomeActivity : BaseActivity(), View.OnClickListener {
+class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
-    private val welcomeViewModel: WelcomeViewModel by viewModels()
-    private lateinit var binding: ActivityWelcomeBinding
+    private val welcomeViewModel: WelcomeUserViewModel by viewModels()
+    private lateinit var binding: ActivityWelcomeUserBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +36,7 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
 
 
     override fun initViewBinding() {
-        binding = ActivityWelcomeBinding.inflate(layoutInflater)
+        binding = ActivityWelcomeUserBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
     }
