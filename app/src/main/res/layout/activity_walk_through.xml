@@ -29,9 +29,11 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnSkip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_semibold"
+            android:onClick="@{listener::onClick}"
             android:padding="10dp"
             android:text="@string/skip"
             android:textColor="@color/_A3A5AD"
@@ -72,7 +74,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/buttonCreateAccount"
+                android:id="@+id/btnGetStarted"
                 style="@style/ButtonPrimary"
                 android:layout_width="wrap_content"
                 android:backgroundTint="@color/_399282"

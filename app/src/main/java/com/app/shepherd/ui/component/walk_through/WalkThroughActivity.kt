@@ -1,11 +1,13 @@
 package com.app.shepherd.ui.component.walkThrough
 
-import com.app.shepherd.ui.base.BaseActivity
 import android.os.Bundle
 import android.view.View
 import com.app.shepherd.R
 import com.app.shepherd.databinding.ActivityWalkThroughBinding
+import com.app.shepherd.ui.base.BaseActivity
+import com.app.shepherd.ui.component.createAccount.CreateAccountActivity
 import com.app.shepherd.ui.component.onBoarding.adapter.OnBoardingImagesAdapter
+import com.app.shepherd.ui.component.welcome.WelcomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
 
@@ -69,5 +71,17 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btnSkip -> {
+                navigateToWelcomeScreen()
+            }
+            R.id.btnGetStarted -> {
+                navigateToWelcomeScreen()
+            }
+        }
+    }
+
+    private fun navigateToWelcomeScreen() {
+        startActivity<WelcomeActivity>()
     }
 }
