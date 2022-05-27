@@ -8,14 +8,14 @@ import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.databinding.ActWelcomeBinding
-import com.app.shepherd.databinding.ActivityJoinCareTeamBinding
-import com.app.shepherd.databinding.ActivityWelcomeBinding
-import com.app.shepherd.databinding.ActivityWelcomeUserBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
-import com.app.shepherd.ui.component.addLovedOneCondition.adapter.JoinCareTeamAdapter
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
-import com.app.shepherd.utils.*
+import com.app.shepherd.ui.component.login.LoginActivity
+import com.app.shepherd.utils.SingleEvent
+import com.app.shepherd.utils.observe
+import com.app.shepherd.utils.setupSnackbar
+import com.app.shepherd.utils.showToast
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,7 +51,8 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
 
     private fun handleLoginResult(status: Resource<LoginResponse>) {
         when (status) {
-            is Resource.Loading -> {}
+            is Resource.Loading -> {
+            }
             is Resource.Success -> status.data?.let {
 
             }
@@ -70,16 +71,24 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-            R.id.imageViewBack -> {
-                finishActivity()
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            /* R.id.imageViewBack -> {
+                 finishActivity()
+             }
+             R.id.imageViewAddLovedOne -> {
+                 navigateToAddLovedOneScreen()
+             }
+             R.id.imageViewJoinTeam -> {
+                 navigateToJoinCareTeamScreen()
+             }*/
+
+            R.id.btnLogin -> {
+                navigateToLogin()
             }
-            R.id.imageViewAddLovedOne -> {
-                navigateToAddLovedOneScreen()
-            }
-            R.id.imageViewJoinTeam -> {
-                navigateToJoinCareTeamScreen()
+
+            R.id.btnCreateAccount -> {
+
             }
         }
     }
@@ -91,6 +100,10 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToJoinCareTeamScreen() {
         startActivity<JoinCareTeamActivity>()
+    }
+
+    private fun navigateToLogin() {
+        startActivity<LoginActivity>()
     }
 
 }

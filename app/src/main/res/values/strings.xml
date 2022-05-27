@@ -47,13 +47,15 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="log_in">Log In</string>
     <string name="forgot_your_password">Forgot your Password?</string>
     <string name="reset_it">Reset it</string>
     <string name="reset">Reset</string>
     <string name="already_have_account">Already have account?</string>
+    <string name="already_have_an_account">Already have an account?</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="reset_password_description">\u0020 and we\'ll send you instruction on how to reset your password</string>
-    <string name="create_an_account">Create an account</string>
+    <string name="create_an_account">Create an Account</string>
     <string name="welcome_info">A simple, advanced system for managing the healthcare and resources of a Loved One</string>
     <string name="password_at_least_8_characters">Password has to be at Least 8 characters long</string>
     <string name="tell_us_a_little_about">Tell us a little about your loved one</string>
@@ -207,6 +209,18 @@
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
     <string name="create_new">Create New</string>
+    <string name="create">Create</string>
     <string name="welcome">Welcome</string>
     <string name="desc_text">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</string>
+    <string name="hello">Hello!</string>
+    <string name="please_log_in">Please Log In</string>
+    <string name="login_description">Welcome to Shepherd, please put your login credentials below to start using the app.</string>
+    <string name="please_enter_email_id">Please enter your email id</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="new_on_app">New on app?</string>
+    <string name="create_a_new_account">Create a \nNew Account</string>
+    <string name="create_account_description">Are you new to the platform? Please fill the below details to create your account.</string>
+    <string name="agree_to_terms_and_conditions_and_privacy_policy">I agree to the Terms &amp; \nConditions and Privacy Policy</string>
+    <string name="enter_phone_number">Enter phone number</string>
 </resources>

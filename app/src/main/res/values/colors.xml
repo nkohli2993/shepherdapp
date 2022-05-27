@@ -26,5 +26,6 @@
     <color name="_A26DCB">#A26DCB</color>
     <color name="_33A26ECA">#33A26ECA</color>
     <color name="transparent">#00000000</color>
+    <color name="heading_background">#F8F8F8</color>
 
 </resources>
