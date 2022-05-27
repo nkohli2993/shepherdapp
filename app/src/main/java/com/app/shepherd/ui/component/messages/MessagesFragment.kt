@@ -48,7 +48,7 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(),
         fragmentMessagesBinding.listener = this
 
         setDirectMessagesAdapter()
-        setDiscussionsGroupAdapter()
+//        setDiscussionsGroupAdapter()
 
     }
 
@@ -84,21 +84,21 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(),
         val directMessagesAdapter = DirectMessagesAdapter(messagesViewModel)
         fragmentMessagesBinding.recyclerViewDirectMessages.adapter = directMessagesAdapter
 
-        fragmentMessagesBinding.recyclerViewDirectMessages.addItemDecoration(
-            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        )
+//        fragmentMessagesBinding.recyclerViewDirectMessages.addItemDecoration(
+//            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+//        )
 
 
     }
 
-    private fun setDiscussionsGroupAdapter() {
-        val discussionsGroupAdapter = DiscussionGroupsAdapter(messagesViewModel)
-        fragmentMessagesBinding.recyclerViewDiscussionGroups.adapter = discussionsGroupAdapter
-
-        fragmentMessagesBinding.recyclerViewDiscussionGroups.addItemDecoration(
-            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        )
-    }
+//    private fun setDiscussionsGroupAdapter() {
+//        val discussionsGroupAdapter = DiscussionGroupsAdapter(messagesViewModel)
+//        fragmentMessagesBinding.recyclerViewDiscussionGroups.adapter = discussionsGroupAdapter
+//
+//        fragmentMessagesBinding.recyclerViewDiscussionGroups.addItemDecoration(
+//            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+//        )
+//    }
 
 
     override fun onClick(p0: View?) {

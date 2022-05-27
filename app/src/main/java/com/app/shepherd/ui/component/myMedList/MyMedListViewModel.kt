@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.Resource
+import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.login.LoginRequest
 import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.data.error.CHECK_YOUR_FIELDS
@@ -42,6 +43,9 @@ class MyMedListViewModel @Inject constructor(private val dataRepository: DataRep
     private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<String>>()
+    val openMedDetailItems: LiveData<SingleEvent<String>> get() = openMedDetailItemsPrivate
 
     fun doLogin(context: Context, userName: String, passWord: String) {
         val isUsernameValid = isValidEmail(userName)
@@ -61,6 +65,10 @@ class MyMedListViewModel @Inject constructor(private val dataRepository: DataRep
                 }
             }
         }
+    }
+
+    fun openMedDetail(item: String) {
+        openMedDetailItemsPrivate.value = SingleEvent(item)
     }
 
     fun showToastMessage(errorCode: Int) {

@@ -89,7 +89,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
             }
             R.id.btnLogin->{
-
+                navigateToHomeScreen()
             }
             R.id.txtCreateAccount->{
 

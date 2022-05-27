@@ -118,6 +118,10 @@ dependencies {
 
     implementation 'com.github.zhpanvip:viewpagerindicator:1.2.1'
 
+    implementation "com.michalsvec:single-row-calednar:$calednarVersion"
+
+
+
 
 }
 kapt {

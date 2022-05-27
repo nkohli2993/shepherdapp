@@ -187,6 +187,7 @@
     <string name="menu_lock_box_info">LockBox Doc Info</string>
     <string name="menu_my_med_list">My MedList</string>
     <string name="menu_messages">Messages</string>
+    <string name="medicine_detail">Medicine Detail</string>
     <string name="menu_new_message">New Message</string>
     <string name="menu_chat">Chat</string>
     <string name="new_message">New Message</string>
@@ -223,4 +224,10 @@
     <string name="create_account_description">Are you new to the platform? Please fill the below details to create your account.</string>
     <string name="agree_to_terms_and_conditions_and_privacy_policy">I agree to the Terms &amp; \nConditions and Privacy Policy</string>
     <string name="enter_phone_number">Enter phone number</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="please_choose_any_current_medications_from_the_list_below">Please choose any current medications from the list below.</string>
+    <string name="create_discussion_with">Create Discussion with :</string>
+    <string name="start_discussion">Start Discussion</string>
+    <string name="write">Write...</string>
 </resources>

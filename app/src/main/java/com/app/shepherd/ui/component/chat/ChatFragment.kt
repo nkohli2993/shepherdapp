@@ -89,10 +89,10 @@ class ChatFragment : BaseFragment<FragmentMessagesBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonSubmit,R.id.imageViewBack -> {
-               //backPress()
-                startActivity(Intent(requireContext(), HomeActivity::class.java))
-            }
+//            R.id.buttonSubmit,R.id.imageViewBack -> {
+//               //backPress()
+//                startActivity(Intent(requireContext(), HomeActivity::class.java))
+//            }
         }
     }
 

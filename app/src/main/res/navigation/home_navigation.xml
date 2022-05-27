@@ -147,8 +147,16 @@
         <action
             android:id="@+id/action_my_medlist_to_add_new_medication"
             app:destination="@+id/nav_add_new_medication" />
+        <action
+            android:id="@+id/action_my_medlist_to_med_detail"
+            app:destination="@+id/nav_med_detail" />
 
     </fragment>
+    <fragment
+        android:id="@+id/nav_med_detail"
+        android:name="com.app.shepherd.ui.component.my_med_detail.MyMedDetialFragment"
+        android:label="@string/medicine_detail"
+        tools:layout="@layout/fragment_member_details" />
 
     <fragment
         android:id="@+id/nav_messages"

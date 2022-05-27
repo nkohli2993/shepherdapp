@@ -16,101 +16,70 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreyLight"
+        android:background="@color/colorWhite"
         android:orientation="vertical"
         tools:context="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity">
 
 
-
-        <LinearLayout
-            android:id="@+id/linearLayoutToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/colorPrimaryDark"
-            android:gravity="end"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/_12sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_medlist"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:tint="@color/colorWhite" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextViewPoppinsSemiBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:gravity="end|center_vertical"
-                android:includeFontPadding="false"
-                android:text="@string/medlist"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_15ssp" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/topView"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvChoose"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_4sdp"
-            android:background="@color/colorPeach"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_book"
+            android:text="@string/please_choose_any_current_medications_from_the_list_below"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSearch"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_24sdp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:orientation="horizontal"
+            app:cardBackgroundColor="@color/_F3F3F4"
             app:cardCornerRadius="@dimen/_18sdp"
-            app:cardElevation="@dimen/_5sdp"
+            app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topView">
+            app:layout_constraintTop_toBottomOf="@+id/tvChoose">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_5sdp">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/editTextSearch"
-                    style="@style/TextViewPoppinsRegular"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_toStartOf="@+id/viewDivider"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@null"
+                    android:drawableStart="@drawable/ic_med_search"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_book"
                     android:gravity="center_vertical"
-                    android:hint="@string/start_typing_condition"
+                    android:hint="@string/search"
                     android:imeOptions="actionDone"
                     android:inputType="textCapSentences"
                     android:maxLines="1"
-                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingHorizontal="@dimen/_5sdp"
                     android:textColor="@android:color/black"
+                    android:textColorHint="@color/_192032"
                     android:textSize="@dimen/_11ssp" />
-
-                <View
-                    android:id="@+id/viewDivider"
-                    android:layout_width="@dimen/_1sdp"
-                    android:layout_height="match_parent"
-                    android:layout_marginVertical="@dimen/_8sdp"
-                    android:layout_toStartOf="@+id/llSearch"
-                    android:background="@color/colorPrimaryDark" />
 
                 <LinearLayout
                     android:id="@+id/llSearch"
-                    android:layout_width="@dimen/_34sdp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:gravity="center">
 
@@ -119,60 +88,24 @@
                         android:layout_height="wrap_content"
                         android:clickable="false"
                         android:focusable="false"
-                        android:src="@drawable/ic_search" />
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_cancel" />
                 </LinearLayout>
-            </RelativeLayout>
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewDetails"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMedicine"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginVertical="@dimen/_16sdp"
-            app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="@dimen/_6sdp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonAddNewMedication"
-            app:layout_constraintEnd_toEndOf="@+id/cardViewSearch"
-            app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/Id_const_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/_16sdp"
-                android:layout_marginEnd="@dimen/_12sdp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewMedicine"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    tools:listitem="@layout/adapter_add_medicine_list"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHeight_max="@dimen/_400sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
-
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonAddNewMedication"
-            style="@style/ButtonPrimary"
-            android:layout_width="wrap_content"
-            android:layout_marginVertical="@dimen/_24sdp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:onClick="@{listener::onClick}"
-            android:text="@string/add_new_medication"
-            android:textAllCaps="false"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch"
+            tools:listitem="@layout/adapter_add_medicine_list" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

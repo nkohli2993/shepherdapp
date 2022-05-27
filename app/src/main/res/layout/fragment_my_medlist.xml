@@ -16,7 +16,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreyLight"
+        android:background="@color/colorWhite"
         android:orientation="vertical"
         tools:context="com.app.shepherd.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
@@ -37,64 +37,25 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
                 <LinearLayout
-                    android:id="@+id/linearLayoutToolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:background="@color/colorPrimaryDark"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_restore_from_trash"
-                        android:tint="@color/colorWhite" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextViewPoppinsSemiBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical"
-                        android:gravity="end|center_vertical"
-                        android:includeFontPadding="false"
-                        android:text="@string/medlist"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/topView"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_4sdp"
-                    android:background="@color/colorPurple"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonNewMedication"
-                    style="@style/ButtonPrimary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:layout_marginEnd="@dimen/_6sdp"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="@dimen/_20sdp"
-                    android:text="@string/new_medication"
-                    android:textAllCaps="false"
-                    android:textSize="@dimen/_11ssp"
+                    android:background="@drawable/checkbox_background"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/topView" />
+                    app:layout_constraintTop_toTopOf="parent">
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvNew"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_5sdp"
+                        android:text="+ New"
+                        android:textColor="@color/_A26DCB"
+                        android:textSize="@dimen/_16ssp" />
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMyReminder"
@@ -102,44 +63,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_12sdp"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="@string/my_reminders"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/buttonNewMedication" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewReminders"
-                    android:layout_width="0dp"
+                <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
+                    android:id="@+id/srCalender"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:deselection="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewMyReminder"
-                    tools:listitem="@layout/adapter_my_reminders" />
+                    app:longPress="false"
+                    app:multiSelection="false" />
 
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewSelectedDayMedicine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewReminders"
+                    app:layout_constraintTop_toBottomOf="@+id/srCalender"
                     tools:itemCount="3"
                     tools:listitem="@layout/adapter_selected_day_medicine" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMyMedications"
-                    style="@style/TextViewPoppinsSemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_12sdp"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="@string/my_medications"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recyclerViewSelectedDayMedicine" />
 
