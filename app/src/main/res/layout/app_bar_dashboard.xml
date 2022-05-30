@@ -28,8 +28,8 @@
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="@dimen/_24sdp"
                 android:layout_gravity="end"
-                android:src="@drawable/test_image"
                 android:layout_marginEnd="@dimen/_8sdp"
+                android:src="@drawable/test_image"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

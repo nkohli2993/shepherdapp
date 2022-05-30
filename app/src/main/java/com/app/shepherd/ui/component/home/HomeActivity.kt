@@ -8,12 +8,10 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.ActivityHomeBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.adapter.MenuItemAdapter

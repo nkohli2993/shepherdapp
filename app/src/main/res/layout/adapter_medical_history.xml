@@ -12,33 +12,35 @@
             android:id="@+id/cardView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardElevation="0dp"
-            app:cardBackgroundColor="@color/colorWhite"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/_4sdp"
             app:cardCornerRadius="@dimen/_12sdp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_black_border"
+                android:padding="@dimen/_4sdp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="@font/gotham_book"
+                    android:includeFontPadding="false"
+                    android:paddingHorizontal="@dimen/_4sdp"
+                    android:text="@string/test_diabetes"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_10ssp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_round_cancel" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    style="@style/TextViewPoppinsRegular"
-                    android:layout_gravity="center_vertical"
-                    android:paddingHorizontal="@dimen/_4sdp"
-                    android:text="@string/test_diabetes"/>
 
             </LinearLayout>
 

@@ -7,17 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.shepherd.R
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.databinding.FragmentMyMedlistBinding
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.memberDetails.adapter.MemberModulesAdapter
 import com.app.shepherd.ui.component.myMedList.adapter.MyMedicationsAdapter
-import com.app.shepherd.ui.component.myMedList.adapter.MyRemindersAdapter
 import com.app.shepherd.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar

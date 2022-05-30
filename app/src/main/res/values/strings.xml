@@ -230,4 +230,6 @@
     <string name="create_discussion_with">Create Discussion with :</string>
     <string name="start_discussion">Start Discussion</string>
     <string name="write">Write...</string>
+    <string name="change">Change</string>
+    <string name="your_loved_ones">Your Loved Ones</string>
 </resources>

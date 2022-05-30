@@ -81,11 +81,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         val lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter
 
+
     }
 
     private fun setPendingInvitationsAdapter() {
-        val pendingInvitationsAdapter = PendingInvitationsAdapter(profileViewModel)
-        fragmentProfileBinding.recyclerPendingInvitations.adapter = pendingInvitationsAdapter
+//        val pendingInvitationsAdapter = PendingInvitationsAdapter(profileViewModel)
+//        fragmentProfileBinding.recyclerPendingInvitations.adapter = pendingInvitationsAdapter
 
     }
 
