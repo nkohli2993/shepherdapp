@@ -10,6 +10,7 @@ plugins {
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
+
     defaultConfig {
         applicationId "com.app.shepherd"
         minSdkVersion rootProject.minSdkVersion
@@ -23,13 +24,17 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
     buildTypes {
         debug {
             debuggable true
+            minifyEnabled false
+            buildConfigField("String", "BASE_URL", base_url_local)
         }
         release {
             debuggable false
-            minifyEnabled false
+            minifyEnabled true
+            buildConfigField("String", "BASE_URL", base_url_live)
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -64,6 +69,32 @@ android {
     lintOptions {
         baseline file("lint.xml")
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def project = "shepherd"
+            def separator = "_"
+            def buildType = variant.buildType.name
+            def versionName = variant.versionName
+            def versionCode = variant.versionCode
+            def date = new Date()
+
+            def formattedDate = date.format('dd_MM_yyyy')
+
+            def buildTag = versionName //"1.0.1.7"
+
+
+            def newApkName = "v" + buildTag + "(" + project + ")" + separator + formattedDate + ".apk"
+
+
+//            project + separator + "v" + versionName + separator + versionCode + separator + buildType + separator + formattedDate + ".apk"
+
+
+            output.outputFileName = newApkName
+        }
+    }
+
+
 }
 
 dependencies {
@@ -104,6 +135,7 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+//    annotationProcessor "com.google.dagger:dagger-android-processor:2.11"
     //Image Libraries
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
@@ -117,6 +149,11 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
     implementation 'com.github.zhpanvip:viewpagerindicator:1.2.1'
+
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    //toasty
+    implementation "com.github.GrenderG:Toasty:$toasty_version"
 
 
 }

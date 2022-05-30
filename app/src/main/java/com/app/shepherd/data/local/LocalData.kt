@@ -5,8 +5,8 @@ import android.content.SharedPreferences
 import com.app.shepherd.FAVOURITES_KEY
 import com.app.shepherd.SHARED_PREFERENCES_FILE_NAME
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginRequest
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginRequestModel
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.error.PASS_WORD_ERROR
 import javax.inject.Inject
 
@@ -16,14 +16,16 @@ import javax.inject.Inject
 
 class LocalData @Inject constructor(val context: Context) {
 
-    fun doLogin(loginRequest: LoginRequest): Resource<LoginResponse> {
-        if (loginRequest == LoginRequest("sumit@sumit.sumit", "sumit")) {
-            return Resource.Success(LoginResponse("123", "Ahmed", "Mahmoud",
+    /*fun doLogin(loginRequest: LoginRequestModel): Resource<LoginResponseModel> {
+        if (loginRequest == LoginRequestModel("sumit@sumit.sumit", "sumit")) {
+            return Resource.Success(
+                LoginResponseModel("123", "Ahmed", "Mahmoud",
                     "Phase 6 Mohali", "77", "160055", "Chandigarh",
-                    "India", "sumit@sumit.sumit"))
+                    "India", "sumit@sumit.sumit")
+            )
         }
         return Resource.DataError(PASS_WORD_ERROR)
-    }
+    }*/
 
     fun getCachedFavourites(): Resource<Set<String>> {
         val sharedPref = context.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, 0)

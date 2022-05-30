@@ -7,9 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.dashboard.DashboardModel
-import com.app.shepherd.data.dto.login.LoginRequest
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginRequestModel
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.error.CHECK_YOUR_FIELDS
 import com.app.shepherd.data.error.EMAIL_ERROR
 import com.app.shepherd.ui.base.BaseViewModel
@@ -30,8 +29,8 @@ class CareTeamMembersViewModel @Inject constructor(private val dataRepository: D
     BaseViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponse>>()
-    val loginLiveData: LiveData<Resource<LoginResponse>> get() = loginLiveDataPrivate
+    private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
+    val loginLiveData: LiveData<Resource<LoginResponseModel>> get() = loginLiveDataPrivate
 
     /** Error handling as UI **/
 
@@ -64,7 +63,7 @@ class CareTeamMembersViewModel @Inject constructor(private val dataRepository: D
             viewModelScope.launch {
                 loginLiveDataPrivate.value = Resource.Loading()
                 wrapEspressoIdlingResource {
-                    dataRepository.doLogin(loginRequest = LoginRequest(userName, passWord))
+                    dataRepository.doLogin(loginRequest = LoginRequestModel(userName, passWord))
                         .collect {
                             loginLiveDataPrivate.value = it
                         }

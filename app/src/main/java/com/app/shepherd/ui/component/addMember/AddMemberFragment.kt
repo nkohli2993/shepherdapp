@@ -3,17 +3,14 @@ package com.app.shepherd.ui.component.addMember
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.addMember.adapter.AddMemberRoleAdapter
@@ -75,7 +72,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

@@ -5,15 +5,21 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
-import com.google.android.material.snackbar.Snackbar
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
-import com.app.shepherd.databinding.ActivityLoginBinding
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.ActivityLoginNewBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.resetPassword.ResetPasswordActivity
-import com.app.shepherd.utils.*
+import com.app.shepherd.utils.SingleEvent
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showSuccess
+import com.app.shepherd.utils.setupSnackbar
+import com.app.shepherd.utils.showToast
+import com.app.shepherd.view_model.LoginViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -29,18 +35,46 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
+        binding.viewModel = loginViewModel
     }
 
     override fun initViewBinding() {
         binding = ActivityLoginNewBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
     }
 
     override fun observeViewModel() {
-        observe(loginViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(loginViewModel.showSnackBar)
-        observeToast(loginViewModel.showToast)
+//        observe(loginViewModel.loginLiveData, ::handleLoginResult)
+//        observeSnackBarMessages(loginViewModel.showSnackBar)
+//        observeToast(loginViewModel.showToast)
+
+
+//        observe(loginViewModel.loginResponseLiveData,::handleLoginResult)
+
+        loginViewModel.loginResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.message?.let { it1 -> showSuccess(this, it1) }
+                    navigateToHomeScreen()
+                }
+
+                is DataResult.Failure -> {
+                    //handleAPIFailure(it.message, it.errorCode)
+
+                    hideLoading()
+                    it.errorCode?.let { showError(this, it.toString()) }
+
+                }
+            }
+
+        }
+
     }
 
     /*private fun doLogin() {
@@ -51,14 +85,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         )
     }*/
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
-            is Resource.Loading -> {}
+            is Resource.Loading -> {
+            }
             is Resource.Success -> status.data?.let {
                 navigateToHomeScreen()
             }
             is Resource.DataError -> {
-                status.errorCode?.let { loginViewModel.showToastMessage(it) }
+//                status.errorCode?.let { loginViewModel.showToastMessage(it) }
             }
         }
     }
@@ -77,24 +112,30 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-           /* R.id.buttonLogin -> {
-                //  doLogin()
-                navigateToHomeScreen()
-            }
-            R.id.textViewResetPassword -> {
-                navigateToResetPasswordScreen()
-            }*/
+            /* R.id.buttonLogin -> {
+                 //  doLogin()
+                 navigateToHomeScreen()
+             }
+             R.id.textViewResetPassword -> {
+                 navigateToResetPasswordScreen()
+             }*/
 
-            R.id.txtForgotPassword->{
-
-            }
-            R.id.btnLogin->{
+            R.id.txtForgotPassword -> {
 
             }
-            R.id.txtCreateAccount->{
+            R.id.btnLogin -> {
+                doLogin()
+
+
+            }
+            R.id.txtCreateAccount -> {
 
             }
         }
+    }
+
+    private fun doLogin() {
+        loginViewModel.login()
     }
 
     private fun navigateToResetPasswordScreen() {

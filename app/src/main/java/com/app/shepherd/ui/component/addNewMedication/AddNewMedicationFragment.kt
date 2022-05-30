@@ -9,14 +9,13 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentAddNewMedicationBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.addNewMedication.adapter.AddMedicineListAdapter
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_add_member.*
 
 
 /**
@@ -55,7 +54,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

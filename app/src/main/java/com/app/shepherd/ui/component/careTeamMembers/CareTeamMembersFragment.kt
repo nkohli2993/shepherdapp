@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentCareTeamMembersBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.careTeamMembers.adapter.CareTeamMembersAdapter
@@ -18,8 +18,6 @@ import com.app.shepherd.utils.observe
 import com.app.shepherd.utils.setupSnackbar
 import com.app.shepherd.utils.showToast
 import com.google.android.material.snackbar.Snackbar
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -59,7 +57,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

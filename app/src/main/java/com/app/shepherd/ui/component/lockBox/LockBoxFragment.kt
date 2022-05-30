@@ -9,14 +9,11 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentLockboxBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.lockBox.adapter.OtherDocumentsAdapter
 import com.app.shepherd.ui.component.lockBox.adapter.RecommendedDocumentsAdapter
-import com.app.shepherd.ui.component.myMedList.adapter.MyMedicationsAdapter
-import com.app.shepherd.ui.component.myMedList.adapter.MyRemindersAdapter
-import com.app.shepherd.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -61,7 +58,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

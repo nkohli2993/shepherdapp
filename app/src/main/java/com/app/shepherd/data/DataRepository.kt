@@ -1,7 +1,7 @@
 package com.app.shepherd.data
 
-import com.app.shepherd.data.dto.login.LoginRequest
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginRequestModel
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.recipes.Recipes
 import com.app.shepherd.data.local.LocalData
 import com.app.shepherd.data.remote.RemoteData
@@ -24,11 +24,15 @@ class DataRepository @Inject constructor(private val remoteRepository: RemoteDat
         }.flowOn(ioDispatcher)
     }
 
-    override suspend fun doLogin(loginRequest: LoginRequest): Flow<Resource<LoginResponse>> {
-        return flow {
-            emit(localRepository.doLogin(loginRequest))
-        }.flowOn(ioDispatcher)
+    override suspend fun doLogin(loginRequest: LoginRequestModel): Flow<Resource<LoginResponseModel>> {
+        TODO("Not yet implemented")
     }
+
+    /* override suspend fun doLogin(loginRequest: LoginRequestModel): Flow<Resource<LoginResponseModel>> {
+         return flow {
+             emit(localRepository.doLogin(loginRequest))
+         }.flowOn(ioDispatcher)
+     }*/
 
     override suspend fun addToFavourite(id: String): Flow<Resource<Boolean>> {
         return flow {

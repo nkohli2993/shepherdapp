@@ -8,6 +8,10 @@
             name="listener"
             type="android.view.View.OnClickListener" />
 
+        <variable
+            name="viewModel"
+            type="com.app.shepherd.view_model.LoginViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,8 +92,10 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
                 android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                 android:hint="@string/enter_your_email"
+                android:text="@={viewModel.loginData.email}"
                 android:padding="@dimen/_10sdp"
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/_192032"
@@ -111,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                 android:hint="@string/enter_your_password"
+                android:text="@={viewModel.loginData.password}"
                 android:padding="@dimen/_10sdp"
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/_192032"

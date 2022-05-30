@@ -7,17 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentChatBinding
 import com.app.shepherd.databinding.FragmentMessagesBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.chat.adapter.ChatAdapter
 import com.app.shepherd.ui.component.home.HomeActivity
-import com.app.shepherd.ui.component.messages.adapter.DirectMessagesAdapter
-import com.app.shepherd.ui.component.messages.adapter.DiscussionGroupsAdapter
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +57,7 @@ class ChatFragment : BaseFragment<FragmentMessagesBinding>(),
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

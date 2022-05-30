@@ -9,12 +9,9 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentNewMessageBinding
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.myMedList.adapter.MyMedicationsAdapter
-import com.app.shepherd.ui.component.myMedList.adapter.MyRemindersAdapter
-import com.app.shepherd.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.app.shepherd.ui.component.newMessage.adapter.UsersAdapter
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
@@ -57,7 +54,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

@@ -6,7 +6,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.ActWelcomeBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
@@ -49,7 +49,7 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {
             }

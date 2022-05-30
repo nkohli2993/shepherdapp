@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginRequest
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginRequestModel
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.error.EMAIL_ERROR
 import com.app.shepherd.ui.base.BaseViewModel
 import com.app.shepherd.utils.RegexUtils.isValidEmail
@@ -25,8 +25,8 @@ class ResetPasswordViewModel @Inject constructor(private val dataRepository: Dat
     BaseViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val resetPasswordLiveDataPrivate = MutableLiveData<Resource<LoginResponse>>()
-    val resetPasswordLiveData: LiveData<Resource<LoginResponse>> get() = resetPasswordLiveDataPrivate
+    private val resetPasswordLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
+    val resetPasswordLiveData: LiveData<Resource<LoginResponseModel>> get() = resetPasswordLiveDataPrivate
 
     /** Error handling as UI **/
 
@@ -47,7 +47,7 @@ class ResetPasswordViewModel @Inject constructor(private val dataRepository: Dat
             viewModelScope.launch {
                 resetPasswordLiveDataPrivate.value = Resource.Loading()
                 wrapEspressoIdlingResource {
-                    dataRepository.doLogin(loginRequest = LoginRequest(email, ""))
+                    dataRepository.doLogin(loginRequest = LoginRequestModel(email, ""))
                         .collect {
                             resetPasswordLiveDataPrivate.value = it
                         }

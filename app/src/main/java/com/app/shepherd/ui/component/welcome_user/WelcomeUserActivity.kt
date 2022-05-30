@@ -6,12 +6,10 @@ import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
-import com.app.shepherd.databinding.ActivityJoinCareTeamBinding
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.ActivityWelcomeUserBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
-import com.app.shepherd.ui.component.addLovedOneCondition.adapter.JoinCareTeamAdapter
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
@@ -48,7 +46,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

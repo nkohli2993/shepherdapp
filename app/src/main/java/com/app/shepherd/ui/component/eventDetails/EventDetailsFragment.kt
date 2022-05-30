@@ -9,11 +9,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.databinding.FragmentEventDetailsBinding
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.app.shepherd.ui.component.eventDetails.adapter.EventChatAdapter
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.utils.*
@@ -59,7 +58,7 @@ class EventDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

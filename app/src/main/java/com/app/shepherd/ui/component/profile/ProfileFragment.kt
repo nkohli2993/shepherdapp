@@ -8,10 +8,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentProfileBinding
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.notifications.adapter.NotificationsAdapter
 import com.app.shepherd.ui.component.profile.adapter.LovedOnesAdapter
 import com.app.shepherd.ui.component.profile.adapter.PendingInvitationsAdapter
 import com.app.shepherd.utils.SingleEvent
@@ -56,7 +55,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {
