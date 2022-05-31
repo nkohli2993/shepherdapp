@@ -1,6 +1,10 @@
 package com.app.shepherd.ui.component.login
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
@@ -21,6 +25,7 @@ import com.app.shepherd.utils.showToast
 import com.app.shepherd.view_model.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_login_new.*
 
 /**
  * Created by Sumit Kumar
@@ -30,12 +35,51 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginNewBinding
+    private var isPasswordShown = false
 
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
         binding.viewModel = loginViewModel
+
+        // Handle the click of Show or Hide Password Icon
+        edtPasswd.setOnTouchListener { _, event ->
+            val drawableRight = 2
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= (edtPasswd.right - edtPasswd.compoundDrawables[drawableRight].bounds.width())) {
+                    if (isPasswordShown) {
+                        //Hide Password
+                        binding.edtPasswd.transformationMethod =
+                            PasswordTransformationMethod.getInstance()
+                        isPasswordShown = !isPasswordShown
+                        edtPasswd.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.ic_eye,
+                            0
+                        )
+
+                    } else {
+                        //Show password
+                        binding.edtPasswd.transformationMethod =
+                            HideReturnsTransformationMethod.getInstance()
+                        isPasswordShown = !isPasswordShown
+                        edtPasswd.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                            0,
+                            0,
+                            R.drawable.ic_eye_on,
+                            0
+                        )
+
+                    }
+
+                    true
+                }
+            }
+            false
+        }
     }
 
     override fun initViewBinding() {
