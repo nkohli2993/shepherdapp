@@ -52,7 +52,7 @@ ext {
     sspVersion = '1.0.6'
     livedata_ktx = '2.4.1'
     ext.toasty_version = "1.4.2"
-
+    COUNTRY_CODE_PICKER = "2.4.2"
 
     base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""
     base_url_live = "\"\""

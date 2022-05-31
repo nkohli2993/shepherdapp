@@ -220,8 +220,11 @@
     <string name="please_enter_valid_email_id">Please enter valid email id</string>
     <string name="enter_your_password">Enter your password</string>
     <string name="please_enter_your_password">Please enter your password</string>
+    <string name="please_enter_first_name">Please enter first name</string>
+    <string name="please_enter_last_name">Please enter last name</string>
     <string name="please_enter_valid_password">Password should be minimum of 8 digits including alphanumeric with at least 1 digit and 1 special character</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="mobile_number">Mobile Number</string>
     <string name="new_on_app">New on app?</string>
     <string name="create_a_new_account">Create a \nNew Account</string>
     <string name="create_account_description">Are you new to the platform? Please fill the below details to create your account.</string>

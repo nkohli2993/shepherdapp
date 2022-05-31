@@ -155,6 +155,12 @@ dependencies {
     //toasty
     implementation "com.github.GrenderG:Toasty:$toasty_version"
 
+    // country code picker
+    implementation "com.github.joielechong:countrycodepicker:${COUNTRY_CODE_PICKER}"
+
+    // Dependency required for country code picker
+    implementation 'io.michaelrocks:libphonenumber-android:8.12.48'
+
 
 }
 kapt {

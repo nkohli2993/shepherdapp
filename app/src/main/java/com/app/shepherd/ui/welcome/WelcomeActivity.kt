@@ -10,6 +10,7 @@ import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.ActWelcomeBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
+import com.app.shepherd.ui.component.createAccount.CreateNewAccountActivity
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.SingleEvent
@@ -73,22 +74,12 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            /* R.id.imageViewBack -> {
-                 finishActivity()
-             }
-             R.id.imageViewAddLovedOne -> {
-                 navigateToAddLovedOneScreen()
-             }
-             R.id.imageViewJoinTeam -> {
-                 navigateToJoinCareTeamScreen()
-             }*/
-
             R.id.btnLogin -> {
                 navigateToLogin()
             }
 
             R.id.btnCreateAccount -> {
-
+                navigateToSignUp()
             }
         }
     }
@@ -104,6 +95,10 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToLogin() {
         startActivity<LoginActivity>()
+    }
+
+    private fun navigateToSignUp() {
+        startActivity<CreateNewAccountActivity>()
     }
 
 }
