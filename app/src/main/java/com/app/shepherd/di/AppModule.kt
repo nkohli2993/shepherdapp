@@ -86,6 +86,4 @@ class AppModule {
 
         return okHttpClient.build()
     }
-
-
 }
