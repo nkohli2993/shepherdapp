@@ -128,6 +128,10 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
+            // Back icon of Toolbar
+            R.id.imgBack -> {
+                onBackPressed()
+            }
             // Upload Profile Pic
             R.id.imgUploadProfilePic -> {
                 openImagePicker()
