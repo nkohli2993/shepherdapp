@@ -1,11 +1,21 @@
 package com.app.shepherd.view_model
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.login.Payload
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.AuthRepository
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -21,4 +31,62 @@ class CreateNewAccountViewModel @Inject constructor(
         value = UserSignupData()
     }
 
+    var imageFile: File? = null
+
+    private var _uploadImageLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
+    var uploadImageLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
+        _uploadImageLiveData
+
+
+    private var _signUpLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
+    var signUpLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
+        _signUpLiveData
+
+
+    fun createAccount(
+        phoneCode: String?,
+        profilePicUrl: String?,
+        firstName: String?,
+        lastName: String?,
+        email: String?,
+        passwd: String?,
+        phoneNumber: String?,
+    ): LiveData<Event<DataResult<LoginResponseModel>>> {
+        //Update the phone code
+        signUpData.value.let {
+            it?.firstname = firstName
+            it?.lastname = lastName
+            it?.email = email
+            it?.password = passwd
+            it?.phoneCode = phoneCode
+            it?.phoneNo = phoneNumber
+            it?.profilePhoto = profilePicUrl
+            it?.roleId = "1"
+        }
+        viewModelScope.launch {
+            val response = signUpData.value?.let { authRepository.signup(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _signUpLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return signUpLiveData
+    }
+
+    //Upload Image
+    fun uploadImage(file: File?): LiveData<Event<DataResult<LoginResponseModel>>> {
+        viewModelScope.launch {
+            val response = authRepository.uploadImage(file)
+            withContext(Dispatchers.Main) {
+                response.collect { _uploadImageLiveData.postValue(Event(it)) }
+            }
+        }
+        return uploadImageLiveData
+    }
+
+    // Save Successfully Registered User's Info into Preferences
+    fun saveUser(payload: Payload) {
+        userRepository.saveUser(payload)
+    }
 }

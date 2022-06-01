@@ -217,13 +217,13 @@ fun String.isValidEmail(): Boolean =
 
 fun EditText.isValidPassword(): Boolean {
     return Pattern
-        .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[!&^%$#@()=*/.+_-])(?=\\S+$).{8,}$")
+        .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!&^%$#@()=*/.+_-])(?=\\S+$).{8,}$")
         .matcher(this.checkString()).matches()
 }
 
 fun String.isValidPassword(): Boolean {
     return Pattern
-        .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[!&^%$#@()=*/.+_-])(?=\\S+$).{8,}$")
+        .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!&^%$#@()=*/.+_-])(?=\\S+$).{8,}$")
         .matcher(this.checkString()).matches()
 }
 

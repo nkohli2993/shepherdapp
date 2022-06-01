@@ -148,7 +148,7 @@ abstract class BaseActivity : AppCompatActivity() {
                     } else {
                         File(selectedMedia[0].path!!)
                     }
-                    selectedFile.value = file
+                    selectedFile.value = file!!
                 }
             }
         }

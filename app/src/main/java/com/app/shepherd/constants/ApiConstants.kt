@@ -1,7 +1,6 @@
 package com.app.shepherd.constants
 
-import com.app.shepherd.BuildConfig
-import com.app.shepherd.BuildConfig.*
+import com.app.shepherd.BuildConfig.BASE_URL
 
 
 /*
@@ -18,34 +17,19 @@ object ApiConstants {
     }
 
     object AGORA {
-       /* const val TEMP_TOKEN =
-            "eyJpdiI6IllhajV5emZUUk53Nm1nK280dG1aUGc9PSIsInZhbHVlIjoiclFiczJnS2Uzb0ZWRUE0YkRzZnFVZz09IiwibWFjIjoiNjljYmI3OTliYWY2Y2RiNzBmNDQzZWU5ZjBkOTEwOGEyMDY4MGQxMTZlNzM2NTQ1YmQ2YWFkMzMyOTUxOTliOSJ9-1629695509"
-        const val TEMP_CHANNEL_NAME = "cus_JlV5gtn3ip6NG2"*/
+        /* const val TEMP_TOKEN =
+             "eyJpdiI6IllhajV5emZUUk53Nm1nK280dG1aUGc9PSIsInZhbHVlIjoiclFiczJnS2Uzb0ZWRUE0YkRzZnFVZz09IiwibWFjIjoiNjljYmI3OTliYWY2Y2RiNzBmNDQzZWU5ZjBkOTEwOGEyMDY4MGQxMTZlNzM2NTQ1YmQ2YWFkMzMyOTUxOTliOSJ9-1629695509"
+         const val TEMP_CHANNEL_NAME = "cus_JlV5gtn3ip6NG2"*/
     }
 
     private const val API_VERSION = "api/v1/"
 
     object AUTHENTICATION {
         const val LOGIN = "$BASE_URL${API_VERSION}users/login"
-//        const val SOCIAL_LOGIN = "${BuildConfig.BASE_URL}${API_VERSION}social-login"
-//        const val REGISTER_CUSTOMER = "${BuildConfig.BASE_URL}${API_VERSION}user-register"
-//        const val FORGOT_PASSWORD = "${BuildConfig.BASE_URL}${API_VERSION}forgot"
-//        const val REGISTER_VIP = "${BuildConfig.BASE_URL}${API_VERSION}provider-register"
-//        const val GET_CATEGORY = "${BuildConfig.BASE_URL}${API_VERSION}get-category"
+        const val SIGN_UP = "$BASE_URL${API_VERSION}users"
+        const val UPLOAD_IMAGE = "$BASE_URL${API_VERSION}user_profiles/profile/"
     }
 
-    object PAYMENT {
-//        const val ADD_BANK_ACCOUNT = "${BuildConfig.BASE_URL}${API_VERSION}add-bank"
-//        const val ADD_CARD = "${BuildConfig.BASE_URL}${API_VERSION}add-card"
-//        const val GET_CARDS = "${BuildConfig.BASE_URL}${API_VERSION}card-list"
-//        const val DELETE_CARD = "${BuildConfig.BASE_URL}${API_VERSION}delete-card"
-//        const val DEFAULT_CARD = "${BuildConfig.BASE_URL}${API_VERSION}default-card"
-//        const val SEND_TIP = "${BuildConfig.BASE_URL}${API_VERSION}send-tip"
-//        const val GET_BANK_LIST = "${BuildConfig.BASE_URL}${API_VERSION}account-list"
-//        const val DEFAULT_BANK = "${BuildConfig.BASE_URL}${API_VERSION}bank-default"
-//        const val DELETE_BANK = "${BuildConfig.BASE_URL}${API_VERSION}bank-delete"
-
-    }
 
     object ADDRESS {
 //        const val GET_COUNTRY = "${BuildConfig.BASE_URL}${API_VERSION}get-country"
@@ -117,12 +101,12 @@ object ApiConstants {
 
     }*/
 
-   /* object CHAT {
-        const val GET_CHAT_LIST = "${BuildConfig.BASE_URL}${API_VERSION}chat-user"
-        const val READ_MESSAGE = "${BuildConfig.BASE_URL}${API_VERSION}read-message"
-        const val START_CONVERSATION = "${BuildConfig.BASE_URL}${API_VERSION}converstion"
+    /* object CHAT {
+         const val GET_CHAT_LIST = "${BuildConfig.BASE_URL}${API_VERSION}chat-user"
+         const val READ_MESSAGE = "${BuildConfig.BASE_URL}${API_VERSION}read-message"
+         const val START_CONVERSATION = "${BuildConfig.BASE_URL}${API_VERSION}converstion"
 
-    }*/
+     }*/
 
     /*object PLANS {
         const val ADD_PLAN = "${BuildConfig.BASE_URL}${API_VERSION}add-plan"
@@ -139,9 +123,6 @@ object ApiConstants {
 //        const val UPLOAD_DOC = "${BuildConfig.BASE_URL}${API_VERSION}save-image"
 //
 //    }
-
-
-
 
 
 //    const val RE_SEND_OTP = "${BuildConfig.BASE_URL}${API_VERSION}user/resendOtp"

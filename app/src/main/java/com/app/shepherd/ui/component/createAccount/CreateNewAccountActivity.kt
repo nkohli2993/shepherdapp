@@ -4,21 +4,24 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
-import androidx.lifecycle.LiveData
+import com.app.shepherd.BuildConfig
 import com.app.shepherd.R
-import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponseModel
-import com.app.shepherd.databinding.ActivityCreateAccountBinding
 import com.app.shepherd.databinding.ActivityCreateNewAccountBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.welcome.WelcomeActivity
-import com.app.shepherd.utils.*
-import com.google.android.material.snackbar.Snackbar
+import com.app.shepherd.utils.PhoneTextFormatter
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showInfo
+import com.app.shepherd.utils.extensions.showSuccess
+import com.app.shepherd.utils.loadImageCentreCrop
+import com.app.shepherd.utils.observe
+import com.app.shepherd.view_model.CreateNewAccountViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_create_account.*
-import kotlinx.android.synthetic.main.activity_create_account.cardViewImage
-import kotlinx.android.synthetic.main.activity_create_account.imageViewLovedOne
-import kotlinx.android.synthetic.main.activity_create_account.textViewUploadPhoto
+import kotlinx.android.synthetic.main.activity_create_account.editTextPhoneNumber
+import kotlinx.android.synthetic.main.activity_create_new_account.*
 import java.io.File
 
 
@@ -28,18 +31,28 @@ import java.io.File
 @AndroidEntryPoint
 class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
-    private val createAccountViewModel: CreateAccountViewModel by viewModels()
+    private val createNewAccountViewModel: CreateNewAccountViewModel by viewModels()
     private lateinit var binding: ActivityCreateNewAccountBinding
+    private var phoneCode: String? = null
+    private var profilePicUrl: String? = null
+    private var email: String? = null
+    private var passwd: String? = null
+    private var firstName: String? = null
+    private var lastName: String? = null
+    private var phoneNumber: String? = null
+    private var roleId: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBar.listener = this
+        binding.toolBarNew.listener = this
         binding.listener = this
-
         //setPhoneNumberFormat()
-    }
 
+        binding.ccp.setOnCountryChangeListener {
+            this.phoneCode = it.phoneCode
+        }
+    }
 
     override fun initViewBinding() {
         binding = ActivityCreateNewAccountBinding.inflate(layoutInflater)
@@ -48,16 +61,102 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
+        observe(selectedFile, ::handleSelectedImage)
 
+        // Observe the response of upload image api
+        createNewAccountViewModel.uploadImageLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.errorCode?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.let { it1 ->
+                        it1.message?.let { it2 -> showSuccess(this, it2) }
+                        profilePicUrl = it1.payload?.profilePhoto
+                    }
+                }
+            }
+        }
+
+        // Observe the response of sign up api
+        createNewAccountViewModel.signUpLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.errorCode?.let { showError(this, it.toString()) }
+
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+
+                }
+                is DataResult.Success -> {
+                    it.data.let { it1 ->
+                        it1.message?.let { it2 -> showSuccess(this, it2) }
+
+                        // Save User's Info to Shared Preferences
+                        it1.payload?.let { it2 -> createNewAccountViewModel.saveUser(it2) }
+                        navigateToHomeScreen()
+                    }
+
+                }
+            }
+        }
+    }
+
+    private fun navigateToHomeScreen() {
+        startActivityWithFinish<HomeActivity>()
     }
 
 
+    private fun handleSelectedImage(file: File?) {
+        if (file != null && file.exists()) {
+            //imgUploadProfilePic.visibility = View.GONE
+
+            createNewAccountViewModel.imageFile = file
+            createNewAccountViewModel.uploadImage(file)
+            imgProfile.loadImageCentreCrop(R.drawable.ic_outline_person, file)
+            imgProfile.scaleType = ImageView.ScaleType.FIT_XY
+        }
+    }
 
 
-
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            // Upload Profile Pic
+            R.id.imgUploadProfilePic -> {
+                openImagePicker()
+            }
+            // Create Account
+            R.id.btnCreate -> {
+                if (binding.checkboxTermsConditions.isChecked) {
+                    firstName = edtFirstName.text.toString().trim()
+                    lastName = edtLastName.text.toString().trim()
+                    email = editTextEmail.text.toString().trim()
+                    passwd = editTextPassword.text.toString().trim()
+                    phoneNumber = edtPhoneNumber.text.toString().trim()
+                    phoneCode = ccp.selectedCountryCode
+                    createNewAccountViewModel.createAccount(
+                        phoneCode,
+                        BuildConfig.BASE_URL + profilePicUrl,
+                        firstName,
+                        lastName,
+                        email,
+                        passwd,
+                        phoneNumber
+                    )
+                } else {
+                    showInfo(
+                        this,
+                        "Please select the box describing Terms & Condition and Privacy Policy"
+                    )
+                }
+            }
         }
     }
 

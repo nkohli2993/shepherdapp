@@ -103,7 +103,7 @@
                 android:layout_marginTop="@dimen/_5sdp"
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="@dimen/_5sdp"
-                bind:getEmailError="@{@string/email}"/>
+                bind:getEmailError="@{@string/email}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -129,7 +129,7 @@
                 android:drawableStart="@drawable/ic_passwd"
                 android:drawableEnd="@drawable/ic_eye"
                 android:drawablePadding="@dimen/_5sdp"
-                bind:getPassError="@{@string/password}"/>
+                bind:getPassError="@{@string/password}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtForgotPassword"

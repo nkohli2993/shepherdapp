@@ -3,6 +3,7 @@ package com.app.shepherd.network.retrofit
 import com.app.shepherd.constants.ApiConstants
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.signup.UserSignupData
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -13,5 +14,14 @@ interface ApiService {
 
     @POST(ApiConstants.AUTHENTICATION.LOGIN)
     suspend fun login(@Body value: UserSignupData): Response<LoginResponseModel>
+
+    @POST(ApiConstants.AUTHENTICATION.SIGN_UP)
+    suspend fun signUp(@Body value: UserSignupData): Response<LoginResponseModel>
+
+    @Multipart
+    @POST(ApiConstants.AUTHENTICATION.UPLOAD_IMAGE)
+    suspend fun uploadImage(
+        @Part profilePhoto: MultipartBody.Part?
+    ): Response<LoginResponseModel>
 
 }

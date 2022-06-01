@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.login.Payload
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.AuthRepository
@@ -25,6 +26,7 @@ class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
+
     var loginData = MutableLiveData<UserSignupData>().apply {
         value = UserSignupData()
     }
@@ -46,7 +48,7 @@ class LoginViewModel @Inject constructor(
         return loginResponseLiveData
     }
 
-    fun saveUser(user: UserSignupData) {
+    fun saveUser(user: Payload) {
         userRepository.saveUser(user)
     }
 

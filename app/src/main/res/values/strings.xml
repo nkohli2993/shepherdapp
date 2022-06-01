@@ -222,7 +222,7 @@
     <string name="please_enter_your_password">Please enter your password</string>
     <string name="please_enter_first_name">Please enter first name</string>
     <string name="please_enter_last_name">Please enter last name</string>
-    <string name="please_enter_valid_password">Password should be minimum of 8 digits including alphanumeric with at least 1 digit and 1 special character</string>
+    <string name="please_enter_valid_password">Password must be at least 8 characters long with 1 capital letter, 1 number and 1 special character</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="new_on_app">New on app?</string>
