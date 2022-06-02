@@ -206,6 +206,7 @@
     <string name="menu_resources">Resources</string>
     <string name="menu_add_loved_one">Add Loved One</string>
     <string name="v1_0_all_rights_reserved">v1.0 All Rights Reserved</string>
+    <string name="shepherd_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
     <string name="create_new">Create New</string>
@@ -215,6 +216,7 @@
     <string name="hello">Hello!</string>
     <string name="please_log_in">Please Log In</string>
     <string name="login_description">Welcome to Shepherd, please put your login credentials below to start using the app.</string>
+    <string name="forgot_passwd_description">Enter your email and we´ll send you instructions on how to reset your password.</string>
     <string name="please_enter_email_id">Please enter your email id</string>
     <string name="please_enter">Please enter</string>
     <string name="please_enter_valid_email_id">Please enter valid email id</string>
@@ -224,6 +226,7 @@
     <string name="please_enter_last_name">Please enter last name</string>
     <string name="please_enter_valid_password">Password must be at least 8 characters long with 1 capital letter, 1 number and 1 special character</string>
     <string name="forgot_password">Forgot Password?</string>
+    <string name="forgot_passwd">Forgot Password</string>
     <string name="mobile_number">Mobile Number</string>
     <string name="new_on_app">New on app?</string>
     <string name="create_a_new_account">Create a \nNew Account</string>
