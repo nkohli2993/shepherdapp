@@ -25,6 +25,9 @@
             android:name=".ui.component.resetPassword.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password" />
         <activity
+            android:name=".ui.component.forgot_password.ForgotPasswordActivity"
+            android:label="@string/forgot_passwd" />
+        <activity
             android:name=".ui.component.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/AppTheme">

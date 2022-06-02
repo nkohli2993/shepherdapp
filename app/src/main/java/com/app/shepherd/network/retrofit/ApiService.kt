@@ -1,6 +1,7 @@
 package com.app.shepherd.network.retrofit
 
 import com.app.shepherd.constants.ApiConstants
+import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.signup.UserSignupData
 import okhttp3.MultipartBody
@@ -23,5 +24,8 @@ interface ApiService {
     suspend fun uploadImage(
         @Part profilePhoto: MultipartBody.Part?
     ): Response<LoginResponseModel>
+
+    @POST(ApiConstants.AUTHENTICATION.FORGOT_PASSWORD)
+    suspend fun forgotPassword(@Body value: ForgotPasswordModel): Response<LoginResponseModel>
 
 }

@@ -1,6 +1,7 @@
 package com.app.shepherd.data.remote
 
 import android.webkit.MimeTypeMap
+import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.network.retrofit.ApiService
@@ -63,6 +64,16 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
                 return apiService.signUp(value)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+
+    // Forgot Password
+    suspend fun forgotPassword(value: ForgotPasswordModel): Flow<DataResult<LoginResponseModel>> {
+        return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
+                return apiService.forgotPassword(value)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
