@@ -205,8 +205,8 @@
     <string name="test_diabetes">Diabetes</string>
     <string name="menu_resources">Resources</string>
     <string name="menu_add_loved_one">Add Loved One</string>
-    <string name="v1_0_all_rights_reserved">v1.0 All Rights Reserved</string>
-    <string name="shepherd_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>
+    <string name="v1_0_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>
+<!--    <string name="shepherd_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>-->
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
     <string name="create_new">Create New</string>

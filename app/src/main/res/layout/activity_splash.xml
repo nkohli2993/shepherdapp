@@ -23,7 +23,7 @@
         android:fontFamily="@font/gotham_light"
         android:text="@string/v1_0_all_rights_reserved"
         android:textColor="@color/_192032"
-        android:textSize="@dimen/_12sdp"
+        android:textSize="@dimen/_9sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
