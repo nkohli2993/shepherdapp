@@ -9,18 +9,41 @@
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_crop_image_menu_rotate_left.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_image_placeholder.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/shape_circle_white.xml" value="0.255" />
+        <entry key="..\:/Users/itechnolab101/.gradle/caches/transforms-3/342dce9291abea3ff1834378267f2ba2/transformed/jetified-number-keyboard-3.0.0/res/drawable/numberkeyboard_key_bg.xml" value="0.259" />
+        <entry key="..\:/Users/itechnolab101/.gradle/caches/transforms-3/342dce9291abea3ff1834378267f2ba2/transformed/jetified-number-keyboard-3.0.0/res/drawable/numberkeyboard_key_bg_pressed.xml" value="0.259" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/button_primary.xml" value="0.253" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/calendar_item_background.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/checkbox_background.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/circle_white.xml" value="0.264" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_calendar.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_care_points.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_checkbox_unchecked.xml" value="0.219" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_calender.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_care_team.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_discussion.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_lockbox.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_med_list.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_resource.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_vital.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_heart.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_calender.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_care_team.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_discussion.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_lockbox.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_med_list.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_resource.xml" value="0.2765" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_vital.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_med_search.xml" value="0.264" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_mwnu.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_round_cancel.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/rounded_box_6.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/selected_calendar_item_background.xml" value="0.264" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/shape_rectangle_circular_corner_border_grey.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/switch_thumb_selector.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/switch_track_selector.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/unselected_calendar_item_background.xml" value="0.264" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/activity_create_account.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/activity_home.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/activity_login_new.xml" value="0.20833333333333334" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/activity_onboarding.xml" value="0.20833333333333334" />
@@ -28,10 +51,12 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/activity_walk_through.xml" value="0.1" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_add_medicine_list.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_chat.xml" value="0.19202898550724637" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_dashboard.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_direct_messages.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_loved_ones.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_medical_history.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_medical_history_topics.xml" value="0.26902173913043476" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_menu_item.xml" value="0.2296195652173913" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_my_medications_list.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_my_reminders.xml" value="0.25" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.25" />
@@ -43,13 +68,17 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/content_dashboard.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_add_new_medication.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_care_team_members.xml" value="0.21829710144927536" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_change_password.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_chat.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_dashboard.xml" value="0.21829710144927536" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_edit_profile.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_messages.xml" value="0.273058884835852" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_my_medlist.xml" value="0.2" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_new_message.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_profile.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_resources.xml" value="0.21829710144927536" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_security_code.xml" value="0.26902173913043476" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_vital_stats.xml" value="0.2604166666666667" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.26902173913043476" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_12.xml" value="0.255" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_6.xml" value="0.255" />

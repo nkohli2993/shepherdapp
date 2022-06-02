@@ -120,6 +120,7 @@
     <string name="start_typing">Start Typing…</string>
     <string name="add_new_member">Add New Member</string>
     <string name="menu_care_team_members">CareTeam Members</string>
+    <string name="vital_stats">Vital Stats</string>
     <string name="menu_add_new_care_team_member">Add New CareTeam Members</string>
     <string name="menu_member_details">CareTeam Member Details</string>
     <string name="menu_add_new_event">Add new event</string>
@@ -185,6 +186,9 @@
     <string name="menu_care_points">CarePoints</string>
     <string name="menu_lock_box">LockBox</string>
     <string name="menu_lock_box_info">LockBox Doc Info</string>
+    <string name="change_password">Change Password</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="secure_code">Secure Code</string>
     <string name="menu_my_med_list">My MedList</string>
     <string name="menu_messages">Messages</string>
     <string name="medicine_detail">Medicine Detail</string>
@@ -218,6 +222,9 @@
     <string name="login_description">Welcome to Shepherd, please put your login credentials below to start using the app.</string>
     <string name="please_enter_email_id">Please enter your email id</string>
     <string name="enter_your_password">Enter your password</string>
+    <string name="enter_your_old_password">Enter your old password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="enter_confirm_password">Enter confirm password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="new_on_app">New on app?</string>
     <string name="create_a_new_account">Create a \nNew Account</string>
@@ -232,4 +239,18 @@
     <string name="write">Write...</string>
     <string name="change">Change</string>
     <string name="your_loved_ones">Your Loved Ones</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="this_keep_your_account_secure">This keep your account secure</string>
+    <string name="enter_new_code">Enter New Code</string>
+    <string name="remotely_monitor_your_loved_one_s_vitals_statistics_via_wearables">Remotely monitor your loved one’s vitals statistics via wearables.</string>
+    <string name="heart_rate">Heart Rate</string>
+    <string name="bpm">bpm</string>
+    <string name="body_temp">Body Temp</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="oxygen">Oxygen</string>
 </resources>

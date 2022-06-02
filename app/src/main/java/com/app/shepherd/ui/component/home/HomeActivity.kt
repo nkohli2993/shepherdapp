@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.appBarDashboard.toolbar)
+//        setSupportActionBar(binding.appBarDashboard.toolbar)
 
         setupNavigationDrawer()
 
@@ -57,44 +57,44 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun setupNavigationDrawer() {
         drawerLayout = binding.drawerLayout
 
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawerLayout,
-            binding.appBarDashboard.toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        drawerLayout!!.addDrawerListener(toggle)
-        toggle.isDrawerIndicatorEnabled = true
-        toggle.syncState()
+//        val toggle = ActionBarDrawerToggle(
+//            this,
+//            drawerLayout,
+//            binding.appBarDashboard.toolbar,
+//            R.string.navigation_drawer_open,
+//            R.string.navigation_drawer_close
+//        )
+//        drawerLayout!!.addDrawerListener(toggle)
+//        toggle.isDrawerIndicatorEnabled = true
+//        toggle.syncState()
 
-        val navView: NavigationView = binding.navView
+//        val navView: NavigationView = binding.navView
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
 
 
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_dashboard, R.id.nav_notifications, R.id.nav_profile,
-                R.id.nav_care_team, R.id.nav_care_points, R.id.nav_lock_box,
-                R.id.nav_my_medlist, R.id.nav_messages, R.id.nav_resources,
-            ), drawerLayout
-        )
+//        appBarConfiguration = AppBarConfiguration(
+//            setOf(
+//                R.id.nav_dashboard, R.id.nav_notifications, R.id.nav_profile,
+//                R.id.nav_care_team, R.id.nav_care_points, R.id.nav_lock_box,
+//                R.id.nav_my_medlist, R.id.nav_messages, R.id.nav_resources,
+//            ), drawerLayout
+//        )
 
-        navView.setNavigationItemSelectedListener(this)
+//        navView.setNavigationItemSelectedListener(this)
 
-        NavigationUI.setupWithNavController(navView, navController)
-        NavigationUI.setupActionBarWithNavController(this, navController)
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+//        NavigationUI.setupWithNavController(navView, navController)
+//        NavigationUI.setupActionBarWithNavController(this, navController)
+//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
-        binding.appBarDashboard.toolbar.setupWithNavController(navController, drawerLayout)
+//        binding.appBarDashboard.toolbar.setupWithNavController(navController, drawerLayout)
 
     }
 
     private fun setMenuItemAdapter() {
         viewModel.inflateDashboardList(this)
 
-        val adapter = MenuItemAdapter(viewModel, viewModel.menuItemList, viewModel.menuItemMap)
-        binding.recyclerViewMenu.adapter = adapter
+//        val adapter = MenuItemAdapter(viewModel, viewModel.menuItemList, viewModel.menuItemMap)
+//        binding.recyclerViewMenu.adapter = adapter
     }
 
 

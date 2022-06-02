@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:background="@drawable/circle_white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvRemoteMonitor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/gotham_book"
+                android:text="@string/remotely_monitor_your_loved_one_s_vitals_statistics_via_wearables"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clHeartNTempWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintTop_toBottomOf="@+id/tvRemoteMonitor">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvHeartRate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toStartOf="@+id/cvBodyTemp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_20sdp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivHeart"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_heart"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvHeartRate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10ssp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:text="@string/heart_rate"
+                            android:textColor="@color/_8A569C"
+                            android:textSize="@dimen/_14ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ivHeart" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvHeartRateValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/gotham_bold"
+                            android:text="78"
+                            android:textColor="@color/_8A569C"
+                            android:textSize="@dimen/_10ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvHeartRate" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvHeartRateUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/gotham_book"
+                            android:text="@string/bpm"
+                            android:textColor="@color/_8A569C"
+                            android:textSize="@dimen/_10ssp"
+                            app:layout_constraintStart_toEndOf="@+id/tvHeartRateValue"
+                            app:layout_constraintTop_toBottomOf="@+id/tvHeartRate" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvBodyTemp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cvHeartRate"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/_335F6AB2"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_20sdp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivBodyTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_temperature"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBodyTemp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10ssp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:text="@string/body_temp"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_14ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ivBodyTemp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBodyTempValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/gotham_bold"
+                            android:text="98"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_10ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBodyTemp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBodyTempUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/gotham_book"
+                            android:text="F"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_10ssp"
+                            app:layout_constraintStart_toEndOf="@+id/tvBodyTempValue"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBodyTemp" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clBloodNOWrapper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/clHeartNTempWrapper">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvBloodPressure"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toStartOf="@+id/cvOxygen"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/_33187AB6"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_20sdp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivBloodPressure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_blood_pressure"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBloodPressure"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10ssp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:text="@string/blood_pressure"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_14ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ivBloodPressure" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvBloodPressureValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/gotham_bold"
+                            android:text="141/90"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_10ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvBloodPressure" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvOxygen"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_2sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cvBloodPressure"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/_3371C8B7"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:paddingVertical="@dimen/_20sdp">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivOxygen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_oxygen"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvOxygen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10ssp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:text="@string/oxygen"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_14ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/ivOxygen" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvOxygenValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/gotham_bold"
+                            android:text="94%"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_10ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvOxygen" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvOxygenUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:fontFamily="@font/gotham_book"
+                            android:text="SpO2"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_10ssp"
+                            app:layout_constraintStart_toEndOf="@+id/tvOxygenValue"
+                            app:layout_constraintTop_toBottomOf="@+id/tvOxygen" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHR"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/gotham_bold"
+                android:text="@string/heart_rate"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintTop_toBottomOf="@+id/clBloodNOWrapper" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:layout_width="match_parent"
+                android:id="@+id/lineChart"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/tvHR" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</layout>

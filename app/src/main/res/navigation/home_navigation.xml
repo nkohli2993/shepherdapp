@@ -34,8 +34,15 @@
         <action
             android:id="@+id/action_dashboard_to_resources"
             app:destination="@+id/nav_resources" />
+        <action
+            android:id="@+id/action_dashboard_to_vital_stats"
+            app:destination="@+id/nav_vital_stats" />
     </fragment>
-
+    <fragment
+        android:id="@+id/nav_vital_stats"
+        android:name="com.app.shepherd.ui.component.vital_stats.VitalStatsFragment"
+        android:label="@string/vital_stats"
+        tools:layout="@layout/fragment_vital_stats" />
 
     <fragment
         android:id="@+id/nav_care_team"
@@ -107,7 +114,17 @@
         android:id="@+id/nav_profile"
         android:name="com.app.shepherd.ui.component.profile.ProfileFragment"
         android:label="@string/menu_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_nav_profile_to_changePassword"
+            app:destination="@id/nav_change_password" />
+        <action
+            android:id="@+id/action_nav_profile_to_secureCode"
+            app:destination="@id/nav_secure_code" />
+        <action
+            android:id="@+id/action_nav_profile_to_editProfile"
+            app:destination="@id/nav_edit_profile" />
+    </fragment>
     <fragment
         android:id="@+id/nav_care_points"
         android:name="com.app.shepherd.ui.component.carePoints.CarePointsFragment"
@@ -119,6 +136,21 @@
             app:destination="@+id/nav_add_new_event" />
 
     </fragment>
+    <fragment
+        android:id="@+id/nav_change_password"
+        android:name="com.app.shepherd.ui.component.change_password.ChangePasswordFragment"
+        android:label="@string/change_password"
+        tools:layout="@layout/fragment_change_password" />
+    <fragment
+        android:id="@+id/nav_edit_profile"
+        android:name="com.app.shepherd.ui.component.edit_profile.EditProfileFragment"
+        android:label="@string/edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/nav_secure_code"
+        android:name="com.app.shepherd.ui.component.security_code.SecurityCodeFragment"
+        android:label="@string/secure_code"
+        tools:layout="@layout/fragment_security_code" />
 
     <fragment
         android:id="@+id/nav_lock_box"

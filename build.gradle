@@ -48,4 +48,5 @@ ext {
     sspVersion = '1.0.6'
     livedata_ktx = '2.4.1'
     calednarVersion = '1.0.0'
+    numberpadVersion = '1.0.1'
 }

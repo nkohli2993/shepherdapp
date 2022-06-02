@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:keyboard="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivSecurity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_security"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvEnterCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_20ssp"
+            android:fontFamily="@font/gotham_book"
+            android:text="@string/enter_new_code"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivSecurity" />
+
+
+        <com.davidmiguel.numberkeyboard.NumberKeyboard
+            android:id="@+id/numpad"
+            android:layout_width="250dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_20ssp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvEnterCode"
+            app:numberkeyboard_keyPadding="10dp"
+            keyboard:numberkeyboard_keyboardType="integer" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSecure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_book"
+            android:text="@string/this_keep_your_account_secure"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/numpad" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSaveChange"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:background="@drawable/button_primary"
+            android:backgroundTint="@color/_399282"
+            android:fontFamily="@font/gotham_medium"
+            android:onClick="@{listener::onClick}"
+            android:paddingHorizontal="80dp"
+            android:text="@string/str_continue"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_13ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSecure" />
+
+    </LinearLayout>
+
+
+</layout>

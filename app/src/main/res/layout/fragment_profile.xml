@@ -26,7 +26,8 @@
                 android:id="@+id/clProfileWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp">
+                android:layout_marginTop="@dimen/_20sdp"
+                android:onClick="@{listener::onClick}">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageViewUser"
@@ -157,6 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10ssp"
                     android:fontFamily="@font/gotham_medium"
+                    android:onClick="@{listener::onClick}"
                     android:text="@string/change"
                     android:textColor="@color/_D7293F"
                     android:textSize="@dimen/_12ssp"
@@ -201,6 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10ssp"
                     android:fontFamily="@font/gotham_medium"
+                    android:onClick="@{listener::onClick}"
                     android:text="@string/reset"
                     android:textColor="@color/_D7293F"
                     android:textSize="@dimen/_12ssp"
