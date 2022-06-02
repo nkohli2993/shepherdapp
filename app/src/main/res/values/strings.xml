@@ -212,6 +212,7 @@
     <string name="create_new">Create New</string>
     <string name="create">Create</string>
     <string name="welcome">Welcome</string>
+    <string name="login_or_create_new_account">Please log in or create a \nnew account.</string>
     <string name="desc_text">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</string>
     <string name="hello">Hello!</string>
     <string name="please_log_in">Please Log In</string>
