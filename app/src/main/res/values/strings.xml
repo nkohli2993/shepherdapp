@@ -235,5 +235,6 @@
     <string name="agree_to_terms_and_conditions_and_privacy_policy">I agree to the Terms &amp; \nConditions and Privacy Policy</string>
     <string name="enter_phone_number">Enter phone number</string>
     <string name="should_be_minimum_5_digits">Length Should Be of 5 to 15 Digits</string>
+    <string name="or_login_with_biometric">Or login with biometric</string>
 
 </resources>

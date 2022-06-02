@@ -160,11 +160,33 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="@dimen/_15sdp" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/or_login_with_biometric"
+                android:textSize="@dimen/_13ssp"
+                android:textColor="@color/_192032"
+                android:fontFamily="@font/gotham_book"
+                android:layout_marginTop="@dimen/_10sdp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgBiometric"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/ic_biometric" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -195,7 +217,7 @@
             android:fontFamily="@font/gotham_light"
             android:text="@string/v1_0_all_rights_reserved"
             android:textColor="@color/_192032"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_9sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
