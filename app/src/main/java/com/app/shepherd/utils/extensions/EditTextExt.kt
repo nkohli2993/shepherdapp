@@ -19,7 +19,6 @@ import android.widget.TextView
 import android.widget.TextView.BufferType
 import androidx.core.content.ContextCompat
 import com.app.shepherd.R
-import com.app.shepherd.ShepherdApp
 import com.app.shepherd.utils.Drawable.END
 import com.app.shepherd.utils.Drawable.START
 import com.google.android.material.textfield.TextInputEditText
