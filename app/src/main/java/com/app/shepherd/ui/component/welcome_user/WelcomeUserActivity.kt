@@ -28,7 +28,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBar.listener = this
+        binding.toolBarNew.listener = this
         binding.listener = this
     }
 
@@ -40,9 +40,9 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
-        observe(welcomeViewModel.loginLiveData, ::handleLoginResult)
+       /* observe(welcomeViewModel.loginLiveData, ::handleLoginResult)
         observeSnackBarMessages(welcomeViewModel.showSnackBar)
-        observeToast(welcomeViewModel.showToast)
+        observeToast(welcomeViewModel.showToast)*/
     }
 
 
@@ -69,13 +69,13 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imageViewBack -> {
+            R.id.imgBack -> {
                 finishActivity()
             }
-            R.id.imageViewAddLovedOne -> {
+            R.id.cardViewAddLovedOne -> {
                 navigateToAddLovedOneScreen()
             }
-            R.id.imageViewJoinTeam -> {
+            R.id.cardViewCareTeam -> {
                 navigateToJoinCareTeamScreen()
             }
         }
