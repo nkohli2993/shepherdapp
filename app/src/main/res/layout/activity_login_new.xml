@@ -17,69 +17,54 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginVertical="@dimen/_20sdp"
-        android:paddingHorizontal="@dimen/_10sdp"
-        android:paddingVertical="@dimen/_8sdp">
-
-        <include
-            android:background="@color/_192032"
-            android:id="@+id/toolBar"
-            layout="@layout/include_toolbar_new"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/heading_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolBar">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtHello"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/hello"
-                android:textSize="@dimen/_14ssp"
-                android:textColor="@color/_192032"
-                android:fontFamily="@font/gotham_bold" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtHello"
-                android:text="@string/please_log_in"
-                android:textSize="@dimen/_14ssp"
-                android:textColor="@color/_192032"
-                android:fontFamily="@font/gotham_bold"
-                android:layout_marginTop="@dimen/_10sdp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtLogin"
-                android:text="@string/login_description"
-                android:textSize="@dimen/_11ssp"
-                android:textColor="@color/_192032"
-                android:fontFamily="@font/gotham_book"
-                android:layout_marginTop="@dimen/_10sdp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:background="@color/heading_background"
+            android:paddingTop="@dimen/_10sdp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/layoutHeader"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolBar"
+                layout="@layout/include_toolbar_new" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:background="@color/heading_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolBar"
+                android:paddingBottom="@dimen/_10sdp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@string/log_in_to_access_your_account"
+                    android:textSize="@dimen/_16ssp"
+                    android:textColor="@color/_192032"
+                    android:fontFamily="@font/gotham_bold" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical"
             android:background="@color/colorWhite"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_20sdp"
             app:layout_constraintTop_toBottomOf="@+id/layoutHeader">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -114,23 +99,38 @@
                 android:fontFamily="@font/gotham_light"
                 android:layout_marginTop="@dimen/_10sdp" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtPasswd"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:gravity="center"
+                android:padding="@dimen/_6sdp"
                 android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtPasswd"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:padding="@dimen/_4sdp"
+                android:layout_height="wrap_content"
                 android:hint="@string/enter_your_password"
                 android:text="@={viewModel.loginData.password}"
-                android:padding="@dimen/_10sdp"
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/_192032"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="textPassword"
                 android:drawableStart="@drawable/ic_passwd"
-                android:drawableEnd="@drawable/ic_eye"
                 android:drawablePadding="@dimen/_5sdp"
                 bind:getPassError="@{@string/password}" />
 
+                <ImageView
+                    android:layout_width="@dimen/_24sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:id="@+id/imageViewPasswordToggle"
+                    android:layout_height="@dimen/_24sdp"
+                    android:src="@drawable/ic_eye"/>
+            </LinearLayout>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtForgotPassword"
                 android:layout_width="wrap_content"

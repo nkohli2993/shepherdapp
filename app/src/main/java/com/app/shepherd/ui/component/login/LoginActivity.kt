@@ -7,6 +7,7 @@ import android.text.method.PasswordTransformationMethod
 import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
@@ -42,44 +43,23 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.toolBar.listener = this
         binding.listener = this
         binding.viewModel = loginViewModel
 
         // Handle the click of Show or Hide Password Icon
-        edtPasswd.setOnTouchListener { _, event ->
-            val drawableRight = 2
-            if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= (edtPasswd.right - edtPasswd.compoundDrawables[drawableRight].bounds.width())) {
-                    if (isPasswordShown) {
-                        //Hide Password
-                        binding.edtPasswd.transformationMethod =
-                            PasswordTransformationMethod.getInstance()
-                        isPasswordShown = !isPasswordShown
-                        edtPasswd.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.ic_eye,
-                            0
-                        )
-
-                    } else {
-                        //Show password
-                        binding.edtPasswd.transformationMethod =
-                            HideReturnsTransformationMethod.getInstance()
-                        isPasswordShown = !isPasswordShown
-                        edtPasswd.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                            0,
-                            0,
-                            R.drawable.ic_eye_on,
-                            0
-                        )
-
-                    }
-
-                    true
-                }
+        binding.imageViewPasswordToggle.setOnClickListener {
+            if (isPasswordShown) {
+                //Hide Password
+                binding.edtPasswd.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.imageViewPasswordToggle.setImageResource(R.drawable.ic_eye)
+            } else {
+                //Show password
+                binding.edtPasswd.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.imageViewPasswordToggle.setImageResource(R.drawable.ic_eye_on)
             }
-            false
+            isPasswordShown = !isPasswordShown
+            binding.edtPasswd.setSelection(binding.edtPasswd.length())
         }
     }
 
@@ -165,6 +145,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()
+            }
+            R.id.imgBack -> {
+                onBackPressed()
             }
         }
     }

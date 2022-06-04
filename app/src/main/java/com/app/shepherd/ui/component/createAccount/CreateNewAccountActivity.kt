@@ -56,79 +56,22 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         binding.listener = this
         //setPhoneNumberFormat()
 
-        binding.ccp.setOnCountryChangeListener {
-            this.phoneCode = it.phoneCode
-        }
-
-        editTextPassword.onDrawableClick(Drawable.END) {
-            if (editTextPassword.text.toString().isNullOrEmpty()) {
-                showInfo(this, resources.getString(R.string.please_enter_your_password))
-            } else {
-                if (isPasswordShown) {
-                    //Hide Password
-                    binding.editTextPassword.transformationMethod =
-                        PasswordTransformationMethod.getInstance()
-                    isPasswordShown = false
-                    editTextPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        0,
-                        0,
-                        R.drawable.ic_eye,
-                        0
-                    )
-
-                } else {
-                    //Show password
-                    binding.editTextPassword.transformationMethod =
-                        HideReturnsTransformationMethod.getInstance()
-                    isPasswordShown = true
-                    editTextPassword.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                        0,
-                        0,
-                        R.drawable.ic_eye_on,
-                        0
-                    )
-
-                }
-            }
-        }
+        binding.ccp.setOnCountryChangeListener { this.phoneCode = it.phoneCode }
 
         // Handle the click of Show or Hide Password Icon
-        /* editTextPassword.setOnTouchListener { _, event ->
-             val drawableRight = 2
-             if (event.action == MotionEvent.ACTION_UP) {
-                 if (event.rawX >= (edtPasswd.right - edtPasswd.compoundDrawables[drawableRight].bounds.width())) {
-                     if (isPasswordShown) {
-                         //Hide Password
-                         binding.editTextPassword.transformationMethod =
-                             PasswordTransformationMethod.getInstance()
-                         isPasswordShown = !isPasswordShown
-                         edtPasswd.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                             0,
-                             0,
-                             R.drawable.ic_eye,
-                             0
-                         )
-
-                     } else {
-                         //Show password
-                         binding.editTextPassword.transformationMethod =
-                             HideReturnsTransformationMethod.getInstance()
-                         isPasswordShown = !isPasswordShown
-                         edtPasswd.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                             0,
-                             0,
-                             R.drawable.ic_eye_on,
-                             0
-                         )
-
-                     }
-
-                     true
-                 }
-             }
-             false
-         }*/
-
+        binding.imageViewPasswordToggle.setOnClickListener {
+            if (isPasswordShown) {
+                //Hide Password
+                binding.editTextPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.imageViewPasswordToggle.setImageResource(R.drawable.ic_eye)
+            } else {
+                //Show password
+                binding.editTextPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.imageViewPasswordToggle.setImageResource(R.drawable.ic_eye_on)
+            }
+            isPasswordShown = !isPasswordShown
+            binding.editTextPassword.setSelection(binding.editTextPassword.length())
+        }
     }
 
     override fun initViewBinding() {
