@@ -12,222 +12,253 @@
 
     </data>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMedList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_bold"
+            android:text="Edit Profile"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageViewUser"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_40sdp"
-                android:background="@drawable/checkbox_background"
-                android:src="@drawable/test_image_square"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clNameWrapper"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_20ssp"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewUser">
+                android:layout_height="wrap_content">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clFirstName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    app:layout_constraintEnd_toStartOf="@+id/clLastname"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvFirstName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/gotham_light"
-                        android:text="@string/first_name"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etOldPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                        android:drawableStart="@drawable/ic_profile"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:hint="@string/enter_first_name"
-                        android:padding="@dimen/_10sdp"
-                        android:singleLine="true"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_14ssp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvFirstName" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clLastname"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/clFirstName"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvLastName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/gotham_light"
-                        android:text="@string/last_name"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etLastName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                        android:drawableStart="@drawable/ic_profile"
-                        android:drawablePadding="@dimen/_5sdp"
-                        android:hint="@string/enter_last_name"
-                        android:padding="@dimen/_10sdp"
-                        android:singleLine="true"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_14ssp"
-                        app:layout_constraintTop_toBottomOf="@+id/tvLastName" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvEmail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/gotham_light"
-                android:text="@string/email"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clNameWrapper" />
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etEmailId"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                android:drawableStart="@drawable/ic_email"
-                android:drawablePadding="@dimen/_5sdp"
-                android:hint="@string/enter_your_email"
-                android:padding="@dimen/_10sdp"
-                android:singleLine="true"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintEnd_toEndOf="@+id/tvEmail"
-                app:layout_constraintStart_toStartOf="@+id/tvEmail"
-                app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvPhoneNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:fontFamily="@font/gotham_light"
-                android:text="@string/phone_number"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_11ssp"
-                app:layout_constraintEnd_toEndOf="@+id/tvEmail"
-                app:layout_constraintStart_toStartOf="@+id/tvEmail"
-                app:layout_constraintTop_toBottomOf="@+id/etEmailId" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clPhoneNumber"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                android:padding="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="@+id/tvEmail"
-                app:layout_constraintStart_toStartOf="@+id/tvEmail"
-                app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_phone"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="1dp"
-                    android:layout_height="0dp"
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imageViewUser"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_80sdp"
                     android:layout_marginStart="@dimen/_10sdp"
-                    android:background="@color/_192032"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/ivPhone"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:background="@drawable/checkbox_background"
+                    android:src="@drawable/test_image_square"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clNameWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20ssp"
+                    app:layout_constraintTop_toBottomOf="@+id/imageViewUser">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clFirstName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        app:layout_constraintEnd_toStartOf="@+id/clLastname"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvFirstName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/gotham_light"
+                            android:text="@string/first_name"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_11ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etOldPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:drawableStart="@drawable/ic_profile"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:hint="@string/enter_first_name"
+                            android:padding="@dimen/_10sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_14ssp"
+                            app:layout_constraintTop_toBottomOf="@+id/tvFirstName" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clLastname"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/clFirstName"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvLastName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/gotham_light"
+                            android:text="@string/last_name"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_11ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:drawableStart="@drawable/ic_profile"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:hint="@string/enter_last_name"
+                            android:padding="@dimen/_10sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_14ssp"
+                            app:layout_constraintTop_toBottomOf="@+id/tvLastName" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="@string/email"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clNameWrapper" />
 
                 <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etNewPassword"
+                    android:id="@+id/etEmailId"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:background="@null"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:drawableStart="@drawable/ic_email"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:hint="@string/enter_phone_number"
-                    android:inputType="number"
-                    android:maxLength="10"
+                    android:hint="@string/enter_your_email"
+                    android:padding="@dimen/_10sdp"
+                    android:singleLine="true"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/tvEmail"
+                    app:layout_constraintStart_toStartOf="@+id/tvEmail"
+                    app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvPhoneNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="@string/phone_number"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_11ssp"
+                    app:layout_constraintEnd_toEndOf="@+id/tvEmail"
+                    app:layout_constraintStart_toStartOf="@+id/tvEmail"
+                    app:layout_constraintTop_toBottomOf="@+id/etEmailId" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clPhoneNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:padding="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="@+id/tvEmail"
+                    app:layout_constraintStart_toStartOf="@+id/tvEmail"
+                    app:layout_constraintTop_toBottomOf="@+id/tvPhoneNumber">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_phone"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="1dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:background="@color/_192032"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivPhone"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etNewPassword"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:background="@null"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:hint="@string/enter_phone_number"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/view"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSaveChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:background="@drawable/button_primary"
+                    android:backgroundTint="@color/_399282"
+                    android:fontFamily="@font/gotham_medium"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingHorizontal="80dp"
+                    android:text="@string/save_changes"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_13ssp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/view"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clPhoneNumber" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSaveChange"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/_15sdp"
-                android:background="@drawable/button_primary"
-                android:backgroundTint="@color/_399282"
-                android:fontFamily="@font/gotham_medium"
-                android:onClick="@{listener::onClick}"
-                android:paddingHorizontal="80dp"
-                android:text="@string/save_changes"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_13ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clPhoneNumber" />
+        </androidx.core.widget.NestedScrollView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
