@@ -253,4 +253,10 @@
     <string name="body_temp">Body Temp</string>
     <string name="blood_pressure">Blood Pressure</string>
     <string name="oxygen">Oxygen</string>
+    <string name="log_out">Log out</string>
+    <string name="_2022_the_shepherd_company_llc_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>
+    <string name="reminders">Reminders</string>
+    <string name="schedule_medication_reminders_set_refill_alerts_research">Schedule medication reminders, set refill alerts, research.</string>
+    <string name="medications">Medications</string>
+    <string name="create_and_join_conversations_among_careteam_members">Create and join conversations among CareTeam members.</string>
 </resources>

@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/_12sdp"
-            android:paddingVertical="@dimen/_8sdp">
+            android:paddingVertical="@dimen/_12ssp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageViewCareTeam"

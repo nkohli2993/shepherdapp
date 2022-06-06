@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class ChatFragment : BaseFragment<FragmentMessagesBinding>(),
+class ChatFragment : BaseFragment<FragmentChatBinding>(),
     View.OnClickListener {
 
     private val chatViewModel: ChatViewModel by viewModels()

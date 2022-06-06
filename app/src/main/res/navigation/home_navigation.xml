@@ -199,6 +199,9 @@
         <action
             android:id="@+id/action_messages_to_new_message"
             app:destination="@+id/nav_new_message" />
+        <action
+            android:id="@+id/action_messages_to_chat"
+            app:destination="@+id/nav_chat" />
 
 
     </fragment>

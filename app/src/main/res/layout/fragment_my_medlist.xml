@@ -6,10 +6,6 @@
     <data>
 
 
-        <variable
-            name="listener"
-            type="android.view.View.OnClickListener" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,38 +33,30 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSchedule"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/checkbox_background"
-                    android:orientation="horizontal"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="@string/schedule_medication_reminders_set_refill_alerts_research"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14sdp"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvNew"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{listener::onClick}"
-                        android:paddingHorizontal="@dimen/_10sdp"
-                        android:paddingVertical="@dimen/_5sdp"
-                        android:text="+ New"
-                        android:textColor="@color/_A26DCB"
-                        android:textSize="@dimen/_16ssp" />
-                </LinearLayout>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMyReminder"
-                    style="@style/TextViewPoppinsSemiBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_12sdp"
                     android:fontFamily="@font/gotham_medium"
-                    android:text="@string/my_reminders"
+                    android:text="@string/reminders"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/tvSchedule" />
 
                 <com.michalsvec.singlerowcalendar.calendar.SingleRowCalendar
                     android:id="@+id/srCalender"
@@ -103,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_12sdp"
                     android:fontFamily="@font/gotham_medium"
-                    android:text="@string/my_medications"
+                    android:text="@string/medications"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14sdp"
                     app:layout_constraintStart_toStartOf="parent"

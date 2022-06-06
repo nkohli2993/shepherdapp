@@ -20,20 +20,41 @@
         android:orientation="vertical"
         tools:context="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMedList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_bold"
+            android:text="@string/medlist"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvChoose"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:fontFamily="@font/gotham_book"
             android:text="@string/please_choose_any_current_medications_from_the_list_below"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toBottomOf="@+id/tvMedList" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSearch"

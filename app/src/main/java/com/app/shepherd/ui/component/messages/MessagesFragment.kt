@@ -7,9 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
+import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.databinding.FragmentMessagesBinding
 import com.app.shepherd.ui.base.BaseFragment
@@ -25,8 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class MessagesFragment : BaseFragment<FragmentMessagesBinding>(),
-    View.OnClickListener {
+class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
     private val messagesViewModel: MessagesViewModel by viewModels()
 
@@ -45,19 +46,24 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(),
     }
 
     override fun initViewBinding() {
-        fragmentMessagesBinding.listener = this
 
         setDirectMessagesAdapter()
-//        setDiscussionsGroupAdapter()
 
     }
 
     override fun observeViewModel() {
         observe(messagesViewModel.loginLiveData, ::handleLoginResult)
+        observeEvent(messagesViewModel.openChatMessageItem, ::navigateToChatItems)
         observeSnackBarMessages(messagesViewModel.showSnackBar)
         observeToast(messagesViewModel.showToast)
     }
 
+    private fun navigateToChatItems(navigateEvent: SingleEvent<Any>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            findNavController().navigate(R.id.action_messages_to_chat)
+        }
+
+    }
 
     private fun handleLoginResult(status: Resource<LoginResponse>) {
         when (status) {
@@ -99,15 +105,6 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(),
 //            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 //        )
 //    }
-
-
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-            R.id.buttonNewMessage -> {
-                p0.findNavController().navigate(R.id.action_messages_to_new_message)
-            }
-        }
-    }
 
 
     override fun getLayoutRes(): Int {

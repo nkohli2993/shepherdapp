@@ -31,8 +31,7 @@ import java.util.*
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>(),
-    View.OnClickListener {
+class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     private val medListViewModel: MyMedListViewModel by viewModels()
 
@@ -52,7 +51,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>(),
     }
 
     override fun initViewBinding() {
-        myMedlistBinding.listener = this
 
 //        setRemindersAdapter()
         setMyMedicationsAdapter()
@@ -208,15 +206,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>(),
         val selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
         myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
 
-    }
-
-
-    override fun onClick(p0: View?) {
-        when (p0?.id) {
-            R.id.tvNew -> {
-                p0.findNavController().navigate(R.id.action_my_medlist_to_add_new_medication)
-            }
-        }
     }
 
 

@@ -16,20 +16,26 @@
             android:id="@+id/ivMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_mwnu"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:layout_width="wrap_content"
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/gotham_bold"
             android:text="Home"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/clEndWrapper"
             app:layout_constraintStart_toEndOf="@+id/ivMenu"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clEndWrapper"
@@ -40,23 +46,57 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatImageView
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNew"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_10sdp"
-                android:src="@drawable/ic_home_notification"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/ivProfile"
+                android:background="@drawable/checkbox_background"
+                android:onClick="@{listener::onClick}"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:text="+ New"
+                android:textColor="@color/_A26DCB"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivProfile"
-                android:layout_width="@dimen/_30ssp"
-                android:layout_height="@dimen/_30ssp"
-                android:src="@drawable/test_image"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/ivEditProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{listener::onClick}"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:src="@drawable/ic_edit_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clHomeWrapper"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:src="@drawable/ic_home_notification"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/ivProfile"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivProfile"
+                    android:layout_width="@dimen/_30ssp"
+                    android:layout_height="@dimen/_30ssp"
+                    android:src="@drawable/test_image"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

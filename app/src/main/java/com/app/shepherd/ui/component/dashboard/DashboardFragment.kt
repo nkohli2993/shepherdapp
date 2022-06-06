@@ -22,13 +22,11 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     private lateinit var fragmentDashboardBinding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
-    private var adapter: DashboardAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.inflateDashboardList(requireContext())
-        adapter = DashboardAdapter(viewModel)
     }
 
     override fun onCreateView(
@@ -37,16 +35,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         savedInstanceState: Bundle?
     ): View {
         fragmentDashboardBinding = FragmentDashboardBinding.inflate(inflater, container, false)
-
-//        fragmentDashboardBinding.recyclerView.adapter = adapter
-//        initRecyclerView(viewModel.dashboardItemList)
-
         return fragmentDashboardBinding.root
-    }
-
-
-    private fun initRecyclerView(dashboard: ArrayList<DashboardModel>) {
-        adapter?.addData(dashboard)
     }
 
 

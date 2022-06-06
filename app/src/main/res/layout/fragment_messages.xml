@@ -20,18 +20,31 @@
         android:orientation="vertical"
         tools:context="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvJoinAndCreate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_book"
+            android:text="@string/create_and_join_conversations_among_careteam_members"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_6sdp"
             android:orientation="horizontal"
             app:cardBackgroundColor="@color/_F3F3F4"
             app:cardCornerRadius="@dimen/_18sdp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/tvJoinAndCreate">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,6 +106,7 @@
             android:text="@string/new_message"
             android:textAllCaps="false"
             android:textSize="@dimen/_11ssp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/cardViewSearch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.25"
@@ -141,8 +155,10 @@
             android:id="@+id/recyclerViewDirectMessages"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_10sdp"
             android:nestedScrollingEnabled="false"
             android:orientation="vertical"
+            android:clipToPadding="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
