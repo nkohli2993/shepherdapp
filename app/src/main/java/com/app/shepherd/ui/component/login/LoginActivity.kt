@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
@@ -19,6 +17,7 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.createAccount.CreateNewAccountActivity
 import com.app.shepherd.ui.component.forgot_password.ForgotPasswordActivity
 import com.app.shepherd.ui.component.home.HomeActivity
+import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
@@ -27,7 +26,6 @@ import com.app.shepherd.utils.showToast
 import com.app.shepherd.view_model.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_login_new.*
 
 /**
  * Created by Sumit Kumar
@@ -55,12 +53,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 binding.imageViewPasswordToggle.setImageResource(R.drawable.ic_eye)
             } else {
                 //Show password
-                binding.edtPasswd.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.edtPasswd.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
                 binding.imageViewPasswordToggle.setImageResource(R.drawable.ic_eye_on)
             }
             isPasswordShown = !isPasswordShown
             binding.edtPasswd.setSelection(binding.edtPasswd.length())
         }
+
+
     }
 
     override fun initViewBinding() {
@@ -71,13 +72,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
-//        observe(loginViewModel.loginLiveData, ::handleLoginResult)
-//        observeSnackBarMessages(loginViewModel.showSnackBar)
-//        observeToast(loginViewModel.showToast)
-
-
-//        observe(loginViewModel.loginResponseLiveData,::handleLoginResult)
-
         loginViewModel.loginResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -85,8 +79,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    it.data.message?.let { it1 -> showSuccess(this, it1) }
-                    navigateToHomeScreen()
+//                    it.data.message?.let { it1 -> showSuccess(this, it1) }
+                    it.data.let { it ->
+                        it.message?.let { it1 -> showSuccess(this, it1) }
+                        // Save User Detail to SharedPref
+                        it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }
+                    }
+                    navigateToWelcomeUserScreen()
                 }
 
                 is DataResult.Failure -> {
@@ -99,7 +98,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
 
         }
-
     }
 
     /*private fun doLogin() {
@@ -125,6 +123,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToHomeScreen() {
         startActivityWithFinish<HomeActivity>()
+    }
+
+    private fun navigateToWelcomeUserScreen() {
+        startActivity<WelcomeUserActivity>()
     }
 
     private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {

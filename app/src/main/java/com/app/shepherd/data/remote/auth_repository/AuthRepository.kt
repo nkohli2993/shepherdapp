@@ -1,4 +1,4 @@
-package com.app.shepherd.data.remote
+package com.app.shepherd.data.remote.auth_repository
 
 import android.webkit.MimeTypeMap
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
