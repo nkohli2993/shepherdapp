@@ -17,6 +17,7 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.createAccount.CreateNewAccountActivity
 import com.app.shepherd.ui.component.forgot_password.ForgotPasswordActivity
 import com.app.shepherd.ui.component.home.HomeActivity
+import com.app.shepherd.ui.component.resetPassword.ResetPasswordActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.extensions.showError
