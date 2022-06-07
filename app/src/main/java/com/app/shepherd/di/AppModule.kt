@@ -26,8 +26,8 @@ import kotlin.coroutines.CoroutineContext
 @InstallIn(SingletonComponent::class)
 class AppModule {
     private val CONNECT_TIMEOUT: Long = 10000
-    private val READ_TIMEOUT: Long = 30000
-    private val WRITE_TIMEOUT: Long = 30000
+    private val READ_TIMEOUT: Long = 15000
+    private val WRITE_TIMEOUT: Long = 15000
 
     @Provides
     @Singleton

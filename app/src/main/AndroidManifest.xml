@@ -27,6 +27,8 @@
         <activity
             android:name=".ui.component.forgot_password.ForgotPasswordActivity"
             android:label="@string/forgot_passwd" />
+        <activity android:name=".ui.component.welcome.WelcomeUserActivity"
+            android:label="@string/welcome_user"/>
         <activity
             android:name=".ui.component.splash.SplashActivity"
             android:exported="true"
@@ -68,6 +70,8 @@
         <activity
             android:name=".ui.component.joinCareTeam.JoinCareTeamActivity"
             android:label="@string/title_activity_join_care_team" />
+        <activity android:name=".ui.component.addLovedOne.SearchPlacesActivity"
+            android:label="@string/search_places"/>
         <activity
             android:name=".ui.component.home.HomeActivity"
             android:exported="false"

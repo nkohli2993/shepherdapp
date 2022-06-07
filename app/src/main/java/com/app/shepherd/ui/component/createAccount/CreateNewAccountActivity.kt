@@ -14,10 +14,9 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.HomeActivity
+import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.ui.component.welcome.WelcomeActivity
-import com.app.shepherd.utils.Drawable
 import com.app.shepherd.utils.PhoneTextFormatter
-import com.app.shepherd.utils.extensions.onDrawableClick
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
@@ -62,11 +61,13 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         binding.imageViewPasswordToggle.setOnClickListener {
             if (isPasswordShown) {
                 //Hide Password
-                binding.editTextPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                binding.editTextPassword.transformationMethod =
+                    PasswordTransformationMethod.getInstance()
                 binding.imageViewPasswordToggle.setImageResource(R.drawable.ic_eye)
             } else {
                 //Show password
-                binding.editTextPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                binding.editTextPassword.transformationMethod =
+                    HideReturnsTransformationMethod.getInstance()
                 binding.imageViewPasswordToggle.setImageResource(R.drawable.ic_eye_on)
             }
             isPasswordShown = !isPasswordShown
@@ -120,8 +121,9 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         it1.message?.let { it2 -> showSuccess(this, it2) }
 
                         // Save User's Info to Shared Preferences
-                        it1.payload?.let { it2 -> createNewAccountViewModel.saveUser(it2) }
-                        navigateToHomeScreen()
+                        // it1.payload?.let { it2 -> createNewAccountViewModel.saveUser(it2) }
+                        // navigateToHomeScreen()
+                        navigateToLoginScreen()
                     }
 
                 }
@@ -131,6 +133,10 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToHomeScreen() {
         startActivityWithFinish<HomeActivity>()
+    }
+
+    private fun navigateToLoginScreen() {
+        startActivityWithFinish<LoginActivity>()
     }
 
 

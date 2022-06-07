@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.dto.login.LoginResponseModel
-import com.app.shepherd.data.dto.login.Payload
+import com.app.shepherd.data.dto.login.UserProfile
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.local.UserRepository
-import com.app.shepherd.data.remote.AuthRepository
+import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
@@ -36,6 +36,8 @@ class LoginViewModel @Inject constructor(
     var loginResponseLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
         _loginResponseLiveData
 
+    private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
+    var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData
 
     fun login(): LiveData<Event<DataResult<LoginResponseModel>>> {
         viewModelScope.launch {
@@ -48,8 +50,22 @@ class LoginViewModel @Inject constructor(
         return loginResponseLiveData
     }
 
-    fun saveUser(user: Payload) {
+    // Save User to SharePrefs
+    fun saveUser(user: UserProfile) {
         userRepository.saveUser(user)
+    }
+
+    // Save AuthToken to SharedPref
+    fun saveToken(token: String) {
+        userRepository.saveToken(token)
+    }
+
+    // Get LoggedIn User Detail
+    fun getUser(): LiveData<Event<UserProfile?>> {
+        val user = userRepository.getCurrentUser()
+        _loggedInUserLiveData.postValue(Event(user))
+        return loggedInUserLiveData
+
     }
 
 }

@@ -1,6 +1,6 @@
 package com.app.shepherd.di
 
-import com.app.shepherd.data.remote.AuthRepository
+import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.ApiService
 import dagger.Module
 import dagger.Provides

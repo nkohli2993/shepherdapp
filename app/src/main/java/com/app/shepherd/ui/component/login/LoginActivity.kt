@@ -84,6 +84,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         it.message?.let { it1 -> showSuccess(this, it1) }
                         // Save User Detail to SharedPref
                         it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }
+
+                        // Save token
+                        it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
                     }
                     navigateToWelcomeUserScreen()
                 }

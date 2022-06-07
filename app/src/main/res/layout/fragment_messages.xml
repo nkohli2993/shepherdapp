@@ -131,7 +131,7 @@
                                 android:layout_height="wrap_content"
                                 android:clickable="false"
                                 android:focusable="false"
-                                android:src="@drawable/ic_search" />
+                                android:src="@drawable/ic_search_colored" />
                         </LinearLayout>
                     </RelativeLayout>
 

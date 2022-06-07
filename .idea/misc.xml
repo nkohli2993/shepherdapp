@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/drawable/ic_arrow_drop_down.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_back_new.xml" value="0.229" />
+        <entry key="app/src/main/res/drawable/ic_cancel.xml" value="0.2495" />
         <entry key="app/src/main/res/drawable/ic_group.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_healthy_food.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/ic_heart_outline.xml" value="0.255" />
@@ -42,10 +43,12 @@
         <entry key="app/src/main/res/drawable/ic_rounded_checkbox.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/ic_rounded_checkbox_unselected.xml" value="0.202" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_search_black_24dp.xml" value="0.2165" />
         <entry key="app/src/main/res/drawable/ic_star_24.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/shape_black_border.xml" value="0.1975" />
         <entry key="app/src/main/res/drawable/shape_circular_checkbox.xml" value="0.217" />
         <entry key="app/src/main/res/drawable/shape_rectangle_circular_corner_border_grey.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable/shape_spinner.xml" value="0.1865" />
         <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/switch_track_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/test_ic_baseline_medication_24.xml" value="0.255" />
@@ -53,7 +56,7 @@
         <entry key="app/src/main/res/layout-v23/adapter_care_points_events.xml" value="0.35625" />
         <entry key="app/src/main/res/layout-v23/adapter_events.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/act_welcome.xml" value="0.75" />
-        <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.17244829886591062" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_team_members.xml" value="0.22" />
@@ -72,6 +75,8 @@
         <entry key="app/src/main/res/layout/activity_recipes_list.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.8486352357320099" />
         <entry key="app/src/main/res/layout/activity_reset_password.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/activity_search_places.xml" value="0.2402027027027027" />
+        <entry key="app/src/main/res/layout/activity_search_places_item.xml" value="0.2402027027027027" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_walk_through.xml" value="0.55" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.375" />
@@ -151,6 +156,7 @@
         <entry key="app/src/main/res/layout/login_activity.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/recipe_item.xml" value="0.56875" />
         <entry key="app/src/main/res/layout/splash_layout.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.2402027027027027" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/menu/dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/menu/details_menu.xml" value="0.35625" />

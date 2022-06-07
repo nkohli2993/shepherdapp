@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.local.UserRepository
-import com.app.shepherd.data.remote.AuthRepository
+import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel

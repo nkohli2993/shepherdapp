@@ -29,7 +29,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBar.listener = this
+        binding.toolBarNew.listener = this
         binding.listener = this
 
         setConditionAdapter()
@@ -43,9 +43,9 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
-        observe(addLovedOneConditionViewModel.loginLiveData, ::handleLoginResult)
+       /* observe(addLovedOneConditionViewModel.loginLiveData, ::handleLoginResult)
         observeSnackBarMessages(addLovedOneConditionViewModel.showSnackBar)
-        observeToast(addLovedOneConditionViewModel.showToast)
+        observeToast(addLovedOneConditionViewModel.showToast)*/
     }
 
 

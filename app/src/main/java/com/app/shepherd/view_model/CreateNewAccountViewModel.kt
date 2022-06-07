@@ -3,11 +3,12 @@ package com.app.shepherd.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
-import com.app.shepherd.data.dto.login.Payload
+import com.app.shepherd.data.dto.login.UserProfile
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.local.UserRepository
-import com.app.shepherd.data.remote.AuthRepository
+import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
@@ -33,8 +34,8 @@ class CreateNewAccountViewModel @Inject constructor(
 
     var imageFile: File? = null
 
-    private var _uploadImageLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
-    var uploadImageLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
+    private var _uploadImageLiveData = MutableLiveData<Event<DataResult<UploadPicResponseModel>>>()
+    var uploadImageLiveData: LiveData<Event<DataResult<UploadPicResponseModel>>> =
         _uploadImageLiveData
 
 
@@ -75,7 +76,7 @@ class CreateNewAccountViewModel @Inject constructor(
     }
 
     //Upload Image
-    fun uploadImage(file: File?): LiveData<Event<DataResult<LoginResponseModel>>> {
+    fun uploadImage(file: File?): LiveData<Event<DataResult<UploadPicResponseModel>>> {
         viewModelScope.launch {
             val response = authRepository.uploadImage(file)
             withContext(Dispatchers.Main) {
@@ -86,7 +87,7 @@ class CreateNewAccountViewModel @Inject constructor(
     }
 
     // Save Successfully Registered User's Info into Preferences
-    fun saveUser(payload: Payload) {
-        userRepository.saveUser(payload)
+    fun saveUser(user: UserProfile) {
+        userRepository.saveUser(user)
     }
 }

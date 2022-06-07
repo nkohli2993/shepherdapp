@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,7 +12,7 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -22,257 +22,417 @@
 
 
         <include
-            android:id="@+id/toolBar"
-            layout="@layout/include_toolbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/toolBarNew"
+            layout="@layout/include_toolbar_new" />
 
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolBar">
+            android:layout_height="match_parent"
+            android:background="@color/heading_background">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textView"
-                    style="@style/TextViewPoppinsRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    android:text="@string/tell_us_a_little_about"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewImage"
+                <LinearLayout
+                    android:id="@+id/layout_header"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_150sdp"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    app:cardBackgroundColor="@color/colorAccent"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imageViewLovedOne"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_above="@+id/textViewUploadPhoto"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center"
-                            android:adjustViewBounds="true"
-                            android:onClick="@{listener::onClick}"
-                            android:src="@drawable/ic_outline_person" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewUploadPhoto"
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/_12sdp"
-                            android:onClick="@{listener::onClick}"
-                            android:text="@string/upload_photo"
-                            android:textColor="@color/colorWhite" />
-                    </RelativeLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewDetails"
-                    android:layout_width="0dp"
+                    android:paddingBottom="@dimen/_60sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewImage"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewImage"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewImage">
+                    android:orientation="vertical"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add_your_loved_one"
+                        android:textSize="@dimen/_16ssp"
+                        android:textColor="@color/_192032"
+                        android:fontFamily="@font/gotham_bold" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txtLogin"
+                        android:text="@string/tell_us_about_loved_one"
+                        android:textSize="@dimen/_12ssp"
+                        android:textColor="@color/_192032"
+                        android:fontFamily="@font/gotham_book"
+                        android:layout_marginTop="@dimen/_10sdp" />
+
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="@dimen/_120sdp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:elevation="@dimen/_10sdp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginTop="@dimen/_60sdp"
+                    android:layout_height="wrap_content">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgLoveOne"
+                        android:layout_width="@dimen/_95sdp"
+                        android:layout_height="@dimen/_100sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:adjustViewBounds="true"
+                        android:background="@color/_399282"
+                        android:onClick="@{listener::onClick}"
+                        android:src="@drawable/ic_outline_person"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgUploadLovedOnePic"
+                        android:layout_width="@dimen/_34sdp"
+                        android:layout_height="@dimen/_34sdp"
+                        android:layout_marginStart="140dp"
+                        android:onClick="@{listener::onClick}"
+                        android:src="@drawable/ic_upload_profile_pic"
+                        android:layout_gravity="bottom|end" />
+
+                </FrameLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_body"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_80sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_header"
+                    app:layout_constraintVertical_bias="0.0">
 
                     <LinearLayout
+                        android:id="@+id/layout_first_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toStartOf="@id/layout_last_name"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/first_name_love_one"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <EditText
+                            android:id="@+id/edtFirstName"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_34sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:drawableStart="@drawable/ic_profile"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:hint="@string/first_name"
+                            android:paddingHorizontal="@dimen/_8sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_last_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:orientation="vertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toEndOf="@id/layout_first_name"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/last_name_love_one"
+                            android:textSize="@dimen/_12ssp" />
+
+                        <EditText
+                            android:id="@+id/edtLastName"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_34sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:drawableStart="@drawable/ic_profile"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:hint="@string/last_name"
+                            android:paddingHorizontal="@dimen/_8sdp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/label_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="@string/email_loved_one"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layout_first_name" />
+
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_34sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                        android:drawableStart="@drawable/ic_email"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:hint="@string/enter_your_email"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        app:layout_constraintTop_toBottomOf="@id/label_email" />
+
+                    <TextView
+                        android:id="@+id/label_phone_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="@string/phone_number"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/editTextEmail" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_12sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_16sdp"
-                        android:orientation="vertical">
+                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/label_phone_number">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="@dimen/_12sdp"
+                            android:layout_height="@dimen/_12sdp"
+                            android:src="@drawable/ic_phone"
+                            android:layout_gravity="center" />
+
+                        <com.rilixtech.widget.countrycodepicker.CountryCodePicker
+                            android:id="@+id/ccp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="@string/first_name"
-                            android:visibility="visible"
-                            app:boxBackgroundColor="@color/colorWhite"
-                            app:boxBackgroundMode="filled"
-                            app:layout_constraintTop_toTopOf="@+id/guidelineTop">
+                            android:padding="16dp"
+                            app:ccp_defaultCode="1"
+                            app:ccp_defaultNameCode="CA"
+                            app:ccp_textColor="#1C2020" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textPersonName"
-                                android:textSize="@dimen/_13ssp" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                        <View
+                            android:layout_width="@dimen/_1sdp"
+                            android:layout_height="match_parent"
+                            android:layout_marginVertical="@dimen/_8sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:background="#5E6370"
+                            android:paddingVertical="@dimen/_5sdp" />
 
-
-                        <com.google.android.material.textfield.TextInputLayout
+                        <EditText
+                            android:id="@+id/edtPhoneNumber"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/last_name"
-                            android:visibility="visible"
-                            app:boxBackgroundColor="@color/colorWhite"
-                            app:boxBackgroundMode="filled"
-                            app:layout_constraintTop_toTopOf="@+id/guidelineTop">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textPersonName"
-                                android:textSize="@dimen/_13ssp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/email"
-                            android:visibility="visible"
-                            app:boxBackgroundColor="@color/colorWhite"
-                            app:boxBackgroundMode="filled"
-                            app:layout_constraintTop_toTopOf="@+id/guidelineTop">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editTextEmail"
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textEmailAddress"
-                                android:textSize="@dimen/_13ssp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/phone_number"
-                            android:visibility="visible"
-                            app:boxBackgroundColor="@color/colorWhite"
-                            app:boxBackgroundMode="filled"
-                            app:layout_constraintTop_toTopOf="@+id/guidelineTop">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editTextPhoneNumber"
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="phone"
-                                android:digits="0123456789+"
-                                android:textSize="@dimen/_13ssp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/address"
-                            android:visibility="visible"
-                            app:boxBackgroundColor="@color/colorWhite"
-                            app:boxBackgroundMode="filled"
-                            app:layout_constraintTop_toTopOf="@+id/guidelineTop">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textPostalAddress"
-                                android:textSize="@dimen/_13ssp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="@string/date_of_birth"
-                            android:visibility="visible"
-                            android:id="@+id/textInputDOB"
-                            app:boxBackgroundColor="@color/colorWhite"
-                            app:boxBackgroundMode="filled"
-                            android:focusable="false"
-                            app:layout_constraintTop_toTopOf="@+id/guidelineTop">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/editTextDOB"
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:focusable="false"
-                                android:textSize="@dimen/_13ssp" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_height="@dimen/_34sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@null"
+                            android:hint="@string/enter_phone_number"
+                            android:inputType="number"
+                            app:layout_constraintTop_toBottomOf="@id/label_phone_number" />
 
 
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+                    <TextView
+                        android:id="@+id/label_date_of_birth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="@string/date_of_birth"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layoutPhone" />
 
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewRelationship"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewDetails"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewDetails"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewDetails">
-
-                    <androidx.appcompat.widget.AppCompatSpinner
+                    <LinearLayout
+                        android:id="@+id/layoutDateOfBirth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:entries="@array/relationship"
-                        android:padding="@dimen/_12sdp" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@+id/label_date_of_birth">
 
-                </androidx.cardview.widget.CardView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/edtDay"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:hint="@string/day"
+                            android:fontFamily="@font/gotham_medium"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:onClick="@{listener::onClick}" />
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonContinue"
-                    style="@style/ButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_marginVertical="@dimen/_18sdp"
-                    android:onClick="@{listener::onClick}"
-                    android:text="@string/str_continue"
-                    android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewRelationship" />
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/edtMonth"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/gotham_medium"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:hint="@string/month"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:onClick="@{listener::onClick}" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/edtYear"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:hint="@string/year"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:onClick="@{listener.onClick}" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="@string/address"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layoutDateOfBirth" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{listener::onClick}"
+                        android:padding="@dimen/_4sdp"
+                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtAddress"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_margin="@dimen/_4sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/app_name"
+                            app:srcCompat="@drawable/ic_outline_location_on"
+                            app:tint="@color/colorGreyDark" />
+
+                        <TextView
+                            android:id="@+id/edtAddress"
+                            android:layout_width="match_parent"
+                            android:background="@null"
+                            android:layout_height="@dimen/_80sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:lines="6"
+                            android:textSize="@dimen/_12ssp"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:hint="@string/address"
+                            android:gravity="top|start"
+                            android:paddingHorizontal="@dimen/_8sdp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtRelationship"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:text="@string/relationship"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
+
+                    <LinearLayout
+                        android:id="@+id/relationshipSpinnerLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtRelationship"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:gravity="center"
+                        android:onClick="@{listener::onClick}"
+                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                        android:orientation="horizontal">
+
+                        <Spinner
+                            android:id="@+id/relationship_spinner"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="@dimen/_40sdp"
+                            android:background="@color/transparent" />
+
+                        <ImageView
+                            android:layout_margin="@dimen/_6sdp"
+                            android:layout_gravity="center"
+                            android:padding="@dimen/_4sdp"
+                            android:layout_width="@dimen/_20sdp"
+                            android:id="@+id/spinner_down_arrow_image"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/app_name"
+                            app:srcCompat="@drawable/ic_arrow_spinner"
+                            app:tint="@color/colorGreyDark" />
+
+                    </LinearLayout>
+                    <!--<androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spRelationship"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_34sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtRelationship"
+                        android:entries="@array/relationship_array"
+                        android:spinnerMode="dropdown" />-->
+
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnContinue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:background="@drawable/button_primary"
+                        android:backgroundTint="@color/_399282"
+                        android:fontFamily="@font/gotham_medium"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="80dp"
+                        android:text="@string/str_continue"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_13ssp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/relationshipSpinnerLayout" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

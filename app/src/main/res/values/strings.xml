@@ -232,6 +232,8 @@
     <string name="mobile_number">Mobile Number</string>
     <string name="new_on_app">New on app?</string>
     <string name="create_a_new_account">Create a New Account</string>
+    <string name="add_your_loved_one">Add Your Loved One</string>
+    <string name="tell_us_about_loved_one">Tell us a little bit about your loved one.</string>
     <string name="try_shepherd_for_30_days">Try Shepherd free for 30 days.</string>
     <string name="create_account_description">Are you new to the platform? Please fill the below details to create your account.</string>
     <string name="agree_to_terms_and_conditions_and_privacy_policy">I agree to the Terms &amp; \nConditions and Privacy Policy</string>
@@ -243,5 +245,26 @@
     <string name="add_your">Add Your</string>
     <string name="loved_one">Loved One</string>
     <string name="join_an_existing">Join An Existing</string>
+    <string name="welcome_user">Welcome User</string>
+    <string name="first_name_love_one">First Name<font color="#D7293F">*</font></string>
+    <string name="last_name_love_one">Last Name<font color="#D7293F">*</font></string>
+    <string name="email_loved_one">Email<font color="#D7293F">*</font></string>
+    <string name="day">Day</string>
+    <string name="year">Year</string>
+    <string name="relationship">Relationship</string>
+    <string name="medical_conditions">Medical Conditions</string>
+    <string name="hint_select_one">Select one</string>
+    <string name="google_maps_api_key">AIzaSyCBlq2RHLf3oCHct3RIMp-iF00r8J_szrQ</string>
+    <string name="search_places">Search Places</string>
+
+
+    <string-array name="relationship_array">
+        <item>Father</item>
+        <item>Mother</item>
+        <item>Son</item>
+        <item>Daughter</item>
+        <item>Grandfather</item>
+        <item>Grandmother</item>
+    </string-array>
 
 </resources>

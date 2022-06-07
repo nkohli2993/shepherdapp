@@ -32,6 +32,16 @@ object ApiConstants {
 
     }
 
+    object RELATIONS {
+        const val GET_RELATIONS = "$BASE_URL${API_VERSION}relations"
+    }
+
+    object LOVED_ONE {
+        const val CREATE_LOVED_ONE = "$BASE_URL${API_VERSION}users/create-loved-one"
+    }
+
+
+
 
     object ADDRESS {
 //        const val GET_COUNTRY = "${BuildConfig.BASE_URL}${API_VERSION}get-country"

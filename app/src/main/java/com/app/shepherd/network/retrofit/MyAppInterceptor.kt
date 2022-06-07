@@ -21,7 +21,7 @@ class MyAppInterceptor @Inject constructor() : Interceptor {
             .add("Accept", "application/json")
             .add(
                 "Authorization",
-                "Bearer ${Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")}"
+                "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")}"
             )
             .build()
 

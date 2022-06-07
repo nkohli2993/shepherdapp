@@ -1,6 +1,7 @@
 package com.app.shepherd.data.remote.auth_repository
 
 import android.webkit.MimeTypeMap
+import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.signup.UserSignupData
@@ -35,7 +36,7 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
     }
 
     //Upload Image
-    suspend fun uploadImage(file: File?): Flow<DataResult<LoginResponseModel>> {
+    suspend fun uploadImage(file: File?): Flow<DataResult<UploadPicResponseModel>> {
         var body: MultipartBody.Part? = null
         if (file != null) {
             var type: String? = null
@@ -51,8 +52,8 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
                 MultipartBody.Part.createFormData("profile", file.name, requestFile)
         }
 
-        return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
+        return object : NetworkOnlineDataRepo<UploadPicResponseModel, UploadPicResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UploadPicResponseModel> {
                 return apiService.uploadImage(body)
             }
         }.asFlow().flowOn(Dispatchers.IO)
