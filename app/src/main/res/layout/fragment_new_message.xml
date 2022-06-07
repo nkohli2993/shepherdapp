@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_10sdp"
             android:src="@drawable/ic_back"
+            android:onClick="@{listener::onClick}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

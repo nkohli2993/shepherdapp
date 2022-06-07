@@ -62,22 +62,23 @@ class HomeActivity : BaseActivity(),
     private fun setupNavigationDrawer() {
         drawerLayout = binding.drawerLayout
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
 
             binding.appBarDashboard.ivEditProfile.isVisible =
                 destination.id == R.id.nav_profile
             when (destination.id) {
                 R.id.nav_dashboard -> {
                     binding.appBarDashboard.apply {
-                        tvTitle.text = "Home"
+                        tvTitle.text = getString(R.string.home)
                         clTopWrapper.isVisible = true
                         clHomeWrapper.isVisible = true
                         tvNew.isVisible = false
                     }
+                    lockUnlockDrawer(false)
                 }
                 R.id.nav_my_medlist -> {
                     binding.appBarDashboard.apply {
-                        tvTitle.text = "MedList Reminder"
+                        tvTitle.text = getString(R.string.medlist_reminder)
                         clTopWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         tvNew.apply {
@@ -87,11 +88,12 @@ class HomeActivity : BaseActivity(),
                             }
                         }
                     }
+                    lockUnlockDrawer(false)
                 }
 
                 R.id.nav_messages -> {
                     binding.appBarDashboard.apply {
-                        tvTitle.text = "Discussions"
+                        tvTitle.text = getString(R.string.discussions)
                         clTopWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         tvNew.apply {
@@ -101,10 +103,11 @@ class HomeActivity : BaseActivity(),
                             }
                         }
                     }
+                    lockUnlockDrawer(false)
                 }
                 R.id.nav_profile -> {
                     binding.appBarDashboard.apply {
-                        tvTitle.text = "My Profile"
+                        tvTitle.text = getString(R.string.my_profile)
                         clTopWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         tvNew.isVisible = false
@@ -112,17 +115,38 @@ class HomeActivity : BaseActivity(),
                             navController.navigate(R.id.nav_edit_profile)
                         }
                     }
+                    lockUnlockDrawer(false)
                 }
+                R.id.nav_vital_stats -> {
+                    binding.appBarDashboard.apply {
+                        tvTitle.text = getString(R.string.vital_stats)
+                        clTopWrapper.isVisible = true
+                        clHomeWrapper.isVisible = false
+                    }
+                    lockUnlockDrawer(false)
+                }
+                R.id.nav_med_detail,
+                R.id.nav_secure_code,
+                R.id.nav_change_password,
                 R.id.nav_edit_profile,
                 R.id.nav_chat,
                 R.id.nav_new_message,
                 R.id.nav_medication_details,
                 R.id.nav_add_new_medication -> {
+                    lockUnlockDrawer(true)
                     binding.appBarDashboard.apply {
                         clTopWrapper.isVisible = false
                     }
                 }
             }
+        }
+    }
+
+    private fun lockUnlockDrawer(lock: Boolean) {
+        if (lock) {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        } else {
+            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
         }
     }
 

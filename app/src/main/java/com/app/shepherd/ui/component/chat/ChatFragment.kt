@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
@@ -89,10 +90,9 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-//            R.id.buttonSubmit,R.id.imageViewBack -> {
-//               //backPress()
-//                startActivity(Intent(requireContext(), HomeActivity::class.java))
-//            }
+            R.id.ivBack -> {
+                findNavController().popBackStack()
+            }
         }
     }
 

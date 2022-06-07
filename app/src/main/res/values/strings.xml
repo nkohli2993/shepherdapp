@@ -94,7 +94,7 @@
     <string name="task_s_for_today">Task(s) for today</string>
     <string name="no_events">No Events</string>
     <string name="care_points">CarePoints</string>
-    <string name="discussions">Discussion(s)</string>
+    <string name="discussions">Discussions</string>
     <string name="view_care_points">View CarePoints</string>
     <string name="lock_box">LockBox</string>
     <string name="files_in_your_lockbox">Files in your lockbox</string>
@@ -259,4 +259,7 @@
     <string name="schedule_medication_reminders_set_refill_alerts_research">Schedule medication reminders, set refill alerts, research.</string>
     <string name="medications">Medications</string>
     <string name="create_and_join_conversations_among_careteam_members">Create and join conversations among CareTeam members.</string>
+    <string name="home">Home</string>
+    <string name="medlist_reminder">MedList Reminder</string>
+    <string name="my_profile">My Profile</string>
 </resources>
