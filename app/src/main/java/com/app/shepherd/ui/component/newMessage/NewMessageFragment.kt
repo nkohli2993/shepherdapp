@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -85,7 +86,10 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.buttonSubmit -> {
-                p0.findNavController().navigate(R.id.action_new_message_to_chat)
+                findNavController().navigate(R.id.action_new_message_to_chat)
+            }
+            R.id.ivBack -> {
+                findNavController().popBackStack()
             }
         }
     }

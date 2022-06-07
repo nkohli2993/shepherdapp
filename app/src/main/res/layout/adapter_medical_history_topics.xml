@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -12,10 +12,12 @@
             android:id="@+id/cardViewLovedOnes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             app:cardBackgroundColor="@color/colorWhite"
             app:cardCornerRadius="@dimen/_6sdp"
             app:cardUseCompatPadding="true"
             app:contentPadding="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -36,43 +38,32 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewTitle"
-                    style="@style/TextViewPoppinsMedium"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="@dimen/_8sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:fontFamily="@font/gotham_bold"
                     android:text="@string/test_topic_title"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toTopOf="@+id/textViewBy"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/imageViewTopic"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewBy"
-                    style="@style/TextViewPoppinsRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/by"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="- HolaDoctor.com"
+                    android:textColor="@color/_192032"
                     android:textSize="@dimen/_11ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textViewTitle" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewWebsite"
-                    style="@style/TextViewPoppinsMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/_4sdp"
-                    android:text="@string/test_website"
-                    android:textSize="@dimen/_11ssp"
-                    android:textColor="@color/colorDarkBlue"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewBy"
-                    app:layout_constraintStart_toEndOf="@+id/textViewBy"
-                    app:layout_constraintTop_toTopOf="@+id/textViewBy" />
-
-
+                    app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

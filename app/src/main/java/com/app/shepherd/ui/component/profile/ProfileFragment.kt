@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentProfileBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.profile.adapter.LovedOnesAdapter
-import com.app.shepherd.ui.component.profile.adapter.PendingInvitationsAdapter
 import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.observe
 import com.app.shepherd.utils.setupSnackbar
@@ -25,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
+class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickListener {
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
@@ -44,6 +44,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     }
 
     override fun initViewBinding() {
+        fragmentProfileBinding.listener = this
         setLovedOnesAdapter()
         setPendingInvitationsAdapter()
     }
@@ -80,17 +81,31 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         val lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter
 
+
     }
 
     private fun setPendingInvitationsAdapter() {
-        val pendingInvitationsAdapter = PendingInvitationsAdapter(profileViewModel)
-        fragmentProfileBinding.recyclerPendingInvitations.adapter = pendingInvitationsAdapter
+//        val pendingInvitationsAdapter = PendingInvitationsAdapter(profileViewModel)
+//        fragmentProfileBinding.recyclerPendingInvitations.adapter = pendingInvitationsAdapter
 
     }
 
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.tvChange -> {
+                p0.findNavController().navigate(R.id.action_nav_profile_to_changePassword)
+            }
+            R.id.tvReset -> {
+                p0.findNavController().navigate(R.id.action_nav_profile_to_secureCode)
+            }
+            R.id.clProfileWrapper -> {
+                p0.findNavController().navigate(R.id.action_nav_profile_to_editProfile)
+            }
+        }
+    }
 
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_my_medlist
+        return R.layout.fragment_profile
     }
 
 

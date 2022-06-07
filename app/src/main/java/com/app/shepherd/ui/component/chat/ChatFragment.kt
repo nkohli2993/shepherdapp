@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -24,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class ChatFragment : BaseFragment<FragmentMessagesBinding>(),
+class ChatFragment : BaseFragment<FragmentChatBinding>(),
     View.OnClickListener {
 
     private val chatViewModel: ChatViewModel by viewModels()
@@ -89,6 +91,9 @@ class ChatFragment : BaseFragment<FragmentMessagesBinding>(),
             R.id.buttonSubmit,R.id.imageViewBack -> {
                //backPress()
                 startActivity(Intent(requireContext(), HomeActivity::class.java))
+            }
+            R.id.ivBack -> {
+                findNavController().popBackStack()
             }
         }
     }

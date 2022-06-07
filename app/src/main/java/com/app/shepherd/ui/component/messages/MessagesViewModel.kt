@@ -7,6 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.Resource
+import com.app.shepherd.data.dto.dashboard.DashboardModel
+import com.app.shepherd.data.dto.login.LoginRequest
+import com.app.shepherd.data.dto.login.LoginResponse
 import com.app.shepherd.data.dto.login.LoginRequestModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.error.CHECK_YOUR_FIELDS
@@ -28,9 +31,13 @@ import javax.inject.Inject
 class MessagesViewModel @Inject constructor(private val dataRepository: DataRepository) :
     BaseViewModel() {
 
+
+    private val openChatMessage = MutableLiveData<SingleEvent<Any>>()
+    val openChatMessageItem: LiveData<SingleEvent<Any>> get() = openChatMessage
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
-    val loginLiveData: LiveData<Resource<LoginResponseModel>> get() = loginLiveDataPrivate
+    private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponse>>()
+    val loginLiveData: LiveData<Resource<LoginResponse>> get() = loginLiveDataPrivate
 
     /** Error handling as UI **/
 
@@ -54,13 +61,18 @@ class MessagesViewModel @Inject constructor(private val dataRepository: DataRepo
             viewModelScope.launch {
                 loginLiveDataPrivate.value = Resource.Loading()
                 wrapEspressoIdlingResource {
-                    dataRepository.doLogin(loginRequest = LoginRequestModel(userName, passWord))
+                    dataRepository.doLogin(loginRequest = LoginRequest(userName, passWord))
                         .collect {
                             loginLiveDataPrivate.value = it
                         }
                 }
             }
         }
+    }
+
+
+    fun openChat(item: Any) {
+        openChatMessage.value = SingleEvent(item)
     }
 
     fun showToastMessage(errorCode: Int) {

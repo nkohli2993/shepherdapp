@@ -3,91 +3,85 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:background="@color/colorWhite"
+        app:cardCornerRadius="@dimen/_8sdp"
+        app:cardElevation="3dp"
+        app:cardUseCompatPadding="true">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewTime"
-            style="@style/TextViewPoppinsRegular"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/test_2_15_pm"
-            android:layout_marginStart="@dimen/_12sdp"
-            android:textColor="@color/colorPeach"
-            android:textSize="@dimen/_11ssp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/cardViewDetails" />
+            android:background="@color/colorWhite">
 
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewDetails"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            app:cardBackgroundColor="@color/colorWhite"
-            app:cardCornerRadius="@dimen/_6sdp"
-            app:cardUseCompatPadding="true"
-            app:contentPadding="@dimen/_8sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textViewTime"
-            app:layout_constraintTop_toTopOf="parent">
+            <CheckBox
+                android:id="@+id/cbReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:background="@drawable/checkbox_background"
+                android:button="@null"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageViewMedicine"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/test_ic_baseline_medication_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cbReminder"
+                app:layout_constraintTop_toTopOf="parent">
 
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMedicineName"
-                    style="@style/TextViewPoppinsSemiBold"
                     android:layout_width="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="@string/test_medicine_name"
-                    android:includeFontPadding="false"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_15ssp"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewMedicine"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMedicineSalt"
-                    style="@style/TextViewPoppinsRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:includeFontPadding="false"
-                    android:text="@string/test_medicine_name"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="(atorvastatin)"
+                    android:textColor="@color/_192032"
                     android:textSize="@dimen/_11ssp"
                     app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
                     app:layout_constraintTop_toBottomOf="@+id/textViewMedicineName" />
 
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/checkbox"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewMedicineTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginTop="@dimen/_3sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:text="9:00 am"
+                    android:textColor="@color/_399282"
+                    android:textSize="@dimen/_10sdp"
+                    app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewMedicineSalt" />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.cardview.widget.CardView>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
 </layout>

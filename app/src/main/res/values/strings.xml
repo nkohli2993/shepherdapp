@@ -94,7 +94,7 @@
     <string name="task_s_for_today">Task(s) for today</string>
     <string name="no_events">No Events</string>
     <string name="care_points">CarePoints</string>
-    <string name="discussions">Discussion(s)</string>
+    <string name="discussions">Discussions</string>
     <string name="view_care_points">View CarePoints</string>
     <string name="lock_box">LockBox</string>
     <string name="files_in_your_lockbox">Files in your lockbox</string>
@@ -120,6 +120,7 @@
     <string name="start_typing">Start Typing…</string>
     <string name="add_new_member">Add New Member</string>
     <string name="menu_care_team_members">CareTeam Members</string>
+    <string name="vital_stats">Vital Stats</string>
     <string name="menu_add_new_care_team_member">Add New CareTeam Members</string>
     <string name="menu_member_details">CareTeam Member Details</string>
     <string name="menu_add_new_event">Add new event</string>
@@ -185,8 +186,12 @@
     <string name="menu_care_points">CarePoints</string>
     <string name="menu_lock_box">LockBox</string>
     <string name="menu_lock_box_info">LockBox Doc Info</string>
+    <string name="change_password">Change Password</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="secure_code">Secure Code</string>
     <string name="menu_my_med_list">My MedList</string>
     <string name="menu_messages">Messages</string>
+    <string name="medicine_detail">Medicine Detail</string>
     <string name="menu_new_message">New Message</string>
     <string name="menu_chat">Chat</string>
     <string name="new_message">New Message</string>
@@ -227,6 +232,9 @@
     <string name="please_enter_first_name">Please enter first name</string>
     <string name="please_enter_last_name">Please enter last name</string>
     <string name="please_enter_valid_password">Password must be at least 8 characters long with 1 capital letter, 1 number and 1 special character</string>
+    <string name="enter_your_old_password">Enter your old password</string>
+    <string name="enter_new_password">Enter new password</string>
+    <string name="enter_confirm_password">Enter confirm password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="forgot_passwd">Forgot Password</string>
     <string name="mobile_number">Mobile Number</string>
@@ -267,4 +275,35 @@
         <item>Grandmother</item>
     </string-array>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="please_choose_any_current_medications_from_the_list_below">Please choose any current medications from the list below.</string>
+    <string name="create_discussion_with">Create Discussion with :</string>
+    <string name="start_discussion">Start Discussion</string>
+    <string name="write">Write...</string>
+    <string name="change">Change</string>
+    <string name="your_loved_ones">Your Loved Ones</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="this_keep_your_account_secure">This keep your account secure</string>
+    <string name="enter_new_code">Enter New Code</string>
+    <string name="remotely_monitor_your_loved_one_s_vitals_statistics_via_wearables">Remotely monitor your loved one’s vitals statistics via wearables.</string>
+    <string name="heart_rate">Heart Rate</string>
+    <string name="bpm">bpm</string>
+    <string name="body_temp">Body Temp</string>
+    <string name="blood_pressure">Blood Pressure</string>
+    <string name="oxygen">Oxygen</string>
+    <string name="log_out">Log out</string>
+    <string name="_2022_the_shepherd_company_llc_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>
+    <string name="reminders">Reminders</string>
+    <string name="schedule_medication_reminders_set_refill_alerts_research">Schedule medication reminders, set refill alerts, research.</string>
+    <string name="medications">Medications</string>
+    <string name="create_and_join_conversations_among_careteam_members">Create and join conversations among CareTeam members.</string>
+    <string name="home">Home</string>
+    <string name="medlist_reminder">MedList Reminder</string>
+    <string name="my_profile">My Profile</string>
 </resources>

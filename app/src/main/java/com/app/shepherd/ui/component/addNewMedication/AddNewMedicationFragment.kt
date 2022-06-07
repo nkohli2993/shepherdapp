@@ -83,8 +83,8 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imageViewBack -> {
-                backPress()
+            R.id.ivBack -> {
+                findNavController().popBackStack()
             }
             R.id.buttonAddNewMedication -> {
                 findNavController().navigate(R.id.action_add_new_medication_to_add_medication_details)

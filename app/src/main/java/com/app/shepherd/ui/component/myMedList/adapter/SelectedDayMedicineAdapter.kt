@@ -1,6 +1,7 @@
 package com.app.shepherd.ui.component.myMedList.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +22,7 @@ class SelectedDayMedicineAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+             viewModel.openMedDetail(itemData[0] as String)
         }
     }
 
@@ -45,14 +46,15 @@ class SelectedDayMedicineAdapter(
     }
 
     override fun onBindViewHolder(holder: SelectedDayMedicineViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+//        holder.bind(requestList[position], onItemClickListener)
+        holder.bind("", onItemClickListener)
     }
 
 
     class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
+        fun bind(dashboard: String, recyclerItemListener: RecyclerItemListener) {
             // itemBinding.data = dashboard
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(

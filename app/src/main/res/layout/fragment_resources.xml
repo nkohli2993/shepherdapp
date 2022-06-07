@@ -16,59 +16,17 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreyLight"
+        android:background="@color/colorWhite"
         android:orientation="vertical"
         tools:context="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity">
 
-
-        <LinearLayout
-            android:id="@+id/linearLayoutToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/colorPrimaryDark"
-            android:gravity="end"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/_12sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="@dimen/_12sdp"
-                android:src="@drawable/ic_resources"
-                android:tint="@color/colorWhite" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextViewPoppinsSemiBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center_vertical"
-                android:gravity="end|center_vertical"
-                android:includeFontPadding="false"
-                android:text="@string/resources"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_15ssp" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/topView"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_4sdp"
-            android:background="@color/colorPeach"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topView">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
@@ -78,50 +36,49 @@
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardViewSearch"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:orientation="horizontal"
+                    app:cardBackgroundColor="@color/_F3F3F4"
                     app:cardCornerRadius="@dimen/_18sdp"
-                    app:cardElevation="@dimen/_5sdp"
+                    app:cardUseCompatPadding="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_5sdp">
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/editTextSearch"
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerVertical="true"
-                            android:layout_toStartOf="@+id/viewDivider"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:background="@null"
+                            android:drawableStart="@drawable/ic_med_search"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:fontFamily="@font/gotham_book"
                             android:gravity="center_vertical"
                             android:hint="@string/search"
                             android:imeOptions="actionDone"
                             android:inputType="textCapSentences"
                             android:maxLines="1"
-                            android:paddingHorizontal="@dimen/_12sdp"
+                            android:paddingHorizontal="@dimen/_5sdp"
                             android:textColor="@android:color/black"
+                            android:textColorHint="@color/_192032"
                             android:textSize="@dimen/_11ssp" />
-
-                        <View
-                            android:id="@+id/viewDivider"
-                            android:layout_width="@dimen/_1sdp"
-                            android:layout_height="match_parent"
-                            android:layout_marginVertical="@dimen/_8sdp"
-                            android:layout_toStartOf="@+id/llSearch"
-                            android:background="@color/colorPrimaryDark" />
 
                         <LinearLayout
                             android:id="@+id/llSearch"
-                            android:layout_width="@dimen/_34sdp"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentEnd="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:layout_marginHorizontal="@dimen/_8sdp"
                             android:gravity="center">
 
@@ -130,23 +87,22 @@
                                 android:layout_height="wrap_content"
                                 android:clickable="false"
                                 android:focusable="false"
-                                android:src="@drawable/ic_search_colored" />
+                                android:padding="@dimen/_10sdp"
+                                android:src="@drawable/ic_cancel" />
                         </LinearLayout>
-                    </RelativeLayout>
+                    </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewTrendingTopics"
-                    style="@style/TextViewPoppinsSemiBold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/gotham_bold"
                     android:text="@string/trending_topics"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/_192032"
                     android:textSize="@dimen/_15ssp"
                     app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
                     app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
@@ -156,6 +112,7 @@
                     android:id="@+id/recyclerViewTopics"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -165,17 +122,20 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewBasedOnMedicalHistory"
-                    style="@style/TextViewPoppinsSemiBold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_12sdp"
+                    android:background="@color/colorGreyLight"
+                    android:fontFamily="@font/gotham_bold"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingTop="@dimen/_12sdp"
                     android:text="@string/based_on_medical_history"
-                    android:textColor="@color/colorBlack"
+                    android:textColor="@color/_192032"
                     android:textSize="@dimen/_15ssp"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recyclerViewTopics" />
 
 
@@ -183,10 +143,12 @@
                     android:id="@+id/recyclerViewMedicalHistory"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorGreyLight"
                     android:orientation="horizontal"
+                    android:paddingTop="@dimen/_5sdp"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/textViewTrendingTopics"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewBasedOnMedicalHistory"
                     app:spanCount="2"
                     tools:itemCount="5"
@@ -197,11 +159,10 @@
                     android:id="@+id/recyclerViewMedicalHistoryTopics"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_4sdp"
                     android:orientation="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewSearch"
-                    app:layout_constraintStart_toStartOf="@+id/textViewTrendingTopics"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recyclerViewMedicalHistory"
                     tools:itemCount="2"
                     tools:listitem="@layout/adapter_medical_history_topics" />

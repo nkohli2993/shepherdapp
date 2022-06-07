@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.dashboard.DashboardModel
@@ -16,17 +17,16 @@ import com.app.shepherd.utils.observeEvent
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
+class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
+    View.OnClickListener {
 
     private lateinit var fragmentDashboardBinding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
-    private var adapter: DashboardAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.inflateDashboardList(requireContext())
-        adapter = DashboardAdapter(viewModel)
     }
 
     override fun onCreateView(
@@ -35,16 +35,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
         savedInstanceState: Bundle?
     ): View {
         fragmentDashboardBinding = FragmentDashboardBinding.inflate(inflater, container, false)
-
-        fragmentDashboardBinding.recyclerView.adapter = adapter
-        initRecyclerView(viewModel.dashboardItemList)
-
         return fragmentDashboardBinding.root
-    }
-
-
-    private fun initRecyclerView(dashboard: ArrayList<DashboardModel>) {
-        adapter?.addData(dashboard)
     }
 
 
@@ -57,33 +48,40 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>() {
     }
 
     override fun initViewBinding() {
+        fragmentDashboardBinding.listener = this
     }
 
     private fun navigateToDashboardItems(navigateEvent: SingleEvent<DashboardModel>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            when (it.title) {
-                resources.getString(R.string.care_team) -> {
-                    findNavController().navigate(R.id.action_dashboard_to_care_team_members)
-                }
-                resources.getString(R.string.care_points) -> {
-                    findNavController().navigate(R.id.action_dashboard_to_care_points)
-                }
-                resources.getString(R.string.lock_box) -> {
-                    findNavController().navigate(R.id.action_dashboard_to_lock_box)
-                }
-                resources.getString(R.string.medlist) -> {
-                    findNavController().navigate(R.id.action_dashboard_to_medication_list)
-                }
-                resources.getString(R.string.messages) -> {
-                    findNavController().navigate(R.id.action_dashboard_to_messages)
-                }
-                resources.getString(R.string.resources) -> {
-                    findNavController().navigate(R.id.action_dashboard_to_resources)
-                }
-            }
 
         }
 
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.cvCarePoints -> {
+                findNavController().navigate(R.id.action_dashboard_to_care_points)
+            }
+            R.id.cvDiscussion -> {
+                findNavController().navigate(R.id.action_dashboard_to_messages)
+            }
+            R.id.cvMedList -> {
+                findNavController().navigate(R.id.action_dashboard_to_medication_list)
+            }
+            R.id.cvResources -> {
+                findNavController().navigate(R.id.action_dashboard_to_resources)
+            }
+            R.id.cvLockBox -> {
+                findNavController().navigate(R.id.action_dashboard_to_lock_box)
+            }
+            R.id.cvVitalStats -> {
+                findNavController().navigate(R.id.action_dashboard_to_vital_stats)
+            }
+            R.id.cvCareTeam -> {
+                findNavController().navigate(R.id.action_dashboard_to_care_team_members)
+            }
+        }
     }
 
 }

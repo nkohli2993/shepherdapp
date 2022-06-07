@@ -169,5 +169,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         loginViewModel.login()
     }
 
+    private fun navigateToResetPasswordScreen() {
+        startActivity<ResetPasswordActivity>()
+    }
 
 }

@@ -42,7 +42,7 @@ class LovedOnesAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 2
+        return 10
     }
 
     override fun onBindViewHolder(holder: LovedOnesViewHolder, position: Int) {

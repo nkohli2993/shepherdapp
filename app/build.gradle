@@ -164,6 +164,13 @@ dependencies {
     // Places API
     implementation 'com.google.android.libraries.places:places:2.6.0'
 
+    implementation "com.michalsvec:single-row-calednar:$calednarVersion"
+
+    implementation 'com.github.davidmigloz:number-keyboard:3.0.0'
+
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+//    implementation "com.github.wRorsjakz:Android-NumPad:$numberpadVersion"
+
 
 }
 kapt {

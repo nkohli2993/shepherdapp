@@ -16,162 +16,63 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreyLight"
+        android:background="@color/colorWhite"
         android:orientation="vertical"
         tools:context="com.app.shepherd.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:onClick="@{listener::onClick}"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMedList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_bold"
+            android:text="John"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewChat"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:fillViewport="true"
-            android:orientation="vertical"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack"
+            tools:itemCount="3"
+            tools:listitem="@layout/adapter_chat" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editTextMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_box_6"
+            android:backgroundTint="@color/_E7E8EA"
+            android:drawableEnd="@drawable/ic_send_msg"
+            android:hint="@string/write"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_15sdp"
+            android:textColorHint="@color/_192032"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-
-                <LinearLayout
-                    android:id="@+id/linearLayoutToolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:background="@color/colorPrimaryDark"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginHorizontal="@dimen/_4sdp"
-                        android:src="@drawable/ic_chat_bubble"
-                        android:tint="@color/colorWhite" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextViewPoppinsSemiBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical"
-                        android:gravity="end|center_vertical"
-                        android:includeFontPadding="false"
-                        android:text="@string/messages"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/topView"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_4sdp"
-                    android:background="@color/colorOrange"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
-
-                <LinearLayout
-                    android:id="@+id/linearLayoutTopView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorOrangeLight"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/_6sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/topView">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="@dimen/_24sdp"
-                        android:layout_height="@dimen/_24sdp"
-                        android:layout_gravity="center"
-                        android:onClick="@{listener.onClick}"
-                        android:rotation="180"
-                        android:id="@+id/imageViewBack"
-                        android:src="@drawable/ic_navigate_next"
-                        app:tint="@color/colorBlack" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="@dimen/_38sdp"
-                        android:layout_height="@dimen/_38sdp"
-                        android:layout_marginHorizontal="@dimen/_8sdp"
-                        android:src="@drawable/test_image_square" />
-
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textViewUserName"
-                        style="@style/TextViewPoppinsSemiBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/test_name"
-                        android:textColor="@color/colorBlack" />
-                </LinearLayout>
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewChat"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintBottom_toTopOf="@+id/textViewYourMessage"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutTopView"
-                    tools:itemCount="3"
-                    tools:listitem="@layout/adapter_chat" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewYourMessage"
-                    style="@style/TextViewPoppinsRegular"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_8sdp"
-                    android:text="@string/your_message"
-                    android:textSize="@dimen/_11ssp"
-                    app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/editTextMessage"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:layout_marginBottom="@dimen/_12sdp"
-                    android:background="@drawable/rounded_box_6"
-                    android:backgroundTint="@color/colorWhite"
-                    app:layout_constraintBottom_toTopOf="@+id/buttonSubmit"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewYourMessage"
-                    app:layout_constraintStart_toStartOf="@+id/textViewYourMessage" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonSubmit"
-                    style="@style/ButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_marginBottom="@dimen/_12sdp"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:onClick="@{listener::onClick}"
-                    android:text="@string/submit"
-                    android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

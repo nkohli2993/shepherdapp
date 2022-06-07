@@ -15,233 +15,163 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreyLight">
+        android:background="@color/colorWhite">
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
+            android:onClick="@{listener::onClick}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMedList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_bold"
+            android:text="New Message"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCreateDiscussionWith"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_book"
+            android:text="@string/create_discussion_with"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewSearch"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:orientation="horizontal"
+            app:cardBackgroundColor="@color/_F3F3F4"
+            app:cardCornerRadius="@dimen/_18sdp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvCreateDiscussionWith">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/container"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:context="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity">
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/_5sdp">
 
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/editTextSearch"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:drawableStart="@drawable/ic_med_search"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/_5sdp"
+                    android:textColor="@android:color/black"
+                    android:textColorHint="@color/_192032"
+                    android:textSize="@dimen/_11ssp" />
 
                 <LinearLayout
-                    android:id="@+id/linearLayoutToolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:background="@color/colorPrimaryDark"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:id="@+id/llSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:gravity="center">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginHorizontal="@dimen/_4sdp"
-                        android:src="@drawable/ic_chat_bubble"
-                        app:tint="@color/colorWhite" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextViewPoppinsSemiBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical"
-                        android:gravity="end|center_vertical"
-                        android:includeFontPadding="false"
-                        android:text="@string/messages"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_15ssp" />
-
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_cancel" />
                 </LinearLayout>
+            </LinearLayout>
 
-                <View
-                    android:id="@+id/topView"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_4sdp"
-                    android:background="@color/colorOrange"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
+        </androidx.cardview.widget.CardView>
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clCreateDiscussion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewSelectUsers"
-                    style="@style/TextViewPoppinsSemiBold"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_8sdp"
-                    android:text="@string/select_user_colon"
-                    android:textSize="@dimen/_15ssp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/topView" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCreateDiscussion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_book"
+                android:text="@string/create_discussion"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewUsers"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewSelectUsers"
-                    tools:itemCount="10"
-                    tools:listitem="@layout/adapter_users" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewDiscussion"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    app:cardUseCompatPadding="true"
-                    app:contentPadding="@dimen/_4sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewUsers">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewUsers"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSubmit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/clCreateDiscussion"
+            tools:itemCount="10"
+            tools:listitem="@layout/adapter_users" />
 
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/buttonSubmit"
+            style="@style/ButtonPrimary"
+            android:layout_width="wrap_content"
+            android:layout_marginVertical="@dimen/_10sdp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:onClick="@{listener::onClick}"
+            android:text="@string/start_discussion"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewUsers" />
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/appCompatImageView5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_chat_bubble"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/colorPrimaryDark" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/create_discussion"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/appCompatRadioButton"
-                            app:layout_constraintStart_toEndOf="@+id/appCompatImageView5"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <androidx.appcompat.widget.AppCompatRadioButton
-                            android:id="@+id/appCompatRadioButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewDiscussionName"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardUseCompatPadding="true"
-                    app:contentPadding="@dimen/_8sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewDiscussion"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewDiscussion"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewDiscussion">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/discussion_name"
-                        app:boxBackgroundColor="@color/colorWhite"
-                        app:boxBackgroundMode="filled"
-                        android:layout_marginHorizontal="@dimen/_4sdp"
-                        app:layout_constraintTop_toTopOf="@+id/guidelineTop">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textPersonName"
-                            android:textSize="@dimen/_13ssp" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextViewPoppinsRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_gravity="center"
-                    android:text="@string/your_message"
-                    android:textSize="@dimen/_15ssp"
-                    android:id="@+id/textViewYourMessage"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewDiscussionName"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewDiscussionName" />
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewMessage"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewDiscussionName"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewDiscussionName"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewYourMessage">
-
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_140sdp"
-                        android:background="@null"
-                        android:padding="@dimen/_8sdp"
-                        android:gravity="top|start"
-                        />
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonSubmit"
-                    style="@style/ButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_marginVertical="@dimen/_24sdp"
-                    android:onClick="@{listener::onClick}"
-                    android:text="@string/submit"
-                    android:textAllCaps="false"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewMessage" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
