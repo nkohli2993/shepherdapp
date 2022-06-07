@@ -18,6 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorGreyLight"
         android:orientation="vertical"
+        android:padding="@dimen/_10sdp"
         tools:context="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity">
 
 
@@ -223,7 +224,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="16dp"
+                            android:layout_gravity="center_vertical"
                             app:ccp_defaultCode="1"
+                            app:ccp_showFlag="false"
                             app:ccp_defaultNameCode="CA"
                             app:ccp_textColor="#1C2020" />
 
