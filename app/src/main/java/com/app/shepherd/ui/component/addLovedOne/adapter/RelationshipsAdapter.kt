@@ -1,4 +1,4 @@
-package com.app.shepherd.ui.component.addLovedOne
+package com.app.shepherd.ui.component.addLovedOne.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

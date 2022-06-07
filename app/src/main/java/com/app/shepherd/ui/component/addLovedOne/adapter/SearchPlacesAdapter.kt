@@ -1,4 +1,4 @@
-package com.app.shepherd.ui.component.addLovedOne
+package com.app.shepherd.ui.component.addLovedOne.adapter
 
 /**
  * Created by Deepak Rattan on 06/06/22

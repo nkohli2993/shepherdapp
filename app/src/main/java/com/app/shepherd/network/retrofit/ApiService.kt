@@ -6,6 +6,7 @@ import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneResponseModel
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.relation.RelationResponseModel
 import com.app.shepherd.data.dto.signup.UserSignupData
 import okhttp3.MultipartBody
@@ -39,6 +40,12 @@ interface ApiService {
     ): Response<RelationResponseModel>
 
     @POST(ApiConstants.LOVED_ONE.CREATE_LOVED_ONE)
-    suspend fun createLovedOne(@Body value: CreateLovedOneModel):Response<CreateLovedOneResponseModel>
+    suspend fun createLovedOne(@Body value: CreateLovedOneModel): Response<CreateLovedOneResponseModel>
+
+    @GET(ApiConstants.MEDICAL_CONDITIONS.GET_MEDICAL_CONDITIONS)
+    suspend fun getMedicalConditions(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): Response<MedicalConditionResponseModel>
 
 }

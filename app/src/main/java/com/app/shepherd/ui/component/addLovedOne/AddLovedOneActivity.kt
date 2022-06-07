@@ -15,6 +15,7 @@ import com.app.shepherd.databinding.ActivityAddLovedOneBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
+import com.app.shepherd.ui.component.addLovedOne.adapter.RelationshipsAdapter
 import com.app.shepherd.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess

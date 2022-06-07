@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.app.shepherd.data.dto.medical_conditions.Conditions" />
 
     </data>
 
@@ -41,9 +44,9 @@
                     android:id="@+id/textViewCondition"
                     style="@style/TextViewPoppinsRegular"
                     android:layout_centerVertical="true"
+                    android:text="@{data.name}"
                     android:layout_toEndOf="@+id/checkbox"
                     android:paddingHorizontal="@dimen/_8sdp"
-                    android:text="@string/diabetes"
                     android:textSize="@dimen/_13ssp" />
 
 

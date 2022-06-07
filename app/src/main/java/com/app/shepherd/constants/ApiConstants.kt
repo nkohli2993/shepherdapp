@@ -40,6 +40,12 @@ object ApiConstants {
         const val CREATE_LOVED_ONE = "$BASE_URL${API_VERSION}users/create-loved-one"
     }
 
+    object MEDICAL_CONDITIONS {
+        const val GET_MEDICAL_CONDITIONS = "$BASE_URL${API_VERSION}conditions"
+    }
+
+
+
 
 
 

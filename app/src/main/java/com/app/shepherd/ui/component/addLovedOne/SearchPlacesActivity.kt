@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.shepherd.R
 import com.app.shepherd.databinding.ActivitySearchPlacesBinding
 import com.app.shepherd.ui.base.BaseActivity
+import com.app.shepherd.ui.component.addLovedOne.adapter.SearchPlacesAdapter
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import dagger.hilt.android.AndroidEntryPoint
