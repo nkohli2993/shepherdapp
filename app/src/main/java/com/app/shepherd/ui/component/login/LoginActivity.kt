@@ -91,7 +91,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
                     }
                     //navigateToWelcomeUserScreen
-                    navigateToJoinCareScreen()
+//                    navigateToJoinCareScreen()
+                    navigateToHomeScreen()
                 }
 
                 is DataResult.Failure -> {

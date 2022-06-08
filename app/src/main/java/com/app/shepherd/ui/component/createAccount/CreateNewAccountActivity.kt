@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -16,6 +17,7 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.ui.component.welcome.WelcomeActivity
+import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.PhoneTextFormatter
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
@@ -46,6 +48,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var phoneNumber: String? = null
     private var roleId: String? = null
     private var isPasswordShown = false
+    private var TAG = "CreateNewAccountActivity"
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -99,6 +102,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
                         profilePicUrl = it1.payload?.profilePhoto
+                        Log.d(TAG, "ProfilePicURL:$profilePicUrl ")
                     }
                 }
             }
@@ -123,7 +127,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         // Save User's Info to Shared Preferences
                         // it1.payload?.let { it2 -> createNewAccountViewModel.saveUser(it2) }
                         // navigateToHomeScreen()
-                        navigateToLoginScreen()
+                        // navigateToLoginScreen()
+                        navigateToWelcomeUserScreen()
                     }
 
                 }
@@ -171,6 +176,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     passwd = editTextPassword.text.toString().trim()
                     phoneNumber = edtPhoneNumber.text.toString().trim()
                     phoneCode = ccp.selectedCountryCode
+                    Log.d(TAG, "onClick: ProfilePicUrl: ${BuildConfig.BASE_URL + profilePicUrl}")
                     createNewAccountViewModel.createAccount(
                         phoneCode,
                         BuildConfig.BASE_URL + profilePicUrl,
@@ -204,6 +210,10 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToWelcomeScreen() {
         startActivity<WelcomeActivity>()
+    }
+
+    private fun navigateToWelcomeUserScreen() {
+        startActivity<WelcomeUserActivity>()
     }
 
 }

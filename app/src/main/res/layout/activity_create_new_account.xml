@@ -19,7 +19,8 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/_10sdp">
 
         <include
             android:id="@+id/toolBarNew"
@@ -228,7 +229,9 @@
                             android:id="@+id/ccp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
                             android:padding="16dp"
+                            app:ccp_showFlag="false"
                             app:ccp_countryPreference=""
                             app:ccp_defaultCode="1"
                             app:ccp_defaultNameCode="CA"
@@ -361,6 +364,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:gravity="center"
                         android:orientation="horizontal"
