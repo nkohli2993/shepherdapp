@@ -110,7 +110,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imageViewBack -> {
+            R.id.imgBack -> {
                 finishActivity()
             }
             R.id.buttonFinish -> {
