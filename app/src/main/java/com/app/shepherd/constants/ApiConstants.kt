@@ -44,6 +44,10 @@ object ApiConstants {
         const val GET_MEDICAL_CONDITIONS = "$BASE_URL${API_VERSION}conditions"
     }
 
+    object CARE_TEAMS {
+        const val GET_CARE_TEAMS = "$BASE_URL${API_VERSION}care_teams"
+    }
+
 
 
 

@@ -241,6 +241,7 @@
     <string name="new_on_app">New on app?</string>
     <string name="create_a_new_account">Create a New Account</string>
     <string name="add_your_loved_one">Add Your Loved One</string>
+    <string name="toggle_switch_to_join_care_team">Toggle the switch to join a Care Team.</string>
     <string name="tell_us_about_loved_one">Tell us a little bit about your loved one.</string>
     <string name="try_shepherd_for_30_days">Try Shepherd free for 30 days.</string>
     <string name="create_account_description">Are you new to the platform? Please fill the below details to create your account.</string>

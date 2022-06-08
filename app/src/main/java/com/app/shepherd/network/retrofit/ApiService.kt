@@ -4,6 +4,7 @@ import com.app.shepherd.constants.ApiConstants
 import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneModel
 import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneResponseModel
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
+import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
@@ -47,5 +48,13 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int
     ): Response<MedicalConditionResponseModel>
+
+    @GET(ApiConstants.CARE_TEAMS.GET_CARE_TEAMS)
+    suspend fun getCareTeams(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int
+    ): Response<CareTeamsResponseModel>
+
 
 }

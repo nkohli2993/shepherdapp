@@ -17,6 +17,7 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.createAccount.CreateNewAccountActivity
 import com.app.shepherd.ui.component.forgot_password.ForgotPasswordActivity
 import com.app.shepherd.ui.component.home.HomeActivity
+import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.app.shepherd.ui.component.resetPassword.ResetPasswordActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.SingleEvent
@@ -89,7 +90,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         // Save token
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
                     }
-                    navigateToWelcomeUserScreen()
+                    //navigateToWelcomeUserScreen
+                    navigateToJoinCareScreen()
                 }
 
                 is DataResult.Failure -> {
@@ -131,6 +133,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToWelcomeUserScreen() {
         startActivity<WelcomeUserActivity>()
+    }
+
+    private fun navigateToJoinCareScreen() {
+        startActivity<JoinCareTeamActivity>()
     }
 
     private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {

@@ -3,16 +3,19 @@ package com.app.shepherd.ui.component.joinCareTeam
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.shepherd.R
-import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.ActivityJoinCareTeamBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.addLovedOneCondition.adapter.JoinCareTeamAdapter
+import com.app.shepherd.ui.component.addLovedOneCondition.adapter.AddLovedOneConditionAdapter
 import com.app.shepherd.ui.component.home.HomeActivity
-import com.app.shepherd.utils.*
-import com.google.android.material.snackbar.Snackbar
+import com.app.shepherd.ui.component.joinCareTeam.adapter.JoinCareTeamAdapter
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showSuccess
+import com.app.shepherd.view_model.CareTeamsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_join_care_team.*
 
@@ -21,18 +24,26 @@ import kotlinx.android.synthetic.main.activity_join_care_team.*
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class JoinCareTeamActivity : BaseActivity(), View.OnClickListener {
+class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
+    JoinCareTeamAdapter.OnItemClickListener {
 
-    private val joinCareTeamViewModel: JoinCareTeamViewModel by viewModels()
+    private val careTeamsViewModel: CareTeamsViewModel by viewModels()
     private lateinit var binding: ActivityJoinCareTeamBinding
+    private var careTeams: ArrayList<CareTeam>? = ArrayList()
+    private var selectedCareTeams: ArrayList<CareTeam>? = ArrayList()
+    private var joinCareTeamAdapter: JoinCareTeamAdapter? = null
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    private var status: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBar.listener = this
+        binding.toolBarNew.listener = this
         binding.listener = this
-
+        binding.recyclerViewMembers.layoutManager = LinearLayoutManager(this)
         setJoinCareTeamAdapter()
+        careTeamsViewModel.getCareTeams(pageNumber, limit, status)
     }
 
 
@@ -43,34 +54,32 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
-        observe(joinCareTeamViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(joinCareTeamViewModel.showSnackBar)
-        observeToast(joinCareTeamViewModel.showToast)
-    }
+        careTeamsViewModel.careTeamsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    careTeams = it.data.payload.careteams
+                    if(careTeams.isNullOrEmpty()) return@observeEvent
+                    joinCareTeamAdapter?.updateCareTeams(careTeams!!)
+                }
 
+                is DataResult.Failure -> {
+                    //handleAPIFailure(it.message, it.errorCode)
 
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
+                    hideLoading()
+                    it.errorCode?.let { showError(this, it.toString()) }
 
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { joinCareTeamViewModel.showToastMessage(it) }
+                }
             }
         }
     }
 
-    private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
-        binding.root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
-    }
-
-    private fun observeToast(event: LiveData<SingleEvent<Any>>) {
-        binding.root.showToast(this, event, Snackbar.LENGTH_LONG)
-    }
-
     private fun setJoinCareTeamAdapter() {
-        val joinCareTeamAdapter = JoinCareTeamAdapter(joinCareTeamViewModel)
+        joinCareTeamAdapter = JoinCareTeamAdapter(careTeamsViewModel)
+        joinCareTeamAdapter?.setClickListener(this)
         recyclerViewMembers.adapter = joinCareTeamAdapter
     }
 
@@ -89,6 +98,15 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener {
         startActivityWithFinish<HomeActivity>()
     }
 
-
+    override fun onItemClick(careTeam: CareTeam) {
+        if (selectedCareTeams?.isEmpty() == true)
+            careTeam.let { selectedCareTeams?.add(it) }
+        else if (careTeam.isSelected == true) selectedCareTeams?.add(careTeam)
+        else if (careTeam.isSelected == false && selectedCareTeams?.contains(careTeam) == true)
+            selectedCareTeams?.remove(careTeam)
+    }
 }
+
+
+
 
