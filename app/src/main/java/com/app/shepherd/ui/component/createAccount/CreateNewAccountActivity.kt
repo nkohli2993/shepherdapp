@@ -127,6 +127,17 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         // it1.payload?.let { it2 -> createNewAccountViewModel.saveUser(it2) }
                         // navigateToHomeScreen()
                         // navigateToLoginScreen()
+
+
+                        // Save Token to SharedPref
+                        it1.payload?.let { it2 ->
+                            it2.token?.let { it3 ->
+                                createNewAccountViewModel.saveToken(
+                                    it3
+                                )
+                            }
+                        }
+
                         navigateToWelcomeUserScreen()
                     }
 

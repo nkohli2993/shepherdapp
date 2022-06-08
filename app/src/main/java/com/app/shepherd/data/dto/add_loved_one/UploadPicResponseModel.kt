@@ -8,5 +8,5 @@ import com.google.gson.annotations.SerializedName
  * Created by Deepak Rattan on 06/06/22
  */
 data class UploadPicResponseModel(
-    @SerializedName("profile_photo") var payload: Payload? = Payload()
+    @SerializedName("payload") var payload: Payload? = Payload()
 ) : BaseResponseModel()

@@ -30,13 +30,14 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Check if user is already loggedIn
-        val token = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")
+//        val token = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")
         // if token is empty ,then the user is logging first time
-        if (token.isNullOrEmpty()) {
+       /* if (token.isNullOrEmpty()) {
             navigateToOnBoardingScreen()
         } else {
             navigateToWelcomeUserScreen()
-        }
+        }*/
+        navigateToOnBoardingScreen()
 
     }
 

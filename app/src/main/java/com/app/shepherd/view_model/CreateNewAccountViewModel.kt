@@ -14,7 +14,6 @@ import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -81,7 +80,9 @@ class CreateNewAccountViewModel @Inject constructor(
         viewModelScope.launch {
             val response = authRepository.uploadImage(file)
             withContext(Dispatchers.Main) {
-                response.collect { _uploadImageLiveData.postValue(Event(it)) }
+                response.collect {
+                    _uploadImageLiveData.postValue(Event(it))
+                }
             }
         }
         return uploadImageLiveData
@@ -90,5 +91,10 @@ class CreateNewAccountViewModel @Inject constructor(
     // Save Successfully Registered User's Info into Preferences
     fun saveUser(user: UserProfile) {
         userRepository.saveUser(user)
+    }
+
+    // Save token
+    fun saveToken(token: String) {
+        userRepository.saveToken(token)
     }
 }
