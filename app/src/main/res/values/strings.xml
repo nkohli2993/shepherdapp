@@ -120,7 +120,7 @@
     <string name="start_typing">Start Typing…</string>
     <string name="add_new_member">Add New Member</string>
     <string name="menu_care_team_members">CareTeam Members</string>
-    <string name="vital_stats">Vital Stats</string>
+    <string name="vital_stats">VitalStats</string>
     <string name="menu_add_new_care_team_member">Add New CareTeam Members</string>
     <string name="menu_member_details">CareTeam Member Details</string>
     <string name="menu_add_new_event">Add new event</string>

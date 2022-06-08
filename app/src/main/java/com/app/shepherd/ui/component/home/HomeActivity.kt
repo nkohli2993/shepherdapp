@@ -121,7 +121,7 @@ class HomeActivity : BaseActivity(),
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.vital_stats)
                         clTopWrapper.isVisible = true
-                        clHomeWrapper.isVisible = false
+                        clEndWrapper.isVisible = false
                     }
                     lockUnlockDrawer(false)
                 }
