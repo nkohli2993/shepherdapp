@@ -8,11 +8,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentMessagesBinding
 import com.app.shepherd.databinding.FragmentResourcesBinding
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.messages.adapter.DiscussionGroupsAdapter
 import com.app.shepherd.ui.component.resources.adapter.MedicalHistoryAdapter
 import com.app.shepherd.ui.component.resources.adapter.MedicalHistoryTopicsAdapter
 import com.app.shepherd.ui.component.resources.adapter.TopicsAdapter
@@ -57,7 +56,7 @@ class ResourcesFragment : BaseFragment<FragmentMessagesBinding>() {
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

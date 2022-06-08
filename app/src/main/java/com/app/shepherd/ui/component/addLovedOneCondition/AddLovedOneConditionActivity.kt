@@ -3,38 +3,45 @@ package com.app.shepherd.ui.component.addLovedOneCondition
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.shepherd.R
-import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.medical_conditions.Conditions
 import com.app.shepherd.databinding.ActivityAddLovedOneConditionBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.addLovedOneCondition.adapter.AddLovedOneConditionAdapter
-import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.app.shepherd.ui.component.welcome.WelcomeActivity
-import com.app.shepherd.utils.*
-import com.google.android.material.snackbar.Snackbar
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_add_loved_one_condition.*
 
 
 /**
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener {
+class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
+    AddLovedOneConditionAdapter.ItemSelectedListener {
 
     private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
     private lateinit var binding: ActivityAddLovedOneConditionBinding
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    private var conditions: ArrayList<Conditions>? = ArrayList()
+    private var selectedConditions: ArrayList<Conditions>? = ArrayList()
+    private var addLovedOneConditionAdapter: AddLovedOneConditionAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBar.listener = this
+        binding.toolBarNew.listener = this
         binding.listener = this
 
-        setConditionAdapter()
+        binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
+
+        // Get Medical conditions
+        addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
     }
 
 
@@ -45,36 +52,30 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
-        observe(addLovedOneConditionViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(addLovedOneConditionViewModel.showSnackBar)
-        observeToast(addLovedOneConditionViewModel.showToast)
-    }
+        addLovedOneConditionViewModel.medicalConditionResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    conditions = it.data.payload?.conditions
+                    addLovedOneConditionAdapter = conditions?.let { it1 ->
+                        AddLovedOneConditionAdapter(addLovedOneConditionViewModel,
+                            it1
+                        )
+                    }
+                    addLovedOneConditionAdapter?.setClickListener(this)
+                    binding.recyclerViewCondition.adapter = addLovedOneConditionAdapter
+                }
 
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.errorCode?.let { showError(this, it.toString()) }
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { addLovedOneConditionViewModel.showToastMessage(it) }
+                }
             }
         }
-    }
-
-
-    private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
-        binding.root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
-    }
-
-    private fun observeToast(event: LiveData<SingleEvent<Any>>) {
-        binding.root.showToast(this, event, Snackbar.LENGTH_LONG)
-    }
-
-
-    private fun setConditionAdapter() {
-        val addLovedOneConditionAdapter = AddLovedOneConditionAdapter(addLovedOneConditionViewModel)
-        recyclerViewCondition.adapter = addLovedOneConditionAdapter
     }
 
     override fun onClick(p0: View?) {
@@ -91,6 +92,15 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToWelcomeScreen() {
         startActivityWithFinishAffinity<WelcomeActivity>()
+    }
+
+    override fun itemSelected(conditions: Conditions) {
+
+        if (selectedConditions?.isEmpty() == true)
+            conditions.let { selectedConditions?.add(it) }
+        else if (conditions.isSelected == true) selectedConditions?.add(conditions)
+        else if(conditions.isSelected == false && selectedConditions?.contains(conditions) == true)
+            selectedConditions?.remove(conditions)
     }
 
 }

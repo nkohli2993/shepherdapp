@@ -80,9 +80,11 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
     fun hideLoading() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            ProgressBarDialog.dismissProgressDialog()
-        }, 500)
+        Looper.myLooper()?.let {
+            Handler(it).postDelayed({
+                ProgressBarDialog.dismissProgressDialog()
+            }, 500)
+        }
     }
 
     fun openImagePicker() {
@@ -146,7 +148,7 @@ abstract class BaseActivity : AppCompatActivity() {
                     } else {
                         File(selectedMedia[0].path!!)
                     }
-                    selectedFile.value = file
+                    selectedFile.value = file!!
                 }
             }
         }

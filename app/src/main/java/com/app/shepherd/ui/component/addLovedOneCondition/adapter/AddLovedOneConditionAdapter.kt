@@ -5,16 +5,27 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
+import com.app.shepherd.data.dto.medical_conditions.Conditions
 import com.app.shepherd.databinding.AdapterAddLovedOneConditionBinding
-import com.app.shepherd.ui.component.addLovedOneCondition.AddLovedOneConditionViewModel
+import com.app.shepherd.view_model.AddLovedOneConditionViewModel
 
 
 class AddLovedOneConditionAdapter(
     private val viewModel: AddLovedOneConditionViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    var conditionList: MutableList<Conditions> = ArrayList()
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     lateinit var binding: AdapterAddLovedOneConditionBinding
+
+    private var onItemClickListener: ItemSelectedListener? = null
+
+    fun setClickListener(clickListener: ItemSelectedListener) {
+        onItemClickListener = clickListener
+    }
+
+    interface ItemSelectedListener {
+        fun itemSelected(conditions: Conditions)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -29,19 +40,27 @@ class AddLovedOneConditionAdapter(
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return conditionList.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            //is ContentViewHolder -> holder.bind(requestList[position])
+            is ContentViewHolder -> holder.bind(conditionList[position])
         }
     }
 
-    inner class ContentViewHolder constructor(private var binding: AdapterAddLovedOneConditionBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class ContentViewHolder(private var itemBinding: AdapterAddLovedOneConditionBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(data: String?) {
+        fun bind(conditions: Conditions) {
+            itemBinding.data = conditions
+            binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
+                conditions.isSelected = isChecked
+
+                onItemClickListener?.itemSelected(conditions)
+            }
+            itemBinding.cardView.setOnClickListener { itemBinding.checkbox.performClick() }
+            itemBinding.textViewCondition.setOnClickListener { itemBinding.checkbox.performClick() }
         }
 
     }

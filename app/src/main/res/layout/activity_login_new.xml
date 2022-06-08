@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,73 +9,62 @@
             name="listener"
             type="android.view.View.OnClickListener" />
 
+        <variable
+            name="viewModel"
+            type="com.app.shepherd.view_model.LoginViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginVertical="@dimen/_20sdp"
-        android:paddingHorizontal="@dimen/_10sdp"
-        android:paddingVertical="@dimen/_8sdp">
-
-        <include
-            android:background="@color/_192032"
-            android:id="@+id/toolBar"
-            layout="@layout/include_toolbar_new"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layoutHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/heading_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolBar">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtHello"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/hello"
-                android:textSize="@dimen/_14ssp"
-                android:textColor="@color/_192032"
-                android:fontFamily="@font/gotham_bold" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtLogin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtHello"
-                android:text="@string/please_log_in"
-                android:textSize="@dimen/_14ssp"
-                android:textColor="@color/_192032"
-                android:fontFamily="@font/gotham_bold"
-                android:layout_marginTop="@dimen/_10sdp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtLogin"
-                android:text="@string/login_description"
-                android:textSize="@dimen/_11ssp"
-                android:textColor="@color/_192032"
-                android:fontFamily="@font/gotham_book"
-                android:layout_marginTop="@dimen/_10sdp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:background="@color/heading_background"
+            android:paddingTop="@dimen/_10sdp"
             android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/layoutHeader"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolBar"
+                layout="@layout/include_toolbar_new" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_10sdp"
+                android:background="@color/heading_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolBar"
+                android:paddingBottom="@dimen/_10sdp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@string/log_in_to_access_your_account"
+                    android:textSize="@dimen/_16ssp"
+                    android:textColor="@color/_192032"
+                    android:fontFamily="@font/gotham_bold" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical"
             android:background="@color/colorWhite"
             android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_20sdp"
             app:layout_constraintTop_toBottomOf="@+id/layoutHeader">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -88,14 +78,17 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
                 android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                 android:hint="@string/enter_your_email"
+                android:text="@={viewModel.loginData.email}"
                 android:padding="@dimen/_10sdp"
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/_192032"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:drawableStart="@drawable/ic_email"
-                android:drawablePadding="@dimen/_5sdp" />
+                android:drawablePadding="@dimen/_5sdp"
+                bind:getEmailError="@{@string/email}" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -106,20 +99,38 @@
                 android:fontFamily="@font/gotham_light"
                 android:layout_marginTop="@dimen/_10sdp" />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:gravity="center"
+                android:padding="@dimen/_6sdp"
                 android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtPasswd"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:padding="@dimen/_4sdp"
+                android:layout_height="wrap_content"
                 android:hint="@string/enter_your_password"
-                android:padding="@dimen/_10sdp"
+                android:text="@={viewModel.loginData.password}"
                 android:textSize="@dimen/_14ssp"
                 android:textColor="@color/_192032"
-                android:layout_marginTop="@dimen/_5sdp"
                 android:inputType="textPassword"
                 android:drawableStart="@drawable/ic_passwd"
-                android:drawableEnd="@drawable/ic_eye"
-                android:drawablePadding="@dimen/_5sdp" />
+                android:drawablePadding="@dimen/_5sdp"
+                bind:getPassError="@{@string/password}" />
 
+                <ImageView
+                    android:layout_width="@dimen/_24sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:id="@+id/imageViewPasswordToggle"
+                    android:layout_height="@dimen/_24sdp"
+                    android:src="@drawable/ic_eye"/>
+            </LinearLayout>
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtForgotPassword"
                 android:layout_width="wrap_content"
@@ -149,11 +160,33 @@
                 android:textColor="@color/colorWhite"
                 android:layout_marginTop="@dimen/_15sdp" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/or_login_with_biometric"
+                android:textSize="@dimen/_13ssp"
+                android:textColor="@color/_192032"
+                android:fontFamily="@font/gotham_book"
+                android:layout_marginTop="@dimen/_10sdp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgBiometric"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/ic_biometric" />
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginStart="@dimen/_20sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -184,7 +217,7 @@
             android:fontFamily="@font/gotham_light"
             android:text="@string/v1_0_all_rights_reserved"
             android:textColor="@color/_192032"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_9sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

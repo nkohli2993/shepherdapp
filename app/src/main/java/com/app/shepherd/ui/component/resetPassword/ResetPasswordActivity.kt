@@ -11,10 +11,9 @@ import androidx.core.text.color
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.ActivityResetPasswordBinding
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.observe
 import com.app.shepherd.utils.setupSnackbar
@@ -57,7 +56,7 @@ class ResetPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    private fun handleResetPasswordResult(status: Resource<LoginResponse>) {
+    private fun handleResetPasswordResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

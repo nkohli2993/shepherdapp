@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.dashboard.DashboardModel
-import com.app.shepherd.data.dto.login.LoginRequest
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginRequestModel
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.error.CHECK_YOUR_FIELDS
 import com.app.shepherd.data.error.EMAIL_ERROR
 import com.app.shepherd.ui.base.BaseViewModel
@@ -34,8 +34,8 @@ class MessagesViewModel @Inject constructor(private val dataRepository: DataRepo
     val openChatMessageItem: LiveData<SingleEvent<Any>> get() = openChatMessage
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponse>>()
-    val loginLiveData: LiveData<Resource<LoginResponse>> get() = loginLiveDataPrivate
+    private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
+    val loginLiveData: LiveData<Resource<LoginResponseModel>> get() = loginLiveDataPrivate
 
     /** Error handling as UI **/
 
@@ -48,7 +48,7 @@ class MessagesViewModel @Inject constructor(private val dataRepository: DataRepo
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
 
-    fun doLogin(context: Context, userName: String, passWord: String) {
+    /*fun doLogin(context: Context, userName: String, passWord: String) {
         val isUsernameValid = isValidEmail(userName)
         val isPassWordValid = isValidPassword(passWord)
         if (!isUsernameValid && !isPassWordValid) {
@@ -66,7 +66,7 @@ class MessagesViewModel @Inject constructor(private val dataRepository: DataRepo
                 }
             }
         }
-    }
+    }*/
 
 
     fun openChat(item: Any) {

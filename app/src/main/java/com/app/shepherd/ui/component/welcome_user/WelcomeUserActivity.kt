@@ -3,19 +3,15 @@ package com.app.shepherd.ui.component.welcome
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.LiveData
 import com.app.shepherd.R
-import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
-import com.app.shepherd.databinding.ActivityJoinCareTeamBinding
 import com.app.shepherd.databinding.ActivityWelcomeUserBinding
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
-import com.app.shepherd.ui.component.addLovedOneCondition.adapter.JoinCareTeamAdapter
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
-import com.app.shepherd.utils.*
-import com.google.android.material.snackbar.Snackbar
+import com.app.shepherd.view_model.WelcomeUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_welcome_user.*
 
 
 /**
@@ -30,8 +26,10 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBar.listener = this
+        binding.toolBarNew.listener = this
         binding.listener = this
+
+        welcomeViewModel.getUser()
     }
 
 
@@ -42,44 +40,26 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
-        observe(welcomeViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(welcomeViewModel.showSnackBar)
-        observeToast(welcomeViewModel.showToast)
-    }
-
-
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
-
+        welcomeViewModel.loggedInUserLiveData.observeEvent(this) {
+            val name = it?.firstname.toString().replaceFirstChar { it ->
+                it.uppercase()
             }
-            is Resource.DataError -> {
-                status.errorCode?.let { welcomeViewModel.showToastMessage(it) }
-            }
+
+            //textViewTitle.text = "Hi " + "${it?.firstname.replaceFirstChar { it.uppercase() }}"
+            textViewTitle.text = "Thanks, $name"
         }
-    }
-
-    private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
-        binding.root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
-    }
-
-    private fun observeToast(event: LiveData<SingleEvent<Any>>) {
-        binding.root.showToast(this, event, Snackbar.LENGTH_LONG)
     }
 
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imageViewBack -> {
-                finishActivity()
-            }
-            R.id.imageViewAddLovedOne -> {
-                navigateToAddLovedOneScreen()
-            }
-            R.id.imageViewJoinTeam -> {
-                navigateToJoinCareTeamScreen()
-            }
+            R.id.imgBack -> finishActivity()
+            R.id.cardViewAddLovedOne -> navigateToAddLovedOneScreen()
+            R.id.imageViewAddLovedOne -> navigateToAddLovedOneScreen()
+            R.id.txtAdd -> navigateToAddLovedOneScreen()
+            R.id.txtLovedOne -> navigateToAddLovedOneScreen()
+            R.id.layoutAddLovedOne -> navigateToAddLovedOneScreen()
+            R.id.cardViewCareTeam -> navigateToJoinCareTeamScreen()
         }
     }
 

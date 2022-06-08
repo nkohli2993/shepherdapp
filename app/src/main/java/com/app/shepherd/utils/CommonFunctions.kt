@@ -59,6 +59,12 @@ object CommonFunctions {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+
+    fun showKeyBoard(activity: Context) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+    }
+
     fun setColorForPath(spannable: Spannable, paths: Array<String>, color: Int) {
         for (i in paths.indices) {
             val indexOfPath = spannable.toString().indexOf(paths[i])

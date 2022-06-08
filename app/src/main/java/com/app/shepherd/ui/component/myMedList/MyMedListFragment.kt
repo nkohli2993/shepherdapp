@@ -10,7 +10,7 @@ import androidx.navigation.findNavController
 import com.app.shepherd.R
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponse
+import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentMyMedlistBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.myMedList.adapter.MyMedicationsAdapter
@@ -169,7 +169,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         }
     }
 
-    private fun handleLoginResult(status: Resource<LoginResponse>) {
+    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {

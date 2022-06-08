@@ -2,6 +2,9 @@
 buildscript {
     ext.kotlin_version = '1.6.20'
     ext.hilt_version = '2.41'
+
+    ext.hilt_viewmodels = "1.0.0-alpha02"
+    ext.hilt_workmanager = "1.0.0-alpha02"
     repositories {
         mavenCentral()
         google()
@@ -16,6 +19,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.10'
     }
 }
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir
@@ -47,6 +51,13 @@ ext {
     glideVersion = '4.13.1'
     sspVersion = '1.0.6'
     livedata_ktx = '2.4.1'
+    ext.toasty_version = "1.4.2"
+    COUNTRY_CODE_PICKER = "2.4.2"
+
+    base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""
+    base_url_live = "\"\""
     calednarVersion = '1.0.0'
     numberpadVersion = '1.0.1'
 }
+
+//ext.base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""
