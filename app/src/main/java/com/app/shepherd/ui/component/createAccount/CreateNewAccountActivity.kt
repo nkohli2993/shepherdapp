@@ -54,7 +54,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBarNew.listener = this
         binding.listener = this
         //setPhoneNumberFormat()
 
@@ -160,7 +159,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             // Back icon of Toolbar
-            R.id.imgBack -> {
+            R.id.ivBack -> {
                 onBackPressed()
             }
             // Upload Profile Pic

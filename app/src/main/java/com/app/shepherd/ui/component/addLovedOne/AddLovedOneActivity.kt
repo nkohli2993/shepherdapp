@@ -69,7 +69,6 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
         binding.ccp.setOnCountryChangeListener { this.phoneCode = it.phoneCode }
 
-        binding.toolBarNew.listener = this
         binding.listener = this
         binding.relationshipSpinner.onItemSelectedListener = this
 
@@ -167,7 +166,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imgBack -> {
+            R.id.ivBack -> {
                 onBackPressed()
             }
             R.id.imageViewLovedOne -> {

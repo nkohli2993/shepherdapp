@@ -46,7 +46,7 @@
     <string name="loading">Loading</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
     <string name="log_in">Log In</string>
     <string name="forgot_your_password">Forgot your Password?</string>
     <string name="reset_it">Reset it</string>
@@ -120,7 +120,7 @@
     <string name="start_typing">Start Typing…</string>
     <string name="add_new_member">Add New Member</string>
     <string name="menu_care_team_members">CareTeam Members</string>
-    <string name="vital_stats">Vital Stats</string>
+    <string name="vital_stats">VitalStats</string>
     <string name="menu_add_new_care_team_member">Add New CareTeam Members</string>
     <string name="menu_member_details">CareTeam Member Details</string>
     <string name="menu_add_new_event">Add new event</string>
@@ -217,7 +217,7 @@
     <string name="create_new">Create New</string>
     <string name="create">Create</string>
     <string name="welcome">Welcome</string>
-    <string name="login_or_create_new_account">Please log in or create a \nnew account.</string>
+    <string name="login_or_create_new_account">Please log in or create a new account.</string>
     <string name="desc_text">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</string>
     <string name="hello">Hello!</string>
     <string name="log_in_to_access_your_account">Log in to access your \naccount</string>

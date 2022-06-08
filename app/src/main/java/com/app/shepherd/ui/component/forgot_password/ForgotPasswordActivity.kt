@@ -31,7 +31,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.imgBack -> {
+            R.id.ivBack -> {
                 onBackPressed()
             }
             R.id.btnReset -> {

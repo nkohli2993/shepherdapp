@@ -12,14 +12,11 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:layout_marginVertical="@dimen/_10sdp"
-        android:padding="@dimen/_10sdp"
         tools:context="com.app.shepherd.ui.component.welcome.WelcomeActivity">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -31,102 +28,105 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/clBottomWrapper"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivWalkThroughLogo">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/img"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="@dimen/_300sdp"
-                app:layout_constraintTop_toBottomOf="@+id/ivWalkThroughLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/walk_through_1"
+                app:layout_constraintBottom_toTopOf="@id/tvTitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/tvTitle"
-                android:layout_marginTop="@dimen/_30sdp"
-                android:src="@drawable/walk_through_1" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_19ssp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:fontFamily="@font/gotham_bold"
+                android:lineSpacingExtra="5dp"
                 android:text="@string/login_or_create_new_account"
-                app:fontFamily="@font/poppins_bold"
-                app:layout_constraintTop_toBottomOf="@+id/img"
+                android:textColor="@color/_192032"
+                android:textSize="22sp"
+                app:layout_constraintBottom_toTopOf="@+id/tvDescription"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="@dimen/_30sdp" />
+                app:layout_constraintTop_toBottomOf="@+id/img" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_regular"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/gotham_book"
+                android:lineSpacingExtra="5dp"
+                android:text="@string/desc_text"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
-                app:fontFamily="@font/gotham_book"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/desc_text"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
 
-            <LinearLayout
-                android:id="@+id/clBottomWrapper"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_30sdp"
-                app:layout_constraintTop_toBottomOf="@id/tvDescription"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnCreateAccount"
-                    android:background="@drawable/shape_black_border"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/_40sdp"
-                    android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="10dp"
-                    android:textSize="@dimen/_13ssp"
-                    android:text="@string/create_new"
-                    android:fontFamily="@font/gotham_medium"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorBlack"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:id="@+id/clBottomWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnCreateAccount"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_black_border"
+                android:fontFamily="@font/gotham_medium"
+                android:onClick="@{listener::onClick}"
+                android:paddingHorizontal="10dp"
+                android:text="@string/create_new"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnLogin"
-                    android:background="@drawable/button_primary"
-                    android:backgroundTint="@color/_399282"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="@dimen/_40sdp"
-                    android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="10dp"
-                    android:textSize="@dimen/_13ssp"
-                    android:text="@string/login"
-                    android:fontFamily="@font/gotham_medium"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginBottom="@dimen/_10sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginStart="@dimen/_10sdp"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnLogin"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/button_primary"
+                android:backgroundTint="@color/_399282"
+                android:fontFamily="@font/gotham_medium"
+                android:onClick="@{listener::onClick}"
+                android:paddingHorizontal="10dp"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
         </LinearLayout>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
