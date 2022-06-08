@@ -1,6 +1,8 @@
 package com.app.shepherd.ui.component.addLovedOneCondition
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,6 +32,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var limit: Int = 10
     private var conditions: ArrayList<Conditions>? = ArrayList()
     private var selectedConditions: ArrayList<Conditions>? = ArrayList()
+    private var searchedConditions: ArrayList<Conditions>? = ArrayList()
     private var addLovedOneConditionAdapter: AddLovedOneConditionAdapter? = null
 
 
@@ -42,6 +45,33 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
         // Get Medical conditions
         addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
+
+        binding.imgCancel.setOnClickListener { binding.editTextSearch.setText("") }
+
+        binding.editTextSearch.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if(s.isEmpty()) {
+                        conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
+                        binding.imgCancel.visibility = View.GONE
+                    }
+                    if (s.isNotEmpty()) {
+                        binding.imgCancel.visibility = View.VISIBLE
+                        searchedConditions?.clear()
+                        conditions?.forEach {
+                            if (it.name?.startsWith(s, true) == true) {
+                                searchedConditions?.add(it)
+                            }
+                        }
+                        searchedConditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
+                    }
+                }
+            }
+        })
     }
 
 

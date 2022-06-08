@@ -14,13 +14,18 @@ class AddLovedOneConditionAdapter(
     private val viewModel: AddLovedOneConditionViewModel,
     var conditionList: MutableList<Conditions> = ArrayList()
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<AddLovedOneConditionAdapter.ContentViewHolder>() {
     lateinit var binding: AdapterAddLovedOneConditionBinding
 
     private var onItemClickListener: ItemSelectedListener? = null
 
     fun setClickListener(clickListener: ItemSelectedListener) {
         onItemClickListener = clickListener
+    }
+
+    fun updateConditions(conditions: ArrayList<Conditions>) {
+        conditionList = conditions
+        notifyDataSetChanged()
     }
 
     interface ItemSelectedListener {
@@ -43,10 +48,8 @@ class AddLovedOneConditionAdapter(
         return conditionList.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        when (holder) {
-            is ContentViewHolder -> holder.bind(conditionList[position])
-        }
+    override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
+            holder.bind(conditionList[position])
     }
 
     inner class ContentViewHolder(private var itemBinding: AdapterAddLovedOneConditionBinding) :
