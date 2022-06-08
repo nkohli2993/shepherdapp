@@ -25,7 +25,6 @@
             android:layout_height="wrap_content"
             android:background="@color/heading_background"
             android:orientation="vertical"
-            android:paddingTop="@dimen/_10sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
