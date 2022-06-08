@@ -26,7 +26,6 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBarNew.listener = this
         binding.listener = this
 
         welcomeViewModel.getUser()
@@ -53,7 +52,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imgBack -> finishActivity()
+            R.id.ivBack -> finishActivity()
             R.id.cardViewAddLovedOne -> navigateToAddLovedOneScreen()
             R.id.imageViewAddLovedOne -> navigateToAddLovedOneScreen()
             R.id.txtAdd -> navigateToAddLovedOneScreen()

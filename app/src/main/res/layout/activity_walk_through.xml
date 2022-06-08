@@ -16,7 +16,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         tools:context="com.app.shepherd.ui.component.login.LoginActivity">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -56,31 +55,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewPager">
 
             <com.zhpan.indicator.IndicatorView
-                app:vpi_style="dash"
                 android:id="@+id/viewPagerIndicators"
-                android:layout_width="wrap_content"
-                app:vpi_slider_checked_color="@color/_A26DCB"
-                app:vpi_slider_normal_color="@color/_33A26ECA"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/buttonCreateAccount"
+                app:layout_constraintEnd_toStartOf="@+id/btnGetStarted"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:vpi_slider_checked_color="@color/_A26DCB"
+                app:vpi_slider_normal_color="@color/_33A26ECA"
+                app:vpi_style="round_rect" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnGetStarted"
                 style="@style/ButtonPrimary"
                 android:layout_width="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:backgroundTint="@color/_399282"
                 android:onClick="@{listener::onClick}"
                 android:paddingHorizontal="20dp"
                 android:text="@string/get_started"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

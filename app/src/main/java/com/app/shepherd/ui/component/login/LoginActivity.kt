@@ -42,7 +42,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBar.listener = this
         binding.listener = this
         binding.viewModel = loginViewModel
 
@@ -152,7 +151,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()
             }
-            R.id.imgBack -> {
+            R.id.ivBack -> {
                 onBackPressed()
             }
         }

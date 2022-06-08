@@ -13,6 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/colorWhite"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -21,17 +22,21 @@
             android:layout_height="match_parent"
             android:background="@color/colorGreyLight"
             android:orientation="vertical"
-            android:paddingVertical="@dimen/_10sdp"
             tools:context="com.app.shepherd.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
-            <include
-                android:id="@+id/toolBarNew"
-                layout="@layout/include_toolbar_new" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{listener::onClick}"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_back" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTitle"
-                style="@style/TextViewPoppinsSemiBold"
+                android:fontFamily="@font/gotham_bold"
+                android:textColor="@color/_192032"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_12sdp"
@@ -41,14 +46,14 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtLogin"
-                android:text="@string/welcome_user_desc"
-                android:textSize="@dimen/_12ssp"
-                android:textColor="@color/_192032"
                 android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_6sdp"
                 android:fontFamily="@font/gotham_book"
-                android:layout_marginTop="@dimen/_6sdp" />
+                android:text="@string/welcome_user_desc"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLogin" />
 
 
             <androidx.cardview.widget.CardView
@@ -74,48 +79,48 @@
                         android:id="@+id/imageViewAddLovedOne"
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_120sdp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:onClick="@{listener::onClick}"
                         android:padding="@dimen/_18sdp"
-                        android:src="@drawable/ic_loved_one" />
+                        android:src="@drawable/ic_loved_one"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtAdd"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
+                        android:layout_centerVertical="true"
                         android:layout_toEndOf="@id/imageViewAddLovedOne"
                         android:focusable="false"
-                        android:onClick="@{listener::onClick}"
+                        android:fontFamily="@font/gotham_light"
                         android:gravity="bottom"
-                        android:text="@string/add_your"
-                        app:layout_constraintStart_toEndOf="@id/imageViewAddLovedOne"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/txtLovedOne"
-                        android:layout_centerVertical="true"
-                        android:textSize="@dimen/_16ssp"
-                        android:fontFamily="@font/gotham_medium"
+                        android:onClick="@{listener::onClick}"
                         android:paddingVertical="@dimen/_2sdp"
-                        android:textColor="#399282" />
+                        android:text="@string/add_your"
+                        android:textColor="#399282"
+                        android:textSize="@dimen/_16ssp"
+                        app:layout_constraintBottom_toTopOf="@id/txtLovedOne"
+                        app:layout_constraintStart_toEndOf="@id/imageViewAddLovedOne"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_centerVertical="true"
-                        android:layout_below="@id/txtAdd"
                         android:id="@+id/txtLovedOne"
-                        app:layout_constraintStart_toEndOf="@id/imageViewAddLovedOne"
-                        app:layout_constraintTop_toBottomOf="@id/txtAdd"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
+                        android:layout_below="@id/txtAdd"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center"
                         android:focusable="false"
+                        android:fontFamily="@font/gotham_bold"
                         android:onClick="@{listener::onClick}"
-                        android:text="@string/loved_one"
                         android:paddingVertical="@dimen/_2sdp"
+                        android:text="@string/loved_one"
+                        android:textColor="#399282"
                         android:textSize="@dimen/_18ssp"
-                        android:fontFamily="@font/gotham_medium"
-                        android:textColor="#399282" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/imageViewAddLovedOne"
+                        app:layout_constraintTop_toBottomOf="@id/txtAdd" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -162,23 +167,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:focusable="false"
+                            android:fontFamily="@font/gotham_light"
                             android:onClick="@{listener::onClick}"
-                            android:text="@string/join_an_existing"
-                            android:textSize="@dimen/_16ssp"
-                            android:fontFamily="@font/gotham_medium"
                             android:paddingVertical="@dimen/_2sdp"
-                            android:textColor="#399282" />
+                            android:text="@string/join_an_existing"
+                            android:textColor="#399282"
+                            android:textSize="@dimen/_16ssp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:focusable="false"
+                            android:fontFamily="@font/gotham_bold"
                             android:onClick="@{listener::onClick}"
-                            android:text="@string/care_team"
                             android:paddingVertical="@dimen/_2sdp"
-                            android:textSize="@dimen/_18ssp"
-                            android:fontFamily="@font/gotham_medium"
-                            android:textColor="#399282" />
+                            android:text="@string/care_team"
+                            android:textColor="#399282"
+                            android:textSize="@dimen/_18ssp" />
 
                     </LinearLayout>
 
@@ -193,13 +198,13 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:fontFamily="@font/gotham_light"
             android:text="@string/v1_0_all_rights_reserved"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_9sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="@dimen/_10sdp" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

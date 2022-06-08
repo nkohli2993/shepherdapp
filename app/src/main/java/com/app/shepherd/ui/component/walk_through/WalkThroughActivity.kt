@@ -2,14 +2,16 @@ package com.app.shepherd.ui.component.walkThrough
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
+import androidx.viewpager.widget.ViewPager
 import com.app.shepherd.R
 import com.app.shepherd.databinding.ActivityWalkThroughBinding
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.createAccount.CreateAccountActivity
 import com.app.shepherd.ui.component.onBoarding.adapter.OnBoardingImagesAdapter
 import com.app.shepherd.ui.component.welcome.WelcomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
+
 
 @AndroidEntryPoint
 class WalkThroughActivity : BaseActivity(), View.OnClickListener {
@@ -32,6 +34,8 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setImagesAdapter() {
+        binding.viewPagerIndicators.setSliderWidth(50f)
+        binding.viewPagerIndicators.setSliderHeight(10f)
         val list: ArrayList<WalkThroughModel> = ArrayList()
         list.add(
             WalkThroughModel(
@@ -65,6 +69,20 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
             OnBoardingImagesAdapter(this, list)
         viewPager.adapter = mOnBoardingImagesAdapter
         binding.viewPagerIndicators.setupWithViewPager(viewPager)
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                binding.btnSkip.isVisible = position != 3
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
     }
 
     override fun observeViewModel() {
