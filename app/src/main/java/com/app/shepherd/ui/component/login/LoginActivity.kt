@@ -21,6 +21,7 @@ import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.app.shepherd.ui.component.resetPassword.ResetPasswordActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.SingleEvent
+import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.utils.setupSnackbar
@@ -38,6 +39,29 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginNewBinding
     private var isPasswordShown = false
+
+    // Handle Validation
+    private val isValid: Boolean
+        get() {
+            when {
+                loginViewModel.loginData.value?.email.isNullOrEmpty() -> {
+                    binding.edtEmail.error = getString(R.string.please_enter_email_id)
+                    binding.edtEmail.requestFocus()
+                }
+                loginViewModel.loginData.value?.email?.isValidEmail() == false -> {
+                    binding.edtEmail.error = getString(R.string.please_enter_valid_email_id)
+                    binding.edtEmail.requestFocus()
+                }
+                loginViewModel.loginData.value?.password.isNullOrEmpty() -> {
+                    binding.edtPasswd.error = getString(R.string.please_enter_your_password)
+                    binding.edtPasswd.requestFocus()
+                }
+                else -> {
+                    return true
+                }
+            }
+            return false
+        }
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -84,7 +108,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.data.let { it ->
                         it.message?.let { it1 -> showSuccess(this, it1) }
                         // Save User Detail to SharedPref
-                       // it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }
+                        // it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }
 
                         // Save token
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
@@ -153,7 +177,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 navigateToForgotPasswordScreen()
             }
             R.id.btnLogin -> {
-                doLogin()
+                if (isValid) {
+                    doLogin()
+                }
             }
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()
