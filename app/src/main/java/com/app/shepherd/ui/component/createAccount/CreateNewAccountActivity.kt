@@ -19,6 +19,7 @@ import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.ui.component.welcome.WelcomeActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.PhoneTextFormatter
+import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
@@ -49,6 +50,48 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var roleId: String? = null
     private var isPasswordShown = false
     private var TAG = "CreateNewAccountActivity"
+
+
+    // Handle Validation
+    private val isValid: Boolean
+        get() {
+            when {
+                binding.edtFirstName.text.toString().isEmpty() -> {
+                    binding.edtFirstName.error = getString(R.string.please_enter_first_name)
+                    binding.edtFirstName.requestFocus()
+                }
+                binding.edtLastName.text.toString().isEmpty() -> {
+                    binding.edtLastName.error = getString(R.string.please_enter_last_name)
+                    binding.edtLastName.requestFocus()
+                }
+                binding.editTextEmail.text.toString().isEmpty() -> {
+                    binding.editTextEmail.error = getString(R.string.please_enter_email_id)
+                    binding.editTextEmail.requestFocus()
+                }
+                !binding.editTextEmail.text.toString().isValidEmail() -> {
+                    binding.editTextEmail.error = getString(R.string.please_enter_valid_email_id)
+                    binding.editTextEmail.requestFocus()
+                }
+                binding.edtPhoneNumber.text.toString().isEmpty() -> {
+                    binding.edtPhoneNumber.error = getString(R.string.enter_phone_number)
+                    binding.edtPhoneNumber.requestFocus()
+                }
+                binding.editTextPassword.text.toString().isEmpty() -> {
+                    binding.editTextPassword.error = getString(R.string.please_enter_your_password)
+                    binding.editTextPassword.requestFocus()
+                }
+                !binding.checkboxTermsConditions.isChecked -> {
+                    showInfo(
+                        this,
+                        "Please select the box describing Terms & Condition and Privacy Policy."
+                    )
+                }
+                else -> {
+                    return true
+                }
+            }
+            return false
+        }
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -179,7 +222,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             }
             // Create Account
             R.id.btnCreate -> {
-                if (binding.checkboxTermsConditions.isChecked) {
+                if (isValid) {
                     firstName = edtFirstName.text.toString().trim()
                     lastName = edtLastName.text.toString().trim()
                     email = editTextEmail.text.toString().trim()
@@ -196,12 +239,12 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         passwd,
                         phoneNumber
                     )
-                } else {
+                } /*else {
                     showInfo(
                         this,
                         "Please select the box describing Terms & Condition and Privacy Policy."
                     )
-                }
+                }*/
             }
         }
     }
