@@ -51,9 +51,9 @@ class LoginViewModel @Inject constructor(
     }
 
     // Save User to SharePrefs
-    fun saveUser(user: UserProfile) {
+    /*fun saveUser(user: UserProfile) {
         userRepository.saveUser(user)
-    }
+    }*/
 
     // Save AuthToken to SharedPref
     fun saveToken(token: String) {
@@ -61,11 +61,11 @@ class LoginViewModel @Inject constructor(
     }
 
     // Get LoggedIn User Detail
-    fun getUser(): LiveData<Event<UserProfile?>> {
+  /*  fun getUser(): LiveData<Event<UserProfile?>> {
         val user = userRepository.getCurrentUser()
         _loggedInUserLiveData.postValue(Event(user))
         return loggedInUserLiveData
 
     }
-
+*/
 }

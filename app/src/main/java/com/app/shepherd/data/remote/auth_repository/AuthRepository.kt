@@ -5,6 +5,7 @@ import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.signup.UserSignupData
+import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.NetworkOnlineDataRepo
@@ -75,6 +76,16 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
                 return apiService.forgotPassword(value)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Get User Details
+    suspend fun getUserDetails(id: Int): Flow<DataResult<UserDetailsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<UserDetailsResponseModel, UserDetailsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailsResponseModel> {
+                return apiService.getUserDetails(id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

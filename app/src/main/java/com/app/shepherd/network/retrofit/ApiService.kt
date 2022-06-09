@@ -10,6 +10,7 @@ import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.relation.RelationResponseModel
 import com.app.shepherd.data.dto.signup.UserSignupData
+import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -55,6 +56,11 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("status") status: Int
     ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.USER_DETAILS.GET_USER_DETAILS)
+    suspend fun getUserDetails(
+        @Path("id") id: Int
+    ): Response<UserDetailsResponseModel>
 
 
 }

@@ -6,6 +6,7 @@ package com.app.shepherd.utils
 object Const {
     const val USER_DETAILS = "USER DETAILS"
     const val USER_TOKEN = "USER Token"
+    const val USER_ID = "USER ID"
 }
 
 object Drawable {

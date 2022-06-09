@@ -88,6 +88,6 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToLoginScreen() {
-        startActivity<LoginActivity>()
+        startActivityWithFinish<LoginActivity>()
     }
 }

@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
-import com.app.shepherd.data.dto.login.UserProfile
 import com.app.shepherd.data.dto.signup.UserSignupData
+import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
@@ -89,12 +89,17 @@ class CreateNewAccountViewModel @Inject constructor(
     }
 
     // Save Successfully Registered User's Info into Preferences
-    fun saveUser(user: UserProfile) {
+    fun saveUser(user: UserProfiles) {
         userRepository.saveUser(user)
     }
 
     // Save token
     fun saveToken(token: String) {
         userRepository.saveToken(token)
+    }
+
+    // Save userID
+    fun saveUserId(id: Int) {
+        userRepository.saveUserId(id)
     }
 }

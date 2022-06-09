@@ -163,6 +163,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
                 }
                 is DataResult.Success -> {
+                    hideLoading()
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
 
@@ -173,10 +174,16 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
 
                         // Save Token to SharedPref
-                        it1.payload?.let { it2 ->
-                            it2.token?.let { it3 ->
+                        it1.payload?.let { payload ->
+                            payload.token?.let { token ->
                                 createNewAccountViewModel.saveToken(
-                                    it3
+                                    token
+                                )
+                            }
+
+                            payload.id?.let { userId ->
+                                createNewAccountViewModel.saveUserId(
+                                    userId
                                 )
                             }
                         }

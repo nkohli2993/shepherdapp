@@ -2,11 +2,18 @@ package com.app.shepherd.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.app.shepherd.data.dto.login.UserProfile
+import androidx.lifecycle.viewModelScope
+import com.app.shepherd.data.dto.user.UserDetailsResponseModel
+import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.data.local.UserRepository
+import com.app.shepherd.data.remote.auth_repository.AuthRepository
+import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -14,20 +21,49 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class WelcomeUserViewModel @Inject constructor(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
 ) : BaseViewModel() {
 
-    private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
-    var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData
+   /* private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
+    var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData*/
+
+    private var _userDetailsLiveData =
+        MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
+    var userDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
+        _userDetailsLiveData
 
 
     // Get LoggedIn User Detail from SharedPrefs
-    fun getUser(): LiveData<Event<UserProfile?>> {
+   /* fun getUser(): LiveData<Event<UserProfile?>> {
         val user = userRepository.getCurrentUser()
         _loggedInUserLiveData.postValue(Event(user))
         return loggedInUserLiveData
 
+    }*/
+
+    //get userID from Shared Pref
+    private fun getUserId(): Int {
+        return userRepository.getUserId()
+    }
+
+    // Get User Details
+    fun getUserDetails(): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
+        val userID = getUserId()
+        viewModelScope.launch {
+            val response = authRepository.getUserDetails(userID)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _userDetailsLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return userDetailsLiveData
     }
 
 
+    // Save User to SharePrefs
+    fun saveUser(user: UserProfiles?) {
+        userRepository.saveUser(user)
+    }
 }
