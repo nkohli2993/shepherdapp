@@ -58,6 +58,7 @@ ext {
     base_url_live = "\"\""
     calednarVersion = '1.0.0'
     numberpadVersion = '1.0.1'
+    biometric_version = '1.1.0'
 }
 
 //ext.base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""

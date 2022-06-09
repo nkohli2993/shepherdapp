@@ -18,10 +18,12 @@
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:windowActionBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@color/colorWhite</item>
     </style>
 
 
@@ -31,7 +33,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
 
 
     <style name="AppTheme.NoActionBar">
@@ -54,7 +55,8 @@
     </style>
 
     <style name="CustomCardViewBottomRounded" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_bottom_round_corners</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_bottom_round_corners
+        </item>
     </style>
 
 

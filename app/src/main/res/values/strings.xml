@@ -306,4 +306,11 @@
     <string name="home">Home</string>
     <string name="medlist_reminder">MedList Reminder</string>
     <string name="my_profile">My Profile</string>
+    <string name="discover_health_and_well_being_resources_for_caregivers_and_loved_ones">Discover health and well-being resources for caregivers and loved ones.</string>
+    <string name="plus_new">+ New</string>
+    <string name="discussion_s">Discussion(s)</string>
+    <string name="unread_message_s">Unread Message(s)</string>
+    <string name="new_articles_and_topics">New articles and topics</string>
+    <string name="no_document_yet">No Document Yet</string>
+    <string name="no_stats_yet">No stats yet</string>
 </resources>

@@ -7,7 +7,7 @@ import com.app.shepherd.SPLASH_DELAY
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.databinding.ActivitySplashBinding
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.walkThrough.WalkThroughActivity
+import com.app.shepherd.ui.component.walk_through.WalkThroughActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Prefs

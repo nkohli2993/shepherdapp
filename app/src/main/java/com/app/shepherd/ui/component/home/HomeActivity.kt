@@ -71,6 +71,7 @@ class HomeActivity : BaseActivity(),
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.home)
                         clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = true
                         tvNew.isVisible = false
                     }
@@ -80,6 +81,7 @@ class HomeActivity : BaseActivity(),
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.medlist_reminder)
                         clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         tvNew.apply {
                             isVisible = true
@@ -95,6 +97,7 @@ class HomeActivity : BaseActivity(),
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.discussions)
                         clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         tvNew.apply {
                             isVisible = true
@@ -125,6 +128,14 @@ class HomeActivity : BaseActivity(),
                     }
                     lockUnlockDrawer(false)
                 }
+                R.id.nav_resources -> {
+                    binding.appBarDashboard.apply {
+                        tvTitle.text = getString(R.string.resources)
+                        clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = false
+                    }
+                    lockUnlockDrawer(false)
+                }
                 R.id.nav_med_detail,
                 R.id.nav_secure_code,
                 R.id.nav_change_password,
@@ -143,10 +154,12 @@ class HomeActivity : BaseActivity(),
     }
 
     private fun lockUnlockDrawer(lock: Boolean) {
-        if (lock) {
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        } else {
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        binding.drawerLayout.apply {
+            if (lock) {
+                setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            } else {
+                setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            }
         }
     }
 
