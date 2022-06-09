@@ -70,7 +70,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     //handleAPIFailure(it.message, it.errorCode)
 
                     hideLoading()
-                    it.errorCode?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it.toString()) }
 
                 }
             }

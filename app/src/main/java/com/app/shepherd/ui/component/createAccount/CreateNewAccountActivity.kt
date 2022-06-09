@@ -91,7 +91,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.errorCode?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it.toString()) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -112,7 +112,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.errorCode?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it.toString()) }
 
                 }
                 is DataResult.Loading -> {

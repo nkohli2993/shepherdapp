@@ -101,7 +101,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.errorCode?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it.toString()) }
 
                 }
             }

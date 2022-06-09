@@ -107,7 +107,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.errorCode?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it.toString()) }
 
                 }
             }
@@ -118,7 +118,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.errorCode?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it.toString()) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -138,7 +138,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.errorCode?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it.toString()) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
