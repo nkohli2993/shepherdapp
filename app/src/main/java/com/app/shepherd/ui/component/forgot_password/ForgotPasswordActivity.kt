@@ -9,6 +9,7 @@ import com.app.shepherd.databinding.ActivityForgotPasswordBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
+import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.ForgotPasswordViewModel
@@ -46,7 +47,8 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Failure -> {
                     hideLoading()
                     Log.d(TAG, "Exception is : ${it.errorCode}")
-                    it.errorCode?.let { showError(this, it.toString()) }
+//                    it.errorCode?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -55,6 +57,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                     hideLoading()
                     it.data.message?.let { it1 ->
                         showSuccess(this, it1)
+                        navigateToLoginScreen()
                     }
                 }
             }
@@ -65,5 +68,9 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+    }
+
+    private fun navigateToLoginScreen() {
+        startActivity<LoginActivity>()
     }
 }
