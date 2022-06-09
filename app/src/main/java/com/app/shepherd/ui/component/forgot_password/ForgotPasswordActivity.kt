@@ -25,6 +25,21 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
     private val forgotPasswordViewModel: ForgotPasswordViewModel by viewModels()
     private val TAG = "ForgotPasswordActivity"
 
+    //Handle Validation
+    private val isValid: Boolean
+        get() {
+            when {
+                binding.edtEmail.text.toString().isEmpty() -> {
+                    binding.edtEmail.error = getString(R.string.please_enter_email_id)
+                    binding.edtEmail.requestFocus()
+                }
+                else -> {
+                    return true
+                }
+            }
+            return false
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
@@ -36,7 +51,9 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btnReset -> {
-                forgotPasswordViewModel.forgotPassword(edtEmail.text.toString().trim())
+                if (isValid) {
+                    forgotPasswordViewModel.forgotPassword(edtEmail.text.toString().trim())
+                }
             }
         }
     }
