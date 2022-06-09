@@ -38,7 +38,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.toolBarNew.listener = this
+       // binding.toolBarNew.listener = this
         binding.listener = this
 
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
@@ -48,14 +48,14 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
         binding.imgCancel.setOnClickListener { binding.editTextSearch.setText("") }
 
-        binding.editTextSearch.addTextChangedListener(object : TextWatcher{
+        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
             override fun afterTextChanged(s: Editable?) {
                 if (s != null) {
-                    if(s.isEmpty()) {
+                    if (s.isEmpty()) {
                         conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                         binding.imgCancel.visibility = View.GONE
                     }
@@ -91,7 +91,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     hideLoading()
                     conditions = it.data.payload?.conditions
                     addLovedOneConditionAdapter = conditions?.let { it1 ->
-                        AddLovedOneConditionAdapter(addLovedOneConditionViewModel,
+                        AddLovedOneConditionAdapter(
+                            addLovedOneConditionViewModel,
                             it1
                         )
                     }
@@ -110,7 +111,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imgBack -> {
+            R.id.ivBack -> {
                 finishActivity()
             }
             R.id.buttonFinish -> {
@@ -129,7 +130,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         if (selectedConditions?.isEmpty() == true)
             conditions.let { selectedConditions?.add(it) }
         else if (conditions.isSelected == true) selectedConditions?.add(conditions)
-        else if(conditions.isSelected == false && selectedConditions?.contains(conditions) == true)
+        else if (conditions.isSelected == false && selectedConditions?.contains(conditions) == true)
             selectedConditions?.remove(conditions)
     }
 
