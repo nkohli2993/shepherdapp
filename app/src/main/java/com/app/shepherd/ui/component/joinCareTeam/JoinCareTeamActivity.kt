@@ -10,11 +10,9 @@ import com.app.shepherd.databinding.ActivityJoinCareTeamBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.addLovedOneCondition.adapter.AddLovedOneConditionAdapter
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.joinCareTeam.adapter.JoinCareTeamAdapter
 import com.app.shepherd.utils.extensions.showError
-import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.CareTeamsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_join_care_team.*
@@ -62,8 +60,11 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                 is DataResult.Success -> {
                     hideLoading()
                     careTeams = it.data.payload.careteams
-                    if(careTeams.isNullOrEmpty()) return@observeEvent
+                    if (careTeams.isNullOrEmpty()) return@observeEvent
                     joinCareTeamAdapter?.updateCareTeams(careTeams!!)
+
+                    binding.layoutCareTeam.visibility = View.VISIBLE
+                    binding.txtNoCareTeamFound.visibility = View.GONE
                 }
 
                 is DataResult.Failure -> {
@@ -71,6 +72,8 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
 
                     hideLoading()
                     it.message?.let { showError(this, it.toString()) }
+                    binding.layoutCareTeam.visibility = View.GONE
+                    binding.txtNoCareTeamFound.visibility = View.VISIBLE
 
                 }
             }
@@ -85,7 +88,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.imageViewBack -> {
+            R.id.imgBack -> {
                 finishActivity()
             }
             R.id.buttonJoin -> {

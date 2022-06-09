@@ -308,4 +308,5 @@
     <string name="home">Home</string>
     <string name="medlist_reminder">MedList Reminder</string>
     <string name="my_profile">My Profile</string>
+    <string name="no_care_team_found">No Care Team Found</string>
 </resources>
