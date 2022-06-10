@@ -5,10 +5,12 @@ import android.view.View
 import androidx.activity.viewModels
 import com.app.shepherd.R
 import com.app.shepherd.databinding.ActivityWelcomeUserBinding
+import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
+import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.view_model.WelcomeUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_welcome_user.*
@@ -28,7 +30,8 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
-        welcomeViewModel.getUser()
+        // welcomeViewModel.getUser()
+        welcomeViewModel.getUserDetails()
     }
 
 
@@ -39,13 +42,41 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
-        welcomeViewModel.loggedInUserLiveData.observeEvent(this) {
-            val name = it?.firstname.toString().replaceFirstChar { it ->
-                it.uppercase()
-            }
+        /* welcomeViewModel.loggedInUserLiveData.observeEvent(this) {
+             val name = it?.firstname.toString().replaceFirstChar { it ->
+                 it.uppercase()
+             }
 
-            //textViewTitle.text = "Hi " + "${it?.firstname.replaceFirstChar { it.uppercase() }}"
-            textViewTitle.text = "Thanks, $name"
+             //textViewTitle.text = "Hi " + "${it?.firstname.replaceFirstChar { it.uppercase() }}"
+             textViewTitle.text = "Thanks, $name"
+         }*/
+
+
+        welcomeViewModel.userDetailsLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.payload.let { payload ->
+                        val firstName =
+                            payload?.userProfiles?.firstname.toString()
+                                .replaceFirstChar { name ->
+                                    name.uppercase()
+                                }
+
+                        textViewTitle.text = "Thanks, $firstName"
+
+                        // Save UserProfile info to SharedPreferences
+                        welcomeViewModel.saveUser(payload?.userProfiles)
+                    }
+                }
+            }
         }
     }
 

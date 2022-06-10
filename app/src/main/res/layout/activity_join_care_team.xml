@@ -5,156 +5,78 @@
 
     <data>
 
-
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
-
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/container"
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreyLight"
-        android:orientation="vertical"
-        tools:context="com.app.shepherd.ui.component.addLovedOne.Hilt_CreateAccountActivity">
-
+        android:orientation="vertical">
 
         <include
-            android:id="@+id/toolBar"
-            layout="@layout/include_toolbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/toolBarNew"
+            layout="@layout/include_toolbar_new" />
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
+            android:id="@+id/layoutCareTeam"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolBar">
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:layout_below="@+id/toolBarNew"
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="@string/toggle_switch_to_join_care_team"
+                android:textSize="@dimen/_16ssp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:textColor="@color/_192032"
+                android:fontFamily="@font/gotham_bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewMembers"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/adapter_join_care_team" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonJoin"
+                style="@style/ButtonPrimary"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_marginVertical="@dimen/_24sdp"
+                android:backgroundTint="@color/_399282"
+                android:onClick="@{listener::onClick}"
+                android:text="@string/join"
+                android:textAllCaps="false" />
 
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_160sdp"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_24sdp"
-                    app:cardBackgroundColor="@color/colorAccent"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:layout_editor_absoluteX="16dp">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+        </LinearLayout>
 
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imageViewLovedOne"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_above="@+id/textViewUploadPhoto"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center"
-                            android:adjustViewBounds="true"
-                            android:onClick="@{listener::onClick}"
-                            android:src="@drawable/ic_group" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtNoCareTeamFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_care_team_found"
+            android:textColor="#399282"
+            android:padding="@dimen/_10sdp"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            app:fontFamily="@font/gotham_bold"
+            android:textSize="@dimen/_20ssp" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewUploadPhoto"
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:layout_gravity="center"
-                            android:layout_marginBottom="@dimen/_12sdp"
-                            android:onClick="@{listener::onClick}"
-                            android:text="@string/join_an_existing_careteam"
-                            android:textColor="@color/colorWhite" />
-                    </RelativeLayout>
+    </RelativeLayout>
 
 
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewInvited"
-                    style="@style/TextViewPoppinsRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    android:text="@string/you_have_been_invited_to"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewImage" />
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewDetails"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewImage"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewImage"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewInvited">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/Id_const_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="@dimen/_4sdp"
-                        >
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerViewMembers"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            tools:itemCount="3"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHeight_max="@dimen/_300sdp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:listitem="@layout/adapter_join_care_team" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonJoin"
-                    style="@style/ButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_marginVertical="@dimen/_24sdp"
-                    android:backgroundTint="@color/colorAccent"
-                    android:onClick="@{listener::onClick}"
-                    android:text="@string/join"
-                    android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewDetails" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

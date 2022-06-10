@@ -58,7 +58,7 @@ abstract class NetworkOnlineDataRepo<RESULT, REQUEST> {
                 )
             )
 
-            Log.e("NetowrkCallException", e.message.toString())
+            Log.e("NetworkCallException", e.message.toString())
         }
 
     }
@@ -88,7 +88,7 @@ abstract class NetworkOnlineDataRepo<RESULT, REQUEST> {
         return try {
             val jsonObject = JSONObject(responseBody.string())
 
-            jsonObject.getString("message")
+            jsonObject.getString("msg")
 
         } catch (e: Exception) {
             e.message!!

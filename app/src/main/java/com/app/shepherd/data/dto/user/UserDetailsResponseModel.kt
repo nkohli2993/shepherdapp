@@ -1,12 +1,11 @@
-package com.app.shepherd.data.dto.add_loved_one
+package com.app.shepherd.data.dto.user
 
 import com.app.shepherd.ui.base.BaseResponseModel
-import com.app.shepherd.ui.base.BaseViewModel
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Deepak Rattan on 06/06/22
+ * Created by Deepak Rattan on 09/06/22
  */
-data class UploadPicResponseModel(
+data class UserDetailsResponseModel(
     @SerializedName("payload") var payload: Payload? = Payload()
 ) : BaseResponseModel()
