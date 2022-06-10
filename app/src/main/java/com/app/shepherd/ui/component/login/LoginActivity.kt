@@ -146,8 +146,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 navigateToForgotPasswordScreen()
             }
             R.id.btnLogin -> {
-                startActivity<HomeActivity>()
-//                doLogin()
+                doLogin()
             }
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()
