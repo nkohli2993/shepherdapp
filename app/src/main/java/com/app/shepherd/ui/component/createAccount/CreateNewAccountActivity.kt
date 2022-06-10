@@ -223,6 +223,9 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             R.id.ivBack -> {
                 onBackPressed()
             }
+            R.id.txtLogin -> {
+                navigateToLoginScreen()
+            }
             // Upload Profile Pic
             R.id.imgUploadProfilePic -> {
                 openImagePicker()
