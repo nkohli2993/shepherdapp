@@ -251,8 +251,7 @@
                             android:layout_gravity="center"
                             android:paddingHorizontal="10dp"
                             app:ccp_countryPreference=""
-                            app:ccp_defaultCode="1"
-                            app:ccp_defaultNameCode="CA"
+                            app:ccp_setCountryByTimeZone="true"
                             app:ccp_showFlag="false"
                             app:ccp_textColor="#1C2020" />
 
