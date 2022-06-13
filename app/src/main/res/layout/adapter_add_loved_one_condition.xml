@@ -12,14 +12,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorGreyLight"
+        >
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_8sdp"
-            app:cardBackgroundColor="@color/colorGreyLight"
+            android:layout_marginVertical="@dimen/_8sdp"
             app:cardCornerRadius="@dimen/_6sdp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,6 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                app:cardBackgroundColor="@color/colorWhite"
                 android:paddingVertical="@dimen/_4sdp">
 
                 <androidx.appcompat.widget.AppCompatCheckBox
