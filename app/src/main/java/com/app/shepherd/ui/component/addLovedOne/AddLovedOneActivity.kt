@@ -28,6 +28,8 @@ import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add_loved_one.*
 import java.io.File
+import java.time.LocalDate
+import java.time.Period
 import java.util.*
 
 
@@ -318,6 +320,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             mMonth,
             mDay
         )
+        // set maximum date to be selected as today
+        datePickerDialog.datePicker.maxDate = calendar.timeInMillis;
         datePickerDialog.show()
     }
 
