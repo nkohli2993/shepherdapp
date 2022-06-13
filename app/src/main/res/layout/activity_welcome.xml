@@ -19,7 +19,7 @@
         android:orientation="vertical"
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_marginVertical="@dimen/_10sdp"
-        tools:context="com.app.shepherd.ui.component.welcome.WelcomeActivity">
+        tools:context="com.app.shepherd.ui.welcome.WelcomeActivity">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivWalkThroughLogo"
