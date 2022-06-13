@@ -16,7 +16,7 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.login.LoginActivity
-import com.app.shepherd.ui.component.welcome.WelcomeActivity
+import com.app.shepherd.ui.welcome.WelcomeActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.PhoneTextFormatter
 import com.app.shepherd.utils.extensions.isValidEmail

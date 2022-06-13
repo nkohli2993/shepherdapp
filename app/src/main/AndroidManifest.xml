@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.USE_BIOMETRIC"/>
 
     <application
         android:name=".ShepherdApp"
@@ -17,16 +18,20 @@
             android:exported="false" />
         <activity
             android:name=".ui.component.login.LoginActivity"
-            android:label="@string/title_activity_login" />
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustPan"  />
         <activity
             android:name=".ui.component.createAccount.CreateNewAccountActivity"
-            android:label="@string/create_account" />
+            android:label="@string/create_account"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.component.resetPassword.ResetPasswordActivity"
-            android:label="@string/title_activity_reset_password" />
+            android:label="@string/title_activity_reset_password"
+            android:windowSoftInputMode="adjustPan"  />
         <activity
             android:name=".ui.component.forgot_password.ForgotPasswordActivity"
-            android:label="@string/forgot_passwd" />
+            android:label="@string/forgot_passwd"
+            android:windowSoftInputMode="adjustPan"  />
         <activity android:name=".ui.component.welcome.WelcomeUserActivity"
             android:label="@string/welcome_user"/>
         <activity
@@ -59,7 +64,7 @@
             android:name=".ui.component.createAccount.CreateAccountActivity"
             android:label="@string/title_activity_create_account" />
         <activity
-            android:name=".ui.component.welcome.WelcomeActivity"
+            android:name=".ui.welcome.WelcomeActivity"
             android:label="@string/title_activity_welcome" />
         <activity
             android:name=".ui.component.addLovedOne.AddLovedOneActivity"

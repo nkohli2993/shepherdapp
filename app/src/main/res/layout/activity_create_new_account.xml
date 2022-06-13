@@ -340,7 +340,8 @@
                             android:layout_width="@dimen/_24sdp"
                             android:layout_height="@dimen/_24sdp"
                             android:padding="@dimen/_2sdp"
-                            android:src="@drawable/ic_eye" />
+                            android:src="@drawable/ic_eye"
+                            android:contentDescription="@string/app_name" />
                     </LinearLayout>
 
                     <CheckBox

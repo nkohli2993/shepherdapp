@@ -10,7 +10,7 @@ import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.ActivityCreateAccountBinding
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.welcome.WelcomeActivity
+import com.app.shepherd.ui.welcome.WelcomeActivity
 import com.app.shepherd.utils.*
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
