@@ -88,17 +88,17 @@
                         android:layout_height="@dimen/_100sdp"
                         android:layout_margin="@dimen/_10sdp"
                         android:adjustViewBounds="true"
-                        android:background="@color/_399282"
                         android:onClick="@{listener::onClick}"
-                        android:src="@drawable/ic_outline_person"
+                        android:src="@drawable/ic_defalut_profile_pic"
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/imgUploadProfilePic"
-                        android:layout_width="@dimen/_34sdp"
-                        android:layout_height="@dimen/_34sdp"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_gravity="bottom|end"
-                        android:layout_marginStart="140dp"
                         android:onClick="@{listener::onClick}"
                         android:src="@drawable/ic_upload_profile_pic" />
 
