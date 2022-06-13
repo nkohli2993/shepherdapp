@@ -17,10 +17,10 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:layout_width="0dp"
-        android:padding="@dimen/_2sdp"
         android:id="@+id/edtAddress"
-        android:layout_height="0dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_2sdp"
         android:textSize="@dimen/_12sdp"
         android:gravity="center_vertical"
         android:text="@string/search"

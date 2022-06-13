@@ -1,4 +1,6 @@
 package com.app.shepherd.ui.component.addLovedOne
+
+import CommonFunctions
 import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,7 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class SearchPlacesActivity : BaseActivity(), SearchPlacesAdapter.ClickListener {
+class SearchPlacesActivity : BaseActivity(), SearchPlacesAdapter.ClickListener,
+    View.OnClickListener {
     private var searchPlacesAdapter: SearchPlacesAdapter? = null
     private lateinit var binding: ActivitySearchPlacesBinding
 
@@ -52,6 +55,8 @@ class SearchPlacesActivity : BaseActivity(), SearchPlacesAdapter.ClickListener {
     }
 
     private fun initListeners() {
+        binding.listener = this
+
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
@@ -84,5 +89,14 @@ class SearchPlacesActivity : BaseActivity(), SearchPlacesAdapter.ClickListener {
     }
 
     override fun observeViewModel() = Unit
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.img_clear_text -> {
+                binding.editTextSearch.text.clear()
+            }
+
+        }
+    }
+
 
 }
