@@ -1,13 +1,19 @@
 package com.app.shepherd.ui.component.login
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.ActivityLoginNewBinding
@@ -24,8 +30,6 @@ import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
-import com.app.shepherd.utils.setupSnackbar
-import com.app.shepherd.utils.showToast
 import com.app.shepherd.view_model.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -108,13 +112,23 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.data.let { it ->
                         it.message?.let { it1 -> showSuccess(this, it1) }
                         // Save User Detail to SharedPref
-                        // it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }
+                        it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }
 
                         // Save token
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
+                        token = it.payload?.token
+
                     }
                     //navigateToWelcomeUserScreen
 //                    navigateToJoinCareScreen()
+
+                    /*  val isUserAllowedBiometricLogin = Prefs.with(ShepherdApp.appContext)!!
+                          .getBoolean(Const.USER_BIOMETRIC_LOGIN_PREFERENCE)
+                      if (isUserAllowedBiometricLogin)
+                          showBiometricPromptForEncryption()
+                      else
+                          navigateToHomeScreen()*/
+
                     navigateToHomeScreen()
                 }
 

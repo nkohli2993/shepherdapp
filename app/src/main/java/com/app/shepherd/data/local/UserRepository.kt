@@ -45,4 +45,8 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
         saveUser(null)
         saveToken(null)
     }
+
+    fun clearSharedPref() {
+        Prefs.with(ShepherdApp.appContext)?.removeAll()
+    }
 }

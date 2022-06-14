@@ -1,10 +1,8 @@
 package com.app.shepherd.ui.component.home
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -12,15 +10,14 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.databinding.ActivityHomeBinding
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.home.adapter.MenuItemAdapter
 import com.app.shepherd.ui.component.home.viewModel.HomeViewModel
-import com.app.shepherd.utils.SingleEvent
-import com.app.shepherd.utils.observeEvent
-import com.google.android.material.navigation.NavigationView
+import com.app.shepherd.ui.component.login.LoginActivity
+import com.app.shepherd.utils.Prefs
+import com.app.shepherd.utils.extensions.showSuccess
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -192,7 +189,16 @@ class HomeActivity : BaseActivity(),
             R.id.llCareTeam -> {
                 navController.navigate(R.id.nav_care_team)
             }
+            R.id.tvLogout -> {
+                showSuccess(this, " User logged out successfully")
+                Prefs.with(ShepherdApp.appContext)?.removeAll()
+                navigateToLoginScreen()
+            }
         }
         drawerLayout?.closeDrawer(GravityCompat.START)
+    }
+
+    private fun navigateToLoginScreen() {
+        startActivity<LoginActivity>()
     }
 }
