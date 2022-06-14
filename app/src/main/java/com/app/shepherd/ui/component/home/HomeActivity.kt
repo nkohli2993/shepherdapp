@@ -1,10 +1,14 @@
 package com.app.shepherd.ui.component.home
 
+import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -22,6 +26,7 @@ import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.observeEvent
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.Executor
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(),
@@ -48,6 +53,8 @@ class HomeActivity : BaseActivity(),
             binding.drawerLayout.openDrawer(GravityCompat.START, true)
         })
     }
+
+
 
 
     override fun observeViewModel() {
