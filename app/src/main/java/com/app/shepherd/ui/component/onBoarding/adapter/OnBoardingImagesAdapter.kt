@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
@@ -25,7 +26,7 @@ class OnBoardingImagesAdapter(
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view === `object` as ConstraintLayout
+        return view == `object` as LinearLayout
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -46,7 +47,7 @@ class OnBoardingImagesAdapter(
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as ConstraintLayout)
+        container.removeView(`object` as LinearLayout)
     }
 
 }
