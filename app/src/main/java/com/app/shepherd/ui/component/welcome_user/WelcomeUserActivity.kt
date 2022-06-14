@@ -90,6 +90,9 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
             R.id.txtLovedOne -> navigateToAddLovedOneScreen()
             R.id.layoutAddLovedOne -> navigateToAddLovedOneScreen()
             R.id.cardViewCareTeam -> navigateToJoinCareTeamScreen()
+            R.id.ivCareTeam -> navigateToJoinCareTeamScreen()
+            R.id.txtJoin -> navigateToJoinCareTeamScreen()
+            R.id.txtCareTeam -> navigateToJoinCareTeamScreen()
         }
     }
 

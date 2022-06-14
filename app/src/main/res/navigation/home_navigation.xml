@@ -96,8 +96,16 @@
         <action
             android:id="@+id/action_add_new_medication_to_add_medication_details"
             app:destination="@+id/nav_medication_details" />
+        <action
+            android:id="@+id/action_add_new_medication_to_add_medication"
+            app:destination="@+id/nav_add_medication" />
 
     </fragment>
+    <fragment
+        android:id="@+id/nav_add_medication"
+        android:name="com.app.shepherd.ui.component.addmedicine.AddMedicineFragment"
+        android:label="@string/add_medicine"
+        tools:layout="@layout/fragment_addmedicine" />
 
     <fragment
         android:id="@+id/nav_medication_details"

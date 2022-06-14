@@ -13,7 +13,7 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOneCondition.adapter.AddLovedOneConditionAdapter
-import com.app.shepherd.ui.component.welcome.WelcomeActivity
+import com.app.shepherd.ui.welcome.WelcomeActivity
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint

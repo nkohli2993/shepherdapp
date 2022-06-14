@@ -88,17 +88,17 @@
                         android:layout_height="@dimen/_100sdp"
                         android:layout_margin="@dimen/_10sdp"
                         android:adjustViewBounds="true"
-                        android:background="@color/_399282"
                         android:onClick="@{listener::onClick}"
-                        android:src="@drawable/ic_outline_person"
+                        android:src="@drawable/ic_defalut_profile_pic"
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/imgUploadProfilePic"
-                        android:layout_width="@dimen/_34sdp"
-                        android:layout_height="@dimen/_34sdp"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_marginEnd="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_8sdp"
                         android:layout_gravity="bottom|end"
-                        android:layout_marginStart="140dp"
                         android:onClick="@{listener::onClick}"
                         android:src="@drawable/ic_upload_profile_pic" />
 
@@ -147,6 +147,7 @@
                             android:drawablePadding="@dimen/_5sdp"
                             android:hint="@string/first_name"
                             android:paddingHorizontal="@dimen/_8sdp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:text="@={viewModel.signUpData.firstname}"
                             android:textSize="14sp"
                             bind:getNameError="@{@string/first_name}" />
@@ -181,6 +182,7 @@
                             android:drawablePadding="@dimen/_5sdp"
                             android:hint="@string/last_name"
                             android:paddingHorizontal="@dimen/_8sdp"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:text="@={viewModel.signUpData.lastname}"
                             android:textSize="14sp"
                             bind:getNameError="@{@string/last_name}" />
@@ -249,8 +251,7 @@
                             android:layout_gravity="center"
                             android:paddingHorizontal="10dp"
                             app:ccp_countryPreference=""
-                            app:ccp_defaultCode="1"
-                            app:ccp_defaultNameCode="CA"
+                            app:ccp_setCountryByTimeZone="true"
                             app:ccp_showFlag="false"
                             app:ccp_textColor="#1C2020" />
 
@@ -338,7 +339,8 @@
                             android:layout_width="@dimen/_24sdp"
                             android:layout_height="@dimen/_24sdp"
                             android:padding="@dimen/_2sdp"
-                            android:src="@drawable/ic_eye" />
+                            android:src="@drawable/ic_eye"
+                            android:contentDescription="@string/app_name" />
                     </LinearLayout>
 
                     <CheckBox
@@ -357,7 +359,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/gotham_light"
+                        android:fontFamily="@font/gotham_book"
+                        android:lineSpacingMultiplier="1.4"
+                        android:textColor="@color/colorBlack"
                         android:text="@string/I_agree_to_terms_and_conditions_and_privacy_policy"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/checkbox_terms_conditions"

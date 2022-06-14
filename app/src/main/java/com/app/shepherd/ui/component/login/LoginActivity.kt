@@ -177,6 +177,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 navigateToForgotPasswordScreen()
             }
             R.id.btnLogin -> {
+                navigateToHomeScreen()
                 if (isValid) {
                     doLogin()
                 }

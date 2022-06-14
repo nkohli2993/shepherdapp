@@ -141,55 +141,56 @@
                 app:cardPreventCornerOverlap="false"
                 tools:layout_editor_absoluteX="16dp">
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutJoinExistingTeam"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
-
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivCareTeam"
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_120sdp"
                         android:layout_gravity="center_vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         android:onClick="@{listener::onClick}"
                         android:padding="@dimen/_18sdp"
                         android:src="@drawable/ic_careteam" />
 
-                    <LinearLayout
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtJoin"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:orientation="vertical"
-                        android:padding="@dimen/_10sdp">
+                        android:layout_height="0dp"
+                        android:focusable="false"
+                        android:fontFamily="@font/gotham_light"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingVertical="@dimen/_2sdp"
+                        android:gravity="bottom"
+                        app:layout_constraintBottom_toTopOf="@id/txtCareTeam"
+                        app:layout_constraintStart_toEndOf="@id/ivCareTeam"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:text="@string/join_an_existing"
+                        android:textColor="#399282"
+                        android:textSize="@dimen/_16ssp" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:fontFamily="@font/gotham_light"
-                            android:onClick="@{listener::onClick}"
-                            android:paddingVertical="@dimen/_2sdp"
-                            android:text="@string/join_an_existing"
-                            android:textColor="#399282"
-                            android:textSize="@dimen/_16ssp" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtCareTeam"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:focusable="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivCareTeam"
+                        app:layout_constraintTop_toBottomOf="@id/txtJoin"
+                        android:fontFamily="@font/gotham_bold"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingVertical="@dimen/_2sdp"
+                        android:text="@string/care_team"
+                        android:textColor="#399282"
+                        android:textSize="@dimen/_18ssp" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:focusable="false"
-                            android:fontFamily="@font/gotham_bold"
-                            android:onClick="@{listener::onClick}"
-                            android:paddingVertical="@dimen/_2sdp"
-                            android:text="@string/care_team"
-                            android:textColor="#399282"
-                            android:textSize="@dimen/_18ssp" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
 

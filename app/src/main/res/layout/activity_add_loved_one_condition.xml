@@ -122,12 +122,10 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewDetails"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginVertical="@dimen/_16sdp"
-            app:cardBackgroundColor="@color/colorWhite"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_6sdp"
             app:cardElevation="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/buttonFinish"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="@+id/cardViewSearch"
             app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
             app:layout_constraintTop_toBottomOf="@+id/cardViewSearch">
@@ -145,9 +143,9 @@
                     tools:listitem="@layout/adapter_add_loved_one_condition"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHeight_max="@dimen/_400sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="@dimen/_200sdp" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -156,9 +154,9 @@
             android:id="@+id/buttonFinish"
             style="@style/ButtonPrimary"
             android:layout_width="wrap_content"
-            android:layout_marginVertical="@dimen/_24sdp"
             android:backgroundTint="#399282"
             android:onClick="@{listener::onClick}"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:text="@string/finish"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"

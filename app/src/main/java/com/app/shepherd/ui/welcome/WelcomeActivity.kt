@@ -1,4 +1,4 @@
-package com.app.shepherd.ui.component.welcome
+package com.app.shepherd.ui.welcome
 
 import android.os.Bundle
 import android.view.View
@@ -13,6 +13,7 @@ import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.createAccount.CreateNewAccountActivity
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.app.shepherd.ui.component.login.LoginActivity
+import com.app.shepherd.ui.component.welcome.WelcomeViewModel
 import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.observe
 import com.app.shepherd.utils.setupSnackbar

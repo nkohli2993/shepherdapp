@@ -144,7 +144,7 @@
     <string name="test_text_small">using Lorem Ipsum is that it has a more-or-less normal distribution of letters</string>
     <string name="your_message">Your Message</string>
     <string name="reply">Reply</string>
-    <string name="add">Add</string>
+    <string name="add_medicine">Add medicine</string>
     <string name="event_name">Event Name</string>
     <string name="location">Location</string>
     <string name="assign_to">Assign to…</string>
@@ -175,6 +175,7 @@
     <string name="days">Days</string>
     <string name="test_day">Monday</string>
     <string name="menu_medication_details">Medication Details</string>
+    <string name="add">Medication Details</string>
     <string name="menu_notifications">Notifications</string>
     <string name="test_day_short">Mon</string>
     <string name="test_date_day">18</string>
@@ -246,10 +247,11 @@
     <string name="try_shepherd_for_30_days">Try Shepherd free for 30 days.</string>
     <string name="create_account_description">Are you new to the platform? Please fill the below details to create your account.</string>
     <string name="agree_to_terms_and_conditions_and_privacy_policy">I agree to the Terms &amp; \nConditions and Privacy Policy</string>
-    <string name="I_agree_to_terms_and_conditions_and_privacy_policy">I agree to the <font color="#A26DCB">Terms &amp;</font> <font color="#A26DCB">\nConditions</font> and <font color="#A26DCB">Privacy Policy.</font></string>
+    <string name="I_agree_to_terms_and_conditions_and_privacy_policy">I agree to the <font color="#A26DCB"><b>Terms &amp; \nConditions</b></font> and <font color="#A26DCB"><b>Privacy Policy.</b></font></string>
     <string name="enter_phone_number">Enter phone number</string>
     <string name="enter_address">Enter address</string>
     <string name="should_be_minimum_5_digits">Length Should Be of 5 to 15 Digits</string>
+    <string name="should_be_minimum_3_characters">Should be minimum of 3 characters</string>
     <string name="or_login_with_biometric">Or login with biometric</string>
     <string name="welcome_user_desc">Now either add the name of the Loved One for whom you will be caring, or, if you received an invitation from someone else, join an existing CareTeam.</string>
     <string name="add_your">Add Your</string>
@@ -316,6 +318,11 @@
     <string name="new_articles_and_topics">New articles and topics</string>
     <string name="no_document_yet">No Document Yet</string>
     <string name="no_stats_yet">No stats yet</string>
-
-
+    <string name="prompt_info_title">Sample App Authentication</string>
+    <string name="prompt_info_subtitle">Please login to get access</string>
+    <string name="prompt_info_description">Sample App is using Android biometric authentication</string>
+    <string name="prompt_info_use_app_password">Use app password</string>
+    <string name="secret_key_name">biometric_sample_encryption_key</string>
+    <string name="next">Next</string>
+    <string name="time">Time</string>
 </resources>

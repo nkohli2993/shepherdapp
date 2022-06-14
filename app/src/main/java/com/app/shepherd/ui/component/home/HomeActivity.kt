@@ -136,6 +136,7 @@ class HomeActivity : BaseActivity(),
                     }
                     lockUnlockDrawer(false)
                 }
+                R.id.nav_add_medication,
                 R.id.nav_med_detail,
                 R.id.nav_secure_code,
                 R.id.nav_change_password,
