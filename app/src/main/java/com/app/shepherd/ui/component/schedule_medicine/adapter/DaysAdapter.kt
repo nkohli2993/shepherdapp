@@ -1,10 +1,9 @@
-package com.app.shepherd.ui.component.addmedicine.adapter
+package com.app.shepherd.ui.component.schedule_medicine.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.CheckBox
 import android.widget.TextView

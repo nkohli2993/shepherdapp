@@ -1,4 +1,4 @@
-package com.app.shepherd.ui.component.addmedicine
+package com.app.shepherd.ui.component.schedule_medicine
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
-import com.app.shepherd.databinding.FragmentAddmedicineBinding
+import com.app.shepherd.databinding.FragmentSchedulweMedicineBinding
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.addmedicine.adapter.DaysAdapter
+import com.app.shepherd.ui.component.schedule_medicine.adapter.DaysAdapter
 
 
-class AddMedicineFragment : BaseFragment<FragmentAddmedicineBinding>(),
+class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
     View.OnClickListener {
-    private lateinit var fragmentAddMedicineBinding: FragmentAddmedicineBinding
+    private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding
     var alDose = arrayOf("Select Dose", "160 mg", "80 mg", "40 mg", "20 mg", "10 mg")
     var alFrequency = arrayOf(
         "Select Frequency",
@@ -40,10 +40,10 @@ class AddMedicineFragment : BaseFragment<FragmentAddmedicineBinding>(),
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        fragmentAddMedicineBinding =
-            FragmentAddmedicineBinding.inflate(inflater, container, false)
+        fragmentScheduleMedicineBinding =
+            FragmentSchedulweMedicineBinding.inflate(inflater, container, false)
 
-        return fragmentAddMedicineBinding.root
+        return fragmentScheduleMedicineBinding.root
     }
 
     override fun observeViewModel() {
@@ -51,11 +51,11 @@ class AddMedicineFragment : BaseFragment<FragmentAddmedicineBinding>(),
     }
 
     override fun initViewBinding() {
-        fragmentAddMedicineBinding.listener = this
+        fragmentScheduleMedicineBinding.listener = this
         val doseAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, alDose)
         doseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        fragmentAddMedicineBinding.spDose.adapter = doseAdapter
+        fragmentScheduleMedicineBinding.spDose.adapter = doseAdapter
         val frequencyAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(
                 requireContext(),
@@ -63,14 +63,14 @@ class AddMedicineFragment : BaseFragment<FragmentAddmedicineBinding>(),
                 alFrequency
             )
         frequencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        fragmentAddMedicineBinding.spFrequency.adapter = frequencyAdapter
-        fragmentAddMedicineBinding.spDays.adapter =
+        fragmentScheduleMedicineBinding.spFrequency.adapter = frequencyAdapter
+        fragmentScheduleMedicineBinding.spDays.adapter =
             DaysAdapter(requireContext(), alDays)
 
     }
 
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_addmedicine
+        return R.layout.fragment_schedulwe_medicine
     }
 
     override fun onClick(v: View?) {

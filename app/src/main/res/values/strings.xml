@@ -144,7 +144,7 @@
     <string name="test_text_small">using Lorem Ipsum is that it has a more-or-less normal distribution of letters</string>
     <string name="your_message">Your Message</string>
     <string name="reply">Reply</string>
-    <string name="add_medicine">Add medicine</string>
+    <string name="schedule_medicine">Schedule medicine</string>
     <string name="event_name">Event Name</string>
     <string name="location">Location</string>
     <string name="assign_to">Assign to…</string>
