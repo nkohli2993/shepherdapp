@@ -33,7 +33,6 @@
     </style>
 
 
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -54,7 +53,8 @@
     </style>
 
     <style name="CustomCardViewBottomRounded" parent="@style/Widget.MaterialComponents.CardView">
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_bottom_round_corners</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_bottom_round_corners
+        </item>
     </style>
 
 
@@ -88,6 +88,16 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:textSize">@dimen/_13ssp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextViewGothamMedium">
+        <item name="android:fontFamily">@font/gotham_medium</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/_192032</item>
         <item name="android:textSize">@dimen/_13ssp</item>
         <item name="android:textStyle">normal</item>
         <item name="android:includeFontPadding">false</item>
@@ -148,8 +158,15 @@
         <item name="cornerSize">@dimen/_36sdp</item>
         <item name="cornerFamily">rounded</item>
     </style>
+
     <style name="ShapeAppearanceOverlay.App.CornerSize3Percent" parent="">
         <item name="cornerSize">@dimen/_12sdp</item>
         <item name="cornerFamily">rounded</item>
+    </style>
+
+
+    <style name="CustomCheckbox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_selector</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>
