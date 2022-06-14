@@ -3,18 +3,25 @@ package com.app.shepherd.ui.component.addLovedOneCondition
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.medical_conditions.Conditions
+import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.app.shepherd.databinding.ActivityAddLovedOneConditionBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOneCondition.adapter.AddLovedOneConditionAdapter
-import com.app.shepherd.ui.component.welcome.WelcomeActivity
+import com.app.shepherd.ui.component.home.HomeActivity
+import com.app.shepherd.ui.welcome.WelcomeActivity
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,11 +41,13 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var selectedConditions: ArrayList<Conditions>? = ArrayList()
     private var searchedConditions: ArrayList<Conditions>? = ArrayList()
     private var addLovedOneConditionAdapter: AddLovedOneConditionAdapter? = null
-
+    private var medicalConditionsLovedOneArray: ArrayList<MedicalConditionsLovedOneRequestModel> =
+        ArrayList()
+    private var TAG = "AddLovedOneConditionActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       // binding.toolBarNew.listener = this
+        // binding.toolBarNew.listener = this
         binding.listener = this
 
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
@@ -107,6 +116,28 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
+
+
+        addLovedOneConditionViewModel.userConditionsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.message?.let { it1 -> showSuccess(this, it1) }
+                    navigateToHomeScreen()
+                }
+
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+
+                }
+            }
+
+        }
+
     }
 
     override fun onClick(p0: View?) {
@@ -115,7 +146,31 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 finishActivity()
             }
             R.id.buttonFinish -> {
-                navigateToWelcomeScreen()
+                //navigateToWelcomeScreen()
+                // Get user id from shared preference
+                val userID = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.USER_ID, 0)
+                val ids = selectedConditions?.map {
+                    it.id
+                }
+
+                if (medicalConditionsLovedOneArray.isNotEmpty()) {
+                    medicalConditionsLovedOneArray.clear()
+                }
+
+                if (ids != null) {
+                    for (i in ids.indices) {
+                        medicalConditionsLovedOneArray.add(MedicalConditionsLovedOneRequestModel(i?.let {
+                            ids[it]
+                        }, userID))
+                    }
+                }
+
+                Log.d(
+                    TAG,
+                    "Size of selected medical conditions array :${medicalConditionsLovedOneArray.size} "
+                )
+
+                addLovedOneConditionViewModel.createMedicalConditions(medicalConditionsLovedOneArray)
             }
         }
     }
@@ -123,6 +178,10 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
     private fun navigateToWelcomeScreen() {
         startActivityWithFinishAffinity<WelcomeActivity>()
+    }
+
+    private fun navigateToHomeScreen() {
+        startActivityWithFinish<HomeActivity>()
     }
 
     override fun itemSelected(conditions: Conditions) {

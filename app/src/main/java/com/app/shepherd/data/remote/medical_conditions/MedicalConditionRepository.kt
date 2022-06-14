@@ -1,6 +1,8 @@
 package com.app.shepherd.data.remote.medical_conditions
 
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
+import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
+import com.app.shepherd.data.dto.medical_conditions.UserConditionsResponseModel
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.NetworkOnlineDataRepo
@@ -16,6 +18,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class MedicalConditionRepository @Inject constructor(private val apiService: ApiService) {
+
     // Get Medical Conditions
     suspend fun getMedicalConditions(
         pageNumber: Int,
@@ -25,6 +28,17 @@ class MedicalConditionRepository @Inject constructor(private val apiService: Api
             NetworkOnlineDataRepo<MedicalConditionResponseModel, MedicalConditionResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<MedicalConditionResponseModel> {
                 return apiService.getMedicalConditions(pageNumber, limit)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+
+    // Create Bulk One Medical Conditions
+    suspend fun createMedicalConditions(conditions: ArrayList<MedicalConditionsLovedOneRequestModel>): Flow<DataResult<UserConditionsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<UserConditionsResponseModel, UserConditionsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UserConditionsResponseModel> {
+                return apiService.createBulkOneConditions(conditions)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

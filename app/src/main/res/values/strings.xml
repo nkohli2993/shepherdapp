@@ -250,7 +250,7 @@
     <string name="enter_phone_number">Enter phone number</string>
     <string name="enter_address">Enter address</string>
     <string name="should_be_minimum_5_digits">Length Should Be of 5 to 15 Digits</string>
-    <string name="should_be_minimum_3_characters">Should be minimum of 3 characters</string>
+    <string name="should_be_minimum_3_characters">should be minimum of 3 characters</string>
     <string name="or_login_with_biometric">Or login with biometric</string>
     <string name="welcome_user_desc">Now either add the name of the Loved One for whom you will be caring, or, if you received an invitation from someone else, join an existing CareTeam.</string>
     <string name="add_your">Add Your</string>

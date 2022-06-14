@@ -8,6 +8,8 @@ import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
+import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
+import com.app.shepherd.data.dto.medical_conditions.UserConditionsResponseModel
 import com.app.shepherd.data.dto.relation.RelationResponseModel
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
@@ -62,5 +64,8 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<UserDetailsResponseModel>
 
+
+    @POST(ApiConstants.MEDICAL_CONDITIONS.CREATE_BULK_ONE_CONDITIONS)
+    suspend fun createBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
 
 }
