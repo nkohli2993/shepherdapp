@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.forgot_password
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,7 +12,6 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.extensions.showError
-import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.ForgotPasswordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_forgot_password.*
@@ -73,8 +73,16 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Success -> {
                     hideLoading()
                     it.data.message?.let { it1 ->
-                        showSuccess(this, it1)
-                        navigateToLoginScreen()
+                        // showSuccess(this, it1)
+                        val alertDialog = AlertDialog.Builder(this)
+
+                        alertDialog.apply {
+                            setTitle("Reset Password")
+                            setMessage(it1)
+                            setPositiveButton("OK") { _, _ ->
+                                navigateToLoginScreen()
+                            }
+                        }.create().show()
                     }
                 }
             }
