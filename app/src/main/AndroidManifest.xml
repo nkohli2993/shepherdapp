@@ -23,7 +23,7 @@
         <activity
             android:name=".ui.component.createAccount.CreateNewAccountActivity"
             android:label="@string/create_account"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.component.resetPassword.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password"
