@@ -25,13 +25,12 @@ import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.app.shepherd.ui.component.resetPassword.ResetPasswordActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
-import com.app.shepherd.utils.BiometricUtils
-import com.app.shepherd.utils.SingleEvent
+import com.app.shepherd.utils.*
+import com.app.shepherd.utils.Const.BIOMETRIC_ENABLE
+import com.app.shepherd.utils.Const.DEVICE_ID
 import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
-import com.app.shepherd.utils.setupSnackbar
-import com.app.shepherd.utils.showToast
 import com.app.shepherd.view_model.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -95,14 +94,18 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             binding.edtPasswd.setSelection(binding.edtPasswd.length())
         }
         loginViewModel.clearToken()
-        fingerPrintExecute()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        fingerPrintExecute()
     }
 
     private fun fingerPrintExecute() {
         if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(this) && BiometricUtils.isFingerprintAvailable(
                 this
-            )
+            ) && Prefs.with(this)!!.getBoolean(BIOMETRIC_ENABLE)
         ) {
             executor = ContextCompat.getMainExecutor(this)
             biometricPrompt = BiometricPrompt(this, executor,
@@ -274,13 +277,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun doLogin(isBioMetric: Boolean) {
         loginViewModel.apply {
-            if (isBioMetric) {
-                loginData.value?.let {
-                    it.email = null
-                    it.password = null
-                    it.device = CommonFunctions.getDeviceId(this@LoginActivity)
-                }
-            }
+//            if (isBioMetric) {
+//                loginData.value?.let {
+//                    it.email = null
+//                    it.password = null
+//                    it.device = CommonFunctions.getDeviceId(this@LoginActivity)
+//                }
+//            }
             login(isBioMetric)
         }
     }
