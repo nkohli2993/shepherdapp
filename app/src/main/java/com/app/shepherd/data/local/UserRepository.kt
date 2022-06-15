@@ -4,6 +4,7 @@ import android.util.Log
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.network.retrofit.ApiService
+import com.app.shepherd.utils.Const.DEVICE_ID
 import com.app.shepherd.utils.Const.USER_DETAILS
 import com.app.shepherd.utils.Const.USER_ID
 import com.app.shepherd.utils.Const.USER_TOKEN
@@ -40,6 +41,9 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
 
     fun getUserId() = Prefs.with(ShepherdApp.appContext)!!.getInt(USER_ID, 0)
 
+    fun clearToken() {
+        Prefs.with(ShepherdApp.appContext)!!.remove(USER_TOKEN)
+    }
 
     fun clearData() {
         saveUser(null)

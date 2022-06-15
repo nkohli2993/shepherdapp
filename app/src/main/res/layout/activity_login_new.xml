@@ -175,6 +175,7 @@
                     android:textSize="@dimen/_13ssp" />
 
                 <LinearLayout
+                    android:id="@+id/llBiometricWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -214,6 +215,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_20sdp"
+                    android:onClick="@{listener::onClick}"
                     android:src="@drawable/ic_biometric" />
 
 

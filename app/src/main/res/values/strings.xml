@@ -318,9 +318,9 @@
     <string name="new_articles_and_topics">New articles and topics</string>
     <string name="no_document_yet">No Document Yet</string>
     <string name="no_stats_yet">No stats yet</string>
-    <string name="prompt_info_title">Sample App Authentication</string>
+    <string name="prompt_info_title">Shepherd app Authentication</string>
     <string name="prompt_info_subtitle">Please login to get access</string>
-    <string name="prompt_info_description">Sample App is using Android biometric authentication</string>
+    <string name="prompt_info_description">Shepherd App is using Android biometric authentication</string>
     <string name="prompt_info_use_app_password">Use app password</string>
     <string name="secret_key_name">biometric_sample_encryption_key</string>
     <string name="next">Next</string>

@@ -239,7 +239,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     passwd = editTextPassword.text.toString().trim()
                     phoneNumber = edtPhoneNumber.text.toString().trim()
                     phoneCode = ccp.selectedCountryCode
-                    Log.d(TAG, "onClick: ProfilePicUrl: ${BuildConfig.BASE_URL + profilePicUrl}")
                     createNewAccountViewModel.createAccount(
                         phoneCode,
                         BuildConfig.BASE_URL + profilePicUrl,

@@ -26,6 +26,7 @@ import android.view.inputmethod.InputMethodManager
 import android.webkit.MimeTypeMap
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.hardware.fingerprint.FingerprintManagerCompat
 import androidx.core.text.inSpans
 import com.app.shepherd.BuildConfig
 import com.app.shepherd.R

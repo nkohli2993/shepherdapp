@@ -39,9 +39,9 @@ class LoginViewModel @Inject constructor(
     private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
     var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData
 
-    fun login(): LiveData<Event<DataResult<LoginResponseModel>>> {
+    fun login(isBioMetric: Boolean): LiveData<Event<DataResult<LoginResponseModel>>> {
         viewModelScope.launch {
-            val response = loginData.value?.let { authRepository.login(it) }
+            val response = loginData.value?.let { authRepository.login(it, isBioMetric) }
             withContext(Dispatchers.Main) {
                 response?.collect { _loginResponseLiveData.postValue(Event(it)) }
             }
@@ -59,13 +59,16 @@ class LoginViewModel @Inject constructor(
     fun saveToken(token: String) {
         userRepository.saveToken(token)
     }
+    fun clearToken(){
+        userRepository.clearToken()
+    }
 
     // Get LoggedIn User Detail
-  /*  fun getUser(): LiveData<Event<UserProfile?>> {
-        val user = userRepository.getCurrentUser()
-        _loggedInUserLiveData.postValue(Event(user))
-        return loggedInUserLiveData
+    /*  fun getUser(): LiveData<Event<UserProfile?>> {
+          val user = userRepository.getCurrentUser()
+          _loggedInUserLiveData.postValue(Event(user))
+          return loggedInUserLiveData
 
-    }
-*/
+      }
+  */
 }

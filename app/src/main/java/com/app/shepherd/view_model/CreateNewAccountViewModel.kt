@@ -51,7 +51,7 @@ class CreateNewAccountViewModel @Inject constructor(
         lastName: String?,
         email: String?,
         passwd: String?,
-        phoneNumber: String?,
+        phoneNumber: String?
     ): LiveData<Event<DataResult<LoginResponseModel>>> {
         //Update the phone code
         signUpData.value.let {

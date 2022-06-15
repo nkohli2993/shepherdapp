@@ -52,6 +52,7 @@ class HomeActivity : BaseActivity(),
         binding.appBarDashboard.ivMenu.setOnClickListener(View.OnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START, true)
         })
+
     }
 
 

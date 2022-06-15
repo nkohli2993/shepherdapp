@@ -23,6 +23,9 @@ interface ApiService {
     @POST(ApiConstants.AUTHENTICATION.LOGIN)
     suspend fun login(@Body value: UserSignupData): Response<LoginResponseModel>
 
+    @POST(ApiConstants.AUTHENTICATION.LOGIN_WITH_DEVICE)
+    suspend fun loginWithDevice(@Body value: UserSignupData): Response<LoginResponseModel>
+
     @POST(ApiConstants.AUTHENTICATION.SIGN_UP)
     suspend fun signUp(@Body value: UserSignupData): Response<LoginResponseModel>
 
