@@ -79,6 +79,7 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
 
             override fun onPageSelected(position: Int) {
                 binding.btnSkip.isVisible = position != 3
+                binding.btnGetStarted.isVisible = !(position == 0 || position == 1 || position == 2)
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
