@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.addLovedOneCondition
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,7 +22,6 @@ import com.app.shepherd.ui.welcome.WelcomeActivity
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showError
-import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -125,8 +125,15 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    it.data.message?.let { it1 -> showSuccess(this, it1) }
-                    navigateToHomeScreen()
+                    //it.data.message?.let { it1 -> showSuccess(this, it1) }
+                    val alertDialog = AlertDialog.Builder(this)
+                    alertDialog.apply {
+                        setTitle("Medical Conditions")
+                        setMessage("Medical Conditions added successfully...")
+                        setPositiveButton("OK") { _, _ ->
+                            navigateToHomeScreen()
+                        }
+                    }.create().show()
                 }
 
                 is DataResult.Failure -> {
