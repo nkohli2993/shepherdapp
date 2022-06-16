@@ -179,8 +179,13 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     TAG,
                     "Size of selected medical conditions array :${medicalConditionsLovedOneArray.size} "
                 )
-
-                addLovedOneConditionViewModel.createMedicalConditions(medicalConditionsLovedOneArray)
+                if (medicalConditionsLovedOneArray.size != 0) {
+                    addLovedOneConditionViewModel.createMedicalConditions(
+                        medicalConditionsLovedOneArray
+                    )
+                } else {
+                    showError(this,"Please select at least once medical condition...")
+                }
             }
         }
     }
