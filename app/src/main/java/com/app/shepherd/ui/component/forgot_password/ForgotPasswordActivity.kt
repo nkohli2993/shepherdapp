@@ -1,6 +1,7 @@
 package com.app.shepherd.ui.component.forgot_password
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -74,15 +75,16 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                     hideLoading()
                     it.data.message?.let { it1 ->
                         // showSuccess(this, it1)
-                        val alertDialog = AlertDialog.Builder(this)
-
-                        alertDialog.apply {
+                        val builder = AlertDialog.Builder(this)
+                        val dialog = builder.apply {
                             setTitle("Reset Password")
                             setMessage(it1)
                             setPositiveButton("OK") { _, _ ->
                                 navigateToLoginScreen()
                             }
-                        }.create().show()
+                        }.create()
+                        dialog.show()
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                     }
                 }
             }
