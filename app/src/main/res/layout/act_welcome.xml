@@ -31,7 +31,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginVertical="@dimen/_20sdp"
-            android:src="@drawable/walk_through_1" />
+            android:src="@drawable/welcome" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTitle"
