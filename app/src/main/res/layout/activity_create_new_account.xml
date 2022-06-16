@@ -252,7 +252,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:paddingHorizontal="10dp"
-                            app:ccp_defaultNameCode="DO"
+                            app:ccp_defaultNameCode="US"
                             app:ccp_showFlag="false"
                             app:ccp_textColor="#1C2020" />
 
