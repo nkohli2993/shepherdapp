@@ -12,5 +12,7 @@ data class Payload(
     @SerializedName("email") var email: String? = null,
     @SerializedName("token") var token: String? = null,
     @SerializedName("user_roles") var userRoles: ArrayList<UserRoles?>? = arrayListOf(),
-    @SerializedName("user_profile") var userProfile: UserProfile? = UserProfile()
+    @SerializedName("user_profile") var userProfile: UserProfile? = UserProfile(),
+    @SerializedName("is_biometric") var isBiometric: Boolean? = null
+
 )

@@ -24,7 +24,7 @@ class MyAppInterceptor @Inject constructor() : Interceptor {
                 "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")}"
             )
             .add(
-                "device",
+                "device-id",
                 "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.DEVICE_ID, "")}"
             )
             .build()

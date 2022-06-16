@@ -9,6 +9,7 @@ import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.relation.RelationResponseModel
+import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import okhttp3.MultipartBody
@@ -28,6 +29,9 @@ interface ApiService {
 
     @POST(ApiConstants.AUTHENTICATION.SIGN_UP)
     suspend fun signUp(@Body value: UserSignupData): Response<LoginResponseModel>
+
+    @PATCH(ApiConstants.AUTHENTICATION.BIOMETRIC)
+    suspend fun registerBioMetric(@Body value: BioMetricData): Response<LoginResponseModel>
 
     @Multipart
     @POST(ApiConstants.AUTHENTICATION.UPLOAD_IMAGE)

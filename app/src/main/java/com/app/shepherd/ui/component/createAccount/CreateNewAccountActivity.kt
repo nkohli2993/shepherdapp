@@ -51,7 +51,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var roleId: String? = null
     private var isPasswordShown = false
     private var TAG = "CreateNewAccountActivity"
-    private var enableBioMetric = false
 
 
     // Handle Validation
@@ -189,20 +188,43 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                                 )
                             }
                         }
-//                        if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
-//                                this
-//                            ) && BiometricUtils.isFingerprintAvailable(
-//                                this
-//                            )
-//                        ) {
-//                            showBioMetricDialog()
-//                        } else {
-//                            navigateToWelcomeUserScreen()
-//                        }
-//                        Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, enableBioMetric)
-//
+                        if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
+                                this
+                            ) && BiometricUtils.isFingerprintAvailable(
+                                this
+                            )
+                        ) {
+                            showBioMetricDialog()
+                        } else {
+                            navigateToWelcomeUserScreen()
+                        }
                     }
 
+                }
+            }
+        }
+
+        createNewAccountViewModel.bioMetricLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.let { it1 ->
+                        // Save Token to SharedPref
+                        it1.payload?.let { payload ->
+                            Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
+
+                        }
+                        navigateToWelcomeUserScreen()
+                    }
                 }
             }
         }
@@ -280,18 +302,20 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         val noBtn = dialog.findViewById(R.id.btnNo) as Button
         yesBtn.setOnClickListener {
             dialog.dismiss()
-            registerUser(true)
+            registerBiometric(true)
         }
         noBtn.setOnClickListener {
             dialog.dismiss()
-            registerUser(false)
+            navigateToWelcomeUserScreen()
         }
+        dialog.setCancelable(false)
         dialog.show()
     }
 
-    private fun registerUser(isBioMetricEnable: Boolean) {
-        enableBioMetric = isBioMetricEnable
-
+    private fun registerBiometric(isBioMetricEnable: Boolean) {
+        createNewAccountViewModel.registerBioMetric(
+            isBioMetricEnable
+        )
     }
 
     private fun setPhoneNumberFormat() {

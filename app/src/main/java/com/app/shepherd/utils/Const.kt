@@ -9,6 +9,7 @@ object Const {
     const val USER_ID = "USER ID"
     const val DEVICE_ID = "DEVICE_ID"
     const val BIOMETRIC_ENABLE = "BIOMETRIC_ENABLE"
+    const val SECOND_TIME_LOGIN = "SECOND_TIME_LOGIN"
 }
 
 object Drawable {

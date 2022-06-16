@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.login.UserProfile
+import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.auth_repository.AuthRepository
@@ -30,6 +31,9 @@ class LoginViewModel @Inject constructor(
     var loginData = MutableLiveData<UserSignupData>().apply {
         value = UserSignupData()
     }
+    var bioMetricData = MutableLiveData<BioMetricData>().apply {
+        value = BioMetricData()
+    }
 
     private var _loginResponseLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
 
@@ -38,6 +42,10 @@ class LoginViewModel @Inject constructor(
 
     private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
     var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData
+
+    private var _bioMetricLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
+    var bioMetricLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
+        _bioMetricLiveData
 
     fun login(isBioMetric: Boolean): LiveData<Event<DataResult<LoginResponseModel>>> {
         viewModelScope.launch {
@@ -50,6 +58,23 @@ class LoginViewModel @Inject constructor(
         return loginResponseLiveData
     }
 
+    fun registerBioMetric(
+        isBioMetricEnable: Boolean
+    ): LiveData<Event<DataResult<LoginResponseModel>>> {
+        //Update the phone code
+        bioMetricData.value.let {
+            it?.isBiometric = isBioMetricEnable
+        }
+        viewModelScope.launch {
+            val response = bioMetricData.value?.let { authRepository.registerBioMetric(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _bioMetricLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return bioMetricLiveData
+    }
     // Save User to SharePrefs
     /*fun saveUser(user: UserProfile) {
         userRepository.saveUser(user)
@@ -59,7 +84,8 @@ class LoginViewModel @Inject constructor(
     fun saveToken(token: String) {
         userRepository.saveToken(token)
     }
-    fun clearToken(){
+
+    fun clearToken() {
         userRepository.clearToken()
     }
 
