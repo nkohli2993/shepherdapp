@@ -214,6 +214,7 @@
     <!--    <string name="shepherd_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>-->
     <string name="skip">Skip</string>
     <string name="get_started">Get Started</string>
+    <string name="next">Next</string>
     <string name="create_new">Create New</string>
     <string name="create">Create</string>
     <string name="welcome">Welcome</string>

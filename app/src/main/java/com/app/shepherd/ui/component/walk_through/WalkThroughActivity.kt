@@ -18,6 +18,7 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWalkThroughBinding
     private var mOnBoardingImagesAdapter: OnBoardingImagesAdapter? = null
+    private var selectedPage: Int = 0
 
 
     override fun initViewBinding() {
@@ -78,8 +79,16 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onPageSelected(position: Int) {
+                selectedPage = position
                 binding.btnSkip.isVisible = position != 3
-                binding.btnGetStarted.isVisible = !(position == 0 || position == 1 || position == 2)
+                // binding.btnGetStarted.isVisible = !(position == 0 || position == 1 || position == 2)
+                if ((position == 0 || position == 1 || position == 2)) {
+                    binding.btnGetStarted.visibility = View.GONE
+                    binding.btnNext.visibility = View.VISIBLE
+                } else {
+                    binding.btnGetStarted.visibility = View.VISIBLE
+                    binding.btnNext.visibility = View.GONE
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
@@ -96,6 +105,10 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btnGetStarted -> {
                 navigateToWelcomeScreen()
+            }
+            R.id.btnNext -> {
+                // Move to next slide of view pager
+                binding.viewPager.currentItem = selectedPage + 1
             }
         }
     }
