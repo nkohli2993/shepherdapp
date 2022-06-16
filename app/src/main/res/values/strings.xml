@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Shepherd Care</string>
+    <string name="app_name">Shepherd</string>
     <string name="no_data">No Data</string>
     <string name="search_by_name">Search by name</string>
     <string name="search_error">there is no such recipe name</string>
