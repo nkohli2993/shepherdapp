@@ -1,6 +1,7 @@
 package com.app.shepherd.ui.component.addLovedOneCondition
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -126,14 +127,16 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 is DataResult.Success -> {
                     hideLoading()
                     //it.data.message?.let { it1 -> showSuccess(this, it1) }
-                    val alertDialog = AlertDialog.Builder(this)
-                    alertDialog.apply {
+                    val builder = AlertDialog.Builder(this)
+                    val dialog = builder.apply {
                         setTitle("Medical Conditions")
                         setMessage("Medical Conditions added successfully...")
                         setPositiveButton("OK") { _, _ ->
                             navigateToHomeScreen()
                         }
-                    }.create().show()
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
 
                 is DataResult.Failure -> {
