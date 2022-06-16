@@ -2,6 +2,7 @@ package com.app.shepherd.ui.component.addLovedOne
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -323,6 +324,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         // set maximum date to be selected as today
         datePickerDialog.datePicker.maxDate = calendar.timeInMillis;
         datePickerDialog.show()
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+        datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
     }
 
 
