@@ -10,7 +10,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Do you want to enable bio metric?"
+        android:fontFamily="@font/gotham_medium"
+        android:text="Shepherd Cares"
+        android:textColor="@color/_192032"
+        android:textSize="@dimen/_12ssp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvSubTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:fontFamily="@font/gotham_book"
+        android:gravity="center"
+        android:text="Do you want to login with your biometric for next time?"
         android:textColor="@color/_192032"
         android:textSize="@dimen/_14ssp" />
 
@@ -18,14 +32,14 @@
         android:id="@+id/clBottomWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_below="@+id/tvSubTitle"
+        android:layout_marginTop="@dimen/_15sdp"
         android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnNo"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_weight="1"
             android:background="@drawable/shape_black_border"
@@ -39,7 +53,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnYes"
             android:layout_width="0dp"
-            android:layout_height="@dimen/_40sdp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_weight="1"
