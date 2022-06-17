@@ -121,8 +121,8 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
             } else {
                 val builder = AlertDialog.Builder(this)
                 val dialog = builder.apply {
-                    setTitle("Account Activation Required!")
-                    setMessage("Your account is inactive. Please verify your account by clicking on the Verify Email link sent to your email...")
+                    setTitle(getString(R.string.account_activation_required))
+                    setMessage(getString(R.string.account_inactive_click_link_on_email))
                     setPositiveButton("OK") { _, _ ->
                         //navigateToLoginScreen()
                     }
