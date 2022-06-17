@@ -9,7 +9,7 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.app.shepherd.ui.component.home.HomeActivity
-import com.app.shepherd.ui.component.walkThrough.WalkThroughActivity
+import com.app.shepherd.ui.component.walk_through.WalkThroughActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
 import com.app.shepherd.utils.Const.DEVICE_ID
 import com.app.shepherd.utils.Prefs
