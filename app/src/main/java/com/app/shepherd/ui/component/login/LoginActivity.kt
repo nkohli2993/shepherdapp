@@ -1,11 +1,19 @@
 package com.app.shepherd.ui.component.login
 
 import android.annotation.SuppressLint
+import android.app.Dialog
+import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import android.view.Window
+import android.widget.Button
 import androidx.activity.viewModels
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
@@ -20,15 +28,16 @@ import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.app.shepherd.ui.component.resetPassword.ResetPasswordActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
-import com.app.shepherd.utils.SingleEvent
+import com.app.shepherd.utils.*
+import com.app.shepherd.utils.Const.BIOMETRIC_ENABLE
+import com.app.shepherd.utils.Const.SECOND_TIME_LOGIN
 import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
-import com.app.shepherd.utils.setupSnackbar
-import com.app.shepherd.utils.showToast
 import com.app.shepherd.view_model.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.Executor
 
 /**
  * Created by Sumit Kumar
@@ -39,6 +48,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var binding: ActivityLoginNewBinding
     private var isPasswordShown = false
+    private var isBioMetricLogin = false
+    private lateinit var executor: Executor
+    private lateinit var biometricPrompt: BiometricPrompt
     private var token: String? = null
 
     // Handle Validation
@@ -86,8 +98,69 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             isPasswordShown = !isPasswordShown
             binding.edtPasswd.setSelection(binding.edtPasswd.length())
         }
+        fingerPrintExecute()
 
+    }
 
+    private fun fingerPrintExecute() {
+        if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(this) && BiometricUtils.isFingerprintAvailable(
+                this
+            ) && Prefs.with(this)!!.getBoolean(BIOMETRIC_ENABLE)
+        ) {
+            executor = ContextCompat.getMainExecutor(this)
+            biometricPrompt = BiometricPrompt(this, executor,
+                object : BiometricPrompt.AuthenticationCallback() {
+                    override fun onAuthenticationError(
+                        errorCode: Int,
+                        errString: CharSequence
+                    ) {
+                        super.onAuthenticationError(errorCode, errString)
+                        when (errorCode) {
+                            BiometricPrompt.ERROR_CANCELED,
+                            BiometricPrompt.ERROR_USER_CANCELED -> {
+                            }
+                        }
+                    }
+
+                    override fun onAuthenticationSucceeded(
+                        result: BiometricPrompt.AuthenticationResult
+                    ) {
+                        super.onAuthenticationSucceeded(result)
+                        doLogin(true)
+                    }
+
+                    override fun onAuthenticationFailed() {
+                        super.onAuthenticationFailed()
+                    }
+                })
+            val promptInfo = if (Build.VERSION.SDK_INT < 30) {
+                BiometricPrompt.PromptInfo.Builder()
+                    .setTitle(getString(R.string.prompt_info_title))
+                    .setSubtitle(getString(R.string.prompt_info_subtitle))
+//                .setNegativeButtonText("Cancel")
+                    .setDeviceCredentialAllowed(true)
+                    .setConfirmationRequired(false)
+                    .build()
+            } else {
+                BiometricPrompt.PromptInfo.Builder()
+                    .setTitle(getString(R.string.prompt_info_title))
+                    .setSubtitle(getString(R.string.prompt_info_subtitle))
+                    .setAllowedAuthenticators(
+                        BiometricManager.Authenticators.BIOMETRIC_STRONG or
+                                BiometricManager.Authenticators.DEVICE_CREDENTIAL or
+                                BiometricManager.Authenticators.BIOMETRIC_WEAK
+                    )
+                    .setConfirmationRequired(false)
+                    .build()
+            }
+
+            biometricPrompt.authenticate(promptInfo)
+        } else {
+            binding.apply {
+                llBiometricWrapper.isVisible = false
+                imgBiometric.isVisible = false
+            }
+        }
     }
 
     override fun initViewBinding() {
@@ -116,17 +189,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         token = it.payload?.token
 
                     }
-                    //navigateToWelcomeUserScreen
-//                    navigateToJoinCareScreen()
+                    if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
+                            this
+                        ) && BiometricUtils.isFingerprintAvailable(
+                            this
+                        ) && !isBioMetricLogin && !Prefs.with(this)!!.getBoolean(SECOND_TIME_LOGIN)
 
-                    /*  val isUserAllowedBiometricLogin = Prefs.with(ShepherdApp.appContext)!!
-                          .getBoolean(Const.USER_BIOMETRIC_LOGIN_PREFERENCE)
-                      if (isUserAllowedBiometricLogin)
-                          showBiometricPromptForEncryption()
-                      else
-                          navigateToHomeScreen()*/
-
-                    navigateToHomeScreen()
+                    ) {
+                        showBioMetricDialog()
+                    } else {
+                        navigateToHomeScreen()
+                    }
                 }
 
                 is DataResult.Failure -> {
@@ -139,6 +212,53 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
 
         }
+        loginViewModel.bioMetricLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.let { it1 ->
+                        // Save Token to SharedPref
+                        it1.payload?.let { payload ->
+                            Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
+                        }
+                        navigateToHomeScreen()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun showBioMetricDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_bio_metric)
+        val yesBtn = dialog.findViewById(R.id.btnYes) as Button
+        val noBtn = dialog.findViewById(R.id.btnNo) as Button
+        yesBtn.setOnClickListener {
+            dialog.dismiss()
+            registerBiometric(true)
+        }
+        noBtn.setOnClickListener {
+            dialog.dismiss()
+            navigateToHomeScreen()
+        }
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    private fun registerBiometric(isBioMetricEnable: Boolean) {
+        loginViewModel.registerBioMetric(
+            isBioMetricEnable
+        )
     }
 
     /*private fun doLogin() {
@@ -163,6 +283,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToHomeScreen() {
+        Prefs.with(this)!!.save(SECOND_TIME_LOGIN, true)
         startActivityWithFinish<HomeActivity>()
     }
 
@@ -189,7 +310,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btnLogin -> {
                 if (isValid) {
-                    doLogin()
+                    doLogin(false)
                 }
             }
             R.id.txtCreateAccount -> {
@@ -197,6 +318,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.ivBack -> {
                 onBackPressed()
+            }
+            R.id.imgBiometric -> {
+                fingerPrintExecute()
             }
         }
     }
@@ -209,8 +333,20 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         startActivity<ForgotPasswordActivity>()
     }
 
-    private fun doLogin() {
-        loginViewModel.login()
+    private fun doLogin(isBioMetric: Boolean) {
+        isBioMetricLogin = isBioMetric
+        loginViewModel.apply {
+            if (isBioMetric) {
+                loginData.value?.let {
+                    it.device = CommonFunctions.getDeviceId(this@LoginActivity)
+                }
+            } else {
+                loginData.value?.let {
+                    it.device = null
+                }
+            }
+            login(isBioMetric)
+        }
     }
 
     private fun navigateToResetPasswordScreen() {

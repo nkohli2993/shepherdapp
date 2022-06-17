@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
@@ -11,12 +12,13 @@ import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentProfileBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.profile.adapter.LovedOnesAdapter
-import com.app.shepherd.utils.SingleEvent
-import com.app.shepherd.utils.observe
-import com.app.shepherd.utils.setupSnackbar
-import com.app.shepherd.utils.showToast
+import com.app.shepherd.utils.*
+import com.app.shepherd.utils.Const.BIOMETRIC_ENABLE
+import com.app.shepherd.utils.extensions.showError
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,12 +49,59 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         fragmentProfileBinding.listener = this
         setLovedOnesAdapter()
         setPendingInvitationsAdapter()
+        if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
+                requireContext()
+            ) && BiometricUtils.isFingerprintAvailable(
+                requireContext()
+            )
+        ) {
+            fragmentProfileBinding.scBioMetric.apply {
+                isChecked = Prefs.with(requireContext())!!.getBoolean(BIOMETRIC_ENABLE)
+                setOnCheckedChangeListener { buttonView, isChecked ->
+                    registerBiometric(isChecked)
+
+                }
+            }
+        } else {
+            fragmentProfileBinding.clBioMetricLogin.isVisible = false
+        }
+
+
+    }
+
+    private fun registerBiometric(checked: Boolean) {
+        profileViewModel.registerBioMetric(
+            checked
+        )
     }
 
     override fun observeViewModel() {
         observe(profileViewModel.loginLiveData, ::handleLoginResult)
         observeSnackBarMessages(profileViewModel.showSnackBar)
         observeToast(profileViewModel.showToast)
+        profileViewModel.bioMetricLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.let { it1 ->
+                        // Save Token to SharedPref
+                        it1.payload?.let { payload ->
+                            Prefs.with(requireContext())!!
+                                .save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

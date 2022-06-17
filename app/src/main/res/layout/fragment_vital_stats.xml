@@ -15,12 +15,12 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/_10sdp"
         android:background="@drawable/circle_white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvRemoteMonitor"
@@ -300,14 +300,41 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvHR"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/gotham_bold"
                 android:text="@string/heart_rate"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/clBloodNOWrapper" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHRMin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/gotham_medium"
+                android:text="Min 70"
+                android:textColor="@color/_CEB9D5"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toStartOf="@+id/tvHRMax"
+                app:layout_constraintTop_toBottomOf="@+id/clBloodNOWrapper" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHRMax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/gotham_medium"
+                android:text="Max 130"
+                android:textColor="@color/_8A569C"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clBloodNOWrapper" />
+
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChart"

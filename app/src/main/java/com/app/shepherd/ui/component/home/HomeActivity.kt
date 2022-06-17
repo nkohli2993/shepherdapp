@@ -1,8 +1,13 @@
 package com.app.shepherd.ui.component.home
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,6 +24,7 @@ import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showSuccess
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.concurrent.Executor
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(),
@@ -68,6 +74,7 @@ class HomeActivity : BaseActivity(),
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.home)
                         clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = true
                         tvNew.isVisible = false
                     }
@@ -77,6 +84,7 @@ class HomeActivity : BaseActivity(),
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.medlist_reminder)
                         clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         tvNew.apply {
                             isVisible = true
@@ -92,6 +100,7 @@ class HomeActivity : BaseActivity(),
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.discussions)
                         clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         tvNew.apply {
                             isVisible = true
@@ -122,6 +131,15 @@ class HomeActivity : BaseActivity(),
                     }
                     lockUnlockDrawer(false)
                 }
+                R.id.nav_resources -> {
+                    binding.appBarDashboard.apply {
+                        tvTitle.text = getString(R.string.resources)
+                        clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = false
+                    }
+                    lockUnlockDrawer(false)
+                }
+                R.id.nav_schedule_medication,
                 R.id.nav_med_detail,
                 R.id.nav_secure_code,
                 R.id.nav_change_password,
@@ -140,10 +158,12 @@ class HomeActivity : BaseActivity(),
     }
 
     private fun lockUnlockDrawer(lock: Boolean) {
-        if (lock) {
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        } else {
-            binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        binding.drawerLayout.apply {
+            if (lock) {
+                setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            } else {
+                setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            }
         }
     }
 

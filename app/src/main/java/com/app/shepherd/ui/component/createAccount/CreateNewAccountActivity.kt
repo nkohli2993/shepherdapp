@@ -1,11 +1,14 @@
 package com.app.shepherd.ui.component.createAccount
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.viewModels
 import com.app.shepherd.BuildConfig
@@ -18,13 +21,11 @@ import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.ui.welcome.WelcomeActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
-import com.app.shepherd.utils.PhoneTextFormatter
+import com.app.shepherd.utils.*
 import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
-import com.app.shepherd.utils.loadImageCentreCrop
-import com.app.shepherd.utils.observe
 import com.app.shepherd.view_model.CreateNewAccountViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_create_account.editTextPhoneNumber
@@ -187,10 +188,43 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                                 )
                             }
                         }
-
-                        navigateToWelcomeUserScreen()
+                        if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
+                                this
+                            ) && BiometricUtils.isFingerprintAvailable(
+                                this
+                            )
+                        ) {
+                            showBioMetricDialog()
+                        } else {
+                            navigateToWelcomeUserScreen()
+                        }
                     }
 
+                }
+            }
+        }
+
+        createNewAccountViewModel.bioMetricLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.let { it1 ->
+                        // Save Token to SharedPref
+                        it1.payload?.let { payload ->
+                            Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
+
+                        }
+                        navigateToWelcomeUserScreen()
+                    }
                 }
             }
         }
@@ -239,7 +273,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     passwd = editTextPassword.text.toString().trim()
                     phoneNumber = edtPhoneNumber.text.toString().trim()
                     phoneCode = ccp.selectedCountryCode
-                    Log.d(TAG, "onClick: ProfilePicUrl: ${BuildConfig.BASE_URL + profilePicUrl}")
                     createNewAccountViewModel.createAccount(
                         phoneCode,
                         BuildConfig.BASE_URL + profilePicUrl,
@@ -249,14 +282,40 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         passwd,
                         phoneNumber
                     )
-                } /*else {
-                    showInfo(
-                        this,
-                        "Please select the box describing Terms & Condition and Privacy Policy."
-                    )
-                }*/
+
+                }
+                /*else {
+                        showInfo(
+                            this,
+                            "Please select the box describing Terms & Condition and Privacy Policy."
+                        )
+                    }*/
             }
         }
+    }
+
+    private fun showBioMetricDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_bio_metric)
+        val yesBtn = dialog.findViewById(R.id.btnYes) as Button
+        val noBtn = dialog.findViewById(R.id.btnNo) as Button
+        yesBtn.setOnClickListener {
+            dialog.dismiss()
+            registerBiometric(true)
+        }
+        noBtn.setOnClickListener {
+            dialog.dismiss()
+            navigateToWelcomeUserScreen()
+        }
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    private fun registerBiometric(isBioMetricEnable: Boolean) {
+        createNewAccountViewModel.registerBioMetric(
+            isBioMetricEnable
+        )
     }
 
     private fun setPhoneNumberFormat() {
@@ -276,6 +335,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToWelcomeUserScreen() {
+        Prefs.with(this)!!.save(Const.SECOND_TIME_LOGIN, true)
         startActivity<WelcomeUserActivity>()
     }
 

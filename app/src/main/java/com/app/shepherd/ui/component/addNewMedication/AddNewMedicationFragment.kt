@@ -86,8 +86,8 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
-            R.id.buttonAddNewMedication -> {
-                findNavController().navigate(R.id.action_add_new_medication_to_add_medication_details)
+            R.id.btnNext -> {
+                findNavController().navigate(R.id.action_add_new_medication_to_add_medication)
             }
         }
     }

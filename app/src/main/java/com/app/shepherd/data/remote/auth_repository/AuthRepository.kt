@@ -1,9 +1,11 @@
 package com.app.shepherd.data.remote.auth_repository
 
+import android.util.Log
 import android.webkit.MimeTypeMap
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import com.app.shepherd.network.retrofit.ApiService
@@ -28,9 +30,15 @@ import javax.inject.Singleton
 class AuthRepository @Inject constructor(private val apiService: ApiService) {
 
     //login
-    suspend fun login(value: UserSignupData): Flow<DataResult<LoginResponseModel>> {
+    suspend fun login(
+        value: UserSignupData,
+        isBioMetric: Boolean
+    ): Flow<DataResult<LoginResponseModel>> {
         return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
+                if (isBioMetric) {
+                    return apiService.loginWithDevice(value)
+                }
                 return apiService.login(value)
             }
         }.asFlow().flowOn(Dispatchers.IO)
@@ -66,6 +74,15 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
                 return apiService.signUp(value)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //BioMetric
+    suspend fun registerBioMetric(value: BioMetricData): Flow<DataResult<LoginResponseModel>> {
+        return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
+                return apiService.registerBioMetric(value)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

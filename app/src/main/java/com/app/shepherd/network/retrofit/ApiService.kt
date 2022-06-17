@@ -11,6 +11,7 @@ import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseMode
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.app.shepherd.data.dto.medical_conditions.UserConditionsResponseModel
 import com.app.shepherd.data.dto.relation.RelationResponseModel
+import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import okhttp3.MultipartBody
@@ -25,8 +26,14 @@ interface ApiService {
     @POST(ApiConstants.AUTHENTICATION.LOGIN)
     suspend fun login(@Body value: UserSignupData): Response<LoginResponseModel>
 
+    @POST(ApiConstants.AUTHENTICATION.LOGIN_WITH_DEVICE)
+    suspend fun loginWithDevice(@Body value: UserSignupData): Response<LoginResponseModel>
+
     @POST(ApiConstants.AUTHENTICATION.SIGN_UP)
     suspend fun signUp(@Body value: UserSignupData): Response<LoginResponseModel>
+
+    @PATCH(ApiConstants.AUTHENTICATION.BIOMETRIC)
+    suspend fun registerBioMetric(@Body value: BioMetricData): Response<LoginResponseModel>
 
     @Multipart
     @POST(ApiConstants.AUTHENTICATION.UPLOAD_IMAGE)

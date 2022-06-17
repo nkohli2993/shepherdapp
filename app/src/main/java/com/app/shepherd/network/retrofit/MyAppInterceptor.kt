@@ -23,6 +23,10 @@ class MyAppInterceptor @Inject constructor() : Interceptor {
                 "Authorization",
                 "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")}"
             )
+            .add(
+                "device-id",
+                "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.DEVICE_ID, "")}"
+            )
             .build()
 
         request = request.newBuilder().headers(headers).build()

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.data.local.UserRepository
@@ -31,6 +32,9 @@ class CreateNewAccountViewModel @Inject constructor(
     var signUpData = MutableLiveData<UserSignupData>().apply {
         value = UserSignupData()
     }
+    var bioMetricData = MutableLiveData<BioMetricData>().apply {
+        value = BioMetricData()
+    }
 
     var imageFile: File? = null
 
@@ -43,6 +47,10 @@ class CreateNewAccountViewModel @Inject constructor(
     var signUpLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
         _signUpLiveData
 
+    private var _bioMetricLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
+    var bioMetricLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
+        _bioMetricLiveData
+
 
     fun createAccount(
         phoneCode: String?,
@@ -51,7 +59,7 @@ class CreateNewAccountViewModel @Inject constructor(
         lastName: String?,
         email: String?,
         passwd: String?,
-        phoneNumber: String?,
+        phoneNumber: String?
     ): LiveData<Event<DataResult<LoginResponseModel>>> {
         //Update the phone code
         signUpData.value.let {
@@ -73,6 +81,25 @@ class CreateNewAccountViewModel @Inject constructor(
             }
         }
         return signUpLiveData
+    }
+
+
+    fun registerBioMetric(
+        isBioMetricEnable: Boolean
+    ): LiveData<Event<DataResult<LoginResponseModel>>> {
+        //Update the phone code
+        bioMetricData.value.let {
+            it?.isBiometric = isBioMetricEnable
+        }
+        viewModelScope.launch {
+            val response = bioMetricData.value?.let { authRepository.registerBioMetric(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _bioMetricLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return bioMetricLiveData
     }
 
     //Upload Image

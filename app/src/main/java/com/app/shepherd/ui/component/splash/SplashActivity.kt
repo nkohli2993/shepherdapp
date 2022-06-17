@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.app.shepherd.SPLASH_DELAY
-import com.app.shepherd.ShepherdApp
 import com.app.shepherd.databinding.ActivitySplashBinding
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
@@ -12,7 +11,7 @@ import com.app.shepherd.ui.component.addLovedOneCondition.AddLovedOneConditionAc
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.walkThrough.WalkThroughActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
-import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Const.DEVICE_ID
 import com.app.shepherd.utils.Prefs
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,16 +32,18 @@ class SplashActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //Check if user is already loggedIn
-        val token = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")
+//        val token = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")
         // if token is empty ,then the user is logging first time
-        if (token.isNullOrEmpty()) {
-            navigateToOnBoardingScreen()
-        } else {
-            navigateToHomeScreen()
+        /* if (token.isNullOrEmpty()) {
+             navigateToOnBoardingScreen()
+         } else {
+             navigateToWelcomeUserScreen()
+         }*/
+
+        if (Prefs.with(this)!!.getString(DEVICE_ID, "").isNullOrEmpty()) {
+            Prefs.with(this)!!.save(DEVICE_ID, CommonFunctions.getDeviceId(this))
         }
-        // navigateToOnBoardingScreen()
-//        navigateToMedicalConditionActivity()
-        //navigateToLovedOneActivity()
+        navigateToOnBoardingScreen()
 
     }
 
