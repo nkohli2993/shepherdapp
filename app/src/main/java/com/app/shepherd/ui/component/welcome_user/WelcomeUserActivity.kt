@@ -1,15 +1,23 @@
 package com.app.shepherd.ui.component.welcome
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.activity.viewModels
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
+import com.app.shepherd.data.dto.user.Payload
 import com.app.shepherd.databinding.ActivityWelcomeUserBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.view_model.WelcomeUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,6 +82,10 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
                         // Save UserProfile info to SharedPreferences
                         welcomeViewModel.saveUser(payload?.userProfiles)
+
+                        // Save Payload to shared Pref
+                        welcomeViewModel.savePayload(payload)
+
                     }
                 }
             }
@@ -98,7 +110,27 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun navigateToAddLovedOneScreen() {
-        startActivity<AddLovedOneActivity>()
+        var payload: Payload? = null
+        welcomeViewModel.getUserDetails()
+        Handler(Looper.getMainLooper()).postDelayed({
+            payload =
+                Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
+
+            if (payload?.isActive == true) {
+                startActivity<AddLovedOneActivity>()
+            } else {
+                val builder = AlertDialog.Builder(this)
+                val dialog = builder.apply {
+                    setTitle("Account Activation Required!")
+                    setMessage("Your account is inactive. Please verify your account by clicking on the Verify Email link sent to your email...")
+                    setPositiveButton("OK") { _, _ ->
+                        //navigateToLoginScreen()
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+            }
+        }, 2000)
     }
 
     private fun navigateToJoinCareTeamScreen() {

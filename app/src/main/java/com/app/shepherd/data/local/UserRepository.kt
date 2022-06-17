@@ -2,8 +2,10 @@ package com.app.shepherd.data.local
 
 import android.util.Log
 import com.app.shepherd.ShepherdApp
+import com.app.shepherd.data.dto.user.Payload
 import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.network.retrofit.ApiService
+import com.app.shepherd.utils.Const.PAYLOAD
 import com.app.shepherd.utils.Const.USER_DETAILS
 import com.app.shepherd.utils.Const.USER_ID
 import com.app.shepherd.utils.Const.USER_TOKEN
@@ -25,6 +27,14 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun saveUser(user: UserProfiles?) {
         Prefs.with(ShepherdApp.appContext)!!.save(USER_DETAILS, user)
         Log.d("UserRepository", "User Info Saved to Preferences Successfully")
+    }
+
+    fun savePayload(payLoad: Payload?) {
+        Prefs.with(ShepherdApp.appContext)!!.save(PAYLOAD, payLoad)
+    }
+
+    fun getPayload(): Payload? {
+        return Prefs.with(ShepherdApp.appContext)?.getObject(PAYLOAD, Payload::class.java)
     }
 
 

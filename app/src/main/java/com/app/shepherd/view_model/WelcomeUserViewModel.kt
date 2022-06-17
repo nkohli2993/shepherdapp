@@ -3,6 +3,7 @@ package com.app.shepherd.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.app.shepherd.data.dto.user.Payload
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.data.local.UserRepository
@@ -25,8 +26,8 @@ class WelcomeUserViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : BaseViewModel() {
 
-   /* private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
-    var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData*/
+    /* private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
+     var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData*/
 
     private var _userDetailsLiveData =
         MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
@@ -35,12 +36,12 @@ class WelcomeUserViewModel @Inject constructor(
 
 
     // Get LoggedIn User Detail from SharedPrefs
-   /* fun getUser(): LiveData<Event<UserProfile?>> {
-        val user = userRepository.getCurrentUser()
-        _loggedInUserLiveData.postValue(Event(user))
-        return loggedInUserLiveData
+    /* fun getUser(): LiveData<Event<UserProfile?>> {
+         val user = userRepository.getCurrentUser()
+         _loggedInUserLiveData.postValue(Event(user))
+         return loggedInUserLiveData
 
-    }*/
+     }*/
 
     //get userID from Shared Pref
     private fun getUserId(): Int {
@@ -65,5 +66,10 @@ class WelcomeUserViewModel @Inject constructor(
     // Save User to SharePrefs
     fun saveUser(user: UserProfiles?) {
         userRepository.saveUser(user)
+    }
+
+    //Save Payload
+    fun savePayload(payload: Payload?) {
+        userRepository.savePayload(payload)
     }
 }

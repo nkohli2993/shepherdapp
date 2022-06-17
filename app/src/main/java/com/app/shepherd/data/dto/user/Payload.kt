@@ -19,6 +19,7 @@ data class Payload(
     @SerializedName("email_otp") var emailOtp: Int? = null,
     @SerializedName("is_active") var isActive: Boolean? = null,
     @SerializedName("is_admin_approved") var isAdminApproved: Boolean? = null,
+    @SerializedName("is_biometric") var isBiometric: Boolean? = null,
     @SerializedName("is_block") var isBlock: Boolean? = null,
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,

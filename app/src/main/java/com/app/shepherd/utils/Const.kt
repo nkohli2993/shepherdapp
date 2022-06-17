@@ -7,6 +7,7 @@ object Const {
     const val USER_DETAILS = "USER DETAILS"
     const val USER_TOKEN = "USER Token"
     const val USER_ID = "USER ID"
+    const val PAYLOAD = "PAYLOAD"
 }
 
 object Drawable {
