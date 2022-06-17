@@ -6,9 +6,11 @@ import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.TextureView
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -238,8 +240,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_bio_metric)
-        val yesBtn = dialog.findViewById(R.id.btnYes) as Button
-        val noBtn = dialog.findViewById(R.id.btnNo) as Button
+        val yesBtn = dialog.findViewById(R.id.btnYes) as TextView
+        val noBtn = dialog.findViewById(R.id.btnNo) as TextView
         yesBtn.setOnClickListener {
             dialog.dismiss()
             registerBiometric(true)
