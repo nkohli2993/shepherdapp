@@ -1,6 +1,5 @@
 package com.app.shepherd.data.remote.auth_repository
 
-import android.util.Log
 import android.webkit.MimeTypeMap
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
@@ -11,6 +10,7 @@ import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.NetworkOnlineDataRepo
+import com.app.shepherd.ui.base.BaseResponseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -103,6 +103,15 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             NetworkOnlineDataRepo<UserDetailsResponseModel, UserDetailsResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<UserDetailsResponseModel> {
                 return apiService.getUserDetails(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //logout
+    suspend fun logout(): Flow<DataResult<BaseResponseModel>> {
+        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.logout()
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

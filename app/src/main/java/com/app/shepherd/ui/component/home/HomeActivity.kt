@@ -13,13 +13,15 @@ import androidx.navigation.ui.NavigationUI
 import com.app.shepherd.R
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.databinding.ActivityHomeBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.home.viewModel.HomeViewModel
 import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.Prefs
+import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
+import com.app.shepherd.view_model.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.Executor
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(),
@@ -49,6 +51,23 @@ class HomeActivity : BaseActivity(),
 
 
     override fun observeViewModel() {
+        // Observe Logout Response
+        viewModel.logoutResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    showSuccess(this, " User logged out successfully")
+                    Prefs.with(ShepherdApp.appContext)?.removeAll()
+                    navigateToLoginScreen()
+                }
+            }
+        }
     }
 
 
@@ -205,9 +224,7 @@ class HomeActivity : BaseActivity(),
                 navController.navigate(R.id.nav_care_team)
             }
             R.id.tvLogout -> {
-                showSuccess(this, " User logged out successfully")
-                Prefs.with(ShepherdApp.appContext)?.removeAll()
-                navigateToLoginScreen()
+                viewModel.logOut()
             }
         }
         drawerLayout?.closeDrawer(GravityCompat.START)

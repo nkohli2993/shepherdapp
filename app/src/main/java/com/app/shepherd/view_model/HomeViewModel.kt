@@ -1,26 +1,40 @@
-package com.app.shepherd.ui.component.home.viewModel
+package com.app.shepherd.view_model
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.app.shepherd.R
 import com.app.shepherd.data.DataRepository
-import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.menuItem.MenuItemModel
+import com.app.shepherd.data.remote.auth_repository.AuthRepository
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.Event
+import com.app.shepherd.ui.base.BaseResponseModel
 import com.app.shepherd.ui.base.BaseViewModel
 import com.app.shepherd.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+
 @HiltViewModel
-class HomeViewModel  @Inject constructor(private val dataRepository: DataRepository) :
-    BaseViewModel() {
+class HomeViewModel @Inject constructor(
+    private val dataRepository: DataRepository,
+    private val authRepository: AuthRepository,
+) : BaseViewModel() {
 
     var menuItemList: ArrayList<MenuItemModel> = ArrayList()
     var menuItemMap: HashMap<String, ArrayList<MenuItemModel>> = HashMap()
+
+    private var _logoutResponseLiveData = MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+
+    var logoutResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+        _logoutResponseLiveData
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val selectedDrawerItemPrivate = MutableLiveData<SingleEvent<String>>()
@@ -91,9 +105,12 @@ class HomeViewModel  @Inject constructor(private val dataRepository: DataReposit
 
         menuItemMap[context.getString(R.string.profile)] = ArrayList()
 
-    menuItemList.add(
+        menuItemList.add(
             MenuItemModel(
-                icon = ContextCompat.getDrawable(context, com.lassi.R.drawable.shape_circle_white)!!,
+                icon = ContextCompat.getDrawable(
+                    context,
+                    com.lassi.R.drawable.shape_circle_white
+                )!!,
                 title = context.getString(R.string.empty)
             )
         )
@@ -115,5 +132,18 @@ class HomeViewModel  @Inject constructor(private val dataRepository: DataReposit
     fun onDrawerItemSelected(title: String) {
         selectedDrawerItemPrivate.value = SingleEvent(title)
     }
+
+    fun logOut(): LiveData<Event<DataResult<BaseResponseModel>>> {
+        viewModelScope.launch {
+            val response = authRepository.logout()
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _logoutResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return logoutResponseLiveData
+    }
+
 
 }

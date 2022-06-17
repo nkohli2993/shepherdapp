@@ -6,13 +6,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.menuItem.MenuItemModel
-import com.app.shepherd.databinding.AdapterDashboardBinding
 import com.app.shepherd.databinding.AdapterSubMenuItemBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.dashboard.DashboardViewModel
-import com.app.shepherd.ui.component.home.viewModel.HomeViewModel
+import com.app.shepherd.view_model.HomeViewModel
 
 
 class SubMenuItemAdapter(
