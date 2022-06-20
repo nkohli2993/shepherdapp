@@ -231,6 +231,6 @@ class HomeActivity : BaseActivity(),
     }
 
     private fun navigateToLoginScreen() {
-        startActivity<LoginActivity>()
+        startActivityWithFinish<LoginActivity>()
     }
 }
