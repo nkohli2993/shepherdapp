@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -231,6 +232,12 @@ class HomeActivity : BaseActivity(),
     }
 
     private fun navigateToLoginScreen() {
-        startActivityWithFinish<LoginActivity>()
+        //startActivityWithFinish<LoginActivity>()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
     }
 }

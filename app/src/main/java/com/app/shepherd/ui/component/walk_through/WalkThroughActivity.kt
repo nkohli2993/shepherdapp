@@ -115,6 +115,6 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToWelcomeScreen() {
-        startActivity<WelcomeActivity>()
+        startActivityWithFinish<WelcomeActivity>()
     }
 }

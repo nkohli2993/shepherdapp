@@ -1,6 +1,7 @@
 package com.app.shepherd.ui.component.welcome
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -123,7 +124,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                 Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
 
             if (payload?.isActive == true) {
-                startActivity<AddLovedOneActivity>()
+                startActivityWithFinish<AddLovedOneActivity>()
             } else {
                 val builder = AlertDialog.Builder(this)
                 val dialog = builder.apply {
@@ -140,11 +141,17 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToJoinCareTeamScreen() {
-        startActivity<JoinCareTeamActivity>()
+        startActivityWithFinish<JoinCareTeamActivity>()
     }
 
     private fun navigateToLoginScreen() {
-        startActivityWithFinish<LoginActivity>()
+        //startActivityWithFinish<LoginActivity>()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
+
     }
 
 }
