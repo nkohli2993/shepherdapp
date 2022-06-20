@@ -85,15 +85,15 @@ class AddLovedOneViewModel @Inject constructor(
 
     // Create Loved One
     fun createLovedOne(
-        email: String,
+        email: String?,
         firstname: String,
         lastname: String,
         relation_id: Int?,
-        phone_code: String,
+        phone_code: String?,
         dob: String?,
         place_id: String?,
-        phone_no: String,
-        profile_photo: String
+        phone_no: String?,
+        profile_photo: String?
     ): LiveData<Event<DataResult<CreateLovedOneResponseModel>>> {
         createLovedOneData.value.let {
             it?.email = email
