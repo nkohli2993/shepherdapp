@@ -16,6 +16,7 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamActivity
+import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showError
@@ -95,7 +96,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.ivBack -> finishActivity()
+            R.id.ivBack -> navigateToLoginScreen()
             R.id.cardViewAddLovedOne -> navigateToAddLovedOneScreen()
             R.id.imageViewAddLovedOne -> navigateToAddLovedOneScreen()
             R.id.txtAdd -> navigateToAddLovedOneScreen()
@@ -106,6 +107,11 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
             R.id.txtJoin -> navigateToJoinCareTeamScreen()
             R.id.txtCareTeam -> navigateToJoinCareTeamScreen()
         }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        navigateToLoginScreen()
     }
 
 
@@ -135,6 +141,10 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToJoinCareTeamScreen() {
         startActivity<JoinCareTeamActivity>()
+    }
+
+    private fun navigateToLoginScreen() {
+        startActivityWithFinish<LoginActivity>()
     }
 
 }

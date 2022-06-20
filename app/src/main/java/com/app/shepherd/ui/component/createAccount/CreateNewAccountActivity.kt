@@ -336,8 +336,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToWelcomeUserScreen() {
         Prefs.with(this)!!.save(Const.SECOND_TIME_LOGIN, true)
-        startActivity<WelcomeUserActivity>()
+        startActivityWithFinish<WelcomeUserActivity>()
     }
 
 }
-
