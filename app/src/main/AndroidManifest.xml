@@ -31,7 +31,7 @@
             android:name=".ui.component.forgot_password.ForgotPasswordActivity"
             android:label="@string/forgot_passwd" />
         <activity
-            android:name="x.ui.component.welcome.WelcomeUserActivity"
+            android:name=".ui.component.welcome.WelcomeUserActivity"
             android:label="@string/welcome_user" />
         <activity
             android:name=".ui.component.splash.SplashActivity"
