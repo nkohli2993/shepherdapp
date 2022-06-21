@@ -85,9 +85,9 @@ class CarePointsFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonAddNewTask -> {
-                p0.findNavController().navigate(R.id.action_care_points_to_add_new_task)
-            }
+//            R.id.buttonAddNewTask -> {
+//                p0.findNavController().navigate(R.id.action_care_points_to_add_new_task)
+//            }
         }
     }
 

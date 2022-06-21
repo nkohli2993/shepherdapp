@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.databinding.AdapterCarePointsEventsBinding
+import com.app.shepherd.databinding.AdapterEventsMembersBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.ui.component.carePoints.CarePointsViewModel
 
@@ -13,7 +14,7 @@ class CarePointsEventAdapter(
     var requestList: MutableList<String> = ArrayList()
 ) :
     RecyclerView.Adapter<CarePointsEventAdapter.CarePointsEventsViewHolder>() {
-    lateinit var binding: AdapterCarePointsEventsBinding
+    lateinit var binding: AdapterEventsMembersBinding
     lateinit var context: Context
 
 
@@ -26,7 +27,7 @@ class CarePointsEventAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsEventsViewHolder {
         context = parent.context
         binding =
-            AdapterCarePointsEventsBinding.inflate(
+            AdapterEventsMembersBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -45,7 +46,7 @@ class CarePointsEventAdapter(
 
 
 
-    class CarePointsEventsViewHolder(private val itemBinding: AdapterCarePointsEventsBinding) :
+    class CarePointsEventsViewHolder(private val itemBinding: AdapterEventsMembersBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {

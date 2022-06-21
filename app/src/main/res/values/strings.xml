@@ -325,4 +325,5 @@
     <string name="secret_key_name">biometric_sample_encryption_key</string>
     <string name="next">Next</string>
     <string name="time">Time</string>
+    <string name="schedule_events_set_reminders_assign_tasks">Schedule events, set reminders, assign tasks.</string>
 </resources>

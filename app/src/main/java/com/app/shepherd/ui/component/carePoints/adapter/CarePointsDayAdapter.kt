@@ -37,7 +37,7 @@ class CarePointsDayAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 6
+        return 2
     }
 
     override fun onBindViewHolder(holder: CarePointsDayViewHolder, position: Int) {

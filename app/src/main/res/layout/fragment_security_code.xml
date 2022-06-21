@@ -36,11 +36,11 @@
                 android:id="@+id/tvMedList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/gotham_bold"
                 android:text="Reset Security Code"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_20ssp"
+                android:layout_gravity="center|start"
                 app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
 

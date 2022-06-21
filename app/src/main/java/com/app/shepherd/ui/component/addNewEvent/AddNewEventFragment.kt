@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_add_new_event.*
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class AddNewEventFragment : BaseFragment<FragmentAddMemberBinding>(),
+class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     View.OnClickListener {
 
     private val addNewEventViewModel: AddNewEventViewModel by viewModels()
@@ -85,28 +86,28 @@ class AddNewEventFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     private fun setAssignMembersAdapter() {
         val addMemberRoleAdapter = AssignToEventAdapter(addNewEventViewModel)
-        fragmentAddNewEventBinding.recyclerViewMembers.adapter = addMemberRoleAdapter
+//        fragmentAddNewEventBinding.recyclerViewMembers.adapter = addMemberRoleAdapter
     }
 
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonAdd -> {
-                p0.findNavController().navigate(R.id.action_add_new_event_to_event_details)
+            R.id.ivBack -> {
+                findNavController().popBackStack()
             }
         }
     }
 
 
     private fun initDatePicker() {
-        textViewSelectDate.datePicker(
+        tvDate.datePicker(
             childFragmentManager,
             AddLovedOneActivity::class.java.simpleName
         )
     }
 
     private fun initTimePicker() {
-        textViewSelectTime.timePicker(
+        tvDate.timePicker(
             requireContext()
         )
     }
