@@ -44,11 +44,17 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var addLovedOneConditionAdapter: AddLovedOneConditionAdapter? = null
     private var medicalConditionsLovedOneArray: ArrayList<MedicalConditionsLovedOneRequestModel> =
         ArrayList()
+    private var lovedOneID: Int? = null
     private var TAG = "AddLovedOneConditionActivity"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // binding.toolBarNew.listener = this
+
+        // Get LovedOneID from AddLovedOneActivity
+        lovedOneID = intent.getIntExtra(Const.LOVED_ONE_ID, 0)
+        Log.d(TAG, "LovedOneID : $lovedOneID")
+
         binding.listener = this
 
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
@@ -171,7 +177,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     for (i in ids.indices) {
                         medicalConditionsLovedOneArray.add(MedicalConditionsLovedOneRequestModel(i?.let {
                             ids[it]
-                        }, userID))
+                        }, lovedOneID))
                     }
                 }
 
@@ -184,7 +190,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         medicalConditionsLovedOneArray
                     )
                 } else {
-                    showError(this,"Please select at least once medical condition...")
+                    showError(this, "Please select at least once medical condition...")
                 }
             }
         }

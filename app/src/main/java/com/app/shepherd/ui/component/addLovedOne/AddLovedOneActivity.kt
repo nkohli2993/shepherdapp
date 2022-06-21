@@ -18,6 +18,7 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.adapter.RelationshipsAdapter
 import com.app.shepherd.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
+import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.utils.loadImageCentreCrop
@@ -58,6 +59,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var email: String? = null
     private var phoneNumber: String? = null
     private var completeURLProfilePic: String? = null
+    private var lovedOneID: Int? = null
 
 
     // Handle Validation
@@ -190,6 +192,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     hideLoading()
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
+                        lovedOneID = it1.payload.id
                         navigateToAddLovedOneConditionScreen()
                     }
                 }
@@ -344,7 +347,12 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
 
     private fun navigateToAddLovedOneConditionScreen() {
-        startActivityWithFinish<AddLovedOneConditionActivity>()
+        val intent = Intent(this, AddLovedOneConditionActivity::class.java)
+        intent.putExtra(Const.LOVED_ONE_ID, lovedOneID)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
+        //startActivityWithFinish<AddLovedOneConditionActivity>()
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
