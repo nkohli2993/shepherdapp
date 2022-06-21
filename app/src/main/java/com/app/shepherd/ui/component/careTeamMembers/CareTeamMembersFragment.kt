@@ -92,9 +92,9 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonAddNewMember -> {
+           /* R.id.buttonAddNewMember -> {
                 findNavController().navigate(R.id.action_care_team_members_to_add_team_member)
-            }
+            }*/
         }
     }
 

@@ -168,6 +168,21 @@ class HomeActivity : BaseActivity(),
                         clTopWrapper.isVisible = false
                     }
                 }
+
+                R.id.nav_care_team -> {
+                    binding.appBarDashboard.apply {
+                        tvTitle.text = "CareTeam"
+                        clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
+                        clHomeWrapper.isVisible = false
+                        tvNew.apply {
+                            isVisible = true
+                            setOnClickListener {
+                               // findNavController().navigate(R.id.nav_add_care_team_member)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

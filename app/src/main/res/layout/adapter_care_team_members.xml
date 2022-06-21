@@ -1,85 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
+        app:cardBackgroundColor="@color/colorWhite"
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_4sdp"
+        app:cardCornerRadius="@dimen/_6sdp"
+        app:cardElevation="@dimen/_1sdp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_8sdp"
-            app:cardBackgroundColor="@color/colorGreyLight"
-            app:cardCornerRadius="@dimen/_6sdp"
-            app:cardElevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal"
+            android:padding="@dimen/_6sdp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imageViewCareTeam"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="@dimen/_48sdp"
+                android:layout_height="@dimen/_48sdp"
+                android:src="@drawable/image_loved_one"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCareTeamName"
+                style="@style/TextViewPoppinsSemiBold"
+                android:layout_width="0dp"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:text="@string/app_name"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCareTeam"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCareTeamRole"
+                style="@style/TextViewPoppinsRegular"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/_12sdp"
-                android:paddingVertical="@dimen/_8sdp">
+                android:text="@string/app_name"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="@+id/textViewCareTeamName"
+                app:layout_constraintStart_toStartOf="@+id/textViewCareTeamName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageViewCareTeam"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:src="@drawable/test_image"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageViewInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_arrow_right"
+                android:layout_marginEnd="@dimen/_4sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewCareTeamName"
-                    style="@style/TextViewPoppinsSemiBold"
-                    android:layout_width="0dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:layout_toStartOf="@+id/checkbox"
-                    android:text="@string/app_name"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14ssp"
-                    app:layout_constraintEnd_toStartOf="@+id/checkbox"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewCareTeam"
-                    app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewCareTeamRole"
-                    style="@style/TextViewPoppinsRegular"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_name"
-                    android:textSize="@dimen/_13ssp"
-                    app:layout_constraintEnd_toEndOf="@+id/textViewCareTeamName"
-                    app:layout_constraintStart_toStartOf="@+id/textViewCareTeamName"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageViewInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_outline_info"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </layout>
