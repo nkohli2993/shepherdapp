@@ -6,6 +6,8 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.14" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.14" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.14" />
+        <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.1675" />
+        <entry key="app/src/main/res/drawable/switch_track_selector.xml" value="0.1675" />
         <entry key="app/src/main/res/layout/act_welcome.xml" value="0.23854166666666668" />
         <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.45" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.24739583333333334" />
@@ -17,11 +19,13 @@
         <entry key="app/src/main/res/layout/activity_walk_through.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_welcome_user.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.4043564014220506" />
+        <entry key="app/src/main/res/layout/adapter_join_care_team.xml" value="0.29375" />
         <entry key="app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.1" />
         <entry key="app/src/main/res/layout/app_bar_dashboard.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.3159525553385417" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/fragment_member_details.xml" value="0.375" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.14" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.12935638427734375" />
       </map>

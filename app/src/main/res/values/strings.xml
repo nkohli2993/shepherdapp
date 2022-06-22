@@ -328,4 +328,10 @@
     <string name="account_activation_required">Account Activation Required!</string>
     <string name="account_inactive_click_link_on_email">Your account is inactive. Please verify your account by clicking on the Verify Email link sent to your email…</string>
     <string name="time">Time</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="remove">Remove</string>
+    <string name="careteam">CareTeam</string>
+    <string name="lockbox">LockBox</string>
+    <string name="mymedlist">MyMedList</string>
+    <string name="resources">Resources</string>
 </resources>
