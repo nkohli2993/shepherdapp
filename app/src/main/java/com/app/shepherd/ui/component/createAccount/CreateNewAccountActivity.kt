@@ -19,8 +19,8 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.login.LoginActivity
-import com.app.shepherd.ui.welcome.WelcomeActivity
 import com.app.shepherd.ui.component.welcome.WelcomeUserActivity
+import com.app.shepherd.ui.welcome.WelcomeActivity
 import com.app.shepherd.utils.*
 import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
@@ -50,6 +50,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var phoneNumber: String? = null
     private var roleId: String? = null
     private var isPasswordShown = false
+    private var profilePicCompleteUrl: String? = null
     private var TAG = "CreateNewAccountActivity"
 
 
@@ -168,12 +169,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
 
-                        // Save User's Info to Shared Preferences
-                        // it1.payload?.let { it2 -> createNewAccountViewModel.saveUser(it2) }
-                        // navigateToHomeScreen()
-                        // navigateToLoginScreen()
-
-
                         // Save Token to SharedPref
                         it1.payload?.let { payload ->
                             payload.token?.let { token ->
@@ -273,9 +268,15 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     passwd = editTextPassword.text.toString().trim()
                     phoneNumber = edtPhoneNumber.text.toString().trim()
                     phoneCode = ccp.selectedCountryCode
+                    profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
+                        null
+                    } else {
+                        BuildConfig.BASE_URL + profilePicUrl
+                    }
+
                     createNewAccountViewModel.createAccount(
                         phoneCode,
-                        BuildConfig.BASE_URL + profilePicUrl,
+                        profilePicCompleteUrl,
                         firstName,
                         lastName,
                         email,

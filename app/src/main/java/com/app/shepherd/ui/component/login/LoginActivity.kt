@@ -19,10 +19,12 @@ import androidx.lifecycle.LiveData
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.login.UserLovedOne
 import com.app.shepherd.databinding.ActivityLoginNewBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
+import com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity
 import com.app.shepherd.ui.component.createAccount.CreateNewAccountActivity
 import com.app.shepherd.ui.component.forgot_password.ForgotPasswordActivity
 import com.app.shepherd.ui.component.home.HomeActivity
@@ -53,6 +55,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private lateinit var executor: Executor
     private lateinit var biometricPrompt: BiometricPrompt
     private var token: String? = null
+    private var userLovedOneArrayList: ArrayList<UserLovedOne>? = null
 
     // Handle Validation
     private val isValid: Boolean
@@ -172,6 +175,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
+        // Observe Login response
         loginViewModel.loginResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -189,6 +193,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
                         token = it.payload?.token
 
+                        userLovedOneArrayList = it.payload?.userLovedOne
+
                     }
                     if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                             this
@@ -199,7 +205,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     ) {
                         showBioMetricDialog()
                     } else {
-                        navigateToHomeScreen()
+                        if (userLovedOneArrayList.isNullOrEmpty()) {
+                            navigateToWelcomeUserScreen()
+                        } else {
+                            navigateToHomeScreen()
+                        }
                     }
                 }
 
@@ -213,6 +223,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             }
 
         }
+
+        // Observe biometric response
         loginViewModel.bioMetricLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -250,7 +262,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
         noBtn.setOnClickListener {
             dialog.dismiss()
-            navigateToHomeScreen()
+            if (userLovedOneArrayList.isNullOrEmpty()) {
+                navigateToAddLovedOneScreen()
+            } else {
+                navigateToHomeScreen()
+            }
+
+            //navigateToHomeScreen()
         }
         dialog.setCancelable(false)
         dialog.show()
@@ -288,8 +306,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         startActivityWithFinish<HomeActivity>()
     }
 
+    private fun navigateToAddLovedOneScreen() {
+        startActivityWithFinish<AddLovedOneActivity>()
+    }
+
     private fun navigateToWelcomeUserScreen() {
-        startActivity<WelcomeUserActivity>()
+        startActivityWithFinish<WelcomeUserActivity>()
     }
 
     private fun navigateToJoinCareScreen() {

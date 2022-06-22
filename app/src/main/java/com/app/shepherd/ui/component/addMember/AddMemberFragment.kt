@@ -52,36 +52,17 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
         setRoleAdapter()
         setRestrictionModuleAdapter()
 
-        editTextEmail.afterTextChanged {
-            if (isValidEmail(it)) {
-                hideKeyBoard(editTextEmail)
-                cardViewRole.alpha = 1.0f
-                cardViewModules.alpha = 1.0f
-                textViewRole.isEnabled = true
-                textViewRole.performClick()
-                cardViewUser.toVisible()
-            }
-        }
+
 
     }
 
     override fun observeViewModel() {
-        observe(addMemberViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(addMemberViewModel.showSnackBar)
-        observeToast(addMemberViewModel.showToast)
+
     }
 
 
     private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
 
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { addMemberViewModel.showToastMessage(it) }
-            }
-        }
     }
 
     private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
@@ -95,16 +76,16 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     private fun setRoleAdapter() {
         val addMemberRoleAdapter = AddMemberRoleAdapter(addMemberViewModel)
-        fragmentAddMemberBinding.recyclerViewMemberRole.adapter = addMemberRoleAdapter
+//        fragmentAddMemberBinding.recyclerViewMemberRole.adapter = addMemberRoleAdapter
     }
 
     private fun setRestrictionModuleAdapter() {
         val restrictionsModuleAdapter = RestrictionsModuleAdapter(addMemberViewModel)
-        fragmentAddMemberBinding.recyclerViewModules.adapter = restrictionsModuleAdapter
+//        fragmentAddMemberBinding.recyclerViewModules.adapter = restrictionsModuleAdapter
 
-        fragmentAddMemberBinding.recyclerViewModules.addItemDecoration(
+/*       fragmentAddMemberBinding.recyclerViewModules.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        )
+        )*/
 
     }
 
@@ -113,10 +94,10 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
             R.id.imageViewBack -> {
                 backPress()
             }
-            R.id.buttonInvite -> {
+          /*  R.id.buttonInvite -> {
                 //backPress()
                 startActivity(Intent(requireContext(), HomeActivity::class.java))
-            }
+            }*/
             R.id.textViewRole -> {
                 manageRoleViewVisibility()
             }
@@ -124,7 +105,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
     }
 
     private fun manageRoleViewVisibility() {
-        if (recyclerViewMemberRole.visibility == View.VISIBLE) {
+       /* if (recyclerViewMemberRole.visibility == View.VISIBLE) {
             recyclerViewMemberRole.toGone()
             textViewRole.setCompoundDrawablesWithIntrinsicBounds(
                 0,
@@ -140,7 +121,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 R.drawable.ic_arrow_drop_up,
                 0
             );
-        }
+        }*/
 
     }
 

@@ -81,20 +81,20 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     private fun setRestrictionModuleAdapter() {
         val memberModulesAdapter = MemberModulesAdapter(memberDetailsViewModel)
-        fragmentMemberDetailsBinding.recyclerViewModules.adapter = memberModulesAdapter
+//        fragmentMemberDetailsBinding.recyclerViewModules.adapter = memberModulesAdapter
 
-        fragmentMemberDetailsBinding.recyclerViewModules.addItemDecoration(
+       /* fragmentMemberDetailsBinding.recyclerViewModules.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        )
+        )*/
 
     }
 
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonSave -> {
+          /*  R.id.buttonSave -> {
                 backPress()
-            }
+            }*/
         }
     }
 

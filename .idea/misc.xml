@@ -16,6 +16,7 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/activity_login_new.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.12777777777777777" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2765625" />
         <entry key="app/src/main/res/layout/activity_waiting_for_approval.xml" value="0.16416666666666666" />
         <entry key="app/src/main/res/layout/activity_walk_through.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_welcome_user.xml" value="0.24739583333333334" />
@@ -24,6 +25,7 @@
         <entry key="app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.1" />
         <entry key="app/src/main/res/layout/app_bar_dashboard.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.24739583333333334" />
+        <entry key="app/src/main/res/layout/dialog_bio_metric.xml" value="0.3234375" />
         <entry key="app/src/main/res/layout/fragment_add_member.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.3159525553385417" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.24739583333333334" />
