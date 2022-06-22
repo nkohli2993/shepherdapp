@@ -334,4 +334,7 @@
     <string name="lockbox">LockBox</string>
     <string name="mymedlist">MyMedList</string>
     <string name="resources">Resources</string>
+    <string name="add_new_member">Add New Member</string>
+    <string name="role">Role</string>
+    <string name="invitation">Invitation</string>
 </resources>
