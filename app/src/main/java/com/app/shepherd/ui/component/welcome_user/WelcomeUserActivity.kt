@@ -52,16 +52,6 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun observeViewModel() {
-        /* welcomeViewModel.loggedInUserLiveData.observeEvent(this) {
-             val name = it?.firstname.toString().replaceFirstChar { it ->
-                 it.uppercase()
-             }
-
-             //textViewTitle.text = "Hi " + "${it?.firstname.replaceFirstChar { it.uppercase() }}"
-             textViewTitle.text = "Thanks, $name"
-         }*/
-
-
         welcomeViewModel.userDetailsLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {

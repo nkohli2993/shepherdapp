@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10ssp"
                     android:fontFamily="@font/gotham_book"
-                    android:text="John Smith"
+                    android:text="@string/care_team_leader"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -84,6 +84,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10ssp"
@@ -112,6 +113,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10ssp"

@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.AdapterLovedOnesBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.notifications.NotificationsViewModel
-import com.app.shepherd.ui.component.profile.ProfileViewModel
+import com.app.shepherd.view_model.ProfileViewModel
 
 
 class LovedOnesAdapter(
