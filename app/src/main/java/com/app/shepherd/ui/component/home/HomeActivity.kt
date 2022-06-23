@@ -2,6 +2,7 @@ package com.app.shepherd.ui.component.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
@@ -13,15 +14,19 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.app.shepherd.R
 import com.app.shepherd.ShepherdApp
+import com.app.shepherd.data.dto.login.UserLovedOne
+import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.databinding.ActivityHomeBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.login.LoginActivity
+import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.HomeViewModel
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,6 +38,7 @@ class HomeActivity : BaseActivity(),
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
     private val viewModel: HomeViewModel by viewModels()
+    private val TAG = "HomeActivity"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +46,15 @@ class HomeActivity : BaseActivity(),
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Get Loved One Array list from Login Screen
+        val lovedOneArrayList =
+            intent?.getParcelableArrayListExtra<UserLovedOne>(Const.LOVED_ONE_ARRAY)
+        if (!lovedOneArrayList.isNullOrEmpty()) {
+            Log.d(TAG, "LovedOneArrayList Size :${lovedOneArrayList.size} ")
+        } else {
+            Log.d(TAG, "LovedOneArrayList is null")
+        }
 
         setupNavigationDrawer()
 
@@ -80,6 +95,24 @@ class HomeActivity : BaseActivity(),
     private fun setupNavigationDrawer() {
         drawerLayout = binding.drawerLayout
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
+
+        // Get Logged In User's profile info
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.USER_DETAILS,
+            UserProfiles::class.java
+        )
+
+        val firstName = loggedInUser?.firstname
+        val lastName = loggedInUser?.lastname
+        val fullName = "$firstName $lastName"
+
+        val profilePicLoggedInUser = loggedInUser?.profilePhoto
+
+        binding.ivName.text = fullName
+
+        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.test_image)
+            .into(binding.ivLoggedInUserProfile)
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             binding.appBarDashboard.ivEditProfile.isVisible =
@@ -178,7 +211,7 @@ class HomeActivity : BaseActivity(),
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
-                               // findNavController().navigate(R.id.nav_add_care_team_member)
+                                // findNavController().navigate(R.id.nav_add_care_team_member)
                             }
                         }
                     }

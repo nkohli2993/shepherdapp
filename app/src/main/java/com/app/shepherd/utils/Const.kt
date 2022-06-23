@@ -12,6 +12,7 @@ object Const {
     const val BIOMETRIC_ENABLE = "BIOMETRIC_ENABLE"
     const val SECOND_TIME_LOGIN = "SECOND_TIME_LOGIN"
     const val LOVED_ONE_ID = "LOVED_ONE_ID"
+    const val LOVED_ONE_ARRAY = "LOVED_ONE_ARRAY"
 }
 
 object Drawable {

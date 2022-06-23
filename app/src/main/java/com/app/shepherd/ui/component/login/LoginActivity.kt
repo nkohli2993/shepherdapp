@@ -3,10 +3,12 @@ package com.app.shepherd.ui.component.login
 import CommonFunctions
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -17,8 +19,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
-import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.login.UserLovedOne
 import com.app.shepherd.databinding.ActivityLoginNewBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -56,6 +56,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private lateinit var biometricPrompt: BiometricPrompt
     private var token: String? = null
     private var userLovedOneArrayList: ArrayList<UserLovedOne>? = null
+    private var TAG = "LoginActivity"
 
     // Handle Validation
     private val isValid: Boolean
@@ -208,7 +209,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         if (userLovedOneArrayList.isNullOrEmpty()) {
                             navigateToWelcomeUserScreen()
                         } else {
-                            navigateToHomeScreen()
+                            //navigateToHomeScreen()
+                            navigateToHomeScreenWithLovedOneArray()
                         }
                     }
                 }
@@ -267,8 +269,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             } else {
                 navigateToHomeScreen()
             }
-
-            //navigateToHomeScreen()
         }
         dialog.setCancelable(false)
         dialog.show()
@@ -278,27 +278,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         loginViewModel.registerBioMetric(
             isBioMetricEnable
         )
-    }
-
-    /*private fun doLogin() {
-        loginViewModel.doLogin(
-            this,
-            binding.editTextEmail.text?.trim().toString(),
-            binding.editTextPassword.text.toString()
-        )
-    }*/
-
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {
-            }
-            is Resource.Success -> status.data?.let {
-                navigateToHomeScreen()
-            }
-            is Resource.DataError -> {
-//                status.errorCode?.let { loginViewModel.showToastMessage(it) }
-            }
-        }
     }
 
     private fun navigateToHomeScreen() {
@@ -374,6 +353,21 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToResetPasswordScreen() {
         startActivity<ResetPasswordActivity>()
+    }
+
+    // Navigate to Home Screen with loved one array
+    private fun navigateToHomeScreenWithLovedOneArray() {
+        if (!userLovedOneArrayList.isNullOrEmpty()) {
+            Log.d(TAG, "LovedOneArrayList Size :${userLovedOneArrayList?.size} ")
+        } else {
+            Log.d(TAG, "LovedOneArrayList is null")
+        }
+
+        val intent = Intent(this, HomeActivity::class.java)
+        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
 }
