@@ -82,7 +82,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_book"
-                            android:text="CareTeam Leader"
+                            android:text="@string/careteam_leader"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintBottom_toBottomOf="parent"

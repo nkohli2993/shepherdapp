@@ -1,5 +1,6 @@
 package com.app.shepherd.data.dto.user
 
+import com.app.shepherd.data.dto.login.UserLovedOne
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -24,6 +25,7 @@ data class Payload(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
-    @SerializedName("user_profiles") var userProfiles: UserProfiles? = UserProfiles()
+    @SerializedName("user_profiles") var userProfiles: UserProfiles? = UserProfiles(),
+    @SerializedName("user_loved_one") var userLovedOne: ArrayList<UserLovedOne> = arrayListOf()
 
 )

@@ -28,6 +28,7 @@ import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.HomeViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.app_bar_dashboard.*
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(),
@@ -39,6 +40,7 @@ class HomeActivity : BaseActivity(),
     private lateinit var binding: ActivityHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private val TAG = "HomeActivity"
+    private var profilePicLovedOne: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,11 +49,16 @@ class HomeActivity : BaseActivity(),
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // Get Loved One Array list from Login Screen
         val lovedOneArrayList =
             intent?.getParcelableArrayListExtra<UserLovedOne>(Const.LOVED_ONE_ARRAY)
         if (!lovedOneArrayList.isNullOrEmpty()) {
             Log.d(TAG, "LovedOneArrayList Size :${lovedOneArrayList.size} ")
+
+            val lovedOneUserId = lovedOneArrayList[0].loveUserId
+            lovedOneUserId?.let { viewModel.getLovedOneDetails(it) }
+
         } else {
             Log.d(TAG, "LovedOneArrayList is null")
         }
@@ -84,6 +91,27 @@ class HomeActivity : BaseActivity(),
                 }
             }
         }
+
+        // Observe Loved One Detail
+        viewModel.lovedOneDetailsLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    profilePicLovedOne = it.data.payload?.userProfiles?.profilePhoto
+
+                    Picasso.get().load(profilePicLovedOne).placeholder(R.drawable.test_image)
+                        .into(ivLovedOneProfile)
+                }
+            }
+        }
+
     }
 
 
@@ -97,7 +125,7 @@ class HomeActivity : BaseActivity(),
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
 
         // Get Logged In User's profile info
-        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)?.getObject(
             Const.USER_DETAILS,
             UserProfiles::class.java
         )

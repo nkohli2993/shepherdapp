@@ -334,4 +334,5 @@
     <string name="mymedlist">MyMedList</string>
     <string name="role">Role</string>
     <string name="invitation">Invitation</string>
+    <string name="careteam_leader">CareTeam Leader</string>
 </resources>

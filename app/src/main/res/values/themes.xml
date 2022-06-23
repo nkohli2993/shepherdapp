@@ -177,4 +177,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/_14sdp</item>
     </style>
+    <style name="roundedCornersImageView10" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/_10sdp</item>
+    </style>
 </resources>

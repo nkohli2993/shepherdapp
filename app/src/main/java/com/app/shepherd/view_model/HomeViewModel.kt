@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.app.shepherd.R
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.menuItem.MenuItemModel
+import com.app.shepherd.data.dto.user.UserDetailsResponseModel
+import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
@@ -26,6 +28,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val dataRepository: DataRepository,
     private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     var menuItemList: ArrayList<MenuItemModel> = ArrayList()
@@ -35,6 +38,11 @@ class HomeViewModel @Inject constructor(
 
     var logoutResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _logoutResponseLiveData
+
+    private var _lovedOneDetailsLiveData =
+        MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
+    var lovedOneDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
+        _lovedOneDetailsLiveData
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val selectedDrawerItemPrivate = MutableLiveData<SingleEvent<String>>()
@@ -143,6 +151,27 @@ class HomeViewModel @Inject constructor(
             }
         }
         return logoutResponseLiveData
+    }
+
+
+    // Get User Details
+    fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
+        //val userID = getLovedOneUserId()
+        viewModelScope.launch {
+            val response = authRepository.getUserDetails(lovedOneUserId)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _lovedOneDetailsLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return lovedOneDetailsLiveData
+    }
+
+    //get userID from Shared Pref
+    private fun getLovedOneUserId(): Int {
+        val userLovedOneArray = userRepository.getPayload()?.userLovedOne
+        return userLovedOneArray?.get(0)?.loveUserId ?: 0
     }
 
 
