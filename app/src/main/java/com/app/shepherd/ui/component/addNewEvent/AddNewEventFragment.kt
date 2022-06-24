@@ -197,7 +197,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         assignTo.clear()
         assignTo.add(256)
         addNewEventViewModel.createEvent(
-            255,
+            256,
             fragmentAddNewEventBinding.etEventName.text.toString().trim(),
             fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
             fragmentAddNewEventBinding.tvDate.text.toString().trim(),
