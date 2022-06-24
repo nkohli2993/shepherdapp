@@ -67,6 +67,13 @@ interface ApiService {
         @Query("status") status: Int
     ): Response<CareTeamsResponseModel>
 
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAM_ROLES)
+    suspend fun getCareTeamRoles(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int
+    ): Response<CareTeamsResponseModel>
+
     @GET(ApiConstants.UserDetails.GET_USER_DETAILS)
     suspend fun getUserDetails(
         @Path("id") id: Int
