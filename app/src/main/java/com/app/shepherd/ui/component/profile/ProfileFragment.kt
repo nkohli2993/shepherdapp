@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.login.UserLovedOne
 import com.app.shepherd.data.dto.user.Payload
+import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.databinding.FragmentProfileBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
@@ -38,6 +39,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     private var payload: Payload? = null
     private var lovedOneArrayList: ArrayList<UserLovedOne>? = null
+    private var lovedOneProfileList: ArrayList<UserProfiles>? = arrayListOf()
+
+    // private var lovedOneUserIDs: ArrayList<Int?>? = null
     private val TAG: String? = null
 
 
@@ -57,8 +61,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     override fun initViewBinding() {
         fragmentProfileBinding.listener = this
         //initView()
-        setLovedOnesAdapter()
-        setPendingInvitationsAdapter()
+        //setLovedOnesAdapter()
+        //setPendingInvitationsAdapter()
         if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                 requireContext()
             ) && BiometricUtils.isFingerprintAvailable(
@@ -152,6 +156,29 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                 }
             }
         }
+
+
+        // Observe Loved One Detail
+        profileViewModel.lovedOneDetailsLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val lovedOneProfile = it.data.payload?.userProfiles
+                    if (lovedOneProfile != null) {
+                        lovedOneProfileList?.add(lovedOneProfile)
+                    }
+                    setLovedOnesAdapter(lovedOneProfileList)
+                }
+            }
+        }
+
     }
 
     private fun getLovedOneInfo() {
@@ -159,13 +186,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         if (!lovedOneArrayList.isNullOrEmpty()) {
             val lovedOneUserIDs = lovedOneArrayList?.map {
                 it.loveUserId
-            }
+            } as ArrayList<Int?>?
             Log.d(TAG, "Loved One User Ids :$lovedOneUserIDs ")
+
+            for (i in lovedOneUserIDs?.indices!!) {
+                lovedOneUserIDs[i]?.let { profileViewModel.getLovedOneDetails(it) }
+            }
         }
+
+
     }
 
-    private fun setLovedOnesAdapter() {
+    private fun setLovedOnesAdapter(lovedOneProfileList: ArrayList<UserProfiles>?) {
         val lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
+        lovedOnesAdapter.addData(lovedOneProfileList)
         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter
 
     }

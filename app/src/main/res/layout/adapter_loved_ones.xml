@@ -17,7 +17,7 @@
         android:paddingVertical="@dimen/_8sdp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imageViewCareTeam"
+            android:id="@+id/imgLovedOne"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
             android:background="@drawable/checkbox_background"
@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewCareTeamName"
+            android:id="@+id/txtLovedOneName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -37,14 +37,14 @@
             android:text="@string/app_name"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_14ssp"
-            app:layout_constraintBottom_toTopOf="@+id/textViewCareTeamRole"
+            app:layout_constraintBottom_toTopOf="@+id/textLovedOneRole"
             app:layout_constraintEnd_toStartOf="@+id/checkbox"
-            app:layout_constraintStart_toEndOf="@+id/imageViewCareTeam"
+            app:layout_constraintStart_toEndOf="@+id/imgLovedOne"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/textViewCareTeamRole"
+            android:id="@+id/textLovedOneRole"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_book"
@@ -52,9 +52,9 @@
             android:textColor="@color/_192032"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/textViewCareTeamName"
-            app:layout_constraintStart_toStartOf="@+id/textViewCareTeamName"
-            app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />
+            app:layout_constraintEnd_toEndOf="@+id/txtLovedOneName"
+            app:layout_constraintStart_toStartOf="@+id/txtLovedOneName"
+            app:layout_constraintTop_toBottomOf="@+id/txtLovedOneName" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/checkbox"

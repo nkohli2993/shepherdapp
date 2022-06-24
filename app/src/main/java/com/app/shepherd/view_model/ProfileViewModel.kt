@@ -41,6 +41,11 @@ class ProfileViewModel @Inject constructor(
     var userDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
         _userDetailsLiveData
 
+    private var _lovedOneDetailsLiveData =
+        MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
+    var lovedOneDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
+        _lovedOneDetailsLiveData
+
 
     fun registerBioMetric(
         isBioMetricEnable: Boolean
@@ -77,6 +82,21 @@ class ProfileViewModel @Inject constructor(
     //get userID from Shared Pref
     private fun getUserId(): Int {
         return userRepository.getCurrentUser()?.userId ?: 0
+    }
+
+
+    // Get User Details
+    fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
+        //val userID = getLovedOneUserId()
+        viewModelScope.launch {
+            val response = authRepository.getUserDetails(lovedOneUserId)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _lovedOneDetailsLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return lovedOneDetailsLiveData
     }
 
 }

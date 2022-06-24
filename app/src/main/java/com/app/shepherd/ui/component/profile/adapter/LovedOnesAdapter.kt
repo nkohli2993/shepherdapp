@@ -4,15 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.shepherd.data.dto.dashboard.DashboardModel
+import com.app.shepherd.R
+import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.databinding.AdapterLovedOnesBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.view_model.ProfileViewModel
+import com.squareup.picasso.Picasso
 
 
 class LovedOnesAdapter(
     private val viewModel: ProfileViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    var lovedOneProfileList: MutableList<UserProfiles> = ArrayList()
 ) :
     RecyclerView.Adapter<LovedOnesAdapter.LovedOnesViewHolder>() {
     lateinit var binding: AdapterLovedOnesBinding
@@ -40,23 +42,28 @@ class LovedOnesAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return 10
+        return lovedOneProfileList.size
     }
 
     override fun onBindViewHolder(holder: LovedOnesViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(lovedOneProfileList[position], onItemClickListener)
     }
 
 
     class LovedOnesViewHolder(private val itemBinding: AdapterLovedOnesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
+        fun bind(userProfiles: UserProfiles, recyclerItemListener: RecyclerItemListener) {
             // itemBinding.data = dashboard
+            val fullName = userProfiles.firstname + " " + userProfiles.lastname
+            itemBinding.txtLovedOneName.text = fullName
+
+            Picasso.get().load(userProfiles.profilePhoto).placeholder(R.drawable.test_image)
+                .into(itemBinding.imgLovedOne)
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    dashboard
+                    userProfiles
                 )
             }
         }
@@ -71,9 +78,9 @@ class LovedOnesAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+    fun addData(lovedOneProfileList: ArrayList<UserProfiles>?) {
+        this.lovedOneProfileList.clear()
+        lovedOneProfileList?.let { this.lovedOneProfileList.addAll(it) }
         notifyDataSetChanged()
     }
 
