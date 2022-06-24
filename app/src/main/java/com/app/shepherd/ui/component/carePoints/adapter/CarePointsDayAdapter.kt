@@ -20,6 +20,7 @@ class CarePointsDayAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
+            viewModel.openEventChat(itemData[0] as Int)
 
         }
     }
@@ -41,7 +42,7 @@ class CarePointsDayAdapter(
     }
 
     override fun onBindViewHolder(holder: CarePointsDayViewHolder, position: Int) {
-       // holder.bind(position, onItemClickListener)
+        holder.bind(position, onItemClickListener)
         setCarePointsAdapter(binding.recyclerViewEvents)
     }
 

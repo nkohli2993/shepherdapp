@@ -43,6 +43,11 @@ object ApiConstants {
 
     }
 
+    object CREATE_EVENT {
+        const val CREATE_EVENT = "$BASE_URL${API_VERSION}events"
+
+    }
+
 
 }
 

@@ -2,76 +2,87 @@ package com.app.shepherd.ui.component.addNewEvent.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
+import android.widget.CheckBox
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.app.shepherd.R
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.AdapterAssignToEventBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.ui.component.addNewEvent.AddNewEventViewModel
+import com.app.shepherd.utils.loadImage
 
 
 class AssignToEventAdapter(
+    val context: Context,
     private val viewModel: AddNewEventViewModel,
-    var requestList: MutableList<DashboardModel> = ArrayList()
+    var memberList: ArrayList<CareTeam> = ArrayList()
 ) :
-    RecyclerView.Adapter<AssignToEventAdapter.AssignToEventViewHolder>() {
-    lateinit var binding: AdapterAssignToEventBinding
-    lateinit var context: Context
+    BaseAdapter() {
+    private val inflater: LayoutInflater =
+        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
-        override fun onItemSelected(vararg itemData: Any) {
-           // viewModel.openDashboardItems(itemData[0] as DashboardModel)
-        }
+    override fun getCount(): Int {
+        return memberList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AssignToEventViewHolder {
-        context = parent.context
-        binding =
-            AdapterAssignToEventBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        return AssignToEventViewHolder(binding)
+    override fun getItem(position: Int): Any {
+        return memberList[position]
     }
-
-    override fun getItemCount(): Int {
-        //  return requestList.size
-        return 4
-    }
-
-    override fun onBindViewHolder(holder: AssignToEventViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
-    }
-
-
-    class AssignToEventViewHolder(private val itemBinding: AdapterAssignToEventBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
-           // itemBinding.data = dashboard
-            itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    dashboard
-                )
-            }
-        }
-    }
-
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return position
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
+        val view: View
+        val vh: ItemHolder
+        if (convertView == null) {
+            view = inflater.inflate(R.layout.adapter_assign_to_event, parent, false)
+            vh = ItemHolder(view)
+            view?.tag = vh
+        } else {
+            view = convertView
+            vh = view.tag as ItemHolder
+        }
+        if (position == 0) {
+            vh.tvSelect.isVisible = true
+            vh.clEventWrapper.isVisible = false
+        } else {
+            vh.tvSelect.isVisible = false
+            vh.clEventWrapper.isVisible = true
+            vh.textViewCareTeamName.text = memberList[position].user?.userProfiles?.fullName
+            vh.textViewCareTeamRole.text = memberList[position].careRoles?.name
+            memberList[position].user?.userProfiles?.profilePhoto?.let {
+                vh.imageViewCareTeam.loadImage(it)
+            }
+        }
+
+        return view
     }
 
-    fun addData(dashboard: MutableList<DashboardModel>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
-        notifyDataSetChanged()
-    }
+    private class ItemHolder(row: View?) {
+        val textViewCareTeamName: TextView
+        val textViewCareTeamRole: TextView
+        val tvSelect: TextView
+        val checkbox: CheckBox
+        val imageViewCareTeam: ImageView
+        val clEventWrapper: ConstraintLayout
 
+        init {
+            textViewCareTeamName = row?.findViewById(R.id.textViewCareTeamName) as TextView
+            textViewCareTeamRole = row.findViewById(R.id.textViewCareTeamRole) as TextView
+            tvSelect = row.findViewById(R.id.tvSelect) as TextView
+            checkbox = row.findViewById(R.id.checkbox) as CheckBox
+            imageViewCareTeam = row.findViewById(R.id.imageViewCareTeam) as ImageView
+            clEventWrapper = row.findViewById(R.id.clEventWrapper) as ConstraintLayout
+        }
+    }
 }

@@ -12,6 +12,8 @@ import com.app.shepherd.data.dto.relation.RelationResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
+import com.app.shepherd.ui.component.addNewEvent.CreateEventModel
+import com.app.shepherd.ui.component.addNewEvent.CreateEventResponseModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -68,6 +70,19 @@ interface ApiService {
     suspend fun getUserDetails(
         @Path("id") id: Int
     ): Response<UserDetailsResponseModel>
+
+    @POST(ApiConstants.CARE_TEAMS.GET_CARE_TEAMS)
+    suspend fun getMembers(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int,
+        @Query("loved_one_id") lovedOneId: Int
+    ): Response<CareTeamsResponseModel>
+
+    @POST(ApiConstants.CREATE_EVENT.CREATE_EVENT)
+    suspend fun createEvent(
+        @Body value: CreateEventModel
+    ): Response<CreateEventResponseModel>
 
 
 }

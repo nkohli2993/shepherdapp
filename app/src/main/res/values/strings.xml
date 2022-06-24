@@ -326,4 +326,7 @@
     <string name="next">Next</string>
     <string name="time">Time</string>
     <string name="schedule_events_set_reminders_assign_tasks">Schedule events, set reminders, assign tasks.</string>
+
+    <string name="please_enter_event_name">Please enter event name</string>
+
 </resources>
