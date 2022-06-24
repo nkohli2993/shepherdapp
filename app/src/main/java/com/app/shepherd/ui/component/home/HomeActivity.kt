@@ -239,9 +239,17 @@ class HomeActivity : BaseActivity(),
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
-                                // findNavController().navigate(R.id.nav_add_care_team_member)
+                                navController.navigate(R.id.nav_add_care_team_member)
+                                lockUnlockDrawer(true)
+                                clTopWrapper.isVisible = false
                             }
                         }
+                    }
+                }
+                else ->{
+                    lockUnlockDrawer(true)
+                    binding.appBarDashboard.apply {
+                        clTopWrapper.isVisible = false
                     }
                 }
             }
