@@ -4,15 +4,18 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.shepherd.data.dto.dashboard.DashboardModel
+import com.app.shepherd.R
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.AdapterCareTeamMembersBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.careTeamMembers.CareTeamMembersViewModel
+import com.app.shepherd.view_model.CareTeamMembersViewModel
+import com.squareup.picasso.Picasso
 
 
 class CareTeamMembersAdapter(
     private val viewModel: CareTeamMembersViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    var careTeams: MutableList<CareTeam> = ArrayList()
+
 ) :
     RecyclerView.Adapter<CareTeamMembersAdapter.CareTeamViewHolder>() {
     lateinit var binding: AdapterCareTeamMembersBinding
@@ -21,7 +24,7 @@ class CareTeamMembersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-           viewModel.openMemberDetails(itemData[0] as Int)
+            viewModel.openMemberDetails(itemData[0] as Int)
         }
     }
 
@@ -37,8 +40,7 @@ class CareTeamMembersAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return 6
+        return careTeams.size
     }
 
     override fun onBindViewHolder(holder: CareTeamViewHolder, position: Int) {
@@ -46,11 +48,24 @@ class CareTeamMembersAdapter(
     }
 
 
-    class CareTeamViewHolder(private val itemBinding: AdapterCareTeamMembersBinding) :
+    inner class CareTeamViewHolder(private val itemBinding: AdapterCareTeamMembersBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
-           // itemBinding.data = dashboard
+            val careTeam = careTeams[position]
+            itemBinding.data = careTeam
+            val firstName = careTeam.user?.userProfiles?.firstname
+            val lastName = careTeam.user?.userProfiles?.lastname
+            val fullName = "$firstName $lastName"
+            val imageUrl = careTeam.user?.userProfiles?.profilePhoto
+
+            itemBinding.let {
+                it.textViewCareTeamName.text = fullName
+                Picasso.get().load(imageUrl).placeholder(R.drawable.test_image)
+                    .into(it.imageViewCareTeam)
+            }
+
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     position
@@ -68,9 +83,14 @@ class CareTeamMembersAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
+    /*fun addData(dashboard: MutableList<String>) {
         this.requestList.clear()
         this.requestList.addAll(dashboard)
+        notifyDataSetChanged()
+    }*/
+
+    fun updateCareTeams(careTeams: ArrayList<CareTeam>) {
+        this.careTeams = careTeams
         notifyDataSetChanged()
     }
 
