@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
+import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
+import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.remote.care_teams.CareTeamsRepository
 import com.app.shepherd.network.retrofit.DataResult
@@ -24,12 +26,18 @@ class AddMemberViewModel @Inject constructor(
     private val careTeamsRepository: CareTeamsRepository
 ) :
     BaseViewModel() {
+
     private var _careTeamRolesResponseLiveData =
         MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
     var careTeamRolesResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
         _careTeamRolesResponseLiveData
 
+    private var _addNewMemberCareTeamResponseLiveData =
+        MutableLiveData<Event<DataResult<AddNewMemberCareTeamResponseModel>>>()
+    var addNewMemberCareTeamResponseLiveData: LiveData<Event<DataResult<AddNewMemberCareTeamResponseModel>>> =
+        _addNewMemberCareTeamResponseLiveData
 
+    // Get Care Team Roles
     fun getCareTeamRoles(
         pageNumber: Int,
         limit: Int,
@@ -42,6 +50,20 @@ class AddMemberViewModel @Inject constructor(
             }
         }
         return careTeamRolesResponseLiveData
+    }
+
+    // Add New Member Care Team
+    fun addNewMemberCareTeam(addNewMemberCareTeamRequestModel: AddNewMemberCareTeamRequestModel): LiveData<Event<DataResult<AddNewMemberCareTeamResponseModel>>> {
+        viewModelScope.launch {
+            val response =
+                careTeamsRepository.addNewCareTeamMember(addNewMemberCareTeamRequestModel)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _addNewMemberCareTeamResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return addNewMemberCareTeamResponseLiveData
     }
 
 }

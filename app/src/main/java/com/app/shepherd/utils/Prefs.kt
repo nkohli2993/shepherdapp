@@ -38,7 +38,7 @@ class Prefs @SuppressLint("CommitPrefEdits") internal constructor(context: Conte
         editor.putLong(key, java.lang.Double.doubleToRawLongBits(value)).apply()
     }
 
-    // to save object in prefrence
+    // to save object in preference
     fun save(key: String?, `object`: Any?) {
 
         editor.putString(key, GSON.toJson(`object`)).apply()

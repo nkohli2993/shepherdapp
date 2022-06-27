@@ -76,6 +76,7 @@ class LoginViewModel @Inject constructor(
         }
         return bioMetricLiveData
     }
+
     // Save User to SharePrefs
     fun saveUser(user: UserProfiles?) {
         userRepository.saveUser(user)
@@ -98,4 +99,8 @@ class LoginViewModel @Inject constructor(
 
       }
   */
+
+    fun saveLovedOneId(lovedOneID: Int) {
+        userRepository.saveLovedOneId(lovedOneID)
+    }
 }

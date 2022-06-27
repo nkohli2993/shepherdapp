@@ -1,5 +1,7 @@
 package com.app.shepherd.data.remote.care_teams
 
+import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
+import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.network.retrofit.DataResult
@@ -45,5 +47,16 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
+    // Add New Care Team Member
+    suspend fun addNewCareTeamMember(newCareTeamMember: AddNewMemberCareTeamRequestModel): Flow<DataResult<AddNewMemberCareTeamResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AddNewMemberCareTeamResponseModel, AddNewMemberCareTeamResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AddNewMemberCareTeamResponseModel> {
+                return apiService.addNewMemberCareTeam(newCareTeamMember)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 
 }

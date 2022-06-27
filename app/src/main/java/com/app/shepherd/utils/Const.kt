@@ -21,3 +21,11 @@ object Drawable {
     const val START = 0
     const val BOTTOM = 3
 }
+
+
+enum class Modules(val value: Int) {
+    CareTeam(1),
+    LockBox(2),
+    MedList(3),
+    Resources(4)
+}

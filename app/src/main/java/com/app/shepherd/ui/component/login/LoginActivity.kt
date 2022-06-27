@@ -196,6 +196,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
                         userLovedOneArrayList = it.payload?.userLovedOne
 
+                        val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
+                        // Save lovedOneID to sharedPref
+                        lovedOneUserID?.let { it1 -> loginViewModel.saveLovedOneId(it1) }
                     }
                     if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                             this

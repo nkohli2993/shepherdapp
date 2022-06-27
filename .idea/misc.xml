@@ -32,11 +32,14 @@
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.24739583333333334" />
         <entry key="app/src/main/res/layout/dialog_bio_metric.xml" value="0.3234375" />
         <entry key="app/src/main/res/layout/fragment_add_member.xml" value="0.25885416666666666" />
+        <entry key="app/src/main/res/layout/fragment_add_new_event.xml" value="0.28229166666666666" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.3159525553385417" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.2515625" />
         <entry key="app/src/main/res/layout/fragment_member_details.xml" value="0.375" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/include_toolbar.xml" value="0.32864583333333336" />
+        <entry key="app/src/main/res/layout/include_toolbar_new.xml" value="0.32864583333333336" />
         <entry key="app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.35052083333333334" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.14" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.12935638427734375" />
