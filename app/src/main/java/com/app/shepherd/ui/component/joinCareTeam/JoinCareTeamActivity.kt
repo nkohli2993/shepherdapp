@@ -1,5 +1,7 @@
 package com.app.shepherd.ui.component.joinCareTeam
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -12,7 +14,6 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.joinCareTeam.adapter.JoinCareTeamAdapter
-import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.view_model.CareTeamsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_join_care_team.*
@@ -71,10 +72,19 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     //handleAPIFailure(it.message, it.errorCode)
 
                     hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
-                    binding.layoutCareTeam.visibility = View.GONE
-                    binding.txtNoCareTeamFound.visibility = View.VISIBLE
-
+                    // it.message?.let { showError(this, it.toString()) }
+                    //binding.layoutCareTeam.visibility = View.GONE
+                    //binding.txtNoCareTeamFound.visibility = View.VISIBLE
+                    val builder = AlertDialog.Builder(this)
+                    val dialog = builder.apply {
+                        setTitle("Care Teams")
+                        setMessage("No Care Team Found")
+                        setPositiveButton("OK") { _, _ ->
+                            navigateToDashboardScreen()
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
             }
         }
@@ -92,7 +102,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                 finishActivity()
             }
             R.id.buttonJoin -> {
-                navigateToDashboardScreen()
+                //navigateToDashboardScreen()
             }
         }
     }

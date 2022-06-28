@@ -31,4 +31,19 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+
+    // Get Care Teams
+    suspend fun getCareTeamRoles(
+        pageNumber: Int,
+        limit: Int,
+        status: Int
+    ): Flow<DataResult<CareTeamsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<CareTeamsResponseModel> {
+                return apiService.getCareTeamRoles(pageNumber, limit, status)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 }

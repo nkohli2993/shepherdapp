@@ -1,5 +1,8 @@
 package com.app.shepherd.ui.component.forgot_password
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,7 +14,6 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.extensions.showError
-import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.ForgotPasswordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_forgot_password.*
@@ -73,8 +75,17 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Success -> {
                     hideLoading()
                     it.data.message?.let { it1 ->
-                        showSuccess(this, it1)
-                        navigateToLoginScreen()
+                        // showSuccess(this, it1)
+                        val builder = AlertDialog.Builder(this)
+                        val dialog = builder.apply {
+                            setTitle("Reset Password")
+                            setMessage(it1)
+                            setPositiveButton("OK") { _, _ ->
+                                navigateToLoginScreen()
+                            }
+                        }.create()
+                        dialog.show()
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                     }
                 }
             }
@@ -88,6 +99,12 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToLoginScreen() {
-        startActivityWithFinish<LoginActivity>()
+        //startActivityWithFinish<LoginActivity>()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
+
     }
 }

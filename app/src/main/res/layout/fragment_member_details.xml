@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,366 +11,347 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreyLight"
-        android:orientation="vertical"
-        tools:context="com.app.shepherd.ui.component.addLovedOne.Hilt_CreateAccountActivity">
+        android:background="@color/_FCFCFC"
+        android:padding="@dimen/_10sdp"
+        android:orientation="vertical">
 
-
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:fillViewport="true"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{listener::onClick}"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivBack">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-
-                <LinearLayout
-                    android:id="@+id/linearLayoutToolbar"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:background="@color/colorPrimaryDark"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_group" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgCareTeamMember"
+                        android:layout_width="@dimen/_60sdp"
+                        android:layout_height="@dimen/_60sdp"
+                        android:layout_marginStart="4dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/ic_defalut_profile_pic"
+                        android:background="@color/colorWhite"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_60sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="@+id/imgCareTeamMember"
+                        app:layout_constraintStart_toEndOf="@+id/imgCareTeamMember"
+                        app:layout_constraintTop_toTopOf="@+id/imgCareTeamMember">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/txtCareTeamMemberName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Mary Tyler"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_14ssp"
+                            app:fontFamily="@font/gotham_medium" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/txtCareTeamMemberDesignation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="Care Team Leader"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_12ssp"
+                            app:fontFamily="@font/gotham_book" />
+
+                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextViewPoppinsSemiBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical"
-                        android:gravity="end|center_vertical"
-                        android:includeFontPadding="false"
-                        android:text="@string/care_team"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/topView"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_4sdp"
-                    android:background="@color/colorDarkBlue"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_150sdp"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    app:cardBackgroundColor="@color/colorAccent"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:cardPreventCornerOverlap="false"
-                    app:layout_constraintTop_toBottomOf="@+id/topView">
-
-                    <RelativeLayout
+                        android:id="@+id/txtEmailCare"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:drawableStart="@drawable/ic_email_care"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:gravity="center_vertical"
+                        android:text="marytyler@email.com"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_12ssp"
+                        app:fontFamily="@font/gotham_book"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember"
+                        android:layout_marginTop="@dimen/_10sdp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtPhoneCare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:drawableStart="@drawable/ic_phone_care"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:gravity="center_vertical"
+                        android:text="+02 900-538-2002"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_12ssp"
+                        app:fontFamily="@font/gotham_book"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtEmailCare"
+                        android:layout_marginTop="@dimen/_10sdp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtAddressCare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:drawableStart="@drawable/ic_address_care"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:gravity="center_vertical"
+                        android:text="402 Harvey Lane Ponte Vedra Beach FL 32082"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_12ssp"
+                        app:fontFamily="@font/gotham_book"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtPhoneCare"
+                        android:layout_marginTop="@dimen/_10sdp" />
 
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imageViewLovedOne"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center"
-                            android:adjustViewBounds="true"
-                            android:onClick="@{listener::onClick}"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/test_image_square" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewMemberName"
-                            style="@style/TextViewPoppinsSemiBold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_above="@+id/textViewMemberRole"
-                            android:layout_gravity="center"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:onClick="@{listener::onClick}"
-                            android:text="@string/test_name"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_15ssp" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewMemberRole"
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentBottom="true"
-                            android:layout_gravity="center"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:layout_marginBottom="@dimen/_12sdp"
-                            android:onClick="@{listener::onClick}"
-                            android:text="@string/care_team_leader"
-                            android:textColor="@color/colorWhite" />
-                    </RelativeLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewDetails"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:cardUseCompatPadding="true"
-                    app:contentPadding="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewImage"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewImage"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewImage">
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    android:background="@color/colorWhite"
+                    android:layout_marginTop="@dimen/_20sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="@dimen/_12sdp">
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_care_team"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:text="@string/careteam"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_12ssp"
+                            app:fontFamily="@font/gotham_book"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".4"
-                                android:drawableStart="@drawable/ic_outline_email"
-                                android:drawablePadding="@dimen/_6sdp"
-                                android:text="@string/email"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/TextViewPoppinsMedium"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_weight=".6"
-                                android:text="@string/test_email"
-                                android:textColor="@color/colorBlack"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                        </LinearLayout>
-
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:background="@color/colorPrimary"
-                            app:layout_constraintTop_toBottomOf="@+id/appCompatTextViewEmail" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchCareTeam"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="@dimen/_12sdp">
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="0dp"
-                                android:layout_weight=".4"
-                                android:drawableStart="@drawable/ic_phone_iphone"
-                                android:drawablePadding="@dimen/_6sdp"
-                                android:text="@string/phone"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/TextViewPoppinsMedium"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_weight=".6"
-                                android:text="@string/test_number"
-                                android:textColor="@color/colorBlack"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                            android:checked="true"
+                            android:thumb="@drawable/switch_thumb_selector"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:track="@drawable/switch_track_selector" />
 
 
-                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    android:background="@color/colorWhite"
+                    android:layout_marginTop="@dimen/_10sdp">
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_1sdp"
-                            android:background="@color/colorPrimary"
-                            app:layout_constraintTop_toBottomOf="@+id/appCompatTextViewEmail" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:background="@color/colorWhite">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingVertical="@dimen/_12sdp">
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_lock_box"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:text="@string/lockbox"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_12ssp"
+                            app:fontFamily="@font/gotham_book"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:id="@+id/appCompatTextViewAddress"
-                                style="@style/TextViewPoppinsRegular"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".4"
-                                android:drawableStart="@drawable/ic_outline_location_on"
-                                android:drawablePadding="@dimen/_6sdp"
-                                android:text="@string/address"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <androidx.appcompat.widget.AppCompatTextView
-                                style="@style/TextViewPoppinsMedium"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_weight=".6"
-                                android:text="@string/test_address"
-                                android:textColor="@color/colorBlack"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-
-                        </LinearLayout>
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchLockBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:thumb="@drawable/switch_thumb_selector"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:track="@drawable/switch_track_selector" />
 
 
                     </LinearLayout>
 
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewModules"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewDetails">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/Id_const_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        >
-
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerViewModules"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:itemCount="4"
-                            tools:listitem="@layout/adapter_restriction_modules" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewRemoveCareTeam"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewDetails"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewDetails"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewModules">
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    android:background="@color/colorWhite"
+                    android:layout_marginTop="@dimen/_10sdp">
 
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="@dimen/_8sdp">
-
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:background="@color/colorWhite">
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewCareTeamRole"
-                            style="@style/TextViewPoppinsRegular"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:text="@string/remove_from_care_team"
-                            android:textColor="@color/colorPeach"
-                            android:textSize="@dimen/_11ssp"
-                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_medical_list"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:text="@string/mymedlist"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_12ssp"
+                            app:fontFamily="@font/gotham_book"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
-
-                        <com.google.android.material.button.MaterialButton
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchMyMedList"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:backgroundTint="@color/colorPeach"
-                            app:cornerRadius="@dimen/_20sdp"
-                            style="@style/TextViewPoppinsMedium"
-                            android:text="@string/delete"
-                            android:textColor="@color/colorWhite"
-                            android:textAllCaps="false"
-                            android:layout_marginEnd="@dimen/_6sdp"
-                            app:icon="@drawable/ic_restore_from_trash"
+                            android:checked="false"
+                            android:thumb="@drawable/switch_thumb_selector"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:track="@drawable/switch_track_selector" />
 
+
+                    </LinearLayout>
 
                 </androidx.cardview.widget.CardView>
 
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/_8sdp"
+                    android:background="@color/colorWhite"
+                    android:layout_marginTop="@dimen/_10sdp">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonSave"
-                    style="@style/ButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_marginVertical="@dimen/_24sdp"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:onClick="@{listener::onClick}"
-                    android:text="@string/save"
-                    android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewRemoveCareTeam" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:background="@color/colorWhite">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/ic_resources"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:text="@string/resources"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_12ssp"
+                            app:fontFamily="@font/gotham_book"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/switchResources"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false"
+                            android:thumb="@drawable/switch_thumb_selector"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:track="@drawable/switch_track_selector" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_20sdp">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnCreateAccount"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/shape_black_border"
+                        android:fontFamily="@font/gotham_medium"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/remove"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_13ssp" />
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnLogin"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:layout_weight="1"
+                        android:background="@drawable/button_primary"
+                        android:backgroundTint="@color/_399282"
+                        android:fontFamily="@font/gotham_medium"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="10dp"
+                        android:text="@string/save_changes"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_13ssp" />
+                </LinearLayout>
+
+            </LinearLayout>
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
-        </androidx.core.widget.NestedScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

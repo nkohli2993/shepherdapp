@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.dashboard.DashboardModel
-import com.app.shepherd.databinding.AdapterNotificationsBinding
 import com.app.shepherd.databinding.AdapterPendingInvitationsBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.notifications.NotificationsViewModel
-import com.app.shepherd.ui.component.profile.ProfileViewModel
+import com.app.shepherd.view_model.ProfileViewModel
 
 
 class PendingInvitationsAdapter(

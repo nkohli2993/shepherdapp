@@ -96,10 +96,20 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToLogin() {
         startActivity<LoginActivity>()
+        /* val intent = Intent(this, LoginActivity::class.java)
+         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+         startActivity(intent)
+         finish()*/
+        //startActivityWithFinish<LoginActivity>()
     }
 
     private fun navigateToSignUp() {
         startActivity<CreateNewAccountActivity>()
+        /* val intent = Intent(this, CreateNewAccountActivity::class.java)
+         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+         startActivity(intent)
+         finish()*/
+        //startActivityWithFinish<CreateNewAccountActivity>()
     }
 
 }

@@ -82,14 +82,15 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:src="@drawable/ic_home_notification"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/ivProfile"
+                    app:layout_constraintEnd_toStartOf="@+id/ivLovedOneProfile"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/ivProfile"
-                    android:layout_width="@dimen/_30ssp"
-                    android:layout_height="@dimen/_30ssp"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivLovedOneProfile"
+                    android:layout_width="@dimen/_33sdp"
+                    android:layout_height="@dimen/_32sdp"
                     android:src="@drawable/test_image"
+                    app:shapeAppearanceOverlay="@style/roundedCornersImageView"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

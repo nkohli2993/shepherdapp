@@ -306,4 +306,27 @@ object CommonFunctions {
     ) =
         inSpans(StyleSpan(typeface?.style ?: Typeface.DEFAULT.style), builderAction = builderAction)
 
+
+    fun showDefaultDialog(
+        context: Context,
+        title: String,
+        message: String,
+        positiveButtonText: String,
+        negativeButtonText: String
+    ) {
+        val alertDialog = AlertDialog.Builder(context)
+
+        alertDialog.apply {
+            setTitle(title)
+            setMessage(message)
+            setPositiveButton(positiveButtonText) { _, _ ->
+
+            }
+            setNegativeButton(negativeButtonText) { _, _ ->
+            }
+            setNeutralButton("Neutral") { _, _ ->
+            }
+        }.create().show()
+    }
+
 }

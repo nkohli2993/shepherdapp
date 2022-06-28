@@ -11,6 +11,6 @@ data class Payload(
     @SerializedName("current_page") var currentPage: Int? = null,
     @SerializedName("total_pages") var totalPages: Int? = null,
     @SerializedName("per_page") var perPage: Int? = null,
-    @SerializedName("careteams") var careteams: ArrayList<CareTeam> = arrayListOf()
-
+    @SerializedName("careteams") var careteams: ArrayList<CareTeam>? = arrayListOf(),
+    @SerializedName("careroles") var careroles: ArrayList<CareRoles>? = arrayListOf()
 )

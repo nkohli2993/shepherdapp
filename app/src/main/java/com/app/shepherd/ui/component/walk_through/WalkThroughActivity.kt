@@ -19,6 +19,7 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityWalkThroughBinding
     private var mOnBoardingImagesAdapter: OnBoardingImagesAdapter? = null
+    private var selectedPage: Int = 0
 
 
     override fun initViewBinding() {
@@ -40,28 +41,28 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
         val list: ArrayList<WalkThroughModel> = ArrayList()
         list.add(
             WalkThroughModel(
-                R.drawable.walk_through_1,
+                R.drawable.walkthrough_1,
                 "Care for your loved ones.\nCare for yourself.",
                 "Welcome. Shepherd was designed for the health and well-being of family caregivers and those for whom they are giving care."
             )
         )
         list.add(
             WalkThroughModel(
-                R.drawable.walk_through_1,
+                R.drawable.walkthrough_2,
                 "Manage the stress that \ncomes with caregiving.",
                 "Whether you are managing the care of a parent, a husband or wife, or a special- needs child, Shepherd can help you reduce the stress that comes with caregiving."
             )
         )
         list.add(
             WalkThroughModel(
-                R.drawable.walk_through_1,
+                R.drawable.walkthrough_3,
                 "Take control of your day.",
                 "Shepherd gives you more control over your daily workload, and includes expert advice to help guide you through the caregiving experience."
             )
         )
         list.add(
             WalkThroughModel(
-                R.drawable.walk_through_1,
+                R.drawable.walkthrough_4,
                 "Try it for free.",
                 "Try Shepherd for 30 days and see how much better things can be."
             )
@@ -79,7 +80,16 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onPageSelected(position: Int) {
+                selectedPage = position
                 binding.btnSkip.isVisible = position != 3
+                // binding.btnGetStarted.isVisible = !(position == 0 || position == 1 || position == 2)
+                if ((position == 0 || position == 1 || position == 2)) {
+                    binding.btnGetStarted.visibility = View.GONE
+                    binding.btnNext.visibility = View.VISIBLE
+                } else {
+                    binding.btnGetStarted.visibility = View.VISIBLE
+                    binding.btnNext.visibility = View.GONE
+                }
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
@@ -97,10 +107,14 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
             R.id.btnGetStarted -> {
                 navigateToWelcomeScreen()
             }
+            R.id.btnNext -> {
+                // Move to next slide of view pager
+                binding.viewPager.currentItem = selectedPage + 1
+            }
         }
     }
 
     private fun navigateToWelcomeScreen() {
-        startActivity<WelcomeActivity>()
+        startActivityWithFinish<WelcomeActivity>()
     }
 }

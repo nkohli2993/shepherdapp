@@ -7,6 +7,6 @@ import com.google.gson.annotations.SerializedName
  * Created by Deepak Rattan on 06/06/22
  */
 data class CreateLovedOneResponseModel(
-    @SerializedName("payload") var payload: Boolean
+    @SerializedName("payload") var payload: Payload
 ) : BaseResponseModel()
 

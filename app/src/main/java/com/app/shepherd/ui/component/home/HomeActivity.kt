@@ -1,14 +1,10 @@
 package com.app.shepherd.ui.component.home
 
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.biometric.BiometricManager
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -16,17 +12,23 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupWithNavController
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
+import com.app.shepherd.data.dto.login.UserLovedOne
+import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.databinding.ActivityHomeBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
-import com.app.shepherd.ui.component.home.adapter.MenuItemAdapter
-import com.app.shepherd.ui.component.home.viewModel.HomeViewModel
-import com.app.shepherd.utils.SingleEvent
-import com.app.shepherd.utils.observeEvent
-import com.google.android.material.navigation.NavigationView
+import com.app.shepherd.ui.component.login.LoginActivity
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showSuccess
+import com.app.shepherd.view_model.HomeViewModel
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.Executor
+import kotlinx.android.synthetic.main.app_bar_dashboard.*
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(),
@@ -37,6 +39,8 @@ class HomeActivity : BaseActivity(),
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
     private val viewModel: HomeViewModel by viewModels()
+    private val TAG = "HomeActivity"
+    private var profilePicLovedOne: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +49,20 @@ class HomeActivity : BaseActivity(),
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        // Get Loved One Array list from Login Screen
+        val lovedOneArrayList =
+            intent?.getParcelableArrayListExtra<UserLovedOne>(Const.LOVED_ONE_ARRAY)
+        if (!lovedOneArrayList.isNullOrEmpty()) {
+            Log.d(TAG, "LovedOneArrayList Size :${lovedOneArrayList.size} ")
+
+            val lovedOneUserId = lovedOneArrayList[0].loveUserId
+            lovedOneUserId?.let { viewModel.getLovedOneDetails(it) }
+
+        } else {
+            Log.d(TAG, "LovedOneArrayList is null")
+        }
+
         setupNavigationDrawer()
 
         setMenuItemAdapter()
@@ -52,11 +70,47 @@ class HomeActivity : BaseActivity(),
         binding.appBarDashboard.ivMenu.setOnClickListener(View.OnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START, true)
         })
-
     }
 
 
     override fun observeViewModel() {
+        // Observe Logout Response
+        viewModel.logoutResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    showSuccess(this, " User logged out successfully")
+                    Prefs.with(ShepherdApp.appContext)?.removeAll()
+                    navigateToLoginScreen()
+                }
+            }
+        }
+
+        // Observe Loved One Detail
+        viewModel.lovedOneDetailsLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    profilePicLovedOne = it.data.payload?.userProfiles?.profilePhoto
+
+                    Picasso.get().load(profilePicLovedOne).placeholder(R.drawable.test_image)
+                        .into(ivLovedOneProfile)
+                }
+            }
+        }
     }
 
 
@@ -68,6 +122,24 @@ class HomeActivity : BaseActivity(),
     private fun setupNavigationDrawer() {
         drawerLayout = binding.drawerLayout
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
+
+        // Get Logged In User's profile info
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)?.getObject(
+            Const.USER_DETAILS,
+            UserProfiles::class.java
+        )
+
+        val firstName = loggedInUser?.firstname
+        val lastName = loggedInUser?.lastname
+        val fullName = "$firstName $lastName"
+
+        val profilePicLoggedInUser = loggedInUser?.profilePhoto
+
+        binding.ivName.text = fullName
+
+        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.test_image)
+            .into(binding.ivLoggedInUserProfile)
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
             binding.appBarDashboard.ivEditProfile.isVisible =
@@ -172,6 +244,29 @@ class HomeActivity : BaseActivity(),
                         clTopWrapper.isVisible = false
                     }
                 }
+
+                R.id.nav_care_team -> {
+                    binding.appBarDashboard.apply {
+                        tvTitle.text = "CareTeam"
+                        clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
+                        clHomeWrapper.isVisible = false
+                        tvNew.apply {
+                            isVisible = true
+                            setOnClickListener {
+                                navController.navigate(R.id.nav_add_care_team_member)
+                                lockUnlockDrawer(true)
+                                clTopWrapper.isVisible = false
+                            }
+                        }
+                    }
+                }
+                else ->{
+                    lockUnlockDrawer(true)
+                    binding.appBarDashboard.apply {
+                        clTopWrapper.isVisible = false
+                    }
+                }
             }
         }
     }
@@ -228,7 +323,20 @@ class HomeActivity : BaseActivity(),
             R.id.llCareTeam -> {
                 navController.navigate(R.id.nav_care_team)
             }
+            R.id.tvLogout -> {
+                viewModel.logOut()
+            }
         }
         drawerLayout?.closeDrawer(GravityCompat.START)
+    }
+
+    private fun navigateToLoginScreen() {
+        //startActivityWithFinish<LoginActivity>()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
     }
 }

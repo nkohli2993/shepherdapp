@@ -38,7 +38,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private lateinit var fragmentAddNewEventBinding: FragmentAddNewEventBinding
     private var pageNumber: Int = 1
     private var limit: Int = 10
-    private var status: Int = 0
+    private var status: Int = 1
     private var assignTo = ArrayList<Int>()
     private var careteams = ArrayList<CareTeam>()
     override fun onCreateView(
@@ -64,7 +64,12 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
     private fun getAssignedToMembers() {
-        addNewEventViewModel.getMembers(pageNumber, limit, status, 264)
+        addNewEventViewModel.getMembers(
+            pageNumber,
+            limit,
+            status,
+            addNewEventViewModel.getLovedOneId()
+        )
     }
 
     override fun observeViewModel() {
@@ -87,7 +92,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     val payload = it.data.payload
 
                     careteams.add(CareTeam())
-                    careteams.addAll(payload.careteams)
+                    careteams.addAll(payload.careteams!!)
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
                             requireContext(),
@@ -197,7 +202,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         assignTo.clear()
         assignTo.add(256)
         addNewEventViewModel.createEvent(
-            256,
+            addNewEventViewModel.getLovedOneId(),
             fragmentAddNewEventBinding.etEventName.text.toString().trim(),
             fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
             fragmentAddNewEventBinding.tvDate.text.toString().trim(),

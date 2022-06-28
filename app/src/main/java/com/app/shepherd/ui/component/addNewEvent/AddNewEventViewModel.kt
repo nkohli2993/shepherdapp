@@ -14,6 +14,7 @@ import com.app.shepherd.data.dto.login.LoginRequestModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.error.CHECK_YOUR_FIELDS
 import com.app.shepherd.data.error.EMAIL_ERROR
+import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
@@ -32,7 +33,10 @@ import javax.inject.Inject
  * Created by Sumit Kumar
  */
 @HiltViewModel
-class AddNewEventViewModel @Inject constructor(private val dataRepository: DataRepository) :
+class AddNewEventViewModel @Inject constructor(
+    private val dataRepository: DataRepository,
+    private val userRepository: UserRepository
+) :
     BaseViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -135,6 +139,10 @@ class AddNewEventViewModel @Inject constructor(private val dataRepository: DataR
             }
         }
         return createEventLiveData
+    }
+
+    fun getLovedOneId(): Int {
+        return userRepository.getLovedOneId()
     }
 
 }

@@ -8,12 +8,15 @@ import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
+import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
+import com.app.shepherd.data.dto.medical_conditions.UserConditionsResponseModel
 import com.app.shepherd.data.dto.relation.RelationResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventResponseModel
+import com.app.shepherd.ui.base.BaseResponseModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -23,55 +26,62 @@ import retrofit2.http.*
  */
 interface ApiService {
 
-    @POST(ApiConstants.AUTHENTICATION.LOGIN)
+    @POST(ApiConstants.Authentication.LOGIN)
     suspend fun login(@Body value: UserSignupData): Response<LoginResponseModel>
 
-    @POST(ApiConstants.AUTHENTICATION.LOGIN_WITH_DEVICE)
+    @POST(ApiConstants.Authentication.LOGIN_WITH_DEVICE)
     suspend fun loginWithDevice(@Body value: UserSignupData): Response<LoginResponseModel>
 
-    @POST(ApiConstants.AUTHENTICATION.SIGN_UP)
+    @POST(ApiConstants.Authentication.SIGN_UP)
     suspend fun signUp(@Body value: UserSignupData): Response<LoginResponseModel>
 
-    @PATCH(ApiConstants.AUTHENTICATION.BIOMETRIC)
+    @PATCH(ApiConstants.Authentication.BIOMETRIC)
     suspend fun registerBioMetric(@Body value: BioMetricData): Response<LoginResponseModel>
 
     @Multipart
-    @POST(ApiConstants.AUTHENTICATION.UPLOAD_IMAGE)
+    @POST(ApiConstants.Authentication.UPLOAD_IMAGE)
     suspend fun uploadImage(
         @Part profilePhoto: MultipartBody.Part?
     ): Response<UploadPicResponseModel>
 
-    @POST(ApiConstants.AUTHENTICATION.FORGOT_PASSWORD)
+    @POST(ApiConstants.Authentication.FORGOT_PASSWORD)
     suspend fun forgotPassword(@Body value: ForgotPasswordModel): Response<LoginResponseModel>
 
-    @GET(ApiConstants.RELATIONS.GET_RELATIONS)
+    @GET(ApiConstants.Relations.GET_RELATIONS)
     suspend fun getRelations(
         @Query("page") page: Int,
         @Query("limit") limit: Int
     ): Response<RelationResponseModel>
 
-    @POST(ApiConstants.LOVED_ONE.CREATE_LOVED_ONE)
+    @POST(ApiConstants.LovedOne.CREATE_LOVED_ONE)
     suspend fun createLovedOne(@Body value: CreateLovedOneModel): Response<CreateLovedOneResponseModel>
 
-    @GET(ApiConstants.MEDICAL_CONDITIONS.GET_MEDICAL_CONDITIONS)
+    @GET(ApiConstants.MedicalConditions.GET_MEDICAL_CONDITIONS)
     suspend fun getMedicalConditions(
         @Query("page") page: Int,
         @Query("limit") limit: Int
     ): Response<MedicalConditionResponseModel>
 
-    @GET(ApiConstants.CARE_TEAMS.GET_CARE_TEAMS)
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
     suspend fun getCareTeams(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("status") status: Int
     ): Response<CareTeamsResponseModel>
 
-    @GET(ApiConstants.USER_DETAILS.GET_USER_DETAILS)
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAM_ROLES)
+    suspend fun getCareTeamRoles(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int
+    ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.UserDetails.GET_USER_DETAILS)
     suspend fun getUserDetails(
         @Path("id") id: Int
     ): Response<UserDetailsResponseModel>
 
-    @POST(ApiConstants.CARE_TEAMS.GET_CARE_TEAMS)
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
     suspend fun getMembers(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
@@ -79,10 +89,15 @@ interface ApiService {
         @Query("loved_one_id") lovedOneId: Int
     ): Response<CareTeamsResponseModel>
 
-    @POST(ApiConstants.CREATE_EVENT.CREATE_EVENT)
+    @POST(ApiConstants.CreateEvent.CREATE_EVENT)
     suspend fun createEvent(
         @Body value: CreateEventModel
     ): Response<CreateEventResponseModel>
 
 
+    @POST(ApiConstants.MedicalConditions.CREATE_BULK_ONE_CONDITIONS)
+    suspend fun createBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
+
+    @GET(ApiConstants.Authentication.LOGOUT)
+    suspend fun logout(): Response<BaseResponseModel>
 }

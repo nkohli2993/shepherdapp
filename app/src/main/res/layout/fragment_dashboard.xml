@@ -357,12 +357,12 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/_0086AC">
+                    android:background="@color/_187AB6">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_resources"
+                        android:src="@drawable/ic_home_resources"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -377,13 +377,13 @@
                             android:id="@+id/ivResource"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:src="@drawable/ic_home_resource"
+                            android:layout_marginTop="@dimen/_20ssp"
+                            android:src="@drawable/ic_resourc"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvResources"
+                            android:id="@+id/tvResource"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
@@ -392,23 +392,23 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_18ssp"
                             app:layout_constraintStart_toEndOf="@+id/ivResource"
-                            app:layout_constraintTop_toTopOf="@+id/ivResource" />
+                            app:layout_constraintTop_toTopOf="@id/ivResource" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvResourcesDescription"
+                            android:id="@+id/tvResourceListDescription"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="Last article published an hour ago"
+                            android:text="@string/last_article_published"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintStart_toEndOf="@+id/ivResource"
-                            app:layout_constraintTop_toBottomOf="@+id/tvResources" />
+                            app:layout_constraintTop_toBottomOf="@+id/tvResource" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvResourcesCount"
+                            android:id="@+id/tvResourceListMessageCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
@@ -416,17 +416,17 @@
                             android:text="12"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
-                            app:layout_constraintBottom_toTopOf="@+id/tvResourcesMessage"
-                            app:layout_constraintEnd_toEndOf="@+id/tvResourcesMessage"
-                            app:layout_constraintStart_toStartOf="@+id/tvResourcesMessage" />
+                            app:layout_constraintBottom_toTopOf="@+id/tvResourceListMessage"
+                            app:layout_constraintEnd_toEndOf="@+id/tvResourceListMessage"
+                            app:layout_constraintStart_toStartOf="@+id/tvResourceListMessage" />
 
                         <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/tvResourcesMessage"
+                            android:id="@+id/tvResourceListMessage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="@string/new_articles_and_topics"
+                            android:text="@string/new_article_and_topics"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -455,7 +455,7 @@
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_lock_box"
+                        android:src="@drawable/ic_home_lockbox_bg"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 

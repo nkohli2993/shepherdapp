@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -50,12 +49,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/ivProfile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/ivLoggedInUserProfile"
+                            android:layout_width="@dimen/_40sdp"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_marginStart="@dimen/_20ssp"
+                            android:padding="@dimen/_2sdp"
                             android:src="@drawable/test_image"
+                            app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+                            app:strokeWidth="@dimen/_2sdp"
+                            app:strokeColor="@color/_399282"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,7 +72,7 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_14ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvRole"
-                            app:layout_constraintStart_toEndOf="@+id/ivProfile"
+                            app:layout_constraintStart_toEndOf="@+id/ivLoggedInUserProfile"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -79,11 +82,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_book"
-                            android:text="CareTeam Leader"
+                            android:text="@string/careteam_leader"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivProfile"
+                            app:layout_constraintStart_toEndOf="@+id/ivLoggedInUserProfile"
                             app:layout_constraintTop_toBottomOf="@+id/ivName" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -386,6 +389,7 @@
                 android:text="@string/log_out"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_14ssp"
+                android:onClick="@{listener::onClick}"
                 app:layout_constraintBottom_toTopOf="@+id/tvCopyRight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

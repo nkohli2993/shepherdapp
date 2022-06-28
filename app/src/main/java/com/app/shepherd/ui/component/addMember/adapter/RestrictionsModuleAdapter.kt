@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.AdapterRestrictionModulesBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.addMember.AddMemberViewModel
+import com.app.shepherd.view_model.AddMemberViewModel
 
 
 class RestrictionsModuleAdapter(
