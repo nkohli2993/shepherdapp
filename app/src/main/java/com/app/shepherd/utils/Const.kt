@@ -11,6 +11,8 @@ object Const {
     const val DEVICE_ID = "DEVICE_ID"
     const val BIOMETRIC_ENABLE = "BIOMETRIC_ENABLE"
     const val SECOND_TIME_LOGIN = "SECOND_TIME_LOGIN"
+    const val CARE_POINT = "CARE_POINT"
+    const val CHAT = "CHAT"
     const val LOVED_ONE_ID = "LOVED_ONE_ID"
     const val LOVED_ONE_ARRAY = "LOVED_ONE_ARRAY"
 }

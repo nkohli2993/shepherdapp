@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -53,8 +54,18 @@ class CarePointsFragment : BaseFragment<FragmentAddMemberBinding>(),
         observe(carePointsViewModel.loginLiveData, ::handleLoginResult)
         observeSnackBarMessages(carePointsViewModel.showSnackBar)
         observeToast(carePointsViewModel.showToast)
+        observeEvent(carePointsViewModel.openChatItems, ::navigateToChat)
     }
 
+    private fun navigateToChat(navigateEvent: SingleEvent<Int>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            findNavController().navigate(
+                CarePointsFragmentDirections.actionCarePointsToChatFragment(
+                    Const.CARE_POINT
+                )
+            )
+        }
+    }
 
     private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
@@ -85,9 +96,9 @@ class CarePointsFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonAddNewTask -> {
-                p0.findNavController().navigate(R.id.action_care_points_to_add_new_task)
-            }
+//            R.id.buttonAddNewTask -> {
+//                p0.findNavController().navigate(R.id.action_care_points_to_add_new_task)
+//            }
         }
     }
 

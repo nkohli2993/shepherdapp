@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -193,6 +194,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         // Save token
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
                         token = it.payload?.token
+                        it.payload?.userLovedOne?.let {
+                            if (it.isNotEmpty()){
+                                loginViewModel.saveLovedOneId(it[0].loveUserId)
+                            }
+                        }
 
                         userLovedOneArrayList = it.payload?.userLovedOne
 
@@ -259,8 +265,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_bio_metric)
-        val yesBtn = dialog.findViewById(R.id.btnYes) as Button
-        val noBtn = dialog.findViewById(R.id.btnNo) as Button
+        val yesBtn = dialog.findViewById(R.id.btnYes) as TextView
+        val noBtn = dialog.findViewById(R.id.btnNo) as TextView
         yesBtn.setOnClickListener {
             dialog.dismiss()
             registerBiometric(true)

@@ -233,7 +233,9 @@ fun AppCompatTextView.datePicker(fm: FragmentManager, tag: String) {
 
 
     setOnClickListener {
-        datePicker.show(fm, tag)
+        if (!datePicker.isAdded) {
+            datePicker.show(fm, tag)
+        }
     }
 
     datePicker.addOnPositiveButtonClickListener {
@@ -246,7 +248,7 @@ fun AppCompatTextView.timePicker(context: Context) {
     val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
     val minute = mCurrentTime.get(Calendar.MINUTE)
 
-        val mTimePicker = TimePickerDialog(
+    val mTimePicker = TimePickerDialog(
         context,
         { view, hourOfDay, selectedMinute ->
             text = String.format("%02d : %02d", hourOfDay, selectedMinute)

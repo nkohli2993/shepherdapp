@@ -46,5 +46,10 @@ object ApiConstants {
     object UserDetails {
         const val GET_USER_DETAILS = "$BASE_URL${API_VERSION}users/{id}"
     }
+
+    object CreateEvent {
+        const val CREATE_EVENT = "$BASE_URL${API_VERSION}events"
+
+    }
 }
 

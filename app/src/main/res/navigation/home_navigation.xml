@@ -146,6 +146,9 @@
         <action
             android:id="@+id/action_care_points_to_add_new_task"
             app:destination="@+id/nav_add_new_event" />
+        <action
+            android:id="@+id/action_care_points_to_chatFragment"
+            app:destination="@+id/nav_chat" />
 
     </fragment>
     <fragment
@@ -234,7 +237,11 @@
         android:id="@+id/nav_chat"
         android:name="com.app.shepherd.ui.component.chat.ChatFragment"
         android:label="@string/menu_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat">
+        <argument
+            android:name="source"
+            app:argType="string" />
+    </fragment>
 
 
     <fragment

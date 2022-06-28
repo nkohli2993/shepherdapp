@@ -49,7 +49,8 @@ class LocalData @Inject constructor(val context: Context) {
 
     fun removeFromFavourites(id: String): Resource<Boolean> {
         val sharedPref = context.getSharedPreferences(SHARED_PREFERENCES_FILE_NAME, 0)
-        var set = sharedPref.getStringSet(FAVOURITES_KEY, mutableSetOf<String>())?.toMutableSet() ?: mutableSetOf()
+        var set = sharedPref.getStringSet(FAVOURITES_KEY, mutableSetOf<String>())?.toMutableSet()
+            ?: mutableSetOf()
         if (set.contains(id)) {
             set.remove(id)
         }

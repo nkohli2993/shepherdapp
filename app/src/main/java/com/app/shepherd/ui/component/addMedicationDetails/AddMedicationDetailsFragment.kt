@@ -29,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_add_medication_details.*
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class AddMedicationDetailsFragment : BaseFragment<FragmentAddNewMedicationBinding>(),
+class AddMedicationDetailsFragment : BaseFragment<FragmentAddMedicationDetailsBinding>(),
     View.OnClickListener {
 
     private val addMedicationDetailViewModel: AddMedicationDetailViewModel by viewModels()

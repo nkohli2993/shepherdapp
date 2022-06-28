@@ -111,7 +111,6 @@ class HomeActivity : BaseActivity(),
                 }
             }
         }
-
     }
 
 
@@ -215,6 +214,22 @@ class HomeActivity : BaseActivity(),
                     }
                     lockUnlockDrawer(false)
                 }
+                R.id.nav_care_points -> {
+                    binding.appBarDashboard.apply {
+                        tvTitle.text = getString(R.string.care_points)
+                        clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
+                        clHomeWrapper.isVisible = false
+                        tvNew.apply {
+                            isVisible = true
+                            setOnClickListener {
+                                navController.navigate(R.id.nav_add_new_event)
+                            }
+                        }
+                    }
+                    lockUnlockDrawer(false)
+                }
+                R.id.nav_add_new_event,
                 R.id.nav_schedule_medication,
                 R.id.nav_med_detail,
                 R.id.nav_secure_code,

@@ -37,115 +37,71 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-                <LinearLayout
-                    android:id="@+id/linearLayoutToolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:background="@color/colorPrimaryDark"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_calendar"
-                        android:tint="@color/colorWhite" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextViewPoppinsSemiBold"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical"
-                        android:gravity="end|center_vertical"
-                        android:includeFontPadding="false"
-                        android:text="@string/care_points"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-                <View
-                    android:id="@+id/topView"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSchedule"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_4sdp"
-                    android:background="@color/colorPeach"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_12sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="@string/schedule_events_set_reminders_assign_tasks"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
-
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
-                    android:id="@+id/toggleGroup"
+                    android:id="@+id/llDateType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/_192032"
                     android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/topView">
+                    android:paddingVertical="@dimen/_4sdp"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSchedule">
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/textViewToday"
-                        style="@style/Widget.Material3.Button.TextButton"
-                        android:layout_width="wrap_content"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_semibold"
-                        android:text="@string/today"
-                        android:textColor="@color/colorPeach"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintTop_toBottomOf="@+id/topView"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:text="Today"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_10ssp" />
 
-                        />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="2dp"
+                        android:background="@color/colorWhite" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/textViewWeek"
-                        style="@style/Widget.Material3.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/week"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintStart_toEndOf="@+id/textViewToday"
-                        app:layout_constraintTop_toTopOf="@+id/textViewToday" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:text="Week"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_10ssp" />
 
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/textViewMonth"
-                        style="@style/Widget.Material3.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/poppins_regular"
-                        android:text="@string/month"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintStart_toEndOf="@+id/textViewWeek"
-                        app:layout_constraintTop_toTopOf="@+id/textViewToday" />
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginVertical="2dp"
+                        android:background="@color/colorWhite" />
 
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/buttonAddNewTask"
-                        style="@style/ButtonPrimary"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_6sdp"
-                        android:backgroundTint="@color/colorPrimaryDark"
-                        android:onClick="@{listener::onClick}"
-                        android:paddingHorizontal="@dimen/_1sdp"
-                        android:text="@string/add_new_task"
-                        android:textAllCaps="false"
-                        android:textSize="@dimen/_11ssp"
-                        app:layout_constraintBottom_toBottomOf="@+id/cardViewSearch"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.25"
-                        app:layout_constraintStart_toStartOf="@+id/guidelineSearch"
-                        app:layout_constraintTop_toTopOf="@+id/cardViewSearch" />
-
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/poppins_bold"
+                        android:gravity="center"
+                        android:text="Month"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_10ssp" />
 
                 </LinearLayout>
 
@@ -154,44 +110,40 @@
                     android:id="@+id/calendarView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@+id/toggleGroup" />
+                    app:layout_constraintTop_toBottomOf="@+id/llDateType" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewSelectGroup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_8sdp"
-                    android:fontFamily="@font/poppins_semibold"
+                    android:fontFamily="@font/gotham_bold"
                     android:text="@string/today"
-                    android:textColor="@color/colorPeach"
-                    android:textSize="@dimen/_11ssp"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewEventDays"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewSelectGroup"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/adapter_care_points_day" />
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    app:cardCornerRadius="10dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewSelectGroup">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonAdd"
-                    style="@style/ButtonPrimary"
-                    android:layout_width="wrap_content"
-                    android:layout_marginVertical="@dimen/_24sdp"
-                    android:backgroundTint="@color/colorPrimaryDark"
-                    android:onClick="@{listener::onClick}"
-                    android:text="@string/add"
-                    android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewEventDays" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerViewEventDays"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/adapter_care_points_day" />
+
+                </androidx.cardview.widget.CardView>
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

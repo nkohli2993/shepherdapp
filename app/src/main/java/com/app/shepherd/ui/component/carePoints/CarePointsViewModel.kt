@@ -42,6 +42,9 @@ class CarePointsViewModel @Inject constructor(private val dataRepository: DataRe
     private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val openChatItemsPrivate = MutableLiveData<SingleEvent<Int>>()
+    val openChatItems: LiveData<SingleEvent<Int>> get() = openChatItemsPrivate
 
     fun doLogin(context: Context, userName: String, passWord: String) {
         val isUsernameValid = isValidEmail(userName)
@@ -66,5 +69,9 @@ class CarePointsViewModel @Inject constructor(private val dataRepository: DataRe
     fun showToastMessage(errorCode: Int) {
         val error = errorManager.getError(errorCode)
         showToastPrivate.value = SingleEvent(error.description)
+    }
+
+    fun openEventChat(item: Int) {
+        openChatItemsPrivate.value = SingleEvent(item)
     }
 }

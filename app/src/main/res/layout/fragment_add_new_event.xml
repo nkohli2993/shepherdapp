@@ -20,8 +20,30 @@
         android:orientation="vertical"
         tools:context="com.app.shepherd.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{listener::onClick}"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvMedList"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gotham_bold"
+            android:text="Add New CarePoint"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toTopOf="@+id/ivBack" />
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:fillViewport="true"
@@ -29,304 +51,272 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/ivBack">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:orientation="vertical">
 
 
-                <LinearLayout
-                    android:id="@+id/linearLayoutToolbar"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="Event Name"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14ssp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etEventName"
                     android:layout_width="match_parent"
-                    android:layout_height="?actionBarSize"
-                    android:background="@color/colorPrimaryDark"
-                    android:gravity="end"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:fontFamily="@font/gotham_medium"
+                    android:hint="Event Name"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="@dimen/_20sdp"
+                    android:textSize="@dimen/_12ssp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="@string/address"
+                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toBottomOf="@id/layoutDateOfBirth" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="@dimen/_30sdp"
-                        android:layout_height="@dimen/_30sdp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_calendar"
-                        android:tint="@color/colorWhite" />
+                <LinearLayout
+                    android:id="@+id/layoutAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:onClick="@{listener::onClick}"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_4sdp">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextViewPoppinsSemiBold"
-                        android:layout_width="wrap_content"
+                    <ImageView
+                        android:layout_width="@dimen/_20sdp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical"
-                        android:gravity="end|center_vertical"
-                        android:includeFontPadding="false"
-                        android:text="@string/care_points"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_15ssp" />
+                        android:layout_margin="@dimen/_4sdp"
+                        android:contentDescription="@string/app_name"
+                        app:srcCompat="@drawable/ic_outline_location_on"
+                        app:tint="@color/colorGreyDark" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_80sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:background="@null"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:gravity="top|start"
+                        android:hint="@string/address"
+                        android:lines="6"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:textSize="@dimen/_12ssp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtRelationship"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="Assign To"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
+
+                <LinearLayout
+                    android:id="@+id/relationshipSpinnerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:gravity="center"
+                    android:onClick="@{listener::onClick}"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtRelationship">
+
+                    <Spinner
+                        android:id="@+id/eventMemberSpinner"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_weight="1"
+                        android:background="@color/transparent" />
+
+                    <ImageView
+                        android:id="@+id/spinner_down_arrow_image"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_4sdp"
+                        app:srcCompat="@drawable/ic_arrow_spinner"
+                        app:tint="@color/colorGreyDark" />
 
                 </LinearLayout>
 
-                <View
-                    android:id="@+id/topView"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="Date"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDate"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_4sdp"
-                    android:background="@color/colorPeach"
-                    app:layout_constraintTop_toBottomOf="@+id/linearLayoutToolbar" />
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewDetails"
-                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/topView"
-                    app:layout_constraintStart_toStartOf="@+id/topView"
-                    app:layout_constraintTop_toBottomOf="@+id/topView">
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:drawableStart="@drawable/ic_calendar"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="@dimen/_20sdp"
+                    android:text="DD/MM/YY"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="Time"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clTimeWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTime">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivClock"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_clock"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="12:00"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/llAmPm"
+                        app:layout_constraintStart_toEndOf="@+id/ivClock"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/llAmPm"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_12sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_16sdp"
-                        android:orientation="vertical">
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="@string/event_name"
-                            android:visibility="visible"
-                            app:boxBackgroundColor="@color/colorWhite"
-                            app:boxBackgroundMode="filled"
-                            app:layout_constraintTop_toTopOf="@+id/guidelineTop">
+                            android:fontFamily="@font/gotham_medium"
+                            android:text="AM"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_14ssp" />
 
-                            <com.google.android.material.textfield.TextInputEditText
-                                style="@style/TextViewPoppinsMedium"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textPersonName"
-                                android:textSize="@dimen/_13ssp" />
-                        </com.google.android.material.textfield.TextInputLayout>
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:background="@color/_192032" />
 
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="@string/location"
-                            android:visibility="visible"
-                            app:boxBackgroundColor="@color/colorWhite"
-                            app:boxBackgroundMode="filled"
-                            app:layout_constraintTop_toTopOf="@+id/guidelineTop">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                style="@style/TextViewPoppinsMedium"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="textPersonName"
-                                android:textSize="@dimen/_13ssp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:text="PM"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_14ssp" />
 
                     </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewAssignTo"
-                    android:layout_width="0dp"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewDetails"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewDetails"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewDetails">
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:text="Note"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp" />
 
-                    <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clNoteWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    app:layout_constraintTop_toBottomOf="@+id/tvNote">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etNote"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/textViewRole"
-                            style="@style/TextViewPoppinsMedium"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:onClick="@{listener::onClick}"
-                            android:padding="@dimen/_12sdp"
-                            android:text="@string/assign_to"
-                            app:drawableEndCompat="@drawable/ic_arrow_drop_down" />
-
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/constraintAssignTo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_4sdp"
-                            android:layout_marginBottom="@dimen/_12sdp">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/recyclerViewMembers"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:nestedScrollingEnabled="false"
-                                android:orientation="vertical"
-                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintHeight_max="@dimen/_300sdp"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                tools:itemCount="4"
-                                tools:listitem="@layout/adapter_assign_to_event" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewSelectDate"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewDetails"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewDetails"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewAssignTo">
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewSelectDate"
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toStartOf="@+id/textViewSelectedDate"
-                            android:padding="@dimen/_12sdp"
-                            android:text="@string/select_date" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imageViewSelectDate"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:src="@drawable/ic_navigate_next" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewSelectedDate"
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:onClick="@{listener::onClick}"
-                            android:padding="@dimen/_12sdp"
-                            android:text="@string/test_time"
-                            android:visibility="gone" />
-
-
-                    </RelativeLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardViewSelectTime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    app:cardBackgroundColor="@color/colorWhite"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewDetails"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewDetails"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewSelectDate">
-
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewSelectTime"
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toStartOf="@+id/textViewSelectedTime"
-                            android:padding="@dimen/_12sdp"
-                            android:text="@string/select_time" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/imageViewSelectTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginHorizontal="@dimen/_12sdp"
-                            android:src="@drawable/ic_navigate_next" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/textViewSelectedTime"
-                            style="@style/TextViewPoppinsRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:onClick="@{listener::onClick}"
-                            android:padding="@dimen/_12sdp"
-                            android:text="@string/test_time"
-                            android:visibility="gone" />
-
-
-                    </RelativeLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/editTextNotes"
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:background="@drawable/rounded_box_6"
-                    android:backgroundTint="@color/colorWhite"
-                    android:gravity="top"
-                    android:hint="@string/notes"
-                    android:padding="@dimen/_12sdp"
-                    app:layout_constraintEnd_toEndOf="@+id/cardViewSelectTime"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewSelectTime"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewSelectTime" />
+                        android:background="@null"
+                        android:gravity="top|start"
+                        android:hint="Write"
+                        android:lines="4"
+                        android:padding="@dimen/_10sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/buttonAdd"
-                    style="@style/ButtonPrimary"
+                    android:id="@+id/btnAdd"
                     android:layout_width="wrap_content"
-                    android:layout_marginVertical="@dimen/_24sdp"
-                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:background="@drawable/button_primary"
+                    android:backgroundTint="@color/_399282"
+                    android:fontFamily="@font/gotham_medium"
                     android:onClick="@{listener::onClick}"
-                    android:text="@string/add"
+                    android:paddingHorizontal="80dp"
+                    android:text="Add"
                     android:textAllCaps="false"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/editTextNotes" />
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_13ssp" />
 
+            </LinearLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

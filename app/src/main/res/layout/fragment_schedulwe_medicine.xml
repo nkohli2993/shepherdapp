@@ -30,14 +30,14 @@
             android:id="@+id/tvMedList"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/gotham_bold"
             android:text="Schedule Medication"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivBack"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/ivBack" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvChoose"

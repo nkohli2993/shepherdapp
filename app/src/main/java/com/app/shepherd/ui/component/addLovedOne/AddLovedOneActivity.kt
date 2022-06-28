@@ -347,6 +347,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
 
     private fun navigateToAddLovedOneConditionScreen() {
+        addLovedOneViewModel.saveLovedOneId(lovedOneID)
         val intent = Intent(this, AddLovedOneConditionActivity::class.java)
         intent.putExtra(Const.LOVED_ONE_ID, lovedOneID)
         startActivity(intent)
