@@ -13,6 +13,7 @@ import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
+import com.app.shepherd.utils.Role
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -70,7 +71,7 @@ class CreateNewAccountViewModel @Inject constructor(
             it?.phoneCode = phoneCode
             it?.phoneNo = phoneNumber
             it?.profilePhoto = profilePicUrl
-            it?.roleId = "2"
+            it?.roleId = Role.User.id
         }
         viewModelScope.launch {
             val response = signUpData.value?.let { authRepository.signup(it) }

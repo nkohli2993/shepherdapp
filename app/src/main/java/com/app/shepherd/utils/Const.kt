@@ -31,3 +31,9 @@ enum class Modules(val value: Int) {
     MedList(3),
     Resources(4)
 }
+
+enum class Role(val id: String) {
+    User("1"),
+    UserLovedOne("2"),
+    Admin("3")
+}
