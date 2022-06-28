@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.AdapterCareTeamMembersBinding
+import com.app.shepherd.databinding.AdapterCareTeamMembersDashboardBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.view_model.CareTeamMembersViewModel
 import com.squareup.picasso.Picasso
@@ -95,6 +96,7 @@ class CareTeamMembersAdapter(
     }*/
 
     fun updateCareTeams(careTeams: ArrayList<CareTeam>) {
+        this.careTeams.clear()
         this.careTeams = careTeams
         notifyDataSetChanged()
     }

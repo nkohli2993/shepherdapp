@@ -96,7 +96,6 @@ interface ApiService {
         @Body value: CreateEventModel
     ): Response<CreateEventResponseModel>
 
-
     @POST(ApiConstants.MedicalConditions.CREATE_BULK_ONE_CONDITIONS)
     suspend fun createBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
 

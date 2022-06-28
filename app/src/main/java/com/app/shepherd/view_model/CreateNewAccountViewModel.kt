@@ -70,7 +70,7 @@ class CreateNewAccountViewModel @Inject constructor(
             it?.phoneCode = phoneCode
             it?.phoneNo = phoneNumber
             it?.profilePhoto = profilePicUrl
-            it?.roleId = "1"
+            it?.roleId = "2"
         }
         viewModelScope.launch {
             val response = signUpData.value?.let { authRepository.signup(it) }

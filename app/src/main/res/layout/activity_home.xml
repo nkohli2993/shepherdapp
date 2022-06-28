@@ -4,11 +4,9 @@
 
     <data>
 
-
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
-
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout

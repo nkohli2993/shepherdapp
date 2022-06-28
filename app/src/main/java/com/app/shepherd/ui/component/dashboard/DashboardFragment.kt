@@ -1,19 +1,25 @@
 package com.app.shepherd.ui.component.dashboard
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.FragmentDashboardBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
+import com.app.shepherd.ui.component.dashboard.adapter.CareTeamMembersDashBoardAdapter
 import com.app.shepherd.ui.component.dashboard.adapter.DashboardAdapter
 import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.observeEvent
+import com.app.shepherd.view_model.DashboardViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,11 +28,19 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     private lateinit var fragmentDashboardBinding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    private var status: Int = 1
+    private var careTeams: ArrayList<CareTeam>? = ArrayList()
+    private var dashBoardAdapter: DashboardAdapter? = null
+    private var careTeamMembersDashBoardAdapter: CareTeamMembersDashBoardAdapter? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.inflateDashboardList(requireContext())
+        // Get Care Teams
+        viewModel.getCareTeams(pageNumber, limit, status)
     }
 
     override fun onCreateView(
@@ -45,10 +59,51 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     override fun observeViewModel() {
         observeEvent(viewModel.openDashboardItems, ::navigateToDashboardItems)
+
+        viewModel.careTeamsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    careTeams = it.data.payload.careteams
+                    if (careTeams.isNullOrEmpty()) return@observeEvent
+                    val careTeamMembers = careTeams?.size ?: 0
+                    if (careTeamMembers == 0 || careTeamMembers == 1) {
+                        fragmentDashboardBinding.tvMember.text = "$careTeamMembers Member"
+                    } else {
+                        fragmentDashboardBinding.tvMember.text = "$careTeamMembers Members"
+                    }
+                    careTeamMembersDashBoardAdapter?.addData(careTeams!!)
+                }
+
+                is DataResult.Failure -> {
+                    hideLoading()
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle("Care Teams")
+                        setMessage("No Care Team Found")
+                        setPositiveButton("OK") { _, _ ->
+                            // navigateToDashboardScreen()
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                }
+            }
+        }
+
     }
 
     override fun initViewBinding() {
         fragmentDashboardBinding.listener = this
+        setCareTeamAdapters()
+    }
+
+    private fun setCareTeamAdapters() {
+        careTeamMembersDashBoardAdapter = CareTeamMembersDashBoardAdapter(viewModel)
+        fragmentDashboardBinding.rvCareTeam.adapter = careTeamMembersDashBoardAdapter
     }
 
     private fun navigateToDashboardItems(navigateEvent: SingleEvent<DashboardModel>) {
