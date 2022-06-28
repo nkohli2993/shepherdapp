@@ -11,7 +11,6 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.view.Window
-import android.widget.Button
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
@@ -191,20 +190,29 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         // Save User Detail to SharedPref
                         it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }
 
+                        // Save user ID
+                        it.payload?.userProfile?.let { it1 ->
+                            it1.userId?.let { it2 ->
+                                loginViewModel.saveUserId(
+                                    it2
+                                )
+                            }
+                        }
+
                         // Save token
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
                         token = it.payload?.token
                         it.payload?.userLovedOne?.let {
-                            if (it.isNotEmpty()){
+                            if (it.isNotEmpty()) {
                                 loginViewModel.saveLovedOneId(it[0].loveUserId)
                             }
                         }
 
                         userLovedOneArrayList = it.payload?.userLovedOne
 
-                        val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
+                        // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
                         // Save lovedOneID to sharedPref
-                        lovedOneUserID?.let { it1 -> loginViewModel.saveLovedOneId(it1) }
+                        // lovedOneUserID?.let { it1 -> loginViewModel.saveLovedOneId(it1) }
                     }
                     if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                             this

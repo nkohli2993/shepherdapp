@@ -131,7 +131,27 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToJoinCareTeamScreen() {
-        startActivityWithFinish<JoinCareTeamActivity>()
+        var payload: Payload? = null
+        welcomeViewModel.getUserDetails()
+        Handler(Looper.getMainLooper()).postDelayed({
+            payload =
+                Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
+
+            if (payload?.isActive == true) {
+                startActivityWithFinish<JoinCareTeamActivity>()
+            } else {
+                val builder = AlertDialog.Builder(this)
+                val dialog = builder.apply {
+                    setTitle(getString(R.string.account_activation_required))
+                    setMessage(getString(R.string.account_inactive_click_link_on_email))
+                    setPositiveButton("OK") { _, _ ->
+                        //navigateToLoginScreen()
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+            }
+        }, 2000)
     }
 
     private fun navigateToLoginScreen() {
