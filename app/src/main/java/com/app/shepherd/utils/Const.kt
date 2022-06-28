@@ -37,3 +37,9 @@ enum class Role(val id: String) {
     UserLovedOne("2"),
     Admin("3")
 }
+
+enum class UserSlug(val slug: String) {
+    User("user"),
+    UserLovedOne("user-loved-one"),
+    Admin("admin")
+}

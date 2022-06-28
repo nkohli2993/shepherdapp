@@ -13,12 +13,13 @@ import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseMode
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.app.shepherd.data.dto.medical_conditions.UserConditionsResponseModel
 import com.app.shepherd.data.dto.relation.RelationResponseModel
+import com.app.shepherd.data.dto.roles.RolesResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
+import com.app.shepherd.ui.base.BaseResponseModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventResponseModel
-import com.app.shepherd.ui.base.BaseResponseModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -77,6 +78,13 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("status") status: Int
     ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.Authentication.USER_ROLES)
+    suspend fun getUserRoles(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int
+    ): Response<RolesResponseModel>
 
     @GET(ApiConstants.UserDetails.GET_USER_DETAILS)
     suspend fun getUserDetails(

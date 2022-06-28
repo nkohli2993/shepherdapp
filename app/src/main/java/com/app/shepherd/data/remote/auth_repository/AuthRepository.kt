@@ -4,6 +4,7 @@ import android.webkit.MimeTypeMap
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.roles.RolesResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
@@ -112,6 +113,18 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
                 return apiService.logout()
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    suspend fun getRoles(
+        pageNumber: Int,
+        limit: Int,
+        status: Int
+    ): Flow<DataResult<RolesResponseModel>> {
+        return object : NetworkOnlineDataRepo<RolesResponseModel, RolesResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<RolesResponseModel> {
+                return apiService.getUserRoles(pageNumber, limit, status)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

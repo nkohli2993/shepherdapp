@@ -8,7 +8,6 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.view.Window
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -52,6 +51,9 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var roleId: String? = null
     private var isPasswordShown = false
     private var profilePicCompleteUrl: String? = null
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    private var status: Int = 1
     private var TAG = "CreateNewAccountActivity"
 
 
@@ -120,6 +122,9 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             }
             isPasswordShown = !isPasswordShown
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
+
+            // Get Roles
+            createNewAccountViewModel.getRoles(pageNumber, limit, status)
         }
     }
 
@@ -224,6 +229,25 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+
+        // Observe the response of Roles api
+        createNewAccountViewModel.rolesResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+
+                }
+                is DataResult.Success -> {
+                    roleId = it.data.payload.users.filter { users ->
+                        users.slug == UserSlug.User.slug
+                    }.map { user ->
+                        user.id
+                    }[0].toString()
+                }
+            }
+        }
     }
 
     private fun navigateToHomeScreen() {
@@ -282,7 +306,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         lastName,
                         email,
                         passwd,
-                        phoneNumber
+                        phoneNumber,
+                        roleId
                     )
 
                 }

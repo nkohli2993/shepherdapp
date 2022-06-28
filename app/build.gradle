@@ -30,8 +30,8 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField("String", "BASE_URL", base_url_local)
-//            buildConfigField("String", "BASE_URL", base_url_staging)
+//            buildConfigField("String", "BASE_URL", base_url_local)
+            buildConfigField("String", "BASE_URL", base_url_staging)
         }
         release {
             debuggable false

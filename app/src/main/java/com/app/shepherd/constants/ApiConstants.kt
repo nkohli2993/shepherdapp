@@ -20,7 +20,7 @@ object ApiConstants {
         const val FORGOT_PASSWORD = "$BASE_URL${API_VERSION}users/forgot-password"
         const val BIOMETRIC = "$BASE_URL${API_VERSION}users/biomertic"
         const val LOGOUT = "$BASE_URL${API_VERSION}users/logout"
-
+        const val USER_ROLES = "$BASE_URL${API_VERSION}roles"
     }
 
     object Relations {
