@@ -3,9 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="data"
             type="com.app.shepherd.data.dto.care_team.CareTeam" />
+
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
@@ -19,8 +21,8 @@
             android:id="@+id/cardView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_6sdp"
             android:onClick="@{listener::onClick}"
+            app:cardCornerRadius="@dimen/_6sdp"
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,20 +41,20 @@
                     android:layout_height="@dimen/_40sdp"
                     android:adjustViewBounds="true"
                     android:background="@color/_399282"
+                    android:src="@{data.user.userProfiles.profilePhoto}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:src="@{data.user.userProfiles.profilePhoto}"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
 
-<!--                <androidx.appcompat.widget.AppCompatImageView-->
-<!--                    android:id="@+id/imageViewCareTeam"-->
-<!--                    android:layout_width="@dimen/_40sdp"-->
-<!--                    android:layout_height="@dimen/_40sdp"-->
-<!--                    android:src="@drawable/test_image"-->
-<!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toTopOf="parent" />-->
+                <!--                <androidx.appcompat.widget.AppCompatImageView-->
+                <!--                    android:id="@+id/imageViewCareTeam"-->
+                <!--                    android:layout_width="@dimen/_40sdp"-->
+                <!--                    android:layout_height="@dimen/_40sdp"-->
+                <!--                    android:src="@drawable/test_image"-->
+                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                    app:layout_constraintStart_toStartOf="parent"-->
+                <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewCareTeamName"
@@ -100,8 +102,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
             android:background="@color/colorGreyLight"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/cardView"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

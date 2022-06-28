@@ -144,6 +144,8 @@ class HomeActivity : BaseActivity(),
 
             binding.appBarDashboard.ivEditProfile.isVisible =
                 destination.id == R.id.nav_profile
+            binding.appBarDashboard.ivSetting.isVisible =
+                destination.id == R.id.nav_profile
             when (destination.id) {
                 R.id.nav_dashboard -> {
                     binding.appBarDashboard.apply {
@@ -195,6 +197,9 @@ class HomeActivity : BaseActivity(),
                         ivEditProfile.setOnClickListener() {
                             navController.navigate(R.id.nav_edit_profile)
                         }
+                        ivSetting.setOnClickListener() {
+                            navController.navigate(R.id.nav_setting)
+                        }
                     }
                     lockUnlockDrawer(false)
                 }
@@ -229,22 +234,6 @@ class HomeActivity : BaseActivity(),
                     }
                     lockUnlockDrawer(false)
                 }
-                R.id.nav_add_new_event,
-                R.id.nav_schedule_medication,
-                R.id.nav_med_detail,
-                R.id.nav_secure_code,
-                R.id.nav_change_password,
-                R.id.nav_edit_profile,
-                R.id.nav_chat,
-                R.id.nav_new_message,
-                R.id.nav_medication_details,
-                R.id.nav_add_new_medication -> {
-                    lockUnlockDrawer(true)
-                    binding.appBarDashboard.apply {
-                        clTopWrapper.isVisible = false
-                    }
-                }
-
                 R.id.nav_care_team -> {
                     binding.appBarDashboard.apply {
                         tvTitle.text = "CareTeam"
@@ -261,7 +250,7 @@ class HomeActivity : BaseActivity(),
                         }
                     }
                 }
-                else ->{
+                else -> {
                     lockUnlockDrawer(true)
                     binding.appBarDashboard.apply {
                         clTopWrapper.isVisible = false

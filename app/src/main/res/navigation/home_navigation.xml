@@ -123,12 +123,7 @@
         android:name="com.app.shepherd.ui.component.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile">
-        <action
-            android:id="@+id/action_nav_profile_to_changePassword"
-            app:destination="@id/nav_change_password" />
-        <action
-            android:id="@+id/action_nav_profile_to_secureCode"
-            app:destination="@id/nav_secure_code" />
+
         <action
             android:id="@+id/action_nav_profile_to_editProfile"
             app:destination="@id/nav_edit_profile" />
@@ -157,6 +152,26 @@
         android:name="com.app.shepherd.ui.component.edit_profile.EditProfileFragment"
         android:label="@string/edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/nav_setting"
+        android:name="com.app.shepherd.ui.component.settings.SettingFragment"
+        android:label="@string/setting"
+        tools:layout="@layout/fragment_setting">
+        <action
+            android:id="@+id/action_nav_setting_to_changePassword"
+            app:destination="@id/nav_change_password" />
+        <action
+            android:id="@+id/action_nav_setting_to_secureCode"
+            app:destination="@id/nav_secure_code" />
+        <action
+            android:id="@+id/action_nav_setting_to_invitation"
+            app:destination="@id/nav_invitation" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_invitation"
+        android:name="com.app.shepherd.ui.component.invitations.InvitationFragment"
+        android:label="@string/invitation"
+        tools:layout="@layout/fragment_invitation" />
     <fragment
         android:id="@+id/nav_secure_code"
         android:name="com.app.shepherd.ui.component.security_code.SecurityCodeFragment"

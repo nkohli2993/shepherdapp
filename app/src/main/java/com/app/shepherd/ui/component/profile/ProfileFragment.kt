@@ -63,22 +63,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         //initView()
         //setLovedOnesAdapter()
         //setPendingInvitationsAdapter()
-        if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
-                requireContext()
-            ) && BiometricUtils.isFingerprintAvailable(
-                requireContext()
-            )
-        ) {
-            fragmentProfileBinding.scBioMetric.apply {
-                isChecked = Prefs.with(requireContext())!!.getBoolean(BIOMETRIC_ENABLE)
-                setOnCheckedChangeListener { buttonView, isChecked ->
-                    registerBiometric(isChecked)
-
-                }
-            }
-        } else {
-            fragmentProfileBinding.clBioMetricLogin.isVisible = false
-        }
 
 
     }
@@ -107,36 +91,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     }
 
-    private fun registerBiometric(checked: Boolean) {
-        profileViewModel.registerBioMetric(
-            checked
-        )
-    }
 
     override fun observeViewModel() {
-        profileViewModel.bioMetricLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
-
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    it.data.let { it1 ->
-                        // Save Token to SharedPref
-                        it1.payload?.let { payload ->
-                            Prefs.with(requireContext())!!
-                                .save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
-                        }
-                    }
-                }
-            }
-        }
 
 
         profileViewModel.userDetailsLiveData.observeEvent(this) {
@@ -172,6 +128,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                     hideLoading()
                     val lovedOneProfile = it.data.payload?.userProfiles
                     if (lovedOneProfile != null) {
+                        lovedOneProfileList?.clear()
                         lovedOneProfileList?.add(lovedOneProfile)
                     }
                     setLovedOnesAdapter(lovedOneProfileList)
@@ -212,12 +169,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.tvChange -> {
-                p0.findNavController().navigate(R.id.action_nav_profile_to_changePassword)
-            }
-            R.id.tvReset -> {
-                p0.findNavController().navigate(R.id.action_nav_profile_to_secureCode)
-            }
             R.id.clProfileWrapper -> {
                 p0.findNavController().navigate(R.id.action_nav_profile_to_editProfile)
             }

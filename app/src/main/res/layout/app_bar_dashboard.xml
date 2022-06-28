@@ -66,6 +66,16 @@
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_5sdp"
                 android:src="@drawable/ic_edit_profile"
+                app:layout_constraintEnd_toStartOf="@+id/ivSetting"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivSetting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:src="@drawable/ic_setting"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -90,10 +100,10 @@
                     android:layout_width="@dimen/_33sdp"
                     android:layout_height="@dimen/_32sdp"
                     android:src="@drawable/test_image"
-                    app:shapeAppearanceOverlay="@style/roundedCornersImageView"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
