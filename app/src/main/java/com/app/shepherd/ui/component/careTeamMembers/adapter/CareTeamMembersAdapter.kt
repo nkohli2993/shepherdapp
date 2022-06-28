@@ -24,7 +24,7 @@ class CareTeamMembersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openMemberDetails(itemData[0] as Int)
+            viewModel.openMemberDetails(itemData[0] as CareTeam)
         }
     }
 
@@ -68,7 +68,7 @@ class CareTeamMembersAdapter(
 
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    position
+                    careTeams[position]
                 )
             }
         }
