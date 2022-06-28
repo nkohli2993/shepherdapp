@@ -42,7 +42,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewCareTeamName"
                 style="@style/TextViewPoppinsSemiBold"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:text="@string/app_name"
@@ -54,11 +54,10 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewCareTeamRole"
                 style="@style/TextViewPoppinsRegular"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:textSize="@dimen/_13ssp"
-                app:layout_constraintEnd_toEndOf="@+id/textViewCareTeamName"
                 app:layout_constraintStart_toStartOf="@+id/textViewCareTeamName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />
 

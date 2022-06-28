@@ -61,9 +61,14 @@ class CareTeamMembersAdapter(
 
             itemBinding.let {
                 it.textViewCareTeamName.text = fullName
+
                 Picasso.get().load(imageUrl).placeholder(R.drawable.test_image)
                     .into(it.imageViewCareTeam)
+
+                it.textViewCareTeamRole.text = careTeam.careRoles?.name
             }
+
+
 
 
             itemBinding.root.setOnClickListener {
