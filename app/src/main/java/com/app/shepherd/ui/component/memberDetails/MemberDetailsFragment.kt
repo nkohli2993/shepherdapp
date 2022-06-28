@@ -96,9 +96,9 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            /*  R.id.buttonSave -> {
+              R.id.ivBack -> {
                   backPress()
-              }*/
+              }
         }
     }
 
