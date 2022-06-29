@@ -12,6 +12,7 @@ import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.databinding.FragmentMemberDetailsBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.memberDetails.adapter.MemberModulesAdapter
+import com.app.shepherd.utils.Modules
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -65,6 +66,18 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
 
         fragmentMemberDetailsBinding.txtCareTeamMemberDesignation.text = careTeam?.careRoles?.name
 
+        //get permissions
+        val permission = careTeam?.permission
+        if (permission?.length == 1) {
+            checkPermission(permission.toInt())
+        } else {
+            val perList = permission?.split(',')?.map { it.trim() }
+            for (i in perList?.indices!!) {
+                checkPermission(perList[i].toInt())
+            }
+        }
+
+
         /* fragmentMemberDetailsBinding.txtCareTeamMemberName.text =
              careTeam?.user?.userProfiles?.fullName
  */
@@ -77,6 +90,24 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
               careTeam?.user?.userProfiles?*/
 
         //Set Address
+    }
+
+    private fun checkPermission(s: Int) {
+        when {
+            Modules.CareTeam.value == s -> {
+                fragmentMemberDetailsBinding.switchCareTeam.isChecked = true
+            }
+            Modules.LockBox.value == s -> {
+                fragmentMemberDetailsBinding.switchLockBox.isChecked = true
+            }
+            Modules.MedList.value == s -> {
+                fragmentMemberDetailsBinding.switchMyMedList.isChecked = true
+            }
+            Modules.Resources.value == s -> {
+                fragmentMemberDetailsBinding.switchResources.isChecked = true
+            }
+        }
+
     }
 
     override fun observeViewModel() {
@@ -96,9 +127,9 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-              R.id.ivBack -> {
-                  backPress()
-              }
+            R.id.ivBack -> {
+                backPress()
+            }
         }
     }
 

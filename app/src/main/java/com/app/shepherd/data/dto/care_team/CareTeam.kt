@@ -13,6 +13,7 @@ data class CareTeam(
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("love_user_id") var loveUserId: Int? = null,
     @SerializedName("role_id") var roleId: Int? = null,
+    @SerializedName("permission") var permission: String? = null,
     @SerializedName("status") var status: Boolean? = null,
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
