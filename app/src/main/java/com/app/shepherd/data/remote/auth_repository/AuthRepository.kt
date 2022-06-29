@@ -120,11 +120,10 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
     suspend fun getRoles(
         pageNumber: Int,
         limit: Int,
-        status: Int
     ): Flow<DataResult<RolesResponseModel>> {
         return object : NetworkOnlineDataRepo<RolesResponseModel, RolesResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<RolesResponseModel> {
-                return apiService.getUserRoles(pageNumber, limit, status)
+                return apiService.getUserRoles(pageNumber, limit)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

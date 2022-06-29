@@ -53,7 +53,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var profilePicCompleteUrl: String? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
-    private var status: Int = 1
     private var TAG = "CreateNewAccountActivity"
 
 
@@ -124,7 +123,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
 
             // Get Roles
-            createNewAccountViewModel.getRoles(pageNumber, limit, status)
+            createNewAccountViewModel.getRoles(pageNumber, limit)
         }
     }
 

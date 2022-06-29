@@ -84,7 +84,6 @@ interface ApiService {
     suspend fun getUserRoles(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("status") status: Int
     ): Response<RolesResponseModel>
 
     @GET(ApiConstants.UserDetails.GET_USER_DETAILS)

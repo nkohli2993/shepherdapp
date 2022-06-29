@@ -125,10 +125,9 @@ class CreateNewAccountViewModel @Inject constructor(
     fun getRoles(
         pageNumber: Int,
         limit: Int,
-        status: Int
     ): LiveData<Event<DataResult<RolesResponseModel>>> {
         viewModelScope.launch {
-            val response = authRepository.getRoles(pageNumber, limit, status)
+            val response = authRepository.getRoles(pageNumber, limit)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _rolesResponseLiveData.postValue(Event(it))
