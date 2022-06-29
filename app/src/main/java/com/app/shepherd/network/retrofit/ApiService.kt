@@ -7,6 +7,7 @@ import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
+import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
@@ -112,4 +113,9 @@ interface ApiService {
 
     @POST(ApiConstants.CareTeams.ADD_NEW_CARE_TEAM_MEMBER)
     suspend fun addNewMemberCareTeam(@Body value: AddNewMemberCareTeamRequestModel): Response<AddNewMemberCareTeamResponseModel>
+
+    @GET(ApiConstants.Home.GET_HOME_DATA)
+    suspend fun getHomeData(
+        @Query("love_user_id") loveUserID: Int
+    ): Response<HomeResponseModel>
 }

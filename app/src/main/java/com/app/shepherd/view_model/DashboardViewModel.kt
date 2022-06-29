@@ -1,6 +1,7 @@
 package com.app.shepherd.view_model
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
@@ -10,7 +11,10 @@ import com.app.shepherd.R
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.dashboard.DashboardModel
+import com.app.shepherd.data.dto.dashboard.HomeResponseModel
+import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.care_teams.CareTeamsRepository
+import com.app.shepherd.data.remote.home_repository.HomeRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
@@ -24,16 +28,30 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val dataRepository: DataRepository,
-    private val careTeamsRepository: CareTeamsRepository
+    private val careTeamsRepository: CareTeamsRepository,
+    private val homeRepository: HomeRepository,
+    private val userRepository: UserRepository
 ) :
     BaseViewModel() {
 
-
+    private val TAG = "DashboardViewModel"
     var dashboardItemList: ArrayList<DashboardModel> = ArrayList()
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val openDashboardItemsPrivate = MutableLiveData<SingleEvent<DashboardModel>>()
     val openDashboardItems: LiveData<SingleEvent<DashboardModel>> get() = openDashboardItemsPrivate
+
+
+    private var _careTeamsResponseLiveData =
+        MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
+    var careTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
+        _careTeamsResponseLiveData
+
+
+    private var _homeResponseLiveData =
+        MutableLiveData<Event<DataResult<HomeResponseModel>>>()
+    var homeResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
+        _homeResponseLiveData
 
 
     fun openDashboardItems(item: DashboardModel) {
@@ -127,13 +145,6 @@ class DashboardViewModel @Inject constructor(
         )
     }
 
-
-    private var _careTeamsResponseLiveData =
-        MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
-    var careTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
-        _careTeamsResponseLiveData
-
-
     fun getCareTeams(
         pageNumber: Int,
         limit: Int,
@@ -146,6 +157,21 @@ class DashboardViewModel @Inject constructor(
             }
         }
         return careTeamsResponseLiveData
+    }
+
+
+    fun getHomeData(): LiveData<Event<DataResult<HomeResponseModel>>> {
+        val lovedOneId = userRepository.getLovedOneId()
+        Log.d(TAG, "LovedOneID :$lovedOneId ")
+        viewModelScope.launch {
+            val response = homeRepository.getHomeData(lovedOneId)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _homeResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return homeResponseLiveData
     }
 
 
