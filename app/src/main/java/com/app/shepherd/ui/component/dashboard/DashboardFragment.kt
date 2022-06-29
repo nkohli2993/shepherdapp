@@ -22,6 +22,7 @@ import com.app.shepherd.utils.observeEvent
 import com.app.shepherd.view_model.DashboardViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
 @AndroidEntryPoint
 class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     View.OnClickListener {
@@ -112,6 +113,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         }
 
     }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {

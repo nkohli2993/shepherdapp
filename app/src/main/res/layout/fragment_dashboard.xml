@@ -703,6 +703,7 @@
                             android:layout_height="wrap_content"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="@dimen/_18sdp"
                             android:layout_marginBottom="@dimen/_10sdp"
                             android:orientation="horizontal"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
