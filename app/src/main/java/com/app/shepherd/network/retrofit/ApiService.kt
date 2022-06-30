@@ -4,19 +4,23 @@ import com.app.shepherd.constants.ApiConstants
 import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneModel
 import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneResponseModel
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
+import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
+import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
+import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.app.shepherd.data.dto.medical_conditions.UserConditionsResponseModel
 import com.app.shepherd.data.dto.relation.RelationResponseModel
+import com.app.shepherd.data.dto.roles.RolesResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
+import com.app.shepherd.ui.base.BaseResponseModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventResponseModel
-import com.app.shepherd.ui.base.BaseResponseModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -76,6 +80,12 @@ interface ApiService {
         @Query("status") status: Int
     ): Response<CareTeamsResponseModel>
 
+    @GET(ApiConstants.Authentication.USER_ROLES)
+    suspend fun getUserRoles(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<RolesResponseModel>
+
     @GET(ApiConstants.UserDetails.GET_USER_DETAILS)
     suspend fun getUserDetails(
         @Path("id") id: Int
@@ -94,10 +104,17 @@ interface ApiService {
         @Body value: CreateEventModel
     ): Response<CreateEventResponseModel>
 
-
     @POST(ApiConstants.MedicalConditions.CREATE_BULK_ONE_CONDITIONS)
     suspend fun createBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
 
     @GET(ApiConstants.Authentication.LOGOUT)
     suspend fun logout(): Response<BaseResponseModel>
+
+    @POST(ApiConstants.CareTeams.ADD_NEW_CARE_TEAM_MEMBER)
+    suspend fun addNewMemberCareTeam(@Body value: AddNewMemberCareTeamRequestModel): Response<AddNewMemberCareTeamResponseModel>
+
+    @GET(ApiConstants.Home.GET_HOME_DATA)
+    suspend fun getHomeData(
+        @Query("love_user_id") loveUserID: Int
+    ): Response<HomeResponseModel>
 }

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.AdapterCareTeamMembersBinding
+import com.app.shepherd.databinding.AdapterCareTeamMembersDashboardBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.view_model.CareTeamMembersViewModel
 import com.squareup.picasso.Picasso
@@ -24,7 +25,7 @@ class CareTeamMembersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openMemberDetails(itemData[0] as Int)
+            viewModel.openMemberDetails(itemData[0] as CareTeam)
         }
     }
 
@@ -61,14 +62,19 @@ class CareTeamMembersAdapter(
 
             itemBinding.let {
                 it.textViewCareTeamName.text = fullName
+
                 Picasso.get().load(imageUrl).placeholder(R.drawable.test_image)
                     .into(it.imageViewCareTeam)
+
+                it.textViewCareTeamRole.text = careTeam.careRoles?.name
             }
+
+
 
 
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    position
+                    careTeams[position]
                 )
             }
         }
@@ -90,6 +96,7 @@ class CareTeamMembersAdapter(
     }*/
 
     fun updateCareTeams(careTeams: ArrayList<CareTeam>) {
+        this.careTeams.clear()
         this.careTeams = careTeams
         notifyDataSetChanged()
     }

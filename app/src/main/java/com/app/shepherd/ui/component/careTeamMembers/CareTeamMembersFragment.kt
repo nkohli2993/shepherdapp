@@ -3,6 +3,7 @@ package com.app.shepherd.ui.component.careTeamMembers
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,6 +39,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
 
     private var careTeams: ArrayList<CareTeam>? = ArrayList()
     private var careTeamAdapter: CareTeamMembersAdapter? = null
+    private var TAG = "CareTeamMembersFragment"
 
 
     override fun onCreateView(
@@ -107,9 +109,13 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
 
     }
 
-    private fun openMemberDetails(navigateEvent: SingleEvent<Int>) {
+    private fun openMemberDetails(navigateEvent: SingleEvent<CareTeam>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            findNavController().navigate(R.id.action_care_team_members_to_member_details)
+            Log.d(TAG, "openMemberDetails: CareTeam :$it")
+            // Sending CareTeam object through safeArgs
+            val action = CareTeamMembersFragmentDirections.actionCareTeamMembersToMemberDetails(it)
+            //findNavController().navigate(R.id.action_care_team_members_to_member_details)
+            findNavController().navigate(action)
         }
 
     }

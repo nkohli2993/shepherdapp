@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_light"
-                    android:text="Event Name"
+                    android:text="@string/event_name"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp" />
 
@@ -76,7 +76,7 @@
                     android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:fontFamily="@font/gotham_medium"
-                    android:hint="Event Name"
+                    android:hint="@string/event_name"
                     android:paddingHorizontal="@dimen/_8sdp"
                     android:paddingVertical="@dimen/_20sdp"
                     android:textSize="@dimen/_12ssp" />
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_light"
-                    android:text="Assign To"
+                    android:text="@string/assign_to"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
@@ -167,12 +167,12 @@
 
                 </LinearLayout>
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_light"
-                    android:text="Date"
+                    android:text="@string/date"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
@@ -192,12 +192,12 @@
                     android:text="DD/MM/YY"
                     android:textSize="14sp" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_light"
-                    android:text="Time"
+                    android:text="@string/time"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
@@ -207,8 +207,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTime">
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivClock"
@@ -246,7 +245,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="AM"
+                            android:text="@string/am"
                             android:textColor="@color/_192032"
                             android:textSize="@dimen/_14ssp" />
 
@@ -261,7 +260,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="PM"
+                            android:text="@string/pm"
                             android:textColor="@color/_192032"
                             android:textSize="@dimen/_14ssp" />
 
@@ -273,7 +272,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:fontFamily="@font/gotham_medium"
-                    android:text="Note"
+                    android:text="@string/notes"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp" />
 
@@ -291,7 +290,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="top|start"
-                        android:hint="Write"
+                        android:hint="@string/write"
                         android:lines="4"
                         android:padding="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -309,7 +308,7 @@
                     android:fontFamily="@font/gotham_medium"
                     android:onClick="@{listener::onClick}"
                     android:paddingHorizontal="80dp"
-                    android:text="Add"
+                    android:text="@string/add"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_13ssp" />

@@ -6,14 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.care_team.CareRoles
-import com.app.shepherd.data.dto.care_team.CareTeam
-import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.AdapterAddMemberRoleBinding
-import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.view_model.AddMemberViewModel
 
 class AddMemberRoleAdapter(
     context: Context,
@@ -60,6 +55,4 @@ class AddMemberRoleAdapter(
         this.careRoles = careRoles
         notifyDataSetChanged()
     }
-
-
 }

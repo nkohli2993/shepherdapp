@@ -15,6 +15,8 @@ object Const {
     const val CHAT = "CHAT"
     const val LOVED_ONE_ID = "LOVED_ONE_ID"
     const val LOVED_ONE_ARRAY = "LOVED_ONE_ARRAY"
+    const val PRIVACY_POLICY = "PRIVACY_POLICY"
+    const val TERM_OF_USE = "TERM_OF_USE"
 }
 
 object Drawable {
@@ -22,4 +24,24 @@ object Drawable {
     const val TOP = 1
     const val START = 0
     const val BOTTOM = 3
+}
+
+
+enum class Modules(val value: Int) {
+    CareTeam(1),
+    LockBox(2),
+    MedList(3),
+    Resources(4)
+}
+
+enum class Role(val id: String) {
+    User("1"),
+    UserLovedOne("2"),
+    Admin("3")
+}
+
+enum class UserSlug(val slug: String) {
+    User("user"),
+    UserLovedOne("user-loved-one"),
+    Admin("admin")
 }

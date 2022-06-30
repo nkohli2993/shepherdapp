@@ -5,7 +5,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-platform-android'
     id 'dagger.hilt.android.plugin'
-    id 'androidx.navigation.safeargs'
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 
@@ -30,12 +30,14 @@ android {
         debug {
             debuggable true
             minifyEnabled false
-            buildConfigField("String", "BASE_URL", base_url_local)
+//            buildConfigField("String", "BASE_URL", base_url_local)
+            buildConfigField("String", "BASE_URL", base_url_staging)
         }
         release {
             debuggable false
             minifyEnabled true
-            buildConfigField("String", "BASE_URL", base_url_live)
+            //buildConfigField("String", "BASE_URL", base_url_live)
+            buildConfigField("String", "BASE_URL", base_url_staging)
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvMedList"
+            android:id="@+id/tvSetting"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_bold"
@@ -206,6 +206,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clPrivacyPolicy"
                     android:layout_width="match_parent"
+                    android:onClick="@{listener::onClick}"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:paddingVertical="@dimen/_10sdp">
@@ -214,7 +215,7 @@
                         android:id="@+id/ivPrivacyPolicy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_subscription_plan"
+                        android:src="@drawable/ic_privacy_policy"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -235,6 +236,7 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clTermOfUse"
+                    android:onClick="@{listener::onClick}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10sdp"
@@ -244,7 +246,7 @@
                         android:id="@+id/ivTermOfUse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_privacy_policy"
+                        android:src="@drawable/ic_term_of_use"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 

@@ -33,7 +33,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
     private var joinCareTeamAdapter: JoinCareTeamAdapter? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
-    private var status: Int = 0
+    private var status: Int = 1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

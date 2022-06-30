@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.roles.RolesResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserProfiles
@@ -51,6 +52,10 @@ class CreateNewAccountViewModel @Inject constructor(
     var bioMetricLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
         _bioMetricLiveData
 
+    private var _rolesResponseLiveData = MutableLiveData<Event<DataResult<RolesResponseModel>>>()
+    var rolesResponseLiveData: LiveData<Event<DataResult<RolesResponseModel>>> =
+        _rolesResponseLiveData
+
 
     fun createAccount(
         phoneCode: String?,
@@ -59,7 +64,8 @@ class CreateNewAccountViewModel @Inject constructor(
         lastName: String?,
         email: String?,
         passwd: String?,
-        phoneNumber: String?
+        phoneNumber: String?,
+        roleId: String?
     ): LiveData<Event<DataResult<LoginResponseModel>>> {
         //Update the phone code
         signUpData.value.let {
@@ -70,7 +76,7 @@ class CreateNewAccountViewModel @Inject constructor(
             it?.phoneCode = phoneCode
             it?.phoneNo = phoneNumber
             it?.profilePhoto = profilePicUrl
-            it?.roleId = "1"
+            it?.roleId = roleId
         }
         viewModelScope.launch {
             val response = signUpData.value?.let { authRepository.signup(it) }
@@ -83,7 +89,7 @@ class CreateNewAccountViewModel @Inject constructor(
         return signUpLiveData
     }
 
-
+    // Biometric Registration
     fun registerBioMetric(
         isBioMetricEnable: Boolean
     ): LiveData<Event<DataResult<LoginResponseModel>>> {
@@ -114,6 +120,23 @@ class CreateNewAccountViewModel @Inject constructor(
         }
         return uploadImageLiveData
     }
+
+    //Get Roles
+    fun getRoles(
+        pageNumber: Int,
+        limit: Int,
+    ): LiveData<Event<DataResult<RolesResponseModel>>> {
+        viewModelScope.launch {
+            val response = authRepository.getRoles(pageNumber, limit)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _rolesResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return rolesResponseLiveData
+    }
+
 
     // Save Successfully Registered User's Info into Preferences
     fun saveUser(user: UserProfiles) {

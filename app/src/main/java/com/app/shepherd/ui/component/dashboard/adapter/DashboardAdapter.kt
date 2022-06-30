@@ -3,15 +3,11 @@ package com.app.shepherd.ui.component.dashboard.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.app.shepherd.R
 import com.app.shepherd.data.dto.dashboard.DashboardModel
-import com.app.shepherd.data.dto.recipes.RecipesItem
 import com.app.shepherd.databinding.AdapterDashboardBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.dashboard.DashboardViewModel
-import com.app.shepherd.utils.loadImage
+import com.app.shepherd.view_model.DashboardViewModel
 
 
 class DashboardAdapter(

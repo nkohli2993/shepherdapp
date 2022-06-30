@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.remote.care_teams.CareTeamsRepository
 import com.app.shepherd.network.retrofit.DataResult
@@ -27,12 +28,12 @@ class CareTeamMembersViewModel @Inject constructor(
 ) :
     BaseViewModel() {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val openMemberDetailsPrivate = MutableLiveData<SingleEvent<Int>>()
-    val openMemberDetails: LiveData<SingleEvent<Int>> get() = openMemberDetailsPrivate
+    private val openMemberDetailsPrivate = MutableLiveData<SingleEvent<CareTeam>>()
+    val openMemberDetails: LiveData<SingleEvent<CareTeam>> get() = openMemberDetailsPrivate
 
 
-    fun openMemberDetails(item: Int) {
-        openMemberDetailsPrivate.value = SingleEvent(item)
+    fun openMemberDetails(careTeam: CareTeam) {
+        openMemberDetailsPrivate.value = SingleEvent(careTeam)
     }
 
 

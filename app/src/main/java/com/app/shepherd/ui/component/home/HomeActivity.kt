@@ -207,7 +207,14 @@ class HomeActivity : BaseActivity(),
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.vital_stats)
                         clTopWrapper.isVisible = true
-                        clEndWrapper.isVisible = false
+                        clEndWrapper.isVisible = true
+                        clHomeWrapper.isVisible = false
+                        tvNew.apply {
+                            isVisible = true
+                            setOnClickListener {
+                                navController.navigate(R.id.nav_add_vitals)
+                            }
+                        }
                     }
                     lockUnlockDrawer(false)
                 }
@@ -236,7 +243,7 @@ class HomeActivity : BaseActivity(),
                 }
                 R.id.nav_care_team -> {
                     binding.appBarDashboard.apply {
-                        tvTitle.text = "CareTeam"
+                        tvTitle.text = getString(R.string.careteam)
                         clTopWrapper.isVisible = true
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
