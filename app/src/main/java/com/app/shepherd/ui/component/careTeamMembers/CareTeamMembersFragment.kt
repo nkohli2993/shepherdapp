@@ -60,7 +60,8 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun initViewBinding() {
         fragmentCareTeamMembersBinding.listener = this
         setCareTeamAdapters()
-        careTeamViewModel.getCareTeams(pageNumber, limit, status)
+        // Get Care Teams by lovedOne Id
+        careTeamViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
 
         fragmentCareTeamMembersBinding.imgCancel.setOnClickListener {
             fragmentCareTeamMembersBinding.editTextSearch.setText("")

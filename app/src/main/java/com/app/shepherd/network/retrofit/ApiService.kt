@@ -67,10 +67,18 @@ interface ApiService {
     ): Response<MedicalConditionResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
-    suspend fun getCareTeams(
+    suspend fun getCareTeamsForLoggedInUser(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("status") status: Int
+    ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getCareTeamsByLovedOneId(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int,
+        @Query("loved_one_id") lovedOneId: Int,
     ): Response<CareTeamsResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAM_ROLES)
@@ -115,6 +123,7 @@ interface ApiService {
 
     @GET(ApiConstants.Home.GET_HOME_DATA)
     suspend fun getHomeData(
-        @Query("love_user_id") loveUserID: Int
+        @Query("love_user_id") loveUserID: Int,
+        @Query("status") status: Int,
     ): Response<HomeResponseModel>
 }

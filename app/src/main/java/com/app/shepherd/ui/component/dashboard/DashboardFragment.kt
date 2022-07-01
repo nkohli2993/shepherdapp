@@ -44,7 +44,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         viewModel.inflateDashboardList(requireContext())
 
         // Get Care Teams
-        viewModel.getCareTeams(pageNumber, limit, status)
+        // viewModel.getCareTeams(pageNumber, limit, status)
 
         //Get Home Data
         viewModel.getHomeData()
@@ -67,7 +67,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     override fun observeViewModel() {
         observeEvent(viewModel.openDashboardItems, ::navigateToDashboardItems)
 
-        // Observe Get Care Teams Api Response
+        /*// Observe Get Care Teams Api Response
         viewModel.careTeamsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -101,7 +101,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 }
             }
         }
-
+*/
         // Observe Get Home Data Api Response
         viewModel.homeResponseLiveData.observeEvent(this) {
             when (it) {
@@ -125,6 +125,17 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
             it.tvMedListMessageCount.text = payload?.medLists.toString()
             // it.tvResourceListMessageCount.text=payload?.
             it.tvLockBoxCount.text = payload?.lockBoxs.toString()
+            val careTeamMembers = payload?.careTeams
+            if (careTeamMembers == 0 || careTeamMembers == 1) {
+                fragmentDashboardBinding.tvMember.text = "$careTeamMembers Member"
+            } else {
+                fragmentDashboardBinding.tvMember.text = "$careTeamMembers Members"
+            }
+
+            val careTeamMembersProfileList = payload?.careTeamProfiles
+            if (!careTeamMembersProfileList.isNullOrEmpty()) {
+                careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
+            }
 
         }
 

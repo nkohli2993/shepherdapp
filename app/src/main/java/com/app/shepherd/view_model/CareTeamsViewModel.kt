@@ -31,14 +31,15 @@ class CareTeamsViewModel @Inject constructor(
         _careTeamsResponseLiveData
 
 
-    // Get Medical Conditions
-    fun getCareTeams(
+    // Get Care Teams for Logged In User
+    fun getCareTeamsForLoggedInUser(
         pageNumber: Int,
         limit: Int,
         status: Int
     ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
         viewModelScope.launch {
-            val response = careTeamsRepository.getCareTeams(pageNumber, limit, status)
+            val response =
+                careTeamsRepository.getCareTeamsForLoggedInUser(pageNumber, limit, status)
             withContext(Dispatchers.Main) {
                 response.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
             }

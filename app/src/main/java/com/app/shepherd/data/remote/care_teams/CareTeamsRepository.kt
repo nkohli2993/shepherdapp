@@ -19,8 +19,8 @@ import javax.inject.Singleton
 @Singleton
 class CareTeamsRepository @Inject constructor(private val apiService: ApiService) {
 
-    // Get Care Teams
-    suspend fun getCareTeams(
+    // Get Care Teams for loggedIn User
+    suspend fun getCareTeamsForLoggedInUser(
         pageNumber: Int,
         limit: Int,
         status: Int
@@ -28,7 +28,22 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
         return object :
             NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<CareTeamsResponseModel> {
-                return apiService.getCareTeams(pageNumber, limit, status)
+                return apiService.getCareTeamsForLoggedInUser(pageNumber, limit, status)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Get Care Teams for loggedIn User
+    suspend fun getCareTeamsByLovedOneId(
+        pageNumber: Int,
+        limit: Int,
+        status: Int,
+        lovedOneId: Int
+    ): Flow<DataResult<CareTeamsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<CareTeamsResponseModel> {
+                return apiService.getCareTeamsByLovedOneId(pageNumber, limit, status, lovedOneId)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

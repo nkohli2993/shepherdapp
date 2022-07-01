@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
+import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.care_teams.CareTeamsRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class CareTeamMembersViewModel @Inject constructor(
     private val dataRepository: DataRepository,
-    private val careTeamsRepository: CareTeamsRepository
+    private val careTeamsRepository: CareTeamsRepository,
+    private val userRepository: UserRepository
 ) :
     BaseViewModel() {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -43,13 +45,15 @@ class CareTeamMembersViewModel @Inject constructor(
         _careTeamsResponseLiveData
 
 
-    fun getCareTeams(
+    fun getCareTeamsByLovedOneId(
         pageNumber: Int,
         limit: Int,
         status: Int
     ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        val lovedOneId = userRepository.getLovedOneId()
         viewModelScope.launch {
-            val response = careTeamsRepository.getCareTeams(pageNumber, limit, status)
+            val response =
+                careTeamsRepository.getCareTeamsByLovedOneId(pageNumber, limit, status, lovedOneId)
             withContext(Dispatchers.Main) {
                 response.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
             }

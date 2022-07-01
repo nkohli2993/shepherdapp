@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 
 class CareTeamMembersDashBoardAdapter(
     private val viewModel: DashboardViewModel,
-    var careTeams: MutableList<CareTeam> = ArrayList()
+    var careTeams: MutableList<String> = ArrayList()
 ) :
     RecyclerView.Adapter<CareTeamMembersDashBoardAdapter.CareTeamViewHolder>() {
     lateinit var binding: AdapterCareTeamMembersDashboardBinding
@@ -51,9 +51,10 @@ class CareTeamMembersDashBoardAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
-            val careTeam = careTeams[position]
-            itemBinding.data = careTeam
-            val imageUrl = careTeam.user?.userProfiles?.profilePhoto
+            val imageUrl = careTeams[position]
+            //itemBinding.data = careTeam
+            //val imageUrl = careTeam.user?.userProfiles?.profilePhoto
+            //val imageUrl = careTeam.user?.userProfiles?.profilePhoto
 
             itemBinding.let {
                 Picasso.get().load(imageUrl).placeholder(R.drawable.test_image)
@@ -76,7 +77,7 @@ class CareTeamMembersDashBoardAdapter(
         return position
     }
 
-    fun addData(careTeams: ArrayList<CareTeam>) {
+    fun addData(careTeams: ArrayList<String>) {
         this.careTeams.clear()
         this.careTeams = careTeams
         notifyDataSetChanged()
