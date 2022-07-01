@@ -41,6 +41,8 @@ object ApiConstants {
         const val GET_CARE_TEAMS = "$BASE_URL${API_VERSION}care_teams"
         const val GET_CARE_TEAM_ROLES = "$BASE_URL${API_VERSION}care_roles"
         const val ADD_NEW_CARE_TEAM_MEMBER = "$BASE_URL${API_VERSION}invites"
+        const val DELETE_CARE_TEAM_MEMBER = "$BASE_URL${API_VERSION}care_teams/{id}"
+
     }
 
     object UserDetails {
@@ -51,8 +53,8 @@ object ApiConstants {
         const val CREATE_EVENT = "$BASE_URL${API_VERSION}events"
     }
 
-    object Home{
-        const val GET_HOME_DATA="$BASE_URL${API_VERSION}users/get-home-data"
+    object Home {
+        const val GET_HOME_DATA = "$BASE_URL${API_VERSION}users/get-home-data"
     }
 }
 

@@ -7,6 +7,7 @@ import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
+import com.app.shepherd.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -66,22 +67,8 @@ interface ApiService {
         @Query("limit") limit: Int
     ): Response<MedicalConditionResponseModel>
 
-    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
-    suspend fun getCareTeamsForLoggedInUser(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-        @Query("status") status: Int
-    ): Response<CareTeamsResponseModel>
-
-    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
-    suspend fun getCareTeamsByLovedOneId(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-        @Query("status") status: Int,
-        @Query("loved_one_id") lovedOneId: Int,
-    ): Response<CareTeamsResponseModel>
-
     @GET(ApiConstants.CareTeams.GET_CARE_TEAM_ROLES)
+
     suspend fun getCareTeamRoles(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
@@ -99,14 +86,6 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<UserDetailsResponseModel>
 
-    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
-    suspend fun getMembers(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-        @Query("status") status: Int,
-        @Query("loved_one_id") lovedOneId: Int
-    ): Response<CareTeamsResponseModel>
-
     @POST(ApiConstants.CreateEvent.CREATE_EVENT)
     suspend fun createEvent(
         @Body value: CreateEventModel
@@ -118,8 +97,36 @@ interface ApiService {
     @GET(ApiConstants.Authentication.LOGOUT)
     suspend fun logout(): Response<BaseResponseModel>
 
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getCareTeamsForLoggedInUser(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int
+    ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getCareTeamsByLovedOneId(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int,
+        @Query("loved_one_id") lovedOneId: Int,
+    ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getMembers(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int,
+        @Query("loved_one_id") lovedOneId: Int
+    ): Response<CareTeamsResponseModel>
+
     @POST(ApiConstants.CareTeams.ADD_NEW_CARE_TEAM_MEMBER)
     suspend fun addNewMemberCareTeam(@Body value: AddNewMemberCareTeamRequestModel): Response<AddNewMemberCareTeamResponseModel>
+
+    @DELETE(ApiConstants.CareTeams.DELETE_CARE_TEAM_MEMBER)
+    suspend fun deleteCareTeamMember(
+        @Path("id") id: Int
+    ): Response<DeleteCareTeamMemberResponseModel>
 
     @GET(ApiConstants.Home.GET_HOME_DATA)
     suspend fun getHomeData(

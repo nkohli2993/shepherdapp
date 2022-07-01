@@ -315,7 +315,7 @@
                     android:layout_marginTop="@dimen/_20sdp">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnCreateAccount"
+                        android:id="@+id/btnDelete"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
@@ -330,7 +330,7 @@
                         android:textSize="@dimen/_13ssp" />
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnLogin"
+                        android:id="@+id/btnUpdate"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginStart="@dimen/_10sdp"

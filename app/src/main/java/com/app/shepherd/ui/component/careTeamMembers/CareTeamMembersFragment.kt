@@ -132,6 +132,9 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // it.message?.let { showError(this, it.toString()) }
                     //binding.layoutCareTeam.visibility = View.GONE
                     //binding.txtNoCareTeamFound.visibility = View.VISIBLE
+                    careTeams?.clear()
+                    careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
                         setTitle("Care Teams")

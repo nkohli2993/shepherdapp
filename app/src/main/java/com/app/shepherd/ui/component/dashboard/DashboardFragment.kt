@@ -1,7 +1,5 @@
 package com.app.shepherd.ui.component.dashboard
 
-import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -113,6 +111,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                     showLoading("")
                 }
                 is DataResult.Success -> {
+                    hideLoading()
                     initHomeViews(it.data.payload)
                 }
             }

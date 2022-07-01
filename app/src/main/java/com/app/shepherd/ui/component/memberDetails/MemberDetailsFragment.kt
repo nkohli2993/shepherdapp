@@ -10,9 +10,14 @@ import com.app.shepherd.R
 import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.databinding.FragmentMemberDetailsBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.memberDetails.adapter.MemberModulesAdapter
 import com.app.shepherd.utils.Modules
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showSuccess
+import com.app.shepherd.view_model.MemberDetailsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -111,6 +116,22 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
     }
 
     override fun observeViewModel() {
+        memberDetailsViewModel.deleteCareTeamMemberLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), it.data.message.toString())
+                    backPress()
+                }
+            }
+        }
 
     }
 
@@ -129,6 +150,9 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
         when (p0?.id) {
             R.id.ivBack -> {
                 backPress()
+            }
+            R.id.btnDelete -> {
+                careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
             }
         }
     }
