@@ -3,6 +3,8 @@ package com.app.shepherd.ui.component.careTeamMembers
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +40,8 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private var status: Int = 1
 
     private var careTeams: ArrayList<CareTeam>? = ArrayList()
+    private var selectedCareTeams: ArrayList<CareTeam>? = ArrayList()
+    private var searchedCareTeams: ArrayList<CareTeam>? = ArrayList()
     private var careTeamAdapter: CareTeamMembersAdapter? = null
     private var TAG = "CareTeamMembersFragment"
 
@@ -58,6 +62,52 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         setCareTeamAdapters()
         careTeamViewModel.getCareTeams(pageNumber, limit, status)
 
+        fragmentCareTeamMembersBinding.imgCancel.setOnClickListener {
+            fragmentCareTeamMembersBinding.editTextSearch.setText("")
+        }
+
+        // Search Care Team Members
+        fragmentCareTeamMembersBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if (s.isEmpty()) {
+                        careTeams.let {
+                            it?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+                        }
+                        fragmentCareTeamMembersBinding.imgCancel.visibility = View.GONE
+                    }
+
+                    if (s.isNotEmpty()) {
+                        fragmentCareTeamMembersBinding.imgCancel.visibility = View.VISIBLE
+                        searchedCareTeams?.clear()
+                        searchedCareTeams = careTeams?.filter {
+                            it.user?.userProfiles?.firstname?.startsWith(
+                                s,
+                                true
+                            ) == true
+                        } as ArrayList<CareTeam>
+
+                        searchedCareTeams.let {
+                            it?.let { it1 ->
+                                careTeamAdapter?.updateCareTeams(
+                                    it1
+                                )
+                            }
+                        }
+                    }
+                }
+
+            }
+        })
+
+
     }
 
     override fun observeViewModel() {
@@ -73,11 +123,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     careTeams = it.data.payload.careteams
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     careTeamAdapter?.updateCareTeams(careTeams!!)
-
-                    // binding.layoutCareTeam.visibility = View.VISIBLE
-                    // binding.txtNoCareTeamFound.visibility = View.GONE
                 }
-
                 is DataResult.Failure -> {
                     //handleAPIFailure(it.message, it.errorCode)
 

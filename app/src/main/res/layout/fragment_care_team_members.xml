@@ -71,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
-                    android:layout_toStartOf="@+id/viewDivider"
+                    android:layout_toStartOf="@+id/img_cancel"
                     android:layout_toEndOf="@id/llSearch"
                     android:background="@null"
                     android:gravity="center_vertical"
@@ -84,12 +84,13 @@
                     android:textSize="@dimen/_11ssp" />
 
                 <ImageView
-                    android:id="@+id/viewDivider"
+                    android:id="@+id/img_cancel"
                     android:layout_width="@dimen/_20sdp"
-                    android:padding="@dimen/_4sdp"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
                     android:layout_alignParentEnd="true"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:padding="@dimen/_4sdp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_cancel" />
 
             </RelativeLayout>

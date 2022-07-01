@@ -96,7 +96,6 @@ class CareTeamMembersAdapter(
     }*/
 
     fun updateCareTeams(careTeams: ArrayList<CareTeam>) {
-        this.careTeams.clear()
         this.careTeams = careTeams
         notifyDataSetChanged()
     }
