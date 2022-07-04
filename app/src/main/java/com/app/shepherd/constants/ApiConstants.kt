@@ -42,7 +42,7 @@ object ApiConstants {
         const val GET_CARE_TEAM_ROLES = "$BASE_URL${API_VERSION}care_roles"
         const val ADD_NEW_CARE_TEAM_MEMBER = "$BASE_URL${API_VERSION}invites"
         const val DELETE_CARE_TEAM_MEMBER = "$BASE_URL${API_VERSION}care_teams/{id}"
-
+        const val UPDATE_CARE_TEAM_MEMBER = "$BASE_URL${API_VERSION}care_teams/{id}"
     }
 
     object UserDetails {

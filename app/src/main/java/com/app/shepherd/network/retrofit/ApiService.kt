@@ -8,6 +8,8 @@ import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRe
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.care_team.DeleteCareTeamMemberResponseModel
+import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
+import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -127,6 +129,12 @@ interface ApiService {
     suspend fun deleteCareTeamMember(
         @Path("id") id: Int
     ): Response<DeleteCareTeamMemberResponseModel>
+
+    @PUT(ApiConstants.CareTeams.UPDATE_CARE_TEAM_MEMBER)
+    suspend fun updateCareTeamMember(
+        @Path("id") id: Int,
+        @Body updateCareTeamMemberRequestModel: UpdateCareTeamMemberRequestModel
+    ): Response<UpdateCareTeamMemberResponseModel>
 
     @GET(ApiConstants.Home.GET_HOME_DATA)
     suspend fun getHomeData(

@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.care_team.DeleteCareTeamMemberResponseModel
+import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
+import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.app.shepherd.data.remote.care_teams.CareTeamsRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
@@ -30,6 +32,11 @@ class MemberDetailsViewModel @Inject constructor(
     val deleteCareTeamMemberLiveData: LiveData<Event<DataResult<DeleteCareTeamMemberResponseModel>>> =
         _deleteCareTeamMemberLiveData
 
+    private var _updateCareTeamMemberLiveData =
+        MutableLiveData<Event<DataResult<UpdateCareTeamMemberResponseModel>>>()
+    val updateCareTeamMemberLiveData: LiveData<Event<DataResult<UpdateCareTeamMemberResponseModel>>> =
+        _updateCareTeamMemberLiveData
+
 
     fun deleteCareTeamMember(id: Int): LiveData<Event<DataResult<DeleteCareTeamMemberResponseModel>>> {
         viewModelScope.launch {
@@ -43,4 +50,20 @@ class MemberDetailsViewModel @Inject constructor(
         return deleteCareTeamMemberLiveData
     }
 
+    fun updateCareTeamMember(
+        id: Int,
+        updateCareTeamMemberRequestModel: UpdateCareTeamMemberRequestModel
+    ): LiveData<Event<DataResult<UpdateCareTeamMemberResponseModel>>> {
+        viewModelScope.launch {
+            val response =
+                careTeamsRepository.updateCareTeamMember(id, updateCareTeamMemberRequestModel)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _updateCareTeamMemberLiveData.postValue(Event(it))
+                }
+            }
+        }
+
+        return updateCareTeamMemberLiveData
+    }
 }
