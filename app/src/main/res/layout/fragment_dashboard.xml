@@ -172,7 +172,7 @@
                             android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="Last message from Roberto Flox"
+                            android:text="No Discussions"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -200,7 +200,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:fontFamily="@font/gotham_bold"
-                                    android:text="12"
+                                    android:text="0"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/_20ssp" />
 
@@ -231,7 +231,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:fontFamily="@font/gotham_bold"
-                                    android:text="12"
+                                    android:text="0"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/_20ssp" />
 

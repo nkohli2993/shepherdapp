@@ -120,10 +120,21 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     private fun initHomeViews(payload: Payload?) {
         fragmentDashboardBinding.let {
+            // Care Points
             it.tvTaskCount.text = payload?.carePoints.toString()
+
+            // Discussions
+
+            // MedList
             it.tvMedListMessageCount.text = payload?.medLists.toString()
-            // it.tvResourceListMessageCount.text=payload?.
+
+            // Resources
+            // LockBox
             it.tvLockBoxCount.text = payload?.lockBoxs.toString()
+
+            // Vital Stats
+
+            // Care Team
             val careTeamMembers = payload?.careTeams
             if (careTeamMembers == 0 || careTeamMembers == 1) {
                 fragmentDashboardBinding.tvMember.text = "$careTeamMembers Member"

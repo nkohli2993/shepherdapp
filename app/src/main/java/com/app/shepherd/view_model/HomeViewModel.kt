@@ -1,6 +1,7 @@
 package com.app.shepherd.view_model
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
@@ -8,10 +9,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.R
 import com.app.shepherd.data.DataRepository
+import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.menuItem.MenuItemModel
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.auth_repository.AuthRepository
+import com.app.shepherd.data.remote.home_repository.HomeRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseResponseModel
@@ -28,7 +31,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val dataRepository: DataRepository,
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val homeRepository: HomeRepository
 ) : BaseViewModel() {
 
     var menuItemList: ArrayList<MenuItemModel> = ArrayList()
@@ -43,6 +47,12 @@ class HomeViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
     var lovedOneDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
         _lovedOneDetailsLiveData
+
+    private var _homeResponseLiveData =
+        MutableLiveData<Event<DataResult<HomeResponseModel>>>()
+    var homeResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
+        _homeResponseLiveData
+
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val selectedDrawerItemPrivate = MutableLiveData<SingleEvent<String>>()
@@ -172,6 +182,21 @@ class HomeViewModel @Inject constructor(
     private fun getLovedOneUserId(): Int {
         val userLovedOneArray = userRepository.getPayload()?.userLovedOne
         return userLovedOneArray?.get(0)?.loveUserId ?: 0
+    }
+
+    fun getHomeData(): LiveData<Event<DataResult<HomeResponseModel>>> {
+        val lovedOneId = userRepository.getLovedOneId()
+        val status = 1
+       // Log.d(TAG, "LovedOneID :$lovedOneId ")
+        viewModelScope.launch {
+            val response = homeRepository.getHomeData(lovedOneId, status)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _homeResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return homeResponseLiveData
     }
 
 
