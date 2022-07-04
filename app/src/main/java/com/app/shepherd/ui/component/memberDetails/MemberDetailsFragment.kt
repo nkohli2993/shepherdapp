@@ -62,17 +62,32 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
     }
 
     private fun initView() {
-        // Set profile pic
-        Picasso.get().load(careTeam?.user?.userProfiles?.profilePhoto)
-            .placeholder(R.drawable.test_image)
-            .into(fragmentMemberDetailsBinding.imgCareTeamMember)
+        careTeam?.user.let {
+            // Set profile pic
+            Picasso.get().load(it?.userProfiles?.profilePhoto)
+                .placeholder(R.drawable.test_image)
+                .into(fragmentMemberDetailsBinding.imgCareTeamMember)
 
-        // Set Name
-        careTeam?.user?.userProfiles.let {
+            // Set Name
             fragmentMemberDetailsBinding.txtCareTeamMemberName.text =
-                it?.firstname + " " + it?.lastname
+                it?.userProfiles?.firstname + " " + it?.userProfiles?.lastname
+
+            // Set Email ID
+            fragmentMemberDetailsBinding.txtEmailCare.text = it?.email
+
+            // Set Address
+            fragmentMemberDetailsBinding.txtAddressCare.text =
+                it?.userProfiles?.address ?: "No address available"
+
+            // Set Phone Number
+            var phone: String? = null
+            it?.userProfiles.let { it1 ->
+                phone = "+" + it1?.phoneCode + "-" + it1?.phoneNumber
+            }
+            fragmentMemberDetailsBinding.txtPhoneCare.text = phone ?: "Phone Number Not Available"
         }
 
+        // Set role
         fragmentMemberDetailsBinding.txtCareTeamMemberDesignation.text = careTeam?.careRoles?.name
 
         //get permissions

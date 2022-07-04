@@ -13,7 +13,10 @@ data class UserProfiles(
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("firstname") var firstname: String? = null,
     @SerializedName("lastname") var lastname: String? = null,
-    @SerializedName("profile_photo") var profilePhoto: String? = null
+    @SerializedName("profile_photo") var profilePhoto: String? = null,
+    @SerializedName("phone_code") var phoneCode: String? = null,
+    @SerializedName("phone_no") var phoneNumber: String? = null,
+    @SerializedName("address") var address: String? = null
 ):Parcelable{
     val fullName = "$firstname $lastname"
 }
