@@ -45,3 +45,13 @@ enum class UserSlug(val slug: String) {
     UserLovedOne("user-loved-one"),
     Admin("admin")
 }
+
+enum class Invitations(val sendType: String) {
+    Sender("sender"),
+    Receiver("receiver")
+}
+
+enum class Status(val status: Int) {
+    Zero(0),
+    One(1)
+}

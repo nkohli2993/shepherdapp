@@ -56,5 +56,9 @@ object ApiConstants {
     object Home {
         const val GET_HOME_DATA = "$BASE_URL${API_VERSION}users/get-home-data"
     }
+
+    object Invitations {
+        const val GET_INVITATIONS = "$BASE_URL${API_VERSION}invites"
+    }
 }
 
