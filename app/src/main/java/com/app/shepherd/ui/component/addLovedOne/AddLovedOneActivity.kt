@@ -3,12 +3,16 @@ package com.app.shepherd.ui.component.addLovedOne
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.app.shepherd.BuildConfig
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.relation.Relation
@@ -304,7 +308,27 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             R.id.imgUploadLovedOnePic -> {
                 openImagePicker()
             }
+            R.id.ivInfo -> {
+                showPopUp()
+            }
         }
+    }
+
+    private fun showPopUp() {
+        val dialog = AlertDialog.Builder(this)
+        val layoutView = layoutInflater.inflate(R.layout.dialog_loved_one_info_pop_up, null)
+        val okayBtn = layoutView.findViewById(R.id.btnOkay) as Button
+        dialog.setView(layoutView)
+        dialog.setCancelable(true)
+        val alertDialog = dialog.create()
+        alertDialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
+        alertDialog.show()
+        okayBtn.setOnClickListener { alertDialog.dismiss() }
     }
 
     private fun onPlaceSelected(data: Intent?) {
