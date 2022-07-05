@@ -60,13 +60,13 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
                 "Shepherd gives you more control over your daily workload, and includes expert advice to help guide you through the caregiving experience."
             )
         )
-        list.add(
-            WalkThroughModel(
-                R.drawable.walkthrough_4,
-                "Try it for free.",
-                "Try Shepherd for 30 days and see how much better things can be."
-            )
-        )
+        /* list.add(
+             WalkThroughModel(
+                 R.drawable.walkthrough_4,
+                 "Try it for free.",
+                 "Try Shepherd for 30 days and see how much better things can be."
+             )
+         )*/
         mOnBoardingImagesAdapter =
             OnBoardingImagesAdapter(this, list)
         viewPager.adapter = mOnBoardingImagesAdapter
@@ -81,9 +81,8 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
 
             override fun onPageSelected(position: Int) {
                 selectedPage = position
-                binding.btnSkip.isVisible = position != 3
-                // binding.btnGetStarted.isVisible = !(position == 0 || position == 1 || position == 2)
-                if ((position == 0 || position == 1 || position == 2)) {
+                binding.btnSkip.isVisible = position != 2
+                if ((position == 0 || position == 1)) {
                     binding.btnGetStarted.visibility = View.GONE
                     binding.btnNext.visibility = View.VISIBLE
                 } else {
