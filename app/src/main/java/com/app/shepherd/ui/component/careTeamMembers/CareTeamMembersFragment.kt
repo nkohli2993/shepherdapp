@@ -83,6 +83,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                             it?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
                         }
                         fragmentCareTeamMembersBinding.imgCancel.visibility = View.GONE
+                        fragmentCareTeamMembersBinding.recyclerViewCareTeam.visibility = View.VISIBLE
                     }
 
                     if (s.isNotEmpty()) {
@@ -94,6 +95,19 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                                 true
                             ) == true
                         } as ArrayList<CareTeam>
+
+                        // Show No Care Team Found when no care team is available during search
+                        if (searchedCareTeams.isNullOrEmpty()) {
+                            fragmentCareTeamMembersBinding.let {
+                                it.recyclerViewCareTeam.visibility = View.GONE
+                                it.txtNoCareTeamFound.visibility = View.VISIBLE
+                            }
+                        } else {
+                            fragmentCareTeamMembersBinding.let {
+                                it.recyclerViewCareTeam.visibility = View.VISIBLE
+                                it.txtNoCareTeamFound.visibility = View.GONE
+                            }
+                        }
 
                         searchedCareTeams.let {
                             it?.let { it1 ->
