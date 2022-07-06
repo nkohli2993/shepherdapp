@@ -134,7 +134,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
-
+                    backPress()
                 }
             }
         }

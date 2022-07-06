@@ -83,7 +83,8 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                             it?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
                         }
                         fragmentCareTeamMembersBinding.imgCancel.visibility = View.GONE
-                        fragmentCareTeamMembersBinding.recyclerViewCareTeam.visibility = View.VISIBLE
+                        fragmentCareTeamMembersBinding.recyclerViewCareTeam.visibility =
+                            View.VISIBLE
                     }
 
                     if (s.isNotEmpty()) {
