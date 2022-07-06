@@ -138,6 +138,7 @@
         <entry key="app/src/main/res/drawable/ic_restore_from_trash.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_star_24.xml" value="0.2515" />
+        <entry key="app/src/main/res/drawable/rounded_box_new.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/switch_track_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/test_ic_baseline_medication_24.xml" value="0.255" />
@@ -175,6 +176,7 @@
         <entry key="app/src/main/res/layout/adapter_care_points.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_points_events.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_care_team_members_dashboard.xml" value="0.2579162410623085" />
         <entry key="app/src/main/res/layout/adapter_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_date_picker.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_documents.xml" value="0.855" />

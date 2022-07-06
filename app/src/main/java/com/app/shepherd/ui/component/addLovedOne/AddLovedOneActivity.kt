@@ -197,6 +197,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
                         lovedOneID = it1.payload.id
+                        addLovedOneViewModel.saveLovedOneId(lovedOneID)
                         navigateToAddLovedOneConditionScreen()
                     }
                 }

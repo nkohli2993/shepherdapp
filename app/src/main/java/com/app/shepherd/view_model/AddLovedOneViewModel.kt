@@ -1,7 +1,5 @@
 package com.app.shepherd.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -122,7 +120,7 @@ class AddLovedOneViewModel @Inject constructor(
     }
 
     fun saveLovedOneId(lovedOneID: Int?) {
-        userRepository.saveLovedOneId(lovedOneID!!)
+        lovedOneID?.let { userRepository.saveLovedOneId(it) }
     }
 
 }

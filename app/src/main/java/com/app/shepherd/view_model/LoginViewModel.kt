@@ -92,7 +92,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun saveLovedOneId(lovedOneID: Int?) {
-        userRepository.saveLovedOneId(lovedOneID!!)
+        lovedOneID?.let { userRepository.saveLovedOneId(it) }
     }
 
     // Get LoggedIn User Detail
