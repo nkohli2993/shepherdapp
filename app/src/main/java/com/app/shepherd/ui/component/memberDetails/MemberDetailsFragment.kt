@@ -65,7 +65,7 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
         careTeam?.user.let {
             // Set profile pic
             Picasso.get().load(it?.userProfiles?.profilePhoto)
-                .placeholder(R.drawable.test_image)
+                .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(fragmentMemberDetailsBinding.imgCareTeamMember)
 
             // Set Name

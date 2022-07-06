@@ -58,7 +58,7 @@ class LovedOnesAdapter(
             val fullName = userProfiles.firstname + " " + userProfiles.lastname
             itemBinding.txtLovedOneName.text = fullName
 
-            Picasso.get().load(userProfiles.profilePhoto).placeholder(R.drawable.test_image)
+            Picasso.get().load(userProfiles.profilePhoto).placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(itemBinding.imgLovedOne)
 
             itemBinding.root.setOnClickListener {

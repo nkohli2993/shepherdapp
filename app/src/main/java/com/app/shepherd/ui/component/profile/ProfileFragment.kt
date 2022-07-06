@@ -76,7 +76,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
         // Get loggedIn User's Profile Pic
         val profilePicLoggedInUser = payload?.userProfiles?.profilePhoto
-        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.test_image)
+        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.ic_defalut_profile_pic)
             .into(fragmentProfileBinding.imageViewUser)
 
         //Set Email

@@ -106,7 +106,7 @@ class HomeActivity : BaseActivity(),
                 is DataResult.Success -> {
                     hideLoading()
                     val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
-                    Picasso.get().load(lovedOneProfilePic).placeholder(R.drawable.test_image)
+                    Picasso.get().load(lovedOneProfilePic).placeholder(R.drawable.ic_defalut_profile_pic)
                         .into(ivLovedOneProfile)
                 }
             }
@@ -158,7 +158,7 @@ class HomeActivity : BaseActivity(),
 
         binding.ivName.text = fullName
 
-        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.test_image)
+        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.ic_defalut_profile_pic)
             .into(binding.ivLoggedInUserProfile)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
