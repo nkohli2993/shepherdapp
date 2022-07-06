@@ -153,6 +153,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
+                        android:paddingHorizontal="@dimen/_5sdp"
                         android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -200,6 +201,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_5sdp"
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:background="@color/colorWhite">
 
@@ -250,6 +252,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_5sdp"
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:background="@color/colorWhite">
 
@@ -300,6 +303,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/_5sdp"
                         android:layout_marginHorizontal="@dimen/_5sdp"
                         android:background="@color/colorWhite">
 
