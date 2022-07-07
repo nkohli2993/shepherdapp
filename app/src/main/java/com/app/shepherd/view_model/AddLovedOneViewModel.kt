@@ -87,11 +87,12 @@ class AddLovedOneViewModel @Inject constructor(
     fun createLovedOne(
         email: String?,
         firstname: String,
-        lastname: String,
+        lastname: String?,
         relation_id: Int?,
         phone_code: String?,
         dob: String?,
         place_id: String?,
+        customAddress: String?,
         phone_no: String?,
         profile_photo: String?
     ): LiveData<Event<DataResult<CreateLovedOneResponseModel>>> {
@@ -103,6 +104,7 @@ class AddLovedOneViewModel @Inject constructor(
             it?.phoneCode = phone_code
             it?.dob = dob
             it?.placeId = place_id
+            it?.customAddress = customAddress
             it?.phoneNo = phone_no
             it?.profilePhoto = profile_photo
         }
