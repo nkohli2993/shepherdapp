@@ -10,7 +10,6 @@ import androidx.navigation.fragment.navArgs
 import com.app.shepherd.R
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.care_team.CareTeam
-import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.databinding.FragmentMemberDetailsBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -67,26 +66,23 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
     private fun initView() {
         careTeam?.user.let {
             // Set profile pic
-            Picasso.get().load(it?.userProfiles?.profilePhoto)
+            Picasso.get().load(it?.profilePhoto)
                 .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(fragmentMemberDetailsBinding.imgCareTeamMember)
 
             // Set Name
             fragmentMemberDetailsBinding.txtCareTeamMemberName.text =
-                it?.userProfiles?.firstname + " " + it?.userProfiles?.lastname
+                it?.firstname + " " + it?.lastname
 
             // Set Email ID
             fragmentMemberDetailsBinding.txtEmailCare.text = it?.email
 
             // Set Address
             fragmentMemberDetailsBinding.txtAddressCare.text =
-                it?.userProfiles?.address ?: "No address available"
-
+                it?.address ?: "No address available"
             // Set Phone Number
-            var phone: String? = null
-            it?.userProfiles.let { it1 ->
-                phone = "+" + it1?.phoneCode + "-" + it1?.phoneNumber
-            }
+            val phone = "+" + it?.phone
+
             fragmentMemberDetailsBinding.txtPhoneCare.text = phone ?: "Phone Number Not Available"
         }
 
@@ -167,7 +163,7 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     //showSuccess(requireContext(), it.data.message.toString())
-                    showSuccess(requireContext(),"Care Team Member updated successfully...")
+                    showSuccess(requireContext(), "Care Team Member updated successfully...")
                     backPress()
                 }
             }
@@ -195,11 +191,11 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
             R.id.btnDelete -> {
                 // Check the member id should not match with the id of loggedIn user
                 val loggedInUserId = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.USER_ID, 0)
-                if (loggedInUserId == careTeam?.userId) {
-                    showError(requireContext(), "You can not remove the Team Lead...")
-                } else {
-                    careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
-                }
+                /* if (loggedInUserId == careTeam?.userId) {
+                     showError(requireContext(), "You can not remove the Team Lead...")
+                 } else {
+                     careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                 }*/
 
             }
             R.id.btnUpdate -> {
@@ -235,12 +231,12 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
 
                 // Update Care Team Member Detail
-                careTeam?.userId?.let {
-                    memberDetailsViewModel.updateCareTeamMember(
-                        it,
-                        UpdateCareTeamMemberRequestModel(selectedModule)
-                    )
-                }
+                /*  careTeam?.userId?.let {
+                      memberDetailsViewModel.updateCareTeamMember(
+                          it,
+                          UpdateCareTeamMemberRequestModel(selectedModule)
+                      )
+                  }*/
 
             }
         }

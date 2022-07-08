@@ -42,12 +42,12 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
         pageNumber: Int,
         limit: Int,
         status: Int,
-        lovedOneId: Int
+        lovedOneUUID: String
     ): Flow<DataResult<CareTeamsResponseModel>> {
         return object :
             NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<CareTeamsResponseModel> {
-                return apiService.getCareTeamsByLovedOneId(pageNumber, limit, status, lovedOneId)
+                return apiService.getCareTeamsByLovedOneId(pageNumber, limit, status, lovedOneUUID)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

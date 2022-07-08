@@ -60,7 +60,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.careteams
+                   // careTeams = it.data.payload.careteams
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     joinCareTeamAdapter?.updateCareTeams(careTeams!!)
 

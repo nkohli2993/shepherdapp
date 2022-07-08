@@ -50,12 +50,17 @@ class CareTeamMembersViewModel @Inject constructor(
         limit: Int,
         status: Int
     ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
-        val lovedOneId = userRepository.getLovedOneId()
+        //val lovedOneId = userRepository.getLovedOneId()
+        val lovedOneUUID = userRepository.getLovedOneUUId()
         viewModelScope.launch {
             val response =
-                careTeamsRepository.getCareTeamsByLovedOneId(pageNumber, limit, status, lovedOneId)
+                lovedOneUUID?.let {
+                    careTeamsRepository.getCareTeamsByLovedOneId(pageNumber, limit, status,
+                        it
+                    )
+                }
             withContext(Dispatchers.Main) {
-                response.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
+                response?.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
             }
         }
         return careTeamsResponseLiveData

@@ -145,7 +145,7 @@ class DashboardViewModel @Inject constructor(
         )
     }
 
-    fun getCareTeams(
+   /* fun getCareTeams(
         pageNumber: Int,
         limit: Int,
         status: Int
@@ -159,7 +159,7 @@ class DashboardViewModel @Inject constructor(
             }
         }
         return careTeamsResponseLiveData
-    }
+    }*/
 
 
     fun getHomeData(): LiveData<Event<DataResult<HomeResponseModel>>> {

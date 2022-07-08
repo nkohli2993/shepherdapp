@@ -41,7 +41,6 @@
                     android:layout_height="@dimen/_40sdp"
                     android:adjustViewBounds="true"
                     android:background="@color/_399282"
-                    android:src="@{data.user.userProfiles.profilePhoto}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

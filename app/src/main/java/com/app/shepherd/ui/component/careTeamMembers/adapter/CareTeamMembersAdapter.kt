@@ -55,10 +55,10 @@ class CareTeamMembersAdapter(
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             val careTeam = careTeams[position]
             itemBinding.data = careTeam
-            val firstName = careTeam.user?.userProfiles?.firstname
-            val lastName = careTeam.user?.userProfiles?.lastname
+            val firstName = careTeam.user?.firstname
+            val lastName = careTeam.user?.lastname
             val fullName = "$firstName $lastName"
-            val imageUrl = careTeam.user?.userProfiles?.profilePhoto
+            val imageUrl = careTeam.user?.profilePhoto
 
             itemBinding.let {
                 it.textViewCareTeamName.text = fullName

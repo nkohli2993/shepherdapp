@@ -98,8 +98,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careRoles = it.data.payload.careroles
-                    if (careRoles.isNullOrEmpty()) return@observeEvent
+//                    careRoles = it.data.payload.careroles
+//                    if (careRoles.isNullOrEmpty()) return@observeEvent
                     setRoleAdapter()
                 }
 

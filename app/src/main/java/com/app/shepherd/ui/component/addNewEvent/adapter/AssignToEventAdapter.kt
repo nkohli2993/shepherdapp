@@ -58,11 +58,11 @@ class AssignToEventAdapter(
         } else {
             vh.tvSelect.isVisible = false
             vh.clEventWrapper.isVisible = true
-            vh.textViewCareTeamName.text = memberList[position].user?.userProfiles?.fullName
-            vh.textViewCareTeamRole.text = memberList[position].careRoles?.name
-            memberList[position].user?.userProfiles?.profilePhoto?.let {
-                vh.imageViewCareTeam.loadImage(it)
-            }
+//            vh.textViewCareTeamName.text = memberList[position].user?.userProfiles?.fullName
+//            vh.textViewCareTeamRole.text = memberList[position].careRoles?.name
+//            memberList[position].user?.userProfiles?.profilePhoto?.let {
+//                vh.imageViewCareTeam.loadImage(it)
+//            }
         }
 
         return view

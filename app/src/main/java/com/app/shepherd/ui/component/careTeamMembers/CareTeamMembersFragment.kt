@@ -91,7 +91,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         fragmentCareTeamMembersBinding.imgCancel.visibility = View.VISIBLE
                         searchedCareTeams?.clear()
                         searchedCareTeams = careTeams?.filter {
-                            it.user?.userProfiles?.firstname?.startsWith(
+                            it.user?.firstname?.startsWith(
                                 s,
                                 true
                             ) == true
@@ -136,7 +136,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.careteams
+                    careTeams = it.data.payload.careTeams
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     careTeamAdapter?.updateCareTeams(careTeams!!)
                 }

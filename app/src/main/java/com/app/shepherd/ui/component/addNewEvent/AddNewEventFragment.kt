@@ -92,7 +92,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     val payload = it.data.payload
 
                     careteams.add(CareTeam())
-                    careteams.addAll(payload.careteams!!)
+//                    careteams.addAll(payload.careteams!!)
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
                             requireContext(),

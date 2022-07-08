@@ -112,7 +112,7 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("status") status: Int,
-        @Query("loved_one_id") lovedOneId: Int,
+        @Query("loved_one_id") lovedOneUUID: String,
     ): Response<CareTeamsResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
