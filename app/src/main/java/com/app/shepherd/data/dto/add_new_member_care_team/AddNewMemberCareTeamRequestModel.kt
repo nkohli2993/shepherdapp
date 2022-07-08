@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 
 data class AddNewMemberCareTeamRequestModel(
 
-    @SerializedName("user_id") var userId: Int? = null,
+    @SerializedName("user_id") var userId: String? = null,
     @SerializedName("receiver_user_id") var receiverUserId: Int? = null,
     @SerializedName("email") var email: String? = null,
     @SerializedName("loveone_user_id") var loveoneUserId: String? = null,

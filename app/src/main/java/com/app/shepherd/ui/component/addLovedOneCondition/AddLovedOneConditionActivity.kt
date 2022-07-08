@@ -52,8 +52,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         // binding.toolBarNew.listener = this
 
         // Get LovedOneID from AddLovedOneActivity
-        lovedOneID = intent.getIntExtra(Const.LOVED_ONE_ID, 0)
-        Log.d(TAG, "LovedOneID : $lovedOneID")
+        // lovedOneID = intent.getIntExtra(Const.LOVED_ONE_ID, 0)
+        //Log.d(TAG, "LovedOneID : $lovedOneID")
 
         binding.listener = this
 
@@ -165,6 +165,11 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 //navigateToWelcomeScreen()
                 // Get user id from shared preference
                 val userID = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.USER_ID, 0)
+
+                // Get LovedOne UUID from shared Pref
+                val lovedOneUUID =
+                    Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+
                 val ids = selectedConditions?.map {
                     it.id
                 }
@@ -177,7 +182,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     for (i in ids.indices) {
                         medicalConditionsLovedOneArray.add(MedicalConditionsLovedOneRequestModel(i?.let {
                             ids[it]
-                        }, lovedOneID))
+                        }, lovedOneUUID))
                     }
                 }
 

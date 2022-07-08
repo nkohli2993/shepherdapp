@@ -18,10 +18,10 @@ import javax.inject.Singleton
 @Singleton
 class HomeRepository @Inject constructor(val apiService: ApiService) {
 
-    suspend fun getHomeData(lovedOneUserId: String?, status: Int): Flow<DataResult<HomeResponseModel>> {
+    suspend fun getHomeData(lovedOneUUID: String, status: Int): Flow<DataResult<HomeResponseModel>> {
         return object : NetworkOnlineDataRepo<HomeResponseModel, HomeResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<HomeResponseModel> {
-                return apiService.getHomeData(lovedOneUserId/*, status*/)
+                return apiService.getHomeData(lovedOneUUID/*, status*/)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

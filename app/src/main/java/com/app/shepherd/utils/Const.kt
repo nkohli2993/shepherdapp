@@ -15,6 +15,7 @@ object Const {
     const val CARE_POINT = "CARE_POINT"
     const val CHAT = "CHAT"
     const val LOVED_ONE_ID = "LOVED_ONE_ID"
+    const val LOVED_ONE_UUID = "LOVED_ONE_UUID"
     const val LOVED_ONE_ARRAY = "LOVED_ONE_ARRAY"
     const val PRIVACY_POLICY = "PRIVACY_POLICY"
     const val TERM_OF_USE = "TERM_OF_USE"

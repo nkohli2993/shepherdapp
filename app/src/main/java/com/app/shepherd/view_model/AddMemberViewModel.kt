@@ -66,4 +66,8 @@ class AddMemberViewModel @Inject constructor(
         return addNewMemberCareTeamResponseLiveData
     }
 
+    fun getLovedOneUUId(): String? {
+        return dataRepository.getLovedOneUUId()
+    }
+
 }

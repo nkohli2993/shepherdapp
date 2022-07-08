@@ -197,7 +197,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     UserProfiles::class.java
                 )
 
-                val loggedInUserID = loggedInUser?.userId
+                val loggedInUserID = addMemberViewModel.getLovedOneUUId()
                 Log.d(TAG, "loggedInUserID : $loggedInUserID")
 
                 // Get LovedOneId

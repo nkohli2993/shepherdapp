@@ -1,12 +1,11 @@
-package com.app.shepherd.data.dto.user
+package com.app.shepherd.data.dto.add_loved_one
 
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Deepak Rattan on 09/06/22
+ * Created by Deepak Rattan on 08/07/22
  */
 data class UserProfiles(
-
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("firstname") var firstname: String? = null,
@@ -14,23 +13,11 @@ data class UserProfiles(
     @SerializedName("dob") var dob: String? = null,
     @SerializedName("address") var address: String? = null,
     @SerializedName("phone_code") var phoneCode: String? = null,
-    @SerializedName("phone_no") var phoneNumber: String? = null,
+    @SerializedName("phone_no") var phoneNo: String? = null,
     @SerializedName("profile_photo") var profilePhoto: String? = null,
     @SerializedName("is_biometric") var isBiometric: Boolean? = null,
     @SerializedName("is_email_verified") var isEmailVerified: Boolean? = null,
-    @SerializedName("personal_statement") var personalStatement: String? = null,
-    @SerializedName("gender") var gender: String? = null,
-    @SerializedName("business_address") var businessAddress: String? = null,
-    @SerializedName("city") var city: String? = null,
-    @SerializedName("state") var state: String? = null,
-    @SerializedName("zipcode") var zipcode: String? = null,
-    @SerializedName("business_phone_code") var businessPhoneCode: String? = null,
-    @SerializedName("business_phone") var businessPhone: String? = null,
-    @SerializedName("mission_statement") var missionStatement: String? = null,
-    @SerializedName("allow_mobile_visit") var allowMobileVisit: Int? = null,
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
-
-
 )
