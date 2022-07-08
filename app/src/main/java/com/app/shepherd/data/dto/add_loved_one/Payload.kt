@@ -26,6 +26,6 @@ data class Payload(
     @SerializedName("is_admin_approved") var isAdminApproved: Boolean? = null,
     @SerializedName("is_biometric") var isBiometric: Boolean? = null,
     @SerializedName("is_block") var isBlock: Boolean? = null,
-    @SerializedName("id") var id: Int? = null,
+    @SerializedName("id") var id: String? = null,
     @SerializedName("password") var password: String? = null
 )

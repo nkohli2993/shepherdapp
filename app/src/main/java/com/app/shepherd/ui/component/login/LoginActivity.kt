@@ -199,12 +199,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
 
+                        // Save UUID
+                        it.payload?.uuid.let { uuid ->
+                            uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
+                        }
+
                         // Save token
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
                         token = it.payload?.token
                         it.payload?.userLovedOne?.let {
                             if (it.isNotEmpty()) {
-                                loginViewModel.saveLovedOneId(it[0].loveUserId)
+                                loginViewModel.saveLovedOneId(it[0].loveUserId!!)
                             }
                         }
 
@@ -260,7 +265,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.data.let { it1 ->
                         // Save Token to SharedPref
                         it1.payload?.let { payload ->
-                            Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
+                            Prefs.with(this)!!
+                                .save(Const.BIOMETRIC_ENABLE, payload.userProfile?.isBiometric!!)
                         }
                         navigateToHomeScreen()
                     }

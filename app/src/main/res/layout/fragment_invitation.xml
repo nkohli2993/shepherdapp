@@ -46,7 +46,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivBack"
-            tools:listitem="@layout/adapter_join_care_team" />
+            tools:listitem="@layout/adapter_invitations" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

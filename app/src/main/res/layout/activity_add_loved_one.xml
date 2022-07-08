@@ -19,14 +19,30 @@
         android:background="@color/colorGreyLight"
         android:orientation="vertical">
 
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{listener::onClick}"
-            android:padding="@dimen/_10sdp"
-            android:src="@drawable/ic_back" />
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{listener::onClick}"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_back" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{listener::onClick}"
+                android:padding="@dimen/_10sdp"
+                android:layout_gravity="end"
+                android:src="@drawable/ic_add_loved_one_info" />
+
+        </FrameLayout>
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -184,7 +200,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_light"
-                        android:text="@string/email"
+                        android:text="@string/email_"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/layout_first_name" />
@@ -348,6 +364,7 @@
                         android:onClick="@{listener::onClick}"
                         android:orientation="horizontal"
                         android:padding="@dimen/_4sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtAddress">
 
@@ -373,6 +390,51 @@
                             android:textSize="@dimen/_12ssp" />
                     </LinearLayout>
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtCustomAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/gotham_light"
+                        android:text="@string/custom_address"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutCustomAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                        android:onClick="@{listener::onClick}"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_4sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtCustomAddress">
+
+                        <ImageView
+                            android:layout_width="@dimen/_20sdp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/_4sdp"
+                            android:contentDescription="@string/app_name"
+                            app:srcCompat="@drawable/ic_outline_location_on"
+                            app:tint="@color/colorGreyDark" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edtCustomAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_80sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:background="@null"
+                            android:drawablePadding="@dimen/_5sdp"
+                            android:gravity="top|start"
+                            android:hint="@string/address"
+                            android:lines="6"
+                            android:paddingHorizontal="@dimen/_8sdp"
+                            android:textSize="@dimen/_12ssp" />
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/txtRelationship"
                         android:layout_width="wrap_content"
@@ -382,7 +444,7 @@
                         android:fontFamily="@font/gotham_light"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
+                        app:layout_constraintTop_toBottomOf="@id/layoutCustomAddress" />
 
                     <LinearLayout
                         android:id="@+id/relationshipSpinnerLayout"

@@ -7,6 +7,7 @@ object Const {
     const val USER_DETAILS = "USER DETAILS"
     const val USER_TOKEN = "USER Token"
     const val USER_ID = "USER ID"
+    const val UUID = "UUID"
     const val PAYLOAD = "PAYLOAD"
     const val DEVICE_ID = "DEVICE_ID"
     const val BIOMETRIC_ENABLE = "BIOMETRIC_ENABLE"
@@ -44,4 +45,14 @@ enum class UserSlug(val slug: String) {
     User("user"),
     UserLovedOne("user-loved-one"),
     Admin("admin")
+}
+
+enum class Invitations(val sendType: String) {
+    Sender("sender"),
+    Receiver("receiver")
+}
+
+enum class Status(val status: Int) {
+    Zero(0),
+    One(1)
 }

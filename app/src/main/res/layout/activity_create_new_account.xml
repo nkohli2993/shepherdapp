@@ -60,7 +60,7 @@
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_16ssp" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                  <!--  <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
@@ -69,14 +69,14 @@
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/txtLogin" />
+                        app:layout_constraintTop_toBottomOf="@+id/txtLogin" />-->
 
                 </LinearLayout>
 
                 <FrameLayout
                     android:layout_width="@dimen/_120sdp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_60sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
                     android:elevation="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +223,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_light"
-                        android:text="@string/phone_number"
+                        android:text="@string/phone_no"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"

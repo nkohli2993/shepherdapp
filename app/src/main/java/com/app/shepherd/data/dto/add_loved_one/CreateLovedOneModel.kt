@@ -7,7 +7,7 @@ package com.app.shepherd.data.dto.add_loved_one
 import com.google.gson.annotations.SerializedName
 
 data class CreateLovedOneModel(
-    
+
     @SerializedName("email") var email: String? = null,
     @SerializedName("firstname") var firstname: String? = null,
     @SerializedName("lastname") var lastname: String? = null,
@@ -15,7 +15,7 @@ data class CreateLovedOneModel(
     @SerializedName("phone_code") var phoneCode: String? = null,
     @SerializedName("dob") var dob: String? = null,
     @SerializedName("place_id") var placeId: String? = null,
+    @SerializedName("address") var customAddress: String? = null,
     @SerializedName("phone_no") var phoneNo: String? = null,
     @SerializedName("profile_photo") var profilePhoto: String? = null
-
 )

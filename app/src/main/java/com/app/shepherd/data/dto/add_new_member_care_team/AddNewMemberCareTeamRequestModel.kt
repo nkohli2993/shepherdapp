@@ -11,7 +11,7 @@ data class AddNewMemberCareTeamRequestModel(
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("receiver_user_id") var receiverUserId: Int? = null,
     @SerializedName("email") var email: String? = null,
-    @SerializedName("loveone_user_id") var loveoneUserId: Int? = null,
+    @SerializedName("loveone_user_id") var loveoneUserId: String? = null,
     @SerializedName("careteam_role_id") var careteamRoleId: Int? = null,
     @SerializedName("permission") var permission: String? = null
 )

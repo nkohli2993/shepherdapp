@@ -1,7 +1,5 @@
 package com.app.shepherd.ui.component.dashboard
 
-import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,7 +42,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         viewModel.inflateDashboardList(requireContext())
 
         // Get Care Teams
-        viewModel.getCareTeams(pageNumber, limit, status)
+        // viewModel.getCareTeams(pageNumber, limit, status)
 
         //Get Home Data
         viewModel.getHomeData()
@@ -67,7 +65,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     override fun observeViewModel() {
         observeEvent(viewModel.openDashboardItems, ::navigateToDashboardItems)
 
-        // Observe Get Care Teams Api Response
+        /*// Observe Get Care Teams Api Response
         viewModel.careTeamsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -101,7 +99,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 }
             }
         }
-
+*/
         // Observe Get Home Data Api Response
         viewModel.homeResponseLiveData.observeEvent(this) {
             when (it) {
@@ -113,6 +111,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                     showLoading("")
                 }
                 is DataResult.Success -> {
+                    hideLoading()
                     initHomeViews(it.data.payload)
                 }
             }
@@ -121,10 +120,32 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     private fun initHomeViews(payload: Payload?) {
         fragmentDashboardBinding.let {
+            // Care Points
             it.tvTaskCount.text = payload?.carePoints.toString()
+
+            // Discussions
+
+            // MedList
             it.tvMedListMessageCount.text = payload?.medLists.toString()
-            // it.tvResourceListMessageCount.text=payload?.
+
+            // Resources
+            // LockBox
             it.tvLockBoxCount.text = payload?.lockBoxs.toString()
+
+            // Vital Stats
+
+            // Care Team
+            val careTeamMembers = payload?.careTeams
+            if (careTeamMembers == 0 || careTeamMembers == 1) {
+                fragmentDashboardBinding.tvMember.text = "$careTeamMembers Member"
+            } else {
+                fragmentDashboardBinding.tvMember.text = "$careTeamMembers Members"
+            }
+
+            val careTeamMembersProfileList = payload?.careTeamProfiles
+            if (!careTeamMembersProfileList.isNullOrEmpty()) {
+                careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
+            }
 
         }
 

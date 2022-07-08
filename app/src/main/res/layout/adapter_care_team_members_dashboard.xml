@@ -4,9 +4,9 @@
 
     <data>
 
-        <variable
+       <!-- <variable
             name="data"
-            type="com.app.shepherd.data.dto.care_team.CareTeam" />
+            type="com.app.shepherd.data.dto.care_team.CareTeam" />-->
 
         <variable
             name="listener"

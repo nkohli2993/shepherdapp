@@ -11,6 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class User(
 
     @SerializedName("id") var id: Int? = null,
+    @SerializedName("email") var email: String? = null,
     @SerializedName("user_profiles") var userProfiles: UserProfiles? = UserProfiles()
 
 ):Parcelable

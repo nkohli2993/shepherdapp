@@ -5,6 +5,7 @@ import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.user.Payload
 import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.network.retrofit.ApiService
+import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Const.LOVED_ONE_ID
 import com.app.shepherd.utils.Const.PAYLOAD
 import com.app.shepherd.utils.Const.USER_DETAILS
@@ -49,14 +50,21 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
         Prefs.with(ShepherdApp.appContext)!!.save(USER_ID, id)
     }
 
-    fun getUserId() = Prefs.with(ShepherdApp.appContext)!!.getInt(USER_ID, 0)
+    fun getUserId() = Prefs.with(ShepherdApp.appContext)!!.getString(USER_ID)
 
-    fun saveLovedOneId(id: Int) {
+    fun saveUUID(uuid: String) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.UUID, uuid)
+    }
+
+    fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+
+
+    fun saveLovedOneId(id: String) {
         Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_ID, id)
         Log.d("UserRepo", "saveLovedOneId: LovedOneId added to sharedPref ")
     }
 
-    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getInt(LOVED_ONE_ID, 0)
+    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(LOVED_ONE_ID)
 
     fun clearToken() {
         Prefs.with(ShepherdApp.appContext)!!.remove(USER_TOKEN)

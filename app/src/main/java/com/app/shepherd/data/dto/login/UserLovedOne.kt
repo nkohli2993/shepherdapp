@@ -10,8 +10,8 @@ import com.google.gson.annotations.SerializedName
 data class UserLovedOne(
 
     @SerializedName("id") var id: Int? = null,
-    @SerializedName("user_id") var userId: Int? = null,
-    @SerializedName("love_user_id") var loveUserId: Int? = null,
+    @SerializedName("user_id") var userId: String? = null,
+    @SerializedName("love_user_id") var loveUserId: String? = null,
     @SerializedName("role_id") var roleId: Int? = null,
     @SerializedName("status") var status: Boolean? = null,
     @SerializedName("created_at") var createdAt: String? = null,
@@ -21,8 +21,8 @@ data class UserLovedOne(
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readValue(String::class.java.classLoader) as? String,
+        parcel.readValue(String::class.java.classLoader) as? String,
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
         parcel.readString(),

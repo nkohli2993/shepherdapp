@@ -150,8 +150,10 @@ class DashboardViewModel @Inject constructor(
         limit: Int,
         status: Int
     ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        val lovedOneId = userRepository.getLovedOneId()
         viewModelScope.launch {
-            val response = careTeamsRepository.getCareTeams(pageNumber, limit, status)
+            val response =
+                careTeamsRepository.getCareTeamsByLovedOneId(pageNumber, limit, status, lovedOneId)
             withContext(Dispatchers.Main) {
                 response.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
             }
@@ -162,9 +164,10 @@ class DashboardViewModel @Inject constructor(
 
     fun getHomeData(): LiveData<Event<DataResult<HomeResponseModel>>> {
         val lovedOneId = userRepository.getLovedOneId()
+        val status = 1
         Log.d(TAG, "LovedOneID :$lovedOneId ")
         viewModelScope.launch {
-            val response = homeRepository.getHomeData(lovedOneId)
+            val response = homeRepository.getHomeData(lovedOneId, status)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _homeResponseLiveData.postValue(Event(it))
@@ -173,6 +176,4 @@ class DashboardViewModel @Inject constructor(
         }
         return homeResponseLiveData
     }
-
-
 }

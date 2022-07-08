@@ -3,12 +3,16 @@ package com.app.shepherd.ui.component.addLovedOne
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.app.shepherd.BuildConfig
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.relation.Relation
@@ -19,7 +23,9 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.adapter.RelationshipsAdapter
 import com.app.shepherd.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.utils.loadImageCentreCrop
 import com.app.shepherd.utils.observe
@@ -59,7 +65,9 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var email: String? = null
     private var phoneNumber: String? = null
     private var completeURLProfilePic: String? = null
-    private var lovedOneID: Int? = null
+    private var lovedOneID: String? = null
+    private var customAddress: String? = null
+    private var lastName: String? = null
 
 
     // Handle Validation
@@ -70,25 +78,25 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     binding.edtFirstName.error = getString(R.string.please_enter_first_name)
                     binding.edtFirstName.requestFocus()
                 }
-                binding.edtLastName.text.toString().isEmpty() -> {
-                    binding.edtLastName.error = getString(R.string.please_enter_last_name)
-                    binding.edtLastName.requestFocus()
+                /* binding.edtLastName.text.toString().isEmpty() -> {
+                     binding.edtLastName.error = getString(R.string.please_enter_last_name)
+                     binding.edtLastName.requestFocus()
+                 }*/
+                binding.editTextEmail.text.toString().isEmpty() -> {
+                    binding.editTextEmail.error = getString(R.string.please_enter_email_id)
+                    binding.editTextEmail.requestFocus()
                 }
-                /* binding.editTextEmail.text.toString().isEmpty() -> {
-                     binding.editTextEmail.error = getString(R.string.please_enter_email_id)
-                     binding.editTextEmail.requestFocus()
-                 }*/
-                /* !binding.editTextEmail.text.toString().isValidEmail() -> {
-                     binding.editTextEmail.error = getString(R.string.please_enter_valid_email_id)
-                     binding.editTextEmail.requestFocus()
-                 }*/
+                !binding.editTextEmail.text.toString().isValidEmail() -> {
+                    binding.editTextEmail.error = getString(R.string.please_enter_valid_email_id)
+                    binding.editTextEmail.requestFocus()
+                }
                 /* binding.edtPhoneNumber.text.toString().isEmpty() -> {
                      binding.edtPhoneNumber.error = getString(R.string.enter_phone_number)
                      binding.edtPhoneNumber.requestFocus()
                  }*/
-                /* dob.isNullOrEmpty() -> {
-                     showInfo(this, "Please enter date of birth")
-                 }*/
+                dob.isNullOrEmpty() -> {
+                    showInfo(this, "Please enter date of birth")
+                }
                 /* binding.edtAddress.text.toString().isEmpty() -> {
                      binding.edtAddress.error = getString(R.string.enter_address)
                      binding.edtAddress.requestFocus()
@@ -193,6 +201,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
                         lovedOneID = it1.payload.id
+                        addLovedOneViewModel.saveLovedOneId(lovedOneID)
                         navigateToAddLovedOneConditionScreen()
                     }
                 }
@@ -234,7 +243,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                         email = null
                     }
                     val firstName = binding.edtFirstName.text.toString().trim()
-                    val lastName = binding.edtLastName.text.toString().trim()
+                    lastName = binding.edtLastName.text.toString().trim()
                     val relationId = selectedRelationship?.id
                     phoneCode = ccp.selectedCountryCode
                     phoneNumber = binding.edtPhoneNumber.text.toString().trim()
@@ -248,7 +257,16 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                         lovedOnePicUrl = null
                         completeURLProfilePic = null
                     } else {
-                        completeURLProfilePic = BuildConfig.BASE_URL + lovedOnePicUrl
+                        completeURLProfilePic = BuildConfig.BASE_URL_USER + lovedOnePicUrl
+                    }
+
+                    customAddress = binding.edtCustomAddress.text.toString()
+                    if (customAddress.isNullOrEmpty()) {
+                        customAddress = null
+                    }
+
+                    if (lastName.isNullOrEmpty()) {
+                        lastName = null
                     }
 
                     addLovedOneViewModel.createLovedOne(
@@ -259,9 +277,11 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                         phoneCode,
                         dob,
                         placeId,
+                        customAddress,
                         phoneNumber,
                         completeURLProfilePic
                     )
+
                 }
 
                 /* val email = binding.editTextEmail.text.toString().trim()
@@ -304,7 +324,27 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             R.id.imgUploadLovedOnePic -> {
                 openImagePicker()
             }
+            R.id.ivInfo -> {
+                showPopUp()
+            }
         }
+    }
+
+    private fun showPopUp() {
+        val dialog = AlertDialog.Builder(this)
+        val layoutView = layoutInflater.inflate(R.layout.dialog_loved_one_info_pop_up, null)
+        val okayBtn = layoutView.findViewById(R.id.btnOkay) as Button
+        dialog.setView(layoutView)
+        dialog.setCancelable(true)
+        val alertDialog = dialog.create()
+        alertDialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
+        alertDialog.show()
+        okayBtn.setOnClickListener { alertDialog.dismiss() }
     }
 
     private fun onPlaceSelected(data: Intent?) {

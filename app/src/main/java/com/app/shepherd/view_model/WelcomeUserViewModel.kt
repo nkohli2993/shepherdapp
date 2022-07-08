@@ -44,17 +44,23 @@ class WelcomeUserViewModel @Inject constructor(
      }*/
 
     //get userID from Shared Pref
-    private fun getUserId(): Int {
+    private fun getUserId(): String? {
         return userRepository.getUserId()
+    }
+
+    //get UUID from Shared Pref
+    private fun getUUID(): String? {
+        return userRepository.getUUID()
     }
 
     // Get User Details
     fun getUserDetails(): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
-        val userID = getUserId()
+        //val userID = getUserId()
+        val uuid = getUUID()
         viewModelScope.launch {
-            val response = authRepository.getUserDetails(userID)
+            val response = uuid?.let { authRepository.getUserDetails(it) }
             withContext(Dispatchers.Main) {
-                response.collect {
+                response?.collect {
                     _userDetailsLiveData.postValue(Event(it))
                 }
             }

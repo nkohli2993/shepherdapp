@@ -121,8 +121,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             }
             isPasswordShown = !isPasswordShown
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
-
-
         }
         // Get Roles
         createNewAccountViewModel.getRoles(pageNumber, limit)
@@ -188,6 +186,12 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                                     userId
                                 )
                             }
+
+                            payload.uuid?.let { uuid ->
+                                createNewAccountViewModel.saveUUID(
+                                    uuid
+                                )
+                            }
                         }
                         if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                                 this
@@ -219,7 +223,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     it.data.let { it1 ->
                         // Save Token to SharedPref
                         it1.payload?.let { payload ->
-                            Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
+                            Prefs.with(this)!!
+                                .save(Const.BIOMETRIC_ENABLE, payload.userProfile?.isBiometric!!)
                         }
                         navigateToWelcomeUserScreen()
                     }
@@ -293,7 +298,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
                         null
                     } else {
-                        BuildConfig.BASE_URL + profilePicUrl
+                        BuildConfig.BASE_URL_USER + profilePicUrl
                     }
 
                     createNewAccountViewModel.createAccount(

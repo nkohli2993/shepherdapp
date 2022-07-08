@@ -3,6 +3,8 @@ package com.app.shepherd.ui.component.careTeamMembers
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,6 +40,8 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private var status: Int = 1
 
     private var careTeams: ArrayList<CareTeam>? = ArrayList()
+    private var selectedCareTeams: ArrayList<CareTeam>? = ArrayList()
+    private var searchedCareTeams: ArrayList<CareTeam>? = ArrayList()
     private var careTeamAdapter: CareTeamMembersAdapter? = null
     private var TAG = "CareTeamMembersFragment"
 
@@ -56,7 +60,69 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun initViewBinding() {
         fragmentCareTeamMembersBinding.listener = this
         setCareTeamAdapters()
-        careTeamViewModel.getCareTeams(pageNumber, limit, status)
+        // Get Care Teams by lovedOne Id
+        careTeamViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
+
+        fragmentCareTeamMembersBinding.imgCancel.setOnClickListener {
+            fragmentCareTeamMembersBinding.editTextSearch.setText("")
+        }
+
+        // Search Care Team Members
+        fragmentCareTeamMembersBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if (s.isEmpty()) {
+                        careTeams.let {
+                            it?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+                        }
+                        fragmentCareTeamMembersBinding.imgCancel.visibility = View.GONE
+                        fragmentCareTeamMembersBinding.recyclerViewCareTeam.visibility =
+                            View.VISIBLE
+                    }
+
+                    if (s.isNotEmpty()) {
+                        fragmentCareTeamMembersBinding.imgCancel.visibility = View.VISIBLE
+                        searchedCareTeams?.clear()
+                        searchedCareTeams = careTeams?.filter {
+                            it.user?.userProfiles?.firstname?.startsWith(
+                                s,
+                                true
+                            ) == true
+                        } as ArrayList<CareTeam>
+
+                        // Show No Care Team Found when no care team is available during search
+                        if (searchedCareTeams.isNullOrEmpty()) {
+                            fragmentCareTeamMembersBinding.let {
+                                it.recyclerViewCareTeam.visibility = View.GONE
+                                it.txtNoCareTeamFound.visibility = View.VISIBLE
+                            }
+                        } else {
+                            fragmentCareTeamMembersBinding.let {
+                                it.recyclerViewCareTeam.visibility = View.VISIBLE
+                                it.txtNoCareTeamFound.visibility = View.GONE
+                            }
+                        }
+
+                        searchedCareTeams.let {
+                            it?.let { it1 ->
+                                careTeamAdapter?.updateCareTeams(
+                                    it1
+                                )
+                            }
+                        }
+                    }
+                }
+
+            }
+        })
+
 
     }
 
@@ -73,11 +139,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     careTeams = it.data.payload.careteams
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     careTeamAdapter?.updateCareTeams(careTeams!!)
-
-                    // binding.layoutCareTeam.visibility = View.VISIBLE
-                    // binding.txtNoCareTeamFound.visibility = View.GONE
                 }
-
                 is DataResult.Failure -> {
                     //handleAPIFailure(it.message, it.errorCode)
 
@@ -85,6 +147,9 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // it.message?.let { showError(this, it.toString()) }
                     //binding.layoutCareTeam.visibility = View.GONE
                     //binding.txtNoCareTeamFound.visibility = View.VISIBLE
+                    careTeams?.clear()
+                    careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
                         setTitle("Care Teams")

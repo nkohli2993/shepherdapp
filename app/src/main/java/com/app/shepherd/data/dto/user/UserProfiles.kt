@@ -23,8 +23,10 @@ data class UserProfiles(
     @SerializedName("profile_photo") var profilePhoto: String? = null,
     @SerializedName("mission_statement") var missionStatement: String? = null,
     @SerializedName("allow_mobile_visit") var allowMobileVisit: Int? = null,
+    @SerializedName("is_biometric") var isBiometric: Boolean? = null,
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
+
 
 )

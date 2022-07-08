@@ -51,7 +51,7 @@ class HomeActivity : BaseActivity(),
 
 
         // Get Loved One Array list from Login Screen
-        val lovedOneArrayList =
+       /* val lovedOneArrayList =
             intent?.getParcelableArrayListExtra<UserLovedOne>(Const.LOVED_ONE_ARRAY)
         if (!lovedOneArrayList.isNullOrEmpty()) {
             Log.d(TAG, "LovedOneArrayList Size :${lovedOneArrayList.size} ")
@@ -61,8 +61,9 @@ class HomeActivity : BaseActivity(),
 
         } else {
             Log.d(TAG, "LovedOneArrayList is null")
-        }
+        }*/
 
+        viewModel.getHomeData()
         setupNavigationDrawer()
 
         setMenuItemAdapter()
@@ -92,8 +93,28 @@ class HomeActivity : BaseActivity(),
             }
         }
 
+        // Observe Get Home Data Api Response
+        viewModel.homeResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(this, it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
+                    Picasso.get().load(lovedOneProfilePic).placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(ivLovedOneProfile)
+                }
+            }
+        }
+
+
         // Observe Loved One Detail
-        viewModel.lovedOneDetailsLiveData.observeEvent(this) {
+        /*viewModel.lovedOneDetailsLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -110,7 +131,7 @@ class HomeActivity : BaseActivity(),
                         .into(ivLovedOneProfile)
                 }
             }
-        }
+        }*/
     }
 
 
@@ -137,7 +158,7 @@ class HomeActivity : BaseActivity(),
 
         binding.ivName.text = fullName
 
-        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.test_image)
+        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.ic_defalut_profile_pic)
             .into(binding.ivLoggedInUserProfile)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->

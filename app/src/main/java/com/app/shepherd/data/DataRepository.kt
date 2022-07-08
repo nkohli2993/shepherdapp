@@ -81,7 +81,7 @@ class DataRepository @Inject constructor(
         pageNumber: Int,
         limit: Int,
         status: Int,
-        loved_one_id: Int
+        loved_one_id: String?
     ): Flow<DataResult<CareTeamsResponseModel>> {
         return object :
             NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {

@@ -3,7 +3,7 @@ package com.app.shepherd.ui.component.addNewEvent
 import com.google.gson.annotations.SerializedName
 
 data class CreateEventModel(
-    @SerializedName("loved_one_user_id") var loved_one_user_id: Int? = null,
+    @SerializedName("loved_one_user_id") var loved_one_user_id: String? = null,
     @SerializedName("name") var name: String? = null,
     @SerializedName("location") var location: String? = null,
     @SerializedName("date") var date: String? = null,

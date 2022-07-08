@@ -1,7 +1,5 @@
 package com.app.shepherd.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -89,11 +87,12 @@ class AddLovedOneViewModel @Inject constructor(
     fun createLovedOne(
         email: String?,
         firstname: String,
-        lastname: String,
+        lastname: String?,
         relation_id: Int?,
         phone_code: String?,
         dob: String?,
         place_id: String?,
+        customAddress: String?,
         phone_no: String?,
         profile_photo: String?
     ): LiveData<Event<DataResult<CreateLovedOneResponseModel>>> {
@@ -105,6 +104,7 @@ class AddLovedOneViewModel @Inject constructor(
             it?.phoneCode = phone_code
             it?.dob = dob
             it?.placeId = place_id
+            it?.customAddress = customAddress
             it?.phoneNo = phone_no
             it?.profilePhoto = profile_photo
         }
@@ -121,8 +121,8 @@ class AddLovedOneViewModel @Inject constructor(
         return createLovedOneLiveData
     }
 
-    fun saveLovedOneId(lovedOneID: Int?) {
-        userRepository.saveLovedOneId(lovedOneID!!)
+    fun saveLovedOneId(lovedOneID: String?) {
+        lovedOneID?.let { userRepository.saveLovedOneId(it) }
     }
 
 }

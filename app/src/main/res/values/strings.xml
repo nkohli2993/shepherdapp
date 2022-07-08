@@ -45,6 +45,7 @@
     <string name="test_address">402 Harvey Lane Ponte Vedra Beach FL 32082</string>
     <string name="loading">Loading</string>
     <string name="email">Email</string>
+    <string name="email_">Email<font color="#D7293F">*</font></string>
     <string name="password">Password</string>
     <string name="login">Log in</string>
     <string name="log_in">Log In</string>
@@ -63,7 +64,9 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="phone_number">Phone Number</string>
+    <string name="phone_no">Phone No.</string>
     <string name="address">Address</string>
+    <string name="custom_address">Custom Address</string>
     <string name="date_of_birth">Date of Birth</string>
     <string name="str_continue">Continue</string>
     <string name="select_date">Select Date</string>
@@ -261,7 +264,8 @@
     <string name="join_an_existing">Join An Existing</string>
     <string name="welcome_user">Welcome User</string>
     <string name="first_name_love_one">First Name<font color="#D7293F">*</font></string>
-    <string name="last_name_love_one">Last Name<font color="#D7293F">*</font></string>
+    <!--<string name="last_name_love_one">Last Name<font color="#D7293F">*</font></string>-->
+    <string name="last_name_love_one">Last Name</string>
     <string name="email_loved_one">Email<font color="#D7293F">*</font></string>
     <string name="day">Day</string>
     <string name="year">Year</string>
@@ -351,4 +355,6 @@
     <string name="am">AM</string>
     <string name="pm">PM</string>
     <string name="add">Add</string>
+    <string name="loved_one_pop_up">Enter valid Loved one email, using which Loved one would be able to Login into the Shepherd Platform.</string>
+    <string name="send_invite">Send Invite</string>
 </resources>

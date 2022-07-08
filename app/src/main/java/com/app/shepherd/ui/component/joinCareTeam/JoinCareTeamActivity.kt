@@ -42,7 +42,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
         binding.listener = this
         binding.recyclerViewMembers.layoutManager = LinearLayoutManager(this)
         setJoinCareTeamAdapter()
-        careTeamsViewModel.getCareTeams(pageNumber, limit, status)
+        careTeamsViewModel.getCareTeamsForLoggedInUser(pageNumber, limit, status)
     }
 
 

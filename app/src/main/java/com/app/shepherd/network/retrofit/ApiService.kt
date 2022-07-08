@@ -7,8 +7,12 @@ import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
+import com.app.shepherd.data.dto.care_team.DeleteCareTeamMemberResponseModel
+import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
+import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
+import com.app.shepherd.data.dto.invitation.InvitationsResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
@@ -66,14 +70,8 @@ interface ApiService {
         @Query("limit") limit: Int
     ): Response<MedicalConditionResponseModel>
 
-    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
-    suspend fun getCareTeams(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-        @Query("status") status: Int
-    ): Response<CareTeamsResponseModel>
-
     @GET(ApiConstants.CareTeams.GET_CARE_TEAM_ROLES)
+
     suspend fun getCareTeamRoles(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
@@ -88,16 +86,8 @@ interface ApiService {
 
     @GET(ApiConstants.UserDetails.GET_USER_DETAILS)
     suspend fun getUserDetails(
-        @Path("id") id: Int
+        @Path("id") String: String
     ): Response<UserDetailsResponseModel>
-
-    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
-    suspend fun getMembers(
-        @Query("page") page: Int,
-        @Query("limit") limit: Int,
-        @Query("status") status: Int,
-        @Query("loved_one_id") lovedOneId: Int
-    ): Response<CareTeamsResponseModel>
 
     @POST(ApiConstants.CreateEvent.CREATE_EVENT)
     suspend fun createEvent(
@@ -110,11 +100,52 @@ interface ApiService {
     @GET(ApiConstants.Authentication.LOGOUT)
     suspend fun logout(): Response<BaseResponseModel>
 
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getCareTeamsForLoggedInUser(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int
+    ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getCareTeamsByLovedOneId(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int,
+        @Query("loved_one_id") lovedOneId: String?,
+    ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getMembers(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int,
+        @Query("loved_one_id") lovedOneId: String?
+    ): Response<CareTeamsResponseModel>
+
     @POST(ApiConstants.CareTeams.ADD_NEW_CARE_TEAM_MEMBER)
     suspend fun addNewMemberCareTeam(@Body value: AddNewMemberCareTeamRequestModel): Response<AddNewMemberCareTeamResponseModel>
 
+    @DELETE(ApiConstants.CareTeams.DELETE_CARE_TEAM_MEMBER)
+    suspend fun deleteCareTeamMember(
+        @Path("id") id: Int
+    ): Response<DeleteCareTeamMemberResponseModel>
+
+    @PUT(ApiConstants.CareTeams.UPDATE_CARE_TEAM_MEMBER)
+    suspend fun updateCareTeamMember(
+        @Path("id") id: Int,
+        @Body updateCareTeamMemberRequestModel: UpdateCareTeamMemberRequestModel
+    ): Response<UpdateCareTeamMemberResponseModel>
+
     @GET(ApiConstants.Home.GET_HOME_DATA)
     suspend fun getHomeData(
-        @Query("love_user_id") loveUserID: Int
+        @Query("love_user_id") loveUserID: String?,
+        /*@Query("status") status: Int,*/
     ): Response<HomeResponseModel>
+
+    @GET(ApiConstants.Invitations.GET_INVITATIONS)
+    suspend fun getInvitations(
+        @Query("sendType") sendType: String,
+        @Query("status") status: Int
+    ): Response<InvitationsResponseModel>
 }

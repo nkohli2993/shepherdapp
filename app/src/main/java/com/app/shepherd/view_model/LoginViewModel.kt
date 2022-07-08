@@ -91,9 +91,6 @@ class LoginViewModel @Inject constructor(
         userRepository.clearToken()
     }
 
-    fun saveLovedOneId(lovedOneID: Int?) {
-        userRepository.saveLovedOneId(lovedOneID!!)
-    }
 
     // Get LoggedIn User Detail
     /*  fun getUser(): LiveData<Event<UserProfile?>> {
@@ -104,12 +101,17 @@ class LoginViewModel @Inject constructor(
       }
   */
 
-    fun saveLovedOneId(lovedOneID: Int) {
+    fun saveLovedOneId(lovedOneID: String) {
         userRepository.saveLovedOneId(lovedOneID)
     }
 
     // Save userID
     fun saveUserId(id: Int) {
         userRepository.saveUserId(id)
+    }
+
+    // Save UUID
+    fun saveUUID(id: String) {
+        userRepository.saveUUID(id)
     }
 }
