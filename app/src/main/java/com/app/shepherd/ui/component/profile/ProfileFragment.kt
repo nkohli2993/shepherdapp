@@ -108,7 +108,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                     hideLoading()
                     payload = it.data.payload
                     initView()
-                    getLovedOneInfo()
+//                    getLovedOneInfo()
                 }
             }
         }

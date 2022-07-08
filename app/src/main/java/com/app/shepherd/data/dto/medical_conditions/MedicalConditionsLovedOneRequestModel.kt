@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName
  */
 data class MedicalConditionsLovedOneRequestModel(
     @SerializedName("condition_id") var conditionId: Int? = null,
-    @SerializedName("user_id") var userId: Int? = null
+    @SerializedName("user_id") var lovedOneUUID: String? = null
 )

@@ -55,7 +55,7 @@ class WelcomeUserViewModel @Inject constructor(
 
     // Get User Details
     fun getUserDetails(): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
-        //val userID = getUserId()
+//        val userID = getUserId()
         val uuid = getUUID()
         viewModelScope.launch {
             val response = uuid?.let { authRepository.getUserDetails(it) }

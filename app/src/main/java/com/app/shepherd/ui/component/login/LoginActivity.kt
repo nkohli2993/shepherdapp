@@ -187,31 +187,73 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //                    it.data.message?.let { it1 -> showSuccess(this, it1) }
                     it.data.let { it ->
                         it.message?.let { it1 -> showSuccess(this, it1) }
-                        // Save User Detail to SharedPref
-                        it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }
+                        it.payload.let { payload ->
+                            payload?.userProfile?.let { it1 ->
+                                // Save UserProfiles
+                                loginViewModel.saveUser(it1)
+
+                                // Save UserID
+                                it1.userId?.let { userID ->
+                                    loginViewModel.saveUserId(userID)
+
+                                }
+                            }
+
+                            // Save UUID
+                            payload?.uuid.let { uuid ->
+                                uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
+                            }
+
+                            // Save token
+                            payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
+
+                            payload?.userLovedOne?.let {
+                                if (it.isNotEmpty()) {
+                                    // Save Loved One UUID
+                                    it[0].loveUserId?.let { it1 ->
+                                        loginViewModel.saveLovedOneUUID(
+                                            it1
+                                        )
+                                    }
+                                    // Save LovedOne ID
+                                    it[0].id?.let { it1 ->
+                                        loginViewModel.saveLovedOneId(
+                                            it1
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+
+                        /* // Save User Detail to SharedPref
+                         it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }*/
 
                         // Save user ID
-                        it.payload?.userProfile?.let { it1 ->
-                            it1.userId?.let { it2 ->
-                                loginViewModel.saveUserId(
-                                    it2
-                                )
-                            }
-                        }
+                        /* it.payload?.userProfile?.let { it1 ->
+                             it1.userId?.let { it2 ->
+                                 loginViewModel.saveUserId(
+                                     it2
+                                 )
+                             }
+                         }*/
 
                         // Save UUID
-                        it.payload?.uuid.let { uuid ->
+                        /*it.payload?.uuid.let { uuid ->
                             uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
-                        }
+                        }*/
 
                         // Save token
-                        it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
-                        token = it.payload?.token
-                        it.payload?.userLovedOne?.let {
-                            if (it.isNotEmpty()) {
-                                loginViewModel.saveLovedOneId(it[0].loveUserId)
-                            }
-                        }
+                        /* it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
+                         token = it.payload?.token*/
+
+                        // Save Loved One UUID
+                        /* it.payload?.userLovedOne?.let {
+                             if (it.isNotEmpty()) {
+                                 it[0].loveUserId?.let { it1 -> loginViewModel.saveLovedOneUUID(it1) }
+                             }
+                         }*/
+
 
                         userLovedOneArrayList = it.payload?.userLovedOne
 

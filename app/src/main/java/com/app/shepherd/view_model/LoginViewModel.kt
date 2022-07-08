@@ -104,8 +104,12 @@ class LoginViewModel @Inject constructor(
       }
   */
 
-    fun saveLovedOneId(lovedOneID: Int) {
-        userRepository.saveLovedOneId(lovedOneID)
+    fun saveLovedOneId(id: Int) {
+        userRepository.saveLovedOneId(id)
+    }
+
+    fun saveLovedOneUUID(lovedOneUUID: String) {
+        userRepository.saveLovedOneUUId(lovedOneUUID)
     }
 
     // Save userID

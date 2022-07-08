@@ -201,7 +201,16 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
                         lovedOneID = it1.payload.id
+
+                        // Save Loved One Id to sharedPref
                         addLovedOneViewModel.saveLovedOneId(lovedOneID)
+
+                        // Saved LovedOne UUID to Shared Pref
+                        it1.payload.uniqueUuid?.let { it2 ->
+                            addLovedOneViewModel.saveLovedOneUUID(
+                                it2
+                            )
+                        }
                         navigateToAddLovedOneConditionScreen()
                     }
                 }
@@ -387,9 +396,9 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
 
     private fun navigateToAddLovedOneConditionScreen() {
-        addLovedOneViewModel.saveLovedOneId(lovedOneID)
+       // addLovedOneViewModel.saveLovedOneId(lovedOneID)
         val intent = Intent(this, AddLovedOneConditionActivity::class.java)
-        intent.putExtra(Const.LOVED_ONE_ID, lovedOneID)
+        //intent.putExtra(Const.LOVED_ONE_ID, lovedOneID)
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open

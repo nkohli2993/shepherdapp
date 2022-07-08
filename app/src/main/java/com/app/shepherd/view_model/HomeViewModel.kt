@@ -1,7 +1,6 @@
 package com.app.shepherd.view_model
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
@@ -165,33 +164,33 @@ class HomeViewModel @Inject constructor(
 
 
     // Get User Details
-   /* fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
-        //val userID = getLovedOneUserId()
-        viewModelScope.launch {
-            val response = authRepository.getUserDetails(lovedOneUserId)
-            withContext(Dispatchers.Main) {
-                response.collect {
-                    _lovedOneDetailsLiveData.postValue(Event(it))
-                }
-            }
-        }
-        return lovedOneDetailsLiveData
-    }*/
+    /* fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
+         //val userID = getLovedOneUserId()
+         viewModelScope.launch {
+             val response = authRepository.getUserDetails(lovedOneUserId)
+             withContext(Dispatchers.Main) {
+                 response.collect {
+                     _lovedOneDetailsLiveData.postValue(Event(it))
+                 }
+             }
+         }
+         return lovedOneDetailsLiveData
+     }*/
 
     //get userID from Shared Pref
-    private fun getLovedOneUserId(): Int {
-        val userLovedOneArray = userRepository.getPayload()?.userLovedOne
-        return userLovedOneArray?.get(0)?.loveUserId ?: 0
-    }
+    /* private fun getLovedOneUserId(): Int {
+         val userLovedOneArray = userRepository.getPayload()?.userLovedOne
+         return userLovedOneArray?.get(0)?.loveUserId ?: 0
+     }*/
 
     fun getHomeData(): LiveData<Event<DataResult<HomeResponseModel>>> {
-        val lovedOneId = userRepository.getLovedOneId()
+        val lovedOneUUID = userRepository.getLovedOneUUId()
         val status = 1
-       // Log.d(TAG, "LovedOneID :$lovedOneId ")
+        // Log.d(TAG, "LovedOneID :$lovedOneId ")
         viewModelScope.launch {
-            val response = homeRepository.getHomeData(lovedOneId, status)
+            val response = lovedOneUUID?.let { homeRepository.getHomeData(it, status) }
             withContext(Dispatchers.Main) {
-                response.collect {
+                response?.collect {
                     _homeResponseLiveData.postValue(Event(it))
                 }
             }

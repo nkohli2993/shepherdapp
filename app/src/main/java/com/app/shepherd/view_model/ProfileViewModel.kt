@@ -67,7 +67,7 @@ class ProfileViewModel @Inject constructor(
 
     // Get User Details
     fun getUserDetails(): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
-        // val userID = getUserId()
+//        val userID = getUserId()
         val uuid = getUUID()
         viewModelScope.launch {
             val response = uuid?.let { authRepository.getUserDetails(it) }
@@ -90,10 +90,15 @@ class ProfileViewModel @Inject constructor(
         return userRepository.getUUID()
     }
 
+    // Get Loved One user ID
+    private fun getLovedOneUserId(): Int {
+        return userRepository.getLovedOneId()
+    }
+
 
     // Get User Details
     fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
-        //val userID = getLovedOneUserId()
+//        val userID = getLovedOneUserId()
         val uuid = getUUID()
         viewModelScope.launch {
             val response = uuid?.let { authRepository.getUserDetails(it) }

@@ -163,13 +163,13 @@ class DashboardViewModel @Inject constructor(
 
 
     fun getHomeData(): LiveData<Event<DataResult<HomeResponseModel>>> {
-        val lovedOneId = userRepository.getLovedOneId()
+        val lovedOneUUID = userRepository.getLovedOneUUId()
         val status = 1
-        Log.d(TAG, "LovedOneID :$lovedOneId ")
+        Log.d(TAG, "LovedOneUUID :$lovedOneUUID ")
         viewModelScope.launch {
-            val response = homeRepository.getHomeData(lovedOneId, status)
+            val response = lovedOneUUID?.let { homeRepository.getHomeData(it, status) }
             withContext(Dispatchers.Main) {
-                response.collect {
+                response?.collect {
                     _homeResponseLiveData.postValue(Event(it))
                 }
             }
