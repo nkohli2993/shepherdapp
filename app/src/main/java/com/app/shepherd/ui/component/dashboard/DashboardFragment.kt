@@ -136,19 +136,25 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
             // Care Team
             val careTeamMembers = payload?.careTeams
-            if (careTeamMembers == 0 || careTeamMembers == 1) {
-                fragmentDashboardBinding.tvMember.text = "$careTeamMembers Member"
+
+
+            val careTeamMembersProfileList = payload?.careTeamProfiles?.map { careTeamProfiles ->
+                careTeamProfiles.user?.profilePhoto
+            } as ArrayList<String>
+
+            val careTeamMembersCount = careTeamMembersProfileList.size
+
+            if (careTeamMembersCount == 0 || careTeamMembersCount == 1) {
+                fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Member"
             } else {
-                fragmentDashboardBinding.tvMember.text = "$careTeamMembers Members"
+                fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Members"
             }
 
-            val careTeamMembersProfileList = payload?.careTeamProfiles
             if (!careTeamMembersProfileList.isNullOrEmpty()) {
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
             }
 
         }
-
     }
 
     override fun initViewBinding() {

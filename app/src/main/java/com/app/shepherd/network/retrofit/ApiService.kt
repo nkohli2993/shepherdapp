@@ -139,7 +139,7 @@ interface ApiService {
 
     @GET(ApiConstants.Home.GET_HOME_DATA)
     suspend fun getHomeData(
-        @Query("love_user_id") loveUserID: String,
+        @Query("love_user_id") lovedOneUUID: String,
         /*@Query("status") status: Int,*/
     ): Response<HomeResponseModel>
 
