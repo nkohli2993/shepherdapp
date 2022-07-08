@@ -257,7 +257,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                         lovedOnePicUrl = null
                         completeURLProfilePic = null
                     } else {
-                        completeURLProfilePic = BuildConfig.BASE_URL + lovedOnePicUrl
+                        completeURLProfilePic = BuildConfig.BASE_URL_USER + lovedOnePicUrl
                     }
 
                     customAddress = binding.edtCustomAddress.text.toString()

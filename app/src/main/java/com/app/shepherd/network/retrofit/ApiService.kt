@@ -86,7 +86,7 @@ interface ApiService {
 
     @GET(ApiConstants.UserDetails.GET_USER_DETAILS)
     suspend fun getUserDetails(
-        @Path("id") id: Int
+        @Path("id") String: String
     ): Response<UserDetailsResponseModel>
 
     @POST(ApiConstants.CreateEvent.CREATE_EVENT)
@@ -140,7 +140,7 @@ interface ApiService {
     @GET(ApiConstants.Home.GET_HOME_DATA)
     suspend fun getHomeData(
         @Query("love_user_id") loveUserID: Int,
-        @Query("status") status: Int,
+        /*@Query("status") status: Int,*/
     ): Response<HomeResponseModel>
 
     @GET(ApiConstants.Invitations.GET_INVITATIONS)

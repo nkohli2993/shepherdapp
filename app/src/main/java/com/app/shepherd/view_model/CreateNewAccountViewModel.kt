@@ -152,4 +152,9 @@ class CreateNewAccountViewModel @Inject constructor(
     fun saveUserId(id: Int) {
         userRepository.saveUserId(id)
     }
+
+    // Save uuid
+    fun saveUUID(uuid: String) {
+        userRepository.saveUUID(uuid)
+    }
 }

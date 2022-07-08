@@ -51,11 +51,15 @@
                         android:layout_height="@dimen/_60sdp"
                         android:layout_marginStart="4dp"
                         android:adjustViewBounds="true"
+                        android:padding="@dimen/_5sdp"
                         android:src="@drawable/ic_defalut_profile_pic"
+                        android:scaleType="centerCrop"
                         android:background="@color/colorWhite"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
+                        app:strokeWidth="@dimen/_2sdp"
+                        app:strokeColor="@color/_A26DCB"
+                        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

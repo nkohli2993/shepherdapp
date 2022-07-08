@@ -165,7 +165,7 @@ class HomeViewModel @Inject constructor(
 
 
     // Get User Details
-    fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
+   /* fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
         //val userID = getLovedOneUserId()
         viewModelScope.launch {
             val response = authRepository.getUserDetails(lovedOneUserId)
@@ -176,7 +176,7 @@ class HomeViewModel @Inject constructor(
             }
         }
         return lovedOneDetailsLiveData
-    }
+    }*/
 
     //get userID from Shared Pref
     private fun getLovedOneUserId(): Int {

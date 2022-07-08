@@ -121,10 +121,10 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             }
             isPasswordShown = !isPasswordShown
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
-
-            // Get Roles
-            createNewAccountViewModel.getRoles(pageNumber, limit)
         }
+
+        // Get Roles
+        createNewAccountViewModel.getRoles(pageNumber, limit)
     }
 
     override fun initViewBinding() {
@@ -185,6 +185,12 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                             payload.id?.let { userId ->
                                 createNewAccountViewModel.saveUserId(
                                     userId
+                                )
+                            }
+
+                            payload.uuid?.let { uuid ->
+                                createNewAccountViewModel.saveUUID(
+                                    uuid
                                 )
                             }
                         }
@@ -295,7 +301,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
                         null
                     } else {
-                        BuildConfig.BASE_URL + profilePicUrl
+                        BuildConfig.BASE_URL_USER + profilePicUrl
                     }
 
                     createNewAccountViewModel.createAccount(

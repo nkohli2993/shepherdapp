@@ -55,14 +55,20 @@ ext {
     livedata_ktx = '2.4.1'
     ext.toasty_version = "1.4.2"
     COUNTRY_CODE_PICKER = "2.4.2"
+    calednarVersion = '1.0.0'
+    numberpadVersion = '1.0.1'
+    biometric_version = '1.2.0-alpha04'
 
     //base_url_staging = "\"http://sheperdstagging.itechnolabs.tech/\""
     base_url_staging = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
     base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""
     base_url_live = "\"\""
-    calednarVersion = '1.0.0'
-    numberpadVersion = '1.0.1'
-    biometric_version = '1.2.0-alpha04'
+
+    // Base URL for Authentication
+    base_url_user = "\"https://usersherperd.itechnolabs.tech/\""
+    // Base URL for Shepherd
+    base_url = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
+
 }
 
 //ext.base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""

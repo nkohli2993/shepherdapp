@@ -5,6 +5,7 @@ import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.user.Payload
 import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.network.retrofit.ApiService
+import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Const.LOVED_ONE_ID
 import com.app.shepherd.utils.Const.PAYLOAD
 import com.app.shepherd.utils.Const.USER_DETAILS
@@ -50,6 +51,13 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     }
 
     fun getUserId() = Prefs.with(ShepherdApp.appContext)!!.getInt(USER_ID, 0)
+
+    fun saveUUID(uuid: String) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.UUID, uuid)
+    }
+
+    fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+
 
     fun saveLovedOneId(id: Int) {
         Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_ID, id)

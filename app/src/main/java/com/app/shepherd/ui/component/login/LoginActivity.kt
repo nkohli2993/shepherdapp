@@ -199,6 +199,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
 
+                        // Save UUID
+                        it.payload?.uuid.let { uuid ->
+                            uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
+                        }
+
                         // Save token
                         it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
                         token = it.payload?.token

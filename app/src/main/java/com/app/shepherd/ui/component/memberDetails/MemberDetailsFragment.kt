@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.app.shepherd.databinding.FragmentAddMemberBinding
@@ -16,7 +17,9 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.memberDetails.adapter.MemberModulesAdapter
+import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Modules
+import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.MemberDetailsViewModel
@@ -163,7 +166,8 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    showSuccess(requireContext(), it.data.message.toString())
+                    //showSuccess(requireContext(), it.data.message.toString())
+                    showSuccess(requireContext(),"Care Team Member updated successfully...")
                     backPress()
                 }
             }
@@ -189,7 +193,14 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 backPress()
             }
             R.id.btnDelete -> {
-                careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                // Check the member id should not match with the id of loggedIn user
+                val loggedInUserId = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.USER_ID, 0)
+                if (loggedInUserId == careTeam?.userId) {
+                    showError(requireContext(), "You can not remove the Team Lead...")
+                } else {
+                    careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                }
+
             }
             R.id.btnUpdate -> {
                 // Checked the selected state of Care Team

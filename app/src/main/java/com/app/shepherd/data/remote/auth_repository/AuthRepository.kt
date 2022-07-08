@@ -99,7 +99,7 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
     }
 
     // Get User Details
-    suspend fun getUserDetails(id: Int): Flow<DataResult<UserDetailsResponseModel>> {
+    suspend fun getUserDetails(id: String): Flow<DataResult<UserDetailsResponseModel>> {
         return object :
             NetworkOnlineDataRepo<UserDetailsResponseModel, UserDetailsResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<UserDetailsResponseModel> {

@@ -36,6 +36,9 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_width="@dimen/_48sdp"
                 android:layout_height="@dimen/_48sdp"
+                android:padding="@dimen/_5sdp"
+                app:strokeWidth="@dimen/_2sdp"
+                app:strokeColor="@color/_A26DCB"
                 android:src="@drawable/ic_defalut_profile_pic"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
 

@@ -21,7 +21,7 @@ class HomeRepository @Inject constructor(val apiService: ApiService) {
     suspend fun getHomeData(lovedOneUserId: Int, status: Int): Flow<DataResult<HomeResponseModel>> {
         return object : NetworkOnlineDataRepo<HomeResponseModel, HomeResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<HomeResponseModel> {
-                return apiService.getHomeData(lovedOneUserId, status)
+                return apiService.getHomeData(lovedOneUserId/*, status*/)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
