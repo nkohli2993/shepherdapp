@@ -57,7 +57,8 @@ ext {
     COUNTRY_CODE_PICKER = "2.4.2"
 
     //base_url_staging = "\"http://sheperdstagging.itechnolabs.tech/\""
-    base_url_staging = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
+//    base_url_staging = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
+    base_url_staging = "\"https://shepherdapp.itechnolabs.tech/\""
     base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""
     base_url_live = "\"\""
     calednarVersion = '1.0.0'

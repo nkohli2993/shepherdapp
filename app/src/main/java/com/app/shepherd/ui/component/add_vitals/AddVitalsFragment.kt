@@ -29,8 +29,7 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
     }
 
     override fun observeViewModel() {
-
-    }
+      }
 
     override fun initViewBinding() {
         fragmentAddVitalsBinding.listener = this

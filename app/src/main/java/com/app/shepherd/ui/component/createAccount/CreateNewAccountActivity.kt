@@ -122,9 +122,10 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             isPasswordShown = !isPasswordShown
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
 
-            // Get Roles
-            createNewAccountViewModel.getRoles(pageNumber, limit)
+
         }
+        // Get Roles
+        createNewAccountViewModel.getRoles(pageNumber, limit)
     }
 
     override fun initViewBinding() {
@@ -209,11 +210,9 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Failure -> {
                     hideLoading()
                     it.message?.let { showError(this, it.toString()) }
-
                 }
                 is DataResult.Loading -> {
                     showLoading("")
-
                 }
                 is DataResult.Success -> {
                     hideLoading()
@@ -221,7 +220,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         // Save Token to SharedPref
                         it1.payload?.let { payload ->
                             Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
-
                         }
                         navigateToWelcomeUserScreen()
                     }
