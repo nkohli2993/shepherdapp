@@ -7,6 +7,7 @@ import com.app.shepherd.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.app.shepherd.data.dto.invitation.InvitationsResponseModel
+import com.app.shepherd.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.NetworkOnlineDataRepo
@@ -109,6 +110,16 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
             NetworkOnlineDataRepo<InvitationsResponseModel, InvitationsResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<InvitationsResponseModel> {
                 return apiService.getInvitations(sendType, status)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Accept Care Team Invitation
+    suspend fun acceptInvitation(id: Int): Flow<DataResult<AcceptInvitationResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AcceptInvitationResponseModel, AcceptInvitationResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AcceptInvitationResponseModel> {
+                return apiService.acceptInvitation(id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

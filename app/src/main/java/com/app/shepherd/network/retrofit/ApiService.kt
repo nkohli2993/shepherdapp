@@ -13,6 +13,7 @@ import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.invitation.InvitationsResponseModel
+import com.app.shepherd.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
@@ -147,4 +148,7 @@ interface ApiService {
         @Query("sendType") sendType: String,
         @Query("status") status: Int
     ): Response<InvitationsResponseModel>
+
+    @PATCH(ApiConstants.Invitations.ACCEPT_INVITATIONS)
+    suspend fun acceptInvitation(@Path("id") id: Int): Response<AcceptInvitationResponseModel>
 }

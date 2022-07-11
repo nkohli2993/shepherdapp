@@ -61,6 +61,7 @@ object ApiConstants {
 
     object Invitations {
         const val GET_INVITATIONS = "$BASE_URL${API_VERSION}invites"
+        const val ACCEPT_INVITATIONS = "$BASE_URL${API_VERSION}invites/accept/{id}"
     }
 }
 

@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.invitation.Results
 import com.app.shepherd.databinding.AdapterInvitationsBinding
 import com.app.shepherd.view_model.InvitationViewModel
@@ -31,7 +30,7 @@ class InvitationAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(careTeam: CareTeam)
+        fun onItemClick(id: Int?)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -75,19 +74,26 @@ class InvitationAdapter(
 
                 // Set Name  of loved One
                 it.txtLovedOneName.text = result.name
+
                 // Set Profile Pic of loved One
                 Picasso.get().load(result.image)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(it.imgLovedOne)
+
                 // Set Role of Care Team
                 it.textViewCareTeamRole.text = result.careRoles?.name
 
-            }
-            /* binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
-                 result.isSelected = isChecked
+                // Set toggle
+                binding.toggleSwitch.isChecked = result.isSelected
 
-                 onItemClickListener?.onItemClick(careTeam)
-             }*/
+            }
+            binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
+                result.isSelected = isChecked
+
+                if (isChecked) {
+                    onItemClickListener?.onItemClick(result.id)
+                }
+            }
             itemBinding.cardView.setOnClickListener { itemBinding.toggleSwitch.performClick() }
         }
 

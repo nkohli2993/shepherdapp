@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.invitation.Results
 import com.app.shepherd.databinding.FragmentInvitationBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -17,6 +16,8 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.utils.Invitations
 import com.app.shepherd.utils.Status
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.InvitationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -74,6 +75,22 @@ class InvitationFragment : BaseFragment<FragmentInvitationBinding>(), View.OnCli
             }
         }
 
+        invitationViewModel.acceptInvitationsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), "Invitation Accepted Successfully...")
+                }
+            }
+        }
+
 
     }
 
@@ -81,7 +98,6 @@ class InvitationFragment : BaseFragment<FragmentInvitationBinding>(), View.OnCli
         fragmentInvitationBinding.listener = this
 
         setInvitationAdapter()
-
 
         //Get Invitations for Joining Care Team
         invitationViewModel.getJoinCareTeamInvitations(sendType, status)
@@ -105,8 +121,12 @@ class InvitationFragment : BaseFragment<FragmentInvitationBinding>(), View.OnCli
         }
     }
 
-    override fun onItemClick(careTeam: CareTeam) {
-
+    override fun onItemClick(id: Int?) {
+        if (id != null) {
+            // Accept the invitation request
+            invitationViewModel.acceptCareTeamInvitations(id)
+        }
     }
+
 
 }
