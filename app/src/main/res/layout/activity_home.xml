@@ -56,7 +56,7 @@
                             android:src="@drawable/test_image"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/roundedCornersImageView"
+                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent"
                             app:strokeColor="@color/_399282"
                             app:strokeWidth="@dimen/_2sdp" />
 

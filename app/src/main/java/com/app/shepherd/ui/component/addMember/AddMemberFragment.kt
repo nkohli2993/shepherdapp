@@ -202,8 +202,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "loggedInUserID : $loggedInUserID")
 
                 // Get LovedOneId
-                val lovedOneId = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID)
-                Log.d(TAG, "LovedOneID : $lovedOneId")
+                val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID)
+                Log.d(TAG, "LovedOneID : $lovedOneUUID")
 
                 // Checked the selected state of Care Team
                 val isCareTeamEnabled = fragmentAddMemberBinding.switchCareTeam.isChecked
@@ -241,7 +241,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                         loggedInUserID,
                         null,
                         email,
-                        lovedOneId,
+                        lovedOneUUID,
                         roleID,
                         selectedModule
                     )

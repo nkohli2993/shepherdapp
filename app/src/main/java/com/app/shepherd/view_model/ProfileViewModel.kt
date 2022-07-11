@@ -67,10 +67,10 @@ class ProfileViewModel @Inject constructor(
 
     // Get User Details
     fun getUserDetails(): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
-//        val userID = getUserId()
-        val uuid = getUUID()
+        val userID = getUserId()
+//        val uuid = getUUID()
         viewModelScope.launch {
-            val response = uuid?.let { authRepository.getUserDetails(it) }
+            val response = userID?.let { authRepository.getUserDetails(it) }
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _userDetailsLiveData.postValue(Event(it))
@@ -98,10 +98,10 @@ class ProfileViewModel @Inject constructor(
 
     // Get User Details
     fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
-//        val userID = getLovedOneUserId()
-        val uuid = getUUID()
+        val userID = getLovedOneUserId()
+//        val uuid = getUUID()
         viewModelScope.launch {
-            val response = uuid?.let { authRepository.getUserDetails(it) }
+            val response = userID?.let { authRepository.getUserDetails(it.toInt()) }
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _lovedOneDetailsLiveData.postValue(Event(it))

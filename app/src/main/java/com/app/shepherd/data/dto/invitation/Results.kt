@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  */
 data class Results (
 
-    @SerializedName("id"               ) var id             : Int?       = null,
+   /* @SerializedName("id"               ) var id             : Int?       = null,
     @SerializedName("user_id"          ) var userId         : Int?       = null,
     @SerializedName("receiver_user_id" ) var receiverUserId : Int?       = null,
     @SerializedName("email"            ) var email          : String?    = null,
@@ -21,6 +21,12 @@ data class Results (
     @SerializedName("deleted_at"       ) var deletedAt      : String?    = null,
     @SerializedName("user"             ) var user           : User?      = User(),
     @SerializedName("love_user"        ) var loveUser       : LoveUser?  = LoveUser(),
-    @SerializedName("care_roles"       ) var careRoles      : CareRoles? = CareRoles()
+    @SerializedName("care_roles"       ) var careRoles      : CareRoles? = CareRoles()*/
+
+    @SerializedName("id"         ) var id        : Int?       = null,
+    @SerializedName("name"       ) var name      : String?    = null,
+    @SerializedName("image"      ) var image     : String?    = null,
+    @SerializedName("care_roles" ) var careRoles : CareRoles? = CareRoles()
+
 
 )

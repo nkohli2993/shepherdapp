@@ -85,7 +85,7 @@ interface ApiService {
 
     @GET(ApiConstants.UserDetails.GET_USER_DETAILS)
     suspend fun getUserDetails(
-        @Path("id") id: String
+        @Path("id") id: Int
     ): Response<UserDetailsResponseModel>
 
     @POST(ApiConstants.CreateEvent.CREATE_EVENT)

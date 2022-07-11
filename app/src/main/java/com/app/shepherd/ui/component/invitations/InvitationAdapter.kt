@@ -62,16 +62,26 @@ class InvitationAdapter(
             itemBinding.data = result
 
             itemBinding.let {
-                result.loveUser?.userProfiles.let { it1 ->
-                    val name = it1?.firstname + " " + it1?.lastname
-                    // Set full Name  of loved One
-                    it.txtLovedOneName.text = name
+                /* result.loveUser?.userProfiles.let { it1 ->
+                     val name = it1?.firstname + " " + it1?.lastname
+                     // Set full Name  of loved One
+                     it.txtLovedOneName.text = name
 
-                    // Set Profile Pic of loved One
-                    Picasso.get().load(it1?.profilePhoto)
-                        .placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(it.imgLovedOne)
-                }
+                     // Set Profile Pic of loved One
+                     Picasso.get().load(it1?.profilePhoto)
+                         .placeholder(R.drawable.ic_defalut_profile_pic)
+                         .into(it.imgLovedOne)
+                 }*/
+
+                // Set Name  of loved One
+                it.txtLovedOneName.text = result.name
+                // Set Profile Pic of loved One
+                Picasso.get().load(result.image)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(it.imgLovedOne)
+                // Set Role of Care Team
+                it.textViewCareTeamRole.text = result.careRoles?.name
+
             }
             /* binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
                  result.isSelected = isChecked

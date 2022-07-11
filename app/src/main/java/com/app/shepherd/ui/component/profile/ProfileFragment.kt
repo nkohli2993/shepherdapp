@@ -83,8 +83,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         fragmentProfileBinding.txtEmail.text = payload?.email
 
         // Set LoggedIn user's email
-        val phoneCode = payload?.phoneCode
-        val phoneNumber = payload?.phoneNo
+        val phoneCode = payload?.userProfiles?.phoneCode
+        val phoneNumber = payload?.userProfiles?.phoneNumber
 
         val phone = "+$phoneCode $phoneNumber"
         fragmentProfileBinding.txtPhone.text = phone
