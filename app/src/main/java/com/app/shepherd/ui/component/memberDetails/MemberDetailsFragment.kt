@@ -16,6 +16,7 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.memberDetails.adapter.MemberModulesAdapter
+import com.app.shepherd.utils.CareRole
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Modules
 import com.app.shepherd.utils.Prefs
@@ -189,13 +190,16 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 backPress()
             }
             R.id.btnDelete -> {
-                // Check the member id should not match with the id of loggedIn user
-                val loggedInUserId = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.USER_ID, 0)
-                /* if (loggedInUserId == careTeam?.userId) {
-                     showError(requireContext(), "You can not remove the Team Lead...")
-                 } else {
-                     careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
-                 }*/
+                // Do not remove the Care Team Lead
+                // Check the member id should not match with the uuid of loggedIn user and slug value should not match with care_team_lead
+                val loggedInUserUUID =
+                    Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+
+                if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
+                    showError(requireContext(), "You can not remove the Care Team Lead...")
+                } else {
+                    careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                }
 
             }
             R.id.btnUpdate -> {
@@ -231,7 +235,7 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
 
                 // Update Care Team Member Detail
-                /*  careTeam?.userId?.let {
+                 /* careTeam?.userId?.let {
                       memberDetailsViewModel.updateCareTeamMember(
                           it,
                           UpdateCareTeamMemberRequestModel(selectedModule)

@@ -128,12 +128,12 @@ interface ApiService {
 
     @DELETE(ApiConstants.CareTeams.DELETE_CARE_TEAM_MEMBER)
     suspend fun deleteCareTeamMember(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): Response<DeleteCareTeamMemberResponseModel>
 
     @PUT(ApiConstants.CareTeams.UPDATE_CARE_TEAM_MEMBER)
     suspend fun updateCareTeamMember(
-        @Path("id") id: Int,
+        @Path("id") id: String,
         @Body updateCareTeamMemberRequestModel: UpdateCareTeamMemberRequestModel
     ): Response<UpdateCareTeamMemberResponseModel>
 

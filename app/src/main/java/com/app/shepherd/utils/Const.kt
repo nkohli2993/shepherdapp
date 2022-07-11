@@ -57,3 +57,7 @@ enum class Status(val status: Int) {
     Zero(0),
     One(1)
 }
+
+enum class CareRole(val slug: String) {
+    CareTeamLead("care_team_lead")
+}
