@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.app.shepherd.R
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.care_team.CareTeam
+import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.databinding.FragmentMemberDetailsBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -235,12 +236,12 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
 
                 // Update Care Team Member Detail
-                 /* careTeam?.userId?.let {
+                  careTeam?.userId?.let {
                       memberDetailsViewModel.updateCareTeamMember(
                           it,
                           UpdateCareTeamMemberRequestModel(selectedModule)
                       )
-                  }*/
+                  }
 
             }
         }
