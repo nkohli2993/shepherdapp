@@ -15,6 +15,7 @@ import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.app.shepherd.data.dto.care_team.CareRoles
+import com.app.shepherd.data.dto.care_team.CareTeamRoles
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.databinding.FragmentAddMemberBinding
@@ -45,9 +46,9 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var status: Int = 1
-    private var selectedCareRole: CareRoles? = null
+    private var selectedCareRole: CareTeamRoles? = null
 
-    private var careRoles: ArrayList<CareRoles>? = ArrayList()
+    private var careRoles: ArrayList<CareTeamRoles>? = ArrayList()
     private var addMemberRoleAdapter: AddMemberRoleAdapter? = null
     private var TAG = "AddMemberFragment"
     private var selectedModule: String = ""
@@ -98,8 +99,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-//                    careRoles = it.data.payload.careroles
-//                    if (careRoles.isNullOrEmpty()) return@observeEvent
+                    careRoles = it.data.payload.careRoles
+                    if (careRoles.isNullOrEmpty()) return@observeEvent
                     setRoleAdapter()
                 }
 

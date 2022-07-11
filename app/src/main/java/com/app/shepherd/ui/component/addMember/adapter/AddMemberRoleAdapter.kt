@@ -7,14 +7,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.care_team.CareRoles
+import com.app.shepherd.data.dto.care_team.CareTeamRoles
 import com.app.shepherd.databinding.AdapterAddMemberRoleBinding
 
 class AddMemberRoleAdapter(
     context: Context,
     var resource: Int,
-    var careRoles: MutableList<CareRoles> = ArrayList()
-) : ArrayAdapter<CareRoles>(context, resource, careRoles) {
+    var careRoles: MutableList<CareTeamRoles> = ArrayList()
+) : ArrayAdapter<CareTeamRoles>(context, resource, careRoles) {
     lateinit var binding: AdapterAddMemberRoleBinding
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -51,7 +51,7 @@ class AddMemberRoleAdapter(
         return view
     }
 
-    fun updateCareTeams(careRoles: ArrayList<CareRoles>) {
+    fun updateCareTeams(careRoles: ArrayList<CareTeamRoles>) {
         this.careRoles = careRoles
         notifyDataSetChanged()
     }

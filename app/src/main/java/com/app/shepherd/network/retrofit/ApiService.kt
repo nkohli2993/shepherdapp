@@ -71,11 +71,10 @@ interface ApiService {
     ): Response<MedicalConditionResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAM_ROLES)
-
     suspend fun getCareTeamRoles(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("status") status: Int
+//        @Query("status") status: Int
     ): Response<CareTeamsResponseModel>
 
     @GET(ApiConstants.Authentication.USER_ROLES)
