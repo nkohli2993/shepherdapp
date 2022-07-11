@@ -51,7 +51,7 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
         Prefs.with(ShepherdApp.appContext)!!.save(USER_ID, id)
     }
 
-    fun getUserId() = Prefs.with(ShepherdApp.appContext)!!.getInt(USER_ID, 0)
+    fun getUserId() = Prefs.with(ShepherdApp.appContext)!!.getString(USER_ID)
 
     fun saveUUID(uuid: String) {
         Prefs.with(ShepherdApp.appContext)!!.save(Const.UUID, uuid)
@@ -60,11 +60,11 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
 
-    fun saveLovedOneId(id: Int) {
+    fun saveLovedOneId(id: String) {
         Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_ID, id)
     }
 
-    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getInt(LOVED_ONE_ID, 0)
+    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(LOVED_ONE_ID)
 
     fun saveLovedOneUUId(uuid: String) {
         Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_UUID, uuid)

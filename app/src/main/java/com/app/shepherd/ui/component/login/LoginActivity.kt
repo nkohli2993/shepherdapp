@@ -254,7 +254,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                              }
                          }*/
 
-
                         userLovedOneArrayList = it.payload?.userLovedOne
 
                         // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
@@ -307,7 +306,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.data.let { it1 ->
                         // Save Token to SharedPref
                         it1.payload?.let { payload ->
-                            Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
+                            Prefs.with(this)!!
+                                .save(Const.BIOMETRIC_ENABLE, payload.userProfile?.isBiometric!!)
                         }
                         navigateToHomeScreen()
                     }

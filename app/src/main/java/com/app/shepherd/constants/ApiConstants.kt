@@ -19,7 +19,7 @@ object ApiConstants {
         const val SIGN_UP = "$BASE_URL_USER${API_VERSION}users"
         const val UPLOAD_IMAGE = "$BASE_URL_USER${API_VERSION}user_profiles/profile/"
         const val FORGOT_PASSWORD = "$BASE_URL_USER${API_VERSION}users/forgot-password"
-        const val BIOMETRIC = "$BASE_URL_USER${API_VERSION}users/biomertic"
+        const val BIOMETRIC = "$BASE_URL_USER${API_VERSION}user_profiles/biomertic"
         const val LOGOUT = "$BASE_URL_USER${API_VERSION}users/logout"
         const val USER_ROLES = "$BASE_URL_USER${API_VERSION}roles"
     }

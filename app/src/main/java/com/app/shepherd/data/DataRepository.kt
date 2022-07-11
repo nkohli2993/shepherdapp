@@ -1,5 +1,6 @@
 package com.app.shepherd.data
 
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.login.LoginRequestModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -11,6 +12,8 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.NetworkOnlineDataRepo
 import com.app.shepherd.ui.component.addNewEvent.CreateEventModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventResponseModel
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -81,7 +84,7 @@ class DataRepository @Inject constructor(
         pageNumber: Int,
         limit: Int,
         status: Int,
-        loved_one_id: Int
+        loved_one_id: String?
     ): Flow<DataResult<CareTeamsResponseModel>> {
         return object :
             NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
@@ -99,4 +102,6 @@ class DataRepository @Inject constructor(
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+    fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+
 }

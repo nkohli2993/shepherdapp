@@ -134,7 +134,10 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     //it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
-                    showSuccess(requireContext(),"Request sent to the member for joining care team successfully...")
+                    showSuccess(
+                        requireContext(),
+                        "Request sent to the member for joining care team successfully..."
+                    )
                     backPress()
                 }
             }
@@ -194,11 +197,11 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     UserProfiles::class.java
                 )
 
-                val loggedInUserID = loggedInUser?.userId
+                val loggedInUserID = addMemberViewModel.getLovedOneUUId()
                 Log.d(TAG, "loggedInUserID : $loggedInUserID")
 
                 // Get LovedOneId
-                val lovedOneId = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.LOVED_ONE_ID, 0)
+                val lovedOneId = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID)
                 Log.d(TAG, "LovedOneID : $lovedOneId")
 
                 // Checked the selected state of Care Team

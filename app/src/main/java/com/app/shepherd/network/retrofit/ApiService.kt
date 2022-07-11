@@ -120,7 +120,7 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("status") status: Int,
-        @Query("loved_one_id") lovedOneId: Int
+        @Query("loved_one_id") lovedOneId: String?
     ): Response<CareTeamsResponseModel>
 
     @POST(ApiConstants.CareTeams.ADD_NEW_CARE_TEAM_MEMBER)

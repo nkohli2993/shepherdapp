@@ -91,7 +91,7 @@ class AddNewEventViewModel @Inject constructor(
         pageNumber: Int,
         limit: Int,
         status: Int,
-        lovedOneId: Int
+        lovedOneId: String?
     ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
         viewModelScope.launch {
             val response = dataRepository.getMembers(pageNumber, limit, status, lovedOneId)
@@ -111,7 +111,7 @@ class AddNewEventViewModel @Inject constructor(
     }
 
     fun createEvent(
-        loved_one_user_id: Int,
+        loved_one_user_id: String?,
         name: String,
         location: String,
         date: String,
@@ -141,7 +141,7 @@ class AddNewEventViewModel @Inject constructor(
         return createEventLiveData
     }
 
-    fun getLovedOneId(): Int {
+    fun getLovedOneId(): String? {
         return userRepository.getLovedOneId()
     }
 

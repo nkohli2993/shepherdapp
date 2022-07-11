@@ -122,7 +122,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             isPasswordShown = !isPasswordShown
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
         }
-
         // Get Roles
         createNewAccountViewModel.getRoles(pageNumber, limit)
     }
@@ -215,19 +214,17 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Failure -> {
                     hideLoading()
                     it.message?.let { showError(this, it.toString()) }
-
                 }
                 is DataResult.Loading -> {
                     showLoading("")
-
                 }
                 is DataResult.Success -> {
                     hideLoading()
                     it.data.let { it1 ->
                         // Save Token to SharedPref
                         it1.payload?.let { payload ->
-                            Prefs.with(this)!!.save(Const.BIOMETRIC_ENABLE, payload.isBiometric!!)
-
+                            Prefs.with(this)!!
+                                .save(Const.BIOMETRIC_ENABLE, payload.userProfile?.isBiometric!!)
                         }
                         navigateToWelcomeUserScreen()
                     }

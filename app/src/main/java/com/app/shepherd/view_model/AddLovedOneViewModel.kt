@@ -121,7 +121,7 @@ class AddLovedOneViewModel @Inject constructor(
         return createLovedOneLiveData
     }
 
-    fun saveLovedOneId(lovedOneID: Int?) {
+    fun saveLovedOneId(lovedOneID: String?) {
         lovedOneID?.let { userRepository.saveLovedOneId(it) }
     }
 

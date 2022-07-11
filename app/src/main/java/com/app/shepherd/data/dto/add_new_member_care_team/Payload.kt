@@ -10,7 +10,7 @@ data class Payload(
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("status") var status: Int? = null,
     @SerializedName("id") var id: Int? = null,
-    @SerializedName("user_id") var userId: Int? = null,
+    @SerializedName("user_id") var userId: String? = null,
     @SerializedName("receiver_user_id") var receiverUserId: Int? = null,
     @SerializedName("email") var email: String? = null,
     @SerializedName("loveone_user_id") var loveoneUserId: Int? = null,

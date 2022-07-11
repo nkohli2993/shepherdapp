@@ -44,7 +44,7 @@ class WelcomeUserViewModel @Inject constructor(
      }*/
 
     //get userID from Shared Pref
-    private fun getUserId(): Int {
+    private fun getUserId(): String? {
         return userRepository.getUserId()
     }
 

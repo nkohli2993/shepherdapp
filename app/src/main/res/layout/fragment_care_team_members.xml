@@ -16,22 +16,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/_FCFCFC"
-        android:paddingHorizontal="@dimen/_10sdp"
         android:orientation="vertical"
+        android:paddingHorizontal="@dimen/_10sdp"
         tools:context="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
-            android:lineSpacingMultiplier="1.3"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/gotham_book"
-            app:fontFamily="@font/gotham_book"
+            android:lineSpacingMultiplier="1.3"
             android:text="@string/create_care_team"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_12ssp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/cardViewSearch" />
+            app:fontFamily="@font/gotham_book"
+            app:layout_constraintBottom_toTopOf="@+id/cardViewSearch"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <androidx.cardview.widget.CardView
@@ -47,15 +47,15 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:background="@color/_F3F3F4"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/_F3F3F4">
 
                 <LinearLayout
                     android:id="@+id/llSearch"
                     android:layout_width="@dimen/_36sdp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/_2sdp"
                     android:layout_alignParentStart="true"
+                    android:layout_marginStart="@dimen/_2sdp"
                     android:gravity="center">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -91,8 +91,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:padding="@dimen/_4sdp"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_cancel" />
+                    android:src="@drawable/ic_cancel"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -112,13 +112,13 @@
             android:id="@+id/txtNoCareTeamFound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_book"
+            android:layout_gravity="center"
             android:layout_marginTop="@dimen/_16sdp"
-            app:fontFamily="@font/gotham_bold"
+            android:fontFamily="@font/gotham_book"
             android:text="@string/no_care_team_found"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_16ssp"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:fontFamily="@font/gotham_bold" />
     </LinearLayout>
 </layout>

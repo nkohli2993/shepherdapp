@@ -91,7 +91,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     // Get Loved One user ID
-    private fun getLovedOneUserId(): Int {
+    private fun getLovedOneUserId(): String? {
         return userRepository.getLovedOneId()
     }
 

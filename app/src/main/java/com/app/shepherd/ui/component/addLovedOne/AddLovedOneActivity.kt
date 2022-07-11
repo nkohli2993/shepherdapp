@@ -65,7 +65,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var email: String? = null
     private var phoneNumber: String? = null
     private var completeURLProfilePic: String? = null
-    private var lovedOneID: Int? = null
+    private var lovedOneID: String? = null
     private var customAddress: String? = null
     private var lastName: String? = null
 

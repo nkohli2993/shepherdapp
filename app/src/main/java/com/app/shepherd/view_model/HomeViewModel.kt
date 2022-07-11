@@ -183,6 +183,7 @@ class HomeViewModel @Inject constructor(
          return userLovedOneArray?.get(0)?.loveUserId ?: 0
      }*/
 
+
     fun getHomeData(): LiveData<Event<DataResult<HomeResponseModel>>> {
         val lovedOneUUID = userRepository.getLovedOneUUId()
         val status = 1

@@ -32,4 +32,5 @@ data class UserProfiles(
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
 
+
 )
