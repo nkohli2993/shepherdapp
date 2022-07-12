@@ -218,7 +218,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                     // Save LovedOne ID
                                     it[0].id?.let { it1 ->
                                         loginViewModel.saveLovedOneId(
-                                            it1
+                                            it1.toString()
                                         )
                                     }
                                 }

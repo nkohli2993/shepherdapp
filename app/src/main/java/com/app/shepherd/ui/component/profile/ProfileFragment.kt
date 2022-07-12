@@ -108,7 +108,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                     hideLoading()
                     payload = it.data.payload
                     initView()
-//                    getLovedOneInfo()
+                    getLovedOneInfo()
                 }
             }
         }
@@ -142,7 +142,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         lovedOneArrayList = payload?.userLovedOne
         if (!lovedOneArrayList.isNullOrEmpty()) {
             val lovedOneUserIDs = lovedOneArrayList?.map {
-                it.loveUserId
+                it.id
             } as ArrayList<Int?>?
             Log.d(TAG, "Loved One User Ids :$lovedOneUserIDs ")
 

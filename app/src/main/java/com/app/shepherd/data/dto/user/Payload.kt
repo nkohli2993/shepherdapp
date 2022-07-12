@@ -27,6 +27,6 @@ data class Payload(
     @SerializedName("is_biometric") var isBiometric: Boolean? = null,
     @SerializedName("is_block") var isBlock: Boolean? = null,
     @SerializedName("user_profiles") var userProfiles: UserProfiles? = UserProfiles(),
-    @SerializedName("user_loved_one") var userLovedOne: ArrayList<UserLovedOne> = arrayListOf()
-
+    @SerializedName("user_loved_one") var userLovedOne: ArrayList<UserLovedOne> = arrayListOf(),
+    @SerializedName("user_roles") var userRoles: ArrayList<UserRole> = arrayListOf()
 )
