@@ -224,7 +224,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         // Save Token to SharedPref
                         it1.payload?.let { payload ->
                             Prefs.with(this)!!
-                                .save(Const.BIOMETRIC_ENABLE, payload.userProfile?.isBiometric!!)
+                                .save(Const.BIOMETRIC_ENABLE, payload.userProfiles?.isBiometric!!)
                         }
                         navigateToWelcomeUserScreen()
                     }

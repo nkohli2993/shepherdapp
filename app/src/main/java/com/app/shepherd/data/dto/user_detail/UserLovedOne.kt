@@ -1,13 +1,11 @@
-package com.app.shepherd.data.dto.login
+package com.app.shepherd.data.dto.user_detail
 
-import android.os.Parcel
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Deepak Rattan on 21/06/22
+ * Created by Deepak Rattan on 12/07/22
  */
-data class UserLovedOne(
+data class UserLovedOne (
 
     @SerializedName("id"           ) var id         : Int?       = null,
     @SerializedName("user_id"      ) var userId     : String?    = null,

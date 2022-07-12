@@ -188,7 +188,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.data.let { it ->
                         it.message?.let { it1 -> showSuccess(this, it1) }
                         it.payload.let { payload ->
-                            payload?.userProfile?.let { it1 ->
+                            payload?.userProfiles?.let { it1 ->
                                 // Save UserProfiles
                                 loginViewModel.saveUser(it1)
 
@@ -307,7 +307,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         // Save Token to SharedPref
                         it1.payload?.let { payload ->
                             Prefs.with(this)!!
-                                .save(Const.BIOMETRIC_ENABLE, payload.userProfile?.isBiometric!!)
+                                .save(Const.BIOMETRIC_ENABLE, payload.userProfiles?.isBiometric!!)
                         }
                         navigateToHomeScreen()
                     }
@@ -428,7 +428,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
 
         val intent = Intent(this, HomeActivity::class.java)
-        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
+//        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

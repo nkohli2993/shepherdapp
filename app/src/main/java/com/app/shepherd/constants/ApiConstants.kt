@@ -48,6 +48,7 @@ object ApiConstants {
 
     object UserDetails {
         const val GET_USER_DETAILS = "$BASE_URL_USER${API_VERSION}users/{id}"
+        const val GET_USER_DETAILS_BY_UUID = "$BASE_URL_USER${API_VERSION}users/uuid/{id}"
     }
 
     object CreateEvent {

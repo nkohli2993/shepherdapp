@@ -5,22 +5,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.app.shepherd.R
+import com.app.shepherd.data.dto.login.Payload
 import com.app.shepherd.data.dto.login.UserLovedOne
-import com.app.shepherd.data.dto.user.Payload
-import com.app.shepherd.data.dto.user.UserProfiles
+import com.app.shepherd.data.dto.login.UserProfile
 import com.app.shepherd.databinding.FragmentProfileBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.profile.adapter.LovedOnesAdapter
-import com.app.shepherd.utils.BiometricUtils
-import com.app.shepherd.utils.Const
-import com.app.shepherd.utils.Const.BIOMETRIC_ENABLE
-import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.view_model.ProfileViewModel
 import com.squareup.picasso.Picasso
@@ -39,7 +34,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     private var payload: Payload? = null
     private var lovedOneArrayList: ArrayList<UserLovedOne>? = null
-    private var lovedOneProfileList: ArrayList<UserProfiles>? = arrayListOf()
+    private var lovedOneProfileList: ArrayList<UserProfile>? = arrayListOf()
 
     // private var lovedOneUserIDs: ArrayList<Int?>? = null
     private val TAG: String? = null
@@ -53,7 +48,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         fragmentProfileBinding =
             FragmentProfileBinding.inflate(inflater, container, false)
         // Get loggedIn User's Profile info by hitting api
-        profileViewModel.getUserDetails()
+        //profileViewModel.getUserDetails()
+        profileViewModel.getUserDetailByUUID()
 
         return fragmentProfileBinding.root
     }
@@ -82,12 +78,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         //Set Email
         fragmentProfileBinding.txtEmail.text = payload?.email
 
-        // Set LoggedIn user's email
+        // Set Phone Number
         val phoneCode = payload?.userProfiles?.phoneCode
-        val phoneNumber = payload?.userProfiles?.phoneNumber
+        val phoneNumber = payload?.userProfiles?.phoneNo
 
         val phone = "+$phoneCode $phoneNumber"
         fragmentProfileBinding.txtPhone.text = phone
+
+        //Get user's role
+        fragmentProfileBinding.tvProfessional.text = payload?.userLovedOne?.get(0)?.careRoles?.name
 
     }
 
@@ -95,7 +94,26 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     override fun observeViewModel() {
 
 
-        profileViewModel.userDetailsLiveData.observeEvent(this) {
+        /* profileViewModel.userDetailsLiveData.observeEvent(this) {
+             when (it) {
+                 is DataResult.Failure -> {
+                     hideLoading()
+                     it.message?.let { showError(requireContext(), it.toString()) }
+                 }
+                 is DataResult.Loading -> {
+                     showLoading("")
+                 }
+                 is DataResult.Success -> {
+                     hideLoading()
+                     payload = it.data.payload
+                     initView()
+                     getLovedOneInfo()
+                 }
+             }
+         }*/
+
+
+        profileViewModel.userDetailByUUIDLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -115,7 +133,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
 
         // Observe Loved One Detail
-        profileViewModel.lovedOneDetailsLiveData.observeEvent(this) {
+        profileViewModel.lovedOneDetailByUUIDLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -142,8 +160,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         lovedOneArrayList = payload?.userLovedOne
         if (!lovedOneArrayList.isNullOrEmpty()) {
             val lovedOneUserIDs = lovedOneArrayList?.map {
-                it.id
-            } as ArrayList<Int?>?
+                it.loveUserId
+            } as ArrayList<String?>?
             Log.d(TAG, "Loved One User Ids :$lovedOneUserIDs ")
 
             for (i in lovedOneUserIDs?.indices!!) {
@@ -154,7 +172,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     }
 
-    private fun setLovedOnesAdapter(lovedOneProfileList: ArrayList<UserProfiles>?) {
+    private fun setLovedOnesAdapter(lovedOneProfileList: ArrayList<UserProfile>?) {
         val lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
         lovedOnesAdapter.addData(lovedOneProfileList)
         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter

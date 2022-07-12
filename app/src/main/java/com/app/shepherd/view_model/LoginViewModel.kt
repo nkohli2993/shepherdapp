@@ -7,7 +7,6 @@ import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.login.UserProfile
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
-import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
@@ -78,7 +77,7 @@ class LoginViewModel @Inject constructor(
     }
 
     // Save User to SharePrefs
-    fun saveUser(user: UserProfiles?) {
+    fun saveUser(user: UserProfile?) {
         userRepository.saveUser(user)
     }
 

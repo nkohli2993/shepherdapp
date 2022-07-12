@@ -10,7 +10,7 @@ import android.view.View
 import androidx.activity.viewModels
 import com.app.shepherd.R
 import com.app.shepherd.ShepherdApp
-import com.app.shepherd.data.dto.user.Payload
+import com.app.shepherd.data.dto.user_detail.Payload
 import com.app.shepherd.databinding.ActivityWelcomeUserBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent

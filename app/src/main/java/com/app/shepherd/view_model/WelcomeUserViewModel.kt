@@ -3,9 +3,9 @@ package com.app.shepherd.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.app.shepherd.data.dto.user.Payload
-import com.app.shepherd.data.dto.user.UserDetailsResponseModel
-import com.app.shepherd.data.dto.user.UserProfiles
+import com.app.shepherd.data.dto.login.Payload
+import com.app.shepherd.data.dto.login.UserProfile
+import com.app.shepherd.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
@@ -30,8 +30,8 @@ class WelcomeUserViewModel @Inject constructor(
      var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData*/
 
     private var _userDetailsLiveData =
-        MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
-    var userDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
+        MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
+    var userDetailsLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
         _userDetailsLiveData
 
 
@@ -54,11 +54,11 @@ class WelcomeUserViewModel @Inject constructor(
     }
 
     // Get User Details
-    fun getUserDetails(): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
-        val userID = getUserId()
-//        val uuid = getUUID()
+    fun getUserDetails(): LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> {
+//        val userID = getUserId()
+        val uuid = getUUID()
         viewModelScope.launch {
-            val response = userID?.let { authRepository.getUserDetails(it) }
+            val response = uuid?.let { authRepository.getUserDetailsByUUID(it) }
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _userDetailsLiveData.postValue(Event(it))
@@ -70,7 +70,7 @@ class WelcomeUserViewModel @Inject constructor(
 
 
     // Save User to SharePrefs
-    fun saveUser(user: UserProfiles?) {
+    fun saveUser(user: UserProfile?) {
         userRepository.saveUser(user)
     }
 

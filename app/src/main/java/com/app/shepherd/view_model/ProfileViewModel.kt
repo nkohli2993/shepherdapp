@@ -7,6 +7,7 @@ import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
+import com.app.shepherd.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.network.retrofit.DataResult
@@ -41,10 +42,20 @@ class ProfileViewModel @Inject constructor(
     var userDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
         _userDetailsLiveData
 
+    private var _userDetailByUUIDLiveData =
+        MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
+    var userDetailByUUIDLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
+        _userDetailByUUIDLiveData
+
     private var _lovedOneDetailsLiveData =
         MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
     var lovedOneDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
         _lovedOneDetailsLiveData
+
+    private var _lovedOneDetailByUUIDLiveData =
+        MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
+    var lovedOneDetailByUUIDLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
+        _lovedOneDetailByUUIDLiveData
 
 
     fun registerBioMetric(
@@ -80,6 +91,20 @@ class ProfileViewModel @Inject constructor(
         return userDetailsLiveData
     }
 
+    // Get User Details
+    fun getUserDetailByUUID(): LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> {
+        val uuid = getUUID()
+        viewModelScope.launch {
+            val response = uuid?.let { authRepository.getUserDetailsByUUID(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _userDetailByUUIDLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return userDetailByUUIDLiveData
+    }
+
     //get userID from Shared Pref
     private fun getUserId(): Int {
         return userRepository.getCurrentUser()?.userId ?: 0
@@ -97,18 +122,18 @@ class ProfileViewModel @Inject constructor(
 
 
     // Get User Details
-    fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
+    fun getLovedOneDetails(lovedOneUserId: String): LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> {
 //        val userID = getLovedOneUserId()
 //        val uuid = getUUID()
         viewModelScope.launch {
-            val response = lovedOneUserId?.let { authRepository.getUserDetails(it) }
+            val response = lovedOneUserId.let { authRepository.getUserDetailsByUUID(it) }
             withContext(Dispatchers.Main) {
-                response?.collect {
-                    _lovedOneDetailsLiveData.postValue(Event(it))
+                response.collect {
+                    _lovedOneDetailByUUIDLiveData.postValue(Event(it))
                 }
             }
         }
-        return lovedOneDetailsLiveData
+        return lovedOneDetailByUUIDLiveData
     }
 
 }

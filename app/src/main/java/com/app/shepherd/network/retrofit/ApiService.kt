@@ -23,6 +23,7 @@ import com.app.shepherd.data.dto.roles.RolesResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
+import com.app.shepherd.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.app.shepherd.ui.base.BaseResponseModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventModel
 import com.app.shepherd.ui.component.addNewEvent.CreateEventResponseModel
@@ -88,6 +89,11 @@ interface ApiService {
     suspend fun getUserDetails(
         @Path("id") id: Int
     ): Response<UserDetailsResponseModel>
+
+    @GET(ApiConstants.UserDetails.GET_USER_DETAILS_BY_UUID)
+    suspend fun getUserDetailByUUID(
+        @Path("id") id: String
+    ): Response<UserDetailByUUIDResponseModel>
 
     @POST(ApiConstants.CreateEvent.CREATE_EVENT)
     suspend fun createEvent(

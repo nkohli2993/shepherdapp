@@ -1,10 +1,11 @@
-package com.app.shepherd.data.dto.login
+package com.app.shepherd.data.dto.user_detail
+
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Deepak Rattan on 06/06/22
+ * Created by Deepak Rattan on 12/07/22
  */
-data class UserProfile (
+data class UserProfiles (
 
     @SerializedName("id"                ) var id              : Int?     = null,
     @SerializedName("user_id"           ) var userId          : Int?     = null,

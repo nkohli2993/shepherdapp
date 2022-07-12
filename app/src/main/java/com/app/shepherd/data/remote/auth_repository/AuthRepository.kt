@@ -8,6 +8,7 @@ import com.app.shepherd.data.dto.roles.RolesResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.signup.UserSignupData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
+import com.app.shepherd.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.NetworkOnlineDataRepo
@@ -107,6 +108,17 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
+    // Get User Details By UUID
+    suspend fun getUserDetailsByUUID(id: String): Flow<DataResult<UserDetailByUUIDResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<UserDetailByUUIDResponseModel, UserDetailByUUIDResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailByUUIDResponseModel> {
+                return apiService.getUserDetailByUUID(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 
     //logout
     suspend fun logout(): Flow<DataResult<BaseResponseModel>> {

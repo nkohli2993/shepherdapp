@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.user.UserProfiles
+import com.app.shepherd.data.dto.login.UserProfile
 import com.app.shepherd.databinding.AdapterLovedOnesBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.view_model.ProfileViewModel
@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 
 class LovedOnesAdapter(
     private val viewModel: ProfileViewModel,
-    var lovedOneProfileList: MutableList<UserProfiles> = ArrayList()
+    var lovedOneProfileList: MutableList<UserProfile> = ArrayList()
 ) :
     RecyclerView.Adapter<LovedOnesAdapter.LovedOnesViewHolder>() {
     lateinit var binding: AdapterLovedOnesBinding
@@ -53,7 +53,7 @@ class LovedOnesAdapter(
     class LovedOnesViewHolder(private val itemBinding: AdapterLovedOnesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(userProfiles: UserProfiles, recyclerItemListener: RecyclerItemListener) {
+        fun bind(userProfiles: UserProfile, recyclerItemListener: RecyclerItemListener) {
             // itemBinding.data = dashboard
             val fullName = userProfiles.firstname + " " + userProfiles.lastname
             itemBinding.txtLovedOneName.text = fullName
@@ -78,7 +78,7 @@ class LovedOnesAdapter(
         return position
     }
 
-    fun addData(lovedOneProfileList: ArrayList<UserProfiles>?) {
+    fun addData(lovedOneProfileList: ArrayList<UserProfile>?) {
         this.lovedOneProfileList.clear()
         lovedOneProfileList?.let { this.lovedOneProfileList.addAll(it) }
         notifyDataSetChanged()
