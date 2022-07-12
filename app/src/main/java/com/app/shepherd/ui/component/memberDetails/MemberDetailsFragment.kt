@@ -1,5 +1,7 @@
 package com.app.shepherd.ui.component.memberDetails
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -191,16 +193,41 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 backPress()
             }
             R.id.btnDelete -> {
+                val builder = AlertDialog.Builder(requireContext())
+                val dialog = builder.apply {
+                    setTitle("Remove Care Team Member")
+                    setMessage("Are you sure you want to remove the care team member?")
+                    setPositiveButton("Yes") { _, _ ->
+                        // Do not remove the Care Team Lead
+                        // Check the member id should not match with the uuid of loggedIn user and slug value should not match with care_team_lead
+                        val loggedInUserUUID =
+                            Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+
+                        if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
+                            showError(requireContext(), "You can not remove the Care Team Lead...")
+                        } else {
+                            careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                        }
+                    }
+                    setNegativeButton("No"){_,_->
+
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+
+
                 // Do not remove the Care Team Lead
                 // Check the member id should not match with the uuid of loggedIn user and slug value should not match with care_team_lead
-                val loggedInUserUUID =
+               /* val loggedInUserUUID =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
                 if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
                     showError(requireContext(), "You can not remove the Care Team Lead...")
                 } else {
                     careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
-                }
+                }*/
 
             }
             R.id.btnUpdate -> {
