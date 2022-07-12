@@ -19,7 +19,6 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.memberDetails.adapter.MemberModulesAdapter
-import com.app.shepherd.utils.CareRole
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Modules
 import com.app.shepherd.utils.Prefs
@@ -28,6 +27,7 @@ import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.MemberDetailsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.StringBuilder
 
 
 /**
@@ -86,6 +86,10 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 it?.address ?: "No address available"
             // Set Phone Number
             val phone = "+" + it?.phone
+//            val phoneArr = it?.phone?.split(" ")
+//            val phoneNumber = phoneArr?.get(1)
+//            var phoneCharArr = phoneNumber?.toCharArray()
+//            var phoneNoWithHyphen : CharArray
 
             fragmentMemberDetailsBinding.txtPhoneCare.text = phone ?: "Phone Number Not Available"
         }
