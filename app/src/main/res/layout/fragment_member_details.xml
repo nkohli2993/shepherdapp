@@ -327,6 +327,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:layout_marginHorizontal="@dimen/_7sdp"
                         android:layout_marginTop="@dimen/_20sdp">
 
                         <androidx.appcompat.widget.AppCompatButton
@@ -338,7 +339,7 @@
                             android:background="@drawable/shape_black_border"
                             android:fontFamily="@font/gotham_medium"
                             android:onClick="@{listener::onClick}"
-                            android:paddingHorizontal="10dp"
+                            android:paddingHorizontal="8dp"
                             android:text="@string/remove"
                             android:textAllCaps="false"
                             android:textColor="@color/colorBlack"
@@ -355,7 +356,7 @@
                             android:backgroundTint="@color/_399282"
                             android:fontFamily="@font/gotham_medium"
                             android:onClick="@{listener::onClick}"
-                            android:paddingHorizontal="10dp"
+                            android:paddingHorizontal="8dp"
                             android:text="@string/save_changes"
                             android:textAllCaps="false"
                             android:textColor="@color/colorWhite"
