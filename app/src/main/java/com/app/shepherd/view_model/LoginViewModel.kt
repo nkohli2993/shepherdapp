@@ -105,6 +105,10 @@ class LoginViewModel @Inject constructor(
         userRepository.saveLovedOneId(id)
     }
 
+    fun saveEmail(id: String) {
+        userRepository.saveEmail(id)
+    }
+
     fun saveLovedOneUUID(lovedOneUUID: String) {
         userRepository.saveLovedOneUUId(lovedOneUUID)
 
