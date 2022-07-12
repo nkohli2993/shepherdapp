@@ -79,7 +79,7 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
     }
 
     // Delete Care Team Member
-    suspend fun deleteCareTeamMember(id: String): Flow<DataResult<DeleteCareTeamMemberResponseModel>> {
+    suspend fun deleteCareTeamMember(id: Int): Flow<DataResult<DeleteCareTeamMemberResponseModel>> {
         return object :
             NetworkOnlineDataRepo<DeleteCareTeamMemberResponseModel, DeleteCareTeamMemberResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<DeleteCareTeamMemberResponseModel> {
@@ -90,7 +90,7 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
 
     // Update Care Team Member
     suspend fun updateCareTeamMember(
-        id: String,
+        id: Int,
         updateCareTeamMemberRequestModel: UpdateCareTeamMemberRequestModel
     ): Flow<DataResult<UpdateCareTeamMemberResponseModel>> {
         return object :

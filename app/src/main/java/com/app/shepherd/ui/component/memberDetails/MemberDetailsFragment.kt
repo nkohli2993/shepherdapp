@@ -203,13 +203,13 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                         val loggedInUserUUID =
                             Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
-                        if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
+                        if (loggedInUserUUID == careTeam?.userId /*&& CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug*/) {
                             showError(requireContext(), "You can not remove the Care Team Lead...")
                         } else {
-                            careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                            careTeam?.id?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
                         }
                     }
-                    setNegativeButton("No"){_,_->
+                    setNegativeButton("No") { _, _ ->
 
                     }
                 }.create()
@@ -220,14 +220,14 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
 
                 // Do not remove the Care Team Lead
                 // Check the member id should not match with the uuid of loggedIn user and slug value should not match with care_team_lead
-               /* val loggedInUserUUID =
-                    Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+                /* val loggedInUserUUID =
+                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
-                if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
-                    showError(requireContext(), "You can not remove the Care Team Lead...")
-                } else {
-                    careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
-                }*/
+                 if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
+                     showError(requireContext(), "You can not remove the Care Team Lead...")
+                 } else {
+                     careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                 }*/
 
             }
             R.id.btnUpdate -> {
@@ -263,12 +263,12 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
 
                 // Update Care Team Member Detail
-                  careTeam?.userId?.let {
-                      memberDetailsViewModel.updateCareTeamMember(
-                          it,
-                          UpdateCareTeamMemberRequestModel(selectedModule)
-                      )
-                  }
+                careTeam?.id?.let {
+                    memberDetailsViewModel.updateCareTeamMember(
+                        it,
+                        UpdateCareTeamMemberRequestModel(selectedModule)
+                    )
+                }
 
             }
         }
