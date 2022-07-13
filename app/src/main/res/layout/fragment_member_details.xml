@@ -37,12 +37,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/_10sdp">
+                android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:elevation="@dimen/_2sdp"
                     android:background="@color/colorWhite"
                     android:paddingVertical="@dimen/_8sdp">
 
@@ -50,7 +50,7 @@
                         android:id="@+id/imgCareTeamMember"
                         android:layout_width="@dimen/_65sdp"
                         android:layout_height="@dimen/_65sdp"
-                        android:layout_marginStart="4dp"
+                        android:layout_marginStart="14dp"
                         android:padding="@dimen/_5sdp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_defalut_profile_pic"
@@ -98,6 +98,7 @@
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="@dimen/_5sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:fontFamily="@font/gotham_book"
@@ -114,6 +115,7 @@
                         android:gravity="center_vertical"
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
                         android:textSize="@dimen/_12ssp"
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
@@ -128,18 +130,19 @@
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="@dimen/_5sdp"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtPhoneCare" />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     android:background="@color/_FCFCFC"
                     android:orientation="vertical">
 
