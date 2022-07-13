@@ -255,6 +255,7 @@
                             android:layout_gravity="center_vertical"
                             android:padding="16dp"
                             app:ccp_defaultNameCode="US"
+                            app:ccp_hideNameCode="true"
                             app:ccp_showFlag="false"
                             app:ccp_textColor="#1C2020" />
 
