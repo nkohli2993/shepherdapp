@@ -106,7 +106,12 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         //super.onBackPressed()
-        navigateToLoginScreen()
+        //navigateToLoginScreen()
+        // Navigate to Home Screen of Android
+        val a = Intent(Intent.ACTION_MAIN)
+        a.addCategory(Intent.CATEGORY_HOME)
+        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(a)
     }
 
 
