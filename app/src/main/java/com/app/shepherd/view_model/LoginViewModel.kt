@@ -123,4 +123,9 @@ class LoginViewModel @Inject constructor(
     fun saveUUID(id: String) {
         userRepository.saveUUID(id)
     }
+
+    // Save User's Role
+    fun saveUserRole(role: String) {
+        userRepository.saveUserRole(role)
+    }
 }

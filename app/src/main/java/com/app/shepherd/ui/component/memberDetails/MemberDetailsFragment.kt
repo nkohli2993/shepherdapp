@@ -1,5 +1,7 @@
 package com.app.shepherd.ui.component.memberDetails
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,7 +19,6 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.memberDetails.adapter.MemberModulesAdapter
-import com.app.shepherd.utils.CareRole
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Modules
 import com.app.shepherd.utils.Prefs
@@ -26,13 +27,14 @@ import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.MemberDetailsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.StringBuilder
 
 
 /**
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
+class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     View.OnClickListener {
 
     private val memberDetailsViewModel: MemberDetailsViewModel by viewModels()
@@ -84,6 +86,10 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 it?.address ?: "No address available"
             // Set Phone Number
             val phone = "+" + it?.phone
+//            val phoneArr = it?.phone?.split(" ")
+//            val phoneNumber = phoneArr?.get(1)
+//            var phoneCharArr = phoneNumber?.toCharArray()
+//            var phoneNoWithHyphen : CharArray
 
             fragmentMemberDetailsBinding.txtPhoneCare.text = phone ?: "Phone Number Not Available"
         }
@@ -191,16 +197,41 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 backPress()
             }
             R.id.btnDelete -> {
+                val builder = AlertDialog.Builder(requireContext())
+                val dialog = builder.apply {
+                    setTitle("Remove Care Team Member")
+                    setMessage("Are you sure you want to remove the care team member?")
+                    setPositiveButton("Yes") { _, _ ->
+                        // Do not remove the Care Team Lead
+                        // Check the member id should not match with the uuid of loggedIn user and slug value should not match with care_team_lead
+                        val loggedInUserUUID =
+                            Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+
+                        if (loggedInUserUUID == careTeam?.userId /*&& CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug*/) {
+                            showError(requireContext(), "You can not remove the Care Team Lead...")
+                        } else {
+                            careTeam?.id?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                        }
+                    }
+                    setNegativeButton("No") { _, _ ->
+
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+
+
                 // Do not remove the Care Team Lead
                 // Check the member id should not match with the uuid of loggedIn user and slug value should not match with care_team_lead
-                val loggedInUserUUID =
-                    Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+                /* val loggedInUserUUID =
+                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
-                if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
-                    showError(requireContext(), "You can not remove the Care Team Lead...")
-                } else {
-                    careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
-                }
+                 if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
+                     showError(requireContext(), "You can not remove the Care Team Lead...")
+                 } else {
+                     careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
+                 }*/
 
             }
             R.id.btnUpdate -> {
@@ -236,12 +267,12 @@ class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
 
                 // Update Care Team Member Detail
-                  careTeam?.userId?.let {
-                      memberDetailsViewModel.updateCareTeamMember(
-                          it,
-                          UpdateCareTeamMemberRequestModel(selectedModule)
-                      )
-                  }
+                careTeam?.id?.let {
+                    memberDetailsViewModel.updateCareTeamMember(
+                        it,
+                        UpdateCareTeamMemberRequestModel(selectedModule)
+                    )
+                }
 
             }
         }

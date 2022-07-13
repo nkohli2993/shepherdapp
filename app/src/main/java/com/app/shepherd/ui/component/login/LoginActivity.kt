@@ -222,6 +222,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                             it1.toString()
                                         )
                                     }
+
+                                    // Save Role
+                                    it[0].careRoles?.name.let {
+                                        it?.let { it1 -> loginViewModel.saveUserRole(it1) }
+                                    }
                                 }
                             }
                             payload?.email?.let { email ->

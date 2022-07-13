@@ -14,7 +14,6 @@ import com.app.shepherd.R
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
-import com.app.shepherd.data.dto.care_team.CareRoles
 import com.app.shepherd.data.dto.care_team.CareTeamRoles
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.user.UserProfiles
@@ -26,6 +25,7 @@ import com.app.shepherd.ui.component.addMember.adapter.AddMemberRoleAdapter
 import com.app.shepherd.ui.component.addMember.adapter.RestrictionsModuleAdapter
 import com.app.shepherd.utils.*
 import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.AddMemberViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -60,6 +60,9 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     fragmentAddMemberBinding.edtEmail.error =
                         getString(R.string.please_enter_email_id)
                     fragmentAddMemberBinding.edtEmail.requestFocus()
+                }
+                selectedCareRole?.id == null -> {
+                    showInfo(requireContext(), "Please select any role...")
                 }
                 else -> {
                     return true
@@ -101,6 +104,9 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     hideLoading()
                     careRoles = it.data.payload.careRoles
                     if (careRoles.isNullOrEmpty()) return@observeEvent
+                    val careRole =
+                        CareTeamRoles(null, "Select Role", null, null, null, null, null, null)
+                    careRoles!!.add(0, careRole)
                     setRoleAdapter()
                 }
 
@@ -202,7 +208,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "loggedInUserID : $loggedInUserID")
 
                 // Get LovedOneId
-                val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID)
+                val lovedOneUUID =
+                    Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID)
                 Log.d(TAG, "LovedOneID : $lovedOneUUID")
 
                 // Checked the selected state of Care Team
@@ -287,7 +294,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         when (parent?.id) {
-            R.id.relationship_spinner -> {
+            R.id.sp_roles -> {
                 if (position > 0) selectCareRole(position)
             }
         }

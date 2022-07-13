@@ -49,16 +49,17 @@
 
                         <com.google.android.material.imageview.ShapeableImageView
                             android:id="@+id/ivLoggedInUserProfile"
-                            android:layout_width="@dimen/_40sdp"
-                            android:layout_height="@dimen/_40sdp"
+                            android:layout_width="@dimen/_56sdp"
+                            android:layout_height="@dimen/_56sdp"
                             android:layout_marginStart="@dimen/_20ssp"
                             android:padding="@dimen/_2sdp"
-                            android:src="@drawable/test_image"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_defalut_profile_pic"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent"
                             app:strokeColor="@color/_399282"
-                            app:strokeWidth="@dimen/_2sdp" />
+                            app:strokeWidth="@dimen/_1sdp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/ivName"
@@ -66,7 +67,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="John Smith"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_14ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvRole"
@@ -80,7 +80,6 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_book"
-                            android:text="@string/careteam_leader"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintBottom_toBottomOf="parent"

@@ -9,6 +9,7 @@ object Const {
     const val USER_ID = "USER ID"
     const val UUID = "UUID"
     const val EMAIL_ID = "EMAIL_ID"
+    const val USER_ROLE = "USER_ROLE"
     const val PAYLOAD = "PAYLOAD"
     const val DEVICE_ID = "DEVICE_ID"
     const val BIOMETRIC_ENABLE = "BIOMETRIC_ENABLE"
@@ -20,6 +21,7 @@ object Const {
     const val LOVED_ONE_ARRAY = "LOVED_ONE_ARRAY"
     const val PRIVACY_POLICY = "PRIVACY_POLICY"
     const val TERM_OF_USE = "TERM_OF_USE"
+
 }
 
 object Drawable {

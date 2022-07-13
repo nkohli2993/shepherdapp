@@ -81,7 +81,7 @@ class InvitationAdapter(
                     .into(it.imgLovedOne)
 
                 // Set Role of Care Team
-                it.textViewCareTeamRole.text = result.careRoles?.name
+                it.textViewCareTeamRole.text = "As " + result.careRoles?.name
 
                 // Set toggle
                 binding.toggleSwitch.isChecked = result.isSelected

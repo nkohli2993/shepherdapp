@@ -27,8 +27,8 @@ data class CareTeam(
     var loveUser: LoveUser? = LoveUser(),
     @SerializedName("care_roles")
     var careRoles: CareRoles? = CareRoles(),
-    @SerializedName("care_conditions")
-    var careConditions: ArrayList<String> = arrayListOf(),
+    /*@SerializedName("care_conditions")
+    var careConditions: ArrayList<CareCondition> = arrayListOf(),*/
     @SerializedName("is_selected") var isSelected: Boolean? = null
 
 ) : Parcelable

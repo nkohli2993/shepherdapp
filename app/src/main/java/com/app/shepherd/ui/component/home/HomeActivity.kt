@@ -2,7 +2,6 @@ package com.app.shepherd.ui.component.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
@@ -14,7 +13,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.app.shepherd.R
 import com.app.shepherd.ShepherdApp
-import com.app.shepherd.data.dto.login.UserLovedOne
 import com.app.shepherd.data.dto.user.UserProfiles
 import com.app.shepherd.databinding.ActivityHomeBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -51,17 +49,17 @@ class HomeActivity : BaseActivity(),
 
 
         // Get Loved One Array list from Login Screen
-       /* val lovedOneArrayList =
-            intent?.getParcelableArrayListExtra<UserLovedOne>(Const.LOVED_ONE_ARRAY)
-        if (!lovedOneArrayList.isNullOrEmpty()) {
-            Log.d(TAG, "LovedOneArrayList Size :${lovedOneArrayList.size} ")
+        /* val lovedOneArrayList =
+             intent?.getParcelableArrayListExtra<UserLovedOne>(Const.LOVED_ONE_ARRAY)
+         if (!lovedOneArrayList.isNullOrEmpty()) {
+             Log.d(TAG, "LovedOneArrayList Size :${lovedOneArrayList.size} ")
 
-            val lovedOneUserId = lovedOneArrayList[0].loveUserId
-            lovedOneUserId?.let { viewModel.getLovedOneDetails(it) }
+             val lovedOneUserId = lovedOneArrayList[0].loveUserId
+             lovedOneUserId?.let { viewModel.getLovedOneDetails(it) }
 
-        } else {
-            Log.d(TAG, "LovedOneArrayList is null")
-        }*/
+         } else {
+             Log.d(TAG, "LovedOneArrayList is null")
+         }*/
 
         viewModel.getHomeData()
         setupNavigationDrawer()
@@ -106,7 +104,8 @@ class HomeActivity : BaseActivity(),
                 is DataResult.Success -> {
                     hideLoading()
                     val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
-                    Picasso.get().load(lovedOneProfilePic).placeholder(R.drawable.ic_defalut_profile_pic)
+                    Picasso.get().load(lovedOneProfilePic)
+                        .placeholder(R.drawable.ic_defalut_profile_pic)
                         .into(ivLovedOneProfile)
                 }
             }
@@ -160,6 +159,14 @@ class HomeActivity : BaseActivity(),
 
         Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.ic_defalut_profile_pic)
             .into(binding.ivLoggedInUserProfile)
+
+        // Set User's Role
+        val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
+        if (role.isNullOrEmpty()) {
+            binding.tvRole.text = "Care Team Leader"
+        } else {
+            binding.tvRole.text = role
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
 

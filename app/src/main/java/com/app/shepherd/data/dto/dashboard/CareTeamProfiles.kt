@@ -16,6 +16,6 @@ data class CareTeamProfiles (
     @SerializedName("user"            ) var user           : User?             = User(),
     @SerializedName("love_user"       ) var loveUser       : LoveUser?         = LoveUser(),
     @SerializedName("care_roles"      ) var careRoles      : CareRoles?        = CareRoles(),
-    @SerializedName("care_conditions" ) var careConditions : ArrayList<String> = arrayListOf()
+    @SerializedName("care_conditions" ) var careConditions : ArrayList<CareCondition> = arrayListOf()
 
 )

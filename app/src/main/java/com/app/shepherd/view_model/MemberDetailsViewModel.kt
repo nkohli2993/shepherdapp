@@ -38,7 +38,7 @@ class MemberDetailsViewModel @Inject constructor(
         _updateCareTeamMemberLiveData
 
 
-    fun deleteCareTeamMember(id: String): LiveData<Event<DataResult<DeleteCareTeamMemberResponseModel>>> {
+    fun deleteCareTeamMember(id: Int): LiveData<Event<DataResult<DeleteCareTeamMemberResponseModel>>> {
         viewModelScope.launch {
             val response = careTeamsRepository.deleteCareTeamMember(id)
             withContext(Dispatchers.Main) {
@@ -51,7 +51,7 @@ class MemberDetailsViewModel @Inject constructor(
     }
 
     fun updateCareTeamMember(
-        id: String,
+        id: Int,
         updateCareTeamMemberRequestModel: UpdateCareTeamMemberRequestModel
     ): LiveData<Event<DataResult<UpdateCareTeamMemberResponseModel>>> {
         viewModelScope.launch {
