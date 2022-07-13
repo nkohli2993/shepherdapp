@@ -145,7 +145,7 @@
         <entry key="app/src/main/res/font/roboto_bold.xml" value="0.38645833333333335" />
         <entry key="app/src/main/res/layout-v23/adapter_care_points_events.xml" value="0.35625" />
         <entry key="app/src/main/res/layout-v23/adapter_events.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_team_members.xml" value="0.22" />
