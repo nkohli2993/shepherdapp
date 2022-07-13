@@ -78,6 +78,10 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                         // Save Payload to shared Pref
                         welcomeViewModel.savePayload(payload)
 
+                        //Save User Role
+                        /*payload?.userLovedOne?.get(0)?.careRoles?.name.let {
+                            it?.let { it1 -> welcomeViewModel.saveUserRole(it1) }
+                        }*/
                     }
                 }
             }

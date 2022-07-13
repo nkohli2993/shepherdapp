@@ -78,4 +78,9 @@ class WelcomeUserViewModel @Inject constructor(
     fun savePayload(payload: Payload?) {
         userRepository.savePayload(payload)
     }
+
+    //Save UserRole
+    fun saveUserRole(role: String) {
+        userRepository.saveUserRole(role)
+    }
 }
