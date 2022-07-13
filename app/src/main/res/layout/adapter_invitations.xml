@@ -67,7 +67,6 @@
                     style="@style/TextViewPoppinsRegular"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@{data.careRoles.name}"
                     android:textSize="@dimen/_13ssp"
                     app:layout_constraintEnd_toEndOf="@+id/txtLovedOneName"
                     app:layout_constraintStart_toStartOf="@+id/txtLovedOneName"
