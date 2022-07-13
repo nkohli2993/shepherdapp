@@ -28,28 +28,36 @@
             android:orientation="horizontal"
             android:padding="@dimen/_8sdp">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imageViewCareTeam"
+            <LinearLayout
+                android:id="@+id/llImageWrapper"
                 android:layout_width="@dimen/_62sdp"
                 android:layout_height="@dimen/_62sdp"
-                android:padding="@dimen/_5sdp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_defalut_profile_pic"
+                android:background="@drawable/bg_image_place_holder"
+                android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent"
-                app:strokeColor="@color/_A26DCB"
-                app:strokeWidth="@dimen/_1sdp" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageViewCareTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_defalut_profile_pic"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/imageViewCareTeam"
-                app:layout_constraintStart_toEndOf="@+id/imageViewCareTeam"
-                app:layout_constraintTop_toTopOf="@id/imageViewCareTeam">
+                app:layout_constraintBottom_toBottomOf="@+id/llImageWrapper"
+                app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
+                app:layout_constraintTop_toTopOf="@id/llImageWrapper">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewCareTeamName"
@@ -58,8 +66,8 @@
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:textColor="@color/colorBlack"
                     android:textSize="@dimen/_14ssp"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewCareTeam"
-                    app:layout_constraintTop_toTopOf="@+id/imageViewCareTeam" />
+                    app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/llImageWrapper" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewCareTeamRole"
@@ -68,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:textSize="@dimen/_13ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageViewCareTeam"
+                    app:layout_constraintBottom_toBottomOf="@+id/llImageWrapper"
                     app:layout_constraintStart_toStartOf="@+id/textViewCareTeamName" />
 
             </LinearLayout>
