@@ -15,8 +15,6 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"
-        android:padding="@dimen/_10sdp"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -32,35 +30,35 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/_FCFCFC"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivBack">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/_10sdp">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/_8sdp"
-                    android:background="@color/colorWhite">
+                    android:background="@color/colorWhite"
+                    android:paddingVertical="@dimen/_8sdp">
 
                     <com.google.android.material.imageview.ShapeableImageView
                         android:id="@+id/imgCareTeamMember"
-                        android:layout_width="@dimen/_60sdp"
-                        android:layout_height="@dimen/_60sdp"
+                        android:layout_width="@dimen/_65sdp"
+                        android:layout_height="@dimen/_65sdp"
                         android:layout_marginStart="4dp"
-                        android:adjustViewBounds="true"
                         android:padding="@dimen/_5sdp"
+                        android:scaleType="fitXY"
                         android:src="@drawable/ic_defalut_profile_pic"
-                        android:scaleType="centerCrop"
-                        android:background="@color/colorWhite"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:strokeWidth="@dimen/_2sdp"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent"
                         app:strokeColor="@color/_A26DCB"
-                        app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
+                        app:strokeWidth="@dimen/_1sdp" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -76,9 +74,8 @@
                             android:id="@+id/txtCareTeamMemberName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Mary Tyler"
                             android:textColor="@color/_192032"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_16ssp"
                             app:fontFamily="@font/gotham_medium" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -86,9 +83,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_5sdp"
-                            android:text="Care Team Leader"
                             android:textColor="@color/_192032"
-                            android:textSize="@dimen/_12ssp"
+                            android:textSize="@dimen/_16ssp"
                             app:fontFamily="@font/gotham_book" />
 
                     </LinearLayout>
@@ -97,49 +93,46 @@
                         android:id="@+id/txtEmailCare"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:drawableStart="@drawable/ic_email_care"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
-                        android:text="marytyler@email.com"
+                        android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember"
-                        android:layout_marginTop="@dimen/_10sdp" />
+                        app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtPhoneCare"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:drawableStart="@drawable/ic_phone_care"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
-                        android:text="+02 900-538-2002"
+                        android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txtEmailCare"
-                        android:layout_marginTop="@dimen/_10sdp" />
+                        app:layout_constraintTop_toBottomOf="@id/txtEmailCare" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtAddressCare"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:drawableStart="@drawable/ic_address_care"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
-                        android:text="402 Harvey Lane Ponte Vedra Beach FL 32082"
+                        android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txtPhoneCare"
-                        android:layout_marginTop="@dimen/_10sdp" />
+                        app:layout_constraintTop_toBottomOf="@id/txtPhoneCare" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -147,22 +140,23 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/_FCFCFC">
+                    android:background="@color/_FCFCFC"
+                    android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_8sdp"
-                        android:background="@color/colorWhite"
                         android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_20sdp">
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:background="@color/colorWhite"
+                        app:cardCornerRadius="@dimen/_16sdp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_7sdp">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="0dp"
@@ -173,7 +167,7 @@
                                 android:text="@string/careteam"
                                 android:textColor="@color/_192032"
                                 android:textSize="@dimen/_12ssp"
-                                app:fontFamily="@font/gotham_book"
+                                app:fontFamily="@font/gotham_medium"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
@@ -195,17 +189,18 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_8sdp"
-                        android:background="@color/colorWhite"
                         android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_10sdp">
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/colorWhite"
+                        app:cardCornerRadius="@dimen/_16sdp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:background="@color/colorWhite">
+                            android:background="@color/colorWhite"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_7sdp">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="0dp"
@@ -216,7 +211,7 @@
                                 android:text="@string/lockbox"
                                 android:textColor="@color/_192032"
                                 android:textSize="@dimen/_12ssp"
-                                app:fontFamily="@font/gotham_book"
+                                app:fontFamily="@font/gotham_medium"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
@@ -239,17 +234,18 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_8sdp"
-                        android:background="@color/colorWhite"
                         android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_10sdp">
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/colorWhite"
+                        app:cardCornerRadius="@dimen/_16sdp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:background="@color/colorWhite">
+                            android:background="@color/colorWhite"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_7sdp">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="0dp"
@@ -260,7 +256,7 @@
                                 android:text="@string/mymedlist"
                                 android:textColor="@color/_192032"
                                 android:textSize="@dimen/_12ssp"
-                                app:fontFamily="@font/gotham_book"
+                                app:fontFamily="@font/gotham_medium"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
@@ -283,17 +279,18 @@
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardCornerRadius="@dimen/_8sdp"
-                        android:background="@color/colorWhite"
                         android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_10sdp">
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/colorWhite"
+                        app:cardCornerRadius="@dimen/_16sdp">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
                             android:layout_marginHorizontal="@dimen/_5sdp"
-                            android:background="@color/colorWhite">
+                            android:background="@color/colorWhite"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_7sdp">
 
                             <androidx.appcompat.widget.AppCompatTextView
                                 android:layout_width="0dp"
@@ -304,7 +301,7 @@
                                 android:text="@string/resources"
                                 android:textColor="@color/_192032"
                                 android:textSize="@dimen/_12ssp"
-                                app:fontFamily="@font/gotham_book"
+                                app:fontFamily="@font/gotham_medium"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
@@ -326,9 +323,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginHorizontal="@dimen/_7sdp"
-                        android:layout_marginTop="@dimen/_20sdp">
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:orientation="horizontal">
 
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btnDelete"

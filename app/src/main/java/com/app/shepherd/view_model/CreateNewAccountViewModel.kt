@@ -139,9 +139,9 @@ class CreateNewAccountViewModel @Inject constructor(
 
 
     // Save Successfully Registered User's Info into Preferences
-   /* fun saveUser(user: UserProfiles) {
-        userRepository.saveUser(user)
-    }*/
+    /* fun saveUser(user: UserProfiles) {
+         userRepository.saveUser(user)
+     }*/
 
     // Save token
     fun saveToken(token: String) {
@@ -156,5 +156,9 @@ class CreateNewAccountViewModel @Inject constructor(
     // Save uuid
     fun saveUUID(uuid: String) {
         userRepository.saveUUID(uuid)
+    }
+
+    fun saveEmail(email: String) {
+        userRepository.saveEmail(email)
     }
 }

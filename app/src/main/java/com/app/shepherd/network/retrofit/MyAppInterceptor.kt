@@ -25,7 +25,9 @@ class MyAppInterceptor @Inject constructor() : Interceptor {
             )
             .add(
                 "device-id",
-                "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.DEVICE_ID, "")}"
+                "${
+                    Prefs.with(ShepherdApp.appContext)!!.getString(Const.DEVICE_ID, "")
+                }" + "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.EMAIL_ID, "")}"
             )
             .build()
 

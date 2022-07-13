@@ -34,7 +34,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class MemberDetailsFragment : BaseFragment<FragmentAddMemberBinding>(),
+class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     View.OnClickListener {
 
     private val memberDetailsViewModel: MemberDetailsViewModel by viewModels()

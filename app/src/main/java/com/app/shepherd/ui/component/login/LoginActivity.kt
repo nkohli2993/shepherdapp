@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.login.UserLovedOne
 import com.app.shepherd.databinding.ActivityLoginNewBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -228,6 +229,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                     }
                                 }
                             }
+                            payload?.email?.let { email ->
+                                loginViewModel.saveEmail(
+                                    email
+                                )
+                            }
                         }
 
 
@@ -274,12 +280,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     ) {
                         showBioMetricDialog()
                     } else {
-                        if (userLovedOneArrayList.isNullOrEmpty()) {
-                            navigateToWelcomeUserScreen()
-                        } else {
-                            //navigateToHomeScreen()
-                            navigateToHomeScreenWithLovedOneArray()
-                        }
+                        navigateToScreen()
+
                     }
                 }
 
@@ -314,10 +316,21 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             Prefs.with(this)!!
                                 .save(Const.BIOMETRIC_ENABLE, payload.userProfiles?.isBiometric!!)
                         }
-                        navigateToHomeScreen()
+                        Prefs.with(this)!!.save(SECOND_TIME_LOGIN, true)
+                        navigateToScreen()
                     }
                 }
             }
+        }
+    }
+
+    private fun navigateToScreen() {
+
+        if (userLovedOneArrayList.isNullOrEmpty()) {
+            navigateToWelcomeUserScreen()
+        } else {
+            //navigateToHomeScreen()
+            navigateToHomeScreenWithLovedOneArray()
         }
     }
 
@@ -333,11 +346,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
         noBtn.setOnClickListener {
             dialog.dismiss()
-            if (userLovedOneArrayList.isNullOrEmpty()) {
-                navigateToAddLovedOneScreen()
-            } else {
-                navigateToHomeScreen()
-            }
+            navigateToScreen()
         }
         dialog.setCancelable(false)
         dialog.show()
@@ -349,10 +358,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
-    private fun navigateToHomeScreen() {
-        Prefs.with(this)!!.save(SECOND_TIME_LOGIN, true)
-        startActivityWithFinish<HomeActivity>()
-    }
 
     private fun navigateToAddLovedOneScreen() {
         startActivityWithFinish<AddLovedOneActivity>()
@@ -406,12 +411,21 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     private fun doLogin(isBioMetric: Boolean) {
         isBioMetricLogin = isBioMetric
+
         loginViewModel.apply {
             if (isBioMetric) {
                 loginData.value?.let {
-                    it.device = CommonFunctions.getDeviceId(this@LoginActivity)
+                    it.device = CommonFunctions.getDeviceId(this@LoginActivity) + "${
+                        Prefs.with(
+                            ShepherdApp.appContext
+                        )!!.getString(Const.EMAIL_ID, "")
+                    }"
                 }
             } else {
+                loginViewModel.saveEmail(
+                    binding.edtEmail.text.toString().trim()
+                )
+
                 loginData.value?.let {
                     it.device = null
                 }

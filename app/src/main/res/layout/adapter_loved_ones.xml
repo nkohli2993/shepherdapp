@@ -16,15 +16,19 @@
         android:paddingHorizontal="@dimen/_12sdp"
         android:paddingVertical="@dimen/_8sdp">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgLovedOne"
             android:layout_width="@dimen/_40sdp"
             android:layout_height="@dimen/_40sdp"
-            android:background="@drawable/checkbox_background"
-            android:src="@drawable/test_image"
+            android:padding="@dimen/_2sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_defalut_profile_pic"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent"
+            app:strokeColor="@color/_A26DCB"
+            app:strokeWidth="@dimen/_1sdp" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtLovedOneName"

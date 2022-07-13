@@ -192,6 +192,11 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                                     uuid
                                 )
                             }
+                            payload.email?.let { email ->
+                                createNewAccountViewModel.saveEmail(
+                                    email
+                                )
+                            }
                         }
                         if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                                 this
@@ -289,6 +294,9 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             // Create Account
             R.id.btnCreate -> {
                 if (isValid) {
+                    createNewAccountViewModel.saveEmail(
+                        editTextEmail.text.toString().trim()
+                    )
                     firstName = edtFirstName.text.toString().trim()
                     lastName = edtLastName.text.toString().trim()
                     email = editTextEmail.text.toString().trim()

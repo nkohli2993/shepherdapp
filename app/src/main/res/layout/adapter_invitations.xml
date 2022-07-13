@@ -37,13 +37,17 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imgLovedOne"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
+                    android:layout_width="@dimen/_55sdp"
+                    android:layout_height="@dimen/_55sdp"
                     android:adjustViewBounds="true"
+                    android:padding="@dimen/_1sdp"
+                    android:scaleType="fitXY"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent"
+                    app:strokeColor="@color/_A26DCB"
+                    app:strokeWidth="@dimen/_1sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtLovedOneName"

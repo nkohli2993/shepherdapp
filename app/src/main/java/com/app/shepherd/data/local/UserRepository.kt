@@ -57,6 +57,10 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
         Prefs.with(ShepherdApp.appContext)!!.save(Const.UUID, uuid)
     }
 
+    fun saveEmail(email: String) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.EMAIL_ID, email)
+    }
+
     fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
     fun saveUserRole(role: String) {

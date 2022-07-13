@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_box_new"
                 android:fontFamily="@font/gotham_medium"
-                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_12sdp"
                 android:paddingVertical="@dimen/_5sdp"
                 android:text="@string/plus_new"
                 android:textColor="@color/_A26DCB"
