@@ -5,26 +5,40 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.login.UserProfile
+import com.app.shepherd.ShepherdApp
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.AdapterLovedOnesBinding
-import com.app.shepherd.ui.base.listeners.RecyclerItemListener
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
 import com.app.shepherd.view_model.ProfileViewModel
 import com.squareup.picasso.Picasso
 
 
 class LovedOnesAdapter(
     private val viewModel: ProfileViewModel,
-    var lovedOneProfileList: MutableList<UserProfile> = ArrayList()
+    var careTeams: MutableList<CareTeam> = ArrayList()
 ) :
     RecyclerView.Adapter<LovedOnesAdapter.LovedOnesViewHolder>() {
     lateinit var binding: AdapterLovedOnesBinding
     lateinit var context: Context
+    private var onItemClickListener: OnItemClickListener? = null
+    private var lastSelectedPosition = -1
+    private var dismissLastSelectedOption: (() -> Unit)? = null
 
 
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
-        override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
-        }
+    /* private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
+         override fun onItemSelected(vararg itemData: Any) {
+             // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+         }
+     }*/
+
+    interface OnItemClickListener {
+        fun onItemClick(careTeam: CareTeam)
+    }
+
+
+    fun setClickListener(clickListener: OnItemClickListener) {
+        onItemClickListener = clickListener
     }
 
     override fun onCreateViewHolder(
@@ -42,30 +56,69 @@ class LovedOnesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return lovedOneProfileList.size
+        return careTeams.size
     }
 
     override fun onBindViewHolder(holder: LovedOnesViewHolder, position: Int) {
-        holder.bind(lovedOneProfileList[position], onItemClickListener)
+        holder.bind(careTeams[position])
     }
 
 
-    class LovedOnesViewHolder(private val itemBinding: AdapterLovedOnesBinding) :
+    inner class LovedOnesViewHolder(private val itemBinding: AdapterLovedOnesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(userProfiles: UserProfile, recyclerItemListener: RecyclerItemListener) {
+        fun bind(careTeam: CareTeam) {
             // itemBinding.data = dashboard
-            val fullName = userProfiles.firstname + " " + userProfiles.lastname
-            itemBinding.txtLovedOneName.text = fullName
+            careTeam.let {
+                // Set full name
+                val fullName = it.loveUser?.firstname + " " + it.loveUser?.lastname
+                itemBinding.txtLovedOneName.text = fullName
 
-            Picasso.get().load(userProfiles.profilePhoto).placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(itemBinding.imgLovedOne)
+                //Set Image
+                Picasso.get().load(it.loveUser?.profilePhoto)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(itemBinding.imgLovedOne)
 
-            itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    userProfiles
-                )
+                // Get lovedOneID from Shared Pref
+                val lovedOneIDInPrefs =
+                    Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+                itemBinding.checkbox.isChecked = lovedOneIDInPrefs.equals(it.loveUserId)
+
+                if (lovedOneIDInPrefs.equals(it.loveUserId)) {
+                    dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
+                    lastSelectedPosition = bindingAdapterPosition
+                    itemBinding.checkbox.isChecked = true
+                    careTeam.isSelected = true
+                } else {
+                    itemBinding.checkbox.isChecked = false
+                    careTeam.isSelected = false
+                }
             }
+
+            itemBinding.checkbox.setOnClickListener {
+                deselectCareTeams()
+                careTeam.isSelected = true
+                dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
+                lastSelectedPosition = bindingAdapterPosition
+                itemBinding.checkbox.isChecked = true
+                onItemClickListener?.onItemClick(careTeam)
+            }
+        }
+    }
+
+    private fun deselectCareTeams() {
+        careTeams.forEach {
+            it.isSelected = false
+        }
+    }
+
+    private fun dismissLastSelectedCareTeam(binding: AdapterLovedOnesBinding, position: Int) {
+        if (lastSelectedPosition != -1) {
+            dismissLastSelectedOption?.invoke()
+            lastSelectedPosition = position
+        }
+        dismissLastSelectedOption = listener@{
+            binding.checkbox.isChecked = false
         }
     }
 
@@ -78,9 +131,9 @@ class LovedOnesAdapter(
         return position
     }
 
-    fun addData(lovedOneProfileList: ArrayList<UserProfile>?) {
-        this.lovedOneProfileList.clear()
-        lovedOneProfileList?.let { this.lovedOneProfileList.addAll(it) }
+    fun addData(careTeams: ArrayList<CareTeam>?) {
+        this.careTeams.clear()
+        careTeams?.let { this.careTeams.addAll(it) }
         notifyDataSetChanged()
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.app.shepherd.R
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.login.Payload
 import com.app.shepherd.data.dto.login.UserLovedOne
 import com.app.shepherd.data.dto.login.UserProfile
@@ -16,6 +17,7 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.profile.adapter.LovedOnesAdapter
+import com.app.shepherd.utils.Status
 import com.app.shepherd.utils.extensions.getStringWithHyphen
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.view_model.ProfileViewModel
@@ -27,18 +29,25 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickListener {
+class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickListener,
+    LovedOnesAdapter.OnItemClickListener {
 
     private val profileViewModel: ProfileViewModel by viewModels()
+    var lovedOnesAdapter: LovedOnesAdapter? = null
 
     private lateinit var fragmentProfileBinding: FragmentProfileBinding
 
     private var payload: Payload? = null
     private var lovedOneArrayList: ArrayList<UserLovedOne>? = null
     private var lovedOneProfileList: ArrayList<UserProfile>? = arrayListOf()
+    private var careTeams: ArrayList<CareTeam> = arrayListOf()
+    private var selectedCareTeams: ArrayList<CareTeam> = arrayListOf()
 
     // private var lovedOneUserIDs: ArrayList<Int?>? = null
     private val TAG: String? = null
+    private var page = 1
+    private var limit = 10
+    private var status = Status.One.status
 
 
     override fun onCreateView(
@@ -51,6 +60,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         // Get loggedIn User's Profile info by hitting api
         //profileViewModel.getUserDetails()
         profileViewModel.getUserDetailByUUID()
+
+        // Get care Teams for loggedIn User
+        profileViewModel.getCareTeamsForLoggedInUser(page, limit, status)
 
         return fragmentProfileBinding.root
     }
@@ -128,14 +140,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                     hideLoading()
                     payload = it.data.payload
                     initView()
-                    getLovedOneInfo()
+//                    getLovedOneInfo()
                 }
             }
         }
 
-
-        // Observe Loved One Detail
-        profileViewModel.lovedOneDetailByUUIDLiveData.observeEvent(this) {
+        profileViewModel.careTeamsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -146,15 +156,35 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val lovedOneProfile = it.data.payload?.userProfiles
-                    if (lovedOneProfile != null) {
-                        lovedOneProfileList?.clear()
-                        lovedOneProfileList?.add(lovedOneProfile)
-                    }
-                    setLovedOnesAdapter(lovedOneProfileList)
+                    careTeams = it.data.payload.careTeams
+                    setLovedOnesAdapter(careTeams)
+
                 }
             }
         }
+
+
+        // Observe Loved One Detail
+        /* profileViewModel.lovedOneDetailByUUIDLiveData.observeEvent(this) {
+             when (it) {
+                 is DataResult.Failure -> {
+                     hideLoading()
+                     it.message?.let { showError(requireContext(), it.toString()) }
+                 }
+                 is DataResult.Loading -> {
+                     showLoading("")
+                 }
+                 is DataResult.Success -> {
+                     hideLoading()
+                     val lovedOneProfile = it.data.payload?.userProfiles
+                     if (lovedOneProfile != null) {
+                         lovedOneProfileList?.clear()
+                         lovedOneProfileList?.add(lovedOneProfile)
+                     }
+                     setLovedOnesAdapter(lovedOneProfileList)
+                 }
+             }
+         }*/
 
     }
 
@@ -170,16 +200,21 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                 lovedOneUserIDs[i]?.let { profileViewModel.getLovedOneDetails(it) }
             }
         }
-
-
     }
 
-    private fun setLovedOnesAdapter(lovedOneProfileList: ArrayList<UserProfile>?) {
-        val lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
-        lovedOnesAdapter.addData(lovedOneProfileList)
+    private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeam>?) {
+        lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
+        lovedOnesAdapter?.addData(careTeams)
         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter
-
+        lovedOnesAdapter?.setClickListener(this)
     }
+
+    /* private fun setLovedOnesAdapter(lovedOneProfileList: ArrayList<UserProfile>?) {
+         val lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
+         lovedOnesAdapter.addData(lovedOneProfileList)
+         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter
+
+     }*/
 
     private fun setPendingInvitationsAdapter() {
 //        val pendingInvitationsAdapter = PendingInvitationsAdapter(profileViewModel)
@@ -197,6 +232,22 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_profile
+    }
+
+    override fun onItemClick(careTeam: CareTeam) {
+        // Save the selected lovedOne UUID in shared prefs
+        careTeam.loveUserId?.let { profileViewModel.saveLovedOneUUID(it) }
+
+       /* if (selectedCareTeams.isEmpty()) {
+            selectedCareTeams.add(careTeam)
+        } else {
+            selectedCareTeams.forEach {
+                it.isSelected = false
+            }
+            selectedCareTeams.add(careTeam)
+        }
+        lovedOnesAdapter?.addData(selectedCareTeams)*/
+
     }
 
 

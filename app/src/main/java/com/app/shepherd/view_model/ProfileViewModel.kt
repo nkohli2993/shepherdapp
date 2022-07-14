@@ -4,12 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
+import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.signup.BioMetricData
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import com.app.shepherd.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.auth_repository.AuthRepository
+import com.app.shepherd.data.remote.care_teams.CareTeamsRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
@@ -26,7 +28,8 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val dataRepository: DataRepository,
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val careTeamsRepository: CareTeamsRepository
 ) :
     BaseViewModel() {
 
@@ -56,6 +59,11 @@ class ProfileViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
     var lovedOneDetailByUUIDLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
         _lovedOneDetailByUUIDLiveData
+
+    private var _careTeamsResponseLiveData =
+        MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
+    var careTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
+        _careTeamsResponseLiveData
 
 
     fun registerBioMetric(
@@ -134,6 +142,28 @@ class ProfileViewModel @Inject constructor(
             }
         }
         return lovedOneDetailByUUIDLiveData
+    }
+
+
+    // Get Care Teams for Logged In User
+    fun getCareTeamsForLoggedInUser(
+        pageNumber: Int,
+        limit: Int,
+        status: Int
+    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        viewModelScope.launch {
+            val response =
+                careTeamsRepository.getCareTeamsForLoggedInUser(pageNumber, limit, status)
+            withContext(Dispatchers.Main) {
+                response.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return careTeamsResponseLiveData
+    }
+
+    // Save Loved One UUID
+    fun saveLovedOneUUID(lovedOneUUID: String) {
+        userRepository.saveLovedOneUUId(lovedOneUUID)
     }
 
 }
