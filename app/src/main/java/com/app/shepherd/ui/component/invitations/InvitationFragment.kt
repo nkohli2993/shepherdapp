@@ -88,7 +88,7 @@ class InvitationFragment : BaseFragment<FragmentInvitationBinding>(), View.OnCli
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(requireContext(), "Invitation Accepted Successfully...")
-                    //invitationViewModel.getJoinCareTeamInvitations(sendType, status)
+                    invitationViewModel.getJoinCareTeamInvitations(sendType, status)
                 }
             }
         }
