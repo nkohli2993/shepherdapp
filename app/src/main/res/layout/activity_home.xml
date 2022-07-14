@@ -47,19 +47,26 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/ivLoggedInUserProfile"
-                            android:layout_width="@dimen/_56sdp"
-                            android:layout_height="@dimen/_56sdp"
+                        <LinearLayout
+                            android:id="@+id/llImageWrapper"
+                            android:layout_width="@dimen/_65sdp"
+                            android:layout_height="@dimen/_65sdp"
                             android:layout_marginStart="@dimen/_20ssp"
-                            android:padding="@dimen/_2sdp"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/ic_defalut_profile_pic"
+                            android:background="@drawable/profile_image_bg"
+                            android:orientation="vertical"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent"
-                            app:strokeColor="@color/_399282"
-                            app:strokeWidth="@dimen/_1sdp" />
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/ivLoggedInUserProfile"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="@dimen/_1sdp"
+                                android:padding="@dimen/_2sdp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/ic_defalut_profile_pic"
+                                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
+                        </LinearLayout>
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/ivName"
@@ -70,7 +77,7 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_14ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvRole"
-                            app:layout_constraintStart_toEndOf="@+id/ivLoggedInUserProfile"
+                            app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_chainStyle="packed" />
 
@@ -83,7 +90,7 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_12ssp"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivLoggedInUserProfile"
+                            app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                             app:layout_constraintTop_toBottomOf="@+id/ivName" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -357,7 +357,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/_187AB6">
+                    android:background="@color/_0086AC">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:layout_width="wrap_content"

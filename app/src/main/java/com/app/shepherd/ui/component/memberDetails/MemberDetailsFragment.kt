@@ -91,7 +91,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             val phoneNumber = phoneArr?.get(1)
             //val phoneWithHyphen = phoneNumber?.let { it1 -> getStringWithHyphen(it1) }
             val phoneWithHyphen = phoneNumber?.getStringWithHyphen(phoneNumber)
-            val phoneNo = "+$phoneCode $phoneWithHyphen"
+            val phoneNo = "$phoneCode $phoneWithHyphen"
             Log.d(TAG, "initView: $phoneNo")
 
 
