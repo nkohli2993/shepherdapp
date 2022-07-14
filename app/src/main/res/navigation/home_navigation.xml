@@ -287,6 +287,22 @@
         android:id="@+id/nav_add_loved_one"
         android:name="com.app.shepherd.ui.component.addLovedOne.AddLovedOneActivity"
         android:label="@string/add_loved_one"
-        tools:layout="@layout/activity_add_loved_one" />
+        tools:layout="@layout/activity_add_loved_one">
 
+        <argument
+            android:name="source"
+            android:defaultValue="register"
+            app:argType="string"
+            app:nullable="true" />
+    </activity>
+    <fragment
+        android:id="@+id/nav_loved_one"
+        android:name="com.app.shepherd.ui.component.loved_one.LovedOnesFragment"
+        android:label="@string/loved_one"
+        tools:layout="@layout/fragment_loved_ones">
+
+        <action
+            android:id="@+id/action_nav_loved_one_to_nav_add_loved_one"
+            app:destination="@id/nav_add_loved_one" />
+    </fragment>
 </navigation>

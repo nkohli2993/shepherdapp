@@ -32,34 +32,34 @@
             android:id="@+id/layoutCareTeam"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
             android:layout_below="@+id/ivBack"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/toggle_switch_to_join_care_team"
-                android:textSize="@dimen/_16ssp"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
+                android:fontFamily="@font/gotham_bold"
+                android:text="@string/toggle_switch_to_join_care_team"
                 android:textColor="@color/_192032"
-                android:fontFamily="@font/gotham_bold" />
+                android:textSize="@dimen/_16ssp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewMembers"
                 android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_weight="1"
-                android:layout_height="0dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/adapter_join_care_team" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/buttonJoin"
                 style="@style/ButtonPrimary"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginVertical="@dimen/_24sdp"
                 android:backgroundTint="@color/_399282"
                 android:onClick="@{listener::onClick}"
@@ -74,14 +74,14 @@
             android:id="@+id/txtNoCareTeamFound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/no_care_team_found"
-            android:textColor="#399282"
-            android:padding="@dimen/_10sdp"
-            android:visibility="gone"
             android:layout_centerInParent="true"
             android:layout_gravity="center"
-            app:fontFamily="@font/gotham_bold"
-            android:textSize="@dimen/_20ssp" />
+            android:padding="@dimen/_10sdp"
+            android:text="@string/no_care_team_found"
+            android:textColor="#399282"
+            android:textSize="@dimen/_20ssp"
+            android:visibility="gone"
+            app:fontFamily="@font/gotham_bold" />
 
     </RelativeLayout>
 

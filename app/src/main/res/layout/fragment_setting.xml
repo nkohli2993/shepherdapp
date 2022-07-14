@@ -206,9 +206,9 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clPrivacyPolicy"
                     android:layout_width="match_parent"
-                    android:onClick="@{listener::onClick}"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:onClick="@{listener::onClick}"
                     android:paddingVertical="@dimen/_10sdp">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -236,10 +236,10 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clTermOfUse"
-                    android:onClick="@{listener::onClick}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:onClick="@{listener::onClick}"
                     android:paddingVertical="@dimen/_10sdp">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -310,6 +310,7 @@
             android:drawablePadding="@dimen/_10sdp"
             android:fontFamily="@font/gotham_bold"
             android:onClick="@{listener::onClick}"
+            android:padding="10dp"
             android:text="@string/log_out"
             android:textColor="@color/_D7293F"
             android:textSize="@dimen/_14ssp"

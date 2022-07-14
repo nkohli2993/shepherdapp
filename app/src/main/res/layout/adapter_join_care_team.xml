@@ -37,8 +37,8 @@
 
                 <LinearLayout
                     android:id="@+id/llImageWrapper"
-                    android:layout_width="@dimen/_55sdp"
-                    android:layout_height="@dimen/_55sdp"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
                     android:background="@drawable/bg_image_place_holder"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"

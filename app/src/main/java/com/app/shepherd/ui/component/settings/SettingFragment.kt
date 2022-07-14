@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.settings
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,14 +9,17 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.databinding.FragmentSettingBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.utils.BiometricUtils
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showSuccess
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +27,14 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
 
     private lateinit var fragmentSettingBinding: FragmentSettingBinding
     private val settingViewModel: SettingViewModel by viewModels()
+
+    private lateinit var homeActivity: HomeActivity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -120,7 +132,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                     )
                 )
             }
+            R.id.tvLogout -> {
+                homeActivity.navigateToLoginScreen()
+            }
         }
-
     }
 }

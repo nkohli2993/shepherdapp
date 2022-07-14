@@ -3,6 +3,7 @@ package com.app.shepherd.ui.component.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -69,6 +70,13 @@ class HomeActivity : BaseActivity(),
         binding.appBarDashboard.ivMenu.setOnClickListener(View.OnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START, true)
         })
+        setOnClickListeners()
+    }
+
+    private fun setOnClickListeners() {
+        binding.appBarDashboard.ivLovedOneProfile.setOnClickListener {
+            navController.navigate(R.id.nav_loved_one)
+        }
     }
 
 
@@ -84,8 +92,7 @@ class HomeActivity : BaseActivity(),
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    showSuccess(this, " User logged out successfully")
-                    Prefs.with(ShepherdApp.appContext)?.removeAll()
+
                     navigateToLoginScreen()
                 }
             }
@@ -354,13 +361,15 @@ class HomeActivity : BaseActivity(),
         drawerLayout?.closeDrawer(GravityCompat.START)
     }
 
-    private fun navigateToLoginScreen() {
+    fun navigateToLoginScreen() {
         //startActivityWithFinish<LoginActivity>()
-
+        showSuccess(this, "User logged out successfully")
+        Prefs.with(ShepherdApp.appContext)?.removeAll()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
     }
+
 }

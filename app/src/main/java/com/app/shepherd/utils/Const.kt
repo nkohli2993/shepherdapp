@@ -21,6 +21,7 @@ object Const {
     const val LOVED_ONE_ARRAY = "LOVED_ONE_ARRAY"
     const val PRIVACY_POLICY = "PRIVACY_POLICY"
     const val TERM_OF_USE = "TERM_OF_USE"
+    const val ADD_LOVE_ONE = "ADD_LOVE_ONE"
 
 }
 
