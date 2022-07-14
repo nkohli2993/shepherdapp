@@ -58,6 +58,7 @@ class InvitationFragment : BaseFragment<FragmentInvitationBinding>(), View.OnCli
                         setMessage("No Invitations Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()
+                            findNavController().popBackStack()
                         }
                     }.create()
                     dialog.show()
