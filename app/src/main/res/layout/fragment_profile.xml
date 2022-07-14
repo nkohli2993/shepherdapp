@@ -31,8 +31,8 @@
 
                 <LinearLayout
                     android:id="@+id/llImageWrapper"
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_80sdp"
+                    android:layout_width="@dimen/_85sdp"
+                    android:layout_height="@dimen/_85sdp"
                     android:layout_marginStart="@dimen/_10ssp"
                     android:background="@drawable/bg_image_place_holder"
                     android:orientation="vertical"
@@ -68,6 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10ssp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_book"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
