@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.care_team.CareTeam
+import com.app.shepherd.data.dto.invitation.Results
 import com.app.shepherd.databinding.AdapterJoinCareTeamBinding
-import com.app.shepherd.ui.component.joinCareTeam.JoinCareTeamViewModel
 import com.app.shepherd.view_model.CareTeamsViewModel
+import com.squareup.picasso.Picasso
 
 
 class JoinCareTeamAdapter(
     private val viewModel: CareTeamsViewModel,
-    var careTeams: MutableList<CareTeam> = ArrayList()
+    var results: MutableList<Results> = ArrayList()
 ) :
     RecyclerView.Adapter<JoinCareTeamAdapter.ContentViewHolder>() {
     lateinit var binding: AdapterJoinCareTeamBinding
@@ -24,13 +24,13 @@ class JoinCareTeamAdapter(
         onItemClickListener = clickListener
     }
 
-    fun updateCareTeams(careTeams: ArrayList<CareTeam>) {
-        this.careTeams = careTeams
+    fun updateCareTeams(results: ArrayList<Results>) {
+        this.results = results
         notifyDataSetChanged()
     }
 
     interface OnItemClickListener {
-        fun onItemClick(careTeam: CareTeam)
+        fun onItemClick(id: Results?)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -46,23 +46,44 @@ class JoinCareTeamAdapter(
     }
 
     override fun getItemCount(): Int {
-        return careTeams.size
+        return results.size
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
-        holder.bind(careTeams[position])
+        holder.bind(results[position])
     }
 
     inner class ContentViewHolder constructor(private var itemBinding: AdapterJoinCareTeamBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(careTeam: CareTeam?) {
-            if(careTeam == null) return
-            itemBinding.data = careTeam
-            binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
-                careTeam.isSelected = isChecked
+        fun bind(result: Results?) {
+            if (result == null) return
+            itemBinding.data = result
+            itemBinding.let {
+                // Set Name  of loved One
+                it.textViewCareTeamName.text = result.name
 
-                onItemClickListener?.onItemClick(careTeam)
+                // Set Profile Pic of loved One
+                Picasso.get().load(result.image)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(it.imageViewCareTeam)
+
+                // Set Role of Care Team
+                it.textViewCareTeamRole.text = "As " + result.careRoles?.name
+
+                // Set toggle
+                binding.toggleSwitch.isChecked = result.isSelected
+
+            }
+
+
+
+            binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
+                result.isSelected = isChecked
+
+                if (isChecked) {
+                    onItemClickListener?.onItemClick(result)
+                }
             }
             itemBinding.cardView.setOnClickListener { itemBinding.toggleSwitch.performClick() }
         }

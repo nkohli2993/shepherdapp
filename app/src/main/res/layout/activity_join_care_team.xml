@@ -16,17 +16,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/toolBarNew"
-            layout="@layout/include_toolbar_new" />
+        <!-- <include
+             android:id="@+id/toolBarNew"
+             layout="@layout/include_toolbar_new" />-->
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{listener::onClick}"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back" />
 
         <LinearLayout
             android:id="@+id/layoutCareTeam"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
-            android:layout_below="@+id/toolBarNew"
-
+            android:layout_below="@+id/ivBack"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView

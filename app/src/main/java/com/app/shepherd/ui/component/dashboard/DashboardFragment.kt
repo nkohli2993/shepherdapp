@@ -45,7 +45,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         // viewModel.getCareTeams(pageNumber, limit, status)
 
         //Get Home Data
-        viewModel.getHomeData()
+        //viewModel.getHomeData()
     }
 
     override fun onCreateView(
@@ -54,6 +54,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         savedInstanceState: Bundle?
     ): View {
         fragmentDashboardBinding = FragmentDashboardBinding.inflate(inflater, container, false)
+        //Get Home Data
+        viewModel.getHomeData()
         return fragmentDashboardBinding.root
     }
 

@@ -137,7 +137,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvYourLovedOnes"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:background="@color/_FCFCFC"

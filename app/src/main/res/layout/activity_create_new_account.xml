@@ -89,7 +89,7 @@
                         android:layout_margin="@dimen/_10sdp"
                         android:adjustViewBounds="true"
                         android:onClick="@{listener::onClick}"
-                        android:src="@drawable/ic_defalut_profile_pic"
+                        android:src="@drawable/icon_default_profile_pic"
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -254,6 +254,7 @@
                             android:paddingHorizontal="10dp"
                             app:ccp_defaultNameCode="US"
                             app:ccp_showFlag="false"
+                            app:ccp_hideNameCode="true"
                             app:ccp_textColor="#1C2020" />
 
                         <View

@@ -106,7 +106,12 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
         //super.onBackPressed()
-        navigateToLoginScreen()
+        //navigateToLoginScreen()
+        // Navigate to Home Screen of Android
+        val a = Intent(Intent.ACTION_MAIN)
+        a.addCategory(Intent.CATEGORY_HOME)
+        a.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(a)
     }
 
 
@@ -118,7 +123,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                 Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
 
             if (payload?.isActive == true) {
-                startActivityWithFinish<AddLovedOneActivity>()
+                startActivity<AddLovedOneActivity>()
             } else {
                 val builder = AlertDialog.Builder(this)
                 val dialog = builder.apply {
@@ -142,7 +147,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                 Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
 
             if (payload?.isActive == true) {
-                startActivityWithFinish<JoinCareTeamActivity>()
+                startActivity<JoinCareTeamActivity>()
             } else {
                 val builder = AlertDialog.Builder(this)
                 val dialog = builder.apply {

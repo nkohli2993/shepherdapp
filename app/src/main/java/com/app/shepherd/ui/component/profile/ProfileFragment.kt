@@ -16,6 +16,7 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.profile.adapter.LovedOnesAdapter
+import com.app.shepherd.utils.extensions.getStringWithHyphen
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.view_model.ProfileViewModel
 import com.squareup.picasso.Picasso
@@ -81,8 +82,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         // Set Phone Number
         val phoneCode = payload?.userProfiles?.phoneCode
         val phoneNumber = payload?.userProfiles?.phoneNo
+        val phoneNo = phoneNumber?.getStringWithHyphen(phoneNumber)
 
-        val phone = "+$phoneCode $phoneNumber"
+        val phone = "+$phoneCode $phoneNo"
         fragmentProfileBinding.txtPhone.text = phone
 
         //Get user's role

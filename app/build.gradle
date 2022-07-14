@@ -35,6 +35,8 @@ android {
 //            buildConfigField("String", "BASE_URL", base_url_local)
             buildConfigField("String", "BASE_URL_USER", base_url_user)
             buildConfigField("String", "BASE_URL", base_url)
+            buildConfigField("String", "BASE_URL_USER_STAGING", base_url_user_staging)
+            buildConfigField("String", "BASE_URL_STAGING", base_url_staging)
         }
         release {
             debuggable false

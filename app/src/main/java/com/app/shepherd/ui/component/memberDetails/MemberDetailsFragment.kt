@@ -22,12 +22,12 @@ import com.app.shepherd.ui.component.memberDetails.adapter.MemberModulesAdapter
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Modules
 import com.app.shepherd.utils.Prefs
+import com.app.shepherd.utils.extensions.getStringWithHyphen
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.MemberDetailsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.StringBuilder
 
 
 /**
@@ -86,12 +86,16 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 it?.address ?: "No address available"
             // Set Phone Number
             val phone = "+" + it?.phone
-//            val phoneArr = it?.phone?.split(" ")
-//            val phoneNumber = phoneArr?.get(1)
-//            var phoneCharArr = phoneNumber?.toCharArray()
-//            var phoneNoWithHyphen : CharArray
+            val phoneArr = it?.phone?.split(" ")
+            val phoneCode = phoneArr?.get(0)
+            val phoneNumber = phoneArr?.get(1)
+            //val phoneWithHyphen = phoneNumber?.let { it1 -> getStringWithHyphen(it1) }
+            val phoneWithHyphen = phoneNumber?.getStringWithHyphen(phoneNumber)
+            val phoneNo = "+$phoneCode $phoneWithHyphen"
+            Log.d(TAG, "initView: $phoneNo")
 
-            fragmentMemberDetailsBinding.txtPhoneCare.text = phone ?: "Phone Number Not Available"
+
+            fragmentMemberDetailsBinding.txtPhoneCare.text = phoneNo ?: "Phone Number Not Available"
         }
 
         // Set role
@@ -121,6 +125,19 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
               careTeam?.user?.userProfiles?*/
 
         //Set Address
+    }
+
+    fun getStringWithHyphen(str: String): String {
+        var resultant = ""
+        resultant = if (str.length <= 3) str else "" + str[0] + str[1] + str[1]
+        for (i in 3 until str.length) {
+            if (i % 3 == 0) {
+                resultant += "-" + str[i]
+            } else {
+                resultant += str[i]
+            }
+        }
+        return resultant
     }
 
     private fun checkPermission(s: Int) {

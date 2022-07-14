@@ -22,7 +22,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:background="@color/_FCFCFC">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBack"
@@ -59,9 +60,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/_60sdp"
+                    android:background="@color/_FCFCFC"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -100,7 +101,7 @@
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="@dimen/_100sdp"
                         android:onClick="@{listener::onClick}"
-                        android:src="@drawable/image_loved_one"
+                        android:src="@drawable/icon_default_profile_pic"
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -255,6 +256,7 @@
                             android:layout_gravity="center_vertical"
                             android:padding="16dp"
                             app:ccp_defaultNameCode="US"
+                            app:ccp_hideNameCode="true"
                             app:ccp_showFlag="false"
                             app:ccp_textColor="#1C2020" />
 

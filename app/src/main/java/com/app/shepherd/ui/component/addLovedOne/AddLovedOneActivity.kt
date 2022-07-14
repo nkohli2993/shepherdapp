@@ -22,7 +22,6 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.addLovedOne.adapter.RelationshipsAdapter
 import com.app.shepherd.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
-import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.extensions.isValidEmail
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
@@ -372,15 +371,29 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         mMonth = calendar[Calendar.MONTH]
         mDay = calendar[Calendar.DAY_OF_MONTH]
 
-
+        val months = arrayOf(
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
+        )
         //show dialog
         val datePickerDialog = DatePickerDialog(
             this,
             { view, year, month, dayOfMonth ->
                 edtDay.text = dayOfMonth.toString()
-                edtMonth.text = (month + 1).toString()
+                edtMonth.text = months[month]
                 edtYear.text = year.toString()
                 dob = year.toString() + "-" + (month + 1).toString() + "-" + dayOfMonth.toString()
+//                dob = year.toString() + "-" + months[month] + "-" + dayOfMonth.toString()
                 Log.d(TAG, "DateOfBirth: $dob")
             },
             mYear,
@@ -396,7 +409,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
 
     private fun navigateToAddLovedOneConditionScreen() {
-       // addLovedOneViewModel.saveLovedOneId(lovedOneID)
+        // addLovedOneViewModel.saveLovedOneId(lovedOneID)
         val intent = Intent(this, AddLovedOneConditionActivity::class.java)
         //intent.putExtra(Const.LOVED_ONE_ID, lovedOneID)
         startActivity(intent)
