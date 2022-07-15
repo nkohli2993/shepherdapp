@@ -5,32 +5,32 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.invitation.Results
-import com.app.shepherd.databinding.AdapterJoinCareTeamBinding
+import com.app.shepherd.ShepherdApp
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.RvLoveOnesBinding
-import com.app.shepherd.view_model.CareTeamsViewModel
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
+import com.app.shepherd.view_model.LovedOneViewModel
 import com.squareup.picasso.Picasso
 
 class LovedOneAdapter(
     private val viewModel: LovedOneViewModel,
-    var results: MutableList<Results> = ArrayList()
+    var careTeams: MutableList<CareTeam> = ArrayList()
 ) :
     RecyclerView.Adapter<LovedOneAdapter.ContentViewHolder>() {
     lateinit var binding: RvLoveOnesBinding
 
     private var onItemClickListener: OnItemClickListener? = null
 
+    private var lastSelectedPosition = -1
+    private var dismissLastSelectedOption: (() -> Unit)? = null
+
     fun setClickListener(clickListener: OnItemClickListener) {
         onItemClickListener = clickListener
     }
 
-    fun updateCareTeams(results: ArrayList<Results>) {
-        this.results = results
-        notifyDataSetChanged()
-    }
-
     interface OnItemClickListener {
-        fun onItemClick(id: Results?)
+        fun onItemClick(careTeam: CareTeam)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -46,45 +46,74 @@ class LovedOneAdapter(
     }
 
     override fun getItemCount(): Int {
-        return results.size
+        return careTeams.size
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
-        holder.bind(results[position])
+        holder.bind(careTeams[position])
     }
 
     inner class ContentViewHolder constructor(private var itemBinding: RvLoveOnesBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(result: Results?) {
-            if (result == null) return
-            itemBinding.data = result
-            itemBinding.let {
-                // Set Name  of loved One
-                it.textViewCareTeamName.text = result.name
+        fun bind(careTeam: CareTeam) {
+            if (careTeam == null) return
+            careTeam.let {
+                // Set full name
+                val fullName = it.loveUser?.firstname + " " + it.loveUser?.lastname
+                itemBinding.textViewCareTeamName.text = fullName
 
-                // Set Profile Pic of loved One
-                Picasso.get().load(result.image)
+                //Set Image
+                Picasso.get().load(it.loveUser?.profilePhoto)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(it.imageViewCareTeam)
+                    .into(itemBinding.imageViewCareTeam)
 
-                // Set toggle
-                binding.toggleSwitch.isChecked = result.isSelected
+                // Set Role
+                itemBinding.txtRole.text = "As " + it.careRoles?.name
 
-            }
+                // Get lovedOneID from Shared Pref
+                val lovedOneIDInPrefs =
+                    Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+                itemBinding.checkbox.isChecked = lovedOneIDInPrefs.equals(it.loveUserId)
 
-
-
-            binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
-                result.isSelected = isChecked
-
-                if (isChecked) {
-                    onItemClickListener?.onItemClick(result)
+                if (lovedOneIDInPrefs.equals(it.loveUserId)) {
+                    dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
+                    lastSelectedPosition = bindingAdapterPosition
+                    itemBinding.checkbox.isChecked = true
+                    careTeam.isSelected = true
+                } else {
+                    itemBinding.checkbox.isChecked = false
+                    careTeam.isSelected = false
                 }
             }
-//            itemBinding.cardView.setOnClickListener { itemBinding.toggleSwitch.performClick() }
+
+            itemBinding.checkbox.setOnClickListener {
+                deselectCareTeams()
+                careTeam.isSelected = true
+                dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
+                lastSelectedPosition = bindingAdapterPosition
+                itemBinding.checkbox.isChecked = true
+                onItemClickListener?.onItemClick(careTeam)
+            }
+
         }
 
+    }
+
+    private fun deselectCareTeams() {
+        careTeams.forEach {
+            it.isSelected = false
+        }
+    }
+
+    private fun dismissLastSelectedCareTeam(binding: RvLoveOnesBinding, position: Int) {
+        if (lastSelectedPosition != -1) {
+            dismissLastSelectedOption?.invoke()
+            lastSelectedPosition = position
+        }
+        dismissLastSelectedOption = listener@{
+            binding.checkbox.isChecked = false
+        }
     }
 
     override fun getItemId(position: Int): Long {
@@ -93,6 +122,12 @@ class LovedOneAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return position
+    }
+
+    fun addData(careTeams: ArrayList<CareTeam>?) {
+        this.careTeams.clear()
+        careTeams?.let { this.careTeams.addAll(it) }
+        notifyDataSetChanged()
     }
 
 }
