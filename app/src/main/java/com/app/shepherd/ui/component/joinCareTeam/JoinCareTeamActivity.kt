@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.invitation.Results
 import com.app.shepherd.databinding.ActivityJoinCareTeamBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -14,7 +15,9 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.ui.component.joinCareTeam.adapter.JoinCareTeamAdapter
+import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Invitations
+import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.Status
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
@@ -115,7 +118,14 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                         setMessage("No Invitations Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()
-                            onBackPressed()
+                            // Check if SharedPref contains lovedOne UUID
+                            val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
+                                .getString(Const.LOVED_ONE_UUID, "")
+                            if (lovedOneUUID.isNullOrEmpty()) {
+                                onBackPressed()
+                            } else {
+                                navigateToDashboardScreen()
+                            }
                         }
                     }.create()
                     dialog.show()
@@ -151,8 +161,8 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     // Save LovedOne UUID
                     val lovedOneUUID = it.data.payload?.loveoneUserId
                     lovedOneUUID?.let { it1 -> careTeamsViewModel.saveLovedOneUUID(it1) }
-
-                    //careTeamsViewModel.getJoinCareTeamInvitations(sendType, status)
+                    // Refresh the invitations
+                    careTeamsViewModel.getJoinCareTeamInvitations(sendType, status)
                 }
             }
         }
@@ -173,8 +183,10 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.buttonJoin -> {
                 //navigateToDashboardScreen()
-                if (selectedCareTeams?.isEmpty() == true) {
-                    showInfo(this, "Please select at least one care team...")
+                val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
+                    .getString(Const.LOVED_ONE_UUID, "")
+                if (lovedOneUUID.isNullOrEmpty()) {
+                    showInfo(this, "Please accept any one invitation to join...")
                 } else {
                     navigateToDashboardScreen()
                 }
@@ -192,11 +204,11 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
             careTeamsViewModel.acceptCareTeamInvitations(result.id!!)
         }
 
-        if (selectedCareTeams?.isEmpty() == true)
-            result.let { it?.let { it1 -> selectedCareTeams?.add(it1) } }
-        else if (result?.isSelected == true) selectedCareTeams?.add(result)
-        else if (result?.isSelected == false && selectedCareTeams?.contains(result) == true)
-            selectedCareTeams?.remove(result)
+        /* if (selectedCareTeams?.isEmpty() == true)
+             result.let { it?.let { it1 -> selectedCareTeams?.add(it1) } }
+         else if (result?.isSelected == true) selectedCareTeams?.add(result)
+         else if (result?.isSelected == false && selectedCareTeams?.contains(result) == true)
+             selectedCareTeams?.remove(result)*/
     }
 
     /*override fun onItemClick(careTeam: CareTeam) {

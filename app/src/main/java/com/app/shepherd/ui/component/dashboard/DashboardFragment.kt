@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.addCallback
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
@@ -16,6 +15,7 @@ import com.app.shepherd.databinding.FragmentDashboardBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
+import com.app.shepherd.ui.base.listeners.ChildFragmentToActivityListener
 import com.app.shepherd.ui.component.dashboard.adapter.CareTeamMembersDashBoardAdapter
 import com.app.shepherd.ui.component.dashboard.adapter.DashboardAdapter
 import com.app.shepherd.ui.component.home.HomeActivity
@@ -38,13 +38,17 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     private var careTeams: ArrayList<CareTeam>? = ArrayList()
     private var dashBoardAdapter: DashboardAdapter? = null
     private var careTeamMembersDashBoardAdapter: CareTeamMembersDashBoardAdapter? = null
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
 
     private lateinit var homeActivity: HomeActivity
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is HomeActivity) {
             homeActivity = context
         }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -211,6 +215,11 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 findNavController().navigate(R.id.action_dashboard_to_care_team_members)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        parentActivityListener?.msgFromChildFragmentToActivity()
     }
 
 }

@@ -19,6 +19,7 @@ import com.app.shepherd.databinding.ActivityHomeBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseActivity
+import com.app.shepherd.ui.base.listeners.ChildFragmentToActivityListener
 import com.app.shepherd.ui.component.login.LoginActivity
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Prefs
@@ -30,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.app_bar_dashboard.*
 
 @AndroidEntryPoint
-class HomeActivity : BaseActivity(),
+class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     View.OnClickListener {
 
     private lateinit var navController: NavController
@@ -47,20 +48,6 @@ class HomeActivity : BaseActivity(),
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        // Get Loved One Array list from Login Screen
-        /* val lovedOneArrayList =
-             intent?.getParcelableArrayListExtra<UserLovedOne>(Const.LOVED_ONE_ARRAY)
-         if (!lovedOneArrayList.isNullOrEmpty()) {
-             Log.d(TAG, "LovedOneArrayList Size :${lovedOneArrayList.size} ")
-
-             val lovedOneUserId = lovedOneArrayList[0].loveUserId
-             lovedOneUserId?.let { viewModel.getLovedOneDetails(it) }
-
-         } else {
-             Log.d(TAG, "LovedOneArrayList is null")
-         }*/
 
         viewModel.getHomeData()
         setupNavigationDrawer()
@@ -370,6 +357,10 @@ class HomeActivity : BaseActivity(),
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
+    }
+
+    override fun msgFromChildFragmentToActivity() {
+        viewModel.getHomeData()
     }
 
 }
