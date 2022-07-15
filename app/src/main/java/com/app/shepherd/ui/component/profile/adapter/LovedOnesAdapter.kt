@@ -79,6 +79,9 @@ class LovedOnesAdapter(
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(itemBinding.imgLovedOne)
 
+                // Set Role
+                itemBinding.textLovedOneRole.text = it.careRoles?.name
+
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")

@@ -9,6 +9,7 @@
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_crop_image_menu_rotate_left.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_image_placeholder.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/shape_circle_white.xml" value="0.255" />
+        <entry key="../../../../layout/custom_preview.xml" value="0.21203703703703702" />
         <entry key="..\:/Users/itechnolab101/.gradle/caches/transforms-3/342dce9291abea3ff1834378267f2ba2/transformed/jetified-number-keyboard-3.0.0/res/drawable/numberkeyboard_key_bg.xml" value="0.259" />
         <entry key="..\:/Users/itechnolab101/.gradle/caches/transforms-3/342dce9291abea3ff1834378267f2ba2/transformed/jetified-number-keyboard-3.0.0/res/drawable/numberkeyboard_key_bg_pressed.xml" value="0.259" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/bg_image_place_holder.xml" value="0.2765" />
@@ -28,7 +29,6 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_med_list.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_resource.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_d_vital.xml" value="0.2765" />
-        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_defalut_profile_pic.xml" value="0.2445" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_heart.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_calender.xml" value="0.2765" />
@@ -37,14 +37,11 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_lockbox.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_med_list.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_resource.xml" value="0.2765" />
-        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_resources.xml" value="0.221" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_home_vital.xml" value="0.2765" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_med_search.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_mwnu.xml" value="0.2765" />
-        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_resourc.xml" value="0.221" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_round_cancel.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/ic_rounded_corner_checkox_unselected.xml" value="0.2625" />
-        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/profile_image_bg.xml" value="0.221" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/rounded_box_6.xml" value="0.264" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/rounded_box_8.xml" value="0.1645" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/rounded_box_new.xml" value="0.2535" />
@@ -71,12 +68,10 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_assign_to_event.xml" value="0.22402736212056434" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_care_points_day.xml" value="0.22402736212056434" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_care_points_events.xml" value="0.22402736212056434" />
-        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_care_team_members.xml" value="0.33" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_chat.xml" value="0.19202898550724637" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_dashboard.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_direct_messages.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_events_members.xml" value="0.22402736212056434" />
-        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_invitations.xml" value="0.22402736212056434" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_join_care_team.xml" value="0.15684496826835903" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_loved_ones.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/adapter_medical_history.xml" value="0.26902173913043476" />
@@ -94,7 +89,7 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/dialog_bio_metric.xml" value="0.23369565217391305" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_add_medication_details.xml" value="0.22402736212056434" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_add_member.xml" value="0.21105072463768115" />
-        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_add_new_event.xml" value="0.33" />
+        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_add_new_event.xml" value="0.12552083333333333" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_add_new_medication.xml" value="0.21829710144927536" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_add_vitals.xml" value="0.22402736212056434" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_addmedicine.xml" value="0.27291666666666664" />
@@ -107,7 +102,6 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_event_details.xml" value="0.12552083333333333" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_information.xml" value="0.11115861479264642" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_invitation.xml" value="0.1278324070115434" />
-        <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_member_details.xml" value="0.22402736212056434" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_messages.xml" value="0.273058884835852" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_my_med_detial.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/fragment_my_medlist.xml" value="0.2" />
@@ -132,6 +126,7 @@
         <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_arrow_drop_down.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.255" />
+        <entry key="app/src/main/res/drawable/ic_defalut_profile_pic.xml" value="0.1565" />
         <entry key="app/src/main/res/drawable/ic_group.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_healthy_food.xml" value="0.2515" />
         <entry key="app/src/main/res/drawable/ic_heart_outline.xml" value="0.255" />
@@ -148,25 +143,27 @@
         <entry key="app/src/main/res/drawable/ic_restore_from_trash.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_star_24.xml" value="0.2515" />
+        <entry key="app/src/main/res/drawable/rounded_box_new.xml" value="0.143" />
+        <entry key="app/src/main/res/drawable/shape_auth_header.xml" value="0.182" />
         <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/switch_track_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/test_ic_baseline_medication_24.xml" value="0.255" />
         <entry key="app/src/main/res/font/roboto_bold.xml" value="0.38645833333333335" />
         <entry key="app/src/main/res/layout-v23/adapter_care_points_events.xml" value="0.35625" />
         <entry key="app/src/main/res/layout-v23/adapter_events.xml" value="0.35625" />
-        <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_team_members.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_create_new_account.xml" value="0.1341216216216216" />
+        <entry key="app/src/main/res/layout/activity_create_new_account.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.534375" />
-        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.16544362908605736" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.28763601189855736" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.29243266353142366" />
-        <entry key="app/src/main/res/layout/activity_join_care_team.xml" value="0.2236323095275174" />
+        <entry key="app/src/main/res/layout/activity_join_care_team.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_join_team.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_login_new.xml" value="0.2371581054036024" />
+        <entry key="app/src/main/res/layout/activity_login_new.xml" value="0.2716718994641597" />
         <entry key="app/src/main/res/layout/activity_my_medlist.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_recipes_list.xml" value="0.29243266353142366" />
@@ -185,6 +182,7 @@
         <entry key="app/src/main/res/layout/adapter_care_points.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_points_events.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_care_team_members_dashboard.xml" value="0.2579162410623085" />
         <entry key="app/src/main/res/layout/adapter_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_date_picker.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_documents.xml" value="0.855" />
@@ -192,8 +190,10 @@
         <entry key="app/src/main/res/layout/adapter_events.xml" value="0.855" />
         <entry key="app/src/main/res/layout/adapter_events_days.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_events_members.xml" value="0.855" />
+        <entry key="app/src/main/res/layout/adapter_invitations.xml" value="0.2755208333333333" />
         <entry key="app/src/main/res/layout/adapter_join_care_team.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_loved_one_condition.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/adapter_loved_ones.xml" value="0.18703703703703703" />
         <entry key="app/src/main/res/layout/adapter_member_modules.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/adapter_menu_item.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_my_medications_list.xml" value="0.29243266353142366" />
@@ -208,20 +208,31 @@
         <entry key="app/src/main/res/layout/app_bar_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/details_layout.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/dialog_bio_metric.xml" value="0.26927083333333335" />
+        <entry key="app/src/main/res/layout/dialog_loved_one_info_pop_up.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/dialog_progress_bar.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/fragment_add_medication_details.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_add_medicine_details.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_add_member.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_add_new_event.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/fragment_add_new_medication.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_add_vitals.xml" value="0.3703125" />
+        <entry key="app/src/main/res/layout/fragment_care_points.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_event_details.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_information.xml" value="0.3703125" />
+        <entry key="app/src/main/res/layout/fragment_invitation.xml" value="0.31197916666666664" />
         <entry key="app/src/main/res/layout/fragment_lockbox.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_lockbox_doc_info.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_member_details.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/fragment_loved_ones.xml" value="0.33645833333333336" />
+        <entry key="app/src/main/res/layout/fragment_member_details.xml" value="0.24329071044921877" />
         <entry key="app/src/main/res/layout/fragment_my_medlist.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2487231869254341" />
+        <entry key="app/src/main/res/layout/fragment_resources.xml" value="0.3703125" />
+        <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/home_activity.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/include_home_toolbar.xml" value="0.178125" />
@@ -230,6 +241,7 @@
         <entry key="app/src/main/res/layout/login_activity.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/recipe_item.xml" value="0.56875" />
         <entry key="app/src/main/res/layout/splash_layout.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.25885416666666666" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/menu/dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/menu/details_menu.xml" value="0.35625" />
