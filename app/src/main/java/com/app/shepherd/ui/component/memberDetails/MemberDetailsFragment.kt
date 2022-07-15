@@ -95,7 +95,14 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             Log.d(TAG, "initView: $phoneNo")
 
 
-            fragmentMemberDetailsBinding.txtPhoneCare.text = phoneNo ?: "Phone Number Not Available"
+            if (phoneNo.toString().contains("+")) {
+                fragmentMemberDetailsBinding.txtPhoneCare.text =
+                    phoneNo ?: "Phone Number Not Available"
+
+            } else {
+                fragmentMemberDetailsBinding.txtPhoneCare.text = "+" + phoneNo ?: "Phone Number Not Available"
+
+            }
         }
 
         // Set role
