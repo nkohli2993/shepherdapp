@@ -411,7 +411,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private fun navigateToAddLovedOneConditionScreen() {
         // addLovedOneViewModel.saveLovedOneId(lovedOneID)
         val intent = Intent(this, AddLovedOneConditionActivity::class.java)
-        //intent.putExtra(Const.LOVED_ONE_ID, lovedOneID)
+        intent.putExtra("source", getIntent().getStringExtra("source"))
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open

@@ -207,7 +207,11 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun navigateToHomeScreen() {
-        startActivityWithFinish<HomeActivity>()
+        if (intent.getStringExtra("source") == Const.ADD_LOVE_ONE) {
+            onBackPressed()
+        } else {
+            startActivityWithFinish<HomeActivity>()
+        }
     }
 
     override fun itemSelected(conditions: Conditions) {
