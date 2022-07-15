@@ -73,7 +73,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         //setLovedOnesAdapter()
         //setPendingInvitationsAdapter()
 
-
     }
 
     private fun initView() {
@@ -238,15 +237,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         // Save the selected lovedOne UUID in shared prefs
         careTeam.loveUserId?.let { profileViewModel.saveLovedOneUUID(it) }
 
-       /* if (selectedCareTeams.isEmpty()) {
-            selectedCareTeams.add(careTeam)
-        } else {
-            selectedCareTeams.forEach {
-                it.isSelected = false
-            }
-            selectedCareTeams.add(careTeam)
-        }
-        lovedOnesAdapter?.addData(selectedCareTeams)*/
+        /* if (selectedCareTeams.isEmpty()) {
+             selectedCareTeams.add(careTeam)
+         } else {
+             selectedCareTeams.forEach {
+                 it.isSelected = false
+             }
+             selectedCareTeams.add(careTeam)
+         }
+         lovedOnesAdapter?.addData(selectedCareTeams)*/
 
     }
 
