@@ -187,4 +187,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">@dimen/_12sdp</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize10Percent." parent="">
+        <item name="cornerSize">25%</item>
+    </style>
 </resources>

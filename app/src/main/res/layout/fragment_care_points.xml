@@ -67,7 +67,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
-                        android:text="Today"
+                        android:text="@string/today"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_10ssp" />
 
@@ -83,7 +83,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
-                        android:text="Week"
+                        android:text="@string/week"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_10ssp" />
 
@@ -99,7 +99,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_bold"
                         android:gravity="center"
-                        android:text="Month"
+                        android:text="@string/month"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_10ssp" />
 

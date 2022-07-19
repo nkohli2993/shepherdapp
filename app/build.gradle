@@ -179,7 +179,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 //    implementation "com.github.wRorsjakz:Android-NumPad:$numberpadVersion"
     implementation "androidx.biometric:biometric:$biometric_version"
-
+    implementation 'com.google.android.material:material:1.6.1'
 }
 kapt {
     correctErrorTypes true

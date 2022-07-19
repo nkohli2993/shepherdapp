@@ -45,16 +45,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.component.recipes.RecipesListActivity"
-            android:label="@string/title_activity_recipes">
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
-        </activity>
-        <activity
-            android:name=".ui.component.details.DetailsActivity"
-            android:label="@string/title_activity_recipe_details" />
-        <activity
             android:name=".ui.component.onBoarding.OnBoardingActivity"
             android:label="@string/title_activity_on_boarding" />
         <activity

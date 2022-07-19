@@ -5,6 +5,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneModel
@@ -18,6 +19,8 @@ import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.RegexUtils.isValidEmail
 import com.app.shepherd.utils.RegexUtils.isValidPassword
 import com.app.shepherd.utils.RegexUtils.passwordValidated
@@ -117,7 +120,7 @@ class AddNewEventViewModel @Inject constructor(
         date: String,
         time: String,
         notes: String,
-        assign_to: ArrayList<Int>
+        assign_to: ArrayList<String>
     ): LiveData<Event<DataResult<CreateEventResponseModel>>> {
         createEventData.value.let {
             it?.loved_one_user_id = loved_one_user_id
@@ -140,6 +143,8 @@ class AddNewEventViewModel @Inject constructor(
         }
         return createEventLiveData
     }
+
+    fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
 
     fun getLovedOneId(): String? {
         return userRepository.getLovedOneId()

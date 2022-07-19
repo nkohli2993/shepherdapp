@@ -1,23 +1,34 @@
 package com.app.shepherd.ui.component.carePoints
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
+import com.app.shepherd.data.dto.added_events.AddedEventModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.databinding.FragmentCarePointsBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.carePoints.adapter.CarePointsDayAdapter
 import com.app.shepherd.utils.*
+import com.app.shepherd.view_model.CreatedCarePointsViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -26,10 +37,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CarePointsFragment : BaseFragment<FragmentAddMemberBinding>(),
     View.OnClickListener {
-
-    private val carePointsViewModel: CarePointsViewModel by viewModels()
-
     private lateinit var fragmentCarePointsBinding: FragmentCarePointsBinding
+    private var carePoints: ArrayList<AddedEventModel>? = ArrayList()
+    private var carePointsAdapter: CarePointsDayAdapter? = null
+    private val carePointsViewModel: CreatedCarePointsViewModel by viewModels()
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    private var startDate:String = ""
+    private var endDate:String = ""
 
 
     override fun onCreateView(
@@ -43,21 +58,52 @@ class CarePointsFragment : BaseFragment<FragmentAddMemberBinding>(),
         return fragmentCarePointsBinding.root
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun initViewBinding() {
         fragmentCarePointsBinding.listener = this
-
-
+        val calendar = Calendar.getInstance().time
+        startDate = SimpleDateFormat("yyyy-MM-dd").format(calendar)
+        endDate = SimpleDateFormat("yyyy-MM-dd").format(calendar)
+        carePointsViewModel.getCarePointsByLovedOneId(pageNumber, limit, startDate, endDate)
         setCarePointsAdapter()
+
     }
 
     override fun observeViewModel() {
-        observe(carePointsViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(carePointsViewModel.showSnackBar)
-        observeToast(carePointsViewModel.showToast)
-        observeEvent(carePointsViewModel.openChatItems, ::navigateToChat)
+        observe(carePointsViewModel.openMemberDetails,::openCarePointDetails)
+        carePointsViewModel.carePointsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    carePoints = it.data.payload.results
+                    if (carePoints.isNullOrEmpty()) return@observeEvent
+                    carePointsAdapter?.updateCarePoints(carePoints!!)
+                }
+                is DataResult.Failure -> {
+                    hideLoading()
+                    carePoints?.clear()
+                    carePoints?.let { it1 -> carePointsAdapter?.updateCarePoints(it1) }
+
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle("Care Points")
+                        setMessage("No Care point found")
+                        setPositiveButton("OK") { _, _ ->
+                            // navigateToDashboardScreen()
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                }
+            }
+        }
+
     }
 
-    private fun navigateToChat(navigateEvent: SingleEvent<Int>) {
+    private fun openCarePointDetails(navigateEvent: SingleEvent<AddedEventModel>) {
         navigateEvent.getContentIfNotHandled()?.let {
             findNavController().navigate(
                 CarePointsFragmentDirections.actionCarePointsToChatFragment(
@@ -89,7 +135,7 @@ class CarePointsFragment : BaseFragment<FragmentAddMemberBinding>(),
 
 
     private fun setCarePointsAdapter() {
-        val carePointsAdapter = CarePointsDayAdapter(carePointsViewModel)
+        carePointsAdapter = CarePointsDayAdapter(carePointsViewModel,carePoints!!)
         fragmentCarePointsBinding.recyclerViewEventDays.adapter = carePointsAdapter
     }
 

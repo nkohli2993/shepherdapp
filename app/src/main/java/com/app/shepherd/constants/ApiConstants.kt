@@ -55,6 +55,10 @@ object ApiConstants {
         const val CREATE_EVENT = "$BASE_URL${API_VERSION}events"
     }
 
+    object GetCreateEvent {
+        const val GET_EVENT = "$BASE_URL${API_VERSION}events"
+    }
+
     object Home {
         //const val GET_HOME_DATA = "$BASE_URL_USER${API_VERSION}users/get-home-data"
         const val GET_HOME_DATA = "$BASE_URL${API_VERSION}dashboards/get-home-data"

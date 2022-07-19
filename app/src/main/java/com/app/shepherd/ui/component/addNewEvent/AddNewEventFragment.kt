@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.addNewEvent
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,16 +15,20 @@ import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentAddNewEventBinding
 import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.app.shepherd.utils.*
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showInfo
+import com.app.shepherd.utils.extensions.showSuccess
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_new_event.*
-import com.app.shepherd.network.retrofit.observeEvent
-import com.app.shepherd.utils.extensions.isValidEmail
-import com.app.shepherd.utils.extensions.showError
-import com.app.shepherd.utils.extensions.showInfo
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.concurrent.atomic.AtomicReference
+import kotlin.collections.ArrayList
 
 
 /**
@@ -31,7 +36,7 @@ import com.app.shepherd.utils.extensions.showInfo
  */
 @AndroidEntryPoint
 class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
-    View.OnClickListener {
+    View.OnClickListener, AssignToEventAdapter.selectedTeamMember {
 
     private val addNewEventViewModel: AddNewEventViewModel by viewModels()
 
@@ -39,7 +44,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var status: Int = 1
-    private var assignTo = ArrayList<Int>()
+    private var assignTo = ArrayList<String>()
     private var careteams = ArrayList<CareTeam>()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,7 +73,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             pageNumber,
             limit,
             status,
-            addNewEventViewModel.getLovedOneId()
+            addNewEventViewModel.getLovedOneUUId()
         )
     }
 
@@ -82,6 +87,25 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
 
     private fun observeEventMembers() {
+        addNewEventViewModel.createEventLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), "New carePoint added successfully...")
+                    backPress()
+                }
+
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+
+                }
+            }
+
+        }
         addNewEventViewModel.eventMemberLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -90,11 +114,10 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = it.data.payload
-
-                    careteams.add(CareTeam())
-//                    careteams.addAll(payload.careteams!!)
+                    careteams.addAll(payload.careTeams)
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
+                            this,
                             requireContext(),
                             addNewEventViewModel,
                             careteams
@@ -107,6 +130,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     careteams.add(CareTeam())
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
+                            this,
                             requireContext(),
                             addNewEventViewModel,
                             careteams
@@ -189,7 +213,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     fragmentAddNewEventBinding.edtAddress.requestFocus()
                 }
                 fragmentAddNewEventBinding.tvDate.text.toString().trim() == "DD/MM/YY" -> {
-                    showInfo(requireContext(), "Please enter date of birth")
+                    showInfo(requireContext(), getString(R.string.please_enter_date_of_birth))
                 }
                 else -> {
                     return true
@@ -198,14 +222,25 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             return false
         }
 
+    @SuppressLint("SimpleDateFormat")
     private fun createEvent() {
         assignTo.clear()
-        assignTo.add(256)
+        for (i in careteams) {
+            if (i.isSelected){
+                assignTo.add(i.userId!!)
+            }
+
+        }
+        var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
+        var dateFormat = SimpleDateFormat("dd MMM yyyy")
+        val formatedDate: Date = dateFormat.parse(selectedDate)!!
+        dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        selectedDate = dateFormat.format(formatedDate)
         addNewEventViewModel.createEvent(
             addNewEventViewModel.getLovedOneId(),
             fragmentAddNewEventBinding.etEventName.text.toString().trim(),
             fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
-            fragmentAddNewEventBinding.tvDate.text.toString().trim(),
+            selectedDate,
             fragmentAddNewEventBinding.tvTime.text.toString().trim(),
             fragmentAddNewEventBinding.etNote.text.toString().trim(),
             assignTo
@@ -229,6 +264,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_add_new_event
+    }
+
+    override fun onSelected(position: Int) {
+        // on team member selected
+        careteams[position].isSelected = !careteams[position].isSelected
     }
 
 

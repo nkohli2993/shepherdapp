@@ -4,23 +4,16 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.care_team.CareTeam
-import com.app.shepherd.data.dto.dashboard.DashboardModel
-import com.app.shepherd.databinding.AdapterAssignToEventBinding
-import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.ui.component.addNewEvent.AddNewEventViewModel
-import com.app.shepherd.utils.loadImage
+import com.squareup.picasso.Picasso
 
 
-class AssignToEventAdapter(
+class AssignToEventAdapter(val onListener:selectedTeamMember,
     val context: Context,
     private val viewModel: AddNewEventViewModel,
     var memberList: ArrayList<CareTeam> = ArrayList()
@@ -58,11 +51,14 @@ class AssignToEventAdapter(
         } else {
             vh.tvSelect.isVisible = false
             vh.clEventWrapper.isVisible = true
-//            vh.textViewCareTeamName.text = memberList[position].user?.userProfiles?.fullName
-//            vh.textViewCareTeamRole.text = memberList[position].careRoles?.name
-//            memberList[position].user?.userProfiles?.profilePhoto?.let {
-//                vh.imageViewCareTeam.loadImage(it)
-//            }
+            vh.textViewCareTeamName.text = memberList[position].user?.firstname.plus(" ").plus(memberList[position].user?.lastname)
+            vh.textViewCareTeamRole.text = memberList[position].careRoles?.name
+            Picasso.get().load(memberList[position].user?.profilePhoto).placeholder(R.drawable.ic_defalut_profile_pic)
+                .into(vh.imageViewCareTeam)
+        }
+
+        vh.checkbox.setOnCheckedChangeListener { compoundButton, b ->
+            onListener.onSelected(position)
         }
 
         return view
@@ -84,5 +80,9 @@ class AssignToEventAdapter(
             imageViewCareTeam = row.findViewById(R.id.imageViewCareTeam) as ImageView
             clEventWrapper = row.findViewById(R.id.clEventWrapper) as ConstraintLayout
         }
+    }
+
+    interface selectedTeamMember{
+        fun onSelected(position: Int)
     }
 }

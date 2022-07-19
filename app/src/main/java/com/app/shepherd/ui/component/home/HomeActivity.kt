@@ -3,7 +3,6 @@ package com.app.shepherd.ui.component.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -157,7 +156,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         // Set User's Role
         val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
         if (role.isNullOrEmpty()) {
-            binding.tvRole.text = "Care Team Leader"
+            binding.tvRole.text = getString(R.string.care_team_leader)
         } else {
             binding.tvRole.text = role
         }

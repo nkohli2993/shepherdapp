@@ -1,17 +1,23 @@
 package com.app.shepherd.ui.component.carePoints.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.app.shepherd.R
+import com.app.shepherd.data.dto.added_events.AddedEventModel
+import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.AdapterCarePointsDayBinding
+import com.app.shepherd.databinding.AdapterCareTeamMembersBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.carePoints.CarePointsViewModel
+import com.app.shepherd.view_model.CreatedCarePointsViewModel
+import com.squareup.picasso.Picasso
 
 
 class CarePointsDayAdapter(
-    val viewModel: CarePointsViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    val viewModel: CreatedCarePointsViewModel,
+    var carePointList: MutableList<AddedEventModel> = ArrayList()
 ) :
     RecyclerView.Adapter<CarePointsDayAdapter.CarePointsDayViewHolder>() {
     lateinit var binding: AdapterCarePointsDayBinding
@@ -37,12 +43,14 @@ class CarePointsDayAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return 2
+        //  return carePointList.size
+        Log.e("size","ajdjq: ${carePointList.size}")
+        return carePointList.size
     }
 
     override fun onBindViewHolder(holder: CarePointsDayViewHolder, position: Int) {
         holder.bind(position, onItemClickListener)
+
         setCarePointsAdapter(binding.recyclerViewEvents)
     }
 
@@ -50,23 +58,20 @@ class CarePointsDayAdapter(
         val carePointsEventAdapter = CarePointsEventAdapter()
         recyclerViewEvents.adapter = carePointsEventAdapter
     }
-
-
-    class CarePointsDayViewHolder(private val itemBinding: AdapterCarePointsDayBinding) :
+    inner class CarePointsDayViewHolder(private val itemBinding: AdapterCarePointsDayBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
-           // itemBinding.data = dashboard
+            val carePoints = carePointList[position]
+            itemBinding.data = carePoints
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    position
+                    carePointList[position]
                 )
             }
         }
-
-
     }
-
 
     override fun getItemId(position: Int): Long {
         return position.toLong()
@@ -76,9 +81,9 @@ class CarePointsDayAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+
+    fun updateCarePoints(careTeams: ArrayList<AddedEventModel>) {
+        this.carePointList = careTeams
         notifyDataSetChanged()
     }
 
