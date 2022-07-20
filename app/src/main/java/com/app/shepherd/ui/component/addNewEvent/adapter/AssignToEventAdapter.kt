@@ -45,7 +45,7 @@ class AssignToEventAdapter(val onListener:selectedTeamMember,
             view = convertView
             vh = view.tag as ItemHolder
         }
-        if (position == 0) {
+        if (memberList[position].id == -1) {
             vh.tvSelect.isVisible = true
             vh.clEventWrapper.isVisible = false
         } else {

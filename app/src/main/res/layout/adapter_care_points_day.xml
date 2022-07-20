@@ -80,7 +80,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham_medium"
-                android:text="+2"
                 android:layout_marginStart="@dimen/_2sdp"
                 android:textColor="@color/_A26DCB"
                 android:textSize="@dimen/_8ssp"
@@ -89,10 +88,10 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/timeTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham_medium"
-                android:text="2:15 pm"
                 android:textColor="@color/_399282"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -147,8 +147,8 @@
             android:id="@+id/action_care_points_to_add_new_task"
             app:destination="@+id/nav_add_new_event" />
         <action
-            android:id="@+id/action_care_points_to_chatFragment"
-            app:destination="@+id/nav_chat" />
+            android:id="@+id/action_care_points_to_detailFragment"
+            app:destination="@+id/nav_care_points_detail" />
 
     </fragment>
     <fragment
@@ -267,8 +267,17 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_care_points_detail"
+        android:name="com.app.shepherd.ui.component.carePoints.CarePointDetailFragment"
+        android:label="@string/menu_care_point_detail"
+        tools:layout="@layout/fragment_care_point_detail">
+        <argument
+            android:name="source"
+            app:argType="integer" />
+    </fragment>
+    <fragment
         android:id="@+id/nav_chat"
-        android:name="com.app.shepherd.ui.component.chat.ChatFragment"
+        android:name="com.app.shepherd.ui.component.chat."
         android:label="@string/menu_chat"
         tools:layout="@layout/fragment_chat">
         <argument

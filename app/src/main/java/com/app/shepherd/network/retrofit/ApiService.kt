@@ -7,6 +7,9 @@ import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.added_events.AddedEventResponseModel
+import com.app.shepherd.data.dto.added_events.EventCommentModel
+import com.app.shepherd.data.dto.added_events.EventCommentResponseModel
+import com.app.shepherd.data.dto.added_events.EventDetailResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
@@ -109,6 +112,11 @@ interface ApiService {
         @Query("end_date") end_date: String,
     ): Response<AddedEventResponseModel>
 
+    @GET(ApiConstants.GetCreateEvent.GET_EVENTDETAIL)
+    suspend fun getEventDetail(
+        @Path("id") id: Int
+    ): Response<EventDetailResponseModel>
+
 
     @POST(ApiConstants.MedicalConditions.CREATE_BULK_ONE_CONDITIONS)
     suspend fun createBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
@@ -167,4 +175,11 @@ interface ApiService {
 
     @PATCH(ApiConstants.Invitations.ACCEPT_INVITATIONS)
     suspend fun acceptInvitation(@Path("id") id: Int): Response<AcceptInvitationResponseModel>
+
+
+    @POST(ApiConstants.EventComments.ADD_EVENT_COMMENT)
+    suspend fun creatEventComment(
+        @Body value: EventCommentModel
+    ): Response<EventCommentResponseModel>
+
 }

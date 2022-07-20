@@ -4,19 +4,22 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.app.shepherd.R
+import com.app.shepherd.data.dto.added_events.EventCommentsModel
 import com.app.shepherd.databinding.AdapterCarePointsEventsBinding
+import com.app.shepherd.databinding.AdapterCareTeamMembersDashboardBinding
 import com.app.shepherd.databinding.AdapterEventsMembersBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.ui.component.carePoints.CarePointsViewModel
+import com.squareup.picasso.Picasso
 
 
 class CarePointsEventAdapter(
-    var requestList: MutableList<String> = ArrayList()
+    var commentList: ArrayList<EventCommentsModel> = ArrayList()
 ) :
     RecyclerView.Adapter<CarePointsEventAdapter.CarePointsEventsViewHolder>() {
     lateinit var binding: AdapterEventsMembersBinding
     lateinit var context: Context
-
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
@@ -37,27 +40,38 @@ class CarePointsEventAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 6
-    }
-
-    override fun onBindViewHolder(holder: CarePointsEventsViewHolder, position: Int) {
-       // holder.bind(position, onItemClickListener)
-    }
-
-
-
-    class CarePointsEventsViewHolder(private val itemBinding: AdapterEventsMembersBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
-           // itemBinding.data = dashboard
-            itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    position
-                )
+        return when {
+            commentList.size <= 3 -> {
+                commentList.size
+            }
+            else -> {
+                3
             }
         }
 
+    }
+
+    override fun onBindViewHolder(holder: CarePointsEventsViewHolder, position: Int) {
+        holder.bind(position, onItemClickListener)
+    }
+
+
+    inner class CarePointsEventsViewHolder(private val itemBinding: AdapterEventsMembersBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+
+        fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
+            val imageUrl = commentList[position].user_image ?: ""
+
+            itemBinding.let {
+                if(!imageUrl.isNullOrEmpty()){
+                    Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(it.imageView)
+                }
+                else{
+                    it.imageView.setImageResource(R.drawable.ic_defalut_profile_pic)
+                }
+            }
+        }
     }
 
 
@@ -67,12 +81,6 @@ class CarePointsEventAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return position
-    }
-
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
-        notifyDataSetChanged()
     }
 
 }

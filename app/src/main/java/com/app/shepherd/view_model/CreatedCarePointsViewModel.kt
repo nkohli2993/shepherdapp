@@ -4,8 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.app.shepherd.data.dto.added_events.AddedEventModel
-import com.app.shepherd.data.dto.added_events.AddedEventResponseModel
+import com.app.shepherd.data.dto.added_events.*
 import com.app.shepherd.data.remote.care_point.CarePointRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
@@ -24,7 +23,7 @@ class CreatedCarePointsViewModel @Inject constructor(
 ) :
     BaseViewModel() {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val addedCarePointLiveData = MutableLiveData<SingleEvent<AddedEventModel>>()
+    private val addedCarePointLiveData = MutableLiveData<SingleEvent<Int>>()
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
@@ -32,18 +31,25 @@ class CreatedCarePointsViewModel @Inject constructor(
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val openChatItemsPrivate = MutableLiveData<SingleEvent<Int>>()
-    val openChatItems: LiveData<SingleEvent<Int>> get() = openChatItemsPrivate
+    val openMemberDetails: LiveData<SingleEvent<Int>> get() = addedCarePointLiveData
 
-    val openMemberDetails: LiveData<SingleEvent<AddedEventModel>> get() = addedCarePointLiveData
-    fun openCreatedCarePoints(addedEvent: AddedEventModel) {
-        addedCarePointLiveData.value = SingleEvent(addedEvent)
-    }
-
-
+    // for care point listing
     private var _addedCarePointLiveData =
         MutableLiveData<Event<DataResult<AddedEventResponseModel>>>()
     var carePointsResponseLiveData: LiveData<Event<DataResult<AddedEventResponseModel>>> =
         _addedCarePointLiveData
+
+    // for care point event detail
+    private var _addedCarePointDetailLiveData =
+        MutableLiveData<Event<DataResult<EventDetailResponseModel>>>()
+    var carePointsResponseDetailLiveData: LiveData<Event<DataResult<EventDetailResponseModel>>> =
+        _addedCarePointDetailLiveData
+
+    //for comment
+    private var _addedCarePointCommentLiveData =
+        MutableLiveData<Event<DataResult<EventCommentResponseModel>>>()
+    var addedCarePointCommentLiveData: LiveData<Event<DataResult<EventCommentResponseModel>>> =
+        _addedCarePointCommentLiveData
 
 
     fun getCarePointsByLovedOneId(
@@ -60,8 +66,38 @@ class CreatedCarePointsViewModel @Inject constructor(
                 response?.collect { _addedCarePointLiveData.postValue(Event(it)) }
             }
         }
+
         return carePointsResponseLiveData
     }
+
+    fun getCarePointsDetailId(
+        id: Int
+    ): LiveData<Event<DataResult<EventDetailResponseModel>>> {
+        //val lovedOneId = userRepository.getLovedOneId()
+        viewModelScope.launch {
+            val response =
+                carePointRepository.getCarePointsDetailIdBased(id)
+            withContext(Dispatchers.Main) {
+                response?.collect { _addedCarePointDetailLiveData.postValue(Event(it)) }
+            }
+        }
+        return carePointsResponseDetailLiveData
+    }
+
+    fun addEventCommentCarePoint(
+        eventCommentModel: EventCommentModel
+    ): LiveData<Event<DataResult<EventCommentResponseModel>>> {
+        //val lovedOneId = userRepository.getLovedOneId()
+        viewModelScope.launch {
+            val response =
+                carePointRepository.addEventComment(eventCommentModel)
+            withContext(Dispatchers.Main) {
+                response.collect { _addedCarePointCommentLiveData.postValue(Event(it)) }
+            }
+        }
+        return addedCarePointCommentLiveData
+    }
+
     fun showToastMessage(errorCode: Int) {
         val error = errorManager.getError(errorCode)
         showToastPrivate.value = SingleEvent(error.description)

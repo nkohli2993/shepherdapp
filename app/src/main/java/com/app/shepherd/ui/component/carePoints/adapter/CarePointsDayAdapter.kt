@@ -3,38 +3,37 @@ package com.app.shepherd.ui.component.carePoints.adapter
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.shepherd.R
 import com.app.shepherd.data.dto.added_events.AddedEventModel
-import com.app.shepherd.data.dto.care_team.CareTeam
-import com.app.shepherd.databinding.AdapterCarePointsDayBinding
-import com.app.shepherd.databinding.AdapterCareTeamMembersBinding
+import com.app.shepherd.data.dto.added_events.ResultEventModel
+import com.app.shepherd.databinding.AdapterCarePointsDayDateBasedBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.view_model.CreatedCarePointsViewModel
-import com.squareup.picasso.Picasso
 
 
 class CarePointsDayAdapter(
     val viewModel: CreatedCarePointsViewModel,
-    var carePointList: MutableList<AddedEventModel> = ArrayList()
+    var carePointList: MutableList<ResultEventModel> = java.util.ArrayList(),
+    val clickType: Int
 ) :
-    RecyclerView.Adapter<CarePointsDayAdapter.CarePointsDayViewHolder>() {
-    lateinit var binding: AdapterCarePointsDayBinding
+    RecyclerView.Adapter<CarePointsDayAdapter.CarePointsDayViewHolder>(),
+    CarePointsDateBasedAdapter.OnCarePointSelected {
+    lateinit var binding: AdapterCarePointsDayDateBasedBinding
     lateinit var context: Context
 
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
             viewModel.openEventChat(itemData[0] as Int)
-
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsDayViewHolder {
         context = parent.context
         binding =
-            AdapterCarePointsDayBinding.inflate(
+            AdapterCarePointsDayDateBasedBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -44,31 +43,32 @@ class CarePointsDayAdapter(
 
     override fun getItemCount(): Int {
         //  return carePointList.size
-        Log.e("size","ajdjq: ${carePointList.size}")
         return carePointList.size
     }
 
     override fun onBindViewHolder(holder: CarePointsDayViewHolder, position: Int) {
         holder.bind(position, onItemClickListener)
-
-        setCarePointsAdapter(binding.recyclerViewEvents)
     }
 
-    private fun setCarePointsAdapter(recyclerViewEvents: RecyclerView) {
-        val carePointsEventAdapter = CarePointsEventAdapter()
+    private fun setCarePointsAdapter(
+        recyclerViewEvents: RecyclerView,
+        events: ArrayList<AddedEventModel>
+    ) {
+        val carePointsEventAdapter =
+            CarePointsDateBasedAdapter(viewModel, events,this)
         recyclerViewEvents.adapter = carePointsEventAdapter
     }
-    inner class CarePointsDayViewHolder(private val itemBinding: AdapterCarePointsDayBinding) :
+
+    inner class CarePointsDayViewHolder(private val itemBinding: AdapterCarePointsDayDateBasedBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             val carePoints = carePointList[position]
-            itemBinding.data = carePoints
-
-            itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    carePointList[position]
-                )
+            itemBinding.dateTV.text = carePoints.date
+            setCarePointsAdapter(binding.recyclerViewEventDays, carePoints.events)
+            itemBinding.dateTV.visibility = View.VISIBLE
+            if(clickType == 1){
+                itemBinding.dateTV.visibility = View.GONE
             }
         }
     }
@@ -82,9 +82,15 @@ class CarePointsDayAdapter(
     }
 
 
-    fun updateCarePoints(careTeams: ArrayList<AddedEventModel>) {
+    fun updateCarePoints(careTeams: ArrayList<ResultEventModel>) {
         this.carePointList = careTeams
         notifyDataSetChanged()
     }
+
+    override fun selectedCarePoint(id: Int) {
+        onItemClickListener.onItemSelected(id)
+    }
+
+
 
 }
