@@ -66,6 +66,7 @@ class CreatedCarePointsViewModel @Inject constructor(
                 response?.collect { _addedCarePointLiveData.postValue(Event(it)) }
             }
         }
+
         return carePointsResponseLiveData
     }
 
