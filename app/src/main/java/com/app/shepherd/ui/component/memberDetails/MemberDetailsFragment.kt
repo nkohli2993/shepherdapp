@@ -13,7 +13,6 @@ import com.app.shepherd.R
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
-import com.app.shepherd.databinding.FragmentAddMemberBinding
 import com.app.shepherd.databinding.FragmentMemberDetailsBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
@@ -100,10 +99,24 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                     phoneNo ?: "Phone Number Not Available"
 
             } else {
-                fragmentMemberDetailsBinding.txtPhoneCare.text = "+" + phoneNo ?: "Phone Number Not Available"
+                fragmentMemberDetailsBinding.txtPhoneCare.text =
+                    "+" + phoneNo ?: "Phone Number Not Available"
 
             }
         }
+
+        // if the loggedIn user is the Care Team Leader, then only show the Remove and Save Changes button
+        val isLoggedInUserTeamLead =
+            Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
+                ?: false
+        if (isLoggedInUserTeamLead) {
+            fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
+            fragmentMemberDetailsBinding.btnUpdate.visibility = View.VISIBLE
+        } else {
+            fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
+            fragmentMemberDetailsBinding.btnUpdate.visibility = View.GONE
+        }
+
 
         // Set role
         fragmentMemberDetailsBinding.txtCareTeamMemberDesignation.text = careTeam?.careRoles?.name

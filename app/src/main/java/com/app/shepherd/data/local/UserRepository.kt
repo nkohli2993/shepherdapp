@@ -69,6 +69,20 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
 
     fun getUserRole() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
 
+    fun saveCareTeamLeaderUUID(uuid: String) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.UUID, uuid)
+    }
+
+    fun saveLoggedInUserTeamLead(isLoggedInUserTeamLead: Boolean) {
+        Prefs.with(ShepherdApp.appContext)!!
+            .save(Const.Is_LOGGED_IN_USER_TEAM_LEAD, isLoggedInUserTeamLead)
+    }
+
+    fun isLoggedInUserTeamLead() =
+        Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
+
+    fun getCareTeamLeaderUUID() =
+        Prefs.with(ShepherdApp.appContext)!!.getString(Const.CARE_TEAM_LEADER_UUID, "")
 
     fun saveLovedOneId(id: String) {
         Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_ID, id)

@@ -18,6 +18,7 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.careTeamMembers.adapter.CareTeamMembersAdapter
+import com.app.shepherd.utils.CareRole
 import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.observe
 import com.app.shepherd.view_model.CareTeamMembersViewModel
@@ -60,6 +61,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun initViewBinding() {
         fragmentCareTeamMembersBinding.listener = this
         setCareTeamAdapters()
+
         // Get Care Teams by lovedOne Id
         careTeamViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
 
@@ -138,6 +140,16 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     hideLoading()
                     careTeams = it.data.payload.careTeams
                     if (careTeams.isNullOrEmpty()) return@observeEvent
+                    // Get the uuid of Care Team Leader
+                    val uuidTeamLead = careTeams?.filter {
+                        it.careRoles?.slug == CareRole.CareTeamLead.slug
+                    }?.map {
+                        it.userId
+                    }?.get(0)
+                    Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
+                    uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }
+
+
                     careTeamAdapter?.updateCareTeams(careTeams!!)
                 }
                 is DataResult.Failure -> {

@@ -8,6 +8,8 @@ object Const {
     const val USER_TOKEN = "USER Token"
     const val USER_ID = "USER ID"
     const val UUID = "UUID"
+    const val CARE_TEAM_LEADER_UUID = "CARE TEAM LEADER UUID"
+    const val Is_LOGGED_IN_USER_TEAM_LEAD = "Is_LOGGED_IN_USER_TEAM_LEAD"
     const val EMAIL_ID = "EMAIL_ID"
     const val USER_ROLE = "USER_ROLE"
     const val PAYLOAD = "PAYLOAD"

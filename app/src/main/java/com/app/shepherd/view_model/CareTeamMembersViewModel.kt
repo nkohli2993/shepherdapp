@@ -55,7 +55,8 @@ class CareTeamMembersViewModel @Inject constructor(
         viewModelScope.launch {
             val response =
                 lovedOneUUID?.let {
-                    careTeamsRepository.getCareTeamsByLovedOneId(pageNumber, limit, status,
+                    careTeamsRepository.getCareTeamsByLovedOneId(
+                        pageNumber, limit, status,
                         it
                     )
                 }
@@ -66,5 +67,12 @@ class CareTeamMembersViewModel @Inject constructor(
         return careTeamsResponseLiveData
     }
 
+    fun saveLoggedInUserTeamLead(careTeamLeaderUUID: String) {
+        if (userRepository.getUUID() == careTeamLeaderUUID) {
+            userRepository.saveLoggedInUserTeamLead(true)
+        } else {
+            userRepository.saveLoggedInUserTeamLead(false)
+        }
+    }
 
 }
