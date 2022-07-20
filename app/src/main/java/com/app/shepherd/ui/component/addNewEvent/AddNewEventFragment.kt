@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.care_team.CareTeam
+import com.app.shepherd.data.dto.care_team.Payload
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentAddNewEventBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -114,6 +115,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = it.data.payload
+                    careteams.add(CareTeam(id = -1))
                     careteams.addAll(payload.careTeams)
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(

@@ -57,6 +57,11 @@ object ApiConstants {
 
     object GetCreateEvent {
         const val GET_EVENT = "$BASE_URL${API_VERSION}events"
+        const val GET_EVENTDETAIL= "$BASE_URL${API_VERSION}events/{id}"
+    }
+
+    object EventComments{
+        const val ADD_EVENT_COMMENT =  "$BASE_URL${API_VERSION}event_comments"
     }
 
     object Home {

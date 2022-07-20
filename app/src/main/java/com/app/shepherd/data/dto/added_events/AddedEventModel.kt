@@ -13,4 +13,5 @@ data class AddedEventModel(
     @SerializedName("deleted_at") var deleted_at: String? = null,
     @SerializedName("created_by") var created_by: String? = null,
     @SerializedName("id") var id: Int? = null,
+    @SerializedName("event_comments") var event_comments: ArrayList<EventCommentsModel> = arrayListOf(),
 )

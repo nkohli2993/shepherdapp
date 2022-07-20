@@ -75,6 +75,10 @@ ext {
     base_url_user_staging = "\"https://shepherduser-uat.itechnolabs.tech:6001/\""
     // Base URL for Shepherd
     base_url_staging = "\"https://shepherdapp.itechnolabs.tech/\""
+
+    // dev urls
+    base_url_user_dev = "\"https://shepherduser-uat.itechnolabs.tech:6001/\""
+    base_url_dev = "\"https://shepherdapp.itechnolabs.tech/\""
 }
 
 //ext.base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""

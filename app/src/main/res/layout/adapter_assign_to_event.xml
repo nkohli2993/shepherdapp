@@ -57,12 +57,12 @@
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/imageViewCareTeam"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_margin="@dimen/_1sdp"
                     android:padding="@dimen/_2sdp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_defalut_profile_pic"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent." />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent." />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView

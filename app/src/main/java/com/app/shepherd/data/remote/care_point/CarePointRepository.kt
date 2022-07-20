@@ -1,13 +1,8 @@
 package com.app.shepherd.data.remote.care_point
-import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
-import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.app.shepherd.data.dto.added_events.AddedEventResponseModel
-import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
-import com.app.shepherd.data.dto.care_team.DeleteCareTeamMemberResponseModel
-import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
-import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberResponseModel
-import com.app.shepherd.data.dto.invitation.InvitationsResponseModel
-import com.app.shepherd.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
+import com.app.shepherd.data.dto.added_events.EventCommentModel
+import com.app.shepherd.data.dto.added_events.EventCommentResponseModel
+import com.app.shepherd.data.dto.added_events.EventDetailResponseModel
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.NetworkOnlineDataRepo
@@ -21,7 +16,7 @@ import javax.inject.Singleton
 @Singleton
 class CarePointRepository @Inject constructor(private val apiService: ApiService) {
 
-    // Get Care points for loggedIn User
+    // Get Care points list for loggedIn User
     suspend fun getCarePointsAdded(
         pageNumber: Int,
         limit: Int,
@@ -35,5 +30,29 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+  // Get Care points detail for loggedIn User
+    suspend fun getCarePointsDetailIdBased(
+        id: Int
+    ): Flow<DataResult<EventDetailResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<EventDetailResponseModel, EventDetailResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<EventDetailResponseModel> {
+                return apiService.getEventDetail(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Update Care Team Member
+    suspend fun addEventComment(
+        eventCommentModel: EventCommentModel
+    ): Flow<DataResult<EventCommentResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<EventCommentResponseModel, EventCommentResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<EventCommentResponseModel> {
+                return apiService.creatEventComment(eventCommentModel)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 
 }

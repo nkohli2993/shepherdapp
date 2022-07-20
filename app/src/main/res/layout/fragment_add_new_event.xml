@@ -132,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_light"
-                    android:text="@string/assign_to"
+                    android:text="@string/assign_to_"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />

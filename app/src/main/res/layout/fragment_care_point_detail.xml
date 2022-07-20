@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{listener::onClick}"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTitleCarePoint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/gotham_bold"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivBack" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/gotham_book"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:textColor="@color/_A3A5AD"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/recyclerViewEvents"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleCarePoint" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/gotham_bold"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_time"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gotham_medium"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:textColor="@color/_399282"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_date" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewEvents"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_2sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_location"
+            tools:itemCount="2"
+            tools:listitem="@layout/adapter_events_members" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewUser"
+            android:layout_width="@dimen/_23sdp"
+            android:layout_height="@dimen/_23sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_username"
+            app:layout_constraintStart_toStartOf="@id/tv_date"
+            app:layout_constraintTop_toTopOf="@+id/tv_username" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:fontFamily="@font/gotham_medium"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_userdate"
+            app:layout_constraintStart_toEndOf="@+id/imageViewUser"
+            app:layout_constraintTop_toBottomOf="@id/tv_date" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_userdate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:fontFamily="@font/gotham_medium"
+            android:gravity="end"
+            android:paddingEnd="@dimen/_10sdp"
+            android:textColor="@color/colorGreen"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_username"
+            app:layout_constraintEnd_toEndOf="@+id/tv_time"
+            app:layout_constraintTop_toTopOf="@+id/tv_username" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_notes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:ellipsize="end"
+            android:fontFamily="@font/gotham_book"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_13ssp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/tv_time"
+            app:layout_constraintStart_toStartOf="@id/tv_date"
+            app:layout_constraintTop_toBottomOf="@id/imageViewUser" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewChat"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_5sdp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_notes"
+            tools:itemCount="3"
+            tools:listitem="@layout/adapter_chat" />
+
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/editTextMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_box_6"
+            android:backgroundTint="@color/_E7E8EA"
+            android:hint="@string/write"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_15sdp"
+            android:textColorHint="@color/_192032"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/sendCommentIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:onClick="@{listener::onClick}"
+            android:src="@drawable/ic_send_msg"
+            app:layout_constraintBottom_toBottomOf="@id/editTextMessage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/editTextMessage" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
