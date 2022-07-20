@@ -18,6 +18,7 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.carePoints.adapter.CarePointsDayAdapter
+import com.app.shepherd.utils.CalendarState
 import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.observe
 import com.app.shepherd.view_model.CreatedCarePointsViewModel
@@ -42,7 +43,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private var limit: Int = 10
     private var startDate: String = ""
     private var endDate: String = ""
-    private var clickType = 1  // 1 for today, 2 for week , 3 for month
+    private var clickType = CalendarState.Today.value
     private var sdf: SimpleDateFormat? = null
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +65,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         carePointsViewModel.getCarePointsByLovedOneId(pageNumber, limit, startDate, endDate)
         fragmentCarePointsBinding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
             when (clickType) {
-                1 -> {
+                CalendarState.Today.value -> {
                     val calendar = GregorianCalendar(year, month, dayOfMonth)
                     startDate = sdf!!.format(calendar.time)
                     endDate = sdf!!.format(calendar.time)
@@ -75,7 +76,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                         endDate
                     )
                 }
-                2 -> {
+                CalendarState.Week.value -> {
                     val calendar = GregorianCalendar(year, month, dayOfMonth)
                     startDate = sdf!!.format(calendar.time)
                     calendar.add(Calendar.DATE, 7)
@@ -87,7 +88,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                         endDate
                     )
                 }
-                3 -> {
+                CalendarState.Month.value -> {
                     val calendar = GregorianCalendar(year, month, dayOfMonth)
                     startDate = sdf!!.format(calendar.time)
                     calendar.add(Calendar.MONTH, 1)
@@ -159,14 +160,14 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tv_today -> {
-                clickType = 1
+                clickType = CalendarState.Today.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.today)
                 val cal = Calendar.getInstance()
                 fragmentCarePointsBinding.calendarView.date = cal.timeInMillis
                 onDayClickDataFetch()
             }
             R.id.tv_week -> {
-                clickType = 2
+                clickType = CalendarState.Week.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.week)
                 val cal = Calendar.getInstance()
                 cal[Calendar.HOUR_OF_DAY] = 0 // ! clear would not reset the hour of day !
@@ -178,7 +179,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 onWeekClickDataFetch()
             }
             R.id.tv_month -> {
-                clickType = 3
+                clickType = CalendarState.Month.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.month)
                 val cal = Calendar.getInstance()
                 cal[Calendar.HOUR_OF_DAY] = 0 // ! clear would not reset the hour of day !

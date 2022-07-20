@@ -67,3 +67,9 @@ enum class Status(val status: Int) {
 enum class CareRole(val slug: String) {
     CareTeamLead("care_team_lead")
 }
+
+enum class CalendarState(val value: Int) {
+    Today(1),
+    Week(2),
+    Month(3)
+}

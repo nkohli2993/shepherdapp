@@ -67,9 +67,9 @@ class CarePointsDayAdapter(
             itemBinding.dateTV.text = carePoints.date
             setCarePointsAdapter(binding.recyclerViewEventDays, carePoints.events)
             itemBinding.dateTV.visibility = View.VISIBLE
-            if(clickType == 1){
+           /* if(clickType == 1){
                 itemBinding.dateTV.visibility = View.GONE
-            }
+            }*/
         }
     }
 
