@@ -5,7 +5,6 @@
 
     <data>
 
-
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
@@ -35,7 +34,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_bold"
-            android:text="Add New CarePoint"
+            android:text="@string/add_new_care_point"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="@+id/ivBack"
@@ -66,7 +65,7 @@
                     android:fontFamily="@font/gotham_light"
                     android:text="@string/event_name"
                     android:textColor="@color/_192032"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_12ssp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etEventName"
@@ -77,6 +76,7 @@
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:fontFamily="@font/gotham_medium"
                     android:hint="@string/event_name"
+                    android:textColorHint="@color/_192032"
                     android:inputType="textCapSentences"
                     android:paddingHorizontal="@dimen/_8sdp"
                     android:paddingVertical="@dimen/_20sdp"
@@ -88,7 +88,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_light"
-                    android:text="@string/address"
+                    android:text="@string/address_optional"
+                    android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutDateOfBirth" />
@@ -105,10 +106,10 @@
 
                     <ImageView
                         android:layout_width="@dimen/_20sdp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/_16sdp"
                         android:layout_margin="@dimen/_4sdp"
                         android:contentDescription="@string/app_name"
-                        app:srcCompat="@drawable/ic_outline_location_on"
+                        app:srcCompat="@drawable/ic_address_care_event"
                         app:tint="@color/colorGreyDark" />
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -117,12 +118,13 @@
                         android:layout_height="@dimen/_80sdp"
                         android:layout_marginTop="@dimen/_4sdp"
                         android:background="@null"
-                        android:drawablePadding="@dimen/_5sdp"
                         android:gravity="top|start"
                         android:hint="@string/address"
+                        android:fontFamily="@font/gotham_medium"
+                        android:textColorHint="@color/_192032"
+                        android:textColor="@color/_192032"
                         android:inputType="textCapSentences"
                         android:lines="6"
-                        android:paddingHorizontal="@dimen/_8sdp"
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
 
@@ -134,6 +136,7 @@
                     android:fontFamily="@font/gotham_light"
                     android:text="@string/assign_to"
                     android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/_192032"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
 
@@ -176,6 +179,7 @@
                     android:fontFamily="@font/gotham_light"
                     android:text="@string/date"
                     android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/_192032"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
 
@@ -186,13 +190,16 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:drawableStart="@drawable/ic_calendar"
+                    android:drawableStart="@drawable/ic_calendar_care_event"
                     android:drawablePadding="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_medium"
                     android:paddingHorizontal="@dimen/_8sdp"
                     android:paddingVertical="@dimen/_20sdp"
                     android:text="@string/dd_mm_yy"
-                    android:textSize="14sp" />
+                    android:gravity="center_vertical"
+                    android:textColor="@color/_192032"
+                    app:fontFamily="@font/gotham_medium"
+                    android:textSize="@dimen/_12ssp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -228,7 +235,7 @@
                         android:fontFamily="@font/gotham_medium"
                         android:text="12:00"
                         android:textColor="@color/_192032"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_12ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/llAmPm"
                         app:layout_constraintStart_toEndOf="@+id/ivClock"
@@ -249,7 +256,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/am"
                             android:textColor="@color/_192032"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_12ssp" />
 
                         <View
                             android:layout_width="1dp"
@@ -264,7 +271,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/pm"
                             android:textColor="@color/_192032"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_12ssp" />
 
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -273,8 +280,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/gotham_medium"
-                    android:text="@string/notes"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="@string/note"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp" />
 
@@ -293,6 +300,10 @@
                         android:background="@null"
                         android:gravity="top|start"
                         android:hint="@string/write"
+                        android:textColor="@color/_192032"
+                        android:textColorHint="@color/_192032"
+                        android:fontFamily="@font/gotham_medium"
+                        android:textSize="@dimen/_12ssp"
                         android:lines="4"
                         android:padding="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="parent"
