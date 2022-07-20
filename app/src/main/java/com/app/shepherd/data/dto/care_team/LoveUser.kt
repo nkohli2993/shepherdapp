@@ -9,7 +9,8 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class LoveUser(
-
+    @SerializedName("id") var id: Int? = null,
+    @SerializedName("uid") var uid: String? = null,
     @SerializedName("firstname") var firstname: String? = null,
     @SerializedName("lastname") var lastname: String? = null,
     @SerializedName("profile_photo") var profilePhoto: String? = null,
