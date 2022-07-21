@@ -122,9 +122,12 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/bg_image_place_holder_round.xml" value="0.227" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_background.xml" value="0.15" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selector.xml" value="0.1915" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_arrow_right.xml" value="0.227" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_care_points.xml" value="0.159" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_defalut_profile_pic.xml" value="0.1875" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_home_resources.xml" value="0.15" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_left_arrow.xml" value="0.227" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_right_arrow.xml" value="0.227" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/act_welcome.xml" value="0.19519927536231885" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_add_loved_one.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_create_new_account.xml" value="0.19519927536231885" />
