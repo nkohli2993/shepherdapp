@@ -118,12 +118,17 @@
                     app:headerLabelColor="@color/colorBlack"
                     app:headerColor="@color/colorGreyLight"
                     android:layout_marginTop="@dimen/_10sdp"
+                    app:selectionColor="@color/colorGreen"
+                    app:pagesColor="@color/colorGreyLight"
+                    app:selectionLabelColor="@color/colorGreen"
+                    app:highlightedDaysLabelsColor="@color/colorGreen"
                     app:layout_constraintTop_toBottomOf="@+id/llDateType" />
 
                 <CalendarView
                     android:id="@+id/calendarView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:layout_constraintTop_toBottomOf="@+id/calendar" />
 
                 <androidx.appcompat.widget.AppCompatTextView
