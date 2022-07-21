@@ -3,6 +3,7 @@ package com.app.shepherd.ui.component.carePoints.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.added_events.UserAssigneeModel
@@ -57,13 +58,19 @@ class CarePointsEventAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
+            // Set the margin end as zero for the last item
+            if (position == commentList.size - 1) {
+                itemBinding.layout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    this.marginEnd = 0
+                }
+            }
+
             val imageUrl = commentList[position].user_details.user_profiles.profilePhoto ?: ""
             itemBinding.let {
-                if(!imageUrl.isNullOrEmpty()){
+                if (!imageUrl.isNullOrEmpty()) {
                     Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
                         .into(it.imageView)
-                }
-                else{
+                } else {
                     it.imageView.setImageResource(R.drawable.ic_defalut_profile_pic)
                 }
             }
