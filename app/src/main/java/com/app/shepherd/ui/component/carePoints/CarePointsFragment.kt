@@ -62,6 +62,13 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         startDate = sdf!!.format(Calendar.getInstance().time)
         endDate = startDate
         getCarePointList(startDate, endDate)
+        getCarePointList(startDate,endDate)
+        fragmentCarePointsBinding.calendar.setForwardButtonImage(R.drawable.ic_right_arrow);
+        fragmentCarePointsBinding.calendar.setPreviousButtonImage(R.drawable.ic_left_arrow);
+
+        val calendars: List<Calendar> = ArrayList()
+        calendars
+        fragmentCarePointsBinding.calendar.setHighlightedDays(calendars)
         fragmentCarePointsBinding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
             when (clickType) {
                 CalendarState.Today.value -> {
