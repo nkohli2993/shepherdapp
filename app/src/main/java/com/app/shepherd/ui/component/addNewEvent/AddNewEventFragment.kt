@@ -1,11 +1,17 @@
 package com.app.shepherd.ui.component.addNewEvent
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.RotateAnimation
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
@@ -28,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_new_event.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -57,17 +62,35 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         return fragmentAddNewEventBinding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentAddNewEventBinding.listener = this
 
 
         initDatePicker()
-        initTimePicker()
+       // initTimePicker()
         getAssignedToMembers()
-
+        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+        fragmentAddNewEventBinding.eventMemberSpinner.setOnTouchListener { v, event ->
+            rotate(0f)
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                rotate(180f)
+            }
+            false
+        }
 
     }
 
+    private fun rotate(degree: Float) {
+        val rotateAnim = RotateAnimation(
+            0.0f, degree,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+        )
+        rotateAnim.duration = 0
+        rotateAnim.fillAfter = true
+        fragmentAddNewEventBinding.spinnerDownArrowImage.startAnimation(rotateAnim)
+    }
     private fun getAssignedToMembers() {
         addNewEventViewModel.getMembers(
             pageNumber,
@@ -142,6 +165,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 }
             }
         }
+
     }
 
     private fun observeCreateEvent() {
@@ -198,6 +222,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     createEvent()
                 }
             }
+            R.id.clTimeWrapper ->{
+                timePicker()
+            }
         }
     }
 
@@ -227,7 +254,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private fun createEvent() {
         assignTo.clear()
         for (i in careteams) {
-            if (i.isSelected){
+            if (i.isSelected) {
                 assignTo.add(i.userId!!)
             }
 
@@ -238,7 +265,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         selectedDate = dateFormat.format(formatedDate)
         addNewEventViewModel.createEvent(
-            addNewEventViewModel.getLovedOneId(),
+            addNewEventViewModel.getLovedOneUUId(),
             fragmentAddNewEventBinding.etEventName.text.toString().trim(),
             fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
             selectedDate,
@@ -257,7 +284,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
     private fun initTimePicker() {
-        tvTime.timePicker(
+       tvTime.timePicker(
             requireContext()
         )
     }
@@ -272,6 +299,42 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         careteams[position].isSelected = !careteams[position].isSelected
     }
 
+    private fun timePicker() {
+        val mCurrentTime = Calendar.getInstance()
+        val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
+        val minute = mCurrentTime.get(Calendar.MINUTE)
+
+        val mTimePicker = TimePickerDialog(
+            context,
+            { view, hourOfDay, selectedMinute ->
+                fragmentAddNewEventBinding.tvTime.text =
+                    String.format("%02d:%02d", hourOfDay, selectedMinute)
+
+                if (hourOfDay < 12) {
+                    setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                } else {
+                    setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                }
+            }, hour,
+            minute, true
+        )
+        mTimePicker.show()
+    }
+
+    private fun setColorTimePicked(selected: Int, unselected: Int) {
+        fragmentAddNewEventBinding.tvam.setTextColor(
+            ContextCompat.getColor(
+                requireContext().applicationContext,
+                selected
+            )
+        )
+        fragmentAddNewEventBinding.tvpm.setTextColor(
+            ContextCompat.getColor(
+                requireContext().applicationContext,
+                unselected
+            )
+        )
+    }
 
 }
 

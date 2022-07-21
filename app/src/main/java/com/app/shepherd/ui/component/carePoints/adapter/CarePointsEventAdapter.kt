@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
-import com.app.shepherd.data.dto.added_events.EventCommentsModel
+import com.app.shepherd.data.dto.added_events.UserAssigneeModel
 import com.app.shepherd.databinding.AdapterEventsMembersBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.squareup.picasso.Picasso
 
 
 class CarePointsEventAdapter(
-    var commentList: ArrayList<EventCommentsModel> = ArrayList()
+    var commentList: ArrayList<UserAssigneeModel> = ArrayList()
 ) :
     RecyclerView.Adapter<CarePointsEventAdapter.CarePointsEventsViewHolder>() {
     lateinit var binding: AdapterEventsMembersBinding
@@ -57,8 +57,7 @@ class CarePointsEventAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
-            val imageUrl = commentList[position].user_image ?: ""
-
+            val imageUrl = commentList[position].user_details.user_profiles.profilePhoto ?: ""
             itemBinding.let {
                 if(!imageUrl.isNullOrEmpty()){
                     Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)

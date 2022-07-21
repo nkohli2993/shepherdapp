@@ -4,22 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.shepherd.data.dto.added_events.EventCommentsModel
+import com.app.shepherd.data.dto.added_events.EventCommentUserDetailModel
 import com.app.shepherd.databinding.AdapterChatBinding
-import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 
 class CarePointEventCommentAdapter(
-    var commentList: ArrayList<EventCommentsModel> = ArrayList()
+    var commentList: ArrayList<EventCommentUserDetailModel> = ArrayList()
 ) :
     RecyclerView.Adapter<CarePointEventCommentAdapter.CarePointsEventsViewHolder>() {
     lateinit var binding: AdapterChatBinding
     lateinit var context: Context
-
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
-        override fun onItemSelected(vararg itemData: Any) {
-
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsEventsViewHolder {
         context = parent.context
@@ -34,26 +27,19 @@ class CarePointEventCommentAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return when {
-            commentList.size <= 3 -> {
-                commentList.size
-            }
-            else -> {
-                3
-            }
-        }
+        return commentList.size
 
     }
 
     override fun onBindViewHolder(holder: CarePointsEventsViewHolder, position: Int) {
-        holder.bind(position, onItemClickListener)
+        holder.bind(position)
     }
 
 
     inner class CarePointsEventsViewHolder(private val itemBinding: AdapterChatBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
+        fun bind(position: Int) {
             val commentData = commentList[position]
 
             itemBinding.let {
@@ -71,5 +57,10 @@ class CarePointEventCommentAdapter(
     override fun getItemViewType(position: Int): Int {
         return position
     }
+    fun updateAddedComment(commentAddedList: ArrayList<EventCommentUserDetailModel>) {
+        this.commentList = commentAddedList
+        notifyDataSetChanged()
+    }
+
 
 }

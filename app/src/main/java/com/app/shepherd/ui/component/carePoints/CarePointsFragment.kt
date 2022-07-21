@@ -1,8 +1,6 @@
 package com.app.shepherd.ui.component.carePoints
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +32,7 @@ import java.util.*
 @SuppressLint("SimpleDateFormat")
 @AndroidEntryPoint
 class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
-    View.OnClickListener {
+    View.OnClickListener, CarePointsDayAdapter.EventSelected {
     private lateinit var fragmentCarePointsBinding: FragmentCarePointsBinding
     private var carePoints: ArrayList<ResultEventModel>? = ArrayList()
     private var carePointsAdapter: CarePointsDayAdapter? = null
@@ -62,43 +60,28 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         sdf = SimpleDateFormat("yyyy-MM-dd")
         startDate = sdf!!.format(Calendar.getInstance().time)
         endDate = startDate
-        carePointsViewModel.getCarePointsByLovedOneId(pageNumber, limit, startDate, endDate)
+        getCarePointList(startDate,endDate)
         fragmentCarePointsBinding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
             when (clickType) {
                 CalendarState.Today.value -> {
                     val calendar = GregorianCalendar(year, month, dayOfMonth)
                     startDate = sdf!!.format(calendar.time)
                     endDate = sdf!!.format(calendar.time)
-                    carePointsViewModel.getCarePointsByLovedOneId(
-                        pageNumber,
-                        limit,
-                        startDate,
-                        endDate
-                    )
+                    getCarePointList(startDate,endDate)
                 }
                 CalendarState.Week.value -> {
                     val calendar = GregorianCalendar(year, month, dayOfMonth)
                     startDate = sdf!!.format(calendar.time)
                     calendar.add(Calendar.DATE, 7)
                     endDate = sdf!!.format(calendar.time)
-                    carePointsViewModel.getCarePointsByLovedOneId(
-                        pageNumber,
-                        limit,
-                        startDate,
-                        endDate
-                    )
+                    getCarePointList(startDate,endDate)
                 }
                 CalendarState.Month.value -> {
                     val calendar = GregorianCalendar(year, month, dayOfMonth)
                     startDate = sdf!!.format(calendar.time)
                     calendar.add(Calendar.MONTH, 1)
                     endDate = sdf!!.format(calendar.time)
-                    carePointsViewModel.getCarePointsByLovedOneId(
-                        pageNumber,
-                        limit,
-                        startDate,
-                        endDate
-                    )
+                    getCarePointList(startDate,endDate)
                 }
             }
         }
@@ -124,20 +107,11 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                     carePoints?.clear()
                     carePoints?.let { it1 -> carePointsAdapter?.updateCarePoints(it1) }
                     fragmentCarePointsBinding.noCareFoundTV.visibility = View.VISIBLE
-                    val builder = AlertDialog.Builder(requireContext())
-                    val dialog = builder.apply {
-                        setTitle("Care Points")
-                        setMessage("No Care points found")
-                        setPositiveButton("OK") { _, _ ->
-                            // navigateToDashboardScreen()
-                        }
-                    }.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
             }
         }
 
+        fragmentCarePointsBinding.calendarView.onFocusChangeListener
     }
 
     private fun openCarePointDetails(navigateEvent: SingleEvent<Int>) {
@@ -152,7 +126,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
 
     private fun setCarePointsAdapter() {
-        carePointsAdapter = CarePointsDayAdapter(carePointsViewModel, carePoints!!, clickType)
+        carePointsAdapter = CarePointsDayAdapter(carePointsViewModel, carePoints!!, clickType,this)
         fragmentCarePointsBinding.recyclerViewEventDays.adapter = carePointsAdapter
     }
 
@@ -170,7 +144,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 clickType = CalendarState.Week.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.week)
                 val cal = Calendar.getInstance()
-                cal[Calendar.HOUR_OF_DAY] = 0 // ! clear would not reset the hour of day !
+                cal[Calendar.HOUR_OF_DAY] = 0
                 cal.clear(Calendar.MINUTE)
                 cal.clear(Calendar.SECOND)
                 cal.clear(Calendar.MILLISECOND)
@@ -182,7 +156,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 clickType = CalendarState.Month.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.month)
                 val cal = Calendar.getInstance()
-                cal[Calendar.HOUR_OF_DAY] = 0 // ! clear would not reset the hour of day !
+                cal[Calendar.HOUR_OF_DAY] = 0
                 cal.clear(Calendar.MINUTE)
                 cal.clear(Calendar.SECOND)
                 cal.clear(Calendar.MILLISECOND)
@@ -227,7 +201,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         startDate =
             sdf!!.format(fragmentCarePointsBinding.calendarView.date)
         endDate = sdf!!.format(fragmentCarePointsBinding.calendarView.date)
-        carePointsViewModel.getCarePointsByLovedOneId(pageNumber, limit, startDate, endDate)
+        getCarePointList(startDate,endDate)
     }
 
     private fun onWeekClickDataFetch() {
@@ -243,7 +217,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         startDate = sdf!!.format(calendar.time)
         calendar.add(Calendar.DATE, 7)
         endDate = sdf!!.format(calendar.time)
-        carePointsViewModel.getCarePointsByLovedOneId(pageNumber, limit, startDate, endDate)
+        getCarePointList(startDate,endDate)
     }
 
     private fun onMonthClickDatFetch() {
@@ -259,11 +233,24 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         startDate = sdf!!.format(calendar.time)
         calendar.add(Calendar.MONTH, 1)
         endDate = sdf!!.format(calendar.time)
-        carePointsViewModel.getCarePointsByLovedOneId(pageNumber, limit, startDate, endDate)
+        getCarePointList(startDate,endDate)
     }
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_care_points
+    }
+
+    private fun getCarePointList(startDate:String,endDate:String){
+        carePointsViewModel.getCarePointsByLovedOneId(pageNumber, limit, startDate, endDate,carePointsViewModel.getLovedOneUUId()!!)
+    }
+
+    override fun onEventSelected(id: Int) {
+        //open event detail page
+        findNavController().navigate(
+            CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                id
+            )
+        )
     }
 }
 

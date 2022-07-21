@@ -51,7 +51,7 @@
             android:textColor="@color/_A3A5AD"
             android:textSize="@dimen/_13ssp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/recyclerViewEvents"
+            app:layout_constraintEnd_toStartOf="@id/recyclerViewEventAssigne"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitleCarePoint" />
 
@@ -82,7 +82,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewEvents"
+            android:id="@+id/recyclerViewEventAssigne"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_2sdp"
@@ -149,7 +149,8 @@
             android:id="@+id/recyclerViewChat"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
             app:layout_constraintEnd_toEndOf="parent"

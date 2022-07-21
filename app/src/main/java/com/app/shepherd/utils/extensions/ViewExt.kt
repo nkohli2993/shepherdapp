@@ -243,15 +243,14 @@ fun AppCompatTextView.datePicker(fm: FragmentManager, tag: String) {
     }
 }
 
-fun AppCompatTextView.timePicker(context: Context) {
-    val mCurrentTime = Calendar.getInstance()
+fun AppCompatTextView.timePicker(context: Context) { val mCurrentTime = Calendar.getInstance()
     val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
     val minute = mCurrentTime.get(Calendar.MINUTE)
 
     val mTimePicker = TimePickerDialog(
         context,
         { view, hourOfDay, selectedMinute ->
-            text = String.format("%02d : %02d", hourOfDay, selectedMinute)
+            text = String.format("%02d:%02d", hourOfDay, selectedMinute)
         }, hour,
         minute, true
     )

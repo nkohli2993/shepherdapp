@@ -367,4 +367,6 @@
     <string name="wed_18_jul">wed, 18 jul</string>
     <string name="no_care_points_found">No Care points found</string>
     <string name="menu_care_point_detail">Care point detail</string>
+    <string name="dd_mm_year">DD/MM/YEAR</string>
+    <string name="_12_00">12:00</string>
 </resources>

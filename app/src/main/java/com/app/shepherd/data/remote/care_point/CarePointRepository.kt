@@ -1,8 +1,6 @@
 package com.app.shepherd.data.remote.care_point
-import com.app.shepherd.data.dto.added_events.AddedEventResponseModel
-import com.app.shepherd.data.dto.added_events.EventCommentModel
-import com.app.shepherd.data.dto.added_events.EventCommentResponseModel
-import com.app.shepherd.data.dto.added_events.EventDetailResponseModel
+
+import com.app.shepherd.data.dto.added_events.*
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.NetworkOnlineDataRepo
@@ -20,17 +18,25 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
     suspend fun getCarePointsAdded(
         pageNumber: Int,
         limit: Int,
-        start_date:String,
-        end_date:String
+        start_date: String,
+        end_date: String,
+        loved_one_user_uid: String
     ): Flow<DataResult<AddedEventResponseModel>> {
         return object :
             NetworkOnlineDataRepo<AddedEventResponseModel, AddedEventResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AddedEventResponseModel> {
-                return apiService.getCreatedEvent(pageNumber, limit,start_date,end_date)
+                return apiService.getCreatedEvent(
+                    pageNumber,
+                    limit,
+                    start_date,
+                    end_date,
+                    loved_one_user_uid
+                )
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
-  // Get Care points detail for loggedIn User
+
+    // Get Care points detail for loggedIn User
     suspend fun getCarePointsDetailIdBased(
         id: Int
     ): Flow<DataResult<EventDetailResponseModel>> {
@@ -38,6 +44,18 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
             NetworkOnlineDataRepo<EventDetailResponseModel, EventDetailResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<EventDetailResponseModel> {
                 return apiService.getEventDetail(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Get Care points comments for event
+    suspend fun getEventCommentsIdBased(
+        page: Int, limit: Int, id: Int
+    ): Flow<DataResult<AllCommentEventsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AllCommentEventsResponseModel, AllCommentEventsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AllCommentEventsResponseModel> {
+                return apiService.getEventComment(page, limit, id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

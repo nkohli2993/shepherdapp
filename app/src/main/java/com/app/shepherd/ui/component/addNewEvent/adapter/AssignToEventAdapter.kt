@@ -13,10 +13,11 @@ import com.app.shepherd.view_model.AddNewEventViewModel
 import com.squareup.picasso.Picasso
 
 
-class AssignToEventAdapter(val onListener:selectedTeamMember,
-                           val context: Context,
-                           private val viewModel: AddNewEventViewModel,
-                           var memberList: ArrayList<CareTeam> = ArrayList()
+class AssignToEventAdapter(
+    val onListener: selectedTeamMember,
+    val context: Context,
+    private val viewModel: AddNewEventViewModel,
+    var memberList: ArrayList<CareTeam> = ArrayList()
 ) :
     BaseAdapter() {
     private val inflater: LayoutInflater =
@@ -51,9 +52,11 @@ class AssignToEventAdapter(val onListener:selectedTeamMember,
         } else {
             vh.tvSelect.isVisible = false
             vh.clEventWrapper.isVisible = true
-            vh.textViewCareTeamName.text = memberList[position].user?.firstname.plus(" ").plus(memberList[position].user?.lastname)
+            vh.textViewCareTeamName.text = memberList[position].user?.firstname.plus(" ")
+                .plus(memberList[position].user?.lastname)
             vh.textViewCareTeamRole.text = memberList[position].careRoles?.name
-            Picasso.get().load(memberList[position].user?.profilePhoto).placeholder(R.drawable.ic_defalut_profile_pic)
+            Picasso.get().load(memberList[position].user?.profilePhoto)
+                .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(vh.imageViewCareTeam)
         }
 
@@ -82,7 +85,7 @@ class AssignToEventAdapter(val onListener:selectedTeamMember,
         }
     }
 
-    interface selectedTeamMember{
+    interface selectedTeamMember {
         fun onSelected(position: Int)
     }
 }

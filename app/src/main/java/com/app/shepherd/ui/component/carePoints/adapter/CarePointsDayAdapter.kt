@@ -1,7 +1,6 @@
 package com.app.shepherd.ui.component.carePoints.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,15 @@ import com.app.shepherd.data.dto.added_events.AddedEventModel
 import com.app.shepherd.data.dto.added_events.ResultEventModel
 import com.app.shepherd.databinding.AdapterCarePointsDayDateBasedBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
+import com.app.shepherd.utils.CalendarState
 import com.app.shepherd.view_model.CreatedCarePointsViewModel
 
 
 class CarePointsDayAdapter(
     val viewModel: CreatedCarePointsViewModel,
     var carePointList: MutableList<ResultEventModel> = java.util.ArrayList(),
-    val clickType: Int
+    val clickType: Int,
+    val listener: EventSelected,
 ) :
     RecyclerView.Adapter<CarePointsDayAdapter.CarePointsDayViewHolder>(),
     CarePointsDateBasedAdapter.OnCarePointSelected {
@@ -47,7 +48,7 @@ class CarePointsDayAdapter(
     }
 
     override fun onBindViewHolder(holder: CarePointsDayViewHolder, position: Int) {
-        holder.bind(position, onItemClickListener)
+        holder.bind(position)
     }
 
     private fun setCarePointsAdapter(
@@ -62,14 +63,14 @@ class CarePointsDayAdapter(
     inner class CarePointsDayViewHolder(private val itemBinding: AdapterCarePointsDayDateBasedBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
+        fun bind(position: Int) {
             val carePoints = carePointList[position]
             itemBinding.dateTV.text = carePoints.date
             setCarePointsAdapter(binding.recyclerViewEventDays, carePoints.events)
             itemBinding.dateTV.visibility = View.VISIBLE
-           /* if(clickType == 1){
+            if(clickType == CalendarState.Today.value){
                 itemBinding.dateTV.visibility = View.GONE
-            }*/
+            }
         }
     }
 
@@ -88,9 +89,10 @@ class CarePointsDayAdapter(
     }
 
     override fun selectedCarePoint(id: Int) {
-        onItemClickListener.onItemSelected(id)
+        listener.onEventSelected(id)
     }
 
-
-
+    interface  EventSelected{
+        fun onEventSelected(id:Int)
+    }
 }

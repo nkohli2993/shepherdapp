@@ -14,4 +14,5 @@ data class AddedEventModel(
     @SerializedName("created_by") var created_by: String? = null,
     @SerializedName("id") var id: Int? = null,
     @SerializedName("event_comments") var event_comments: ArrayList<EventCommentsModel> = arrayListOf(),
+    @SerializedName("user_assignes") var user_assignes: ArrayList<UserAssigneeModel> = arrayListOf(),
 )

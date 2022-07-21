@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -38,6 +37,7 @@
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/checkbox_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +46,7 @@
                 android:id="@+id/llImageWrapper"
                 android:layout_width="@dimen/_40sdp"
                 android:layout_height="@dimen/_40sdp"
-                android:background="@drawable/bg_image_place_holder"
+                android:background="@drawable/bg_image_place_holder_round"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/checkbox"
@@ -59,8 +59,8 @@
                     android:layout_margin="@dimen/_1sdp"
                     android:padding="@dimen/_2sdp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_defalut_profile_pic"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent." />
+                    android:src="@drawable/background_splash"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView

@@ -117,6 +117,39 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/layout_add_medicine_list.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.22402736212056434" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_white_round_corner.xml" value="0.15" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/bg_image_place_holder.xml" value="0.1875" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/bg_image_place_holder_round.xml" value="0.227" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_background.xml" value="0.15" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selector.xml" value="0.1915" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_care_points.xml" value="0.159" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_defalut_profile_pic.xml" value="0.1875" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_home_resources.xml" value="0.15" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/act_welcome.xml" value="0.19519927536231885" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_add_loved_one.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_create_new_account.xml" value="0.19519927536231885" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_home.xml" value="0.19519927536231885" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_login_new.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_assign_to_event.xml" value="0.33" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_care_points_day.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_care_points_day_date_based.xml" value="0.2552083333333333" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_care_team_members.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_chat.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_events_members.xml" value="0.5" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/app_bar_dashboard.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/content_dashboard.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_member.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_new_event.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_point_detail.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_points.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_team_members.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_change_password.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_chat.xml" value="0.25625" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_dashboard.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_edit_profile.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_event_details.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_invitation.xml" value="0.25" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_member_details.xml" value="0.2609375" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_12.xml" value="0.255" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_6.xml" value="0.255" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_8.xml" value="0.255" />
@@ -180,8 +213,6 @@
         <entry key="app/src/main/res/layout/adapter_add_member_role.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_assign_to_event.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/adapter_care_points.xml" value="0.29243266353142366" />
-        <entry key="app/src/main/res/layout/adapter_care_points_day.xml" value="0.29791666666666666" />
-        <entry key="app/src/main/res/layout/adapter_care_points_day_date_based.xml" value="0.34479166666666666" />
         <entry key="app/src/main/res/layout/adapter_care_points_events.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members_dashboard.xml" value="0.2579162410623085" />
@@ -219,7 +250,6 @@
         <entry key="app/src/main/res/layout/fragment_add_new_event.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/fragment_add_new_medication.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_add_vitals.xml" value="0.3703125" />
-        <entry key="app/src/main/res/layout/fragment_care_point_detail.xml" value="0.34479166666666666" />
         <entry key="app/src/main/res/layout/fragment_care_points.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.29243266353142366" />
@@ -253,7 +283,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8 (2)" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

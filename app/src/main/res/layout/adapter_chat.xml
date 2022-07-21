@@ -21,25 +21,31 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/appCompatTextViewMessage"
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:background="@drawable/rounded_box_8"
-            android:backgroundTint="@color/_F2F2F2"
-            android:fontFamily="@font/gotham_book"
-            android:padding="@dimen/_12sdp"
-            android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or- less normal distribution of letters, as opposed to using 'Content here,"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_11ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appCompatTextViewDateHeader" />
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextViewDateHeader">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextViewMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/rounded_box_8"
+                android:backgroundTint="@color/_F2F2F2"
+                android:fontFamily="@font/gotham_book"
+                android:padding="@dimen/_12sdp"
+                android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or- less normal distribution of letters, as opposed to using 'Content here,"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_11ssp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

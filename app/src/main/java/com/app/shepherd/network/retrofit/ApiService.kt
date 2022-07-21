@@ -6,10 +6,7 @@ import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneResponseModel
 import com.app.shepherd.data.dto.add_loved_one.UploadPicResponseModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.app.shepherd.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
-import com.app.shepherd.data.dto.added_events.AddedEventResponseModel
-import com.app.shepherd.data.dto.added_events.EventCommentModel
-import com.app.shepherd.data.dto.added_events.EventCommentResponseModel
-import com.app.shepherd.data.dto.added_events.EventDetailResponseModel
+import com.app.shepherd.data.dto.added_events.*
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.app.shepherd.data.dto.care_team.UpdateCareTeamMemberRequestModel
@@ -110,6 +107,7 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("start_date") start_date: String,
         @Query("end_date") end_date: String,
+        @Query("loved_one_user_id") loved_one_user_uid:String
     ): Response<AddedEventResponseModel>
 
     @GET(ApiConstants.Event.GET_EVENT_DETAIL)
@@ -181,5 +179,12 @@ interface ApiService {
     suspend fun createEventComment(
         @Body value: EventCommentModel
     ): Response<EventCommentResponseModel>
+
+    @GET(ApiConstants.Event.GET_ALL_EVENT_COMMENT)
+    suspend fun getEventComment(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("event_id") event_id: Int
+    ): Response<AllCommentEventsResponseModel>
 
 }
