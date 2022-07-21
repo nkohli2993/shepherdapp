@@ -12,7 +12,6 @@ import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.Resource
 import com.app.shepherd.data.dto.care_team.CareTeam
-import com.app.shepherd.data.dto.care_team.Payload
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.databinding.FragmentAddNewEventBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -23,12 +22,12 @@ import com.app.shepherd.utils.*
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
+import com.app.shepherd.view_model.AddNewEventViewModel
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_new_event.*
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.atomic.AtomicReference
 import kotlin.collections.ArrayList
 
 

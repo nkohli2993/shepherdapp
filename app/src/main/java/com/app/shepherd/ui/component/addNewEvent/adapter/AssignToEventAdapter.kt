@@ -9,14 +9,14 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.care_team.CareTeam
-import com.app.shepherd.ui.component.addNewEvent.AddNewEventViewModel
+import com.app.shepherd.view_model.AddNewEventViewModel
 import com.squareup.picasso.Picasso
 
 
 class AssignToEventAdapter(val onListener:selectedTeamMember,
-    val context: Context,
-    private val viewModel: AddNewEventViewModel,
-    var memberList: ArrayList<CareTeam> = ArrayList()
+                           val context: Context,
+                           private val viewModel: AddNewEventViewModel,
+                           var memberList: ArrayList<CareTeam> = ArrayList()
 ) :
     BaseAdapter() {
     private val inflater: LayoutInflater =

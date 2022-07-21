@@ -49,7 +49,7 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
         return object :
             NetworkOnlineDataRepo<EventCommentResponseModel, EventCommentResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<EventCommentResponseModel> {
-                return apiService.creatEventComment(eventCommentModel)
+                return apiService.createEventComment(eventCommentModel)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

@@ -99,12 +99,12 @@ interface ApiService {
         @Path("id") id: String
     ): Response<UserDetailByUUIDResponseModel>
 
-    @POST(ApiConstants.CreateEvent.CREATE_EVENT)
+    @POST(ApiConstants.Event.CREATE_EVENT)
     suspend fun createEvent(
         @Body value: CreateEventModel
     ): Response<CreateEventResponseModel>
 
-    @GET(ApiConstants.GetCreateEvent.GET_EVENT)
+    @GET(ApiConstants.Event.GET_EVENT)
     suspend fun getCreatedEvent(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
@@ -112,7 +112,7 @@ interface ApiService {
         @Query("end_date") end_date: String,
     ): Response<AddedEventResponseModel>
 
-    @GET(ApiConstants.GetCreateEvent.GET_EVENTDETAIL)
+    @GET(ApiConstants.Event.GET_EVENT_DETAIL)
     suspend fun getEventDetail(
         @Path("id") id: Int
     ): Response<EventDetailResponseModel>
@@ -177,8 +177,8 @@ interface ApiService {
     suspend fun acceptInvitation(@Path("id") id: Int): Response<AcceptInvitationResponseModel>
 
 
-    @POST(ApiConstants.EventComments.ADD_EVENT_COMMENT)
-    suspend fun creatEventComment(
+    @POST(ApiConstants.Event.ADD_EVENT_COMMENT)
+    suspend fun createEventComment(
         @Body value: EventCommentModel
     ): Response<EventCommentResponseModel>
 

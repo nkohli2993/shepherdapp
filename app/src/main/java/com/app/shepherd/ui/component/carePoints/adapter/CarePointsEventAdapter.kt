@@ -6,11 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.added_events.EventCommentsModel
-import com.app.shepherd.databinding.AdapterCarePointsEventsBinding
-import com.app.shepherd.databinding.AdapterCareTeamMembersDashboardBinding
 import com.app.shepherd.databinding.AdapterEventsMembersBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.carePoints.CarePointsViewModel
 import com.squareup.picasso.Picasso
 
 

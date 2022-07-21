@@ -1,4 +1,4 @@
-package com.app.shepherd.ui.component.addNewEvent
+package com.app.shepherd.view_model
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
@@ -8,8 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneModel
-import com.app.shepherd.data.dto.add_loved_one.CreateLovedOneResponseModel
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.login.LoginRequestModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -19,6 +17,8 @@ import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
+import com.app.shepherd.ui.component.addNewEvent.CreateEventModel
+import com.app.shepherd.ui.component.addNewEvent.CreateEventResponseModel
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.RegexUtils.isValidEmail
@@ -70,25 +70,6 @@ class AddNewEventViewModel @Inject constructor(
         value = CreateEventModel()
     }
 
-    fun doLogin(context: Context, userName: String, passWord: String) {
-        val isUsernameValid = isValidEmail(userName)
-        val isPassWordValid = isValidPassword(passWord)
-        if (!isUsernameValid && !isPassWordValid) {
-            loginLiveDataPrivate.value = Resource.DataError(CHECK_YOUR_FIELDS)
-        } else if (!isUsernameValid && isPassWordValid) {
-            loginLiveDataPrivate.value = Resource.DataError(EMAIL_ERROR)
-        } else if (passwordValidated(context, passWord)) {
-            viewModelScope.launch {
-                loginLiveDataPrivate.value = Resource.Loading()
-                wrapEspressoIdlingResource {
-                    dataRepository.doLogin(loginRequest = LoginRequestModel(userName, passWord))
-                        .collect {
-                            loginLiveDataPrivate.value = it
-                        }
-                }
-            }
-        }
-    }
 
     fun getMembers(
         pageNumber: Int,

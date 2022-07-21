@@ -51,17 +51,12 @@ object ApiConstants {
         const val GET_USER_DETAILS_BY_UUID = "$BASE_URL_USER${API_VERSION}users/uuid/{id}"
     }
 
-    object CreateEvent {
+    object Event {
         const val CREATE_EVENT = "$BASE_URL${API_VERSION}events"
-    }
-
-    object GetCreateEvent {
         const val GET_EVENT = "$BASE_URL${API_VERSION}events"
-        const val GET_EVENTDETAIL= "$BASE_URL${API_VERSION}events/{id}"
-    }
+        const val GET_EVENT_DETAIL = "$BASE_URL${API_VERSION}events/{id}"
+        const val ADD_EVENT_COMMENT = "$BASE_URL${API_VERSION}event_comments"
 
-    object EventComments{
-        const val ADD_EVENT_COMMENT =  "$BASE_URL${API_VERSION}event_comments"
     }
 
     object Home {
