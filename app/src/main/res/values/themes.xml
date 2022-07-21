@@ -194,4 +194,19 @@
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent." parent="">
         <item name="cornerSize">50%</item>
     </style>
+
+    <style name="CalenderViewCustom" parent="Theme.AppCompat">
+        <item name="colorAccent">@color/_399282</item>
+<!--        <item name="colorPrimary">@color/colorWhite</item>-->
+<!--        <item name="android:textColorPrimary">@color/colorWhite</item>-->
+    </style>
+
+    <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:weekNumberColor">@color/colorOrange</item>
+    </style>
+
+    <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
 </resources>
