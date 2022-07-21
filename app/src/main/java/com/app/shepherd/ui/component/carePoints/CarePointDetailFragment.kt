@@ -84,11 +84,33 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    commentList.add(
+                        commentList.size,
+                        EventCommentUserDetailModel(
+                            event_id = id ?: 0,
+                            comment = fragmentCarePointDetailBinding.editTextMessage.text.toString(),
+                            created_at = it.data.payload.created_at ,
+                            user_details = UserDetailAssigneModel(
+                                id = carePointsViewModel.getUserDetail()?.id,
+                                user_profiles = UserAssigneDetail(
+                                    id = carePointsViewModel.getUserDetail()?.id,
+                                    firstname = carePointsViewModel.getUserDetail()?.firstname,
+                                    lastname = carePointsViewModel.getUserDetail()?.lastname,
+                                    profilePhoto = carePointsViewModel.getUserDetail()?.profilePhoto
+                                )
+                            )
+                        )
+                    )
+                    commentAdapter!!.notifyItemInserted(commentList.size)
+                    commentAdapter!!.notifyDataSetChanged()
                     fragmentCarePointDetailBinding.editTextMessage.setText("")
                     showToast("Comment added successfully")
+                    fragmentCarePointDetailBinding.recyclerViewChat.smoothScrollToPosition(
+                        commentList.size
+                    )
                     //add to comment list
 
-//                    commentList.add(commentList.size,)
+
                 }
                 is DataResult.Failure -> {
                     hideLoading()
