@@ -66,7 +66,10 @@ class CarePointsDateBasedAdapter(
             itemBinding.root.setOnClickListener {
                 listener.selectedCarePoint( carePointList[position].id!!)
             }
-
+            itemBinding.view.visibility = View.VISIBLE
+            if(position+1 == carePointList.size){
+                itemBinding.view.visibility = View.GONE
+            }
             //show assigns in event
             itemBinding.assigneCountTV.visibility = View.VISIBLE
             if(carePoints.user_assignes.size>3){

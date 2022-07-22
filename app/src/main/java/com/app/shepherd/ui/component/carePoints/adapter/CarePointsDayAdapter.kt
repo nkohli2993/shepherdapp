@@ -67,10 +67,7 @@ class CarePointsDayAdapter(
             val carePoints = carePointList[position]
             itemBinding.dateTV.text = carePoints.date
             setCarePointsAdapter(binding.recyclerViewEventDays, carePoints.events)
-            itemBinding.dateTV.visibility = View.VISIBLE
-            if(clickType == CalendarState.Today.value){
-                itemBinding.dateTV.visibility = View.GONE
-            }
+
         }
     }
 

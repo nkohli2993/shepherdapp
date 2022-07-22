@@ -11,6 +11,8 @@
     <color name="colorBlackFF">#FF000000</color>
     <color name="colorBlackTrans50">#50000000</color>
     <color name="colorViewPagerInactive">#A7AFAF</color>
+    <color name="colorViewPagerInactiveLight">#80A7AFAF</color>
+    <color name="colorLightWhite">#99FFFFFF</color>
     <color name="colorGreyLight">#F5F4F8</color>
     <color name="colorPeach">#e9475f</color>
     <color name="colorGreen">#00a59c</color>

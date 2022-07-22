@@ -1,14 +1,13 @@
 package com.app.shepherd.ui.component.addNewEvent
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.app.TimePickerDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
@@ -68,9 +67,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
 
         initDatePicker()
-       // initTimePicker()
+        // initTimePicker()
         getAssignedToMembers()
-        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+        setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50)
         fragmentAddNewEventBinding.eventMemberSpinner.setOnTouchListener { v, event ->
             rotate(0f)
             if (event.action == MotionEvent.ACTION_DOWN) {
@@ -78,7 +77,13 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
             false
         }
-
+        fragmentAddNewEventBinding.etNote.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            when (event.action and MotionEvent.ACTION_MASK) {
+                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            false
+        }
     }
 
     private fun rotate(degree: Float) {
@@ -91,6 +96,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         rotateAnim.fillAfter = true
         fragmentAddNewEventBinding.spinnerDownArrowImage.startAnimation(rotateAnim)
     }
+
     private fun getAssignedToMembers() {
         addNewEventViewModel.getMembers(
             pageNumber,
@@ -218,11 +224,18 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 findNavController().popBackStack()
             }
             R.id.btnAdd -> {
+                assignTo.clear()
+                for (i in careteams) {
+                    if (i.isSelected) {
+                        assignTo.add(i.userId!!)
+                    }
+
+                }
                 if (isValid) {
                     createEvent()
                 }
             }
-            R.id.clTimeWrapper ->{
+            R.id.clTimeWrapper -> {
                 timePicker()
             }
         }
@@ -240,8 +253,27 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     fragmentAddNewEventBinding.edtAddress.error = getString(R.string.enter_address)
                     fragmentAddNewEventBinding.edtAddress.requestFocus()
                 }
+                assignTo.size<=0 ->{
+                    showInfo(requireContext(), getString(R.string.please_select_whome_to_assign_event))
+                }
                 fragmentAddNewEventBinding.tvDate.text.toString().trim() == "DD/MM/YY" -> {
-                    showInfo(requireContext(), getString(R.string.please_enter_date_of_birth))
+                    showInfo(requireContext(), getString(R.string.please_enter_date_of_event))
+                    fragmentAddNewEventBinding.tvDate.requestFocus()
+                }
+                fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty() -> {
+                    showInfo(requireContext(), getString(R.string.please_enter_date_of_event))
+                    fragmentAddNewEventBinding.tvDate.requestFocus()
+                }
+                fragmentAddNewEventBinding.tvTime.text.toString().trim().isEmpty() -> {
+                    showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
+                    fragmentAddNewEventBinding.tvTime.requestFocus()
+                }
+                fragmentAddNewEventBinding.etNote.text.toString().trim().isEmpty() -> {
+                    showInfo(
+                        requireContext(),
+                        getString(R.string.please_enter_notes_for_care_point)
+                    )
+                    fragmentAddNewEventBinding.etNote.requestFocus()
                 }
                 else -> {
                     return true
@@ -252,13 +284,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     @SuppressLint("SimpleDateFormat")
     private fun createEvent() {
-        assignTo.clear()
-        for (i in careteams) {
-            if (i.isSelected) {
-                assignTo.add(i.userId!!)
-            }
-
-        }
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
         var dateFormat = SimpleDateFormat("dd MMM yyyy")
         val formatedDate: Date = dateFormat.parse(selectedDate)!!
@@ -284,7 +309,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
     private fun initTimePicker() {
-       tvTime.timePicker(
+        tvTime.timePicker(
             requireContext()
         )
     }

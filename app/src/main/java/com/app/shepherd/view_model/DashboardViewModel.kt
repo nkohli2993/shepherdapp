@@ -8,16 +8,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.care_team.CareTeamsResponseModel
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.data.dto.dashboard.HomeResponseModel
+import com.app.shepherd.data.dto.dashboard.LoveUser
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.care_teams.CareTeamsRepository
 import com.app.shepherd.data.remote.home_repository.HomeRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -57,6 +61,12 @@ class DashboardViewModel @Inject constructor(
     fun openDashboardItems(item: DashboardModel) {
         openDashboardItemsPrivate.value = SingleEvent(item)
     }
+
+    fun saveLovedUser(user: LoveUser?) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.LOVED_USER_DETAILS, user)
+        Log.d("UserRepository", "User Info Saved to Preferences Successfully")
+    }
+
 
     fun inflateDashboardList(context: Context) {
         dashboardItemList.add(
@@ -144,23 +154,6 @@ class DashboardViewModel @Inject constructor(
             )
         )
     }
-
-   /* fun getCareTeams(
-        pageNumber: Int,
-        limit: Int,
-        status: Int
-    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
-        val lovedOneId = userRepository.getLovedOneId()
-        viewModelScope.launch {
-            val response =
-                careTeamsRepository.getCareTeamsByLovedOneId(pageNumber, limit, status, lovedOneId)
-            withContext(Dispatchers.Main) {
-                response.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
-            }
-        }
-        return careTeamsResponseLiveData
-    }*/
-
 
     fun getHomeData(): LiveData<Event<DataResult<HomeResponseModel>>> {
         val lovedOneUUID = userRepository.getLovedOneUUId()

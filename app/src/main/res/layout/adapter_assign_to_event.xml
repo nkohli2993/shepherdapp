@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/_1sdp"
-                    android:padding="@dimen/_2sdp"
+                    android:padding="@dimen/_1sdp"
                     android:scaleType="fitXY"
                     android:src="@drawable/background_splash"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />

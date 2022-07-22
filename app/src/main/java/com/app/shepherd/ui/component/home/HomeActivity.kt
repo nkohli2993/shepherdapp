@@ -100,6 +100,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     Picasso.get().load(lovedOneProfilePic)
                         .placeholder(R.drawable.ic_defalut_profile_pic)
                         .into(ivLovedOneProfile)
+                //save data
+                    viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
                 }
             }
         }
