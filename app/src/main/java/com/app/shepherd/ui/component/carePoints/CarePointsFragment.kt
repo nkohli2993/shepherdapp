@@ -278,16 +278,15 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.tvMonth.typeface = typeFaceGothamBook
                 clickType = CalendarState.Week.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.week)
-              //  getDateSelectedOnTypeBased(fragmentCarePointsBinding.calendar.currentPageDate.time)
                 setColorBasedOnCarePOintsType(
                     fragmentCarePointsBinding.tvWeek,
                     fragmentCarePointsBinding.tvToday,
                     fragmentCarePointsBinding.tvMonth
                 )
                 val calendars: ArrayList<Calendar> = ArrayList()
+                fragmentCarePointsBinding.calendar.showCurrentMonthPage()
                 for (i in 0 until 7) {
                     val cal = Calendar.getInstance()
-                    cal.time = fragmentCarePointsBinding.calendar.currentPageDate.time
                     cal.add(Calendar.DATE, i)
                     calendars.add(cal)
                 }
@@ -302,9 +301,9 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 clickType = CalendarState.Month.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.month)
                 val calendars: ArrayList<Calendar> = ArrayList()
+                fragmentCarePointsBinding.calendar.showCurrentMonthPage()
                 for (i in 0 until 30) {
                     val cal = Calendar.getInstance()
-                    cal.time = fragmentCarePointsBinding.calendar.currentPageDate.time
                     cal.add(Calendar.DATE, i)
                     calendars.add(cal)
                 }
@@ -359,7 +358,6 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             fragmentCarePointsBinding.tvMonth
         )
         val calendar = Calendar.getInstance()
-        calendar.time = fragmentCarePointsBinding.calendar.currentPageDate.time
         startDate = sdf!!.format(calendar.time)
         calendar.add(Calendar.DATE, 6)
         endDate = sdf!!.format(calendar.time)
