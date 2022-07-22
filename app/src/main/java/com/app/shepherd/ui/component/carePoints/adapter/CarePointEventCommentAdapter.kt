@@ -61,7 +61,7 @@ class CarePointEventCommentAdapter(
                 val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
                     dateTime
                 )
-                val df =
+                val df: SimpleDateFormat =
                     SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
                 df.timeZone = TimeZone.getTimeZone("UTC")
                 val date: Date = df.parse(SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(commentTime!!))!!
