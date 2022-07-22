@@ -262,6 +262,22 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
+
+                R.id.nav_lock_box -> {
+                    binding.appBarDashboard.apply {
+                        tvTitle.text = getString(R.string.lockbox)
+                        clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
+                        clHomeWrapper.isVisible = false
+                        tvNew.apply {
+                            isVisible = true
+                           /* setOnClickListener {
+                                navController.navigate(R.id.nav_add_new_event)
+                            }*/
+                        }
+                    }
+                    lockUnlockDrawer(false)
+                }
                 R.id.nav_care_team -> {
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.careteam)

@@ -81,22 +81,22 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     private fun setRecommendedDocumentsAdapter() {
         val myRemindersAdapter = RecommendedDocumentsAdapter(lockBoxViewModel)
-        fragmentLockboxBinding.recyclerViewDocuments.adapter = myRemindersAdapter
+        fragmentLockboxBinding.rvRecommendedDoc.adapter = myRemindersAdapter
 
     }
 
     private fun setOtherDocumentsAdapter() {
         val myMedicationsAdapter = OtherDocumentsAdapter(lockBoxViewModel)
-        fragmentLockboxBinding.recyclerViewOtherDocuments.adapter = myMedicationsAdapter
+        fragmentLockboxBinding.rvOtherDocuments.adapter = myMedicationsAdapter
 
     }
 
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonNewDocument -> {
+           /* R.id.buttonNewDocument -> {
                 p0.findNavController().navigate(R.id.action_lock_box_to_lock_box_doc_info)
-            }
+            }*/
         }
     }
 

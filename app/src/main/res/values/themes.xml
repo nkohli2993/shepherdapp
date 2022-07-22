@@ -105,6 +105,26 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="TextViewGothamBold">
+        <item name="android:fontFamily">@font/gotham_bold</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/_192032</item>
+        <item name="android:textSize">@dimen/_13ssp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <style name="TextViewGothamBook">
+        <item name="android:fontFamily">@font/gotham_book</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/_192032</item>
+        <item name="android:textSize">@dimen/_13ssp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <style name="TextViewPoppinsBold">
         <item name="android:fontFamily">@font/poppins_bold</item>
         <item name="android:layout_width">match_parent</item>
