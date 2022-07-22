@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.AdapterRecommendedDocumentsBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.lockBox.LockBoxViewModel
+import com.app.shepherd.view_model.LockBoxViewModel
 
 
 class RecommendedDocumentsAdapter(

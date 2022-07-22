@@ -363,6 +363,7 @@
     <string name="dd_mm_yy">DD/MM/YY</string>
     <string name="select">Select</string>
     <string name="add_new_care_point">Add New CarePoint</string>
+    <string name="add_new_lock_box">Add New LockBox</string>
     <string name="assign_to_">Assign to</string>
     <string name="wed_18_jul">wed, 18 jul</string>
     <string name="no_care_points_found">No Care points found</string>
@@ -370,4 +371,11 @@
     <string name="dd_mm_year">DD/MM/YEAR</string>
     <string name="_12_00">12:00</string>
     <string name="lock_box_desc">Store and retrieve important documents and information securely.</string>
+    <string name="choose_file">Choose File</string>
+    <string name="only_jpg_png_pdf_can_be_uploaded">Only JPG, PNG, PDF can be uploaded.</string>
+    <string name="file_name">File Name</string>
+    <string name="name">Name</string>
+    <string name="note">Note</string>
+    <string name="uploaded_files">Uploaded Files</string>
+    <string name="done">Done</string>
 </resources>

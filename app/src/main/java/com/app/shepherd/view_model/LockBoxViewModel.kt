@@ -1,4 +1,4 @@
-package com.app.shepherd.ui.component.lockBox
+package com.app.shepherd.view_model
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting
