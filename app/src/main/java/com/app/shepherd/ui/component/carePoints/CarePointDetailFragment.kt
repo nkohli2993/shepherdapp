@@ -26,6 +26,8 @@ import com.app.shepherd.view_model.CreatedCarePointsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -170,8 +172,18 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             fragmentCarePointDetailBinding.tvUsername.text =
                 carePointsViewModel.getLovedUserDetail()?.firstname.plus(" ")
                     .plus(carePointsViewModel.getLovedUserDetail()?.lastname)
-
-            if((payload.notes?:"").length>120){
+            // shwo created on time
+            val dateTime = (payload.created_at?:"").replace(".000Z","").replace("T"," ")
+            val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
+                dateTime
+            )
+            val df =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+            df.timeZone = TimeZone.getTimeZone("UTC")
+            val date: Date = df.parse(SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(commentTime!!))!!
+            df.timeZone = TimeZone.getDefault()
+            it.tvPostedDate.text = SimpleDateFormat("EEE, MMM dd").format(date);
+            if((payload.notes?:"").length>50){
                 setNotesClickForLong(payload.notes!!,true)
             }
             else{
@@ -211,10 +223,10 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     private fun setNotesClickForLong(notes:String,isSpanned:Boolean){
         val showNotes = if(isSpanned){
-            notes.substring(0,120).plus(" ... View More.")
+            notes.substring(0,50).plus(" ... View more.")
         }
         else{
-            notes.plus(" ... View Less.")
+            notes.plus(" ... View less.")
         }
         val ss = SpannableString(showNotes)
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
@@ -229,8 +241,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 ds.isFakeBoldText = true
             }
         }
-        if(showNotes.length<=135){
-            ss.setSpan(clickableSpan, 120, 135, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        if(showNotes.length<=65){
+            ss.setSpan(clickableSpan, 50, 65, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
         else{
             ss.setSpan(clickableSpan, showNotes.length-15, showNotes.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)

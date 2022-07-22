@@ -129,7 +129,7 @@
                 <com.applandeo.materialcalendarview.CalendarView
                     android:id="@+id/calendar"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_300sdp"
+                    android:layout_height="@dimen/_350sdp"
                     app:abbreviationsBarColor="@color/_E7E8EA"
                     app:headerColor="@color/colorWhite"
                     app:headerLabelColor="@color/colorBlack"
@@ -139,6 +139,23 @@
                     app:selectionColor="@color/colorGreen"
                     app:selectionLabelColor="@color/colorGreen" />
 
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:padding="@dimen/_13sdp"
+                    android:src="@drawable/ic_left_arrow"
+                    app:layout_constraintStart_toStartOf="@id/calendar"
+                    app:layout_constraintTop_toTopOf="@id/calendar" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:padding="@dimen/_13sdp"
+                    android:src="@drawable/ic_right_arrow"
+                    app:layout_constraintEnd_toEndOf="@id/calendar"
+                    app:layout_constraintTop_toTopOf="@id/calendar" />
 
                 <CalendarView
                     android:id="@+id/calendarView"

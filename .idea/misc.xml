@@ -117,9 +117,12 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/layout_add_medicine_list.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.22402736212056434" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_black_round.xml" value="0.114" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_black_round_corner.xml" value="0.114" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_white_round_corner.xml" value="0.15" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/bg_image_place_holder.xml" value="0.1875" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/bg_image_place_holder_round.xml" value="0.227" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/calendar_item_background.xml" value="0.114" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_background.xml" value="0.15" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selector.xml" value="0.1915" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_arrow_right.xml" value="0.227" />
@@ -145,8 +148,8 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/content_dashboard.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_member.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_new_event.xml" value="0.25" />
-        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_point_detail.xml" value="0.32808155699721964" />
-        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_points.xml" value="0.2" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_point_detail.xml" value="0.2" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_points.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_team_members.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_change_password.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_chat.xml" value="0.25625" />
