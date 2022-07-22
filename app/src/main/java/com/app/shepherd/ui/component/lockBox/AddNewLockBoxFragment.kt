@@ -26,7 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     View.OnClickListener {
 
-    private val lockBoxViewModel: LockBoxViewModel by viewModels()
+//    private val lockBoxViewModel: LockBoxViewModel by viewModels()
 
     private lateinit var fragmentAddNewLockBoxBinding: FragmentAddNewLockBoxBinding
 
@@ -51,33 +51,15 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     }
 
     override fun observeViewModel() {
-        observe(lockBoxViewModel.loginLiveData, ::handleLoginResult)
-        observeToast(lockBoxViewModel.showToast)
     }
 
 
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {
-            }
-            is Resource.Success -> status.data?.let {
 
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { lockBoxViewModel.showToastMessage(it) }
-            }
-        }
-    }
-
-
-    private fun observeToast(event: LiveData<SingleEvent<Any>>) {
-        fragmentAddNewLockBoxBinding.root.showToast(this, event, Snackbar.LENGTH_LONG)
-    }
 
 
     private fun setUploadedFilesAdapter() {
-        val uploadedFilesAdapter = UploadedFilesAdapter(lockBoxViewModel)
-        fragmentAddNewLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
+//        val uploadedFilesAdapter = UploadedFilesAdapter(lockBoxViewModel)
+//        fragmentAddNewLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
 
     }
 

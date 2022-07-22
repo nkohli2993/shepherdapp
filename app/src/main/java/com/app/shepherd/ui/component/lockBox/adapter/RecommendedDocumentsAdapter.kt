@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.shepherd.data.dto.dashboard.DashboardModel
+import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.app.shepherd.databinding.AdapterRecommendedDocumentsBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.view_model.LockBoxViewModel
@@ -12,7 +12,7 @@ import com.app.shepherd.view_model.LockBoxViewModel
 
 class RecommendedDocumentsAdapter(
     private val viewModel: LockBoxViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    var lockBoxTypes: MutableList<LockBoxTypes> = ArrayList()
 ) :
     RecyclerView.Adapter<RecommendedDocumentsAdapter.RecommendedDocumentsViewHolder>() {
     lateinit var binding: AdapterRecommendedDocumentsBinding
@@ -41,22 +41,22 @@ class RecommendedDocumentsAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 4
+        return lockBoxTypes.size
     }
 
     override fun onBindViewHolder(holder: RecommendedDocumentsViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(lockBoxTypes[position], onItemClickListener)
     }
 
 
     class RecommendedDocumentsViewHolder(private val itemBinding: AdapterRecommendedDocumentsBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
-            // itemBinding.data = dashboard
+        fun bind(lockBoxTypes: LockBoxTypes, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = lockBoxTypes
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    dashboard
+                    lockBoxTypes
                 )
             }
         }
@@ -71,9 +71,9 @@ class RecommendedDocumentsAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+    fun addData(lockBoxTypes: ArrayList<LockBoxTypes>) {
+        // this.requestList.clear()
+        this.lockBoxTypes.addAll(lockBoxTypes)
         notifyDataSetChanged()
     }
 

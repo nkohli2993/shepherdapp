@@ -165,7 +165,7 @@
     <string name="search">Search</string>
     <string name="recommended_documents">Recommended Documents</string>
     <string name="test_hcpa">HCPA</string>
-    <string name="other_documents">Other Documets</string>
+    <string name="other_documents">Other Documents</string>
     <string name="rename">Rename</string>
     <string name="test_medicare_id_number">Medicare ID Number</string>
     <string name="test_medicine_name">Lipitor</string>
@@ -375,7 +375,6 @@
     <string name="only_jpg_png_pdf_can_be_uploaded">Only JPG, PNG, PDF can be uploaded.</string>
     <string name="file_name">File Name</string>
     <string name="name">Name</string>
-    <string name="note">Note</string>
     <string name="uploaded_files">Uploaded Files</string>
     <string name="done">Done</string>
 </resources>

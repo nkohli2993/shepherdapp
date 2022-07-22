@@ -15,6 +15,7 @@ import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.invitation.InvitationsResponseModel
 import com.app.shepherd.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
+import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
@@ -107,7 +108,7 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("start_date") start_date: String,
         @Query("end_date") end_date: String,
-        @Query("loved_one_user_id") loved_one_user_uid:String
+        @Query("loved_one_user_id") loved_one_user_uid: String
     ): Response<AddedEventResponseModel>
 
     @GET(ApiConstants.Event.GET_EVENT_DETAIL)
@@ -186,5 +187,11 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("event_id") event_id: Int
     ): Response<AllCommentEventsResponseModel>
+
+    @GET(ApiConstants.LockBox.GET_ALL_LOCK_BOX_TYPES)
+    suspend fun getAllLockBoxTypes(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<LockBoxTypeResponseModel>
 
 }

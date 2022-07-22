@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="data"
+            type="com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypes" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +29,6 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="@dimen/_12sdp"
                 android:paddingVertical="@dimen/_8sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -30,7 +36,7 @@
                     android:layout_width="0dp"
                     android:id="@+id/txtTitle"
                     android:layout_height="wrap_content"
-                    android:text="@string/test_hcpa"
+                    android:text="@{data.name}"
                     android:includeFontPadding="false"
                     android:textSize="@dimen/_13ssp"
                     android:layout_marginHorizontal="@dimen/_12sdp"
@@ -40,7 +46,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/nav_header_desc"
+                    android:text="@{data.description}"
                     style="@style/TextViewGothamBook"
                     android:textSize="@dimen/_11ssp"
                     android:layout_marginTop="@dimen/_4sdp"

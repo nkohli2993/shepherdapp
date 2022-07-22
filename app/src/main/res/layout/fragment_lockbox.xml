@@ -16,6 +16,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/_FCFCFC"
         android:paddingHorizontal="@dimen/_10sdp">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -112,7 +113,6 @@
             android:id="@+id/rvRecommendedDoc"
             android:layout_width="0dp"
             android:layout_height="@dimen/_155sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_8sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +137,6 @@
             android:id="@+id/rvOtherDocuments"
             android:layout_width="0dp"
             android:layout_height="@dimen/_150sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"

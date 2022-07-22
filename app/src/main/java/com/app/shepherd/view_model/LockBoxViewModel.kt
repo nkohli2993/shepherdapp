@@ -1,70 +1,48 @@
 package com.app.shepherd.view_model
 
-import android.content.Context
-import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
-import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginRequestModel
-import com.app.shepherd.data.dto.login.LoginResponseModel
-import com.app.shepherd.data.error.CHECK_YOUR_FIELDS
-import com.app.shepherd.data.error.EMAIL_ERROR
+import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
+import com.app.shepherd.data.remote.lock_box.LockBoxRepository
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
-import com.app.shepherd.utils.RegexUtils.isValidEmail
-import com.app.shepherd.utils.RegexUtils.isValidPassword
-import com.app.shepherd.utils.RegexUtils.passwordValidated
-import com.app.shepherd.utils.SingleEvent
-import com.app.shepherd.utils.wrapEspressoIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
- * Created by Sumit Kumar
+ * Created by Deepak Rattan
  */
 @HiltViewModel
-class LockBoxViewModel @Inject constructor(private val dataRepository: DataRepository) :
-    BaseViewModel() {
+class LockBoxViewModel @Inject constructor(
+    private val dataRepository: DataRepository,
+    private val lockBoxRepository: LockBoxRepository
+) : BaseViewModel() {
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
-    val loginLiveData: LiveData<Resource<LoginResponseModel>> get() = loginLiveDataPrivate
+    private var _lockBoxTypeResponseLiveData =
+        MutableLiveData<Event<DataResult<LockBoxTypeResponseModel>>>()
+    var lockBoxTypeResponseLiveData: LiveData<Event<DataResult<LockBoxTypeResponseModel>>> =
+        _lockBoxTypeResponseLiveData
 
-    /** Error handling as UI **/
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val showSnackBarPrivate = MutableLiveData<SingleEvent<Any>>()
-    val showSnackBar: LiveData<SingleEvent<Any>> get() = showSnackBarPrivate
-
-    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
-    val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
-
-
-    fun doLogin(context: Context, userName: String, passWord: String) {
-        val isUsernameValid = isValidEmail(userName)
-        val isPassWordValid = isValidPassword(passWord)
-        if (!isUsernameValid && !isPassWordValid) {
-            loginLiveDataPrivate.value = Resource.DataError(CHECK_YOUR_FIELDS)
-        } else if (!isUsernameValid && isPassWordValid) {
-            loginLiveDataPrivate.value = Resource.DataError(EMAIL_ERROR)
-        } else if (passwordValidated(context, passWord)) {
-            viewModelScope.launch {
-                loginLiveDataPrivate.value = Resource.Loading()
-                wrapEspressoIdlingResource {
-                    dataRepository.doLogin(loginRequest = LoginRequestModel(userName, passWord))
-                        .collect {
-                            loginLiveDataPrivate.value = it
-                        }
+    fun getAllLockBoxTypes(
+        pageNumber: Int,
+        limit: Int
+    ): LiveData<Event<DataResult<LockBoxTypeResponseModel>>> {
+        viewModelScope.launch {
+            val response = lockBoxRepository.getALlLockBoxTypes(pageNumber, limit)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _lockBoxTypeResponseLiveData.postValue(Event(it))
                 }
             }
         }
+        return lockBoxTypeResponseLiveData
     }
 
-    fun showToastMessage(errorCode: Int) {
-        val error = errorManager.getError(errorCode)
-        showToastPrivate.value = SingleEvent(error.description)
-    }
+
 }
