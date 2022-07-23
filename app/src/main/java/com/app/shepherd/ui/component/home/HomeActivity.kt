@@ -273,9 +273,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = false
                         tvNew.apply {
                             isVisible = true
-                           /* setOnClickListener {
-                                navController.navigate(R.id.nav_add_new_event)
-                            }*/
+                            setOnClickListener {
+                                navController.navigate(R.id.addNewLockBoxFragment)
+                            }
                         }
                     }
                     lockUnlockDrawer(false)

@@ -209,6 +209,9 @@
         <action
             android:id="@+id/action_lock_box_to_lock_box_doc_info"
             app:destination="@+id/nav_lock_box_doc_info" />
+        <action
+            android:id="@+id/action_nav_lock_box_to_addNewLockBoxFragment"
+            app:destination="@id/addNewLockBoxFragment" />
 
     </fragment>
 
@@ -314,4 +317,9 @@
             android:id="@+id/action_nav_loved_one_to_nav_add_loved_one"
             app:destination="@id/nav_add_loved_one" />
     </fragment>
+    <fragment
+        android:id="@+id/addNewLockBoxFragment"
+        android:name="com.app.shepherd.ui.component.lockBox.AddNewLockBoxFragment"
+        android:label="AddNewLockBoxFragment"
+        tools:layout="@layout/fragment_add_new_lock_box"/>
 </navigation>
