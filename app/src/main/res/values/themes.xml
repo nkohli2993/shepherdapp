@@ -125,6 +125,16 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
+    <style name="TextViewGothamLight">
+        <item name="android:fontFamily">@font/gotham_light</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/_192032</item>
+        <item name="android:textSize">@dimen/_13ssp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <style name="TextViewPoppinsBold">
         <item name="android:fontFamily">@font/poppins_bold</item>
         <item name="android:layout_width">match_parent</item>
@@ -211,14 +221,15 @@
     <style name="ShapeAppearanceOverlay.App.CornerSize35Percent." parent="">
         <item name="cornerSize">35%</item>
     </style>
+
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent." parent="">
         <item name="cornerSize">50%</item>
     </style>
 
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
         <item name="colorAccent">@color/_399282</item>
-<!--        <item name="colorPrimary">@color/colorWhite</item>-->
-<!--        <item name="android:textColorPrimary">@color/colorWhite</item>-->
+        <!--        <item name="colorPrimary">@color/colorWhite</item>-->
+        <!--        <item name="android:textColorPrimary">@color/colorWhite</item>-->
     </style>
 
     <style name="CalenderViewDateCustomText" parent="android:TextAppearance.DeviceDefault.Small">

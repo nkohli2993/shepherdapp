@@ -383,4 +383,7 @@
     <string name="please_enter_time_of_birth">Please enter time of event</string>
     <string name="please_select_whome_to_assign_event">Please select atleast one assigne to create event</string>
     <string name="write__">Write…</string>
+    <string name="google_drive">Google Drive</string>
+    <string name="local_storage">Local Storage</string>
+    <string name="gallery">Gallery</string>
 </resources>
