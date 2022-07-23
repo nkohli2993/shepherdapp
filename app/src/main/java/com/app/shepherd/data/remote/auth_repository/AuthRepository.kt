@@ -57,10 +57,8 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
                 type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
             }
 
-            val requestFile = file
-                .asRequestBody(type!!.toMediaTypeOrNull())
-            body =
-                MultipartBody.Part.createFormData("profile", file.name, requestFile)
+            val requestFile = file.asRequestBody(type!!.toMediaTypeOrNull())
+            body = MultipartBody.Part.createFormData("profile", file.name, requestFile)
         }
 
         return object : NetworkOnlineDataRepo<UploadPicResponseModel, UploadPicResponseModel>() {

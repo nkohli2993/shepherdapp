@@ -69,8 +69,9 @@ object ApiConstants {
         const val ACCEPT_INVITATIONS = "$BASE_URL${API_VERSION}invites/accept/{id}"
     }
 
-    object LockBox{
-        const val GET_ALL_LOCK_BOX_TYPES="$BASE_URL${API_VERSION}lockbox_types"
+    object LockBox {
+        const val GET_ALL_LOCK_BOX_TYPES = "$BASE_URL${API_VERSION}lockbox_types"
+        const val UPLOAD_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/upload/"
     }
 }
 

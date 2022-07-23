@@ -16,6 +16,7 @@ import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.invitation.InvitationsResponseModel
 import com.app.shepherd.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
 import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
+import com.app.shepherd.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
@@ -188,10 +189,18 @@ interface ApiService {
         @Query("event_id") event_id: Int
     ): Response<AllCommentEventsResponseModel>
 
+    //Lock Box
+
     @GET(ApiConstants.LockBox.GET_ALL_LOCK_BOX_TYPES)
     suspend fun getAllLockBoxTypes(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): Response<LockBoxTypeResponseModel>
+
+    @Multipart
+    @POST(ApiConstants.LockBox.UPLOAD_LOCK_BOX_DOC)
+    suspend fun uploadLockBoxDoc(
+        @Part lockBoxDoc: MultipartBody.Part?
+    ): Response<UploadLockBoxDocResponseModel>
 
 }
