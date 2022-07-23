@@ -1,14 +1,17 @@
 package com.app.shepherd.view_model
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.R
+import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.dashboard.HomeResponseModel
+import com.app.shepherd.data.dto.dashboard.LoveUser
 import com.app.shepherd.data.dto.menuItem.MenuItemModel
 import com.app.shepherd.data.dto.user.UserDetailsResponseModel
 import com.app.shepherd.data.local.UserRepository
@@ -18,6 +21,8 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseResponseModel
 import com.app.shepherd.ui.base.BaseViewModel
+import com.app.shepherd.utils.Const
+import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -162,7 +167,9 @@ class HomeViewModel @Inject constructor(
         return logoutResponseLiveData
     }
 
-
+    fun saveLovedUser(user: LoveUser?) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.LOVED_USER_DETAILS, user)
+    }
     // Get User Details
     /* fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
          //val userID = getLovedOneUserId()

@@ -32,7 +32,7 @@
             android:id="@+id/tvTitleCarePoint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_7sdp"
             android:fontFamily="@font/gotham_bold"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/_192032"
@@ -48,9 +48,8 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/gotham_book"
             android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/_A3A5AD"
+            android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/recyclerViewEventAssigne"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitleCarePoint" />
@@ -98,8 +97,8 @@
 
         <LinearLayout
             android:id="@+id/llImageWrapper"
-            android:layout_width="@dimen/_23sdp"
-            android:layout_height="@dimen/_23sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_image_place_holder_round"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/tv_username"
@@ -108,10 +107,10 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageViewUser"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/_23sdp"
+                android:layout_height="@dimen/_23sdp"
                 android:layout_margin="@dimen/_1sdp"
-                android:padding="@dimen/_2sdp"
+                android:padding="@dimen/_1sdp"
                 android:scaleType="fitXY"
                 android:src="@drawable/background_splash"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
@@ -126,19 +125,19 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toStartOf="@+id/tv_userdate"
+            app:layout_constraintEnd_toStartOf="@+id/tv_postedDate"
             app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
             app:layout_constraintTop_toBottomOf="@id/tv_date" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_userdate"
+            android:id="@+id/tv_postedDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/gotham_medium"
             android:gravity="end"
             android:paddingEnd="@dimen/_10sdp"
-            android:textColor="@color/colorGreen"
+            android:textColor="@color/_399282"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@id/tv_username"
             app:layout_constraintEnd_toEndOf="@+id/tv_time"
@@ -151,10 +150,10 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:ellipsize="end"
+            android:paddingVertical="@dimen/_2sdp"
             android:fontFamily="@font/gotham_book"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@id/tv_time"
             app:layout_constraintStart_toStartOf="@id/tv_date"
             app:layout_constraintTop_toBottomOf="@id/llImageWrapper" />
@@ -183,7 +182,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_box_6"
             android:backgroundTint="@color/_E7E8EA"
-            android:hint="@string/write"
+            android:hint="@string/write__"
             android:maxHeight="@dimen/_100sdp"
             android:paddingHorizontal="@dimen/_10sdp"
             android:paddingVertical="@dimen/_15sdp"

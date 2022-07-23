@@ -1,14 +1,19 @@
 package com.app.shepherd.ui.component.carePoints
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.app.shepherd.R
-import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.added_events.*
 import com.app.shepherd.databinding.FragmentCarePointDetailBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -16,14 +21,14 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.carePoints.adapter.CarePointEventCommentAdapter
 import com.app.shepherd.ui.component.carePoints.adapter.CarePointsEventAdapter
-import com.app.shepherd.utils.Const
-import com.app.shepherd.utils.Prefs
 import com.app.shepherd.utils.extensions.isBlank
 import com.app.shepherd.view_model.CreatedCarePointsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
-import java.util.ArrayList
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 @AndroidEntryPoint
 class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
@@ -154,19 +159,37 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 )
                 it.tvTime.text = SimpleDateFormat("hh:mm a").format(carePointTime!!)
             }
-            it.tvNotes.text = payload.notes
+
 
             //set comment added count  adapter
             val carePointsEventAdapter = CarePointsEventAdapter(payload.user_assignes)
             fragmentCarePointDetailBinding.recyclerViewEventAssigne.adapter = carePointsEventAdapter
 
             //set user detail
-            Picasso.get().load(carePointsViewModel.getUserDetail()?.profilePhoto)
+            Picasso.get().load(carePointsViewModel.getLovedUserDetail()?.profilePhoto)
                 .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(fragmentCarePointDetailBinding.imageViewUser)
             fragmentCarePointDetailBinding.tvUsername.text =
-                carePointsViewModel.getUserDetail()?.firstname.plus(" ")
-                    .plus(carePointsViewModel.getUserDetail()?.lastname)
+                carePointsViewModel.getLovedUserDetail()?.firstname.plus(" ")
+                    .plus(carePointsViewModel.getLovedUserDetail()?.lastname)
+            // shwo created on time
+            val dateTime = (payload.created_at?:"").replace(".000Z","").replace("T"," ")
+            val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
+                dateTime
+            )
+            val df =
+                SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
+            df.timeZone = TimeZone.getTimeZone("UTC")
+            val date: Date = df.parse(SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(commentTime!!))!!
+            df.timeZone = TimeZone.getDefault()
+            it.tvPostedDate.text = SimpleDateFormat("EEE, MMM dd").format(date);
+            if((payload.notes?:"").length>50){
+                setNotesClickForLong(payload.notes!!,true)
+            }
+            else{
+                it.tvNotes.text = payload.notes
+            }
+
         }
     }
 
@@ -198,4 +221,35 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
     }
 
+    private fun setNotesClickForLong(notes:String,isSpanned:Boolean){
+        val showNotes = if(isSpanned){
+            notes.substring(0,50).plus(" ... View more.")
+        }
+        else{
+            notes.plus(" ... View less.")
+        }
+        val ss = SpannableString(showNotes)
+        val clickableSpan: ClickableSpan = object : ClickableSpan() {
+
+            override fun onClick(p0: View) {
+               //click to show whole note
+                setNotesClickForLong(notes,!isSpanned)
+            }
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+                ds.isFakeBoldText = true
+            }
+        }
+        if(showNotes.length<=65){
+            ss.setSpan(clickableSpan, 50, 65, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+        else{
+            ss.setSpan(clickableSpan, showNotes.length-15, showNotes.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+
+        fragmentCarePointDetailBinding.tvNotes.text = ss
+        fragmentCarePointDetailBinding.tvNotes.movementMethod = LinkMovementMethod.getInstance()
+        fragmentCarePointDetailBinding.tvNotes.highlightColor = Color.GREEN
+    }
 }

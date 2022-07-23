@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_2sdp"
         app:layout_constraintBottom_toTopOf="@+id/cardViewDetails"
         app:layout_constraintTop_toTopOf="@+id/cardViewDetails">
 
@@ -41,8 +42,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
+            android:ellipsize="end"
             android:fontFamily="@font/gotham_book"
             android:lineSpacingExtra="@dimen/_5sdp"
+            android:maxLines="3"
             android:text="@{data.location}"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_10ssp"
@@ -50,9 +53,12 @@
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+            android:id="@+id/assigneeCL"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvLocation">
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -69,10 +75,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_2sdp"
-                app:layout_constraintTop_toTopOf="parent"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toEndOf="@+id/ivMessage"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:itemCount="2"
                 tools:listitem="@layout/adapter_events_members" />
 
@@ -80,8 +86,8 @@
                 android:id="@+id/assigneCountTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/gotham_medium"
                 android:layout_marginStart="@dimen/_2sdp"
+                android:fontFamily="@font/gotham_medium"
                 android:textColor="@color/_A26DCB"
                 android:textSize="@dimen/_8ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -100,6 +106,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/_8sdp"
+            android:background="@color/colorViewPagerInactiveLight"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/assigneeCL" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

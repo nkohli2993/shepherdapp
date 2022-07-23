@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.ShepherdApp
 import com.app.shepherd.data.dto.added_events.*
+import com.app.shepherd.data.dto.dashboard.LoveUser
 import com.app.shepherd.data.dto.login.UserProfile
 import com.app.shepherd.data.local.UserRepository
 import com.app.shepherd.data.remote.care_point.CarePointRepository
@@ -140,7 +141,12 @@ class CreatedCarePointsViewModel @Inject constructor(
     }
 
     fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID, "")
 
+    //get userinfo from Shared Pref
+    fun getLovedUserDetail(): LoveUser? {
+        return userRepository.getLovedUser()
+    }
     //get userinfo from Shared Pref
     fun getUserDetail(): UserProfile? {
         return userRepository.getCurrentUser()

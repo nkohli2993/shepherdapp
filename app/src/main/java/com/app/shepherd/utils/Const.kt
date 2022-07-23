@@ -24,7 +24,7 @@ object Const {
     const val PRIVACY_POLICY = "PRIVACY_POLICY"
     const val TERM_OF_USE = "TERM_OF_USE"
     const val ADD_LOVE_ONE = "ADD_LOVE_ONE"
-
+    const val LOVED_USER_DETAILS = "LOVED USER DETAILS"
 }
 
 object Drawable {

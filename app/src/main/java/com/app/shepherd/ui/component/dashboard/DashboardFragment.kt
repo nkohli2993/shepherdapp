@@ -169,7 +169,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
             if (!careTeamMembersProfileList.isNullOrEmpty()) {
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
             }
-
         }
     }
 

@@ -2,12 +2,14 @@ package com.app.shepherd.data.local
 
 import android.util.Log
 import com.app.shepherd.ShepherdApp
+import com.app.shepherd.data.dto.dashboard.LoveUser
 import com.app.shepherd.data.dto.login.Payload
 import com.app.shepherd.data.dto.login.UserProfile
 import com.app.shepherd.network.retrofit.ApiService
 import com.app.shepherd.utils.Const
 import com.app.shepherd.utils.Const.LOVED_ONE_ID
 import com.app.shepherd.utils.Const.LOVED_ONE_UUID
+import com.app.shepherd.utils.Const.LOVED_USER_DETAILS
 import com.app.shepherd.utils.Const.PAYLOAD
 import com.app.shepherd.utils.Const.USER_DETAILS
 import com.app.shepherd.utils.Const.USER_ID
@@ -29,6 +31,18 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
 
     fun saveUser(user: UserProfile?) {
         Prefs.with(ShepherdApp.appContext)!!.save(USER_DETAILS, user)
+        Log.d("UserRepository", "User Info Saved to Preferences Successfully")
+    }
+
+    fun getLovedUser(): LoveUser? {
+        return Prefs.with(ShepherdApp.appContext)!!.getObject(
+            LOVED_USER_DETAILS,
+            LoveUser::class.java
+        )
+    }
+
+    fun saveLovedUser(user: LoveUser?) {
+        Prefs.with(ShepherdApp.appContext)!!.save(LOVED_USER_DETAILS, user)
         Log.d("UserRepository", "User Info Saved to Preferences Successfully")
     }
 
@@ -108,4 +122,6 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun clearSharedPref() {
         Prefs.with(ShepherdApp.appContext)?.removeAll()
     }
+
+
 }

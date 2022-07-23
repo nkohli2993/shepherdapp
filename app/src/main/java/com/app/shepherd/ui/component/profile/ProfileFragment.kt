@@ -105,27 +105,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
 
     override fun observeViewModel() {
-
-
-        /* profileViewModel.userDetailsLiveData.observeEvent(this) {
-             when (it) {
-                 is DataResult.Failure -> {
-                     hideLoading()
-                     it.message?.let { showError(requireContext(), it.toString()) }
-                 }
-                 is DataResult.Loading -> {
-                     showLoading("")
-                 }
-                 is DataResult.Success -> {
-                     hideLoading()
-                     payload = it.data.payload
-                     initView()
-                     getLovedOneInfo()
-                 }
-             }
-         }*/
-
-
         profileViewModel.userDetailByUUIDLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -161,30 +140,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                 }
             }
         }
-
-
-        // Observe Loved One Detail
-        /* profileViewModel.lovedOneDetailByUUIDLiveData.observeEvent(this) {
-             when (it) {
-                 is DataResult.Failure -> {
-                     hideLoading()
-                     it.message?.let { showError(requireContext(), it.toString()) }
-                 }
-                 is DataResult.Loading -> {
-                     showLoading("")
-                 }
-                 is DataResult.Success -> {
-                     hideLoading()
-                     val lovedOneProfile = it.data.payload?.userProfiles
-                     if (lovedOneProfile != null) {
-                         lovedOneProfileList?.clear()
-                         lovedOneProfileList?.add(lovedOneProfile)
-                     }
-                     setLovedOnesAdapter(lovedOneProfileList)
-                 }
-             }
-         }*/
-
     }
 
     private fun getLovedOneInfo() {
@@ -208,19 +163,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         lovedOnesAdapter?.setClickListener(this)
     }
 
-    /* private fun setLovedOnesAdapter(lovedOneProfileList: ArrayList<UserProfile>?) {
-         val lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
-         lovedOnesAdapter.addData(lovedOneProfileList)
-         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter
-
-     }*/
-
-    private fun setPendingInvitationsAdapter() {
-//        val pendingInvitationsAdapter = PendingInvitationsAdapter(profileViewModel)
-//        fragmentProfileBinding.recyclerPendingInvitations.adapter = pendingInvitationsAdapter
-
-    }
-
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.clProfileWrapper -> {
@@ -236,17 +178,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     override fun onItemClick(careTeam: CareTeam) {
         // Save the selected lovedOne UUID in shared prefs
         careTeam.loveUserId?.let { profileViewModel.saveLovedOneUUID(it) }
-
-        /* if (selectedCareTeams.isEmpty()) {
-             selectedCareTeams.add(careTeam)
-         } else {
-             selectedCareTeams.forEach {
-                 it.isSelected = false
-             }
-             selectedCareTeams.add(careTeam)
-         }
-         lovedOnesAdapter?.addData(selectedCareTeams)*/
-
     }
 
 

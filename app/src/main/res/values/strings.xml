@@ -364,7 +364,7 @@
     <string name="select">Select</string>
     <string name="add_new_care_point">Add New CarePoint</string>
     <string name="add_new_lock_box">Add New LockBox</string>
-    <string name="assign_to_">Assign to</string>
+    <string name="assign_to_">Assign To</string>
     <string name="wed_18_jul">wed, 18 jul</string>
     <string name="no_care_points_found">No Care points found</string>
     <string name="menu_care_point_detail">Care point detail</string>
@@ -377,4 +377,10 @@
     <string name="name">Name</string>
     <string name="uploaded_files">Uploaded Files</string>
     <string name="done">Done</string>
+    <string name="please_enter_notes_for_care_point">Please enter event note</string>
+    <string name="choose_time">Choose time</string>
+    <string name="please_enter_date_of_event">Please enter date of event</string>
+    <string name="please_enter_time_of_birth">Please enter time of event</string>
+    <string name="please_select_whome_to_assign_event">Please select atleast one assigne to create event</string>
+    <string name="write__">Write…</string>
 </resources>

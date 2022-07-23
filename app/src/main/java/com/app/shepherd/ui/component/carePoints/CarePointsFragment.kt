@@ -1,8 +1,8 @@
 package com.app.shepherd.ui.component.carePoints
 
+
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,12 +25,11 @@ import com.app.shepherd.view_model.CreatedCarePointsViewModel
 import com.applandeo.materialcalendarview.EventDay
 import com.applandeo.materialcalendarview.listeners.OnCalendarPageChangeListener
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener
-import com.applandeo.materialcalendarview.listeners.OnDayLongClickListener
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Exception
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -72,59 +71,84 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 //        fragmentCarePointsBinding.calendar.setForwardButtonImage(R.drawable.ic_right_arrow);
 //        fragmentCarePointsBinding.calendar.setPreviousButtonImage(R.drawable.ic_left_arrow);
 
-
+        fragmentCarePointsBinding.calendar.setDate(Calendar.getInstance())
         fragmentCarePointsBinding.calendar.setOnPreviousPageChangeListener(object :OnCalendarPageChangeListener{
             override fun onChange() {
-                getDateSelectedOnTypeBased()
+                getDateSelectedOnTypeBased(fragmentCarePointsBinding.calendar.currentPageDate.time)
             }
         })
         fragmentCarePointsBinding.calendar.setOnForwardPageChangeListener(object :OnCalendarPageChangeListener{
             override fun onChange() {
-                getDateSelectedOnTypeBased()
+                getDateSelectedOnTypeBased(fragmentCarePointsBinding.calendar.currentPageDate.time)
             }
         })
+        val calendars: ArrayList<Calendar> = ArrayList()
+        calendars.add(Calendar.getInstance())
+        fragmentCarePointsBinding.calendar.setHighlightedDays(calendars)
+        fragmentCarePointsBinding.calendar.setSelectionBackground(R.drawable.background_black_round)
 
-/*
-        fragmentCarePointsBinding.calendar.setOnDayClickListener(object :OnDayClickListener{
+      //  fragmentCarePointsBinding.calendar.set
+        fragmentCarePointsBinding.calendar.setOnDayClickListener(object : OnDayClickListener {
             override fun onDayClick(eventDay: EventDay) {
-                getDateSelectedOnTypeBased()
-            }
+                val clickedDayCalendar = eventDay.calendar
+                when (clickType) {
+                    CalendarState.Today.value -> {
+                        startDate = sdf!!.format(clickedDayCalendar.time)
+                        endDate = sdf!!.format(clickedDayCalendar.time)
+                        getCarePointList(startDate,endDate)
+                        val calendarsHighLights: ArrayList<Calendar> = ArrayList()
+                        calendarsHighLights.add(clickedDayCalendar)
+                        fragmentCarePointsBinding.calendar.setHighlightedDays(calendarsHighLights)
+                        fragmentCarePointsBinding.calendar.selectedDates = calendarsHighLights
+                        fragmentCarePointsBinding.calendar.setSelectionBackground(R.drawable.background_black_round)
+                    }
+                    CalendarState.Week.value -> {
+                        startDate = sdf!!.format(clickedDayCalendar.time)
+                        clickedDayCalendar.add(Calendar.DATE, 7)
+                        endDate = sdf!!.format(clickedDayCalendar.time)
+                        getCarePointList(startDate,endDate)
+                        clickedDayCalendar.add(Calendar.DATE,-7)
+                        val calendarsHighLights: ArrayList<Calendar> = ArrayList()
+                        for (i in 0 until 7) {
+                            val cal = Calendar.getInstance()
+                            cal.time = clickedDayCalendar.time
+                            cal.add(Calendar.DATE, i)
+                            calendarsHighLights.add(cal)
+                        }
+                        fragmentCarePointsBinding.calendar.setHighlightedDays(calendarsHighLights)
+                        fragmentCarePointsBinding.calendar.selectedDates = calendarsHighLights
+                        fragmentCarePointsBinding.calendar.setSelectionBackground(R.drawable.background_black_round)
+                    }
+                    CalendarState.Month.value -> {
+                        startDate = sdf!!.format(clickedDayCalendar.time)
+                        clickedDayCalendar.add(Calendar.MONTH, 1)
+                        endDate = sdf!!.format(clickedDayCalendar.time)
+                        getCarePointList(startDate,endDate)
+                        clickedDayCalendar.add(Calendar.MONTH,-1)
+                        val calendarsHighLights: ArrayList<Calendar> = ArrayList()
+                        for (i in 0 until 30) {
+                            val cal = Calendar.getInstance()
+                            cal.time = clickedDayCalendar.time
+                            cal.add(Calendar.DATE,i)
+                            calendarsHighLights.add(cal)
+                        }
+                        fragmentCarePointsBinding.calendar.setHighlightedDays(calendarsHighLights)
+                        fragmentCarePointsBinding.calendar.selectedDates = calendarsHighLights
+                        fragmentCarePointsBinding.calendar.setSelectionBackground(R.drawable.background_black_round)
+                    }
+                }
 
+
+            }
         })
-*/
-
-        fragmentCarePointsBinding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-            when (clickType) {
-                CalendarState.Today.value -> {
-                    val calendar = GregorianCalendar(year, month, dayOfMonth)
-                    startDate = sdf!!.format(calendar.time)
-                    endDate = sdf!!.format(calendar.time)
-                    getCarePointList(startDate,endDate)
-                }
-                CalendarState.Week.value -> {
-                    val calendar = GregorianCalendar(year, month, dayOfMonth)
-                    startDate = sdf!!.format(calendar.time)
-                    calendar.add(Calendar.DATE, 7)
-                    endDate = sdf!!.format(calendar.time)
-                    getCarePointList(startDate,endDate)
-                }
-                CalendarState.Month.value -> {
-                    val calendar = GregorianCalendar(year, month, dayOfMonth)
-                    startDate = sdf!!.format(calendar.time)
-                    calendar.add(Calendar.MONTH, 1)
-                    endDate = sdf!!.format(calendar.time)
-                    getCarePointList(startDate,endDate)
-                }
-            }
-        }
     }
 
-    private fun getDateSelectedOnTypeBased() {
+    private fun getDateSelectedOnTypeBased(selectedDate: Date) {
         when (clickType) {
             CalendarState.Today.value -> {
                 setSelectedDate()
-                startDate = sdf!!.format(fragmentCarePointsBinding.calendar.currentPageDate.time)
-                endDate = sdf!!.format(fragmentCarePointsBinding.calendar.currentPageDate.time)
+                startDate = sdf!!.format(selectedDate)
+                endDate = sdf!!.format(selectedDate)
                 getCarePointList(startDate, endDate)
             }
             CalendarState.Week.value -> {
@@ -145,7 +169,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         getCarePointList(startDate, endDate)
         val calendars: ArrayList<Calendar> = ArrayList()
         for (i in 0 until 7) {
-            val cal = fragmentCarePointsBinding.calendar.currentPageDate
+            val cal = Calendar.getInstance()
+            cal.time = fragmentCarePointsBinding.calendar.currentPageDate.time
             cal.add(Calendar.DATE, i)
             calendars.add(cal)
         }
@@ -161,7 +186,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         getCarePointList(startDate, endDate)
         val calendars: ArrayList<Calendar> = ArrayList()
         for (i in 0 until 30) {
-            val cal = fragmentCarePointsBinding.calendar.currentPageDate
+            val cal = Calendar.getInstance()
+            cal.time = fragmentCarePointsBinding.calendar.currentPageDate.time
             cal.add(Calendar.DATE, i)
             calendars.add(cal)
         }
@@ -242,6 +268,9 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 val cal = Calendar.getInstance()
                 fragmentCarePointsBinding.calendarView.date = cal.timeInMillis
                 onDayClickDataFetch()
+                val calendars: ArrayList<Calendar> = ArrayList()
+                calendars.add(fragmentCarePointsBinding.calendar.currentPageDate)
+                fragmentCarePointsBinding.calendar.setHighlightedDays(calendars)
             }
             R.id.tv_week -> {
                 fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBook
@@ -249,14 +278,21 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.tvMonth.typeface = typeFaceGothamBook
                 clickType = CalendarState.Week.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.week)
-                val cal = Calendar.getInstance()
-                cal[Calendar.HOUR_OF_DAY] = 0
-                cal.clear(Calendar.MINUTE)
-                cal.clear(Calendar.SECOND)
-                cal.clear(Calendar.MILLISECOND)
-                cal[Calendar.DAY_OF_WEEK] = cal.firstDayOfWeek
-                fragmentCarePointsBinding.calendarView.date = cal.timeInMillis
+                setColorBasedOnCarePOintsType(
+                    fragmentCarePointsBinding.tvWeek,
+                    fragmentCarePointsBinding.tvToday,
+                    fragmentCarePointsBinding.tvMonth
+                )
+                val calendars: ArrayList<Calendar> = ArrayList()
+                fragmentCarePointsBinding.calendar.showCurrentMonthPage()
+                for (i in 0 until 7) {
+                    val cal = Calendar.getInstance()
+                    cal.add(Calendar.DATE, i)
+                    calendars.add(cal)
+                }
+                fragmentCarePointsBinding.calendar.setHighlightedDays(calendars)
                 onWeekClickDataFetch()
+
             }
             R.id.tv_month -> {
                 fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBook
@@ -264,14 +300,16 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.tvMonth.typeface = typeFaceGothamBold
                 clickType = CalendarState.Month.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.month)
-                val cal = Calendar.getInstance()
-                cal[Calendar.HOUR_OF_DAY] = 0
-                cal.clear(Calendar.MINUTE)
-                cal.clear(Calendar.SECOND)
-                cal.clear(Calendar.MILLISECOND)
-                cal[Calendar.DAY_OF_MONTH] = cal.firstDayOfWeek
-                fragmentCarePointsBinding.calendarView.date = cal.timeInMillis
+                val calendars: ArrayList<Calendar> = ArrayList()
+                fragmentCarePointsBinding.calendar.showCurrentMonthPage()
+                for (i in 0 until 30) {
+                    val cal = Calendar.getInstance()
+                    cal.add(Calendar.DATE, i)
+                    calendars.add(cal)
+                }
+                fragmentCarePointsBinding.calendar.setHighlightedDays(calendars)
                 onMonthClickDatFetch()
+
             }
         }
     }
@@ -290,13 +328,13 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         unSelected.setTextColor(
             ContextCompat.getColor(
                 requireContext().applicationContext,
-                R.color.colorViewPagerInactive
+                R.color.colorLightWhite
             )
         )
         unSelectedSecond.setTextColor(
             ContextCompat.getColor(
                 requireContext().applicationContext,
-                R.color.colorViewPagerInactive
+                R.color.colorLightWhite
             )
         )
     }
@@ -308,8 +346,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             fragmentCarePointsBinding.tvMonth
         )
         startDate =
-            sdf!!.format(fragmentCarePointsBinding.calendarView.date)
-        endDate = sdf!!.format(fragmentCarePointsBinding.calendarView.date)
+            sdf!!.format(fragmentCarePointsBinding.calendar.currentPageDate.time)
+        endDate = sdf!!.format(fragmentCarePointsBinding.calendar.currentPageDate.time)
         getCarePointList(startDate,endDate)
     }
 
@@ -320,11 +358,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             fragmentCarePointsBinding.tvMonth
         )
         val calendar = Calendar.getInstance()
-        calendar.time = sdf!!.parse(
-            sdf!!.format(fragmentCarePointsBinding.calendarView.date)
-        )!!
         startDate = sdf!!.format(calendar.time)
-        calendar.add(Calendar.DATE, 7)
+        calendar.add(Calendar.DATE, 6)
         endDate = sdf!!.format(calendar.time)
         getCarePointList(startDate,endDate)
     }
@@ -336,9 +371,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             fragmentCarePointsBinding.tvWeek
         )
         val calendar = Calendar.getInstance()
-        calendar.time = sdf!!.parse(
-            sdf!!.format(fragmentCarePointsBinding.calendarView.date)
-        )!!
+        calendar.time = fragmentCarePointsBinding.calendar.currentPageDate.time
         startDate = sdf!!.format(calendar.time)
         calendar.add(Calendar.MONTH, 1)
         endDate = sdf!!.format(calendar.time)
