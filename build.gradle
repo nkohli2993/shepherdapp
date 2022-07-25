@@ -6,6 +6,7 @@ buildscript {
     ext.hilt_viewmodels = "1.0.0-alpha02"
     ext.hilt_workmanager = "1.0.0-alpha02"
     repositories {
+        maven { url 'https://jitpack.io' }
         mavenCentral()
         google()
     }

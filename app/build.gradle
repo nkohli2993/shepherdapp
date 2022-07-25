@@ -192,7 +192,7 @@ dependencies {
     implementation "androidx.biometric:biometric:$biometric_version"
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
-    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+    implementation 'com.github.prolificinteractive:material-calendarview:1.6.1'
 
     // google drive libs
     implementation "com.google.android.gms:play-services-auth:18.0.0"
