@@ -105,27 +105,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
             }
         }
-
-
-        // Observe Loved One Detail
-        /*viewModel.lovedOneDetailsLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    profilePicLovedOne = it.data.payload?.userProfiles?.profilePhoto
-
-                    Picasso.get().load(profilePicLovedOne).placeholder(R.drawable.test_image)
-                        .into(ivLovedOneProfile)
-                }
-            }
-        }*/
     }
 
 

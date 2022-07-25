@@ -386,4 +386,5 @@
     <string name="google_drive">Google Drive</string>
     <string name="local_storage">Local Storage</string>
     <string name="gallery">Gallery</string>
+    <string name="google_drive_upload">Google driver</string>
 </resources>
