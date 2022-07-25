@@ -372,7 +372,7 @@
     <string name="_12_00">12:00</string>
     <string name="lock_box_desc">Store and retrieve important documents and information securely.</string>
     <string name="choose_file">Choose File</string>
-    <string name="only_jpg_png_pdf_can_be_uploaded">Only JPG, PNG, PDF can be uploaded.</string>
+    <string name="only_jpg_png_pdf_can_be_uploaded">JPG, PNG, PDF, Word, Text, GIF can be uploaded.</string>
     <string name="file_name">File Name</string>
     <string name="name">Name</string>
     <string name="uploaded_files">Uploaded Files</string>

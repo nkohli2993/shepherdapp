@@ -3,6 +3,7 @@ package com.app.shepherd.data.remote.lock_box
 import android.webkit.MimeTypeMap
 import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
+import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.app.shepherd.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.app.shepherd.network.retrofit.ApiService
@@ -66,6 +67,24 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
             NetworkOnlineDataRepo<AddNewLockBoxResponseModel, AddNewLockBoxResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AddNewLockBoxResponseModel> {
                 return apiService.addNewLockBox(addNewLockBoxRequestModel)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //Get ALl Uploaded Documents by LovedOne UUID
+    suspend fun getAllUploadedDocumentsByLovedOneUUID(
+        pageNumber: Int,
+        limit: Int,
+        lovedOneUUID: String
+    ): Flow<DataResult<UploadedLockBoxDocumentsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<UploadedLockBoxDocumentsResponseModel, UploadedLockBoxDocumentsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UploadedLockBoxDocumentsResponseModel> {
+                return apiService.getAllUploadedDocumentsByLovedOneUUID(
+                    pageNumber,
+                    limit,
+                    lovedOneUUID
+                )
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

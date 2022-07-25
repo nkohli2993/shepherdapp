@@ -11,12 +11,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.viewModels
 import com.app.shepherd.R
+import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.app.shepherd.databinding.FragmentAddNewLockBoxBinding
 import com.app.shepherd.databinding.FragmentLockboxBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.lockBox.adapter.UploadedFilesAdapter
+import com.app.shepherd.ui.component.lockBox.adapter.UploadedLockBoxFilesAdapter
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
@@ -40,6 +41,10 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     private var fileNote: String? = null
     private val TAG = "AddNewLockBoxFragment"
     private var dialog: Dialog? = null
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    var lockBox: ArrayList<LockBox>? = arrayListOf()
+    var uploadedFilesAdapter: UploadedLockBoxFilesAdapter? = null
 
     private val isValid: Boolean
         get() {
@@ -70,6 +75,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     ): View {
         fragmentAddNewLockBoxBinding =
             FragmentAddNewLockBoxBinding.inflate(inflater, container, false)
+
+        addNewLockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
 
         return fragmentAddNewLockBoxBinding.root
     }
@@ -103,7 +110,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             }
         }
 
-
         // Observe the response of add new lock box api
         addNewLockBoxViewModel.addNewLockBoxResponseLiveData.observeEvent(this) {
             when (it) {
@@ -122,6 +128,24 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
             }
         }
+
+        // Observe the response of get all uploaded lock box document by loved one uuid api
+        addNewLockBoxViewModel.uploadedLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    lockBox = it.data.payload?.lockBox
+                    lockBox?.let { it1 -> uploadedFilesAdapter?.addData(it1) }
+                }
+            }
+        }
     }
 
     private fun handleSelectedImage(file: File?) {
@@ -133,7 +157,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
 
     private fun setUploadedFilesAdapter() {
-        val uploadedFilesAdapter = UploadedFilesAdapter(addNewLockBoxViewModel)
+        uploadedFilesAdapter = UploadedLockBoxFilesAdapter(addNewLockBoxViewModel)
         fragmentAddNewLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
     }
 
@@ -149,6 +173,9 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
                     addNewLockBoxViewModel.addNewLockBox(fileName, fileNote, uploadedLockBoxDocUrl)
                 }
+            }
+            R.id.ivBack -> {
+                backPress()
             }
         }
     }
