@@ -16,6 +16,7 @@ import com.app.shepherd.databinding.FragmentLockboxBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
+import com.app.shepherd.ui.component.lockBox.adapter.UploadedFilesAdapter
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.utils.observe
@@ -87,9 +88,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
 
     private fun setUploadedFilesAdapter() {
-//        val uploadedFilesAdapter = UploadedFilesAdapter(lockBoxViewModel)
-//        fragmentAddNewLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
-
+        val uploadedFilesAdapter = UploadedFilesAdapter(addNewLockBoxViewModel)
+        fragmentAddNewLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
     }
 
 

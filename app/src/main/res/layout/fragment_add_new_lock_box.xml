@@ -11,181 +11,189 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"
-        android:layout_marginHorizontal="@dimen/_5sdp">
+        android:layout_marginBottom="@dimen/_10sdp">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ivBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{listener::onClick}"
-            android:padding="@dimen/_10sdp"
-            android:src="@drawable/ic_back"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtAddNewLockBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_bold"
-            android:text="@string/add_new_lock_box"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_20ssp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivBack"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivBack"
-            app:layout_constraintTop_toTopOf="@+id/ivBack" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_12sdp"
-            android:layout_marginHorizontal="@dimen/_2sdp"
-            android:background="@color/_E7E8EA4D"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivBack">
+            android:background="@color/colorWhite"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp">
 
-            <LinearLayout
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{listener::onClick}"
+                android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtAddNewLockBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_bold"
+                android:text="@string/add_new_lock_box"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_20ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/ivBack"
+                app:layout_constraintTop_toTopOf="@+id/ivBack" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:padding="@dimen/_10sdp"
-                android:orientation="vertical">
+                app:cardCornerRadius="@dimen/_12sdp"
+                android:layout_marginHorizontal="@dimen/_2sdp"
+                android:background="@color/_E7E8EA4D"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ivBack">
 
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnChooseFile"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginVertical="@dimen/_10sdp"
-                    android:background="@drawable/button_primary"
-                    android:backgroundTint="@color/_399282"
-                    android:fontFamily="@font/gotham_medium"
-                    android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="@dimen/_20sdp"
-                    android:text="@string/choose_file"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_13ssp" />
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/_10sdp"
+                    android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/only_jpg_png_pdf_can_be_uploaded"
-                    style="@style/TextViewGothamBook"
-                    android:textSize="@dimen/_11sdp" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnChooseFile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:background="@drawable/button_primary"
+                        android:backgroundTint="@color/_399282"
+                        android:fontFamily="@font/gotham_medium"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_20sdp"
+                        android:text="@string/choose_file"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_13ssp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtFileName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_light"
-            android:text="@string/file_name"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/only_jpg_png_pdf_can_be_uploaded"
+                        style="@style/TextViewGothamBook"
+                        android:textSize="@dimen/_11sdp" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edtFileName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-            android:fontFamily="@font/gotham_medium"
-            android:hint="@string/name"
-            android:inputType="textCapSentences"
-            android:paddingHorizontal="@dimen/_8sdp"
-            android:paddingVertical="@dimen/_20sdp"
-            android:textColorHint="@color/_192032"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtFileName" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtFileName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_light"
+                android:text="@string/file_name"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtNote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_light"
-            android:text="@string/note"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtFileName" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtFileName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                android:fontFamily="@font/gotham_medium"
+                android:hint="@string/name"
+                android:inputType="textCapSentences"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_20sdp"
+                android:textColorHint="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtFileName" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/edtNote"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-            android:fontFamily="@font/gotham_medium"
-            android:hint="@string/desc_text"
-            android:inputType="textMultiLine"
-            android:paddingHorizontal="@dimen/_8sdp"
-            android:paddingVertical="@dimen/_20sdp"
-            android:textColorHint="@color/_192032"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtNote" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_light"
+                android:text="@string/note"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtFileName" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextViewGothamBold"
-            android:id="@+id/txtUploadedFiles"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/uploaded_files"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_12ssp"
-            android:textStyle="bold"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edtNote" />
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                android:fontFamily="@font/gotham_medium"
+                android:hint="@string/desc_text"
+                android:inputType="textMultiLine"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_20sdp"
+                android:textColorHint="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txtNote" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvUploadedFiles"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_marginHorizontal="@dimen/_12sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
-            tools:itemCount="5"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/adapter_uploaded_files" />
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewGothamBold"
+                android:id="@+id/txtUploadedFiles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/uploaded_files"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtNote" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnDone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginVertical="@dimen/_10sdp"
-            android:background="@drawable/button_primary"
-            android:backgroundTint="@color/_399282"
-            android:fontFamily="@font/gotham_medium"
-            android:onClick="@{listener::onClick}"
-            android:paddingHorizontal="@dimen/_20sdp"
-            android:text="@string/done"
-            android:textAllCaps="false"
-            android:textColor="@color/colorWhite"
-            android:textSize="@dimen/_13ssp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rvUploadedFiles" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvUploadedFiles"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_130sdp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
+                tools:itemCount="2"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/adapter_uploaded_files" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:background="@drawable/button_primary"
+                android:backgroundTint="@color/_399282"
+                android:fontFamily="@font/gotham_medium"
+                android:onClick="@{listener::onClick}"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:text="@string/done"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvUploadedFiles" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 </layout>
 

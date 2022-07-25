@@ -6,16 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.AdapterOtherDocumentsBinding
+import com.app.shepherd.databinding.AdapterUploadedFilesBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.view_model.LockBoxViewModel
+import com.app.shepherd.view_model.AddNewLockBoxViewModel
 
 
 class UploadedFilesAdapter(
-    private val viewModel: LockBoxViewModel,
+    private val viewModel: AddNewLockBoxViewModel,
     var requestList: MutableList<String> = ArrayList()
 ) :
-    RecyclerView.Adapter<UploadedFilesAdapter.OtherDocumentsViewHolder>() {
-    lateinit var binding: AdapterOtherDocumentsBinding
+    RecyclerView.Adapter<UploadedFilesAdapter.UploadedDocumentsViewHolder>() {
+    lateinit var binding: AdapterUploadedFilesBinding
     lateinit var context: Context
 
 
@@ -28,15 +29,15 @@ class UploadedFilesAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): OtherDocumentsViewHolder {
+    ): UploadedDocumentsViewHolder {
         context = parent.context
         binding =
-            AdapterOtherDocumentsBinding.inflate(
+            AdapterUploadedFilesBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return OtherDocumentsViewHolder(binding)
+        return UploadedDocumentsViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -44,12 +45,12 @@ class UploadedFilesAdapter(
         return 4
     }
 
-    override fun onBindViewHolder(holder: OtherDocumentsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UploadedDocumentsViewHolder, position: Int) {
         //holder.bind(requestList[position], onItemClickListener)
     }
 
 
-    class OtherDocumentsViewHolder(private val itemBinding: AdapterOtherDocumentsBinding) :
+    class UploadedDocumentsViewHolder(private val itemBinding: AdapterUploadedFilesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
