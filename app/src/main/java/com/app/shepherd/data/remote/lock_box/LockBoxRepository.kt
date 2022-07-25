@@ -1,6 +1,8 @@
 package com.app.shepherd.data.remote.lock_box
 
 import android.webkit.MimeTypeMap
+import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
+import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
 import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.app.shepherd.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.app.shepherd.network.retrofit.ApiService
@@ -54,6 +56,16 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
             NetworkOnlineDataRepo<UploadLockBoxDocResponseModel, UploadLockBoxDocResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<UploadLockBoxDocResponseModel> {
                 return apiService.uploadLockBoxDoc(body)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Add New LockBox
+    suspend fun addNewLockBox(addNewLockBoxRequestModel: AddNewLockBoxRequestModel): Flow<DataResult<AddNewLockBoxResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AddNewLockBoxResponseModel, AddNewLockBoxResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AddNewLockBoxResponseModel> {
+                return apiService.addNewLockBox(addNewLockBoxRequestModel)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

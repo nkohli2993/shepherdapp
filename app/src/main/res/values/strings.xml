@@ -386,4 +386,6 @@
     <string name="google_drive">Google Drive</string>
     <string name="local_storage">Local Storage</string>
     <string name="gallery">Gallery</string>
+    <string name="enter_file_name">Please enter file name...</string>
+    <string name="enter_note">Please enter note...</string>
 </resources>

@@ -15,6 +15,8 @@ import com.app.shepherd.data.dto.dashboard.HomeResponseModel
 import com.app.shepherd.data.dto.forgot_password.ForgotPasswordModel
 import com.app.shepherd.data.dto.invitation.InvitationsResponseModel
 import com.app.shepherd.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
+import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
+import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
 import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.app.shepherd.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.app.shepherd.data.dto.login.LoginResponseModel
@@ -202,5 +204,11 @@ interface ApiService {
     suspend fun uploadLockBoxDoc(
         @Part lockBoxDoc: MultipartBody.Part?
     ): Response<UploadLockBoxDocResponseModel>
+
+    @POST(ApiConstants.LockBox.CREATE_LOCK_BOX)
+    suspend fun addNewLockBox(
+        @Body addNewLockBoxRequestModel: AddNewLockBoxRequestModel
+    ): Response<AddNewLockBoxResponseModel>
+
 
 }

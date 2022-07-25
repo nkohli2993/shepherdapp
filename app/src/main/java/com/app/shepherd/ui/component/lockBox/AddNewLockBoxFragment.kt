@@ -18,6 +18,7 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.lockBox.adapter.UploadedFilesAdapter
 import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.utils.observe
 import com.app.shepherd.view_model.AddNewLockBoxViewModel
@@ -35,7 +36,32 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     private lateinit var fragmentAddNewLockBoxBinding: FragmentAddNewLockBoxBinding
     private var uploadedLockBoxDocUrl: String? = null
+    private var fileName: String? = null
+    private var fileNote: String? = null
     private val TAG = "AddNewLockBoxFragment"
+    private var dialog: Dialog? = null
+
+    private val isValid: Boolean
+        get() {
+            when {
+                fragmentAddNewLockBoxBinding.edtFileName.text.toString().isEmpty() -> {
+                    fragmentAddNewLockBoxBinding.edtFileName.error =
+                        getString(R.string.enter_file_name)
+                    fragmentAddNewLockBoxBinding.edtFileName.requestFocus()
+                }
+                fragmentAddNewLockBoxBinding.edtNote.text.toString().isEmpty() -> {
+                    fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
+                }
+
+                uploadedLockBoxDocUrl.isNullOrEmpty() -> {
+                    showInfo(requireContext(), "Please upload file...")
+                }
+                else -> {
+                    return true
+                }
+            }
+            return false
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,10 +76,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     override fun initViewBinding() {
         fragmentAddNewLockBoxBinding.listener = this
-
         setUploadedFilesAdapter()
-
-
     }
 
     override fun observeViewModel() {
@@ -61,6 +84,28 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
         // Observe the response of upload image api
         addNewLockBoxViewModel.uploadLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    dialog?.dismiss()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    dialog?.dismiss()
+                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                    uploadedLockBoxDocUrl = it.data.payload.document
+                    Log.d(TAG, "uploadedLockBoxDocUrl: $uploadedLockBoxDocUrl")
+                }
+            }
+        }
+
+
+        // Observe the response of add new lock box api
+        addNewLockBoxViewModel.addNewLockBoxResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -72,8 +117,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
-                    uploadedLockBoxDocUrl = it.data.payload.document
                     Log.d(TAG, "uploadedLockBoxDocUrl: $uploadedLockBoxDocUrl")
+                    backPress()
                 }
             }
         }
@@ -98,19 +143,26 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             R.id.btnChooseFile -> {
                 showChooseFileDialog()
             }
+            R.id.btnDone -> {
+                if (isValid) {
+                    fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
+                    fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    addNewLockBoxViewModel.addNewLockBox(fileName, fileNote, uploadedLockBoxDocUrl)
+                }
+            }
         }
     }
 
     private fun showChooseFileDialog() {
-        val dialog = Dialog(requireContext())
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_choose_lockbox_file)
-        val cvGoogleDrive = dialog.findViewById(R.id.cvGoogleDrive) as CardView
-        val cvLocalStorage = dialog.findViewById(R.id.cvLocalStorage) as CardView
-        val cancel = dialog.findViewById(R.id.txtCancel) as TextView
+        dialog = Dialog(requireContext())
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog?.setContentView(R.layout.dialog_choose_lockbox_file)
+        val cvGoogleDrive = dialog?.findViewById(R.id.cvGoogleDrive) as CardView
+        val cvLocalStorage = dialog?.findViewById(R.id.cvLocalStorage) as CardView
+        val cancel = dialog?.findViewById(R.id.txtCancel) as TextView
         // Click Google Drive
         cvGoogleDrive.setOnClickListener {
-            dialog.dismiss()
+            dialog?.dismiss()
             showToast("Google Drive Clicked")
         }
 
@@ -123,11 +175,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
         // Click Cancel
         cancel.setOnClickListener {
-            dialog.dismiss()
+            dialog?.dismiss()
             showToast("Cancel clicked")
         }
-        dialog.setCancelable(false)
-        dialog.show()
+        dialog?.setCancelable(false)
+        dialog?.show()
     }
 
 
