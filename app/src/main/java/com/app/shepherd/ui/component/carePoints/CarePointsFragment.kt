@@ -71,36 +71,6 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         endDate = startDate
         getCarePointList(startDate,endDate)
 
-/*        //functionality implemented for com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        fragmentCarePointsBinding.calendarPView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_NONE)
-
-        val calendar = Calendar.getInstance()
-        calendar[2022, 6] = 14
-
-        val calendar2 = Calendar.getInstance()
-        calendar2[2022, 6] = 15
-
-        val calendar3 = Calendar.getInstance()
-        calendar3[2022, 6] = 16
-
-        val calendar4 = Calendar.getInstance()
-        calendar[2022, 6] = 17
-        fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
-            getDateSelectedOnTypeBased(
-                date.date
-            )
-        }
-
-//        fragmentCarePointsBinding.calendarPView.addDecorator(CurrentDayDecatator(activity))
-        fragmentCarePointsBinding.calendarPView.setDateSelected(calendar, true)
-        fragmentCarePointsBinding.calendarPView.setDateSelected(calendar2, true)
-        fragmentCarePointsBinding.calendarPView.setDateSelected(calendar3, true)
-        fragmentCarePointsBinding.calendarPView.setDateSelected(calendar4, true)*/
-
-
-
-
-        //functionality implemented for com.applandeo.materialcalendarview.CalendarView
         fragmentCarePointsBinding.calendar.setSelectionBackground(R.drawable.background_black_round)
 
         fragmentCarePointsBinding.calendar.setDate(Calendar.getInstance())
