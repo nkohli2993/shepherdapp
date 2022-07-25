@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
 import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
+import com.app.shepherd.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.app.shepherd.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.app.shepherd.data.local.UserRepository
@@ -42,10 +43,15 @@ class AddNewLockBoxViewModel @Inject constructor(
     var addNewLockBoxResponseLiveData: LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> =
         _addNewLockBoxResponseLiveData
 
-    private var _uploadedLockBoxDocResponseLiveData =
+    private var _getUploadedLockBoxDocResponseLiveData =
         MutableLiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>>()
-    var uploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> =
-        _uploadedLockBoxDocResponseLiveData
+    var getUploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> =
+        _getUploadedLockBoxDocResponseLiveData
+
+    private var _deleteUploadedLockBoxDocResponseLiveData =
+        MutableLiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>>()
+    var deleteUploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>> =
+        _deleteUploadedLockBoxDocResponseLiveData
 
     // Upload lock box document
     fun uploadLockBoxDoc(file: File?): LiveData<Event<DataResult<UploadLockBoxDocResponseModel>>> {
@@ -98,11 +104,24 @@ class AddNewLockBoxViewModel @Inject constructor(
             }
             withContext(Dispatchers.Main) {
                 response?.collect {
-                    _uploadedLockBoxDocResponseLiveData.postValue(Event(it))
+                    _getUploadedLockBoxDocResponseLiveData.postValue(Event(it))
                 }
             }
         }
-        return uploadedLockBoxDocResponseLiveData
+        return getUploadedLockBoxDocResponseLiveData
+    }
+
+    // Delete Uploaded LockBox Doc
+    fun deleteUploadedLockBoxDoc(id: Int): LiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>> {
+        viewModelScope.launch {
+            val response = lockBoxRepository.deleteUploadedLockBoxDoc(id)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _deleteUploadedLockBoxDocResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return deleteUploadedLockBoxDocResponseLiveData
     }
 
 }

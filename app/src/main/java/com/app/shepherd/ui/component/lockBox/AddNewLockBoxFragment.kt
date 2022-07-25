@@ -1,6 +1,8 @@
 package com.app.shepherd.ui.component.lockBox
 
+import android.app.AlertDialog
 import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,7 +34,7 @@ import java.io.File
  */
 @AndroidEntryPoint
 class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
-    View.OnClickListener {
+    View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener {
 
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     private lateinit var fragmentAddNewLockBoxBinding: FragmentAddNewLockBoxBinding
@@ -130,7 +132,38 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         }
 
         // Observe the response of get all uploaded lock box document by loved one uuid api
-        addNewLockBoxViewModel.uploadedLockBoxDocResponseLiveData.observeEvent(this) {
+        addNewLockBoxViewModel.getUploadedLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                    fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+                    fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                        View.VISIBLE
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    lockBox = it.data.payload?.lockBox
+
+                    if (lockBox.isNullOrEmpty()) {
+                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                            View.VISIBLE
+                    } else {
+                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
+                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
+                        lockBox?.let { it1 -> uploadedFilesAdapter?.addData(it1) }
+                    }
+
+                }
+            }
+        }
+
+        // Observe the response of delete uploaded lock box document
+        addNewLockBoxViewModel.deleteUploadedLockBoxDocResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -141,8 +174,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    lockBox = it.data.payload?.lockBox
-                    lockBox?.let { it1 -> uploadedFilesAdapter?.addData(it1) }
+                    showSuccess(requireContext(), it.data.message.toString())
+
+                    // Reload the uploaded documents
+                    addNewLockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(
+                        pageNumber,
+                        limit
+                    )
                 }
             }
         }
@@ -159,6 +197,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     private fun setUploadedFilesAdapter() {
         uploadedFilesAdapter = UploadedLockBoxFilesAdapter(addNewLockBoxViewModel)
         fragmentAddNewLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
+        uploadedFilesAdapter?.setClickListener(this)
     }
 
 
@@ -212,6 +251,22 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_lockbox
+    }
+
+    override fun onItemClick(lockBox: LockBox) {
+        val builder = AlertDialog.Builder(requireContext())
+        val dialog = builder.apply {
+            setTitle("Delete Uploaded Lock Box Document")
+            setMessage("Are you sure you want to remove the uploaded lock box doc?")
+            setPositiveButton("Yes") { _, _ ->
+                lockBox.id?.let { addNewLockBoxViewModel.deleteUploadedLockBoxDoc(it) }
+            }
+            setNegativeButton("No") { _, _ ->
+            }
+        }.create()
+        dialog.show()
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
     }
 
 

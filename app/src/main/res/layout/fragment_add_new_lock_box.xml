@@ -163,18 +163,53 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtNote" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvUploadedFiles"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_130sdp"
-                android:layout_marginHorizontal="@dimen/_12sdp"
+            <LinearLayout
+                android:id="@+id/layoutUploadedFiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
-                tools:itemCount="2"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/adapter_uploaded_files" />
+                android:orientation="vertical">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvUploadedFiles"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_130sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    tools:itemCount="2"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/adapter_uploaded_files"
+                    android:visibility="visible" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtNoUploadedLockBoxFile"
+                    style="@style/TextViewGothamMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="No Uploaded Lock Box Files Found"
+                    android:textSize="@dimen/_14ssp"
+                    android:visibility="gone"
+                    android:paddingVertical="@dimen/_8sdp" />
+
+
+            </LinearLayout>
+
+            <!--  <androidx.recyclerview.widget.RecyclerView
+                  android:id="@+id/rvUploadedFiles"
+                  android:layout_width="0dp"
+                  android:layout_height="@dimen/_130sdp"
+                  android:layout_marginHorizontal="@dimen/_12sdp"
+                  android:layout_marginTop="@dimen/_8sdp"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
+                  tools:itemCount="2"
+                  app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                  tools:listitem="@layout/adapter_uploaded_files" />-->
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDone"
@@ -193,7 +228,7 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rvUploadedFiles" />
+                app:layout_constraintTop_toBottomOf="@+id/layoutUploadedFiles" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

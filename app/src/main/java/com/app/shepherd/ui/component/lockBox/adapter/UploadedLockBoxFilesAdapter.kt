@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.app.shepherd.databinding.AdapterUploadedFilesBinding
-import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.utils.extensions.toTextFormat
 import com.app.shepherd.view_model.AddNewLockBoxViewModel
 
@@ -19,11 +18,14 @@ class UploadedLockBoxFilesAdapter(
     lateinit var binding: AdapterUploadedFilesBinding
     lateinit var context: Context
 
+    private var onItemClickListener: OnItemClickListener? = null
 
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
-        override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
-        }
+    interface OnItemClickListener {
+        fun onItemClick(lockBox: LockBox)
+    }
+
+    fun setClickListener(clickListener: OnItemClickListener) {
+        onItemClickListener = clickListener
     }
 
     override fun onCreateViewHolder(
@@ -41,19 +43,18 @@ class UploadedLockBoxFilesAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
         return lockBoxList.size
     }
 
     override fun onBindViewHolder(holder: UploadedDocumentsViewHolder, position: Int) {
-        holder.bind(lockBoxList[position], onItemClickListener)
+        holder.bind(lockBoxList[position])
     }
 
 
-    class UploadedDocumentsViewHolder(private val itemBinding: AdapterUploadedFilesBinding) :
+    inner class UploadedDocumentsViewHolder(private val itemBinding: AdapterUploadedFilesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(lockBox: LockBox, recyclerItemListener: RecyclerItemListener) {
+        fun bind(lockBox: LockBox) {
             itemBinding.data = lockBox
 
             val createdAt = lockBox.createdAt
@@ -67,12 +68,9 @@ class UploadedLockBoxFilesAdapter(
                 it.txtUploadDate.text = "Uploaded $formattedString"
             }
 
-
-            /* itemBinding.root.setOnClickListener {
-                     recyclerItemListener.onItemSelected(
-                         dashboard
-                     )
-                 }*/
+            itemBinding.imgDelete.setOnClickListener {
+                onItemClickListener?.onItemClick(lockBox)
+            }
         }
     }
 
@@ -86,7 +84,7 @@ class UploadedLockBoxFilesAdapter(
     }
 
     fun addData(lockBoxList: ArrayList<LockBox>) {
-//        this.lockBoxList.clear()
+        this.lockBoxList.clear()
         this.lockBoxList.addAll(lockBoxList)
         notifyDataSetChanged()
     }

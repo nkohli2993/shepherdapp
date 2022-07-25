@@ -17,6 +17,7 @@ import com.app.shepherd.data.dto.invitation.InvitationsResponseModel
 import com.app.shepherd.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
 import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.app.shepherd.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
+import com.app.shepherd.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.app.shepherd.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
@@ -217,5 +218,10 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("love_user_id") lovedOneUUID: String
     ): Response<UploadedLockBoxDocumentsResponseModel>
+
+    @DELETE(ApiConstants.LockBox.DELETE_UPLOADED_LOCK_BOX_DOC)
+    suspend fun deleteUploadedLockBoxDoc(
+        @Path("id") id: Int
+    ): Response<DeleteUploadedLockBoxDocResponseModel>
 
 }
