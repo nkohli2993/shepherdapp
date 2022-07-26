@@ -12,140 +12,150 @@
 
     </data>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/_FCFCFC"
-        android:paddingHorizontal="@dimen/_10sdp">
+        android:fillViewport="true">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtLockBoxDesc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/gotham_book"
-            android:lineSpacingMultiplier="1.3"
-            android:text="@string/lock_box_desc"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_12ssp"
-            app:fontFamily="@font/gotham_book"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardViewSearch"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginHorizontal="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="horizontal"
-            app:cardCornerRadius="@dimen/_18sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtLockBoxDesc">
+            android:layout_height="match_parent"
 
-            <RelativeLayout
+            android:paddingHorizontal="@dimen/_10sdp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtLockBoxDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:fontFamily="@font/gotham_book"
+                android:lineSpacingMultiplier="1.3"
+                android:text="@string/lock_box_desc"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                app:fontFamily="@font/gotham_book"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewSearch"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/_F3F3F4">
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginHorizontal="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                app:cardCornerRadius="@dimen/_18sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLockBoxDesc">
 
-                <LinearLayout
-                    android:id="@+id/llSearch"
-                    android:layout_width="@dimen/_36sdp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="@dimen/_2sdp"
-                    android:gravity="center">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:src="@drawable/ic_search_colored" />
-                </LinearLayout>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/editTextSearch"
-                    style="@style/TextViewPoppinsRegular"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_toStartOf="@+id/img_cancel"
-                    android:layout_toEndOf="@id/llSearch"
-                    android:background="@null"
-                    android:gravity="center_vertical"
-                    android:hint="@string/search"
-                    android:imeOptions="actionDone"
-                    android:inputType="textCapSentences"
-                    android:maxLines="1"
-                    android:paddingHorizontal="@dimen/_12sdp"
-                    android:textColor="@android:color/black"
-                    android:textColorHint="@color/_192032"
-                    android:textSize="@dimen/_11ssp" />
+                    android:background="@color/_F3F3F4">
 
-                <ImageView
-                    android:id="@+id/img_cancel"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:padding="@dimen/_4sdp"
-                    android:src="@drawable/ic_cancel"
-                    android:visibility="gone" />
+                    <LinearLayout
+                        android:id="@+id/llSearch"
+                        android:layout_width="@dimen/_36sdp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:gravity="center">
 
-            </RelativeLayout>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:src="@drawable/ic_search_colored" />
+                    </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editTextSearch"
+                        style="@style/TextViewPoppinsRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/img_cancel"
+                        android:layout_toEndOf="@id/llSearch"
+                        android:background="@null"
+                        android:gravity="center_vertical"
+                        android:hint="@string/search"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapSentences"
+                        android:maxLines="1"
+                        android:paddingHorizontal="@dimen/_12sdp"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@color/_192032"
+                        android:textSize="@dimen/_11ssp" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtRecommendedDoc"
-            style="@style/TextViewGothamBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_12sdp"
-            android:text="@string/recommended_documents"
-            android:textSize="@dimen/_14ssp"
-            app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
+                    <ImageView
+                        android:id="@+id/img_cancel"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        android:padding="@dimen/_4sdp"
+                        android:src="@drawable/ic_cancel"
+                        android:visibility="gone" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvRecommendedDoc"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_155sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtRecommendedDoc"
-            tools:itemCount="5"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/adapter_recommended_documents" />
+                </RelativeLayout>
 
+            </androidx.cardview.widget.CardView>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtOtherDocuments"
-            style="@style/TextViewGothamBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_14ssp"
-            android:text="@string/other_documents"
-            app:layout_constraintStart_toStartOf="@+id/txtRecommendedDoc"
-            app:layout_constraintTop_toBottomOf="@+id/rvRecommendedDoc" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtRecommendedDoc"
+                style="@style/TextViewGothamBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:text="@string/recommended_documents"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvOtherDocuments"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_150sdp"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@+id/txtOtherDocuments"
-            tools:itemCount="5"
-            tools:listitem="@layout/adapter_other_documents" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecommendedDoc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtRecommendedDoc"
+                tools:itemCount="5"
+                tools:listitem="@layout/adapter_recommended_documents" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtOtherDocuments"
+                style="@style/TextViewGothamBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_14ssp"
+                android:nestedScrollingEnabled="false"
+                android:text="@string/other_documents"
+                app:layout_constraintStart_toStartOf="@+id/txtRecommendedDoc"
+                app:layout_constraintTop_toBottomOf="@+id/rvRecommendedDoc" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOtherDocuments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtOtherDocuments"
+                tools:itemCount="5"
+                tools:listitem="@layout/adapter_other_documents" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </layout>

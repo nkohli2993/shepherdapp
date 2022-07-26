@@ -285,7 +285,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     @SuppressLint("SimpleDateFormat")
     private fun createEvent() {
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
-        var dateFormat = SimpleDateFormat("dd MMM yyyy")
+        var dateFormat = SimpleDateFormat("MMM dd, yyyy")
         val formatedDate: Date = dateFormat.parse(selectedDate)!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         selectedDate = dateFormat.format(formatedDate)

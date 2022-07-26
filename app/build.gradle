@@ -58,6 +58,16 @@ android {
             dimension = 'default'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
     compileOptions {
         targetCompatibility JavaVersion.VERSION_1_8
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -182,7 +192,17 @@ dependencies {
     implementation "androidx.biometric:biometric:$biometric_version"
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
-    implementation 'com.github.prolificinteractive:material-calendarview:2.0.0'
+    implementation 'com.github.prolificinteractive:material-calendarview:1.6.1'
+
+    // google drive libs
+    implementation "com.google.android.gms:play-services-auth:18.0.0"
+    implementation 'com.google.http-client:google-http-client-gson:1.26.0'
+    implementation('com.google.api-client:google-api-client-android:1.26.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
+    implementation('com.google.apis:google-api-services-drive:v3-rev136-1.25.0') {
+        exclude group: 'org.apache.httpcomponents'
+    }
 }
 kapt {
     correctErrorTypes true

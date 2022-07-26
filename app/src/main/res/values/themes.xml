@@ -219,7 +219,7 @@
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize35Percent." parent="">
-        <item name="cornerSize">35%</item>
+        <item name="cornerSize">34%</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent." parent="">

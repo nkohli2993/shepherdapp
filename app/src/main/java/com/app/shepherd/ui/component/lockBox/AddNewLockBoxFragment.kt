@@ -3,6 +3,7 @@ package com.app.shepherd.ui.component.lockBox
 import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Color
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.lockBox.adapter.UploadedLockBoxFilesAdapter
+import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
@@ -230,6 +232,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         cvGoogleDrive.setOnClickListener {
             dialog?.dismiss()
             showToast("Google Drive Clicked")
+
+            val intent = Intent(
+                requireContext().applicationContext,
+                UploadLockBoxDocumentActivity::class.java
+            )
+//        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
+            startActivity(intent)
         }
 
         // Click Local Storage

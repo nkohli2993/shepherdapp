@@ -95,7 +95,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:fontFamily="@font/gotham_bold"
+                            android:fontFamily="@font/gotham_book"
                             android:gravity="center"
                             android:onClick="@{listener::onClick}"
                             android:paddingVertical="@dimen/_5sdp"
@@ -114,7 +114,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:fontFamily="@font/gotham_bold"
+                            android:fontFamily="@font/gotham_book"
                             android:gravity="center"
                             android:onClick="@{listener::onClick}"
                             android:paddingVertical="@dimen/_5sdp"
@@ -124,17 +124,26 @@
 
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.prolificinteractive.materialcalendarview.MaterialCalendarView
+                    android:id="@+id/calendarPView"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_height="@dimen/_350sdp"
+                    app:mcv_showOtherDates="all"
+                    app:layout_constraintTop_toBottomOf="@+id/headerCl"
+                    app:mcv_selectionColor="#00F"
+                    />
 
 
                 <com.applandeo.materialcalendarview.CalendarView
                     android:id="@+id/calendar"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_350sdp"
+                    android:layout_height="wrap_content"
                     app:abbreviationsBarColor="@color/_E7E8EA"
                     app:headerColor="@color/colorWhite"
                     app:headerLabelColor="@color/colorBlack"
                     app:highlightedDaysLabelsColor="@color/colorGreen"
-                    app:layout_constraintTop_toBottomOf="@+id/headerCl"
+                    app:layout_constraintTop_toBottomOf="@+id/calendarPView"
                     app:pagesColor="@color/colorWhite"
                     app:selectionColor="@color/colorGreen"
                     app:selectionLabelColor="@color/colorGreen" />

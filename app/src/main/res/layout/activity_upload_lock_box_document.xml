@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            tools:context=".MainActivity">
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/file_title_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentTop="true" />
+
+            <EditText
+                android:visibility="gone"
+                android:id="@+id/doc_content_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@id/btn_layout"
+                android:layout_below="@id/file_title_edittext" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/btn_layout"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true">
+
+                <Button
+                    android:id="@+id/open_btn"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Open"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorBlack"
+                    style="?attr/buttonBarButtonStyle" />
+
+                <Button
+                    android:id="@+id/create_btn"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Create"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorBlack"
+                    style="?attr/buttonBarButtonStyle" />
+
+                <Button
+                    android:id="@+id/save_btn"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Save"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorBlack"
+                    style="?attr/buttonBarButtonStyle" />
+
+                <Button
+                    android:id="@+id/query_btn"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="Query"
+                    android:gravity="center"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorWhite"
+                    android:background="@color/colorBlack"
+                    style="?attr/buttonBarButtonStyle" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

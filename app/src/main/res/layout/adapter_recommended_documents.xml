@@ -9,53 +9,42 @@
             type="com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypes" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/cardView4"
-        app:layout_constraintTop_toTopOf="@+id/cardView4">
+        app:cardCornerRadius="@dimen/_6sdp"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="@color/colorWhite">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_6sdp"
-            app:cardUseCompatPadding="true"
-            app:cardBackgroundColor="@color/colorWhite"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingVertical="@dimen/_8sdp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewGothamBold"
+                android:layout_width="0dp"
+                android:id="@+id/txtTitle"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_8sdp">
+                android:text="@{data.name}"
+                android:includeFontPadding="false"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    style="@style/TextViewGothamBold"
-                    android:layout_width="0dp"
-                    android:id="@+id/txtTitle"
-                    android:layout_height="wrap_content"
-                    android:text="@{data.name}"
-                    android:includeFontPadding="false"
-                    android:textSize="@dimen/_13ssp"
-                    android:layout_marginHorizontal="@dimen/_12sdp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.description}"
+                style="@style/TextViewGothamBook"
+                android:textSize="@dimen/_9ssp"
+                android:layout_marginTop="@dimen/_4sdp"
+                app:layout_constraintStart_toStartOf="@+id/txtTitle"
+                app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{data.description}"
-                    style="@style/TextViewGothamBook"
-                    android:textSize="@dimen/_11ssp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    app:layout_constraintStart_toStartOf="@+id/txtTitle"
-                    app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </layout>

@@ -1,0 +1,182 @@
+package com.app.shepherd.ui.component.lockBox
+
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
+import androidx.core.net.toUri
+import com.app.shepherd.R
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
+import com.app.shepherd.ui.base.BaseActivity
+import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.extensions.showSuccess
+import com.app.shepherd.view_model.AddNewLockBoxViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.Scope
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.json.gson.GsonFactory
+import com.google.api.services.drive.Drive
+import com.google.api.services.drive.DriveScopes
+import com.lassi.common.utils.KeyUtils
+import com.lassi.data.media.MiMedia
+import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
+
+@AndroidEntryPoint
+class UploadLockBoxDocumentActivity : BaseActivity() {
+    private var mDriveServiceHelper: DriveServiceHelper? = null
+    private var uploadedLockBoxDocUrl: String? = null
+
+    private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
+    override fun observeViewModel() {
+        addNewLockBoxViewModel.uploadLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.message?.let { it1 -> showSuccess(this, it1) }
+                    uploadedLockBoxDocUrl = it.data.payload.document
+                    finish()
+                    Log.d(TAG, "uploadedLockBoxDocUrl: $uploadedLockBoxDocUrl")
+                }
+            }
+        }
+
+    }
+
+    override fun initViewBinding() {
+
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_upload_lock_box_document)
+        requestSignIn()
+
+    }
+
+    public override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        when (requestCode) {
+            REQUEST_CODE_SIGN_IN -> {
+                if (resultCode == RESULT_OK && resultData != null) {
+                    handleSignInResult(resultData)
+                } else {
+                    showError(this,"Unable to create this request try, again later!")
+                    finish()
+                    Log.e("catch_exception", "Request not accepted")
+                }
+            }
+            REQUEST_CODE_OPEN_DOCUMENT -> if (resultCode == RESULT_OK && resultData != null) {
+                val uri = resultData.data
+                uri?.let {
+                    val file = File(uri.toString())
+                    if (file != null && file.exists()) {
+                        addNewLockBoxViewModel.imageFile = file
+                        addNewLockBoxViewModel.uploadLockBoxDoc(file)
+                    }
+                    //                    openFileFromFilePicker(it)
+                }
+
+
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, resultData)
+    }
+
+    private fun requestSignIn() {
+        Log.d(TAG, "Requesting sign-in")
+        val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
+            .build()
+        val client = GoogleSignIn.getClient(this, signInOptions)
+
+        startActivityForResult(client.signInIntent, REQUEST_CODE_SIGN_IN)
+    }
+
+    private fun handleSignInResult(result: Intent) {
+        GoogleSignIn.getSignedInAccountFromIntent(result)
+            .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
+                Log.d(
+                    TAG,
+                    "Signed in as " + googleAccount.email
+                )
+
+                val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
+                    this, setOf(DriveScopes.DRIVE_FILE)
+                )
+                credential.setSelectedAccount(googleAccount.account)
+                val googleDriveService: Drive = Drive.Builder(
+                    AndroidHttp.newCompatibleTransport(),
+                    GsonFactory(),
+                    credential
+                )
+                    .setApplicationName("Drive API Migration")
+                    .build()
+
+                mDriveServiceHelper = DriveServiceHelper(googleDriveService)
+                openFilePicker()
+            }
+            .addOnFailureListener { exception: Exception? ->
+                Log.e(
+                    TAG,
+                    "Unable to sign in.",
+                    exception
+                )
+            }
+    }
+
+    private fun openFilePicker() {
+        if (mDriveServiceHelper != null) {
+            Log.d(TAG, "Opening file picker.")
+            val pickerIntent: Intent = mDriveServiceHelper!!.createFilePickerIntent()
+            filePick.launch(pickerIntent)
+//            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT)
+        }
+    }
+
+    private val filePick =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val selectedMedia =
+                    it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
+                if (!selectedMedia.isNullOrEmpty()) {
+                    var file: File? = null
+                    file = if (selectedMedia[0].path?.startsWith("content")!!) {
+                        CommonFunctions.fileFromContentUri(
+                            this,
+                            selectedMedia[0].path.toString().toUri()
+                        )
+                    } else {
+                        File(selectedMedia[0].path!!)
+                    }
+                    selectedFile.value = file
+
+                    if (file != null && file.exists()) {
+                        addNewLockBoxViewModel.imageFile = file
+                        addNewLockBoxViewModel.uploadLockBoxDoc(file)
+                    }
+
+                }
+            }
+        }
+
+
+    companion object {
+        private const val TAG = "UploadDrive"
+        private const val REQUEST_CODE_SIGN_IN = 1
+        private const val REQUEST_CODE_OPEN_DOCUMENT = 2
+    }
+}
