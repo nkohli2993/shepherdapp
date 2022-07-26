@@ -8,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.added_events.EventCommentUserDetailModel
 import com.app.shepherd.databinding.AdapterCommentBinding
+import com.app.shepherd.view_model.CreatedCarePointsViewModel
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 class CarePointEventCommentAdapter(
-    var commentList: ArrayList<EventCommentUserDetailModel> = ArrayList()
+    var commentList: ArrayList<EventCommentUserDetailModel> = ArrayList(),
+    var carePointsViewModel: CreatedCarePointsViewModel
 ) :
     RecyclerView.Adapter<CarePointEventCommentAdapter.CarePointsEventsViewHolder>() {
     lateinit var binding: AdapterCommentBinding
@@ -45,7 +47,7 @@ class CarePointEventCommentAdapter(
     inner class CarePointsEventsViewHolder(private val itemBinding: AdapterCommentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        @SuppressLint("SimpleDateFormat")
+        @SuppressLint("SimpleDateFormat", "SetTextI18n")
         fun bind(position: Int) {
             val commentData = commentList[position]
 
@@ -53,8 +55,14 @@ class CarePointEventCommentAdapter(
                 Picasso.get().load(commentData.user_details.user_profiles.profilePhoto)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(it.imageViewUser)
-                it.tvUsername.text = commentData.user_details.user_profiles.firstname.plus(" ")
-                    .plus(commentData.user_details.user_profiles.lastname)
+                if(commentData.user_details.user_profiles.id == carePointsViewModel.getUserDetail()?.id){
+                    it.tvUsername.text = "Me"
+                }
+                else{
+                    it.tvUsername.text = commentData.user_details.user_profiles.firstname.plus(" ")
+                        .plus(commentData.user_details.user_profiles.lastname)
+                }
+
                 it.appCompatTextViewMessage.text = commentData.comment
                 //setDate of comment
                 val dateTime = (commentData.created_at?:"").replace(".000Z","").replace("T"," ")

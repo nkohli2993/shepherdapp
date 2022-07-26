@@ -1,13 +1,13 @@
 package com.app.shepherd.ui.component.addNewEvent
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
@@ -33,6 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_new_event.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -40,7 +41,8 @@ import java.util.*
  */
 @AndroidEntryPoint
 class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
-    View.OnClickListener, AssignToEventAdapter.selectedTeamMember {
+    View.OnClickListener, AssignToEventAdapter.selectedTeamMember,
+    DatePickerDialog.OnDateSetListener {
 
     private val addNewEventViewModel: AddNewEventViewModel by viewModels()
 
@@ -66,17 +68,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         fragmentAddNewEventBinding.listener = this
 
 
-        initDatePicker()
-        // initTimePicker()
         getAssignedToMembers()
         setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50)
-        fragmentAddNewEventBinding.eventMemberSpinner.setOnTouchListener { v, event ->
-            rotate(0f)
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                rotate(180f)
-            }
-            false
-        }
         fragmentAddNewEventBinding.etNote.setOnTouchListener { view, event ->
             view.parent.requestDisallowInterceptTouchEvent(true)
             when (event.action and MotionEvent.ACTION_MASK) {
@@ -84,17 +77,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
             false
         }
-    }
 
-    private fun rotate(degree: Float) {
-        val rotateAnim = RotateAnimation(
-            0.0f, degree,
-            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-            RotateAnimation.RELATIVE_TO_SELF, 0.5f
-        )
-        rotateAnim.duration = 0
-        rotateAnim.fillAfter = true
-        fragmentAddNewEventBinding.spinnerDownArrowImage.startAnimation(rotateAnim)
+        fragmentAddNewEventBinding.scrollView.setOnTouchListener { view, motionEvent ->
+           // fragmentAddNewEventBinding.eventMemberSpinner.visibility = View.GONE
+            return@setOnTouchListener false
+        }
     }
 
     private fun getAssignedToMembers() {
@@ -143,7 +130,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = it.data.payload
-                    careteams.add(CareTeam(id = -1))
+//                    careteams.add(CareTeam(id = -1))
                     careteams.addAll(payload.careTeams)
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
@@ -217,11 +204,34 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         fragmentAddNewEventBinding.root.showToast(this, event, Snackbar.LENGTH_LONG)
     }
 
+    private fun rotate(degree: Float) {
+        val rotateAnim = RotateAnimation(
+            0.0f, degree,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+        )
+        rotateAnim.duration = 0
+        rotateAnim.fillAfter = true
+        fragmentAddNewEventBinding.spinnerDownArrowImage.startAnimation(rotateAnim)
+    }
 
+    @SuppressLint("SetTextI18n")
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.ivBack -> {
                 findNavController().popBackStack()
+            }
+            R.id.assigneET ->{
+                if(fragmentAddNewEventBinding.eventMemberSpinner.visibility == View.VISIBLE){
+                    fragmentAddNewEventBinding.eventMemberSpinner.visibility= View.GONE
+                    rotate(0f)
+                }
+                else{
+                    fragmentAddNewEventBinding.eventMemberSpinner.visibility= View.VISIBLE
+                    rotate(180f)
+                }
+//                fragmentAddNewEventBinding.eventMemberSpinner.visibility= View.VISIBLE
+//                fragmentAddNewEventBinding.eventMemberSpinner.performClick()
             }
             R.id.btnAdd -> {
                 assignTo.clear()
@@ -238,6 +248,22 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             R.id.clTimeWrapper -> {
                 timePicker()
             }
+            R.id.tvDate -> {
+                val c = Calendar.getInstance()
+                val mYear = c[Calendar.YEAR]
+                val mMonth = c[Calendar.MONTH]
+                val mDay = c[Calendar.DAY_OF_MONTH]
+
+                val datePickerDialog = DatePickerDialog(
+                    requireActivity(),R.style.datepicker,
+                    { p0, year, monthOfYear, dayOfMonth ->
+                        fragmentAddNewEventBinding.tvDate.text = dayOfMonth.toString() + "-" +if(monthOfYear+1 <10){"0${(monthOfYear + 1)}"} else{(monthOfYear + 1)}  + "-" + year
+                    }, mYear, mMonth, mDay
+                )
+                datePickerDialog.datePicker.minDate = c.timeInMillis
+//                datePickerDialog.da.setButton(DatePickerDialog.BUTTON_POSITIVE,"OK").setTextColor(Color.BLACK)
+                datePickerDialog.show()
+            }
         }
     }
 
@@ -253,8 +279,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     fragmentAddNewEventBinding.edtAddress.error = getString(R.string.enter_address)
                     fragmentAddNewEventBinding.edtAddress.requestFocus()
                 }
-                assignTo.size<=0 ->{
-                    showInfo(requireContext(), getString(R.string.please_select_whome_to_assign_event))
+                assignTo.size <= 0 -> {
+                    showInfo(
+                        requireContext(),
+                        getString(R.string.please_select_whome_to_assign_event)
+                    )
                 }
                 fragmentAddNewEventBinding.tvDate.text.toString().trim() == "DD/MM/YY" -> {
                     showInfo(requireContext(), getString(R.string.please_enter_date_of_event))
@@ -285,7 +314,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     @SuppressLint("SimpleDateFormat")
     private fun createEvent() {
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
-        var dateFormat = SimpleDateFormat("MMM dd, yyyy")
+        var dateFormat = SimpleDateFormat("dd-MM-yyyy")
         val formatedDate: Date = dateFormat.parse(selectedDate)!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         selectedDate = dateFormat.format(formatedDate)
@@ -322,6 +351,20 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     override fun onSelected(position: Int) {
         // on team member selected
         careteams[position].isSelected = !careteams[position].isSelected
+
+        val assignee :ArrayList<String> = arrayListOf()
+        assignee.clear()
+        for(i in careteams){
+            if(i.isSelected){
+                assignee.add(i.user!!.firstname!!.plus(" ").plus(i.user?.lastname))
+            }
+        }
+        if(assignee.size>0){
+            fragmentAddNewEventBinding.assigneET.setText(assignee.joinToString())
+        }else{
+            fragmentAddNewEventBinding.assigneET.setText("")
+        }
+
     }
 
     private fun timePicker() {
@@ -330,7 +373,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         val minute = mCurrentTime.get(Calendar.MINUTE)
 
         val mTimePicker = TimePickerDialog(
-            context,
+            context,R.style.datepicker,
             { view, hourOfDay, selectedMinute ->
                 fragmentAddNewEventBinding.tvTime.text =
                     String.format("%02d:%02d", hourOfDay, selectedMinute)
@@ -343,6 +386,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }, hour,
             minute, true
         )
+//        mTimePicker.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
+//        mTimePicker.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         mTimePicker.show()
     }
 
@@ -359,6 +404,16 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 unselected
             )
         )
+    }
+
+    override fun onDateSet(p0: android.widget.DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val mCalendar = Calendar.getInstance()
+        mCalendar[Calendar.YEAR] = year
+        mCalendar[Calendar.MONTH] = month
+        mCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+        val selectedDate: String =
+            SimpleDateFormat("dd/MMM/yyyy").format(mCalendar.time)
+        fragmentAddNewEventBinding.tvDate.text = selectedDate
     }
 
 }

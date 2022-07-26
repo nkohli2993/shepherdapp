@@ -62,7 +62,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     private fun setCommentAdapter() {
         //set comment adapter added in list
-        commentAdapter = CarePointEventCommentAdapter(commentList)
+        commentAdapter = CarePointEventCommentAdapter(commentList,carePointsViewModel)
         fragmentCarePointDetailBinding.recyclerViewChat.adapter = commentAdapter
     }
 

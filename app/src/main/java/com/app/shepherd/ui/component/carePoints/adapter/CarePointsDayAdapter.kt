@@ -1,5 +1,6 @@
 package com.app.shepherd.ui.component.carePoints.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.app.shepherd.databinding.AdapterCarePointsDayDateBasedBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.utils.CalendarState
 import com.app.shepherd.view_model.CreatedCarePointsViewModel
+import java.text.SimpleDateFormat
 
 
 class CarePointsDayAdapter(
@@ -63,9 +65,12 @@ class CarePointsDayAdapter(
     inner class CarePointsDayViewHolder(private val itemBinding: AdapterCarePointsDayDateBasedBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
+        @SuppressLint("SimpleDateFormat")
         fun bind(position: Int) {
             val carePoints = carePointList[position]
-            itemBinding.dateTV.text = carePoints.date
+            val dateShow = SimpleDateFormat("yyyy-MM-dd").parse(carePoints.date!!)
+            itemBinding.dateTV.text = SimpleDateFormat("EEE, MMM dd").format(dateShow!!)
+
             setCarePointsAdapter(binding.recyclerViewEventDays, carePoints.events)
 
         }

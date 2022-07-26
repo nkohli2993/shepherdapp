@@ -13,6 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/_12sdp"
+        android:clickable="true"
+        android:background="@color/colorWhite"
         android:paddingVertical="@dimen/_8sdp">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -21,6 +23,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_medium"
             android:text="@string/select"
+            android:visibility="gone"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="@dimen/_1sdp"
-                    android:padding="@dimen/_1sdp"
+                    android:padding="1dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/background_splash"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
@@ -65,7 +68,9 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewCareTeamName"
-                style="@style/TextViewPoppinsSemiBold"
+                android:fontFamily="@font/gotham_book"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_centerVertical="true"
                 android:layout_marginHorizontal="@dimen/_8sdp"
@@ -79,11 +84,12 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewCareTeamRole"
-                style="@style/TextViewPoppinsRegular"
+                android:fontFamily="@font/gotham_book"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/care_team_leader"
-                android:textSize="@dimen/_13ssp"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/textViewCareTeamName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />

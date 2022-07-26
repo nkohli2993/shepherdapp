@@ -219,7 +219,7 @@
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize35Percent." parent="">
-        <item name="cornerSize">34%</item>
+        <item name="cornerSize">38.5%</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent." parent="">
@@ -239,5 +239,18 @@
 
     <style name="CalenderViewWeekCustomText" parent="android:TextAppearance.DeviceDefault.Small">
         <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="datepicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPurple</item>
+        <item name="colorPrimaryDark">@color/colorPurple</item>
+        <item name="colorAccent">@color/colorPurple</item>
+        <item name="android:buttonTint">@color/colorBlack</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButtonStyle</item>
+    </style>
+
+    <style name="DatePickerButtonStyle" parent="android:Widget.Material.Button.Borderless">
+        <item name="android:textColor">@color/colorBlack</item>
     </style>
 </resources>
