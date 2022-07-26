@@ -63,7 +63,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     ): View {
         fragmentCarePointsBinding =
             FragmentCarePointsBinding.inflate(inflater, container, false)
-
+        fragmentCarePointsBinding.calendarPView.clearSelection()
         return fragmentCarePointsBinding.root
     }
 
