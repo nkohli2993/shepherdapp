@@ -1,10 +1,13 @@
 package com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 25/07/22
  */
+@Parcelize
 data class LockBox(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: String? = null,
@@ -16,4 +19,4 @@ data class LockBox(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
-)
+) : Parcelable

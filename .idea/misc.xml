@@ -155,6 +155,7 @@
         <entry key="app/src/main/res/font/roboto_bold.xml" value="0.38645833333333335" />
         <entry key="app/src/main/res/layout-v23/adapter_care_points_events.xml" value="0.35625" />
         <entry key="app/src/main/res/layout-v23/adapter_events.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/act_welcome.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />
@@ -245,6 +246,7 @@
         <entry key="app/src/main/res/layout/fragment_resources.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/fragment_uploaded_lock_box_doc_detail.xml" value="0.21953125" />
         <entry key="app/src/main/res/layout/home_activity.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/include_home_toolbar.xml" value="0.178125" />
         <entry key="app/src/main/res/layout/include_toolbar.xml" value="0.638121546961326" />

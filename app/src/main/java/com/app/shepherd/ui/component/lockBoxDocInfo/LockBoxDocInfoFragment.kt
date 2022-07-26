@@ -1,34 +1,33 @@
 package com.app.shepherd.ui.component.lockBoxDocInfo
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.navArgs
 import com.app.shepherd.R
-import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponseModel
-import com.app.shepherd.databinding.FragmentLockboxBinding
-import com.app.shepherd.databinding.FragmentLockboxDocInfoBinding
+import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
+import com.app.shepherd.databinding.FragmentUploadedLockBoxDocDetailBinding
 import com.app.shepherd.ui.base.BaseFragment
-import com.app.shepherd.ui.component.home.HomeActivity
-import com.app.shepherd.utils.*
-import com.google.android.material.snackbar.Snackbar
+import com.app.shepherd.view_model.LockBoxDocInfoViewModel
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_uploaded_lock_box_doc_detail.*
 
 
 /**
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class LockBoxDocInfoFragment : BaseFragment<FragmentLockboxBinding>(),
+class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBinding>(),
     View.OnClickListener {
 
     private val lockBoxDocInfoViewModel: LockBoxDocInfoViewModel by viewModels()
 
-    private lateinit var fragmentLockboxDocInfoBinding: FragmentLockboxDocInfoBinding
+    private lateinit var fragmentUploadedLockBoxDocDetailBinding: FragmentUploadedLockBoxDocDetailBinding
+    private val args: LockBoxDocInfoFragmentArgs by navArgs()
+    private var lockBox: LockBox? = null
 
 
     override fun onCreateView(
@@ -36,55 +35,40 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentLockboxBinding>(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentLockboxDocInfoBinding =
-            FragmentLockboxDocInfoBinding.inflate(inflater, container, false)
+        fragmentUploadedLockBoxDocDetailBinding =
+            FragmentUploadedLockBoxDocDetailBinding.inflate(inflater, container, false)
 
-        return fragmentLockboxDocInfoBinding.root
+        return fragmentUploadedLockBoxDocDetailBinding.root
     }
 
     override fun initViewBinding() {
-        fragmentLockboxDocInfoBinding.listener = this
+        fragmentUploadedLockBoxDocDetailBinding.listener = this
+        lockBox = args.lockBox
+        fragmentUploadedLockBoxDocDetailBinding.let {
+            it.txtLockBoxName.text = lockBox?.name
+            it.txtLockBoxNote.text = lockBox?.note
+            Picasso.get().load(lockBox?.documentUrl).placeholder(R.drawable.ic_defalut_profile_pic)
+                .into(imgDoc)
+        }
+
+
     }
 
     override fun observeViewModel() {
-        observe(lockBoxDocInfoViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(lockBoxDocInfoViewModel.showSnackBar)
-        observeToast(lockBoxDocInfoViewModel.showToast)
-    }
-
-
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
-
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { lockBoxDocInfoViewModel.showToastMessage(it) }
-            }
-        }
-    }
-
-    private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
-        fragmentLockboxDocInfoBinding.root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
-    }
-
-    private fun observeToast(event: LiveData<SingleEvent<Any>>) {
-        fragmentLockboxDocInfoBinding.root.showToast(this, event, Snackbar.LENGTH_LONG)
     }
 
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonRename,R.id.buttonCancel -> {
-                startActivity(Intent(requireContext(), HomeActivity::class.java))
+            R.id.ivBack -> {
+                backPress()
             }
         }
     }
 
 
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_lockbox_doc_info
+        return R.layout.fragment_uploaded_lock_box_doc_detail
     }
 
 

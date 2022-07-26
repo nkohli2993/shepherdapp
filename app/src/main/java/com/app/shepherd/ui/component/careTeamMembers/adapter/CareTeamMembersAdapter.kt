@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.care_team.CareTeam
 import com.app.shepherd.databinding.AdapterCareTeamMembersBinding
-import com.app.shepherd.databinding.AdapterCareTeamMembersDashboardBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.view_model.CareTeamMembersViewModel
 import com.squareup.picasso.Picasso
@@ -68,9 +67,6 @@ class CareTeamMembersAdapter(
 
                 it.textViewCareTeamRole.text = careTeam.careRoles?.name
             }
-
-
-
 
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(

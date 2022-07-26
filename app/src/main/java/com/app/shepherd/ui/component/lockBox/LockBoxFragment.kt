@@ -1,10 +1,12 @@
 package com.app.shepherd.ui.component.lockBox
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypes
@@ -14,7 +16,9 @@ import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.lockBox.adapter.OtherDocumentsAdapter
 import com.app.shepherd.ui.component.lockBox.adapter.RecommendedDocumentsAdapter
+import com.app.shepherd.utils.SingleEvent
 import com.app.shepherd.utils.extensions.showError
+import com.app.shepherd.utils.observe
 import com.app.shepherd.view_model.LockBoxViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     View.OnClickListener {
 
+    private val TAG: String = "LockBoxFragment"
     private val lockBoxViewModel: LockBoxViewModel by viewModels()
     private lateinit var fragmentLockboxBinding: FragmentLockboxBinding
     private var recommendedDocumentsAdapter: RecommendedDocumentsAdapter? = null
@@ -60,6 +65,9 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     }
 
     override fun observeViewModel() {
+        observe(lockBoxViewModel.openUploadedDocDetail, ::openUploadedDocDetail)
+
+
         lockBoxViewModel.lockBoxTypeResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -107,6 +115,16 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
                 }
             }
+        }
+    }
+
+    private fun openUploadedDocDetail(navigateEvent: SingleEvent<LockBox>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            Log.d(TAG, "Uploaded Doc detail :$it")
+            // Sending CareTeam object through safeArgs
+            val action = LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(it)
+            //findNavController().navigate(R.id.action_care_team_members_to_member_details)
+            findNavController().navigate(action)
         }
     }
 

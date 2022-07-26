@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.DataRepository
+import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.app.shepherd.data.local.UserRepository
@@ -11,6 +12,7 @@ import com.app.shepherd.data.remote.lock_box.LockBoxRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
+import com.app.shepherd.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,6 +38,10 @@ class LockBoxViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>>()
     var getUploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> =
         _getUploadedLockBoxDocResponseLiveData
+
+
+    private val openUploadedLockBoxDocInfo = MutableLiveData<SingleEvent<LockBox>>()
+    val openUploadedDocDetail: LiveData<SingleEvent<LockBox>> get() = openUploadedLockBoxDocInfo
 
     fun getAllLockBoxTypes(
         pageNumber: Int,
@@ -74,5 +80,9 @@ class LockBoxViewModel @Inject constructor(
             }
         }
         return getUploadedLockBoxDocResponseLiveData
+    }
+
+    fun openLockBoxDocDetail(lockBox: LockBox) {
+        openUploadedLockBoxDocInfo.value = SingleEvent(lockBox)
     }
 }

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.app.shepherd.databinding.AdapterOtherDocumentsBinding
+import com.app.shepherd.ui.base.listeners.RecyclerItemListener
 import com.app.shepherd.utils.extensions.toTextFormat
 import com.app.shepherd.view_model.LockBoxViewModel
 
@@ -17,6 +18,12 @@ class OtherDocumentsAdapter(
     RecyclerView.Adapter<OtherDocumentsAdapter.OtherDocumentsViewHolder>() {
     lateinit var binding: AdapterOtherDocumentsBinding
     lateinit var context: Context
+
+    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
+        override fun onItemSelected(vararg itemData: Any) {
+            viewModel.openLockBoxDocDetail(itemData[0] as LockBox)
+        }
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,14 +44,14 @@ class OtherDocumentsAdapter(
     }
 
     override fun onBindViewHolder(holder: OtherDocumentsViewHolder, position: Int) {
-        holder.bind(lockBoxList[position])
+        holder.bind(lockBoxList[position], onItemClickListener)
     }
 
 
     class OtherDocumentsViewHolder(private val itemBinding: AdapterOtherDocumentsBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(lockBox: LockBox) {
+        fun bind(lockBox: LockBox, recyclerItemListener: RecyclerItemListener) {
             val createdAt = lockBox.createdAt
             val formattedString = createdAt?.toTextFormat(
                 createdAt,
@@ -59,7 +66,9 @@ class OtherDocumentsAdapter(
             }
 
             itemBinding.root.setOnClickListener {
-
+                recyclerItemListener.onItemSelected(
+                    lockBox
+                )
             }
         }
     }
