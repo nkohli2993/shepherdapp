@@ -189,7 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:text="No Uploaded Lock Box Files Found"
+                    android:text="@string/no_uploaded_lock_box_files_found"
                     android:textSize="@dimen/_14ssp"
                     android:visibility="gone"
                     android:paddingVertical="@dimen/_8sdp" />

@@ -2,8 +2,8 @@ package com.app.shepherd.ui.component.lockBox
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.graphics.Color
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,12 +16,10 @@ import androidx.fragment.app.viewModels
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.app.shepherd.databinding.FragmentAddNewLockBoxBinding
-import com.app.shepherd.databinding.FragmentLockboxBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.lockBox.adapter.UploadedLockBoxFilesAdapter
-import com.app.shepherd.ui.component.home.HomeActivity
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showInfo
 import com.app.shepherd.utils.extensions.showSuccess
@@ -35,7 +33,7 @@ import java.io.File
  * Created by Deepak Rattan on 22-07-22
  */
 @AndroidEntryPoint
-class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
+class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener {
 
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
@@ -277,6 +275,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
     }
+
+
 
 
 }

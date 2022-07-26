@@ -389,4 +389,5 @@
     <string name="enter_file_name">Please enter file name...</string>
     <string name="enter_note">Please enter note...</string>
     <string name="google_drive_upload">Google driver</string>
+    <string name="no_uploaded_lock_box_files_found">No Uploaded Lock Box Files Found</string>
 </resources>

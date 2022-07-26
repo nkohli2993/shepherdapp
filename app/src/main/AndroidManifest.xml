@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- Step 2: This permission is depreciated in Android P -->
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
@@ -15,9 +17,9 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity
-            android:name=".UploadLockBoxDocumentActivity"
-            android:exported="false" />
+       <!-- <activity
+            android:name=".ui.component.lockBox.UploadLockBoxDocumentActivity"
+            android:exported="false" />-->
         <activity
             android:name=".ui.component.login.LoginActivity"
             android:label="@string/title_activity_login"
@@ -94,7 +96,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.apps.drive.APP_ID"
-            android:value="AIzaSyAx1SkDXVxGTl7XkS1eVXDDHnMQVb5aK-k" />
+            android:value="AIzaSyAu_68qM6YLejVPGOQNrJUC2XeNHiu0B8o" />
     </application>
 
 </manifest>

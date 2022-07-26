@@ -40,6 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtUploadedDate"
                 style="@style/TextViewGothamMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

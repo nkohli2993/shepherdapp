@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.app.shepherd.R
+import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.app.shepherd.databinding.FragmentLockboxBinding
 import com.app.shepherd.network.retrofit.DataResult
@@ -28,11 +29,13 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     private val lockBoxViewModel: LockBoxViewModel by viewModels()
     private lateinit var fragmentLockboxBinding: FragmentLockboxBinding
     private var recommendedDocumentsAdapter: RecommendedDocumentsAdapter? = null
+    private var otherDocumentsAdapter: OtherDocumentsAdapter? = null
 
     private val pageNumber = 1
     private val limit = 10
 
     var lockBoxTypes: ArrayList<LockBoxTypes>? = arrayListOf()
+    var lockBoxList: ArrayList<LockBox>? = arrayListOf()
 
 
     override fun onCreateView(
@@ -42,6 +45,9 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     ): View {
         fragmentLockboxBinding =
             FragmentLockboxBinding.inflate(inflater, container, false)
+
+        lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
+
 
         return fragmentLockboxBinding.root
     }
@@ -71,6 +77,37 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
             }
         }
+
+        // Observe the response of get all uploaded lock box document by loved one uuid api
+        lockBoxViewModel.getUploadedLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                    fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
+                    fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                        View.VISIBLE
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    lockBoxList = it.data.payload?.lockBox
+
+                    if (lockBoxList.isNullOrEmpty()) {
+                        fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
+                        fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                            View.VISIBLE
+                    } else {
+                        fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
+                        fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
+                        lockBoxList?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
+                    }
+
+                }
+            }
+        }
     }
 
 
@@ -81,7 +118,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     }
 
     private fun setOtherDocumentsAdapter() {
-        val otherDocumentsAdapter = OtherDocumentsAdapter(lockBoxViewModel)
+        otherDocumentsAdapter = OtherDocumentsAdapter(lockBoxViewModel)
         fragmentLockboxBinding.rvOtherDocuments.adapter = otherDocumentsAdapter
 
     }
@@ -99,7 +136,6 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     override fun getLayoutRes(): Int {
         return R.layout.fragment_lockbox
     }
-
 
 }
 
