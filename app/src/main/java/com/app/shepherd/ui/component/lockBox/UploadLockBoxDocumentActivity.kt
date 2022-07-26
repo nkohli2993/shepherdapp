@@ -75,7 +75,7 @@ class UploadLockBoxDocumentActivity : BaseActivity() {
                 } else {
                     showError(this,"Unable to create this request try, again later!")
                     finish()
-                    Log.e("catch_exception", "Request not accepted")
+                    Log.e("catch_exception", "Request not accepted $resultCode")
                 }
             }
             REQUEST_CODE_OPEN_DOCUMENT -> if (resultCode == RESULT_OK && resultData != null) {
