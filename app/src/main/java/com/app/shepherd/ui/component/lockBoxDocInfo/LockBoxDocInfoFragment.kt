@@ -8,8 +8,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
+import com.app.shepherd.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.app.shepherd.databinding.FragmentUploadedLockBoxDocDetailBinding
+import com.app.shepherd.network.retrofit.DataResult
+import com.app.shepherd.network.retrofit.observeEvent
 import com.app.shepherd.ui.base.BaseFragment
+import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.view_model.LockBoxDocInfoViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,12 +53,30 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
             it.txtLockBoxNote.text = lockBox?.note
             Picasso.get().load(lockBox?.documentUrl).placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(imgDoc)
+            // Click edit lock box icon
+            it.imgEditLockBox.setOnClickListener {
+                layoutDocDetail.visibility = View.GONE
+                layoutEditLockBoxDocDetail.visibility = View.VISIBLE
+            }
         }
-
-
     }
 
     override fun observeViewModel() {
+        lockBoxDocInfoViewModel.updateLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                }
+            }
+        }
+
     }
 
 
@@ -62,6 +84,25 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         when (p0?.id) {
             R.id.ivBack -> {
                 backPress()
+            }
+            R.id.imgEditLockBox -> {
+                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
+                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
+                    View.VISIBLE
+            }
+            R.id.btnCancel -> {
+                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.VISIBLE
+                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
+                    View.GONE
+            }
+            R.id.btnSaveChanges -> {
+                val fileName =
+                    fragmentUploadedLockBoxDocDetailBinding.edtFileName.text.toString().trim()
+                val fileNote =
+                    fragmentUploadedLockBoxDocDetailBinding.edtNote.text.toString().trim()
+                val updateLockBoxRequestModel = UpdateLockBoxRequestModel(fileName, fileNote)
+                lockBoxDocInfoViewModel.updateLockBoxDoc(lockBox?.id, updateLockBoxRequestModel)
+
             }
         }
     }

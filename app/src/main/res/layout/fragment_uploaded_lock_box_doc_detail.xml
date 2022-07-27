@@ -61,10 +61,12 @@
                 android:text="Medicare ID Number" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgEditLockBox"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/_5sdp"
+                android:onClick="@{listener::onClick}"
                 app:layout_constraintTop_toTopOf="@+id/txtLockBoxName"
                 android:src="@drawable/ic_edit_lock_box_doc_info" />
 
