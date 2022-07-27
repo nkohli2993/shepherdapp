@@ -203,7 +203,6 @@ dependencies {
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.1'
 
     // google drive libs
-    implementation "com.google.android.gms:play-services-auth:18.0.0"
     implementation 'com.google.http-client:google-http-client-gson:1.26.0'
     implementation('com.google.api-client:google-api-client-android:1.26.0') {
         exclude group: 'org.apache.httpcomponents'
