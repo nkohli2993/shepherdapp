@@ -386,8 +386,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }, hour,
             minute, true
         )
-//        mTimePicker.getButton(TimePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK);
-//        mTimePicker.getButton(TimePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK);
         mTimePicker.show()
     }
 

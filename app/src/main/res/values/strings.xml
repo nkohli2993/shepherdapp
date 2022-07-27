@@ -338,6 +338,7 @@
     <string name="time">Time</string>
     <string name="schedule_events_set_reminders_assign_tasks">Schedule events, set reminders, assign tasks.</string>
     <string name="please_enter_event_name">Please enter event name</string>
+    <string name="please_enter_med_list_notes">Please enter schedule medication notes</string>
     <string name="remove">Remove</string>
     <string name="careteam">CareTeam</string>
     <string name="lockbox">LockBox</string>
@@ -391,4 +392,6 @@
     <string name="google_drive_upload">Google driver</string>
     <string name="no_uploaded_lock_box_files_found">No Uploaded Lock Box Files Found</string>
     <string name="me">Me</string>
+    <string name="add_medication">Add Medication</string>
+    <string name="schedule_medication">Schedule Medication</string>
 </resources>

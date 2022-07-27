@@ -1,18 +1,16 @@
 package com.app.shepherd.ui.component.myMedList.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.AdapterSelectedDayMedicineBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.myMedList.MyMedListViewModel
+import com.app.shepherd.view_model.MedListViewModel
 
 
 class SelectedDayMedicineAdapter(
-    private val viewModel: MyMedListViewModel,
+    private val viewModel: MedListViewModel,
     var requestList: MutableList<String> = ArrayList()
 ) :
     RecyclerView.Adapter<SelectedDayMedicineAdapter.SelectedDayMedicineViewHolder>() {

@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.app.shepherd.data.dto.dashboard.DashboardModel
 import com.app.shepherd.databinding.AdapterMyMedicationsListBinding
 import com.app.shepherd.ui.base.listeners.RecyclerItemListener
-import com.app.shepherd.ui.component.myMedList.MyMedListViewModel
+import com.app.shepherd.view_model.MedListViewModel
 
 
 class MyMedicationsAdapter(
-    private val viewModel: MyMedListViewModel,
+    private val viewModel: MedListViewModel,
     var requestList: MutableList<String> = ArrayList()
 ) :
     RecyclerView.Adapter<MyMedicationsAdapter.MyMedicationsViewHolder>() {

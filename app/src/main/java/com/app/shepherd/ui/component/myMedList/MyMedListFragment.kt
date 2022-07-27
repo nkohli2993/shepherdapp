@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.navigation.findNavController
 import com.app.shepherd.R
 import androidx.navigation.fragment.findNavController
 import com.app.shepherd.data.Resource
-import com.app.shepherd.data.dto.login.LoginResponseModel
+import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.databinding.FragmentMyMedlistBinding
 import com.app.shepherd.ui.base.BaseFragment
 import com.app.shepherd.ui.component.myMedList.adapter.MyMedicationsAdapter
 import com.app.shepherd.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.app.shepherd.utils.*
+import com.app.shepherd.view_model.MedListViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
@@ -33,7 +33,7 @@ import java.util.*
 @AndroidEntryPoint
 class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
-    private val medListViewModel: MyMedListViewModel by viewModels()
+    private val medListViewModel: MedListViewModel by viewModels()
 
     private lateinit var myMedlistBinding: FragmentMyMedlistBinding
 
@@ -71,19 +71,12 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 date: Date,
                 isSelected: Boolean
             ): Int {
-                // set date to calendar according to position where we are
                 val cal = Calendar.getInstance()
                 cal.time = date
-                // if item is selected we return this layout items
-                // in this example. monday, wednesday and friday will have special item views and other days
-                // will be using basic item view
                 return if (isSelected)
                     R.layout.selected_calendar_item
                 else
                     R.layout.calendar_item
-
-                // NOTE: if we don't want to do it this way, we can simply change color of background
-                // in bindDataToCalendarView method
             }
 
             override fun bindDataToCalendarView(
@@ -92,8 +85,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 position: Int,
                 isSelected: Boolean
             ) {
-                // using this method we can bind data to calendar view
-                // good practice is if all views in layout have same IDs in all item views
                 holder.itemView.tv_date_calendar_item.text = DateUtils.getDayNumber(date)
                 holder.itemView.tv_day_calendar_item.text = DateUtils.getDay3LettersName(date)
 
@@ -101,10 +92,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         }
         val myCalendarChangesObserver = object :
             CalendarChangesObserver {
-            // you can override more methods, in this example we need only this one
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
-//                tvDate.text = "${DateUtils.getMonthName(date)}, ${DateUtils.getDayNumber(date)} "
-//                tvDay.text = DateUtils.getDayName(date)
                 super.whenSelectionChanged(isSelected, position, date)
             }
 
@@ -112,10 +100,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         }
         val mySelectionManager = object : CalendarSelectionManager {
             override fun canBeItemSelected(position: Int, date: Date): Boolean {
-                // set date to calendar according to position
                 val cal = Calendar.getInstance()
                 cal.time = date
-                // in this example sunday and saturday can't be selected, others can
                 return when (cal[Calendar.DAY_OF_WEEK]) {
                     Calendar.SATURDAY -> false
                     Calendar.SUNDAY -> false
@@ -157,10 +143,10 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     override fun observeViewModel() {
-        observe(medListViewModel.loginLiveData, ::handleLoginResult)
+//        observe(medListViewModel._medicalConditionResponseLiveData, ::handleLoginResult)
         observeSnackBarMessages(medListViewModel.showSnackBar)
         observeToast(medListViewModel.showToast)
-        observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
+//        observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
     }
 
     private fun navigateToMedDetail(navigateEvent: SingleEvent<String>) {
@@ -169,7 +155,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         }
     }
 
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
+    private fun handleLoginResult(status: Resource<MedicalConditionResponseModel>) {
         when (status) {
             is Resource.Loading -> {}
             is Resource.Success -> status.data?.let {
@@ -188,13 +174,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private fun observeToast(event: LiveData<SingleEvent<Any>>) {
         myMedlistBinding.root.showToast(this, event, Snackbar.LENGTH_LONG)
     }
-
-
-//    private fun setRemindersAdapter() {
-//        val myRemindersAdapter = MyRemindersAdapter(medListViewModel)
-//        myMedlistBinding.recyclerViewReminders.adapter = myRemindersAdapter
-//
-//    }
 
     private fun setMyMedicationsAdapter() {
         val myMedicationsAdapter = MyMedicationsAdapter(medListViewModel)

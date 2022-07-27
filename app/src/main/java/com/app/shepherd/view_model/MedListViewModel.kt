@@ -1,33 +1,33 @@
 package com.app.shepherd.view_model
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.app.shepherd.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.app.shepherd.data.dto.medical_conditions.UserConditionsResponseModel
-import com.app.shepherd.data.local.UserRepository
-import com.app.shepherd.data.remote.auth_repository.AuthRepository
 import com.app.shepherd.data.remote.medical_conditions.MedicalConditionRepository
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.Event
 import com.app.shepherd.ui.base.BaseViewModel
+import com.app.shepherd.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-/**
- * Created by Deepak Rattan on 07/06/22
- */
 @HiltViewModel
-class AddLovedOneConditionViewModel @Inject constructor(
+class MedListViewModel  @Inject constructor(
     private val medicalConditionRepository: MedicalConditionRepository
 ) : BaseViewModel() {
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val showSnackBarPrivate = MutableLiveData<SingleEvent<Any>>()
+    val showSnackBar: LiveData<SingleEvent<Any>> get() = showSnackBarPrivate
 
-    private var _medicalConditionResponseLiveData =
+     var _medicalConditionResponseLiveData =
         MutableLiveData<Event<DataResult<MedicalConditionResponseModel>>>()
     var medicalConditionResponseLiveData: LiveData<Event<DataResult<MedicalConditionResponseModel>>> =
         _medicalConditionResponseLiveData
@@ -38,8 +38,10 @@ class AddLovedOneConditionViewModel @Inject constructor(
         _userConditionsResponseLiveData
 
     private var _userIDLiveData = MutableLiveData<Event<DataResult<Int>>>()
-    var userIDLiveData: LiveData<Event<DataResult<Int>>> = _userIDLiveData
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
+    val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
     // Get Medical Conditions
     fun getMedicalConditions(
@@ -67,5 +69,16 @@ class AddLovedOneConditionViewModel @Inject constructor(
         return userConditionsResponseLiveData
     }
 
+    fun showToastMessage(errorCode: Int) {
+        val error = errorManager.getError(errorCode)
+        showToastPrivate.value = SingleEvent(error.description)
+    }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<String>>()
+    val openMedDetailItems: LiveData<SingleEvent<String>> get() = openMedDetailItemsPrivate
+
+    fun openMedDetail(item: String) {
+        openMedDetailItemsPrivate.value = SingleEvent(item)
+    }
 }
