@@ -70,12 +70,13 @@ class AddNewLockBoxViewModel @Inject constructor(
     fun addNewLockBox(
         fileName: String?,
         fileNote: String?,
-        documentUrl: String?
+        documentUrl: String?,
+        lbtId: Int?
     ): LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> {
         //get lovedOne UUID from shared Pref
         val lovedOneUUId = userRepository.getLovedOneUUId()
         val addNewLockBoxRequestModel =
-            AddNewLockBoxRequestModel(fileName, fileNote, null, lovedOneUUId, documentUrl)
+            AddNewLockBoxRequestModel(fileName, fileNote, lbtId, lovedOneUUId, documentUrl)
 
         viewModelScope.launch {
             val response = lockBoxRepository.addNewLockBox(addNewLockBoxRequestModel)

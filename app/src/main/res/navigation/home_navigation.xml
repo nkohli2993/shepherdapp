@@ -325,5 +325,11 @@
         android:id="@+id/addNewLockBoxFragment"
         android:name="com.app.shepherd.ui.component.lockBox.AddNewLockBoxFragment"
         android:label="AddNewLockBoxFragment"
-        tools:layout="@layout/fragment_add_new_lock_box"/>
+        tools:layout="@layout/fragment_add_new_lock_box">
+        <argument
+            android:name="lock_box_type"
+            app:argType="com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypes"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

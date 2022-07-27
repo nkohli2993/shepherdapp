@@ -13,8 +13,10 @@ import android.view.Window
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.app.shepherd.R
 import com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox
+import com.app.shepherd.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.app.shepherd.databinding.FragmentAddNewLockBoxBinding
 import com.app.shepherd.network.retrofit.DataResult
 import com.app.shepherd.network.retrofit.observeEvent
@@ -47,6 +49,10 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var limit: Int = 10
     var lockBox: ArrayList<LockBox>? = arrayListOf()
     var uploadedFilesAdapter: UploadedLockBoxFilesAdapter? = null
+    private val args: AddNewLockBoxFragmentArgs by navArgs()
+    private var lockBoxTypes: LockBoxTypes? = null
+    private var lbtId: Int? = null
+
 
     private val isValid: Boolean
         get() {
@@ -86,6 +92,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     override fun initViewBinding() {
         fragmentAddNewLockBoxBinding.listener = this
         setUploadedFilesAdapter()
+        if (args.lockBoxType != null) {
+            lockBoxTypes = args.lockBoxType
+            lbtId = args.lockBoxType?.id
+            fragmentAddNewLockBoxBinding.edtFileName.setText(lockBoxTypes?.name)
+            fragmentAddNewLockBoxBinding.edtNote.setText(lockBoxTypes?.description)
+        }
+
     }
 
     override fun observeViewModel() {
@@ -136,7 +149,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+//                    it.message?.let { showError(requireContext(), it.toString()) }
+                    Log.d(TAG, "Get Uploaded LockBox Document : ${it.message}")
                     fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
                     fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
                         View.VISIBLE
@@ -210,7 +224,12 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 if (isValid) {
                     fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
                     fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
-                    addNewLockBoxViewModel.addNewLockBox(fileName, fileNote, uploadedLockBoxDocUrl)
+                    addNewLockBoxViewModel.addNewLockBox(
+                        fileName,
+                        fileNote,
+                        uploadedLockBoxDocUrl,
+                        lbtId
+                    )
                 }
             }
             R.id.ivBack -> {
@@ -275,8 +294,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
     }
-
-
 
 
 }
