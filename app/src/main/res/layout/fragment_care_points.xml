@@ -127,11 +127,11 @@
                 <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                     android:id="@+id/calendarPView"
                     android:layout_width="match_parent"
-                    android:visibility="gone"
-                    android:layout_height="@dimen/_350sdp"
-                    app:mcv_showOtherDates="all"
+                    android:layout_height="wrap_content"
+                    app:mcv_showOtherDates="none"
+                    android:background="@color/colorWhite"
                     app:layout_constraintTop_toBottomOf="@+id/headerCl"
-                    app:mcv_selectionColor="#00F"
+                    app:mcv_selectionColor="@color/_399282"
                     />
 
 
@@ -141,6 +141,7 @@
                     android:layout_height="wrap_content"
                     app:abbreviationsBarColor="@color/_E7E8EA"
                     app:headerColor="@color/colorWhite"
+                    android:visibility="gone"
                     app:headerLabelColor="@color/colorBlack"
                     app:highlightedDaysLabelsColor="@color/colorGreen"
                     app:layout_constraintTop_toBottomOf="@+id/calendarPView"
@@ -153,6 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:padding="@dimen/_13sdp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_left_arrow"
                     app:layout_constraintStart_toStartOf="@id/calendar"
                     app:layout_constraintTop_toTopOf="@id/calendar" />
@@ -162,6 +164,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_13sdp"
+                    android:visibility="gone"
                     android:src="@drawable/ic_right_arrow"
                     app:layout_constraintEnd_toEndOf="@id/calendar"
                     app:layout_constraintTop_toTopOf="@id/calendar" />

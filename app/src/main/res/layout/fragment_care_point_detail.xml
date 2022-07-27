@@ -45,14 +45,14 @@
             android:id="@+id/tv_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/gotham_book"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp"
+            app:layout_constraintBottom_toBottomOf="@id/recyclerViewEventAssigne"
             app:layout_constraintEnd_toStartOf="@id/recyclerViewEventAssigne"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvTitleCarePoint" />
+            app:layout_constraintTop_toTopOf="@+id/recyclerViewEventAssigne" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_date"
@@ -65,7 +65,7 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toStartOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_location" />
+            app:layout_constraintTop_toBottomOf="@id/recyclerViewEventAssigne" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_time"
@@ -88,9 +88,8 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_location"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tv_location"
+            app:layout_constraintTop_toBottomOf="@id/tvTitleCarePoint"
             tools:itemCount="2"
             tools:listitem="@layout/adapter_events_members" />
 
@@ -99,7 +98,7 @@
             android:id="@+id/llImageWrapper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_image_place_holder_round"
+            android:background="@drawable/bg_image_place_holder_round_new"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/tv_username"
             app:layout_constraintStart_toStartOf="@id/tv_date"
@@ -110,7 +109,7 @@
                 android:layout_width="@dimen/_23sdp"
                 android:layout_height="@dimen/_23sdp"
                 android:layout_margin="@dimen/_1sdp"
-                android:padding="@dimen/_1sdp"
+                android:padding="0.5dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/background_splash"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
@@ -150,8 +149,8 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_10sdp"
             android:ellipsize="end"
-            android:paddingVertical="@dimen/_2sdp"
             android:fontFamily="@font/gotham_book"
+            android:paddingVertical="@dimen/_2sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp"
             app:layout_constraintEnd_toEndOf="@id/tv_time"

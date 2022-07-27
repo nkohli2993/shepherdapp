@@ -46,7 +46,7 @@ class CarePointsDateBasedAdapter(
         recyclerViewEvents: RecyclerView,
         eventComments: ArrayList<UserAssigneeModel>
     ) {
-        val carePointsEventAdapter = CarePointsEventAdapter(eventComments)
+        val carePointsEventAdapter = CarePointsListEventAdapter(eventComments)
         recyclerViewEvents.adapter = carePointsEventAdapter
     }
 
