@@ -158,17 +158,61 @@
                     android:id="@+id/clDoseWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/shape_black_border"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:gravity="center"
+                    android:onClick="@{listener::onClick}"
+                    android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@+id/tvDose">
 
-                    <Spinner
-                        android:id="@+id/spDose"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/assigneET"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/transparent"
+                        android:cursorVisible="false"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="@font/gotham_medium"
+                        android:hint="@string/select_dose"
+                        android:maxLines="10"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:textColor="@color/_192032"
+                        android:textColorHint="@color/_192032"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlSymmetry" />
+
+                    <ImageView
+                        android:id="@+id/spinner_down_arrow_image"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_4sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_spinner"
+                        app:tint="@color/colorGreyDark" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Spinner
+                    android:id="@+id/spDose"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintTop_toBottomOf="@+id/clDoseWrapper"
+                    android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvFrequency"

@@ -57,9 +57,9 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                 findNavController().popBackStack()
             }
             R.id.speakIV ->{
-                val toSpeak: String = fragmentMyMedDetailBinding.tvMedTitle.getText().toString()
+                val toSpeak: String = fragmentMyMedDetailBinding.tvMedTitle.text.toString()
                 Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show()
-                textToSpeech?.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null)
+                textToSpeech?.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null,null)
             }
         }
     }

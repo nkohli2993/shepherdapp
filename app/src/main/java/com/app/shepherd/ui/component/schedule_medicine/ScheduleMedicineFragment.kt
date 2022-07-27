@@ -19,7 +19,7 @@ import java.util.*
 class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
     View.OnClickListener {
     private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding
-    var alDose = arrayOf("Select Dose", "160 mg", "80 mg", "40 mg", "20 mg", "10 mg")
+    var alDose = arrayOf( "160 mg", "80 mg", "40 mg", "20 mg", "10 mg")
     var alFrequency = arrayOf(
         "Select Frequency",
         "Once a day",

@@ -40,6 +40,7 @@ import kotlin.collections.ArrayList
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
+@SuppressLint("SimpleDateFormat")
 class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     View.OnClickListener, AssignToEventAdapter.selectedTeamMember,
     DatePickerDialog.OnDateSetListener {
@@ -76,11 +77,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
             }
             false
-        }
-
-        fragmentAddNewEventBinding.scrollView.setOnTouchListener { view, motionEvent ->
-           // fragmentAddNewEventBinding.eventMemberSpinner.visibility = View.GONE
-            return@setOnTouchListener false
         }
     }
 
@@ -130,7 +126,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = it.data.payload
-//                    careteams.add(CareTeam(id = -1))
                     careteams.addAll(payload.careTeams)
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
@@ -143,7 +138,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 }
 
                 is DataResult.Failure -> {
-                    //handleAPIFailure(it.message, it.errorCode)
                     careteams.add(CareTeam())
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
@@ -153,7 +147,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                             careteams
                         )
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    it.message?.let { showError(requireContext(), it) }
 
                 }
             }
@@ -169,15 +163,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-
-                    Log.e("TAG", "observeEventMembers: " + it.data.payload)
                 }
 
                 is DataResult.Failure -> {
-                    //handleAPIFailure(it.message, it.errorCode)
-
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    it.message?.let { showError(requireContext(), it) }
 
                 }
             }
@@ -230,8 +220,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     fragmentAddNewEventBinding.eventMemberSpinner.visibility= View.VISIBLE
                     rotate(180f)
                 }
-//                fragmentAddNewEventBinding.eventMemberSpinner.visibility= View.VISIBLE
-//                fragmentAddNewEventBinding.eventMemberSpinner.performClick()
             }
             R.id.btnAdd -> {
                 assignTo.clear()
@@ -256,12 +244,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
                 val datePickerDialog = DatePickerDialog(
                     requireActivity(),R.style.datepicker,
-                    { p0, year, monthOfYear, dayOfMonth ->
+                    { _, year, monthOfYear, dayOfMonth ->
                         fragmentAddNewEventBinding.tvDate.text = dayOfMonth.toString() + "-" +if(monthOfYear+1 <10){"0${(monthOfYear + 1)}"} else{(monthOfYear + 1)}  + "-" + year
                     }, mYear, mMonth, mDay
                 )
                 datePickerDialog.datePicker.minDate = c.timeInMillis
-//                datePickerDialog.da.setButton(DatePickerDialog.BUTTON_POSITIVE,"OK").setTextColor(Color.BLACK)
                 datePickerDialog.show()
             }
         }
@@ -311,7 +298,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             return false
         }
 
-    @SuppressLint("SimpleDateFormat")
     private fun createEvent() {
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
         var dateFormat = SimpleDateFormat("dd-MM-yyyy")
@@ -329,29 +315,12 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         )
     }
 
-
-    private fun initDatePicker() {
-        tvDate.datePicker(
-            childFragmentManager,
-            AddNewEventFragment::class.java.simpleName
-        )
-    }
-
-    private fun initTimePicker() {
-        tvTime.timePicker(
-            requireContext()
-        )
-    }
-
-
     override fun getLayoutRes(): Int {
         return R.layout.fragment_add_new_event
     }
 
     override fun onSelected(position: Int) {
-        // on team member selected
         careteams[position].isSelected = !careteams[position].isSelected
-
         val assignee :ArrayList<String> = arrayListOf()
         assignee.clear()
         for(i in careteams){
@@ -374,7 +343,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
         val mTimePicker = TimePickerDialog(
             context,R.style.datepicker,
-            { view, hourOfDay, selectedMinute ->
+            { _, hourOfDay, selectedMinute ->
                 fragmentAddNewEventBinding.tvTime.text =
                     String.format("%02d:%02d", hourOfDay, selectedMinute)
 
@@ -403,6 +372,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             )
         )
     }
+
 
     override fun onDateSet(p0: android.widget.DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         val mCalendar = Calendar.getInstance()

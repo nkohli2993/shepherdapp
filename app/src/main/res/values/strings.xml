@@ -394,4 +394,5 @@
     <string name="me">Me</string>
     <string name="add_medication">Add Medication</string>
     <string name="schedule_medication">Schedule Medication</string>
+    <string name="select_dose">Select Dose</string>
 </resources>
