@@ -262,21 +262,17 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
         dialog?.dismiss()
-        if (selectedFileList!!.size > 5) {
-            showInfo(requireContext().applicationContext, getString(R.string.upload_five_documents))
+        this.selectedFileList = selectedFiles
+        if (!selectedFiles.isNullOrEmpty()) {
+            Log.d(TAG, "handleSelectedFiles: $selectedFiles")
+            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
+            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                View.GONE
+            uploadedFilesAdapter?.addData(selectedFiles)
         } else {
-            selectedFileList!!.addAll(selectedFiles!!)
-            if (!selectedFiles.isNullOrEmpty()) {
-                Log.d(TAG, "handleSelectedFiles: $selectedFiles")
-                fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
-                fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                    View.GONE
-                uploadedFilesAdapter?.addData(selectedFiles)
-            } else {
-                fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-                fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                    View.VISIBLE
-            }
+            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                View.VISIBLE
         }
     }
 
