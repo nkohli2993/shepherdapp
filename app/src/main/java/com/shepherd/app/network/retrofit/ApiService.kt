@@ -23,6 +23,7 @@ import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
+import com.shepherd.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
@@ -208,6 +209,12 @@ interface ApiService {
     suspend fun uploadLockBoxDoc(
         @Part lockBoxDoc: MultipartBody.Part?
     ): Response<UploadLockBoxDocResponseModel>
+
+    @Multipart
+    @POST(ApiConstants.LockBox.UPLOAD_MULTIPLE_LOCK_BOX_DOC)
+    suspend fun uploadMultipleLockBoxDoc(
+        @Part lockBoxDoc: ArrayList<MultipartBody.Part?>
+    ): Response<UploadMultipleLockBoxDoxResponseModel>
 
     @POST(ApiConstants.LockBox.CREATE_LOCK_BOX)
     suspend fun addNewLockBox(

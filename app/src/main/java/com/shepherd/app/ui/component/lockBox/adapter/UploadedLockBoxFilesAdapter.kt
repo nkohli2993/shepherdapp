@@ -4,15 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.databinding.AdapterUploadedFilesBinding
-import com.shepherd.app.utils.extensions.toTextFormat
 import com.shepherd.app.view_model.AddNewLockBoxViewModel
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class UploadedLockBoxFilesAdapter(
     private val viewModel: AddNewLockBoxViewModel,
-    var lockBoxList: MutableList<LockBox> = ArrayList()
+//    var lockBoxList: MutableList<LockBox> = ArrayList()
+    var selectedFiles: MutableList<File> = ArrayList()
 ) :
     RecyclerView.Adapter<UploadedLockBoxFilesAdapter.UploadedDocumentsViewHolder>() {
     lateinit var binding: AdapterUploadedFilesBinding
@@ -21,7 +23,7 @@ class UploadedLockBoxFilesAdapter(
     private var onItemClickListener: OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onItemClick(lockBox: LockBox)
+        fun onItemClick(file: File)
     }
 
     fun setClickListener(clickListener: OnItemClickListener) {
@@ -43,33 +45,39 @@ class UploadedLockBoxFilesAdapter(
     }
 
     override fun getItemCount(): Int {
-        return lockBoxList.size
+        return selectedFiles.size
     }
 
     override fun onBindViewHolder(holder: UploadedDocumentsViewHolder, position: Int) {
-        holder.bind(lockBoxList[position])
+        holder.bind(selectedFiles[position])
     }
 
 
     inner class UploadedDocumentsViewHolder(private val itemBinding: AdapterUploadedFilesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(lockBox: LockBox) {
-            itemBinding.data = lockBox
+        fun bind(file: File) {
+//            itemBinding.data = lockBox
 
-            val createdAt = lockBox.createdAt
-            val formattedString = createdAt?.toTextFormat(
-                createdAt,
+//            val createdAt = lockBox.createdAt
+
+            val sdf = SimpleDateFormat("MMM dd, yyyy")
+            val currentDate = sdf.format(Date())
+            /*val formattedString = date.toTextFormat(
+                date,
                 "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
                 "MMM dd, yyyy"
-            )
+            )*/
             itemBinding.let {
-                it.txtFolderName.text = lockBox.name
-                it.txtUploadDate.text = "Uploaded $formattedString"
+                it.txtFolderName.text = file.name
+                it.txtUploadDate.text = "Uploaded $currentDate"
             }
 
             itemBinding.imgDelete.setOnClickListener {
-                onItemClickListener?.onItemClick(lockBox)
+//                selectedFiles.remove(file)
+//                notifyDataSetChanged()
+
+                onItemClickListener?.onItemClick(file)
             }
         }
     }
@@ -83,9 +91,14 @@ class UploadedLockBoxFilesAdapter(
         return position
     }
 
-    fun addData(lockBoxList: ArrayList<LockBox>) {
-        this.lockBoxList.clear()
-        this.lockBoxList.addAll(lockBoxList)
+    fun addData(selectedFiles: ArrayList<File>) {
+        this.selectedFiles.clear()
+        this.selectedFiles.addAll(selectedFiles)
+        notifyDataSetChanged()
+    }
+
+    fun removeData(file: File) {
+        selectedFiles.remove(file)
         notifyDataSetChanged()
     }
 

@@ -9,6 +9,7 @@ import com.shepherd.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseM
 import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
+import com.shepherd.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.lock_box.LockBoxRepository
 import com.shepherd.app.network.retrofit.DataResult
@@ -38,6 +39,11 @@ class AddNewLockBoxViewModel @Inject constructor(
     var uploadLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadLockBoxDocResponseModel>>> =
         _uploadLockBoxDocResponseLiveData
 
+    private var _uploadMultipleLockBoxDocResponseLiveData =
+        MutableLiveData<Event<DataResult<UploadMultipleLockBoxDoxResponseModel>>>()
+    var uploadMultipleLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadMultipleLockBoxDoxResponseModel>>> =
+        _uploadMultipleLockBoxDocResponseLiveData
+
     private var _addNewLockBoxResponseLiveData =
         MutableLiveData<Event<DataResult<AddNewLockBoxResponseModel>>>()
     var addNewLockBoxResponseLiveData: LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> =
@@ -64,6 +70,20 @@ class AddNewLockBoxViewModel @Inject constructor(
             }
         }
         return uploadLockBoxDocResponseLiveData
+    }
+
+
+    // Upload multiple lock box document
+    fun uploadMultipleLockBoxDoc(files: ArrayList<File>): LiveData<Event<DataResult<UploadMultipleLockBoxDoxResponseModel>>> {
+        viewModelScope.launch {
+            val response = lockBoxRepository.uploadMultipleLockBoxDoc(files)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _uploadMultipleLockBoxDocResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return uploadMultipleLockBoxDocResponseLiveData
     }
 
     // Create Lock Box

@@ -52,6 +52,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private val args: AddNewLockBoxFragmentArgs by navArgs()
     private var lockBoxTypes: LockBoxTypes? = null
     private var lbtId: Int? = null
+    private var selectedFileList: ArrayList<File>? = null
+    var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
 
 
     private val isValid: Boolean
@@ -92,17 +94,18 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     override fun initViewBinding() {
         fragmentAddNewLockBoxBinding.listener = this
         setUploadedFilesAdapter()
-       /* if (args.lockBoxType != null) {
-            lockBoxTypes = args.lockBoxType
-            lbtId = args.lockBoxType?.id
-            fragmentAddNewLockBoxBinding.edtFileName.setText(lockBoxTypes?.name)
-            fragmentAddNewLockBoxBinding.edtNote.setText(lockBoxTypes?.description)
-        }*/
+        /* if (args.lockBoxType != null) {
+             lockBoxTypes = args.lockBoxType
+             lbtId = args.lockBoxType?.id
+             fragmentAddNewLockBoxBinding.edtFileName.setText(lockBoxTypes?.name)
+             fragmentAddNewLockBoxBinding.edtNote.setText(lockBoxTypes?.description)
+         }*/
 
     }
 
     override fun observeViewModel() {
         observe(selectedFile, ::handleSelectedImage)
+        observe(selectedFiles, ::handleSelectedFiles)
 
         // Observe the response of upload image api
         addNewLockBoxViewModel.uploadLockBoxDocResponseLiveData.observeEvent(this) {
@@ -121,6 +124,28 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
                     uploadedLockBoxDocUrl = it.data.payload.document
                     Log.d(TAG, "uploadedLockBoxDocUrl: $uploadedLockBoxDocUrl")
+                }
+            }
+        }
+
+
+        // Observe the response of upload multiple images api
+        addNewLockBoxViewModel.uploadMultipleLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    dialog?.dismiss()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    dialog?.dismiss()
+                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                    uploadedDocumentsUrl = it.data.payload?.document
+                    Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
                 }
             }
         }
@@ -145,36 +170,36 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         }
 
         // Observe the response of get all uploaded lock box document by loved one uuid api
-        addNewLockBoxViewModel.getUploadedLockBoxDocResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-//                    it.message?.let { showError(requireContext(), it.toString()) }
-                    Log.d(TAG, "Get Uploaded LockBox Document : ${it.message}")
-                    fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-                    fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                        View.VISIBLE
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    lockBox = it.data.payload?.lockBox
-
-                    if (lockBox.isNullOrEmpty()) {
-                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                            View.VISIBLE
-                    } else {
-                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
-                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
-                        lockBox?.let { it1 -> uploadedFilesAdapter?.addData(it1) }
-                    }
-
-                }
-            }
-        }
+//        addNewLockBoxViewModel.getUploadedLockBoxDocResponseLiveData.observeEvent(this) {
+//            when (it) {
+//                is DataResult.Failure -> {
+//                    hideLoading()
+////                    it.message?.let { showError(requireContext(), it.toString()) }
+//                    Log.d(TAG, "Get Uploaded LockBox Document : ${it.message}")
+//                    fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+//                    fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+//                        View.VISIBLE
+//                }
+//                is DataResult.Loading -> {
+//                    showLoading("")
+//                }
+//                is DataResult.Success -> {
+//                    hideLoading()
+//                    lockBox = it.data.payload?.lockBox
+//
+//                    if (lockBox.isNullOrEmpty()) {
+//                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+//                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+//                            View.VISIBLE
+//                    } else {
+//                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
+//                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
+////                        lockBox?.let { it1 -> uploadedFilesAdapter?.addData(it1) }
+//                    }
+//
+//                }
+//            }
+//        }
 
         // Observe the response of delete uploaded lock box document
         addNewLockBoxViewModel.deleteUploadedLockBoxDocResponseLiveData.observeEvent(this) {
@@ -200,6 +225,22 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         }
     }
 
+    private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
+        dialog?.dismiss()
+        this.selectedFileList = selectedFiles
+        if (!selectedFiles.isNullOrEmpty()) {
+            Log.d(TAG, "handleSelectedFiles: $selectedFiles")
+            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
+            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                View.GONE
+            uploadedFilesAdapter?.addData(selectedFiles)
+        } else {
+            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                View.VISIBLE
+        }
+    }
+
     private fun handleSelectedImage(file: File?) {
         if (file != null && file.exists()) {
             addNewLockBoxViewModel.imageFile = file
@@ -212,6 +253,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         uploadedFilesAdapter = UploadedLockBoxFilesAdapter(addNewLockBoxViewModel)
         fragmentAddNewLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
         uploadedFilesAdapter?.setClickListener(this)
+
     }
 
 
@@ -221,16 +263,18 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 showChooseFileDialog()
             }
             R.id.btnDone -> {
-                if (isValid) {
-                    fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
-                    fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
-                    addNewLockBoxViewModel.addNewLockBox(
-                        fileName,
-                        fileNote,
-                        uploadedLockBoxDocUrl,
-                        lbtId
-                    )
-                }
+                /* if (isValid) {
+                     fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
+                     fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                     addNewLockBoxViewModel.addNewLockBox(
+                         fileName,
+                         fileNote,
+                         uploadedLockBoxDocUrl,
+                         lbtId
+                     )
+                 }*/
+
+                selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
             }
             R.id.ivBack -> {
                 backPress()
@@ -262,7 +306,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         cvLocalStorage.setOnClickListener {
 //            dialog.dismiss()
 //            showToast("Local Storage Clicked")
-            openDocPicker()
+            openMultipleDocPicker()
         }
 
         // Click Cancel
@@ -279,13 +323,14 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         return R.layout.fragment_lockbox
     }
 
-    override fun onItemClick(lockBox: LockBox) {
+    override fun onItemClick(file: File) {
         val builder = AlertDialog.Builder(requireContext())
         val dialog = builder.apply {
             setTitle("Delete Uploaded Lock Box Document")
             setMessage("Are you sure you want to remove the uploaded lock box doc?")
             setPositiveButton("Yes") { _, _ ->
-                lockBox.id?.let { addNewLockBoxViewModel.deleteUploadedLockBoxDoc(it) }
+//                lockBox.id?.let { addNewLockBoxViewModel.deleteUploadedLockBoxDoc(it) }
+                uploadedFilesAdapter?.removeData(file)
             }
             setNegativeButton("No") { _, _ ->
             }

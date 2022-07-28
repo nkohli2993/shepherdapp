@@ -7,6 +7,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,13 +21,13 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
-import com.shepherd.app.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
 import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
+import com.shepherd.app.R
 import java.io.File
 
 
@@ -35,6 +36,7 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
     abstract fun observeViewModel()
     protected abstract fun initViewBinding()
     var selectedFile: MutableLiveData<File> = MutableLiveData()
+    var selectedFiles: MutableLiveData<ArrayList<File>> = MutableLiveData()
 
 
     var customerDetailsDialog: BottomSheetDialog? = null
@@ -195,6 +197,53 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
                         File(selectedMedia[0].path!!)
                     }
                     selectedFile.value = file!!
+                }
+            }
+        }
+
+    fun openMultipleDocPicker() {
+        val intent = Lassi(requireContext())
+            .with(LassiOption.CAMERA_AND_GALLERY)
+            .setMaxCount(5)
+            .setGridSize(3)
+            .setMediaType(MediaType.DOC) // MediaType : VIDEO IMAGE, AUDIO OR DOC
+            .setPlaceHolder(com.lassi.R.drawable.ic_image_placeholder)
+            .setErrorDrawable(com.lassi.R.drawable.ic_image_placeholder)
+            .setSelectionDrawable(com.lassi.R.drawable.ic_checked_media)
+            .setStatusBarColor(R.color.colorPrimaryDark)
+            .setToolbarColor(R.color.colorPrimary)
+            .setToolbarResourceColor(android.R.color.white)
+            .setProgressBarColor(R.color.colorAccent)
+            .setMinFileSize(0)
+            .setMaxFileSize(5000)
+            .setSupportedFileTypes("pdf", "doc", "docx", "jpg", "jpeg", "png", "gif")
+            .build()
+        receiveMultipleData.launch(intent)
+    }
+
+    private val receiveMultipleData =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val selectedMedia =
+                    it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
+                if (!selectedMedia.isNullOrEmpty()) {
+                    var file: File? = null
+                    var files: ArrayList<File> = arrayListOf()
+                    for (i in selectedMedia.indices) {
+                        file = if (selectedMedia[i].path?.startsWith("content") == true) {
+                            CommonFunctions.fileFromContentUri(
+                                requireContext(),
+                                selectedMedia[i].path.toString().toUri()
+                            )
+                        } else {
+                            File(selectedMedia[i].path!!)
+
+                        }
+                        files.add(file)
+                    }
+                    Log.d("Base Fragment", "selected files :$files ")
+                    Log.d("Base Fragment", "selected files size :${files.size} ")
+                    selectedFiles.value = files
                 }
             }
         }

@@ -155,11 +155,11 @@
                 android:id="@+id/txtUploadedFiles"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/uploaded_files"
+                android:text="@string/selected_files"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtNote" />
 
@@ -181,7 +181,7 @@
                     tools:itemCount="2"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/adapter_uploaded_files"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtNoUploadedLockBoxFile"
@@ -191,7 +191,7 @@
                     android:gravity="center_horizontal"
                     android:text="@string/no_uploaded_lock_box_files_found"
                     android:textSize="@dimen/_14ssp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:paddingVertical="@dimen/_8sdp" />
 
 

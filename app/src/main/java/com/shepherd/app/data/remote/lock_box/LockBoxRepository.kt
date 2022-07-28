@@ -9,6 +9,7 @@ import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
+import com.shepherd.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.NetworkOnlineDataRepo
@@ -60,6 +61,34 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
             NetworkOnlineDataRepo<UploadLockBoxDocResponseModel, UploadLockBoxDocResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<UploadLockBoxDocResponseModel> {
                 return apiService.uploadLockBoxDoc(body)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Upload Lock Box Doc
+    suspend fun uploadMultipleLockBoxDoc(files: ArrayList<File>?): Flow<DataResult<UploadMultipleLockBoxDoxResponseModel>> {
+        var body: MultipartBody.Part? = null
+        var multipartBodyList: ArrayList<MultipartBody.Part?> = arrayListOf()
+        if (!files.isNullOrEmpty()) {
+            for (i in files.indices) {
+                var file = files[i]
+                var type: String? = null
+                val extension = MimeTypeMap.getFileExtensionFromUrl(file.absolutePath)
+
+                extension?.let {
+                    type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+                }
+
+                val requestFile = file.asRequestBody(type!!.toMediaTypeOrNull())
+                body = MultipartBody.Part.createFormData("document", file.name, requestFile)
+                multipartBodyList.add(body)
+            }
+
+        }
+        return object :
+            NetworkOnlineDataRepo<UploadMultipleLockBoxDoxResponseModel, UploadMultipleLockBoxDoxResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UploadMultipleLockBoxDoxResponseModel> {
+                return apiService.uploadMultipleLockBoxDoc(multipartBodyList)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
