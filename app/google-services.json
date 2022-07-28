@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "242696077383-jpiur3dajgr0iu3v8nrn8rr2mloms193.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shepherd.app",
+            "certificate_hash": "45a5353032bd22003463c961bb47e2c8bc20fd24"
+          }
+        },
+        {
           "client_id": "242696077383-7h4dd8vp8c2kcf3e84upvlh3lc6rq5mv.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -57,6 +65,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "242696077383-gg83r6ll3tblnqotok2fj4peqro7uv18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shepherd.app.dev",
+            "certificate_hash": "45a5353032bd22003463c961bb47e2c8bc20fd24"
+          }
+        },
         {
           "client_id": "242696077383-npgg6c3bca3ibj4do1763rvnsv9ca14r.apps.googleusercontent.com",
           "client_type": 1,
