@@ -107,7 +107,8 @@ class DriveServiceHelper(driveService: Drive) {
     fun createFilePickerIntent(): Intent {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-        intent.type = "text/plain"
+//        intent.type = "text/plain"
+        intent.type = "*/*"
         return intent
     }
 
