@@ -128,7 +128,7 @@
             app:layout_constraintStart_toStartOf="@+id/recycleviewMedRV"
             app:layout_constraintTop_toBottomOf="@+id/recycleviewMedRV"/>
 
-        <com.app.shepherd.ui.component.myMedList.TouchyWebView
+        <com.shepherd.app.ui.component.myMedList.TouchyWebView
             android:id="@+id/medDetailWV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

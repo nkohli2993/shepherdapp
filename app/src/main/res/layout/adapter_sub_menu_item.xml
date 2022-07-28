@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.app.shepherd.data.dto.menuItem.MenuItemModel" />
+            type="com.shepherd.app.data.dto.menuItem.MenuItemModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
