@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.lockBox
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
@@ -11,9 +12,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.Scope
+import com.google.api.client.extensions.android.http.AndroidHttp
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
+import com.google.api.client.json.gson.GsonFactory
+import com.google.api.services.drive.Drive
+import com.google.api.services.drive.DriveScopes
+import com.lassi.common.utils.KeyUtils
+import com.lassi.data.media.MiMedia
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes
@@ -52,8 +67,15 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private val args: AddNewLockBoxFragmentArgs by navArgs()
     private var lockBoxTypes: LockBoxTypes? = null
     private var lbtId: Int? = null
-    private var selectedFileList: ArrayList<File>? = null
+    private var selectedFileList: ArrayList<File>? = arrayListOf()
     var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
+    private var mDriveServiceHelper: DriveServiceHelper? = null
+
+    companion object {
+        private const val TAG = "UploadDrive"
+        private const val REQUEST_CODE_SIGN_IN = 1
+        private const val REQUEST_CODE_OPEN_DOCUMENT = 2
+    }
 
 
     private val isValid: Boolean
@@ -240,17 +262,21 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
         dialog?.dismiss()
-        this.selectedFileList = selectedFiles
-        if (!selectedFiles.isNullOrEmpty()) {
-            Log.d(TAG, "handleSelectedFiles: $selectedFiles")
-            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
-            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                View.GONE
-            uploadedFilesAdapter?.addData(selectedFiles)
+        if (selectedFileList!!.size > 5) {
+            showInfo(requireContext().applicationContext, getString(R.string.upload_five_documents))
         } else {
-            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                View.VISIBLE
+            selectedFileList!!.addAll(selectedFiles!!)
+            if (!selectedFiles.isNullOrEmpty()) {
+                Log.d(TAG, "handleSelectedFiles: $selectedFiles")
+                fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
+                fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                    View.GONE
+                uploadedFilesAdapter?.addData(selectedFiles)
+            } else {
+                fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+                fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                    View.VISIBLE
+            }
         }
     }
 
@@ -306,11 +332,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         // Click Google Drive
         cvGoogleDrive.setOnClickListener {
             dialog?.dismiss()
-            val intent = Intent(
-                requireContext().applicationContext,
-                UploadLockBoxDocumentActivity::class.java
-            )
-            startActivity(intent)
+            requestSignIn()
         }
 
         // Click Local Storage
@@ -349,6 +371,119 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
     }
 
+    /*************Code for google drive **************/
+    private fun requestSignIn() {
+        val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
+            .build()
+        val client = GoogleSignIn.getClient(requireContext().applicationContext, signInOptions)
+        val account = GoogleSignIn.getLastSignedInAccount(requireContext().applicationContext)
+        if (account != null) {
+            client.signOut()
+        }
+
+        startActivityForResult(
+            client.signInIntent,
+            REQUEST_CODE_SIGN_IN
+        )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
+        when (requestCode) {
+            REQUEST_CODE_SIGN_IN -> {
+                if (resultCode == AppCompatActivity.RESULT_OK && resultData != null) {
+                    handleSignInResult(resultData)
+                } else {
+                    showError(
+                        requireContext().applicationContext,
+                        "Unable to create this request try, again later!"
+                    )
+                    Log.e("catch_exception", "Request not accepted $resultCode")
+                }
+            }
+            REQUEST_CODE_OPEN_DOCUMENT -> if (resultCode == AppCompatActivity.RESULT_OK && resultData != null) {
+                val uri = resultData.data
+                uri?.let {
+                    var file: File? = null
+                    file = if (uri.toString().startsWith("content")) {
+                        CommonFunctions.fileFromContentUri(
+                            requireContext().applicationContext,
+                            uri.toString().toString().toUri()
+                        )
+                    } else {
+                        File(uri.toString())
+                    }
+                    if (file != null && file.exists()) {
+                        addNewLockBoxViewModel.imageFile = file
+                        if (selectedFileList!!.size > 5) {
+                            showInfo(
+                                requireContext().applicationContext,
+                                getString(R.string.upload_five_documents)
+                            )
+                        } else {
+                            selectedFileList!!.add(file)
+                            if (selectedFileList!!.size > 0) {
+                                Log.d(TAG, "handleSelectedFiles: $selectedFiles")
+                                fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
+                                    View.VISIBLE
+                                fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                                    View.GONE
+                                uploadedFilesAdapter?.addData(selectedFileList!!)
+                            } else {
+                                fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+                                fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                                    View.VISIBLE
+                            }
+                        }
+
+                    }
+                }
+
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, resultData)
+    }
+
+    private fun handleSignInResult(result: Intent) {
+        GoogleSignIn.getSignedInAccountFromIntent(result)
+            .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
+                Log.d(
+                    TAG,
+                    "Signed in as " + googleAccount.email
+                )
+                val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
+                    requireContext().applicationContext, setOf(DriveScopes.DRIVE_FILE)
+                )
+                credential.setSelectedAccount(googleAccount.account)
+                val googleDriveService: Drive = Drive.Builder(
+                    AndroidHttp.newCompatibleTransport(),
+                    GsonFactory(),
+                    credential
+                )
+                    .setApplicationName("Drive API Migration")
+                    .build()
+
+                mDriveServiceHelper = DriveServiceHelper(googleDriveService)
+                openFilePicker()
+            }
+            .addOnFailureListener { exception: Exception? ->
+                Log.e(
+                    TAG,
+                    "Unable to sign in.",
+                    exception
+                )
+            }
+    }
+
+    private fun openFilePicker() {
+        if (mDriveServiceHelper != null) {
+            Log.d(TAG, "Opening file picker.")
+            val pickerIntent: Intent = mDriveServiceHelper!!.createFilePickerIntent()
+            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT)
+        }
+    }
 
 }
 

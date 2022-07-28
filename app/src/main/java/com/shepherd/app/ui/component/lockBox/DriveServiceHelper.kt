@@ -109,6 +109,8 @@ class DriveServiceHelper(driveService: Drive) {
         intent.addCategory(Intent.CATEGORY_OPENABLE)
 //        intent.type = "text/plain"
         intent.type = "*/*"
+        val mimetypes = arrayOf("image/*","application/pdf","application/msword","text/plain",)
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes)
         return intent
     }
 

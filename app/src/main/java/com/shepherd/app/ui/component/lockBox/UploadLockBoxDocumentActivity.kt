@@ -104,6 +104,11 @@ class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnecti
             .requestScopes(Scope(DriveScopes.DRIVE_FILE))
             .build()
         val client = GoogleSignIn.getClient(this, signInOptions)
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account != null) {
+            client.signOut()
+        }
+
         startActivityForResult(client.signInIntent, REQUEST_CODE_SIGN_IN)
     }
 
@@ -142,8 +147,8 @@ class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnecti
         if (mDriveServiceHelper != null) {
             Log.d(TAG, "Opening file picker.")
             val pickerIntent: Intent = mDriveServiceHelper!!.createFilePickerIntent()
-//            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT )
-            filePick.launch(pickerIntent)
+            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT )
+//            filePick.launch(pickerIntent)
         }
     }
 
