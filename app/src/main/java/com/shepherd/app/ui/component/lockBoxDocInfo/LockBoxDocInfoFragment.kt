@@ -14,6 +14,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.LockBoxDocInfoViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,6 +74,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
                 }
             }
         }

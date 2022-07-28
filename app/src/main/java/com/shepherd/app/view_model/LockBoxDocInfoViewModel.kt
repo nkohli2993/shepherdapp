@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
+import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherd.app.data.remote.lock_box.LockBoxRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
@@ -27,15 +28,15 @@ class LockBoxDocInfoViewModel @Inject constructor(
     BaseViewModel() {
 
     private var _updateLockBoxDocResponseLiveData =
-        MutableLiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>>()
-    var updateLockBoxDocResponseLiveData: LiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>> =
+        MutableLiveData<Event<DataResult<UpdateLockBoxResponseModel>>>()
+    var updateLockBoxDocResponseLiveData: LiveData<Event<DataResult<UpdateLockBoxResponseModel>>> =
         _updateLockBoxDocResponseLiveData
 
     // Update Lock Box Doc
     fun updateLockBoxDoc(
         id: Int?,
         updateLockBoxRequestModel: UpdateLockBoxRequestModel
-    ): LiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>> {
+    ): LiveData<Event<DataResult<UpdateLockBoxResponseModel>>> {
         viewModelScope.launch {
             val response = lockBoxRepository.updateLockBoxDoc(id, updateLockBoxRequestModel)
             withContext(Dispatchers.Main) {

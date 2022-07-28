@@ -21,6 +21,7 @@ import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUpl
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
+import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
@@ -229,6 +230,6 @@ interface ApiService {
     suspend fun updateLockBox(
         @Path("id") id: Int?,
         @Body updateLockBoxRequestModel: UpdateLockBoxRequestModel
-    ): Response<DeleteUploadedLockBoxDocResponseModel>
+    ): Response<UpdateLockBoxResponseModel>
 
 }

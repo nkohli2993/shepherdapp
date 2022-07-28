@@ -7,6 +7,7 @@ import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUpl
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
+import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
@@ -106,10 +107,10 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
     suspend fun updateLockBoxDoc(
         id: Int?,
         updateLockBoxRequestModel: UpdateLockBoxRequestModel
-    ): Flow<DataResult<DeleteUploadedLockBoxDocResponseModel>> {
+    ): Flow<DataResult<UpdateLockBoxResponseModel>> {
         return object :
-            NetworkOnlineDataRepo<DeleteUploadedLockBoxDocResponseModel, DeleteUploadedLockBoxDocResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<DeleteUploadedLockBoxDocResponseModel> {
+            NetworkOnlineDataRepo<UpdateLockBoxResponseModel, UpdateLockBoxResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UpdateLockBoxResponseModel> {
                 return apiService.updateLockBox(id, updateLockBoxRequestModel)
             }
         }.asFlow().flowOn(Dispatchers.IO)
