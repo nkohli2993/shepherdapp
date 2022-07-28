@@ -149,6 +149,10 @@ fun ImageView.loadImageCentreCrop(@DrawableRes placeHolder: Int, file: File) =
 //    Picasso.get().load(file).placeholder(placeHolder).error(placeHolder).fit().centerInside().into(this)
     Glide.with(this).load(file).placeholder(placeHolder).error(placeHolder).centerCrop().into(this);
 
+fun ImageView.loadImageCentreCrop(@DrawableRes placeHolder: Int, file: String) =
+//    Picasso.get().load(file).placeholder(placeHolder).error(placeHolder).fit().centerInside().into(this)
+    Glide.with(this).load(file).placeholder(placeHolder).error(placeHolder).into(this);
+
 fun AppCompatTextView.setTextFutureExt(text: String) =
     setTextFuture(
         PrecomputedTextCompat.getTextFuture(

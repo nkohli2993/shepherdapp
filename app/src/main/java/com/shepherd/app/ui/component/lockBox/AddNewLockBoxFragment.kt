@@ -306,20 +306,15 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         // Click Google Drive
         cvGoogleDrive.setOnClickListener {
             dialog?.dismiss()
-            showToast("Google Drive Clicked")
-
             val intent = Intent(
                 requireContext().applicationContext,
                 UploadLockBoxDocumentActivity::class.java
             )
-//        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
             startActivity(intent)
         }
 
         // Click Local Storage
         cvLocalStorage.setOnClickListener {
-//            dialog.dismiss()
-//            showToast("Local Storage Clicked")
             openMultipleDocPicker()
         }
 

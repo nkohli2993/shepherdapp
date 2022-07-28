@@ -39,6 +39,7 @@
             android:id="@+id/dots_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
             app:dotsColor="@color/_399282"
             app:dotsCornerRadius="@dimen/_5sdp"
             app:dotsSize="@dimen/_6sdp"
@@ -85,7 +86,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/viewPagerIndicator">
+            app:layout_constraintTop_toBottomOf="@id/dots_indicator">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtLockBoxName"
@@ -95,7 +96,6 @@
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="Medicare ID Number"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -117,7 +117,6 @@
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:paddingVertical="@dimen/_5sdp"
-                android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content."
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtLockBoxName" />
 

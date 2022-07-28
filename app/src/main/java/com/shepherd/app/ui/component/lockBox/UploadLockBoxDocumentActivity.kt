@@ -34,7 +34,6 @@ import java.io.File
 class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedListener {
     private var mDriveServiceHelper: DriveServiceHelper? = null
     private var uploadedLockBoxDocUrl: String? = null
-    private var googleSignInClient: GoogleSignInClient? = null
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     override fun observeViewModel() {
         addNewLockBoxViewModel.uploadLockBoxDocResponseLiveData.observeEvent(this) {
@@ -99,7 +98,6 @@ class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnecti
     }
 
     private fun requestSignIn() {
-        Log.d(TAG, "Requesting sign-in")
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -144,8 +142,8 @@ class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnecti
         if (mDriveServiceHelper != null) {
             Log.d(TAG, "Opening file picker.")
             val pickerIntent: Intent = mDriveServiceHelper!!.createFilePickerIntent()
-            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT )
-//            filePick.launch(pickerIntent)
+//            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT )
+            filePick.launch(pickerIntent)
         }
     }
 

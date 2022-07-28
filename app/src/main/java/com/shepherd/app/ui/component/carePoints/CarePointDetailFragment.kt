@@ -164,12 +164,11 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             fragmentCarePointDetailBinding.recyclerViewEventAssigne.adapter = carePointsEventAdapter
 
             //set user detail
-            Picasso.get().load(carePointsViewModel.getLovedUserDetail()?.profilePhoto)
+            Picasso.get().load(payload.loved_one_user_id_details.profilePhoto)
                 .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(fragmentCarePointDetailBinding.imageViewUser)
             fragmentCarePointDetailBinding.tvUsername.text =
-                carePointsViewModel.getLovedUserDetail()?.firstname.plus(" ")
-                    .plus(carePointsViewModel.getLovedUserDetail()?.lastname)
+                payload.loved_one_user_id_details.firstname.plus(" ").plus(payload.loved_one_user_id_details.lastname)
             // shwo created on time
             val dateTime = (payload.created_at?:"").replace(".000Z","").replace("T"," ")
             val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
