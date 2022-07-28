@@ -1,10 +1,13 @@
 package com.app.shepherd.data.dto.lock_box.lock_box_type
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 22/07/22
  */
+@Parcelize
 data class LockBoxTypes(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("name") var name: String? = null,
@@ -15,4 +18,4 @@ data class LockBoxTypes(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
-)
+) : Parcelable

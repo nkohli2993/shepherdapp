@@ -21,7 +21,7 @@ class RecommendedDocumentsAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+            viewModel.createRecommendedLockBoxDoc(itemData[0] as LockBoxTypes)
         }
     }
 
@@ -40,7 +40,6 @@ class RecommendedDocumentsAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
         return lockBoxTypes.size
     }
 
@@ -72,7 +71,7 @@ class RecommendedDocumentsAdapter(
     }
 
     fun addData(lockBoxTypes: ArrayList<LockBoxTypes>) {
-        // this.requestList.clear()
+        this.lockBoxTypes.clear()
         this.lockBoxTypes.addAll(lockBoxTypes)
         notifyDataSetChanged()
     }
