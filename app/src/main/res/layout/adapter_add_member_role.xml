@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.app.shepherd.data.dto.care_team.CareRoles" />
+            type="com.shepherd.app.data.dto.care_team.CareRoles" />
 
         <variable
             name="listener"

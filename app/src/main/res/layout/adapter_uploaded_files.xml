@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.app.shepherd.data.dto.lock_box.get_all_uploaded_documents.LockBox" />
+            type="com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

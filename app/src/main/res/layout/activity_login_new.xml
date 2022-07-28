@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.app.shepherd.view_model.LoginViewModel" />
+            type="com.shepherd.app.view_model.LoginViewModel" />
 
     </data>
 

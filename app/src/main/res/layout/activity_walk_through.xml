@@ -16,7 +16,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.app.shepherd.ui.component.login.LoginActivity">
+        tools:context="com.shepherd.app.ui.component.login.LoginActivity">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivWalkThroughLogo"

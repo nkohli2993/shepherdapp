@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorGreyLight"
         android:orientation="vertical"
-        tools:context="com.app.shepherd.ui.component.carePoints.CarePointsFragment">
+        tools:context="com.shepherd.app.ui.component.carePoints.CarePointsFragment">
 
 
         <androidx.core.widget.NestedScrollView
@@ -51,7 +51,8 @@
                         android:id="@+id/tvSchedule"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
                         android:fontFamily="@font/gotham_book"
                         android:text="@string/schedule_events_set_reminders_assign_tasks"
                         android:textColor="@color/_192032"
@@ -124,24 +125,34 @@
 
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 <com.prolificinteractive.materialcalendarview.MaterialCalendarView
                     android:id="@+id/calendarPView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:mcv_showOtherDates="none"
                     android:background="@color/colorWhite"
                     app:layout_constraintTop_toBottomOf="@+id/headerCl"
+                    app:mcv_firstDayOfWeek="monday"
                     app:mcv_selectionColor="@color/_399282"
-                    />
+                    app:mcv_showOtherDates="none" />
 
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_53sdp"
+                    android:background="#80C3C3C3"
+                    app:layout_constraintEnd_toEndOf="@+id/calendarPView"
+                    app:layout_constraintStart_toStartOf="@+id/calendarPView"
+                    app:layout_constraintTop_toTopOf="@+id/calendarPView" />
 
                 <com.applandeo.materialcalendarview.CalendarView
                     android:id="@+id/calendar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     app:abbreviationsBarColor="@color/_E7E8EA"
                     app:headerColor="@color/colorWhite"
-                    android:visibility="gone"
                     app:headerLabelColor="@color/colorBlack"
                     app:highlightedDaysLabelsColor="@color/colorGreen"
                     app:layout_constraintTop_toBottomOf="@+id/calendarPView"
@@ -154,8 +165,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:padding="@dimen/_13sdp"
-                    android:visibility="gone"
                     android:src="@drawable/ic_left_arrow"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="@id/calendar"
                     app:layout_constraintTop_toTopOf="@id/calendar" />
 
@@ -164,8 +175,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:padding="@dimen/_13sdp"
-                    android:visibility="gone"
                     android:src="@drawable/ic_right_arrow"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="@id/calendar"
                     app:layout_constraintTop_toTopOf="@id/calendar" />
 
