@@ -62,6 +62,16 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         lockBoxViewModel.getAllLockBoxTypes(pageNumber, limit)
         setRecommendedDocumentsAdapter()
         setOtherDocumentsAdapter()
+        fragmentLockboxBinding.cvRecommendedDocuments.setOnClickListener {
+            val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
+            findNavController().navigate(action)
+        }
+
+        fragmentLockboxBinding.layoutRecommendedDoc.setOnClickListener {
+            val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
+            findNavController().navigate(action)
+        }
+
     }
 
     override fun observeViewModel() {

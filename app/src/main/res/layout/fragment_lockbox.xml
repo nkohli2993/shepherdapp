@@ -50,6 +50,7 @@
             app:layout_constraintTop_toBottomOf="@+id/txtLockBoxDesc">
 
             <LinearLayout
+                android:id="@+id/layoutRecommendedDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp"
@@ -174,7 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_14ssp"
             android:nestedScrollingEnabled="false"
-            android:text="@string/other_documents"
+            android:text="@string/uploaded_documents"
             app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
             app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
 
