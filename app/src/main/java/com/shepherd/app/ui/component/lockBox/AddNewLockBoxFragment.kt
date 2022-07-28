@@ -68,7 +68,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
                 }
 
-                uploadedLockBoxDocUrl.isNullOrEmpty() -> {
+                uploadedDocumentsUrl.isNullOrEmpty() -> {
                     showInfo(requireContext(), "Please upload file...")
                 }
                 else -> {
@@ -108,26 +108,25 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         observe(selectedFiles, ::handleSelectedFiles)
 
         // Observe the response of upload image api
-        addNewLockBoxViewModel.uploadLockBoxDocResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    dialog?.dismiss()
-                    it.message?.let { showError(requireContext(), it.toString()) }
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    dialog?.dismiss()
-                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
-                    uploadedLockBoxDocUrl = it.data.payload.document
-                    Log.d(TAG, "uploadedLockBoxDocUrl: $uploadedLockBoxDocUrl")
-                }
-            }
-        }
-
+        /* addNewLockBoxViewModel.uploadLockBoxDocResponseLiveData.observeEvent(this) {
+             when (it) {
+                 is DataResult.Failure -> {
+                     hideLoading()
+                     dialog?.dismiss()
+                     it.message?.let { showError(requireContext(), it.toString()) }
+                 }
+                 is DataResult.Loading -> {
+                     showLoading("")
+                 }
+                 is DataResult.Success -> {
+                     hideLoading()
+                     dialog?.dismiss()
+                     it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                     uploadedLockBoxDocUrl = it.data.payload.document
+                     Log.d(TAG, "uploadedLockBoxDocUrl: $uploadedLockBoxDocUrl")
+                 }
+             }
+         }*/
 
         // Observe the response of upload multiple images api
         addNewLockBoxViewModel.uploadMultipleLockBoxDocResponseLiveData.observeEvent(this) {
@@ -143,9 +142,22 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     dialog?.dismiss()
-                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+//                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                    showSuccess(requireContext(), "Files uploaded successfully...")
                     uploadedDocumentsUrl = it.data.payload?.document
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
+                    if (isValid) {
+                        fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
+                        fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                        uploadedDocumentsUrl?.let {
+                            addNewLockBoxViewModel.addNewLockBox(
+                                fileName,
+                                fileNote,
+                                it,
+                                lbtId
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -162,7 +174,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+//                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                    showSuccess(requireContext(), "New LockBox created Successfully...")
                     Log.d(TAG, "uploadedLockBoxDocUrl: $uploadedLockBoxDocUrl")
                     backPress()
                 }
@@ -263,18 +276,19 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 showChooseFileDialog()
             }
             R.id.btnDone -> {
+                selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
                 /* if (isValid) {
                      fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
                      fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
-                     addNewLockBoxViewModel.addNewLockBox(
-                         fileName,
-                         fileNote,
-                         uploadedLockBoxDocUrl,
-                         lbtId
-                     )
+                     uploadedDocumentsUrl?.let {
+                         addNewLockBoxViewModel.addNewLockBox(
+                             fileName,
+                             fileNote,
+                             it,
+                             lbtId
+                         )
+                     }
                  }*/
-
-                selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
             }
             R.id.ivBack -> {
                 backPress()

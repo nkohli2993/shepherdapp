@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.shepherd.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
+import com.shepherd.app.data.dto.lock_box.create_lock_box.Documents
 import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
@@ -90,13 +91,20 @@ class AddNewLockBoxViewModel @Inject constructor(
     fun addNewLockBox(
         fileName: String?,
         fileNote: String?,
-        documentUrl: String?,
+        documentsUrl: ArrayList<String>,
         lbtId: Int?
     ): LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> {
         //get lovedOne UUID from shared Pref
         val lovedOneUUId = userRepository.getLovedOneUUId()
+        val documents: ArrayList<Documents> = arrayListOf()
+
+        for (i in documentsUrl.indices) {
+            val doc = documentsUrl[i]
+            documents.add(Documents(doc))
+        }
+
         val addNewLockBoxRequestModel =
-            AddNewLockBoxRequestModel(fileName, fileNote, lbtId, lovedOneUUId, documentUrl)
+            AddNewLockBoxRequestModel(fileName, fileNote, lbtId, lovedOneUUId, documents)
 
         viewModelScope.launch {
             val response = lockBoxRepository.addNewLockBox(addNewLockBoxRequestModel)
