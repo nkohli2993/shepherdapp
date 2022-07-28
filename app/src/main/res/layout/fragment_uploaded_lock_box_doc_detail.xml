@@ -14,9 +14,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:layout_marginHorizontal="@dimen/_10sdp">
+        android:background="@color/colorWhite">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivBack"
@@ -28,6 +28,43 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_150sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+
+        <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+            android:id="@+id/dots_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:dotsColor="@color/_399282"
+            app:dotsCornerRadius="@dimen/_5sdp"
+            app:dotsSize="@dimen/_6sdp"
+            app:dotsSpacing="@dimen/_3sdp"
+            app:dotsWidthFactor="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+
+        <com.shepherd.app.utils.ViewPagerIndicator
+            android:id="@+id/viewPagerIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:visibility="gone"
+            app:delimiterSize="@dimen/_2sdp"
+            app:itemScale="2"
+            app:itemSelectedTint="@color/_399282"
+            app:itemSize="@dimen/_4sdp"
+            app:itemTint="@color/_399282"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgDoc"
             android:layout_width="match_parent"
@@ -36,51 +73,53 @@
             android:padding="@dimen/_2sdp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_defalut_profile_pic"
-            app:shapeAppearanceOverlay="@style/roundedCornersImageView12"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+            app:layout_constraintTop_toBottomOf="@+id/ivBack"
+            app:shapeAppearanceOverlay="@style/roundedCornersImageView12" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutDocDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgDoc"
-            android:visibility="visible">
+            app:layout_constraintTop_toBottomOf="@id/viewPagerIndicator">
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextViewGothamBold"
                 android:id="@+id/txtLockBoxName"
+                style="@style/TextViewGothamBold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:paddingVertical="@dimen/_5sdp"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:text="Medicare ID Number" />
+                android:text="Medicare ID Number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgEditLockBox"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:onClick="@{listener::onClick}"
-                app:layout_constraintTop_toTopOf="@+id/txtLockBoxName"
-                android:src="@drawable/ic_edit_lock_box_doc_info" />
+                android:src="@drawable/ic_edit_lock_box_doc_info"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txtLockBoxName" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextViewGothamBook"
                 android:id="@+id/txtLockBoxNote"
+                style="@style/TextViewGothamBook"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtLockBoxName"
+                android:layout_marginHorizontal="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_1sdp"
                 android:paddingVertical="@dimen/_5sdp"
-                android:layout_marginHorizontal="@dimen/_5sdp"
-                android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content." />
+                android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content."
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtLockBoxName" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -88,21 +127,21 @@
             android:id="@+id/layoutEditLockBoxDocDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgDoc"
-            android:visibility="gone">
+            app:layout_constraintTop_toBottomOf="@id/imgDoc">
 
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtFileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/gotham_light"
                 android:text="@string/file_name"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -125,12 +164,12 @@
                 android:id="@+id/txtNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/gotham_light"
                 android:text="@string/note"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtFileName" />
 
@@ -155,9 +194,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtNote"
-                android:orientation="horizontal">
+                app:layout_constraintTop_toBottomOf="@+id/edtNote">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnCancel"
