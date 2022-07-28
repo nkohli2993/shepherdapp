@@ -66,6 +66,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         fragmentCarePointDetailBinding.recyclerViewChat.adapter = commentAdapter
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun observeViewModel() {
         carePointsViewModel.carePointsResponseDetailLiveData.observeEvent(this) {
             when (it) {
@@ -95,14 +96,11 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                             event_id = id ?: 0,
                             comment = fragmentCarePointDetailBinding.editTextMessage.text.toString(),
                             created_at = it.data.payload.created_at ,
-                            user_details = UserDetailAssigneModel(
+                            user_details = UserAssigneDetail(
                                 id = carePointsViewModel.getUserDetail()?.id,
-                                user_profiles = UserAssigneDetail(
-                                    id = carePointsViewModel.getUserDetail()?.id,
-                                    firstname = carePointsViewModel.getUserDetail()?.firstname,
-                                    lastname = carePointsViewModel.getUserDetail()?.lastname,
-                                    profilePhoto = carePointsViewModel.getUserDetail()?.profilePhoto
-                                )
+                                firstname = carePointsViewModel.getUserDetail()?.firstname,
+                                lastname = carePointsViewModel.getUserDetail()?.lastname,
+                                profilePhoto = carePointsViewModel.getUserDetail()?.profilePhoto
                             )
                         )
                     )

@@ -1,9 +1,11 @@
 package com.app.shepherd.ui.component.lockBox
 
+import CommonFunctions
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.core.net.toUri
@@ -14,9 +16,10 @@ import com.app.shepherd.ui.base.BaseActivity
 import com.app.shepherd.utils.extensions.showError
 import com.app.shepherd.utils.extensions.showSuccess
 import com.app.shepherd.view_model.AddNewLockBoxViewModel
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.*
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.common.api.Scope
 import com.google.api.client.extensions.android.http.AndroidHttp
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential
@@ -28,11 +31,12 @@ import com.lassi.data.media.MiMedia
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 
+
 @AndroidEntryPoint
-class UploadLockBoxDocumentActivity : BaseActivity() {
+class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedListener {
     private var mDriveServiceHelper: DriveServiceHelper? = null
     private var uploadedLockBoxDocUrl: String? = null
-
+    private var googleSignInClient: GoogleSignInClient? = null
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     override fun observeViewModel() {
         addNewLockBoxViewModel.uploadLockBoxDocResponseLiveData.observeEvent(this) {
@@ -73,7 +77,7 @@ class UploadLockBoxDocumentActivity : BaseActivity() {
                 if (resultCode == RESULT_OK && resultData != null) {
                     handleSignInResult(resultData)
                 } else {
-                    showError(this,"Unable to create this request try, again later!")
+                    showError(this, "Unable to create this request try, again later!")
                     finish()
                     Log.e("catch_exception", "Request not accepted $resultCode")
                 }
@@ -89,21 +93,57 @@ class UploadLockBoxDocumentActivity : BaseActivity() {
                     //                    openFileFromFilePicker(it)
                 }
 
-
             }
         }
         super.onActivityResult(requestCode, resultCode, resultData)
     }
 
     private fun requestSignIn() {
-        Log.d(TAG, "Requesting sign-in")
-        val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//        Log.d(TAG, "Requesting sign-in")
+//        val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(getString(R.string.default_web_client_id))
+//            .requestEmail()
+//            .requestScopes(Scope(DriveScopes.DRIVE_FILE))
+//            .build()
+//        val client = GoogleSignIn.getClient(this, signInOptions)
+//        startActivityForResult(client.signInIntent, REQUEST_CODE_SIGN_IN)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .requestScopes(Scope(DriveScopes.DRIVE_FILE))
             .build()
-        val client = GoogleSignIn.getClient(this, signInOptions)
 
-        startActivityForResult(client.signInIntent, REQUEST_CODE_SIGN_IN)
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+
+        if (account != null) {
+            googleSignInClient!!.signOut()
+        }
+        val intent: Intent = googleSignInClient!!.signInIntent
+        requestForGoogleAccountListResult.launch(intent)
+    }
+
+    private val requestForGoogleAccountListResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { activityResult ->
+            activityResult.apply {
+                if (resultCode == Activity.RESULT_OK) {
+                    val result: GoogleSignInResult =
+                        Auth.GoogleSignInApi.getSignInResultFromIntent(data!!)!!
+                    handleSignInResult(result)
+                }
+            }
+        }
+
+    private fun handleSignInResult(result: GoogleSignInResult?) {
+        result!!.apply {
+            if (isSuccess) {
+                val account = signInAccount
+               /* fragmentEnterEmailBinding!!.etEmailId.setText(account!!.email)
+                verifyEmail()*/
+            } else {
+                Toast.makeText(applicationContext, "Try Again", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun handleSignInResult(result: Intent) {
@@ -113,7 +153,6 @@ class UploadLockBoxDocumentActivity : BaseActivity() {
                     TAG,
                     "Signed in as " + googleAccount.email
                 )
-
                 val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
                     this, setOf(DriveScopes.DRIVE_FILE)
                 )
@@ -143,7 +182,6 @@ class UploadLockBoxDocumentActivity : BaseActivity() {
             Log.d(TAG, "Opening file picker.")
             val pickerIntent: Intent = mDriveServiceHelper!!.createFilePickerIntent()
             filePick.launch(pickerIntent)
-//            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT)
         }
     }
 
@@ -178,5 +216,9 @@ class UploadLockBoxDocumentActivity : BaseActivity() {
         private const val TAG = "UploadDrive"
         private const val REQUEST_CODE_SIGN_IN = 1
         private const val REQUEST_CODE_OPEN_DOCUMENT = 2
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+
     }
 }

@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_bold"
-            android:text="Schedule Medication"
+            android:text="@string/schedule_medication"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="@+id/ivBack"
@@ -82,6 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:background="@drawable/shape_black_border"
+                    android:onClick="@{listener::onClick}"
                     app:layout_constraintTop_toBottomOf="@+id/tvTime">
 
                     <androidx.appcompat.widget.AppCompatImageView
@@ -98,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_medium"
-                        android:text="12:00"
+                        android:text="@string/choose_time"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -114,10 +115,11 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="AM"
+                            android:text="@string/am"
                             android:textColor="@color/_192032"
                             android:textSize="@dimen/_14ssp" />
 
@@ -128,11 +130,12 @@
                             android:background="@color/_192032" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvpm"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="PM"
+                            android:text="@string/pm"
                             android:textColor="@color/_192032"
                             android:textSize="@dimen/_14ssp" />
 
@@ -155,17 +158,61 @@
                     android:id="@+id/clDoseWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/shape_black_border"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:gravity="center"
+                    android:onClick="@{listener::onClick}"
+                    android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@+id/tvDose">
 
-                    <Spinner
-                        android:id="@+id/spDose"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/assigneET"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/transparent"
+                        android:cursorVisible="false"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="@font/gotham_medium"
+                        android:hint="@string/select_dose"
+                        android:maxLines="10"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:textColor="@color/_192032"
+                        android:textColorHint="@color/_192032"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlSymmetry" />
+
+                    <ImageView
+                        android:id="@+id/spinner_down_arrow_image"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_4sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_spinner"
+                        app:tint="@color/colorGreyDark" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <Spinner
+                    android:id="@+id/spDose"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintTop_toBottomOf="@+id/clDoseWrapper"
+                    android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvFrequency"
@@ -173,7 +220,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:fontFamily="@font/gotham_medium"
-                    android:text="Frequency"
+                    android:text="@string/frequency"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -201,7 +248,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:fontFamily="@font/gotham_medium"
-                    android:text="Days"
+                    android:text="@string/days"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -229,7 +276,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:fontFamily="@font/gotham_medium"
-                    android:text="Note"
+                    android:text="@string/note"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -244,11 +291,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/tvNote">
 
                     <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etNote"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="top|start"
-                        android:hint="Write"
+                        android:hint="@string/write"
                         android:lines="4"
                         android:padding="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -256,21 +304,21 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnNext"
+                    android:id="@+id/btnSubmit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_40sdp"
                     android:background="@drawable/button_primary"
                     android:backgroundTint="@color/_399282"
                     android:fontFamily="@font/gotham_medium"
                     android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="80dp"
-                    android:text="Add Medication"
+                    android:paddingHorizontal="@dimen/_30sdp"
+                    android:paddingVertical="@dimen/_15sdp"
+                    android:text="@string/add_medication"
                     android:textAllCaps="false"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_13ssp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/clNoteWrapper" />

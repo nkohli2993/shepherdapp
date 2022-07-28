@@ -47,26 +47,6 @@ class MyMedListViewModel @Inject constructor(private val dataRepository: DataRep
     private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<String>>()
     val openMedDetailItems: LiveData<SingleEvent<String>> get() = openMedDetailItemsPrivate
 
-   /* fun doLogin(context: Context, userName: String, passWord: String) {
-        val isUsernameValid = isValidEmail(userName)
-        val isPassWordValid = isValidPassword(passWord)
-        if (!isUsernameValid && !isPassWordValid) {
-            loginLiveDataPrivate.value = Resource.DataError(CHECK_YOUR_FIELDS)
-        } else if (!isUsernameValid && isPassWordValid) {
-            loginLiveDataPrivate.value = Resource.DataError(EMAIL_ERROR)
-        } else if (passwordValidated(context, passWord)) {
-            viewModelScope.launch {
-                loginLiveDataPrivate.value = Resource.Loading()
-                wrapEspressoIdlingResource {
-                    dataRepository.doLogin(loginRequest = LoginRequest(userName, passWord))
-                        .collect {
-                            loginLiveDataPrivate.value = it
-                        }
-                }
-            }
-        }
-    }*/
-
     fun openMedDetail(item: String) {
         openMedDetailItemsPrivate.value = SingleEvent(item)
     }

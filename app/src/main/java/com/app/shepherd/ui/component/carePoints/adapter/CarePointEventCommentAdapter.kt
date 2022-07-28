@@ -52,15 +52,15 @@ class CarePointEventCommentAdapter(
             val commentData = commentList[position]
 
             itemBinding.let {
-                Picasso.get().load(commentData.user_details.user_profiles.profilePhoto)
+                Picasso.get().load(commentData.user_details.profilePhoto)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(it.imageViewUser)
-                if(commentData.user_details.user_profiles.id == carePointsViewModel.getUserDetail()?.id){
+                if(commentData.user_details.id == carePointsViewModel.getUserDetail()?.id){
                     it.tvUsername.text = "Me"
                 }
                 else{
-                    it.tvUsername.text = commentData.user_details.user_profiles.firstname.plus(" ")
-                        .plus(commentData.user_details.user_profiles.lastname)
+                    it.tvUsername.text = commentData.user_details.firstname.plus(" ")
+                        .plus(commentData.user_details.lastname)
                 }
 
                 it.appCompatTextViewMessage.text = commentData.comment

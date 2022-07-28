@@ -9,7 +9,7 @@
         android:layout_marginHorizontal="@dimen/_10sdp"
         android:background="@color/colorWhite"
         app:cardCornerRadius="@dimen/_8sdp"
-        app:cardElevation="3dp"
+        app:cardElevation="@dimen/_3sdp"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,13 +17,12 @@
             android:layout_height="wrap_content"
             android:background="@color/colorWhite">
 
-            <CheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/cbReminder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:background="@drawable/checkbox_background"
-                android:button="@null"
+                android:button="@drawable/checkbox_background"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +33,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:paddingVertical="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_8sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/cbReminder"
                 app:layout_constraintTop_toTopOf="parent">

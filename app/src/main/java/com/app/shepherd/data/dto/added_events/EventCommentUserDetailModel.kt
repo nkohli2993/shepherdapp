@@ -9,5 +9,5 @@ data class EventCommentUserDetailModel (
     @SerializedName("updated_at") var updated_at: String? = null,
     @SerializedName("user_id") var user_id: String? = null,
     @SerializedName("id") var id: Int? = null,
-    @SerializedName("user_details") var user_details: UserDetailAssigneModel = UserDetailAssigneModel(),
+    @SerializedName("user_id_details") var user_details: UserAssigneDetail = UserAssigneDetail(),
 )
