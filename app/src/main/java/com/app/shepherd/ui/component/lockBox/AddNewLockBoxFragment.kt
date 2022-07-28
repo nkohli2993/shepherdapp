@@ -92,12 +92,12 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     override fun initViewBinding() {
         fragmentAddNewLockBoxBinding.listener = this
         setUploadedFilesAdapter()
-        if (args.lockBoxType != null) {
+       /* if (args.lockBoxType != null) {
             lockBoxTypes = args.lockBoxType
             lbtId = args.lockBoxType?.id
             fragmentAddNewLockBoxBinding.edtFileName.setText(lockBoxTypes?.name)
             fragmentAddNewLockBoxBinding.edtNote.setText(lockBoxTypes?.description)
-        }
+        }*/
 
     }
 

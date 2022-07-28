@@ -225,7 +225,7 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<DeleteUploadedLockBoxDocResponseModel>
 
-    @DELETE(ApiConstants.LockBox.UPDATE_LOCK_BOX_DOC)
+    @PUT(ApiConstants.LockBox.UPDATE_LOCK_BOX_DOC)
     suspend fun updateLockBox(
         @Path("id") id: Int?,
         @Body updateLockBoxRequestModel: UpdateLockBoxRequestModel

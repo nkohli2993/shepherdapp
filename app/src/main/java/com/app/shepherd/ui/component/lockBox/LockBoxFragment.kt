@@ -113,7 +113,6 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
                         lockBoxList?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
                     }
-
                 }
             }
         }
