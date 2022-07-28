@@ -1,5 +1,6 @@
 package com.shepherd.app.data.dto.added_events
 import com.google.gson.annotations.SerializedName
+import com.shepherd.app.data.dto.care_team.LoveUser
 
 data class AddedEventModel(
     @SerializedName("loved_one_user_id") var loved_one_user_id: String? = null,
@@ -16,4 +17,5 @@ data class AddedEventModel(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("event_comments") var event_comments: ArrayList<EventCommentsModel> = arrayListOf(),
     @SerializedName("user_assignes") var user_assignes: ArrayList<UserAssigneeModel> = arrayListOf(),
+    @SerializedName("loved_one_user_id_details") var loved_one_user_id_details: LoveUser = LoveUser() ,
 )

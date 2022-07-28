@@ -16,6 +16,7 @@ data class LockBox(
     @SerializedName("name") var name: String? = null,
     @SerializedName("note") var note: String? = null,
     @SerializedName("document_url") var documentUrl: String? = null,
+    @SerializedName("documents") var documents :ArrayList<DocumentUrl>? = null,
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null

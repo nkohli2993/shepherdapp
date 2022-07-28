@@ -34,7 +34,6 @@ import java.io.File
 class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnectionFailedListener {
     private var mDriveServiceHelper: DriveServiceHelper? = null
     private var uploadedLockBoxDocUrl: String? = null
-    private var googleSignInClient: GoogleSignInClient? = null
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     override fun observeViewModel() {
         addNewLockBoxViewModel.uploadLockBoxDocResponseLiveData.observeEvent(this) {
@@ -99,13 +98,17 @@ class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnecti
     }
 
     private fun requestSignIn() {
-        Log.d(TAG, "Requesting sign-in")
         val signInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .requestScopes(Scope(DriveScopes.DRIVE_FILE))
             .build()
         val client = GoogleSignIn.getClient(this, signInOptions)
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if (account != null) {
+            client.signOut()
+        }
+
         startActivityForResult(client.signInIntent, REQUEST_CODE_SIGN_IN)
     }
 

@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.DocumentUrl
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherd.app.databinding.FragmentUploadedLockBoxDocDetailBinding
@@ -36,7 +37,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     private lateinit var fragmentUploadedLockBoxDocDetailBinding: FragmentUploadedLockBoxDocDetailBinding
     private val args: LockBoxDocInfoFragmentArgs by navArgs()
     private var lockBox: LockBox? = null
-    private var list: ArrayList<String> = arrayListOf()  //TODO: Change type according to type of file to show on view pager
+    private var list: ArrayList<DocumentUrl> = arrayListOf()  //TODO: Change type according to type of file to show on view pager
 
 
     override fun onCreateView(
@@ -66,10 +67,10 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         }
 
         documentImagesAdapter =
-            UploadedDocumentImagesAdapter(requireContext().applicationContext, list)
+            UploadedDocumentImagesAdapter(requireContext().applicationContext, lockBox?.documents)
         viewPager.adapter = documentImagesAdapter
-        binding.dotsIndicator.setViewPager(viewPager)
-        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
+        fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
