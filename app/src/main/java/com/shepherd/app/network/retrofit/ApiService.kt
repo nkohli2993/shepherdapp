@@ -228,6 +228,14 @@ interface ApiService {
         @Query("love_user_id") lovedOneUUID: String
     ): Response<UploadedLockBoxDocumentsResponseModel>
 
+    @GET(ApiConstants.LockBox.GET_ALL_UPLOADED_DOCUMENTS_BY_LOVED_ONE_UUID)
+    suspend fun searchAllUploadedDocumentsByLovedOneUUID(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("love_user_id") lovedOneUUID: String,
+        @Query("search") search: String
+    ): Response<UploadedLockBoxDocumentsResponseModel>
+
     @DELETE(ApiConstants.LockBox.DELETE_UPLOADED_LOCK_BOX_DOC)
     suspend fun deleteUploadedLockBoxDoc(
         @Path("id") id: Int

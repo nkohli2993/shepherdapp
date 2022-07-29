@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
@@ -19,6 +21,7 @@ import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.lockBox.adapter.OtherDocumentsAdapter
 import com.shepherd.app.ui.component.lockBox.adapter.RecommendedDocumentsAdapter
 import com.shepherd.app.utils.SingleEvent
+import com.shepherd.app.utils.extensions.hideKeyboard
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.LockBoxViewModel
@@ -78,50 +81,94 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
         fragmentLockboxBinding.imgCancel.setOnClickListener {
             fragmentLockboxBinding.editTextSearch.setText("")
+            fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+            lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         }
+
+        // Local Search
+        /* fragmentLockboxBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
+             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+             }
+
+             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+             }
+
+             override fun afterTextChanged(s: Editable?) {
+                 if (s != null) {
+                     if (s.isNotEmpty()) {
+                         fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
+                         searchedLockBoxList?.clear()
+                         searchedLockBoxList = lockBoxList?.filter {
+                             it.name?.startsWith(
+                                 s,
+                                 true
+                             ) == true
+                         } as ArrayList<LockBox>
+
+                         // Show No Uploaded Doc Found when Doc is available during search
+                         if (searchedLockBoxList.isNullOrEmpty()) {
+                             fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
+                             fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                                 View.VISIBLE
+                         } else {
+                             fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
+                             fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                                 View.GONE
+                         }
+
+                         searchedLockBoxList.let {
+                             it?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
+                         }
+                     } else {
+                         lockBoxList?.let { otherDocumentsAdapter?.addData(it) }
+                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
+                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                             View.GONE
+                     }
+                 }
+             }
+
+         })*/
 
         fragmentLockboxBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s != null) {
-                    if (s.isNotEmpty()) {
-                        fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
-                        searchedLockBoxList?.clear()
-                        searchedLockBoxList = lockBoxList?.filter {
-                            it.name?.startsWith(
-                                s,
-                                true
-                            ) == true
-                        } as ArrayList<LockBox>
-
-                        // Show No Uploaded Doc Found when Doc is available during search
-                        if (searchedLockBoxList.isNullOrEmpty()) {
-                            fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
-                            fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
-                                View.VISIBLE
-                        } else {
-                            fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
-                            fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
-                                View.GONE
-                        }
-
-                        searchedLockBoxList.let {
-                            it?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
-                        }
-                    } else {
-                        lockBoxList?.let { otherDocumentsAdapter?.addData(it) }
-                        fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
-                        fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
-                            View.GONE
-                    }
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (s.toString().isEmpty()) {
+//                    showInfo(requireContext(), "Please enter some text to search")
+                    fragmentLockboxBinding.imgCancel.visibility = View.GONE
+                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                } else {
+                    fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
+                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.GONE
                 }
             }
 
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        })
+
+        // Handle click of search edit text
+        fragmentLockboxBinding.editTextSearch.setOnEditorActionListener(TextView.OnEditorActionListener { textView, actionID, keyEvent ->
+            if (actionID == EditorInfo.IME_ACTION_SEARCH) {
+                hideKeyboard()
+                val searchData = fragmentLockboxBinding.editTextSearch.text.toString().trim()
+                if (searchData.isNullOrEmpty()) {
+
+                } else {
+                    //Hit search api
+                    lockBoxViewModel.searchAllLockBoxUploadedDocumentsByLovedOneUUID(
+                        pageNumber,
+                        limit,
+                        searchData
+                    )
+                }
+                return@OnEditorActionListener true
+            } else {
+            }
+            false
         })
 
     }
@@ -178,6 +225,40 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
             }
         }
+
+        // Observe the response of get all searched uploaded lock box document by loved one uuid api
+        lockBoxViewModel.getSearchedUploadedLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    Log.d(TAG, "Get Uploaded LockBox :${it.message} ")
+                    // If searched string is not available in the database , it returns 404
+                    fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
+                    fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                        View.VISIBLE
+                    fragmentLockboxBinding.txtNoUploadedLockBoxFile.text =
+                        "Searched Lock Box File Not Found..."
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    searchedLockBoxList = it.data.payload?.lockBox
+                    if (searchedLockBoxList.isNullOrEmpty()) {
+                        fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
+                        fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                            View.VISIBLE
+                    } else {
+                        fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
+                        fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
+                        searchedLockBoxList?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
+                    }
+                }
+            }
+        }
+
+
     }
 
     private fun createRecommendedLockBoxDoc(singleEvent: SingleEvent<LockBoxTypes>) {

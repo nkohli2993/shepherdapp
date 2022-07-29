@@ -121,6 +121,27 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    //Search ALl Uploaded Documents by LovedOne UUID
+    suspend fun searchAllUploadedDocumentsByLovedOneUUID(
+        pageNumber: Int,
+        limit: Int,
+        lovedOneUUID: String,
+        search: String
+    ): Flow<DataResult<UploadedLockBoxDocumentsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<UploadedLockBoxDocumentsResponseModel, UploadedLockBoxDocumentsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UploadedLockBoxDocumentsResponseModel> {
+                return apiService.searchAllUploadedDocumentsByLovedOneUUID(
+                    pageNumber,
+                    limit,
+                    lovedOneUUID,
+                    search
+                )
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+
     //Delete Uploaded LockBox Doc
     suspend fun deleteUploadedLockBoxDoc(id: Int): Flow<DataResult<DeleteUploadedLockBoxDocResponseModel>> {
         return object :
