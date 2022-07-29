@@ -18,6 +18,7 @@
          android:background="@color/_FCFCFC"
          android:fillViewport="true">-->
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -186,7 +187,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -196,8 +196,6 @@
                 android:id="@+id/rvOtherDocuments"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_300sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="10"
                 tools:listitem="@layout/adapter_other_documents" />
