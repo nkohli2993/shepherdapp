@@ -8,5 +8,5 @@ data class CarePointsEvents (
     @SerializedName("current_page") var currentPage: Int? = null,
     @SerializedName("total_pages") var totalPages: Int? = null,
     @SerializedName("per_page") var perPage: Int? = null,
-    @SerializedName("results") var results: ArrayList<ResultEventModel> = arrayListOf()
+    @SerializedName("data") var results: ArrayList<ResultEventModel> = arrayListOf()
 )

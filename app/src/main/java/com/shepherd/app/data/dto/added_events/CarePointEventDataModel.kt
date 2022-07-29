@@ -2,12 +2,8 @@ package com.shepherd.app.data.dto.added_events
 
 import com.google.gson.annotations.SerializedName
 
-data class ResultEventModel(
-
-
+data class CarePointEventDataModel
+    (
     @SerializedName("date") var date: String? = null,
     @SerializedName("events") var events: ArrayList<AddedEventModel> = arrayListOf()
-
-
-//    @SerializedName("data") var events: ArrayList<CarePointEventDataModel> = arrayListOf()
 )

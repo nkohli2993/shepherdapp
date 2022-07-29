@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.added_events.UserAssigneeModel
 import com.shepherd.app.databinding.AdapterAssigneeMenrbersBinding
+import com.shepherd.app.databinding.AdapterEventsMembersBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.squareup.picasso.Picasso
 
@@ -15,7 +16,7 @@ class CarePointsListEventAdapter(
     var commentList: ArrayList<UserAssigneeModel> = ArrayList()
 ) :
     RecyclerView.Adapter<CarePointsListEventAdapter.CarePointsEventsViewHolder>() {
-    lateinit var binding: AdapterAssigneeMenrbersBinding
+    lateinit var binding: AdapterEventsMembersBinding
     lateinit var context: Context
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
@@ -27,7 +28,7 @@ class CarePointsListEventAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsEventsViewHolder {
         context = parent.context
         binding =
-            AdapterAssigneeMenrbersBinding.inflate(
+            AdapterEventsMembersBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -53,7 +54,7 @@ class CarePointsListEventAdapter(
     }
 
 
-    inner class CarePointsEventsViewHolder(private val itemBinding: AdapterAssigneeMenrbersBinding) :
+    inner class CarePointsEventsViewHolder(private val itemBinding: AdapterEventsMembersBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
@@ -64,7 +65,7 @@ class CarePointsListEventAdapter(
                 }
             }
 
-            val imageUrl = commentList[position].user_details.user_profiles.profilePhoto ?: ""
+            val imageUrl = commentList[position].user_details.profilePhoto ?: ""
             itemBinding.let {
                 if (!imageUrl.isNullOrEmpty()) {
                     Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)

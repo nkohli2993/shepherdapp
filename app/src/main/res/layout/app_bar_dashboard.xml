@@ -100,6 +100,7 @@
                     android:id="@+id/ivLovedOneProfile"
                     android:layout_width="@dimen/_33sdp"
                     android:layout_height="@dimen/_32sdp"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_defalut_profile_pic"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

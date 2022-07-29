@@ -7,6 +7,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.added_events.UserAssigneeModel
+import com.shepherd.app.databinding.AdapterAssigneeMenrbersBinding
 import com.shepherd.app.databinding.AdapterEventsMembersBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.squareup.picasso.Picasso
@@ -16,7 +17,7 @@ class CarePointsEventAdapter(
     var commentList: ArrayList<UserAssigneeModel> = ArrayList()
 ) :
     RecyclerView.Adapter<CarePointsEventAdapter.CarePointsEventsViewHolder>() {
-    lateinit var binding: AdapterEventsMembersBinding
+    lateinit var binding: AdapterAssigneeMenrbersBinding
     lateinit var context: Context
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
@@ -28,7 +29,7 @@ class CarePointsEventAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsEventsViewHolder {
         context = parent.context
         binding =
-            AdapterEventsMembersBinding.inflate(
+            AdapterAssigneeMenrbersBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -54,7 +55,7 @@ class CarePointsEventAdapter(
     }
 
 
-    inner class CarePointsEventsViewHolder(private val itemBinding: AdapterEventsMembersBinding) :
+    inner class CarePointsEventsViewHolder(private val itemBinding: AdapterAssigneeMenrbersBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
@@ -65,7 +66,7 @@ class CarePointsEventAdapter(
                 }
             }
 
-            val imageUrl = commentList[position].user_details.user_profiles.profilePhoto ?: ""
+            val imageUrl = commentList[position].user_details.profilePhoto ?: ""
             itemBinding.let {
                 if (!imageUrl.isNullOrEmpty()) {
                     Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)

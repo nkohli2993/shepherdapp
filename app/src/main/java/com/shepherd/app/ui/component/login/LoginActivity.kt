@@ -91,8 +91,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
       /*  if(BuildConfig.DEBUG){
             loginViewModel.loginData.value!!.email = "karam@yopmail.com"
             loginViewModel.loginData.value!!.password = "Admin@123"
-        }
-*/
+        }*/
         binding.viewModel = loginViewModel
 
         // Handle the click of Show or Hide Password Icon
