@@ -359,5 +359,11 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         return R.layout.fragment_lockbox
     }
 
+    override fun onResume() {
+        super.onResume()
+        resetPageNumber()
+        lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
+    }
+
 }
 
