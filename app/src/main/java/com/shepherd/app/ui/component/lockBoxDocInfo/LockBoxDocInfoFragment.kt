@@ -22,7 +22,6 @@ import com.shepherd.app.view_model.LockBoxDocInfoViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_uploaded_lock_box_doc_detail.*
-import kotlinx.android.synthetic.main.fragment_uploaded_lock_box_doc_detail.viewPager
 
 
 /**
@@ -37,7 +36,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     private lateinit var fragmentUploadedLockBoxDocDetailBinding: FragmentUploadedLockBoxDocDetailBinding
     private val args: LockBoxDocInfoFragmentArgs by navArgs()
     private var lockBox: LockBox? = null
-    private var list: ArrayList<DocumentUrl> = arrayListOf()  //TODO: Change type according to type of file to show on view pager
+    private var list: ArrayList<DocumentUrl> =
+        arrayListOf()  //TODO: Change type according to type of file to show on view pager
 
 
     override fun onCreateView(
@@ -70,7 +70,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
             UploadedDocumentImagesAdapter(requireContext().applicationContext, lockBox?.documents)
         viewPager.adapter = documentImagesAdapter
         fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
-        fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object :
+            ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -99,6 +100,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 is DataResult.Success -> {
                     hideLoading()
                     it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                    backPress()
                 }
             }
         }
