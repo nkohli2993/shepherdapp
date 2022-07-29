@@ -9,6 +9,6 @@ data class UserAssigneeModel(
     @SerializedName("created_at") var created_at: String? = null,
     @SerializedName("updated_at") var updated_at: String? = null,
     @SerializedName("deleted_at") var deleted_at: String? = null,
-    @SerializedName("user_details") var user_details: UserDetailAssigneModel = UserDetailAssigneModel(),
+    @SerializedName("user_id_details") var user_details: UserAssigneDetail = UserAssigneDetail(),
 
     )

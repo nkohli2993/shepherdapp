@@ -219,6 +219,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:2.1.0'
+    implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
 }
 kapt {
     correctErrorTypes true

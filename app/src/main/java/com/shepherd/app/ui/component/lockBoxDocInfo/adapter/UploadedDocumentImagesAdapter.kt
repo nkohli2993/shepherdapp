@@ -1,16 +1,22 @@
 package com.shepherd.app.ui.component.lockBoxDocInfo.adapter
+
+import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
+import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.imageview.ShapeableImageView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.DocumentUrl
 import com.shepherd.app.utils.loadImageCentreCrop
+import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 /**
  * Created by Nikita kohli  on 28-07-22
@@ -31,19 +37,24 @@ class UploadedDocumentImagesAdapter(
         return view == `object` as ConstraintLayout
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val itemView: View =
             mLayoutInflater.inflate(R.layout.adapter_document_pager, container, false)
 
         val imageView = itemView.findViewById<View>(R.id.imgDoc) as ShapeableImageView
+        val pdfVIew = itemView.findViewById<View>(R.id.pdfView) as PDFView
+
         if(list!![position].url!!.lowercase().endsWith(".png") ||list!![position].url!!.lowercase().endsWith(".jpg")  ||list!![position].url!!.lowercase().endsWith("jpeg") ) {
             imageView.loadImageCentreCrop(
                 R.drawable.ic_defalut_profile_pic,
                 list!![position].url!!.plus("?thumbnail=100")
             )
         }
-        else if(list!![position].url!!.lowercase().endsWith(".pdf")||list!![position].url!!.lowercase().endsWith(".pdf/x")||list!![position].url!!.lowercase().endsWith(".pdf/a")||list!![position].url!!.lowercase().endsWith(".pdf/e")){
+        else if(list!![position].url!!.lowercase().endsWith(".pdf")||list!![position].url!!.lowercase().endsWith(".pdf/x")||list!![position].url!!.lowercase().endsWith(".pdf/a")||list!![position].url!!.lowercase().endsWith(".pdf/e")) {
             imageView.setImageResource(R.drawable.ic_pdf)
+            imageView.visibility = View.VISIBLE
+
         }
         else if(list!![position].url!!.lowercase().endsWith(".doc") || list!![position].url!!.lowercase().endsWith(".docm")  || list!![position].url!!.lowercase().endsWith(".docx") || list!![position].url!!.lowercase().endsWith(".txt")){
             imageView.setImageResource(R.drawable.ic_doc)
@@ -61,5 +72,6 @@ class UploadedDocumentImagesAdapter(
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as ConstraintLayout)
     }
+
 
 }
