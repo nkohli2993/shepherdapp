@@ -11,6 +11,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes
@@ -41,13 +43,17 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     private var recommendedDocumentsAdapter: RecommendedDocumentsAdapter? = null
     private var otherDocumentsAdapter: OtherDocumentsAdapter? = null
 
-    private val pageNumber = 1
+    private var pageNumber = 1
     private val limit = 10
 
     var lockBoxTypes: ArrayList<LockBoxTypes>? = arrayListOf()
     var lockBoxList: ArrayList<LockBox>? = arrayListOf()
     var searchedLockBoxList: ArrayList<LockBox>? = arrayListOf()
     var search: String? = null
+    var currentPage: Int = 0
+    var totalPage: Int = 0
+    var total: Int = 0
+    var pageCount: Int = 0
 
 
     override fun onCreateView(
@@ -59,8 +65,6 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             FragmentLockboxBinding.inflate(inflater, container, false)
 
         lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
-
-
         return fragmentLockboxBinding.root
     }
 
@@ -82,6 +86,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         fragmentLockboxBinding.imgCancel.setOnClickListener {
             fragmentLockboxBinding.editTextSearch.setText("")
             fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+            resetPageNumber()
             lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         }
 
@@ -154,9 +159,9 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         fragmentLockboxBinding.editTextSearch.setOnEditorActionListener(TextView.OnEditorActionListener { textView, actionID, keyEvent ->
             if (actionID == EditorInfo.IME_ACTION_SEARCH) {
                 hideKeyboard()
+                resetPageNumber()
                 val searchData = fragmentLockboxBinding.editTextSearch.text.toString().trim()
                 if (searchData.isNullOrEmpty()) {
-
                 } else {
                     //Hit search api
                     lockBoxViewModel.searchAllLockBoxUploadedDocumentsByLovedOneUUID(
@@ -171,6 +176,10 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             false
         })
 
+    }
+
+    private fun resetPageNumber() {
+        pageNumber = 1
     }
 
     override fun observeViewModel() {
@@ -197,7 +206,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         }
 
         // Observe the response of get all uploaded lock box document by loved one uuid api
-        lockBoxViewModel.getUploadedLockBoxDocResponseLiveData.observeEvent(this) {
+        lockBoxViewModel.getUploadedLockBoxDocResponseLiveData.observeEvent(this) { it ->
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -212,7 +221,12 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    lockBoxList = it.data.payload?.lockBox
+                    it.data.payload.let {
+                        lockBoxList = it?.lockBox
+                        total = it?.total!!
+                        currentPage = it.currentPage!!
+                        totalPage = it.totalPages!!
+                    }
                     if (lockBoxList.isNullOrEmpty()) {
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
@@ -220,7 +234,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     } else {
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
-                        lockBoxList?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
+                        lockBoxList?.let { it1 -> otherDocumentsAdapter?.addData(it1, false) }
                     }
                 }
             }
@@ -244,7 +258,13 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    searchedLockBoxList?.clear()
                     searchedLockBoxList = it.data.payload?.lockBox
+                    it.data.payload.let { it1 ->
+                        totalPage = it1?.totalPages!!
+                        total = it1.total!!
+                        currentPage = it1.currentPage!!
+                    }
                     if (searchedLockBoxList.isNullOrEmpty()) {
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
@@ -252,7 +272,12 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     } else {
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
-                        searchedLockBoxList?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
+                        searchedLockBoxList?.let { it1 ->
+                            otherDocumentsAdapter?.addData(
+                                it1,
+                                true
+                            )
+                        }
                     }
                 }
             }
@@ -282,13 +307,42 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     private fun setRecommendedDocumentsAdapter() {
         recommendedDocumentsAdapter = RecommendedDocumentsAdapter(lockBoxViewModel)
         fragmentLockboxBinding.rvRecommendedDoc.adapter = recommendedDocumentsAdapter
-
     }
 
     private fun setOtherDocumentsAdapter() {
         otherDocumentsAdapter = OtherDocumentsAdapter(lockBoxViewModel)
         fragmentLockboxBinding.rvOtherDocuments.adapter = otherDocumentsAdapter
+        handleUploadedDocumentsPagination()
+    }
 
+    private fun handleUploadedDocumentsPagination() {
+        var isScrolling = true
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisiblesItems: Int
+        fragmentLockboxBinding.rvOtherDocuments.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    isScrolling = true
+                    visibleItemCount = recyclerView.layoutManager!!.childCount
+                    totalItemCount = recyclerView.layoutManager!!.itemCount
+                    pastVisiblesItems =
+                        (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
+                        isScrolling = false
+                        currentPage++
+                        pageNumber++
+                        lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(
+                            pageNumber,
+                            limit
+                        )
+                    }
+                }
+            }
+        })
     }
 
 
