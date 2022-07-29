@@ -42,6 +42,12 @@ class UploadedDocumentImagesAdapter(
                 list!![position].url!!.plus("?thumbnail=100")
             )
         }
+        else if(list!![position].url!!.lowercase().endsWith(".pdf")||list!![position].url!!.lowercase().endsWith(".pdf/x")||list!![position].url!!.lowercase().endsWith(".pdf/a")||list!![position].url!!.lowercase().endsWith(".pdf/e")){
+            imageView.setImageResource(R.drawable.ic_pdf)
+        }
+        else if(list!![position].url!!.lowercase().endsWith(".doc") || list!![position].url!!.lowercase().endsWith(".docm")  || list!![position].url!!.lowercase().endsWith(".docx") || list!![position].url!!.lowercase().endsWith(".txt")){
+            imageView.setImageResource(R.drawable.ic_doc)
+        }
         else{
             imageView.loadImageCentreCrop(
                 R.drawable.ic_defalut_profile_pic,

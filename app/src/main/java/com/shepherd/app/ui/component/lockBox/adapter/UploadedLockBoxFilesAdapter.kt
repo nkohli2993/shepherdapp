@@ -57,26 +57,14 @@ class UploadedLockBoxFilesAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(file: File) {
-//            itemBinding.data = lockBox
-
-//            val createdAt = lockBox.createdAt
-
             val sdf = SimpleDateFormat("MMM dd, yyyy")
             val currentDate = sdf.format(Date())
-            /*val formattedString = date.toTextFormat(
-                date,
-                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                "MMM dd, yyyy"
-            )*/
             itemBinding.let {
                 it.txtFolderName.text = file.name
                 it.txtUploadDate.text = "Uploaded $currentDate"
             }
 
             itemBinding.imgDelete.setOnClickListener {
-//                selectedFiles.remove(file)
-//                notifyDataSetChanged()
-
                 onItemClickListener?.onItemClick(file)
             }
         }

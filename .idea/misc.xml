@@ -117,10 +117,16 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/layout_add_medicine_list.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.22402736212056434" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_pdf.xml" value="0.177" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_document_pager.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_uploaded_files.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_member.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_new_lock_box.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_points.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_dashboard.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_lockbox.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_profile.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_uploaded_lock_box_doc_detail.xml" value="0.2609375" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_12.xml" value="0.255" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_6.xml" value="0.255" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_8.xml" value="0.255" />

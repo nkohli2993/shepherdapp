@@ -11,7 +11,7 @@
             type="android.view.View.OnClickListener" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
@@ -167,40 +167,33 @@
                 app:layout_constraintStart_toStartOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/edtNote" />
 
-            <LinearLayout
-                android:id="@+id/layoutUploadedFiles"
-                android:layout_width="0dp"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvUploadedFiles"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                android:orientation="vertical"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="@id/cardView"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
-                app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles">
+                app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
+                tools:itemCount="20"
+                tools:listitem="@layout/adapter_uploaded_files" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvUploadedFiles"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:nestedScrollingEnabled="false"
-                    android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/adapter_uploaded_files" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtNoUploadedLockBoxFile"
-                    style="@style/TextViewGothamMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:paddingVertical="@dimen/_8sdp"
-                    android:text="@string/no_uploaded_lock_box_files_found"
-                    android:textSize="@dimen/_14ssp"
-                    android:visibility="visible" />
-
-
-            </LinearLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtNoUploadedLockBoxFile"
+                style="@style/TextViewGothamMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingVertical="@dimen/_8sdp"
+                android:text="@string/no_uploaded_lock_box_files_found"
+                android:textSize="@dimen/_14ssp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="@id/cardView"
+                app:layout_constraintStart_toStartOf="@+id/cardView"
+                app:layout_constraintTop_toBottomOf="@+id/rvUploadedFiles" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDone"
@@ -219,11 +212,11 @@
                 android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layoutUploadedFiles" />
+                app:layout_constraintTop_toBottomOf="@+id/txtNoUploadedLockBoxFile" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>
 
