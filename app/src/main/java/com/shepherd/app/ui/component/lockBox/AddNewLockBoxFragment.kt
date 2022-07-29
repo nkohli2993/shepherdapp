@@ -327,7 +327,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             "Only jpg, jpeg, png, gif, pdf, word and txt file can be uploaded..."
                         )
                     } else if (selectedFileList!!.size > 5) {
-                        showError(requireContext(),"You can upload at max 5 files...")
+                        showError(requireContext(), "You can upload at max 5 files...")
                     } else {
                         selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
                     }
@@ -389,7 +389,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             setTitle("Delete Uploaded Lock Box Document")
             setMessage("Are you sure you want to remove the uploaded lock box doc?")
             setPositiveButton("Yes") { _, _ ->
-//                lockBox.id?.let { addNewLockBoxViewModel.deleteUploadedLockBoxDoc(it) }
                 uploadedFilesAdapter?.removeData(file)
             }
             setNegativeButton("No") { _, _ ->
@@ -428,7 +427,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         requireContext().applicationContext,
                         "Unable to create this request try, again later!"
                     )
-                    Log.e("catch_exception", "Request not accepted $resultCode")
                 }
             }
             REQUEST_CODE_OPEN_DOCUMENT -> if (resultCode == AppCompatActivity.RESULT_OK && resultData != null) {
@@ -511,9 +509,9 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val data: Intent? = result.data
+                val  driveSelectedFileList : ArrayList<File> = arrayListOf()
                 if (data?.clipData != null) {
                     val count = data.clipData?.itemCount ?: 0
-
                     for (i in 0 until count) {
                         val uri: Uri? = data.clipData?.getItemAt(i)?.uri
                         uri?.let {
@@ -526,22 +524,23 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             } else {
                                 File(uri.toString())
                             }
-                            selectedFileList!!.add(file)
+                            driveSelectedFileList.add(file)
 
                         }
-                       // selectedFileList!!.add(file)
-                        if (selectedFileList!!.size > 0) {
-                            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
-                                View.VISIBLE
-                            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                                View.GONE
-                            uploadedFilesAdapter?.addData(selectedFileList!!)
-                        } else {
-                            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-                            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                                View.VISIBLE
-                        }
                     }
+                    if (driveSelectedFileList .size > 0) {
+                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
+                            View.VISIBLE
+                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                            View.GONE
+                        selectedFileList!!.addAll(driveSelectedFileList)
+                        uploadedFilesAdapter?.addData(driveSelectedFileList)
+                    } else {
+                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                            View.VISIBLE
+                    }
+
 
                 }
                 //If single image selected
@@ -560,7 +559,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         }
                         selectedFileList!!.add(file!!)
                         if (selectedFileList!!.size > 0) {
-                            Log.d(TAG, "handleSelectedFiles: $selectedFiles")
                             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
                                 View.VISIBLE
                             fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =

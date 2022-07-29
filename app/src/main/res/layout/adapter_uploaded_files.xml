@@ -49,14 +49,17 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     app:layout_constraintEnd_toStartOf="@id/imgDelete"
                     app:layout_constraintStart_toEndOf="@id/imgFolder"
-                    app:layout_constraintTop_toTopOf="@id/imgFolder"
-                    app:layout_constraintBottom_toBottomOf="@id/imgFolder">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                   >
 
                     <androidx.appcompat.widget.AppCompatTextView
                         style="@style/TextViewGothamBold"
                         android:layout_width="wrap_content"
                         android:id="@+id/txtFolderName"
                         android:layout_height="wrap_content"
+                        android:maxLines="5"
+                        android:ellipsize="end"
                         android:text="@string/file_name"
                         android:includeFontPadding="false"
                         android:textSize="@dimen/_13ssp"
