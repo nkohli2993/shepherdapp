@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
-import com.shepherd.app.data.dto.care_team.CareTeam
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.AdapterLovedOnesBinding
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
@@ -16,7 +16,7 @@ import com.squareup.picasso.Picasso
 
 class LovedOnesAdapter(
     private val viewModel: ProfileViewModel,
-    var careTeams: MutableList<CareTeam> = ArrayList()
+    var careTeams: MutableList<CareTeamModel> = ArrayList()
 ) :
     RecyclerView.Adapter<LovedOnesAdapter.LovedOnesViewHolder>() {
     lateinit var binding: AdapterLovedOnesBinding
@@ -33,7 +33,7 @@ class LovedOnesAdapter(
      }*/
 
     interface OnItemClickListener {
-        fun onItemClick(careTeam: CareTeam)
+        fun onItemClick(careTeam: CareTeamModel)
     }
 
 
@@ -67,27 +67,27 @@ class LovedOnesAdapter(
     inner class LovedOnesViewHolder(private val itemBinding: AdapterLovedOnesBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(careTeam: CareTeam) {
+        fun bind(careTeam: CareTeamModel) {
             // itemBinding.data = dashboard
             careTeam.let {
                 // Set full name
-                val fullName = it.loveUser?.firstname + " " + it.loveUser?.lastname
+                val fullName = it.love_user_id_details.firstname + " " + it.love_user_id_details.lastname
                 itemBinding.txtLovedOneName.text = fullName
 
                 //Set Image
-                Picasso.get().load(it.loveUser?.profilePhoto)
+                Picasso.get().load(it.love_user_id_details.profilePhoto)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(itemBinding.imgLovedOne)
 
                 // Set Role
-                itemBinding.textLovedOneRole.text = it.careRoles?.name
+                itemBinding.textLovedOneRole.text = it.careRoles.name
 
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
-                itemBinding.checkbox.isChecked = lovedOneIDInPrefs.equals(it.loveUserId)
+                itemBinding.checkbox.isChecked = lovedOneIDInPrefs.equals(it.love_user_id_details.uid)
 
-                if (lovedOneIDInPrefs.equals(it.loveUserId)) {
+                if (lovedOneIDInPrefs.equals(it.love_user_id_details.uid)) {
                     dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
                     lastSelectedPosition = bindingAdapterPosition
                     itemBinding.checkbox.isChecked = true
@@ -134,7 +134,7 @@ class LovedOnesAdapter(
         return position
     }
 
-    fun addData(careTeams: ArrayList<CareTeam>?) {
+    fun addData(careTeams: ArrayList<CareTeamModel>?) {
         this.careTeams.clear()
         careTeams?.let { this.careTeams.addAll(it) }
         notifyDataSetChanged()

@@ -107,8 +107,10 @@ class DriveServiceHelper(driveService: Drive) {
     fun createFilePickerIntent(): Intent {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
-//        intent.type = "text/plain"
         intent.type = "*/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        intent.putExtra(Intent.ACTION_PICK,5)
+        intent.putExtra(Intent.EXTRA_RETURN_RESULT,5)
         val mimetypes = arrayOf("image/*","application/pdf","application/msword","text/plain",)
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes)
         return intent

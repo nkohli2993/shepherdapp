@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.care_team.CareTeam
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.login.Payload
 import com.shepherd.app.data.dto.login.UserLovedOne
 import com.shepherd.app.data.dto.login.UserProfile
@@ -39,11 +40,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     private var payload: Payload? = null
     private var lovedOneArrayList: ArrayList<UserLovedOne>? = null
-    private var lovedOneProfileList: ArrayList<UserProfile>? = arrayListOf()
-    private var careTeams: ArrayList<CareTeam> = arrayListOf()
-    private var selectedCareTeams: ArrayList<CareTeam> = arrayListOf()
-
-    // private var lovedOneUserIDs: ArrayList<Int?>? = null
+    private var careTeams: ArrayList<CareTeamModel> = arrayListOf()
     private val TAG: String? = null
     private var page = 1
     private var limit = 10
@@ -57,22 +54,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     ): View {
         fragmentProfileBinding =
             FragmentProfileBinding.inflate(inflater, container, false)
-        // Get loggedIn User's Profile info by hitting api
-        //profileViewModel.getUserDetails()
         profileViewModel.getUserDetailByUUID()
-
-        // Get care Teams for loggedIn User
         profileViewModel.getCareTeamsForLoggedInUser(page, limit, status)
-
         return fragmentProfileBinding.root
     }
 
     override fun initViewBinding() {
         fragmentProfileBinding.listener = this
-        //initView()
-        //setLovedOnesAdapter()
-        //setPendingInvitationsAdapter()
-
     }
 
     private fun initView() {
@@ -134,7 +122,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.careTeams
+                    careTeams = it.data.payload.data
                     setLovedOnesAdapter(careTeams)
 
                 }
@@ -156,7 +144,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         }
     }
 
-    private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeam>?) {
+    private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeamModel>?) {
         lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
         lovedOnesAdapter?.addData(careTeams)
         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter
@@ -175,9 +163,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         return R.layout.fragment_profile
     }
 
-    override fun onItemClick(careTeam: CareTeam) {
+    override fun onItemClick(careTeam: CareTeamModel) {
         // Save the selected lovedOne UUID in shared prefs
-        careTeam.loveUserId?.let { profileViewModel.saveLovedOneUUID(it) }
+        careTeam.love_user_id_details.let { profileViewModel.saveLovedOneUUID(it.uid!!) }
     }
 
 

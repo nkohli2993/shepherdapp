@@ -41,9 +41,9 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cvRecommendedDocuments"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_height="@dimen/_120sdp"
             android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:cardBackgroundColor="@color/_A3A5AD"
             app:cardCornerRadius="@dimen/_18sdp"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +53,8 @@
                 android:id="@+id/layoutRecommendedDoc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/_5sdp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     style="@style/TextViewGothamMedium"
@@ -67,9 +67,12 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvRecommendedDoc"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_height="@dimen/_90sdp"
                     android:layout_marginTop="@dimen/_8sdp"
                     android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:scrollbarThumbVertical="@color/colorWhite"
+                    android:scrollbars="vertical"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="5"
                     tools:listitem="@layout/adapter_recommended_documents" />
@@ -182,9 +185,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginTop="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_20sdp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtOtherDocuments">
@@ -193,8 +196,8 @@
                 android:id="@+id/rvOtherDocuments"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_300sdp"
-                android:nestedScrollingEnabled="false"
                 android:layout_marginBottom="@dimen/_10sdp"
+                android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:itemCount="10"
                 tools:listitem="@layout/adapter_other_documents" />
@@ -205,10 +208,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:paddingVertical="@dimen/_8sdp"
                 android:text="@string/no_uploaded_lock_box_files_found"
                 android:textSize="@dimen/_14ssp"
-                android:visibility="gone"
-                android:paddingVertical="@dimen/_8sdp" />
+                android:visibility="gone" />
         </LinearLayout>
 
 

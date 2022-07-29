@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.care_team.CareTeam
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.FragmentLovedOnesBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -29,7 +30,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     private var page = 1
     private var limit = 10
     private var status = Status.One.status
-    private var careTeams: ArrayList<CareTeam> = arrayListOf()
+    private var careTeams: ArrayList<CareTeamModel> = arrayListOf()
 
 
     override fun onCreateView(
@@ -58,7 +59,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.careTeams
+                    careTeams = it.data.payload.data
                     setLovedOnesAdapter(careTeams)
 
                 }
@@ -71,7 +72,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
         //setLoveOneAdapter()
     }
 
-    private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeam>?) {
+    private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeamModel>?) {
         lovedOneAdapter = LovedOneAdapter(lovedOneViewModel)
         lovedOneAdapter?.addData(careTeams)
         recyclerViewMembers.adapter = lovedOneAdapter
@@ -98,8 +99,8 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
         }
     }
 
-    override fun onItemClick(careTeam: CareTeam) {
+    override fun onItemClick(careTeam: CareTeamModel) {
         // Save the selected lovedOne UUID in shared prefs
-        careTeam.loveUserId?.let { lovedOneViewModel.saveLovedOneUUID(it) }
+        careTeam.love_user_id_details.let { lovedOneViewModel.saveLovedOneUUID(it.uid!!) }
     }
 }

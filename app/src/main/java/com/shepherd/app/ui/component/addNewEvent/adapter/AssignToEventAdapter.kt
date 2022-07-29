@@ -8,7 +8,7 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.care_team.CareTeam
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.view_model.AddNewEventViewModel
 import com.squareup.picasso.Picasso
 
@@ -17,7 +17,7 @@ class AssignToEventAdapter(
     val onListener: selectedTeamMember,
     val context: Context,
     private val viewModel: AddNewEventViewModel,
-    var memberList: ArrayList<CareTeam> = ArrayList()
+    var memberList: ArrayList<CareTeamModel> = ArrayList()
 ) :
     BaseAdapter() {
     private val inflater: LayoutInflater =
@@ -52,10 +52,10 @@ class AssignToEventAdapter(
         } else {
             vh.tvSelect.isVisible = false
             vh.clEventWrapper.isVisible = true
-            vh.textViewCareTeamName.text = memberList[position].user?.firstname.plus(" ")
-                .plus(memberList[position].user?.lastname)
-            vh.textViewCareTeamRole.text = memberList[position].careRoles?.name
-            Picasso.get().load(memberList[position].user?.profilePhoto)
+            vh.textViewCareTeamName.text = memberList[position].user_id_details.firstname.plus(" ")
+                .plus(memberList[position].user_id_details.lastname)
+            vh.textViewCareTeamRole.text = memberList[position].careRoles.name
+            Picasso.get().load(memberList[position].user_id_details.profilePhoto)
                 .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(vh.imageViewCareTeam)
         }

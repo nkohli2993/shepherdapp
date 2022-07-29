@@ -5,6 +5,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -379,7 +380,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         if (account != null) {
             client.signOut()
         }
-
         startActivityForResult(
             client.signInIntent,
             REQUEST_CODE_SIGN_IN
@@ -433,10 +433,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                                     View.VISIBLE
                             }
                         }
-
                     }
                 }
-
             }
         }
         super.onActivityResult(requestCode, resultCode, resultData)
@@ -445,10 +443,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private fun handleSignInResult(result: Intent) {
         GoogleSignIn.getSignedInAccountFromIntent(result)
             .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
-                Log.d(
-                    TAG,
-                    "Signed in as " + googleAccount.email
-                )
                 val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
                     requireContext().applicationContext, setOf(DriveScopes.DRIVE_FILE)
                 )
@@ -475,11 +469,80 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     private fun openFilePicker() {
         if (mDriveServiceHelper != null) {
-            Log.d(TAG, "Opening file picker.")
             val pickerIntent: Intent = mDriveServiceHelper!!.createFilePickerIntent()
-            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT)
+//            startActivityForResult(pickerIntent, REQUEST_CODE_OPEN_DOCUMENT)
+            selectImagesActivityResult.launch(pickerIntent)
         }
     }
+
+    private val selectImagesActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val data: Intent? = result.data
+                if (data?.clipData != null) {
+                    val count = data.clipData?.itemCount ?: 0
+
+                    for (i in 0 until count) {
+                        val uri: Uri? = data.clipData?.getItemAt(i)?.uri
+                        uri?.let {
+                            var file: File? = null
+                            file = if (uri.toString().startsWith("content")) {
+                                CommonFunctions.fileFromContentUri(
+                                    requireContext().applicationContext,
+                                    uri.toString().toUri()
+                                )
+                            } else {
+                                File(uri.toString())
+                            }
+                            selectedFileList!!.add(file)
+
+                        }
+                       // selectedFileList!!.add(file)
+                        if (selectedFileList!!.size > 0) {
+                            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
+                                View.VISIBLE
+                            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                                View.GONE
+                            uploadedFilesAdapter?.addData(selectedFileList!!)
+                        } else {
+                            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+                            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                                View.VISIBLE
+                        }
+                    }
+
+                }
+                //If single image selected
+                else if (data?.data != null) {
+                    val uri: Uri? = data.data
+
+                    uri?.let {
+                        var file: File? = null
+                        file = if (uri.toString().startsWith("content")) {
+                            CommonFunctions.fileFromContentUri(
+                                requireContext().applicationContext,
+                                uri.toString().toString().toUri()
+                            )
+                        } else {
+                            File(uri.toString())
+                        }
+                        selectedFileList!!.add(file!!)
+                        if (selectedFileList!!.size > 0) {
+                            Log.d(TAG, "handleSelectedFiles: $selectedFiles")
+                            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
+                                View.VISIBLE
+                            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                                View.GONE
+                            uploadedFilesAdapter?.addData(selectedFileList!!)
+                        } else {
+                            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+                            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+                                View.VISIBLE
+                        }
+                    }
+                }
+            }
+        }
 
 }
 

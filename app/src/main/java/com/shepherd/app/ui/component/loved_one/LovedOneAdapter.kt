@@ -1,12 +1,13 @@
 package com.shepherd.app.ui.component.loved_one
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
-import com.shepherd.app.data.dto.care_team.CareTeam
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.RvLoveOnesBinding
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
@@ -15,7 +16,7 @@ import com.squareup.picasso.Picasso
 
 class LovedOneAdapter(
     private val viewModel: LovedOneViewModel,
-    var careTeams: MutableList<CareTeam> = ArrayList()
+    var careTeams: MutableList<CareTeamModel> = ArrayList()
 ) :
     RecyclerView.Adapter<LovedOneAdapter.ContentViewHolder>() {
     lateinit var binding: RvLoveOnesBinding
@@ -30,7 +31,7 @@ class LovedOneAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(careTeam: CareTeam)
+        fun onItemClick(careTeam: CareTeamModel)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -56,15 +57,16 @@ class LovedOneAdapter(
     inner class ContentViewHolder constructor(private var itemBinding: RvLoveOnesBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(careTeam: CareTeam) {
+        @SuppressLint("SetTextI18n")
+        fun bind(careTeam: CareTeamModel) {
             if (careTeam == null) return
             careTeam.let {
                 // Set full name
-                val fullName = it.loveUser?.firstname + " " + it.loveUser?.lastname
+                val fullName = it.love_user_id_details.firstname + " " + it.love_user_id_details.lastname
                 itemBinding.textViewCareTeamName.text = fullName
 
                 //Set Image
-                Picasso.get().load(it.loveUser?.profilePhoto)
+                Picasso.get().load(it.love_user_id_details.profilePhoto)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(itemBinding.imageViewCareTeam)
 
@@ -74,9 +76,9 @@ class LovedOneAdapter(
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
-                itemBinding.checkbox.isChecked = lovedOneIDInPrefs.equals(it.loveUserId)
+                itemBinding.checkbox.isChecked = lovedOneIDInPrefs.equals(it.love_user_id_details.uid)
 
-                if (lovedOneIDInPrefs.equals(it.loveUserId)) {
+                if (lovedOneIDInPrefs.equals(it.love_user_id_details.uid)) {
                     dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
                     lastSelectedPosition = bindingAdapterPosition
                     itemBinding.checkbox.isChecked = true
@@ -124,7 +126,7 @@ class LovedOneAdapter(
         return position
     }
 
-    fun addData(careTeams: ArrayList<CareTeam>?) {
+    fun addData(careTeams: ArrayList<CareTeamModel>?) {
         this.careTeams.clear()
         careTeams?.let { this.careTeams.addAll(it) }
         notifyDataSetChanged()

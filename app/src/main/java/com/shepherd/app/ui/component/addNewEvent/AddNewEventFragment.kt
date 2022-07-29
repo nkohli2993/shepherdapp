@@ -28,6 +28,7 @@ import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.AddNewEventViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_new_event.*
 import java.text.SimpleDateFormat
@@ -51,7 +52,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private var limit: Int = 10
     private var status: Int = 1
     private var assignTo = ArrayList<String>()
-    private var careteams = ArrayList<CareTeam>()
+    private var careteams = ArrayList<CareTeamModel>()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -125,7 +126,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = it.data.payload
-                    careteams.addAll(payload.careTeams)
+                    careteams.addAll(payload.data)
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
                             this,
@@ -137,7 +138,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 }
 
                 is DataResult.Failure -> {
-                    careteams.add(CareTeam())
+                    careteams.add(CareTeamModel())
                     fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
                             this,
@@ -224,7 +225,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 assignTo.clear()
                 for (i in careteams) {
                     if (i.isSelected) {
-                        assignTo.add(i.userId!!)
+                        assignTo.add(i.user_id_details.uid!!)
                     }
 
                 }
@@ -324,7 +325,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         assignee.clear()
         for(i in careteams){
             if(i.isSelected){
-                assignee.add(i.user!!.firstname!!.plus(" ").plus(i.user?.lastname))
+                assignee.add(i.user_id_details.firstname!!.plus(" ").plus(i.user_id_details.lastname))
             }
         }
         if(assignee.size>0){

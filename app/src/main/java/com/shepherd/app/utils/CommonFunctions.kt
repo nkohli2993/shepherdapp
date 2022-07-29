@@ -230,7 +230,7 @@ object CommonFunctions {
     fun fileFromContentUri(context: Context, contentUri: Uri): File {
         // Preparing Temp file name
         val fileExtension = getFileExtension(context, contentUri)
-        val fileName = "temp_file" + if (fileExtension != null) ".$fileExtension" else ""
+        val fileName =  contentUri.toString().substring(contentUri.toString().lastIndexOf("/") + 1).replace("%3","_") + if (fileExtension != null) ".$fileExtension" else ""
 
         // Creating Temp file
         val tempFile = File(context.cacheDir, fileName)

@@ -80,42 +80,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     override fun observeViewModel() {
         observeEvent(viewModel.openDashboardItems, ::navigateToDashboardItems)
-
-        /*// Observe Get Care Teams Api Response
-        viewModel.careTeamsResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    careTeams = it.data.payload.careteams
-                    if (careTeams.isNullOrEmpty()) return@observeEvent
-                    val careTeamMembers = careTeams?.size ?: 0
-                    if (careTeamMembers == 0 || careTeamMembers == 1) {
-                        fragmentDashboardBinding.tvMember.text = "$careTeamMembers Member"
-                    } else {
-                        fragmentDashboardBinding.tvMember.text = "$careTeamMembers Members"
-                    }
-                    careTeamMembersDashBoardAdapter?.addData(careTeams!!)
-                }
-
-                is DataResult.Failure -> {
-                    hideLoading()
-                    val builder = AlertDialog.Builder(requireContext())
-                    val dialog = builder.apply {
-                        setTitle("Care Teams")
-                        setMessage("No Care Team Found")
-                        setPositiveButton("OK") { _, _ ->
-                            // navigateToDashboardScreen()
-                        }
-                    }.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                }
-            }
-        }
-*/
         // Observe Get Home Data Api Response
         viewModel.homeResponseLiveData.observeEvent(this) {
             when (it) {

@@ -89,6 +89,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
 
         fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
+            fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
             getDateSelectedOnTypeBased(
                 date.date
             )
@@ -122,9 +123,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             CalendarState.Today.value -> {
                 fragmentCarePointsBinding.calendarPView.selectionMode =
                     MaterialCalendarView.SELECTION_MODE_SINGLE
-                fragmentCarePointsBinding.calendarPView.isEnabled = true
                 fragmentCarePointsBinding.calendarPView.clearSelection()
-                setSelectedDate()
+                fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
                 val calendar = Calendar.getInstance()
                 calendar.time = selectedDate
                 fragmentCarePointsBinding.calendarPView.setDateSelected(calendar, true)
@@ -135,7 +135,6 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             CalendarState.Week.value -> {
                 fragmentCarePointsBinding.calendarPView.selectionMode =
                     MaterialCalendarView.SELECTION_MODE_SINGLE
-                fragmentCarePointsBinding.calendarPView.isEnabled = true
                 fragmentCarePointsBinding.calendarPView.clearSelection()
                 val calendar = Calendar.getInstance()
                 calendar.time = selectedDate
@@ -154,18 +153,11 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 }
             }
             else -> {
-                fragmentCarePointsBinding.calendarPView.isEnabled = false
                 fragmentCarePointsBinding.calendarPView.selectionMode =
                     MaterialCalendarView.SELECTION_MODE_NONE
 
             }
         }
-    }
-
-    private fun setSelectedDate() {
-        val calendars: ArrayList<Calendar> = ArrayList()
-        calendars.add(fragmentCarePointsBinding.calendar.currentPageDate)
-        fragmentCarePointsBinding.calendar.setHighlightedDays(calendars)
     }
 
     private fun getDayCount(month: String, year: String): Int {
