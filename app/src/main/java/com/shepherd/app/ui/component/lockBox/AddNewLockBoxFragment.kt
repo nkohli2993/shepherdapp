@@ -427,7 +427,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         requireContext().applicationContext,
                         "Unable to create this request try, again later!"
                     )
-                    Log.e("catch_exception", "Request not accepted $resultCode")
                 }
             }
             REQUEST_CODE_OPEN_DOCUMENT -> if (resultCode == AppCompatActivity.RESULT_OK && resultData != null) {
@@ -560,12 +559,10 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         }
                         selectedFileList!!.add(file!!)
                         if (selectedFileList!!.size > 0) {
-                            Log.d(TAG, "handleSelectedFiles: $selectedFiles")
                             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
                                 View.VISIBLE
                             fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
                                 View.GONE
-                            Log.e("catch_exception", "selectedFileList: $selectedFileList")
                             uploadedFilesAdapter?.addData(selectedFileList!!)
                         } else {
                             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
