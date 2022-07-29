@@ -1,6 +1,8 @@
 package com.shepherd.app.ui.component.lockBox
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -41,6 +43,8 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     var lockBoxTypes: ArrayList<LockBoxTypes>? = arrayListOf()
     var lockBoxList: ArrayList<LockBox>? = arrayListOf()
+    var searchedLockBoxList: ArrayList<LockBox>? = arrayListOf()
+    var search: String? = null
 
 
     override fun onCreateView(
@@ -71,6 +75,54 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
             findNavController().navigate(action)
         }
+
+        fragmentLockboxBinding.imgCancel.setOnClickListener {
+            fragmentLockboxBinding.editTextSearch.setText("")
+        }
+
+        fragmentLockboxBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+                    if (s.isNotEmpty()) {
+                        fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
+                        searchedLockBoxList?.clear()
+                        searchedLockBoxList = lockBoxList?.filter {
+                            it.name?.startsWith(
+                                s,
+                                true
+                            ) == true
+                        } as ArrayList<LockBox>
+
+                        // Show No Uploaded Doc Found when Doc is available during search
+                        if (searchedLockBoxList.isNullOrEmpty()) {
+                            fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
+                            fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                                View.VISIBLE
+                        } else {
+                            fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
+                            fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                                View.GONE
+                        }
+
+                        searchedLockBoxList.let {
+                            it?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
+                        }
+                    } else {
+                        lockBoxList?.let { otherDocumentsAdapter?.addData(it) }
+                        fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
+                        fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                            View.GONE
+                    }
+                }
+            }
+
+        })
 
     }
 

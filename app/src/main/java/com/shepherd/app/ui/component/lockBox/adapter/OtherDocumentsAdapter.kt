@@ -83,8 +83,8 @@ class OtherDocumentsAdapter(
     }
 
     fun addData(lockBoxList: ArrayList<LockBox>) {
-        this.lockBoxList.clear()
-        this.lockBoxList.addAll(lockBoxList)
+//        this.lockBoxList.clear()
+        this.lockBoxList = lockBoxList
         notifyDataSetChanged()
     }
 
