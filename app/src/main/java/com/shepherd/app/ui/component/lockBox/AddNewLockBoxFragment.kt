@@ -1,6 +1,6 @@
 package com.shepherd.app.ui.component.lockBox
 
-import android.app.Activity
+import CommonFunctions
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Intent
@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
@@ -27,8 +26,6 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
-import com.lassi.common.utils.KeyUtils
-import com.lassi.data.media.MiMedia
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes
@@ -37,6 +34,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.lockBox.adapter.UploadedLockBoxFilesAdapter
+import com.shepherd.app.utils.FileValidator
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
@@ -90,9 +88,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
                 }
 
-                uploadedDocumentsUrl.isNullOrEmpty() -> {
-                    showInfo(requireContext(), "Please upload file...")
+                selectedFileList.isNullOrEmpty() -> {
+                    showInfo(requireContext(), "Please upload file..")
                 }
+
+                /* uploadedDocumentsUrl.isNullOrEmpty() -> {
+                     showInfo(requireContext(), "Please upload file...")
+                 }*/
                 else -> {
                     return true
                 }
@@ -168,17 +170,27 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     showSuccess(requireContext(), "Files uploaded successfully...")
                     uploadedDocumentsUrl = it.data.payload?.document
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
-                    if (isValid) {
-                        fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
-                        fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
-                        uploadedDocumentsUrl?.let {
-                            addNewLockBoxViewModel.addNewLockBox(
-                                fileName,
-                                fileNote,
-                                it,
-                                lbtId
-                            )
-                        }
+                    /* if (isValid) {
+                         fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
+                         fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                         uploadedDocumentsUrl?.let {
+                             addNewLockBoxViewModel.addNewLockBox(
+                                 fileName,
+                                 fileNote,
+                                 it,
+                                 lbtId
+                             )
+                         }
+                     }*/
+                    fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
+                    fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    uploadedDocumentsUrl?.let {
+                        addNewLockBoxViewModel.addNewLockBox(
+                            fileName,
+                            fileNote,
+                            it,
+                            lbtId
+                        )
                     }
                 }
             }
@@ -298,7 +310,25 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 showChooseFileDialog()
             }
             R.id.btnDone -> {
-                selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
+                if (isValid) {
+                    var isFileFormatValid: Boolean = false
+                    for (i in selectedFileList?.indices!!) {
+                        isFileFormatValid =
+                            FileValidator().validate(selectedFileList!![i].toString())
+
+                        if (!isFileFormatValid) return
+                    }
+                    if (!isFileFormatValid) {
+                        showError(
+                            requireContext(),
+                            "Only jpg, jpeg, png, gif, pdf, word and txt file can be uploaded..."
+                        )
+                    } else if (selectedFileList!!.size > 5) {
+                        showError(requireContext(),"You can upload at max 5 files...")
+                    } else {
+                        selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
+                    }
+                }
                 /* if (isValid) {
                      fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
                      fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()

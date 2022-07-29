@@ -92,7 +92,7 @@ class UploadedLockBoxFilesAdapter(
     }
 
     fun addData(selectedFiles: ArrayList<File>) {
-        this.selectedFiles.clear()
+//        this.selectedFiles.clear()
         this.selectedFiles.addAll(selectedFiles)
         notifyDataSetChanged()
     }
