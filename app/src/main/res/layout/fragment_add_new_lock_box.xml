@@ -14,14 +14,15 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/_10sdp">
+        android:overScrollMode="never">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorWhite"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_5sdp">
+            android:background="@color/colorWhite"
+            android:paddingBottom="@dimen/_20sdp">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBack"
@@ -50,9 +51,9 @@
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="@dimen/_12sdp"
                 android:layout_marginHorizontal="@dimen/_2sdp"
                 android:background="@color/_E7E8EA4D"
+                app:cardCornerRadius="@dimen/_12sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ivBack">
 
@@ -60,8 +61,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
-                    android:padding="@dimen/_10sdp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="@dimen/_10sdp">
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnChooseFile"
@@ -84,13 +85,13 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txt"
+                style="@style/TextViewGothamBook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:text="@string/only_jpg_png_pdf_can_be_uploaded"
-                style="@style/TextViewGothamBook"
                 android:textColor="@color/_D7293F"
                 android:textSize="@dimen/_9sdp"
-                android:layout_marginTop="@dimen/_5sdp"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -98,12 +99,12 @@
                 android:id="@+id/txtFileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/gotham_light"
                 android:text="@string/file_name"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt" />
 
@@ -126,12 +127,12 @@
                 android:id="@+id/txtNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:fontFamily="@font/gotham_light"
                 android:text="@string/note"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_8sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtFileName" />
 
@@ -151,15 +152,15 @@
                 app:layout_constraintTop_toBottomOf="@id/txtNote" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextViewGothamBold"
                 android:id="@+id/txtUploadedFiles"
+                style="@style/TextViewGothamBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/selected_files"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edtNote" />
 
@@ -168,20 +169,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_8sdp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
-                android:orientation="vertical">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvUploadedFiles"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_130sdp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_8sdp"
-                    tools:itemCount="2"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/adapter_uploaded_files"
-                    android:visibility="gone" />
+                    tools:itemCount="2"
+                    tools:listitem="@layout/adapter_uploaded_files" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtNoUploadedLockBoxFile"
@@ -189,27 +191,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_horizontal"
+                    android:paddingVertical="@dimen/_8sdp"
                     android:text="@string/no_uploaded_lock_box_files_found"
                     android:textSize="@dimen/_14ssp"
-                    android:visibility="visible"
-                    android:paddingVertical="@dimen/_8sdp" />
+                    android:visibility="visible" />
 
 
             </LinearLayout>
-
-            <!--  <androidx.recyclerview.widget.RecyclerView
-                  android:id="@+id/rvUploadedFiles"
-                  android:layout_width="0dp"
-                  android:layout_height="@dimen/_130sdp"
-                  android:layout_marginHorizontal="@dimen/_12sdp"
-                  android:layout_marginTop="@dimen/_8sdp"
-                  app:layout_constraintEnd_toEndOf="parent"
-                  app:layout_constraintStart_toStartOf="parent"
-                  app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
-                  tools:itemCount="2"
-                  app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                  tools:listitem="@layout/adapter_uploaded_files" />-->
-
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDone"
@@ -226,8 +214,8 @@
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_13ssp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layoutUploadedFiles" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

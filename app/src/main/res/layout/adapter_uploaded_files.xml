@@ -42,10 +42,12 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:layout_constraintEnd_toStartOf="@id/imgDelete"
                     app:layout_constraintStart_toEndOf="@id/imgFolder"
                     app:layout_constraintTop_toTopOf="@id/imgFolder"
                     app:layout_constraintBottom_toBottomOf="@id/imgFolder">
