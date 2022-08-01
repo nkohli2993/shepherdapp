@@ -25,6 +25,7 @@ import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseM
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
@@ -196,8 +197,7 @@ interface ApiService {
         @Query("event_id") event_id: Int
     ): Response<AllCommentEventsResponseModel>
 
-    //Lock Box
-
+    //---------LockBox---------------------------------------
     @GET(ApiConstants.LockBox.GET_ALL_LOCK_BOX_TYPES)
     suspend fun getAllLockBoxTypes(
         @Query("page") page: Int,
@@ -247,5 +247,12 @@ interface ApiService {
         @Body updateLockBoxRequestModel: UpdateLockBoxRequestModel
     ): Response<UpdateLockBoxResponseModel>
 
+    //---------MedList---------------------------------------
+
+    @GET(ApiConstants.MedList.GET_ALL_MED_LIST)
+    suspend fun getAllMedLists(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): Response<GetAllMedListResponseModel>
 
 }

@@ -83,8 +83,8 @@ object ApiConstants {
         const val UPDATE_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
     }
 
-    object Medlist {
-        const val GET_MED_LIST = "$BASE_URL${API_VERSION}medlists"
+    object MedList {
+        const val GET_ALL_MED_LIST ="$BASE_URL${API_VERSION}medlists"
     }
 }
 

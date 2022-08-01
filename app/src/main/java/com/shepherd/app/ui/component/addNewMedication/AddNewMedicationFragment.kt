@@ -44,7 +44,6 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun initViewBinding() {
         fragmentAddNewMedicationBinding.listener = this
-
         setMedicineListAdapter()
     }
 

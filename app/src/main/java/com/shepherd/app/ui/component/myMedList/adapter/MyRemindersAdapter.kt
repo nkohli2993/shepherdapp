@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.data.dto.dashboard.DashboardModel
 import com.shepherd.app.databinding.AdapterMyRemindersBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.ui.component.myMedList.MyMedListViewModel
+import com.shepherd.app.view_model.MyMedListViewModel
 
 
 class MyRemindersAdapter(
