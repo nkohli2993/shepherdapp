@@ -1,6 +1,7 @@
 package com.shepherd.app.ui.component.addNewEvent.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ class AssignToEventAdapter(
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
+        Log.e("catch_exception", "log:${memberList.size}")
         return memberList.size
     }
 
@@ -46,25 +48,30 @@ class AssignToEventAdapter(
             view = convertView
             vh = view.tag as ItemHolder
         }
-        if (memberList[position].id == -1) {
-            vh.tvSelect.isVisible = true
-            vh.clEventWrapper.isVisible = false
-        } else {
-            vh.tvSelect.isVisible = false
-            vh.clEventWrapper.isVisible = true
-            vh.textViewCareTeamName.text = memberList[position].user_id_details.firstname.plus(" ")
-                .plus(memberList[position].user_id_details.lastname)
-            vh.textViewCareTeamRole.text = memberList[position].careRoles.name
-            Picasso.get().load(memberList[position].user_id_details.profilePhoto)
-                .placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(vh.imageViewCareTeam)
-        }
+        Log.e(
+            "catch_exception",
+            "log: ${memberList.size} ${
+                memberList[position].user_id_details.firstname.plus(" ")
+                    .plus(memberList[position].user_id_details.lastname)
+            }"
+        )
 
+        vh.tvSelect.isVisible = false
+        vh.clEventWrapper.isVisible = true
+        vh.textViewCareTeamName.text = memberList[position].user_id_details.firstname.plus(" ")
+            .plus(memberList[position].user_id_details.lastname)
+        vh.textViewCareTeamRole.text = memberList[position].careRoles.name
+        Picasso.get().load(memberList[position].user_id_details.profilePhoto)
+            .placeholder(R.drawable.ic_defalut_profile_pic)
+            .into(vh.imageViewCareTeam)
+        vh.checkbox.isChecked = false
+        if (memberList[position].isSelected) {
+            vh.checkbox.isChecked = true
+        }
         vh.checkbox.setOnCheckedChangeListener { compoundButton, b ->
             onListener.onSelected(position)
         }
         vh.clEventWrapper.setOnClickListener {
-            vh.checkbox.isChecked = !vh.checkbox.isChecked
             onListener.onSelected(position)
         }
         return view
@@ -77,6 +84,7 @@ class AssignToEventAdapter(
         val checkbox: CheckBox
         val imageViewCareTeam: ImageView
         val clEventWrapper: ConstraintLayout
+
         init {
             textViewCareTeamName = row?.findViewById(R.id.textViewCareTeamName) as TextView
             textViewCareTeamRole = row.findViewById(R.id.textViewCareTeamRole) as TextView

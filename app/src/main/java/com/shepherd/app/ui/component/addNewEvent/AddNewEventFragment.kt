@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -13,25 +15,25 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.databinding.FragmentAddNewEventBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
+import com.shepherd.app.ui.component.addNewEvent.adapter.AssigneAdapter
 import com.shepherd.app.utils.*
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.AddNewEventViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.shepherd.app.data.dto.care_team.CareTeamModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -40,9 +42,10 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat")
 class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
-    View.OnClickListener, AssignToEventAdapter.selectedTeamMember,
-    DatePickerDialog.OnDateSetListener {
+    View.OnClickListener, AssigneAdapter.selectedTeamMember,
+    DatePickerDialog.OnDateSetListener, AssignToEventAdapter.selectedTeamMember {
 
+    private var assigneAdapter: AssigneAdapter? = null
     private val addNewEventViewModel: AddNewEventViewModel by viewModels()
 
     private lateinit var fragmentAddNewEventBinding: FragmentAddNewEventBinding
@@ -125,25 +128,35 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     hideLoading()
                     val payload = it.data.payload
                     careteams.addAll(payload.data)
-                    fragmentAddNewEventBinding.eventMemberSpinner.adapter =
-                        AssignToEventAdapter(
-                            this,
-                            requireContext(),
-                            addNewEventViewModel,
-                            careteams
-                        )
+                  /*  assigneAdapter =  AssignToEventAdapter(
+                        this,
+                        requireContext(),
+                        addNewEventViewModel,
+                        careteams
+                    )*/
+                    assigneAdapter = AssigneAdapter( this,
+                        requireContext(),
+                        addNewEventViewModel,
+                        careteams)
+                    fragmentAddNewEventBinding.assigneRV.adapter = assigneAdapter
+
 
                 }
 
                 is DataResult.Failure -> {
                     careteams.add(CareTeamModel())
-                    fragmentAddNewEventBinding.eventMemberSpinner.adapter =
+                   /* fragmentAddNewEventBinding.eventMemberSpinner.adapter =
                         AssignToEventAdapter(
                             this,
                             requireContext(),
                             addNewEventViewModel,
                             careteams
-                        )
+                        )*/
+                    assigneAdapter = AssigneAdapter( this,
+                        requireContext(),
+                        addNewEventViewModel,
+                        careteams)
+                    fragmentAddNewEventBinding.assigneRV.adapter = assigneAdapter
                     hideLoading()
                     it.message?.let { showError(requireContext(), it) }
 
@@ -210,12 +223,12 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 findNavController().popBackStack()
             }
             R.id.assigneET ->{
-                if(fragmentAddNewEventBinding.eventMemberSpinner.visibility == View.VISIBLE){
-                    fragmentAddNewEventBinding.eventMemberSpinner.visibility= View.GONE
+                if(fragmentAddNewEventBinding.assigneRV.visibility == View.VISIBLE){
+                    fragmentAddNewEventBinding.assigneRV.visibility= View.GONE
                     rotate(0f)
                 }
                 else{
-                    fragmentAddNewEventBinding.eventMemberSpinner.visibility= View.VISIBLE
+                    fragmentAddNewEventBinding.assigneRV.visibility= View.VISIBLE
                     rotate(180f)
                 }
             }
@@ -319,6 +332,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     override fun onSelected(position: Int) {
         careteams[position].isSelected = !careteams[position].isSelected
+        Handler(Looper.myLooper()!!).post { assigneAdapter!!.notifyDataSetChanged() }
+
+
         val assignee :ArrayList<String> = arrayListOf()
         assignee.clear()
         for(i in careteams){
@@ -342,14 +358,31 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         val mTimePicker = TimePickerDialog(
             context,R.style.datepicker,
             { _, hourOfDay, selectedMinute ->
-                fragmentAddNewEventBinding.tvTime.text =
-                    String.format("%02d:%02d", hourOfDay, selectedMinute)
-
-                if (hourOfDay < 12) {
-                    setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
-                } else {
-                    setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                //check event time for future events  only
+                if(fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty()){
+                    showError(requireContext(),"Please select new CarePoint date first.")
+                    fragmentAddNewEventBinding.tvDate.requestFocus()
                 }
+                else{
+                    var selectedDateTime = fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ").plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
+                    val currentDateTime = SimpleDateFormat("dd-MM-yyyy HH:mm").format(Calendar.getInstance().time)
+
+                    val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
+                    if(dateFormat.parse(selectedDateTime)!!.after(dateFormat.parse(currentDateTime))){
+                        fragmentAddNewEventBinding.tvTime.text =
+                            String.format("%02d:%02d", hourOfDay, selectedMinute)
+
+                        if (hourOfDay < 12) {
+                            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                        } else {
+                            setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                        }
+                    }
+                    else{
+                        showError(requireContext(),"Please select future time for new CarePoint.")
+                    }
+                }
+
             }, hour,
             minute, true
         )
