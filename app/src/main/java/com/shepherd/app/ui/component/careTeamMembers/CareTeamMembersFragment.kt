@@ -13,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.care_team.CareTeam
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.FragmentCareTeamMembersBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -40,9 +41,9 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private var limit: Int = 10
     private var status: Int = 1
 
-    private var careTeams: ArrayList<CareTeam>? = ArrayList()
-    private var selectedCareTeams: ArrayList<CareTeam>? = ArrayList()
-    private var searchedCareTeams: ArrayList<CareTeam>? = ArrayList()
+    private var careTeams: ArrayList<CareTeamModel>? = ArrayList()
+    private var selectedCareTeams: ArrayList<CareTeamModel>? = ArrayList()
+    private var searchedCareTeams: ArrayList<CareTeamModel>? = ArrayList()
     private var careTeamAdapter: CareTeamMembersAdapter? = null
     private var TAG = "CareTeamMembersFragment"
 
@@ -93,11 +94,11 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         fragmentCareTeamMembersBinding.imgCancel.visibility = View.VISIBLE
                         searchedCareTeams?.clear()
                         searchedCareTeams = careTeams?.filter {
-                            it.user?.firstname?.startsWith(
+                            it.love_user_id_details.firstname?.startsWith(
                                 s,
                                 true
                             ) == true
-                        } as ArrayList<CareTeam>
+                        } as ArrayList<CareTeamModel>
 
                         // Show No Care Team Found when no care team is available during search
                         if (searchedCareTeams.isNullOrEmpty()) {
@@ -138,13 +139,13 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.careTeams
+                    careTeams = it.data.payload.data
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     // Get the uuid of Care Team Leader
                     val uuidTeamLead = careTeams?.filter {
                         it.careRoles?.slug == CareRole.CareTeamLead.slug
                     }?.map {
-                        it.userId
+                        it.love_user_id_details.uid
                     }?.get(0)
                     Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
                     uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }
@@ -186,7 +187,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
 
     }
 
-    private fun openMemberDetails(navigateEvent: SingleEvent<CareTeam>) {
+    private fun openMemberDetails(navigateEvent: SingleEvent<CareTeamModel>) {
         navigateEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "openMemberDetails: CareTeam :$it")
             // Sending CareTeam object through safeArgs

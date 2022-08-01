@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.care_team.CareTeam
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.AdapterCareTeamMembersBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.view_model.CareTeamMembersViewModel
@@ -14,7 +15,7 @@ import com.squareup.picasso.Picasso
 
 class CareTeamMembersAdapter(
     private val viewModel: CareTeamMembersViewModel,
-    var careTeams: MutableList<CareTeam> = ArrayList()
+    var careTeams: MutableList<CareTeamModel> = ArrayList()
 
 ) :
     RecyclerView.Adapter<CareTeamMembersAdapter.CareTeamViewHolder>() {
@@ -24,7 +25,7 @@ class CareTeamMembersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openMemberDetails(itemData[0] as CareTeam)
+            viewModel.openMemberDetails(itemData[0] as CareTeamModel)
         }
     }
 
@@ -53,11 +54,11 @@ class CareTeamMembersAdapter(
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             val careTeam = careTeams[position]
-            itemBinding.data = careTeam
-            val firstName = careTeam.user?.firstname
-            val lastName = careTeam.user?.lastname
+//            itemBinding.data = careTeam
+            val firstName = careTeam.love_user_id_details.firstname
+            val lastName = careTeam.love_user_id_details.lastname
             val fullName = "$firstName $lastName"
-            val imageUrl = careTeam.user?.profilePhoto
+            val imageUrl = careTeam.love_user_id_details.profilePhoto
 
             itemBinding.let {
                 it.textViewCareTeamName.text = fullName
@@ -65,7 +66,7 @@ class CareTeamMembersAdapter(
                 Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(it.imageViewCareTeam)
 
-                it.textViewCareTeamRole.text = careTeam.careRoles?.name
+                it.textViewCareTeamRole.text = careTeam.careRoles.name
             }
 
             itemBinding.root.setOnClickListener {
@@ -91,7 +92,7 @@ class CareTeamMembersAdapter(
         notifyDataSetChanged()
     }*/
 
-    fun updateCareTeams(careTeams: ArrayList<CareTeam>) {
+    fun updateCareTeams(careTeams: ArrayList<CareTeamModel>) {
         this.careTeams = careTeams
         notifyDataSetChanged()
     }

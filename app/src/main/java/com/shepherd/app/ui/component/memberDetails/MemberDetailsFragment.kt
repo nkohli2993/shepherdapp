@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
-import com.shepherd.app.data.dto.care_team.CareTeam
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherd.app.databinding.FragmentMemberDetailsBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -41,7 +41,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     private lateinit var fragmentMemberDetailsBinding: FragmentMemberDetailsBinding
 
     private val args: MemberDetailsFragmentArgs by navArgs()
-    private var careTeam: CareTeam? = null
+    private var careTeam: CareTeamModel? = null
     private var selectedModule: String = ""
     private val TAG = "MemberDetailsFragment"
 
@@ -67,7 +67,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     }
 
     private fun initView() {
-        careTeam?.user.let {
+        careTeam?.love_user_id_details.let {
             // Set profile pic
             Picasso.get().load(it?.profilePhoto)
                 .placeholder(R.drawable.ic_defalut_profile_pic)
@@ -244,7 +244,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                         val loggedInUserUUID =
                             Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
-                        if (loggedInUserUUID == careTeam?.userId /*&& CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug*/) {
+                        if (loggedInUserUUID == careTeam?.love_user_id_details!!.uid /*&& CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug*/) {
                             showError(requireContext(), "You can not remove the Care Team Lead...")
                         } else {
                             careTeam?.id?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
@@ -257,18 +257,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 dialog.show()
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-
-
-                // Do not remove the Care Team Lead
-                // Check the member id should not match with the uuid of loggedIn user and slug value should not match with care_team_lead
-                /* val loggedInUserUUID =
-                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
-
-                 if (loggedInUserUUID == careTeam?.userId && CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug) {
-                     showError(requireContext(), "You can not remove the Care Team Lead...")
-                 } else {
-                     careTeam?.userId?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
-                 }*/
 
             }
             R.id.btnUpdate -> {

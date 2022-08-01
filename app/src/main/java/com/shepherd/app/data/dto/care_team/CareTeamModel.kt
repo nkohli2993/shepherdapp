@@ -1,7 +1,10 @@
 package com.shepherd.app.data.dto.care_team
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CareTeamModel(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("role_id") var role_id: Int? = null,
@@ -15,4 +18,4 @@ data class CareTeamModel(
     @SerializedName("user_id_details") var user_id_details: LoveUser = LoveUser(),
     @SerializedName("love_user_id_details") var love_user_id_details: LoveUser = LoveUser(),
     @SerializedName("is_selected") var isSelected: Boolean = false
-)
+):Parcelable

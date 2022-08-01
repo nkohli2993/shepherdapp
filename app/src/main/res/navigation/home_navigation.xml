@@ -71,7 +71,7 @@
         tools:layout="@layout/fragment_member_details">
         <argument
             android:name="care_team"
-            app:argType="com.shepherd.app.data.dto.care_team.CareTeam" />
+            app:argType="com.shepherd.app.data.dto.care_team.CareTeamModel" />
     </fragment>
 
     <fragment
