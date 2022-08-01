@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
+import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
@@ -46,6 +47,12 @@ class LockBoxViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>>()
     var getSearchedUploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> =
         _getSearchedUploadedLockBoxDocResponseLiveData
+
+    // Get Searched Uploaded Lock Box Response Live Data
+    private var _deleteLockBoxDocResponseLiveData =
+        MutableLiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>>()
+    var deleteLockBoxDocResponseLiveData: LiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>> =
+        _deleteLockBoxDocResponseLiveData
 
     // Uploaded Lock Box Live Data
     private val _openUploadedLockBoxDocInfo = MutableLiveData<SingleEvent<LockBox>>()
@@ -117,6 +124,25 @@ class LockBoxViewModel @Inject constructor(
             }
         }
         return getSearchedUploadedLockBoxDocResponseLiveData
+    }
+
+    // Delete upload lockBox by ID
+    fun deleteAddedLockBoxDocumentBYID(
+        id: Int
+    ): LiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>> {
+        //get lovedOne UUID from shared Pref
+        val lovedOneUUId = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = lovedOneUUId?.let {
+                lockBoxRepository.deleteUploadedLockBoxDoc(id)
+            }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _deleteLockBoxDocResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return deleteLockBoxDocResponseLiveData
     }
 
 

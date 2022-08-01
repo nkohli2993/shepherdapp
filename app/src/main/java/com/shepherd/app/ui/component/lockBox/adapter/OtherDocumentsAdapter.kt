@@ -1,12 +1,17 @@
 package com.shepherd.app.ui.component.lockBox.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.databinding.AdapterOtherDocumentsBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
+import com.shepherd.app.utils.ClickType
 import com.shepherd.app.utils.extensions.toTextFormat
 import com.shepherd.app.view_model.LockBoxViewModel
 
@@ -36,7 +41,7 @@ class OtherDocumentsAdapter(
                 parent,
                 false
             )
-        return OtherDocumentsViewHolder(binding)
+        return OtherDocumentsViewHolder(binding, context)
     }
 
     override fun getItemCount(): Int {
@@ -48,7 +53,10 @@ class OtherDocumentsAdapter(
     }
 
 
-    class OtherDocumentsViewHolder(private val itemBinding: AdapterOtherDocumentsBinding) :
+    class OtherDocumentsViewHolder(
+        private val itemBinding: AdapterOtherDocumentsBinding,
+        val context: Context
+    ) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(lockBox: LockBox, recyclerItemListener: RecyclerItemListener) {
@@ -62,15 +70,57 @@ class OtherDocumentsAdapter(
             itemBinding.let {
                 it.txtTitle.text = lockBox.name
                 it.txtUploadedDate.text = formattedString
-
             }
 
+            itemBinding.imgMore.setOnClickListener {
+                openDocumentOptions(
+                    absoluteAdapterPosition,
+                    itemBinding.imgMore,
+                    context,
+                    recyclerItemListener,
+                    lockBox
+                )
+            }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     lockBox
                 )
             }
         }
+
+        private fun openDocumentOptions(
+            position: Int,
+            optionsImg: AppCompatImageView,
+            context: Context,
+            recyclerItemListener: RecyclerItemListener,
+            lockBox: LockBox
+        ) {
+
+            val popup = PopupMenu(context, optionsImg)
+            popup.inflate(R.menu.options_menu)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.view_document -> {
+                        lockBox.clickType = ClickType.View.value
+                        recyclerItemListener.onItemSelected(
+                            lockBox
+                        )
+                        true
+                    }
+                    R.id.delete_document -> {
+                        lockBox.clickType = ClickType.Delete.value
+                        lockBox.deletePosition = position
+                        recyclerItemListener.onItemSelected(
+                            lockBox
+                        )
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
+
     }
 
 
@@ -83,13 +133,19 @@ class OtherDocumentsAdapter(
     }
 
     fun addData(lockBoxList: ArrayList<LockBox>, isSearchData: Boolean) {
-//        this.lockBoxList.clear()
         if (isSearchData) {
             this.lockBoxList = lockBoxList
         } else {
             this.lockBoxList.addAll(lockBoxList)
         }
         notifyDataSetChanged()
+    }
+
+    fun setList(lockBoxList: ArrayList<LockBox>) {
+        this.lockBoxList = lockBoxList
+        notifyDataSetChanged()
+
+
     }
 
 }

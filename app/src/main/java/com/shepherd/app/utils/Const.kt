@@ -73,3 +73,8 @@ enum class CalendarState(val value: Int) {
     Week(2),
     Month(3)
 }
+
+enum class ClickType(val value: Int){
+    View(1),
+    Delete(2)
+}

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.databinding.AdapterAddMedicineListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.ui.component.addNewMedication.AddMedicationViewModel
+import com.shepherd.app.view_model.AddMedicationViewModel
 
 
 class AddMedicineListAdapter(

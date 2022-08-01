@@ -1,5 +1,8 @@
 package com.shepherd.app.ui.component.lockBox
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -22,9 +25,11 @@ import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.lockBox.adapter.OtherDocumentsAdapter
 import com.shepherd.app.ui.component.lockBox.adapter.RecommendedDocumentsAdapter
+import com.shepherd.app.utils.ClickType
 import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.hideKeyboard
 import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.LockBoxViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     View.OnClickListener {
+
 
     private val TAG: String = "LockBoxFragment"
     private val lockBoxViewModel: LockBoxViewModel by viewModels()
@@ -54,7 +60,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     var totalPage: Int = 0
     var total: Int = 0
     var pageCount: Int = 0
-
+    private var deletePostion: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +70,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         fragmentLockboxBinding =
             FragmentLockboxBinding.inflate(inflater, container, false)
 
-        lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
+        //   lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         return fragmentLockboxBinding.root
     }
 
@@ -182,6 +188,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         pageNumber = 1
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun observeViewModel() {
         observe(lockBoxViewModel.openUploadedDocDetail, ::openUploadedDocDetail)
         observe(lockBoxViewModel.createRecommendedLockBoxDocLiveData, ::createRecommendedLockBoxDoc)
@@ -201,6 +208,34 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     lockBoxTypes = it.data.payload?.lockBoxTypes
                     if (lockBoxTypes.isNullOrEmpty()) return@observeEvent
                     recommendedDocumentsAdapter?.addData(lockBoxTypes!!)
+                }
+            }
+        }
+        lockBoxViewModel.deleteLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showInfo(requireContext(), getString(R.string.lockbox_deleted_successfully))
+                    //remove from list
+                    lockBoxList!!.removeAt(deletePostion)
+                    otherDocumentsAdapter!!.setList(lockBoxList!!)
+                    otherDocumentsAdapter!!.notifyDataSetChanged()
+                    if (lockBoxList.isNullOrEmpty()) {
+                        fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
+                        fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
+                            View.VISIBLE
+                    } else {
+                        fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
+                        fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
+                    }
+
                 }
             }
         }
@@ -297,9 +332,27 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     private fun openUploadedDocDetail(navigateEvent: SingleEvent<LockBox>) {
         navigateEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "Uploaded Doc detail :$it")
-            // Sending CareTeam object through safeArgs
-            val action = LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(it)
-            findNavController().navigate(action)
+            if (it.clickType == ClickType.View.value) {
+                val action = LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(it)
+                findNavController().navigate(action)
+            } else {
+                //show delete dialog
+                val builder = AlertDialog.Builder(requireContext())
+                val dialog = builder.apply {
+                    setTitle("Delete LockBox Document")
+                    setMessage("Sure you want to delete this LockBox document")
+                    setPositiveButton("Yes") { _, _ ->
+                        deletePostion = it.deletePosition!!
+                        lockBoxViewModel.deleteAddedLockBoxDocumentBYID(it.id!!)
+                    }
+                    setNegativeButton("Cancel") { _, _ ->
+
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+            }
+
         }
     }
 

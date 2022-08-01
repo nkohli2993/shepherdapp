@@ -20,6 +20,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_2sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
                 android:src="@drawable/ic_dots"
                 app:layout_constraintBottom_toBottomOf="parent"

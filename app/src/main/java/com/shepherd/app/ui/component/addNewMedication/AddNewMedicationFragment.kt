@@ -15,6 +15,7 @@ import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
 import com.shepherd.app.utils.*
 import com.google.android.material.snackbar.Snackbar
+import com.shepherd.app.view_model.AddMedicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 

@@ -1,4 +1,4 @@
-package com.shepherd.app.ui.component.addNewMedication
+package com.shepherd.app.view_model
 
 import android.content.Context
 import androidx.annotation.VisibleForTesting

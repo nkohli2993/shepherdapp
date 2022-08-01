@@ -15,7 +15,6 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
-import com.shepherd.app.data.dto.care_team.CareTeam
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.databinding.FragmentAddNewEventBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -30,7 +29,6 @@ import com.shepherd.app.view_model.AddNewEventViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.data.dto.care_team.CareTeamModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_add_new_event.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

@@ -2,13 +2,16 @@ package com.shepherd.app.ui.component.lockBoxDocInfo.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.load.Options
 import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.imageview.ShapeableImageView
 import com.shepherd.app.R
@@ -54,7 +57,6 @@ class UploadedDocumentImagesAdapter(
         else if(list!![position].url!!.lowercase().endsWith(".pdf")||list!![position].url!!.lowercase().endsWith(".pdf/x")||list!![position].url!!.lowercase().endsWith(".pdf/a")||list!![position].url!!.lowercase().endsWith(".pdf/e")) {
             imageView.setImageResource(R.drawable.ic_pdf)
             imageView.visibility = View.VISIBLE
-
         }
         else if(list!![position].url!!.lowercase().endsWith(".doc") || list!![position].url!!.lowercase().endsWith(".docm")  || list!![position].url!!.lowercase().endsWith(".docx") || list!![position].url!!.lowercase().endsWith(".txt")){
             imageView.setImageResource(R.drawable.ic_doc)
@@ -73,5 +75,24 @@ class UploadedDocumentImagesAdapter(
         container.removeView(`object` as ConstraintLayout)
     }
 
+    private fun getThumbnail(fileLink :String){
+        val file = File(fileLink)
+        val bitmapOptions = BitmapFactory.Options()
+        bitmapOptions.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(file.absolutePath, bitmapOptions);
+        val desiredWidth = 400
+        val desiredHeight = 300
+        val widthScale = bitmapOptions.outWidth/desiredWidth
+        val heightScale = bitmapOptions.outHeight/desiredHeight
+        val scale = widthScale.coerceAtMost(heightScale);
+        var sampleSize = 1
+        while (sampleSize < scale) {
+            sampleSize *= 2
+        }
+        bitmapOptions.inSampleSize = sampleSize
+        bitmapOptions.inJustDecodeBounds = false
+        val thumbnail = BitmapFactory.decodeFile(file.absolutePath, bitmapOptions)
+        Log.e("catch_exception","bitmap: $thumbnail")
+    }
 
 }

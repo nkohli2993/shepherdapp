@@ -552,7 +552,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         file = if (uri.toString().startsWith("content")) {
                             CommonFunctions.fileFromContentUri(
                                 requireContext().applicationContext,
-                                uri.toString().toString().toUri()
+                                uri.toString().toUri()
                             )
                         } else {
                             File(uri.toString())
@@ -573,6 +573,5 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 }
             }
         }
-
 }
 
