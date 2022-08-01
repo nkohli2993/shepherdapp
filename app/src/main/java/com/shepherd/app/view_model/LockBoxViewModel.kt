@@ -41,6 +41,12 @@ class LockBoxViewModel @Inject constructor(
     var getUploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> =
         _getUploadedLockBoxDocResponseLiveData
 
+    // Get Searched Uploaded Lock Box Response Live Data
+    private var _getSearchedUploadedLockBoxDocResponseLiveData =
+        MutableLiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>>()
+    var getSearchedUploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> =
+        _getSearchedUploadedLockBoxDocResponseLiveData
+
     // Uploaded Lock Box Live Data
     private val _openUploadedLockBoxDocInfo = MutableLiveData<SingleEvent<LockBox>>()
     val openUploadedDocDetail: LiveData<SingleEvent<LockBox>> get() = _openUploadedLockBoxDocInfo
@@ -88,6 +94,31 @@ class LockBoxViewModel @Inject constructor(
         }
         return getUploadedLockBoxDocResponseLiveData
     }
+
+    // Search All Uploaded Lock Box Documents by Loved One UUID
+    fun searchAllLockBoxUploadedDocumentsByLovedOneUUID(
+        pageNumber: Int,
+        limit: Int,
+        search: String
+    ): LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> {
+        //get lovedOne UUID from shared Pref
+        val lovedOneUUId = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = lovedOneUUId?.let {
+                lockBoxRepository.searchAllUploadedDocumentsByLovedOneUUID(
+                    pageNumber, limit,
+                    it, search
+                )
+            }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _getSearchedUploadedLockBoxDocResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return getSearchedUploadedLockBoxDocResponseLiveData
+    }
+
 
     fun openLockBoxDocDetail(lockBox: LockBox) {
         _openUploadedLockBoxDocInfo.value = SingleEvent(lockBox)

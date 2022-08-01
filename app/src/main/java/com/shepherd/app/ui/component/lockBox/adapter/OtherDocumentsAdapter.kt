@@ -82,9 +82,13 @@ class OtherDocumentsAdapter(
         return position
     }
 
-    fun addData(lockBoxList: ArrayList<LockBox>) {
-        this.lockBoxList.clear()
-        this.lockBoxList.addAll(lockBoxList)
+    fun addData(lockBoxList: ArrayList<LockBox>, isSearchData: Boolean) {
+//        this.lockBoxList.clear()
+        if (isSearchData) {
+            this.lockBoxList = lockBoxList
+        } else {
+            this.lockBoxList.addAll(lockBoxList)
+        }
         notifyDataSetChanged()
     }
 

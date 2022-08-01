@@ -78,11 +78,11 @@
                     android:gravity="center_vertical"
                     android:hint="@string/search"
                     android:imeOptions="actionDone"
-                    android:textColorHint="@color/_192032"
                     android:inputType="textCapSentences"
                     android:maxLines="1"
                     android:paddingHorizontal="@dimen/_12sdp"
                     android:textColor="@android:color/black"
+                    android:textColorHint="@color/_192032"
                     android:textSize="@dimen/_11ssp" />
 
                 <ImageView
