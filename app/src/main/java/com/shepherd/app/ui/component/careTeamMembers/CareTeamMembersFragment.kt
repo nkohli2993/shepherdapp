@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.care_team.CareTeam
 import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.FragmentCareTeamMembersBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -145,7 +144,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     val uuidTeamLead = careTeams?.filter {
                         it.careRoles?.slug == CareRole.CareTeamLead.slug
                     }?.map {
-                        it.love_user_id_details.uid
+                        it.user_id
                     }?.get(0)
                     Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
                     uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }

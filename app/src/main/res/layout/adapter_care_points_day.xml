@@ -74,7 +74,7 @@
                 android:id="@+id/recyclerViewEvents"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toEndOf="@+id/ivMessage"
