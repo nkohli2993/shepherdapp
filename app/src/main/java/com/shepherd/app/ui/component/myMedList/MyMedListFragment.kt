@@ -6,22 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import com.shepherd.app.R
 import androidx.navigation.fragment.findNavController
-import com.shepherd.app.data.Resource
-import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
-import com.shepherd.app.databinding.FragmentMyMedlistBinding
-import com.shepherd.app.ui.base.BaseFragment
-import com.shepherd.app.ui.component.myMedList.adapter.MyMedicationsAdapter
-import com.shepherd.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
-import com.shepherd.app.utils.*
-import com.shepherd.app.view_model.MedListViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
+import com.shepherd.app.R
+import com.shepherd.app.data.dto.med_list.Medlist
+import com.shepherd.app.databinding.FragmentMyMedlistBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
+import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.ui.component.myMedList.adapter.MyMedicationsAdapter
+import com.shepherd.app.utils.SingleEvent
+import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.setupSnackbar
+import com.shepherd.app.utils.showToast
+import com.shepherd.app.view_model.MyMedListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import java.util.*
@@ -33,9 +36,18 @@ import java.util.*
 @AndroidEntryPoint
 class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
-    private val medListViewModel: MedListViewModel by viewModels()
+    private val medListViewModel: MyMedListViewModel by viewModels()
+    private var myMedicationsAdapter: MyMedicationsAdapter? = null
 
     private lateinit var myMedlistBinding: FragmentMyMedlistBinding
+    private var pageNumber = 1
+    private val limit = 10
+    var currentPage: Int = 0
+    var totalPage: Int = 0
+    var total: Int = 0
+    var pageCount: Int = 0
+    var medLists: ArrayList<Medlist> = arrayListOf()
+
 
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
@@ -47,6 +59,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         myMedlistBinding =
             FragmentMyMedlistBinding.inflate(inflater, container, false)
 
+        medListViewModel.getAllMedLists(pageNumber, limit)
         return myMedlistBinding.root
     }
 
@@ -143,10 +156,34 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     override fun observeViewModel() {
-//        observe(medListViewModel._medicalConditionResponseLiveData, ::handleLoginResult)
-        observeSnackBarMessages(medListViewModel.showSnackBar)
-        observeToast(medListViewModel.showToast)
 //        observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
+        // Observe Get All Med List Live Data
+        medListViewModel.getMedListResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.payload.let { payload ->
+                        medLists = payload?.medlists!!
+                        total = payload.total!!
+                        currentPage = payload.currentPage!!
+                        totalPage = payload.totalPages!!
+
+                    }
+
+                    if (medLists.isNullOrEmpty()) return@observeEvent
+                    myMedicationsAdapter?.addData(medLists)
+
+                }
+            }
+        }
+
     }
 
     private fun navigateToMedDetail(navigateEvent: SingleEvent<String>) {
@@ -155,17 +192,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         }
     }
 
-    private fun handleLoginResult(status: Resource<MedicalConditionResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
-
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { medListViewModel.showToastMessage(it) }
-            }
-        }
-    }
 
     private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
         myMedlistBinding.root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
@@ -176,14 +202,14 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     private fun setMyMedicationsAdapter() {
-        val myMedicationsAdapter = MyMedicationsAdapter(medListViewModel)
+        myMedicationsAdapter = MyMedicationsAdapter(medListViewModel)
         myMedlistBinding.recyclerViewMyMedications.adapter = myMedicationsAdapter
 
     }
 
     private fun setSelectedDayMedicineAdapter() {
-        val selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
-        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
+//        val selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
+//        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
 
     }
 

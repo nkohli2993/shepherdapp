@@ -5,14 +5,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.data.dto.dashboard.DashboardModel
+import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.view_model.MedListViewModel
+import com.shepherd.app.view_model.MyMedListViewModel
 
 
 class MyMedicationsAdapter(
-    private val viewModel: MedListViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    private val viewModel: MyMedListViewModel,
+    var medLists: MutableList<Medlist> = ArrayList()
 ) :
     RecyclerView.Adapter<MyMedicationsAdapter.MyMedicationsViewHolder>() {
     lateinit var binding: AdapterMyMedicationsListBinding
@@ -41,7 +42,7 @@ class MyMedicationsAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 6
+        return medLists.size
     }
 
     override fun onBindViewHolder(holder: MyMedicationsViewHolder, position: Int) {
@@ -71,9 +72,9 @@ class MyMedicationsAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+    fun addData(medLists: ArrayList<Medlist>) {
+//        this.requestList.clear()
+        this.medLists.addAll(medLists)
         notifyDataSetChanged()
     }
 

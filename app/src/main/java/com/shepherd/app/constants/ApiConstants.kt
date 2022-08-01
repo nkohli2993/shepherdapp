@@ -82,5 +82,9 @@ object ApiConstants {
         const val DELETE_UPLOADED_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
         const val UPDATE_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
     }
+
+    object MedList {
+        const val GET_ALL_MED_LIST ="$BASE_URL${API_VERSION}medlists"
+    }
 }
 
