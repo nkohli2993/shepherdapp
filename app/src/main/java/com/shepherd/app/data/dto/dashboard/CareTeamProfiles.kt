@@ -13,7 +13,7 @@ data class CareTeamProfiles (
     @SerializedName("role_id"         ) var roleId         : Int?              = null,
     @SerializedName("permission"      ) var permission     : String?           = null,
     @SerializedName("status"          ) var status         : Boolean?          = null,
-    @SerializedName("user"            ) var user           : User?             = User(),
+    @SerializedName("user_id_details" ) var user           : User?             = User(),
     @SerializedName("love_user"       ) var loveUser       : LoveUser?         = LoveUser(),
     @SerializedName("care_roles"      ) var careRoles      : CareRoles?        = CareRoles(),
     @SerializedName("care_conditions" ) var careConditions : ArrayList<CareCondition> = arrayListOf()

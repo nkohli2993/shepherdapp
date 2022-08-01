@@ -67,7 +67,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     }
 
     private fun initView() {
-        careTeam?.love_user_id_details.let {
+        careTeam?.user_id_details.let {
             // Set profile pic
             Picasso.get().load(it?.profilePhoto)
                 .placeholder(R.drawable.ic_defalut_profile_pic)
@@ -85,7 +85,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 it?.address ?: "No address available"
             // Set Phone Number
             val phone = "+" + it?.phone
-            val phoneArr = it?.phone?.split(" ")
+            val phoneArr = it?.phone?.split("-")
             val phoneCode = phoneArr?.get(0)
             val phoneNumber = phoneArr?.get(1)
             //val phoneWithHyphen = phoneNumber?.let { it1 -> getStringWithHyphen(it1) }

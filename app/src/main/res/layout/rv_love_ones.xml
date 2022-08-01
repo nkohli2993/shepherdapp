@@ -75,13 +75,14 @@
                 app:layout_constraintStart_toStartOf="@id/textViewCareTeamName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />
 
-            <CheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
+                android:button="@drawable/checkbox_selector"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
