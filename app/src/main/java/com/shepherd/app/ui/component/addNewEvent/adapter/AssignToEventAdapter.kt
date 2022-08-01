@@ -63,7 +63,10 @@ class AssignToEventAdapter(
         vh.checkbox.setOnCheckedChangeListener { compoundButton, b ->
             onListener.onSelected(position)
         }
-
+        vh.clEventWrapper.setOnClickListener {
+            vh.checkbox.isChecked = !vh.checkbox.isChecked
+            onListener.onSelected(position)
+        }
         return view
     }
 
@@ -74,7 +77,6 @@ class AssignToEventAdapter(
         val checkbox: CheckBox
         val imageViewCareTeam: ImageView
         val clEventWrapper: ConstraintLayout
-
         init {
             textViewCareTeamName = row?.findViewById(R.id.textViewCareTeamName) as TextView
             textViewCareTeamRole = row.findViewById(R.id.textViewCareTeamRole) as TextView
