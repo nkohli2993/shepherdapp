@@ -401,5 +401,6 @@
     <string name="view">View</string>
     <string name="lockbox_deleted_successfully">LockBox Document deleted successfully…</string>
     <string name="rationale_external_storage">This app needs access to your external storage so you can upload documents</string>
+    <string name="document_name">Document Name</string>
 
 </resources>

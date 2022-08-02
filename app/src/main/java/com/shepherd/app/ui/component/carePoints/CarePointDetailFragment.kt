@@ -70,7 +70,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     private fun setCommentAdapter() {
         //set comment adapter added in list
-        commentAdapter = CarePointEventCommentAdapter(commentList,carePointsViewModel)
+        commentAdapter = CarePointEventCommentAdapter(commentList, carePointsViewModel)
         fragmentCarePointDetailBinding.recyclerViewChat.adapter = commentAdapter
     }
 
@@ -103,7 +103,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                         EventCommentUserDetailModel(
                             event_id = id ?: 0,
                             comment = fragmentCarePointDetailBinding.editTextMessage.text.toString(),
-                            created_at = it.data.payload.created_at ,
+                            created_at = it.data.payload.created_at,
                             user_details = UserAssigneDetail(
                                 id = carePointsViewModel.getUserDetail()?.id,
                                 firstname = carePointsViewModel.getUserDetail()?.firstname,
@@ -155,6 +155,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     @SuppressLint("SimpleDateFormat")
     private fun initCarePointDetailViews(payload: AddedEventModel) {
         fragmentCarePointDetailBinding.let {
+            it.llImageWrapper.visibility = View.VISIBLE
             it.tvTitleCarePoint.text = payload.name
             it.tvLocation.text = payload.location
             val carePointDate = SimpleDateFormat("yyyy-MM-dd").parse(payload.date!!)!!
@@ -176,22 +177,23 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(fragmentCarePointDetailBinding.imageViewUser)
             fragmentCarePointDetailBinding.tvUsername.text =
-                payload.loved_one_user_id_details.firstname.plus(" ").plus(payload.loved_one_user_id_details.lastname)
+                payload.loved_one_user_id_details.firstname.plus(" ")
+                    .plus(payload.loved_one_user_id_details.lastname)
             // show created on time
-            val dateTime = (payload.created_at?:"").replace(".000Z","").replace("T"," ")
+            val dateTime = (payload.created_at ?: "").replace(".000Z", "").replace("T", " ")
             val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
                 dateTime
             )
             val df =
                 SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH)
             df.timeZone = TimeZone.getTimeZone("UTC")
-            val date: Date = df.parse(SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(commentTime!!))!!
+            val date: Date =
+                df.parse(SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(commentTime!!))!!
             df.timeZone = TimeZone.getDefault()
             it.tvPostedDate.text = SimpleDateFormat("EEE, MMM dd").format(date);
-            if((payload.notes?:"").length>50){
-                setNotesClickForLong(payload.notes!!,true)
-            }
-            else{
+            if ((payload.notes ?: "").length > 50) {
+                setNotesClickForLong(payload.notes!!, true)
+            } else {
                 it.tvNotes.text = payload.notes
             }
             it.editTextMessage.visibility = View.VISIBLE
@@ -233,31 +235,35 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
     }
 
-    private fun setNotesClickForLong(notes:String,isSpanned:Boolean){
-        val showNotes = if(isSpanned){
-            notes.substring(0,50).plus(" ... View more.")
-        }
-        else{
+    private fun setNotesClickForLong(notes: String, isSpanned: Boolean) {
+        val showNotes = if (isSpanned) {
+            notes.substring(0, 50).plus(" ... View more.")
+        } else {
             notes.plus(" ... View less.")
         }
         val ss = SpannableString(showNotes)
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
 
             override fun onClick(p0: View) {
-               //click to show whole note
-                setNotesClickForLong(notes,!isSpanned)
+                //click to show whole note
+                setNotesClickForLong(notes, !isSpanned)
             }
+
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
                 ds.isUnderlineText = false
                 ds.isFakeBoldText = true
             }
         }
-        if(showNotes.length<=65){
+        if (showNotes.length <= 65) {
             ss.setSpan(clickableSpan, 50, 65, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        }
-        else{
-            ss.setSpan(clickableSpan, showNotes.length-15, showNotes.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        } else {
+            ss.setSpan(
+                clickableSpan,
+                showNotes.length - 15,
+                showNotes.length,
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
         }
 
         fragmentCarePointDetailBinding.tvNotes.text = ss
