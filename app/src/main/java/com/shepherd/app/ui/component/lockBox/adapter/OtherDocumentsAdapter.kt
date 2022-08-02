@@ -1,7 +1,6 @@
 package com.shepherd.app.ui.component.lockBox.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -81,11 +80,11 @@ class OtherDocumentsAdapter(
                     lockBox
                 )
             }
-            itemBinding.root.setOnClickListener {
+            /*itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     lockBox
                 )
-            }
+            }*/
         }
 
         private fun openDocumentOptions(
