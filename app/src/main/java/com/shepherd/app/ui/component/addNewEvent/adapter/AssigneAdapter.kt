@@ -48,16 +48,12 @@ class AssigneAdapter(
                 .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(itemBinding.imageViewCareTeam)
 
-//            itemBinding.checkbox.isChecked = false
-//            if (memberList[position].isSelected) {
-//                itemBinding.checkbox.isChecked = true
-//            }
-
-            itemBinding.checkbox.setOnCheckedChangeListener { compoundButton, b ->
-                onListener.onSelected(position)
+            itemBinding.checkbox.isChecked = false
+            if (memberList[position].isSelected) {
+                itemBinding.checkbox.isChecked = true
             }
             itemBinding.clEventWrapper.setOnClickListener {
-//                onListener.onSelected(position)
+                onListener.onSelected(position)
             }
         }
     }
