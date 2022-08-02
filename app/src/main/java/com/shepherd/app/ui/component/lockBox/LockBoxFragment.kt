@@ -51,6 +51,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     private var pageNumber = 1
     private val limit = 10
+    private var isSearch = false
 
     var lockBoxTypes: ArrayList<LockBoxTypes>? = arrayListOf()
     var lockBoxList: ArrayList<LockBox>? = arrayListOf()
@@ -93,6 +94,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             fragmentLockboxBinding.editTextSearch.setText("")
             fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
             resetPageNumber()
+            isSearch = true
             lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         }
 
@@ -256,6 +258,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    lockBoxList?.clear()
                     it.data.payload.let {
                         lockBoxList = it?.lockBox
                         total = it?.total!!
@@ -269,7 +272,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     } else {
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
-                        lockBoxList?.let { it1 -> otherDocumentsAdapter?.addData(it1, false) }
+                        lockBoxList?.let { it1 -> otherDocumentsAdapter?.addData(it1, isSearch) }
                     }
                 }
             }

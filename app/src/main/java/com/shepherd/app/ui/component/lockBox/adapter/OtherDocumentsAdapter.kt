@@ -143,8 +143,6 @@ class OtherDocumentsAdapter(
     fun setList(lockBoxList: ArrayList<LockBox>) {
         this.lockBoxList = lockBoxList
         notifyDataSetChanged()
-
-
     }
 
 }
