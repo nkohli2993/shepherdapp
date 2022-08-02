@@ -78,7 +78,7 @@ object ApiConstants {
         /* const val GET_ALL_UPLOADED_DOCUMENTS_BY_LOVED_ONE_UUID =
              "$BASE_URL${API_VERSION}lockboxs/loved_one"*/
         const val GET_ALL_UPLOADED_DOCUMENTS_BY_LOVED_ONE_UUID =
-            "$BASE_URL${API_VERSION}lockboxs"
+            "$BASE_URL${API_VERSION}lockboxs/loved_one"
         const val DELETE_UPLOADED_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
         const val UPDATE_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
     }
