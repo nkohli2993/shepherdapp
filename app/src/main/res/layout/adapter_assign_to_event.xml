@@ -11,9 +11,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/_12sdp"
-        android:clickable="true"
         android:background="@color/colorWhite"
+        android:clickable="true"
+        android:paddingHorizontal="@dimen/_12sdp"
         android:paddingVertical="@dimen/_8sdp">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -22,9 +22,9 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_medium"
             android:text="@string/select"
-            android:visibility="gone"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/checkbox_selector"
+                android:clickable="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,25 +68,25 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewCareTeamName"
-                android:fontFamily="@font/gotham_book"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:layout_toStartOf="@+id/checkbox"
+                android:fontFamily="@font/gotham_book"
                 android:text="@string/app_name"
                 android:textColor="@color/colorBlack"
                 android:textSize="@dimen/_14ssp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewCareTeamRole"
-                android:fontFamily="@font/gotham_book"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/gotham_book"
                 android:text="@string/care_team_leader"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"

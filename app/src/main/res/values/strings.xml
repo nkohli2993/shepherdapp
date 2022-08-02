@@ -402,5 +402,8 @@
     <string name="lockbox_deleted_successfully">LockBox Document deleted successfully…</string>
     <string name="rationale_external_storage">This app needs access to your external storage so you can upload documents</string>
     <string name="document_name">Document Name</string>
+    <string name="new_care_point_added_successfully">New carePoint added successfully…</string>
+    <string name="please_select_new_care_point_date_firts">Please select new CarePoint date first.</string>
+    <string name="please_select_future_time">Please select future time for new CarePoint.</string>
 
 </resources>
