@@ -18,7 +18,6 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
-import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.login.UserLovedOne
@@ -88,10 +87,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-        if(BuildConfig.DEBUG){
+       /* if(BuildConfig.DEBUG){
             loginViewModel.loginData.value!!.email = "karam@yopmail.com"
             loginViewModel.loginData.value!!.password = "Admin@123"
-        }
+        }*/
         binding.viewModel = loginViewModel
 
         // Handle the click of Show or Hide Password Icon
