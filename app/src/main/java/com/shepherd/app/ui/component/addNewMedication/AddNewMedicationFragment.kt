@@ -5,18 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
-import com.shepherd.app.data.Resource
-import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.FragmentAddNewMedicationBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
-import com.shepherd.app.utils.*
-import com.google.android.material.snackbar.Snackbar
+import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.AddMedicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.ArrayList
 
 
 /**
@@ -29,6 +29,14 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private val addMedicationViewModel: AddMedicationViewModel by viewModels()
 
     private lateinit var fragmentAddNewMedicationBinding: FragmentAddNewMedicationBinding
+    private var pageNumber = 1
+    private val limit = 10
+    private var addMedicineListAdapter: AddMedicineListAdapter? = null
+    var currentPage: Int = 0
+    var totalPage: Int = 0
+    var total: Int = 0
+    var pageCount: Int = 0
+    var medLists: ArrayList<Medlist> = arrayListOf()
 
 
     override fun onCreateView(
@@ -44,39 +52,44 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun initViewBinding() {
         fragmentAddNewMedicationBinding.listener = this
+        addMedicationViewModel.getAllMedLists(pageNumber, limit)
+
         setMedicineListAdapter()
     }
 
     override fun observeViewModel() {
-        observe(addMedicationViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(addMedicationViewModel.showSnackBar)
-        observeToast(addMedicationViewModel.showToast)
-    }
 
+        // Observe Get All Med List Live Data
+        addMedicationViewModel.getMedListResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.payload.let { payload ->
+                        medLists = payload?.medlists!!
+                        total = payload.total!!
+                        currentPage = payload.currentPage!!
+                        totalPage = payload.totalPages!!
 
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
+                    }
 
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { addMedicationViewModel.showToastMessage(it) }
+                    if (medLists.isNullOrEmpty()) return@observeEvent
+                    addMedicineListAdapter?.addData(medLists)
+
+                }
             }
         }
     }
 
-    private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
-        fragmentAddNewMedicationBinding.root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
-    }
-
-    private fun observeToast(event: LiveData<SingleEvent<Any>>) {
-        fragmentAddNewMedicationBinding.root.showToast(this, event, Snackbar.LENGTH_LONG)
-    }
-
 
     private fun setMedicineListAdapter() {
-        val addMedicineListAdapter = AddMedicineListAdapter(addMedicationViewModel)
+        addMedicineListAdapter = AddMedicineListAdapter(addMedicationViewModel)
         fragmentAddNewMedicationBinding.recyclerViewMedicine.adapter = addMedicineListAdapter
     }
 

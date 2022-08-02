@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.AdapterAddMedicineListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.view_model.AddMedicationViewModel
@@ -11,7 +12,7 @@ import com.shepherd.app.view_model.AddMedicationViewModel
 
 class AddMedicineListAdapter(
     private val viewModel: AddMedicationViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    var medLists: MutableList<Medlist> = ArrayList()
 ) :
     RecyclerView.Adapter<AddMedicineListAdapter.AddMedicineListViewHolder>() {
     lateinit var binding: AdapterAddMedicineListBinding
@@ -20,7 +21,7 @@ class AddMedicineListAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-           // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
         }
     }
 
@@ -36,23 +37,22 @@ class AddMedicineListAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return requestList.size
+        return medLists.size
     }
 
     override fun onBindViewHolder(holder: AddMedicineListViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(medLists[position], onItemClickListener)
     }
 
 
     class AddMedicineListViewHolder(private val itemBinding: AdapterAddMedicineListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: String, recyclerItemListener: RecyclerItemListener) {
-           // itemBinding.data = dashboard
+        fun bind(medList: Medlist, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = medList
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    dashboard
+                    medList
                 )
             }
         }
@@ -67,10 +67,8 @@ class AddMedicineListAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+    fun addData(medLists: ArrayList<Medlist>) {
+        this.medLists.addAll(medLists)
         notifyDataSetChanged()
     }
-
 }

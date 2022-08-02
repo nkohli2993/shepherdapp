@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.shepherd.app.data.dto.med_list.Medlist" />
 
     </data>
 
@@ -43,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/gotham_medium"
-                android:text="Acetaminophen"
+                android:text="@{data.name}"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
