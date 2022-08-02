@@ -57,10 +57,12 @@ class CarePointEventCommentAdapter(
                     .into(it.imageViewUser)
                 if(commentData.user_details.id == carePointsViewModel.getUserDetail()?.id){
                     it.tvUsername.text = "Me"
+                    it.viewCL.setBackgroundResource(R.drawable.rounded_box_green)
                 }
                 else{
                     it.tvUsername.text = commentData.user_details.firstname.plus(" ")
                         .plus(commentData.user_details.lastname)
+                    it.viewCL.setBackgroundResource(R.drawable.rounded_box_grey)
                 }
 
                 it.appCompatTextViewMessage.text = commentData.comment

@@ -61,11 +61,9 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         return fragmentCarePointsBinding.root
     }
 
-    @SuppressLint("SimpleDateFormat")
-    override fun initViewBinding() {
-        typeFaceGothamBold = ResourcesCompat.getFont(requireContext(), R.font.gotham_bold)
-        typeFaceGothamBook = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
-        fragmentCarePointsBinding.listener = this
+    override fun onResume() {
+        super.onResume()
+        fragmentCarePointsBinding.calendarPView.clearSelection()
         clickType = CalendarState.Today.value
         fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBold
         fragmentCarePointsBinding.tvWeek.typeface = typeFaceGothamBook
@@ -85,8 +83,12 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         fragmentCarePointsBinding.calendarPView.clearSelection()
         val cal = Calendar.getInstance()
         fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
-
-
+    }
+    @SuppressLint("SimpleDateFormat")
+    override fun initViewBinding() {
+        typeFaceGothamBold = ResourcesCompat.getFont(requireContext(), R.font.gotham_bold)
+        typeFaceGothamBook = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
+        fragmentCarePointsBinding.listener = this
 
         fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
             fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
@@ -251,6 +253,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.calendarPView.setDateSelected(calendar, true)
                 startDate = sdf!!.format(calendar.time)
                 endDate = sdf!!.format(calendar.time)
+                fragmentCarePointsBinding.calendarPView.selectionMode =
+                    MaterialCalendarView.SELECTION_MODE_SINGLE
                 getCarePointList(startDate, endDate)
             }
             R.id.tv_week -> {
@@ -259,7 +263,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.tvMonth.typeface = typeFaceGothamBook
                 clickType = CalendarState.Week.value
                 fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
-
+                fragmentCarePointsBinding.calendarPView.selectionMode =
+                    MaterialCalendarView.SELECTION_MODE_SINGLE
                 setColorBasedOnCarePOintsType(
                     fragmentCarePointsBinding.tvWeek,
                     fragmentCarePointsBinding.tvToday,

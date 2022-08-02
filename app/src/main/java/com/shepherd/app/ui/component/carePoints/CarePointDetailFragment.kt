@@ -9,6 +9,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -50,7 +51,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         return fragmentCarePointDetailBinding.root
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentCarePointDetailBinding.listener = this
         id = args.source
@@ -58,6 +59,13 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         setCommentAdapter()
         carePointsViewModel.getCarePointsDetailId(id ?: 0)
         carePointsViewModel.getCarePointsEventCommentsId(pageNumber, limit, id ?: 0)
+        fragmentCarePointDetailBinding.tvNotes.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            when (event.action and MotionEvent.ACTION_MASK) {
+                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            false
+        }
     }
 
     private fun setCommentAdapter() {
@@ -169,7 +177,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 .into(fragmentCarePointDetailBinding.imageViewUser)
             fragmentCarePointDetailBinding.tvUsername.text =
                 payload.loved_one_user_id_details.firstname.plus(" ").plus(payload.loved_one_user_id_details.lastname)
-            // shwo created on time
+            // show created on time
             val dateTime = (payload.created_at?:"").replace(".000Z","").replace("T"," ")
             val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
                 dateTime
@@ -186,7 +194,14 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             else{
                 it.tvNotes.text = payload.notes
             }
-
+            it.editTextMessage.visibility = View.VISIBLE
+            it.sendCommentIV.visibility = View.VISIBLE
+            if (payload.user_assignes.size == 1) {
+                if (payload.user_assignes[0].user_details.id == carePointsViewModel.getUserDetail()?.id) {
+                    it.editTextMessage.visibility = View.GONE
+                    it.sendCommentIV.visibility = View.GONE
+                }
+            }
         }
     }
 

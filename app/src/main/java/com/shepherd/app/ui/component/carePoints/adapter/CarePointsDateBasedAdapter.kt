@@ -57,24 +57,31 @@ class CarePointsDateBasedAdapter(
         fun bind(position: Int) {
             val carePoints = carePointList[position]
             itemBinding.data = carePoints
-            if(carePoints.time!=null){
+            if (carePoints.time != null) {
                 val carePointDate = SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
-                    carePoints.date.plus(" ").plus(carePoints.time?.replace(" ",""))
+                    carePoints.date.plus(" ").plus(carePoints.time?.replace(" ", ""))
                 )
                 itemBinding.timeTV.text = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             }
             itemBinding.root.setOnClickListener {
-                listener.selectedCarePoint( carePointList[position].id!!)
+                listener.selectedCarePoint(carePointList[position].id!!)
             }
             itemBinding.view.visibility = View.VISIBLE
-            if(position+1 == carePointList.size){
+            if (position + 1 == carePointList.size) {
                 itemBinding.view.visibility = View.GONE
             }
             //show assigns in event
             itemBinding.assigneCountTV.visibility = View.VISIBLE
-            if(carePoints.user_assignes.size>3){
+            if (carePoints.user_assignes.size > 3) {
                 itemBinding.assigneCountTV.visibility = View.VISIBLE
-                itemBinding.assigneCountTV.text = "+${carePoints.user_assignes.size-3}"
+                itemBinding.assigneCountTV.text = "+${carePoints.user_assignes.size - 3}"
+            }
+            //check assignee and remove chat multiple
+            itemBinding.ivMessage.visibility = View.VISIBLE
+            if (carePoints.user_assignes.size == 1) {
+                if (carePoints.user_assignes[0].user_details.id == viewModel.getUserDetail()?.id) {
+                    itemBinding.ivMessage.visibility = View.GONE
+                }
             }
             setCarePointsAdapter(binding.recyclerViewEvents, carePoints.user_assignes)
         }
@@ -88,7 +95,7 @@ class CarePointsDateBasedAdapter(
         return position
     }
 
-    interface OnCarePointSelected{
-        fun selectedCarePoint(id:Int)
+    interface OnCarePointSelected {
+        fun selectedCarePoint(id: Int)
     }
 }

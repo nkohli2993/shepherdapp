@@ -206,7 +206,7 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
             .with(LassiOption.CAMERA_AND_GALLERY)
             .setMaxCount(5)
             .setGridSize(3)
-            .setMediaType(MediaType.DOC) // MediaType : VIDEO IMAGE, AUDIO OR DOC
+            .setMediaType(MediaType.FILE_TYPE_WITH_SYSTEM_VIEW) // MediaType : VIDEO IMAGE, AUDIO OR DOC
             .setPlaceHolder(com.lassi.R.drawable.ic_image_placeholder)
             .setErrorDrawable(com.lassi.R.drawable.ic_image_placeholder)
             .setSelectionDrawable(com.lassi.R.drawable.ic_checked_media)

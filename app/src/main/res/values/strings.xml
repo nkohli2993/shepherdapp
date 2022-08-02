@@ -387,8 +387,8 @@
     <string name="google_drive">Google Drive</string>
     <string name="local_storage">Local Storage</string>
     <string name="gallery">Gallery</string>
-    <string name="enter_file_name">Please enter file name...</string>
-    <string name="enter_note">Please enter note...</string>
+    <string name="enter_file_name">Please enter file name…</string>
+    <string name="enter_note">Please enter note…</string>
     <string name="google_drive_upload">Google driver</string>
     <string name="no_uploaded_lock_box_files_found">No Uploaded Lock Box Files Found</string>
     <string name="me">Me</string>
@@ -399,5 +399,7 @@
     <string name="uploaded_documents">Uploaded Documents</string>
     <string name="upload_five_documents">You can upload only five documents at a time</string>
     <string name="view">View</string>
-    <string name="lockbox_deleted_successfully">LockBox Document deleted successfully...</string>
+    <string name="lockbox_deleted_successfully">LockBox Document deleted successfully…</string>
+    <string name="rationale_external_storage">This app needs access to your external storage so you can upload documents</string>
+
 </resources>

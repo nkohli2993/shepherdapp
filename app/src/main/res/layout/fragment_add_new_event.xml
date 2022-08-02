@@ -42,7 +42,7 @@
             app:layout_constraintStart_toEndOf="@+id/ivBack"
             app:layout_constraintTop_toTopOf="@+id/ivBack" />
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -170,6 +170,7 @@
                         android:focusableInTouchMode="false"
                         android:fontFamily="@font/gotham_medium"
                         android:hint="@string/select"
+                        android:inputType="textMultiLine"
                         android:maxLines="10"
                         android:onClick="@{listener::onClick}"
                         android:paddingHorizontal="@dimen/_8sdp"
@@ -202,14 +203,17 @@
                     android:id="@+id/assigneRV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:background="@color/colorWhite"
-                    android:visibility="gone" />
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
                 <Spinner
                     android:id="@+id/eventMemberSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:spinnerMode="dropdown"
                     android:visibility="gone" />
 
 
@@ -349,6 +353,7 @@
                         android:gravity="top|start"
                         android:hint="@string/write"
                         android:lines="8"
+                        android:maxLength="700"
                         android:padding="@dimen/_10sdp"
                         android:textColor="@color/_192032"
                         android:textColorHint="@color/_192032"
@@ -375,7 +380,7 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

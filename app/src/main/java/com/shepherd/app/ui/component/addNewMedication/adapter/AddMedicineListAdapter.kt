@@ -37,7 +37,7 @@ class AddMedicineListAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 10
+        return requestList.size
     }
 
     override fun onBindViewHolder(holder: AddMedicineListViewHolder, position: Int) {

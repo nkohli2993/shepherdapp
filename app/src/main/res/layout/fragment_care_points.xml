@@ -135,7 +135,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/headerCl"
                     app:mcv_firstDayOfWeek="monday"
                     app:mcv_selectionColor="@color/_399282"
-                    app:mcv_showOtherDates="none" />
+                    app:mcv_showOtherDates="all" />
 
                 <View
                     android:layout_width="0dp"

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -15,25 +13,26 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
-import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.databinding.FragmentAddNewEventBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
-import com.shepherd.app.ui.component.addNewEvent.adapter.AssigneAdapter
 import com.shepherd.app.utils.*
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.AddNewEventViewModel
+import com.google.android.material.snackbar.Snackbar
+import com.shepherd.app.data.dto.care_team.CareTeamModel
+import com.shepherd.app.ui.component.addNewEvent.adapter.AssigneAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -42,8 +41,8 @@ import java.util.*
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat")
 class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
-    View.OnClickListener, AssigneAdapter.selectedTeamMember,
-    DatePickerDialog.OnDateSetListener, AssignToEventAdapter.selectedTeamMember {
+    View.OnClickListener, AssignToEventAdapter.selectedTeamMember,
+    DatePickerDialog.OnDateSetListener {
 
     private var assigneAdapter: AssigneAdapter? = null
     private val addNewEventViewModel: AddNewEventViewModel by viewModels()
@@ -136,7 +135,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     )*/
                     assigneAdapter = AssigneAdapter( this,
                         requireContext(),
-                        addNewEventViewModel,
                         careteams)
                     fragmentAddNewEventBinding.assigneRV.adapter = assigneAdapter
 
@@ -154,7 +152,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         )*/
                     assigneAdapter = AssigneAdapter( this,
                         requireContext(),
-                        addNewEventViewModel,
                         careteams)
                     fragmentAddNewEventBinding.assigneRV.adapter = assigneAdapter
                     hideLoading()
@@ -332,8 +329,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     override fun onSelected(position: Int) {
         careteams[position].isSelected = !careteams[position].isSelected
-        Handler(Looper.myLooper()!!).post { assigneAdapter!!.notifyDataSetChanged() }
 
+       /* if (!fragmentAddNewEventBinding.assigneRV.isComputingLayout && fragmentAddNewEventBinding.assigneRV.scrollState == SCROLL_STATE_IDLE) {
+
+        }*/
+        assigneAdapter!!.notifyDataSetChanged()
 
         val assignee :ArrayList<String> = arrayListOf()
         assignee.clear()
