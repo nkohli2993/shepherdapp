@@ -101,10 +101,12 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgEditLockBox"
-                android:layout_width="@dimen/_15sdp"
-                android:layout_height="@dimen/_15sdp"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
                 android:layout_marginEnd="@dimen/_5sdp"
                 android:onClick="@{listener::onClick}"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_1sdp"
                 android:src="@drawable/ic_edit_lock_box_doc_info"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/txtLockBoxName" />

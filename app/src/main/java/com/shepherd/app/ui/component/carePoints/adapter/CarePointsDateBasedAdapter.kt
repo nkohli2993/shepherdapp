@@ -79,7 +79,7 @@ class CarePointsDateBasedAdapter(
             //check assignee and remove chat multiple
             itemBinding.ivMessage.visibility = View.VISIBLE
             if (carePoints.user_assignes.size == 1) {
-                if (carePoints.user_assignes[0].user_details.id == viewModel.getUserDetail()?.id) {
+                if (carePoints.user_assignes[0].user_details.id == viewModel.getUserDetail()?.userId) {
                     itemBinding.ivMessage.visibility = View.GONE
                 }
             }

@@ -405,5 +405,7 @@
     <string name="new_care_point_added_successfully">New carePoint added successfully…</string>
     <string name="please_select_new_care_point_date_firts">Please select new CarePoint date first.</string>
     <string name="please_select_future_time">Please select future time for new CarePoint.</string>
+    <string name="view_more"> … View more.</string>
+    <string name="view_less"> … View more.</string>
 
 </resources>

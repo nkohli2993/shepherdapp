@@ -63,7 +63,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_90sdp"
                     android:layout_marginTop="@dimen/_8sdp"
-                    android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
                     android:scrollbarThumbVertical="@color/colorWhite"
                     android:scrollbars="vertical"

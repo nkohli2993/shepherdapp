@@ -199,7 +199,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             it.editTextMessage.visibility = View.VISIBLE
             it.sendCommentIV.visibility = View.VISIBLE
             if (payload.user_assignes.size == 1) {
-                if (payload.user_assignes[0].user_details.id == carePointsViewModel.getUserDetail()?.id) {
+                if (payload.user_assignes[0].user_details.id == carePointsViewModel.getUserDetail()?.userId) {
                     it.editTextMessage.visibility = View.GONE
                     it.sendCommentIV.visibility = View.GONE
                 }
@@ -253,6 +253,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 super.updateDrawState(ds)
                 ds.isUnderlineText = false
                 ds.isFakeBoldText = true
+                ds.color = resources.getColor(R.color._399282)
+                ds.linkColor = resources.getColor(R.color._399282)
             }
         }
         if (showNotes.length <= 65) {

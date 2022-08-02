@@ -42,9 +42,14 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
             FragmentLovedOnesBinding.inflate(inflater, container, false)
 
         // Get care Teams for loggedIn User
-        lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+
 
         return fragmentLovedOnesBinding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
     }
 
     override fun observeViewModel() {
