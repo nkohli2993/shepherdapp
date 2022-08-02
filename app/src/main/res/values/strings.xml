@@ -407,5 +407,6 @@
     <string name="please_select_future_time">Please select future time for new CarePoint.</string>
     <string name="view_more"> … View more.</string>
     <string name="view_less"> … View more.</string>
+    <string name="send">Send</string>
 
 </resources>

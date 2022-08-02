@@ -244,7 +244,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         isFileFormatValid =
                             FileValidator().validate(selectedFileList!![i].toString())
 
-                        if (!isFileFormatValid) return
+                        if (!isFileFormatValid) break
                     }
                     if (!isFileFormatValid) {
                         showError(
