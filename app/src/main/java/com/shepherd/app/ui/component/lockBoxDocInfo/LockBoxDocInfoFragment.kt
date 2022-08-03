@@ -1,7 +1,9 @@
 package com.shepherd.app.ui.component.lockBoxDocInfo
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -17,6 +19,7 @@ import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.lockBoxDocInfo.adapter.UploadedDocumentImagesAdapter
 import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.LockBoxDocInfoViewModel
 import com.squareup.picasso.Picasso
@@ -51,6 +54,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         return fragmentUploadedLockBoxDocDetailBinding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentUploadedLockBoxDocDetailBinding.listener = this
         lockBox = args.lockBox
@@ -67,6 +71,13 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 layoutEditLockBoxDocDetail.visibility = View.VISIBLE
 
             }
+        }
+        fragmentUploadedLockBoxDocDetailBinding.edtNote.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            when (event.action and MotionEvent.ACTION_MASK) {
+                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            false
         }
 
         documentImagesAdapter =
@@ -113,6 +124,9 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
+            R.id.tvShare ->{
+                showInfo(requireContext(),getString(R.string.not_implmented))
+            }
             R.id.ivBack -> {
                 backPress()
             }

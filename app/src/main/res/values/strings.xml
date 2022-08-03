@@ -408,5 +408,6 @@
     <string name="view_more"> … View more.</string>
     <string name="view_less"> … View more.</string>
     <string name="send">Send</string>
+    <string name="not_implmented">Not Implemented</string>
 
 </resources>

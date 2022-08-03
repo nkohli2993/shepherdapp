@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.added_events.EventCommentUserDetailModel
 import com.shepherd.app.databinding.AdapterCommentBinding
+import com.shepherd.app.utils.extensions.toTextFormat
 import com.shepherd.app.view_model.CreatedCarePointsViewModel
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat

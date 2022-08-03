@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.lockBox
 
 import CommonFunctions
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
@@ -10,10 +11,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -115,9 +113,18 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         return fragmentAddNewLockBoxBinding.root
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentAddNewLockBoxBinding.listener = this
         setUploadedFilesAdapter()
+        fragmentAddNewLockBoxBinding.edtNote.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            when (event.action and MotionEvent.ACTION_MASK) {
+                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            false
+        }
+
     }
 
     override fun observeViewModel() {
@@ -130,7 +137,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 is DataResult.Failure -> {
                     hideLoading()
                     dialog?.dismiss()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    it.message?.let { showError(requireContext(), it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -200,13 +207,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
         dialog?.dismiss()
-        this.selectedFileList = selectedFiles
+        val uploadSelectedFiles = selectedFiles
+        selectedFileList!!.addAll(uploadSelectedFiles!!)
         if (!selectedFiles.isNullOrEmpty()) {
-            Log.d(TAG, "handleSelectedFiles: $selectedFiles")
             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
             fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
                 View.GONE
-            uploadedFilesAdapter?.addData(selectedFiles)
+            uploadedFilesAdapter?.addData(uploadSelectedFiles)
         } else {
             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
             fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
@@ -458,6 +465,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private val selectImagesActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
+
+                showLoading("Fetching file, Please wait")
                 val data: Intent? = result.data
                 val driveSelectedFileList: ArrayList<File> = arrayListOf()
                 if (data?.clipData != null) {
@@ -490,7 +499,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
                             View.VISIBLE
                     }
-
+                    hideLoading()
 
                 }
                 //If single image selected
@@ -507,18 +516,21 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         } else {
                             File(uri.toString())
                         }
-                        selectedFileList!!.add(file!!)
+                        val fileSelectedUpload: ArrayList<File> = arrayListOf()
+                        fileSelectedUpload.add(file!!)
+                        selectedFileList!!.addAll(fileSelectedUpload)
                         if (selectedFileList!!.size > 0) {
                             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
                                 View.VISIBLE
                             fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
                                 View.GONE
-                            uploadedFilesAdapter?.addData(selectedFileList!!)
+                            uploadedFilesAdapter?.addData(fileSelectedUpload)
                         } else {
                             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
                             fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
                                 View.VISIBLE
                         }
+                        hideLoading()
                     }
                 }
             }
