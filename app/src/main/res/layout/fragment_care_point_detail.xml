@@ -91,7 +91,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitleCarePoint"
-            tools:itemCount="2"
+            tools:itemCount="3"
             tools:listitem="@layout/adapter_events_members" />
 
 

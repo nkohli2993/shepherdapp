@@ -105,7 +105,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                             comment = fragmentCarePointDetailBinding.editTextMessage.text.toString(),
                             created_at = it.data.payload.created_at,
                             user_details = UserAssigneDetail(
-                                id = carePointsViewModel.getUserDetail()?.id,
+                                id = carePointsViewModel.getUserDetail()?.userId,
                                 firstname = carePointsViewModel.getUserDetail()?.firstname,
                                 lastname = carePointsViewModel.getUserDetail()?.lastname,
                                 profilePhoto = carePointsViewModel.getUserDetail()?.profilePhoto
