@@ -330,6 +330,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             setMessage("Are you sure you want to remove the uploaded lock box doc?")
             setPositiveButton("Yes") { _, _ ->
                 uploadedFilesAdapter?.removeData(file)
+                selectedFileList?.remove(file)
             }
             setNegativeButton("No") { _, _ ->
             }
