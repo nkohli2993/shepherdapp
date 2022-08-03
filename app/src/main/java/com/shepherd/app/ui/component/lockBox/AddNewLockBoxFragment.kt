@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -32,7 +31,6 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
-import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.shepherd.app.databinding.FragmentAddNewLockBoxBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -239,7 +237,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
             R.id.btnDone -> {
                 if (isValid) {
-                    var isFileFormatValid: Boolean = false
+                    var isFileFormatValid = false
                     for (i in selectedFileList?.indices!!) {
                         isFileFormatValid =
                             FileValidator().validate(selectedFileList!![i].toString())
@@ -351,9 +349,14 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             REQUEST_CODE_SIGN_IN
         )
     }
+
     @AfterPermissionGranted(REQUEST_CODE_OPEN_DOCUMENT)
     private fun methodRequiresTwoPermission() {
-        val perms = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val perms = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
         if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
             openMultipleDocPicker()
 
@@ -364,6 +367,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             )
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         when (requestCode) {
             REQUEST_CODE_SIGN_IN -> {
@@ -416,6 +420,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         }
         super.onActivityResult(requestCode, resultCode, resultData)
     }
+
     private fun handleSignInResult(result: Intent) {
         GoogleSignIn.getSignedInAccountFromIntent(result)
             .addOnSuccessListener { googleAccount: GoogleSignInAccount ->
