@@ -94,14 +94,10 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             fragmentLockboxBinding.editTextSearch.setText("")
             fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
             resetPageNumber()
-<<<<<<< HEAD
 //            isSearch = true
             isSearch = false
             lockBoxList!!.clear()
 
-=======
-            isSearch = false
->>>>>>> 8c1ffcdb91963b23ea3877c5828ea5b4f0ec6e52
             lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         }
 
