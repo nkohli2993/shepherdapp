@@ -114,7 +114,11 @@
         android:id="@+id/nav_schedule_medication"
         android:name="com.shepherd.app.ui.component.schedule_medicine.ScheduleMedicineFragment"
         android:label="@string/schedule_medicine"
-        tools:layout="@layout/fragment_schedulwe_medicine" />
+        tools:layout="@layout/fragment_schedulwe_medicine" >
+        <argument
+            android:name="medlist"
+            app:argType="com.shepherd.app.data.dto.med_list.Medlist[]" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_medication_details"

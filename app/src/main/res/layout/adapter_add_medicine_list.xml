@@ -28,30 +28,21 @@
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/_10sdp">
 
-            <CheckBox
+            <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/cbReminder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:background="@drawable/checkbox_background"
-                android:button="@null"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:fontFamily="@font/gotham_medium"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:button="@drawable/checkbox_selector"
+                android:fontFamily="@font/gotham_book"
+                android:gravity="start"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="@dimen/_10sdp"
                 android:text="@{data.name}"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/cbReminder"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

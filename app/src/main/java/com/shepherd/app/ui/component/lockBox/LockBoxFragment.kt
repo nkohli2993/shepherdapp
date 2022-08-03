@@ -55,12 +55,10 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     var lockBoxTypes: ArrayList<LockBoxTypes>? = arrayListOf()
     var lockBoxList: ArrayList<LockBox>? = arrayListOf()
-    var searchedLockBoxList: ArrayList<LockBox>? = arrayListOf()
     var search: String? = null
     var currentPage: Int = 0
     var totalPage: Int = 0
     var total: Int = 0
-    var pageCount: Int = 0
     private var deletePostion: Int = -1
 
     override fun onCreateView(
