@@ -101,51 +101,6 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         }
 
-        // Local Search
-        /* fragmentLockboxBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
-             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-             }
-
-             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-             }
-
-             override fun afterTextChanged(s: Editable?) {
-                 if (s != null) {
-                     if (s.isNotEmpty()) {
-                         fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
-                         searchedLockBoxList?.clear()
-                         searchedLockBoxList = lockBoxList?.filter {
-                             it.name?.startsWith(
-                                 s,
-                                 true
-                             ) == true
-                         } as ArrayList<LockBox>
-
-                         // Show No Uploaded Doc Found when Doc is available during search
-                         if (searchedLockBoxList.isNullOrEmpty()) {
-                             fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
-                             fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
-                                 View.VISIBLE
-                         } else {
-                             fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
-                             fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
-                                 View.GONE
-                         }
-
-                         searchedLockBoxList.let {
-                             it?.let { it1 -> otherDocumentsAdapter?.addData(it1) }
-                         }
-                     } else {
-                         lockBoxList?.let { otherDocumentsAdapter?.addData(it) }
-                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
-                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
-                             View.GONE
-                     }
-                 }
-             }
-
-         })*/
-
         fragmentLockboxBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -154,6 +109,12 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 if (s.toString().isEmpty()) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
                     fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                    resetPageNumber()
+//            isSearch = true
+                    isSearch = false
+                    lockBoxList!!.clear()
+
+                    lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
                 } else {
                     fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
                     fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.GONE
