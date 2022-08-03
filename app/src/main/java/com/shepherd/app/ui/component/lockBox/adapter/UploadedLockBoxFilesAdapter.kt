@@ -13,7 +13,6 @@ import java.util.*
 
 class UploadedLockBoxFilesAdapter(
     private val viewModel: AddNewLockBoxViewModel,
-//    var lockBoxList: MutableList<LockBox> = ArrayList()
     var selectedFiles: MutableList<File> = ArrayList()
 ) :
     RecyclerView.Adapter<UploadedLockBoxFilesAdapter.UploadedDocumentsViewHolder>() {

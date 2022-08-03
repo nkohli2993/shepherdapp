@@ -260,19 +260,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
-                R.id.nav_lock_box_doc_info -> {
-                   /* clTopWrapper.isVisible = true
-                    clEndWrapper.isVisible = true
-                    clHomeWrapper.isVisible = false
-                    tvNew.isVisible = false
-                    tvShare.isVisible = true
-                    tvShare.apply {
-                        isVisible = true
-                        setOnClickListener {
-                            showInfo(applicationContext, "Send Clicked")
-                        }
-                    }*/
-                }
                 R.id.nav_care_team -> {
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.careteam)
