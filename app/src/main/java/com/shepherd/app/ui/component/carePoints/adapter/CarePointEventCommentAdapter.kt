@@ -56,7 +56,7 @@ class CarePointEventCommentAdapter(
                 Picasso.get().load(commentData.user_details.profilePhoto)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(it.imageViewUser)
-                if(commentData.user_details.id == carePointsViewModel.getUserDetail()?.id){
+                if(commentData.user_details.id == carePointsViewModel.getUserDetail()?.userId){
                     it.tvUsername.text = "Me"
                     it.viewCL.setBackgroundResource(R.drawable.rounded_box_green)
                 }

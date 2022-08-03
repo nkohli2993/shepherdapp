@@ -65,7 +65,7 @@
                 android:id="@+id/ivMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingEnd="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_5sdp"
                 android:paddingStart="@dimen/_1sdp"
                 android:src="@drawable/ic_care_point_message"
                 android:visibility="gone"
