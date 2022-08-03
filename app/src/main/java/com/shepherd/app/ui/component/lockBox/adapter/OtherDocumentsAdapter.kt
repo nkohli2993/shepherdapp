@@ -63,7 +63,7 @@ class OtherDocumentsAdapter(
             val formattedString = createdAt?.toTextFormat(
                 createdAt,
                 "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                "MMM dd, yyyy"
+                "MMMM dd, yyyy"
             )
 
             itemBinding.let {

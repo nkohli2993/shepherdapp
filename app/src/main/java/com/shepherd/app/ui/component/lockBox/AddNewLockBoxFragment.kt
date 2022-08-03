@@ -139,7 +139,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 is DataResult.Failure -> {
                     hideLoading()
                     dialog?.dismiss()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    it.message?.let { showError(requireContext(), it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -209,13 +209,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
         dialog?.dismiss()
-        this.selectedFileList = selectedFiles
+        val uploadSelectedFiles = selectedFiles
+        selectedFileList!!.addAll(uploadSelectedFiles!!)
         if (!selectedFiles.isNullOrEmpty()) {
-            Log.d(TAG, "handleSelectedFiles: $selectedFiles")
             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
             fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
                 View.GONE
-            uploadedFilesAdapter?.addData(selectedFiles)
+            uploadedFilesAdapter?.addData(uploadSelectedFiles)
         } else {
             fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
             fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =

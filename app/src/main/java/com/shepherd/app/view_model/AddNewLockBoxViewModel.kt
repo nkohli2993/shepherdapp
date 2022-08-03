@@ -1,5 +1,6 @@
 package com.shepherd.app.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -76,6 +77,7 @@ class AddNewLockBoxViewModel @Inject constructor(
 
     // Upload multiple lock box document
     fun uploadMultipleLockBoxDoc(files: ArrayList<File>): LiveData<Event<DataResult<UploadMultipleLockBoxDoxResponseModel>>> {
+        Log.e("TAG", "uploadMultipleLockBoxDoc: ${files.size}")
         viewModelScope.launch {
             val response = lockBoxRepository.uploadMultipleLockBoxDoc(files)
             withContext(Dispatchers.Main) {
