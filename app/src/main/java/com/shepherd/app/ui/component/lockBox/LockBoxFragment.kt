@@ -149,12 +149,17 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (s.toString().isEmpty()) {
-//                    showInfo(requireContext(), "Please enter some text to search")
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
                     fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
                 } else {
                     fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
                     fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.GONE
+                    //Hit search api
+                    lockBoxViewModel.searchAllLockBoxUploadedDocumentsByLovedOneUUID(
+                        pageNumber,
+                        limit,
+                        s.toString()
+                    )
                 }
             }
 
