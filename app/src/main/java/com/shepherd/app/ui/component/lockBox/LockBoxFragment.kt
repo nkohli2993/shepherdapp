@@ -94,7 +94,10 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             fragmentLockboxBinding.editTextSearch.setText("")
             fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
             resetPageNumber()
-            isSearch = true
+//            isSearch = true
+            isSearch = false
+            lockBoxList!!.clear()
+
             lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         }
 
@@ -301,21 +304,21 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    searchedLockBoxList?.clear()
-                    searchedLockBoxList = it.data.payload?.lockBox
+                    lockBoxList?.clear()
+                    lockBoxList = it.data.payload?.lockBox
                     it.data.payload.let { it1 ->
                         totalPage = it1?.totalPages!!
                         total = it1.total!!
                         currentPage = it1.currentPage!!
                     }
-                    if (searchedLockBoxList.isNullOrEmpty()) {
+                    if (lockBoxList.isNullOrEmpty()) {
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
                             View.VISIBLE
                     } else {
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
-                        searchedLockBoxList?.let { it1 ->
+                        lockBoxList?.let { it1 ->
                             otherDocumentsAdapter?.addData(
                                 it1,
                                 true
