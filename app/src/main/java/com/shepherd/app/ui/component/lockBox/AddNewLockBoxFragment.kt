@@ -331,6 +331,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             setPositiveButton("Yes") { _, _ ->
                 selectedFileList!!.remove(file)
                 uploadedFilesAdapter?.removeData(file)
+                selectedFileList?.remove(file)
             }
             setNegativeButton("No") { _, _ ->
             }
