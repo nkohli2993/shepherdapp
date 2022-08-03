@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/_5sdp"
         android:padding="@dimen/_2sdp"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_defalut_profile_pic"
         app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toTopOf="parent"

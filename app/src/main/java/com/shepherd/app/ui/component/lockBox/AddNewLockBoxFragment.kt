@@ -85,12 +85,12 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private val isValid: Boolean
         get() {
             when {
-                fragmentAddNewLockBoxBinding.edtFileName.text.toString().isEmpty() -> {
+                fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim().isEmpty() -> {
                     fragmentAddNewLockBoxBinding.edtFileName.error =
                         getString(R.string.enter_file_name)
                     fragmentAddNewLockBoxBinding.edtFileName.requestFocus()
                 }
-                fragmentAddNewLockBoxBinding.edtNote.text.toString().isEmpty() -> {
+                fragmentAddNewLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
                     fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
                 }
 
@@ -244,7 +244,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         isFileFormatValid =
                             FileValidator().validate(selectedFileList!![i].toString())
 
-                        if (!isFileFormatValid) return
+                        if (!isFileFormatValid) break
                     }
                     if (!isFileFormatValid) {
                         showError(

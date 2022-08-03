@@ -57,12 +57,15 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         fragmentUploadedLockBoxDocDetailBinding.let {
             it.txtLockBoxName.text = lockBox?.name
             it.txtLockBoxNote.text = lockBox?.note
+            it.edtFileName.setText(lockBox?.name)
+            it.edtNote.setText(lockBox?.note)
             Picasso.get().load(lockBox?.documentUrl).placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(imgDoc)
             // Click edit lock box icon
             it.imgEditLockBox.setOnClickListener {
                 layoutDocDetail.visibility = View.GONE
                 layoutEditLockBoxDocDetail.visibility = View.VISIBLE
+
             }
         }
 

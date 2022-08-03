@@ -68,10 +68,10 @@ class CarePointsListEventAdapter(
             val imageUrl = commentList[position].user_details.profilePhoto ?: ""
             itemBinding.let {
                 if (!imageUrl.isNullOrEmpty()) {
-                    Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
+                    Picasso.get().load(imageUrl).placeholder(R.drawable.default_ic)
                         .into(it.imageView)
                 } else {
-                    it.imageView.setImageResource(R.drawable.ic_defalut_profile_pic)
+                    it.imageView.setImageResource(R.drawable.default_ic)
                 }
             }
         }
