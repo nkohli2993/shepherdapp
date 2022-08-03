@@ -181,7 +181,7 @@ interface ApiService {
         @Query("status") status: Int
     ): Response<InvitationsResponseModel>
 
-    @PATCH(ApiConstants.Invitations.ACCEPT_INVITATIONS)
+    @PUT(ApiConstants.Invitations.ACCEPT_INVITATIONS)
     suspend fun acceptInvitation(@Path("id") id: Int): Response<AcceptInvitationResponseModel>
 
 
