@@ -297,7 +297,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                         "Searched Lock Box File Not Found..."
                 }
                 is DataResult.Loading -> {
-                    showLoading("")
+                  //  showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
