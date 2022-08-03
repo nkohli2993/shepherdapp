@@ -45,27 +45,27 @@
             android:id="@+id/tv_location"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="@font/gotham_book"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp"
-            app:layout_constraintBottom_toBottomOf="@id/recyclerViewEventAssigne"
             app:layout_constraintEnd_toStartOf="@id/recyclerViewEventAssigne"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/recyclerViewEventAssigne" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitleCarePoint" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_date"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/gotham_bold"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toStartOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recyclerViewEventAssigne" />
+            app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_time"
@@ -74,6 +74,7 @@
             android:fontFamily="@font/gotham_medium"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/_399282"
+            android:gravity="end"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date"
             app:layout_constraintEnd_toEndOf="parent"

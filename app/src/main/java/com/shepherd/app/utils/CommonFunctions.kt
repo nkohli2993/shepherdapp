@@ -33,6 +33,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -234,7 +235,7 @@ object CommonFunctions {
 
         // Creating Temp file
         val name = if(fileName.length>30){
-            "temp_file_$fileExtension".plus(".$fileExtension")
+            "temp_file_${Calendar.getInstance().timeInMillis}$fileExtension".plus(".$fileExtension")
         }
         else{
             fileName

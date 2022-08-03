@@ -33,7 +33,7 @@
         android:layout_height="@dimen/_70sdp"
         android:fontFamily="@font/gotham_book"
         android:textColor="@color/_192032"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_13ssp"
         android:lineSpacingExtra="@dimen/_4sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

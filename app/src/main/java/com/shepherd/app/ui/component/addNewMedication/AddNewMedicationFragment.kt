@@ -1,12 +1,15 @@
 package com.shepherd.app.ui.component.addNewMedication
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.FragmentAddNewMedicationBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -15,6 +18,7 @@ import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.AddMedicationViewModel
+import com.shepherd.app.view_model.MyMedListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 
@@ -37,7 +41,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     var total: Int = 0
     var pageCount: Int = 0
     var medLists: ArrayList<Medlist> = arrayListOf()
-
+    private val medListViewModel: MyMedListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,11 +54,31 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         return fragmentAddNewMedicationBinding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        medListViewModel.getAllMedLists(pageNumber,limit)
+    }
     override fun initViewBinding() {
         fragmentAddNewMedicationBinding.listener = this
         addMedicationViewModel.getAllMedLists(pageNumber, limit)
 
         setMedicineListAdapter()
+        // Search Care Team Members
+        fragmentAddNewMedicationBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s != null) {
+
+                }
+
+            }
+        })
     }
 
     override fun observeViewModel() {
