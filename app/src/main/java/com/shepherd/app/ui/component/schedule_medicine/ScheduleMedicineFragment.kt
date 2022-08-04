@@ -13,9 +13,10 @@ import com.shepherd.app.databinding.FragmentSchedulweMedicineBinding
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.schedule_medicine.adapter.DaysAdapter
 import com.shepherd.app.utils.extensions.showInfo
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
-
+@AndroidEntryPoint
 class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
     View.OnClickListener {
     private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding

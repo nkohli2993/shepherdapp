@@ -1,10 +1,14 @@
 package com.shepherd.app.data.dto.med_list
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 01/08/22
  */
+
+@Parcelize
 data class Medlist(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("name") var name: String? = null,
@@ -13,5 +17,6 @@ data class Medlist(
     @SerializedName("is_active") var isActive: Boolean? = null,
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
-    @SerializedName("deleted_at") var deletedAt: String? = null
-)
+    @SerializedName("deleted_at") var deletedAt: String? = null,
+    @SerializedName("is_selected") var isSelected: Boolean = false
+):Parcelable

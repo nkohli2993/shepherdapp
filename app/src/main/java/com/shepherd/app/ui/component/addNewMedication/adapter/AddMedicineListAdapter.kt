@@ -1,15 +1,17 @@
 package com.shepherd.app.ui.component.addNewMedication.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.AdapterAddMedicineListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.view_model.AddMedicationViewModel
 
-
+@SuppressLint("NotifyDataSetChanged")
 class AddMedicineListAdapter(
     private val viewModel: AddMedicationViewModel,
     var medLists: MutableList<Medlist> = ArrayList()
@@ -50,6 +52,10 @@ class AddMedicineListAdapter(
 
         fun bind(medList: Medlist, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList
+            itemBinding.cbReminder.isChecked = false
+            if (medList.isSelected) {
+                itemBinding.cbReminder.isChecked = true
+            }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     medList
@@ -67,8 +73,15 @@ class AddMedicineListAdapter(
         return position
     }
 
+
     fun addData(medLists: ArrayList<Medlist>) {
         this.medLists.addAll(medLists)
         notifyDataSetChanged()
     }
+
+    fun setList(medLists: ArrayList<Medlist>) {
+        this.medLists = medLists
+        notifyDataSetChanged()
+    }
+
 }

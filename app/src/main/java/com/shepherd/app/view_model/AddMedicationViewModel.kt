@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
+import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
+import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.data.remote.med_list.MedListRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
 import com.shepherd.app.ui.base.BaseViewModel
+import com.shepherd.app.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,6 +27,9 @@ class AddMedicationViewModel @Inject constructor(
     private val medListRepository: MedListRepository
 ) :
     BaseViewModel() {
+    // Uploaded Lock Box Live Data
+    private val _selectedMedicationDetail = MutableLiveData<SingleEvent<Int>>()
+    val selectedMedicationDetail: LiveData<SingleEvent<Int>> get() = _selectedMedicationDetail
 
     private var _getMedListResponseLiveData =
         MutableLiveData<Event<DataResult<GetAllMedListResponseModel>>>()

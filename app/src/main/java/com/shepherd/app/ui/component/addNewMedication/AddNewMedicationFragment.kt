@@ -3,28 +3,28 @@ package com.shepherd.app.ui.component.addNewMedication
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.FragmentAddNewMedicationBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
+import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddMedicationViewModel
 import com.shepherd.app.view_model.MyMedListViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
-
 
 /**
- * Created by Sumit Kumar on 26-04-22
+ * Created by Nikita kohli on 08-08-22
  */
 @AndroidEntryPoint
 class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>(),
@@ -36,13 +36,12 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private var pageNumber = 1
     private val limit = 10
     private var addMedicineListAdapter: AddMedicineListAdapter? = null
-    var currentPage: Int = 0
-    var totalPage: Int = 0
-    var total: Int = 0
-    var pageCount: Int = 0
+    private var currentPage: Int = 0
+    private var totalPage: Int = 0
+    private var total: Int = 0
     var medLists: ArrayList<Medlist> = arrayListOf()
     private val medListViewModel: MyMedListViewModel by viewModels()
-
+    private val TAG: String = "Add medlist"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,8 +55,9 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun onResume() {
         super.onResume()
-        medListViewModel.getAllMedLists(pageNumber,limit)
+        medListViewModel.getAllMedLists(pageNumber, limit)
     }
+
     override fun initViewBinding() {
         fragmentAddNewMedicationBinding.listener = this
         addMedicationViewModel.getAllMedLists(pageNumber, limit)
@@ -82,7 +82,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     }
 
     override fun observeViewModel() {
-
+        observe(addMedicationViewModel.selectedMedicationDetail, ::selectedMedicationDetail)
         // Observe Get All Med List Live Data
         addMedicationViewModel.getMedListResponseLiveData.observeEvent(this) {
             when (it) {
@@ -100,7 +100,6 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         total = payload.total!!
                         currentPage = payload.currentPage!!
                         totalPage = payload.totalPages!!
-
                     }
 
                     if (medLists.isNullOrEmpty()) return@observeEvent
@@ -108,6 +107,14 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
                 }
             }
+        }
+    }
+
+    private fun selectedMedicationDetail(navigateEvent: SingleEvent<Int>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            Log.d(TAG, "selected med Detail detail : ${medLists[it].id}  ${medLists[it].name}")
+            medLists[it].isSelected = !medLists[it].isSelected
+            addMedicineListAdapter?.setList(medLists)
         }
     }
 
@@ -124,7 +131,17 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                 findNavController().popBackStack()
             }
             R.id.btnNext -> {
-                findNavController().navigate(R.id.action_add_new_medication_to_add_medication)
+                val selectedMedList:ArrayList<Medlist> = arrayListOf()
+                for(i in medLists){
+                    if(i.isSelected){
+                        selectedMedList.add(i)
+                    }
+                }
+                findNavController().navigate(
+                    AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
+                        selectedMedList.toTypedArray()
+                    )
+                )
             }
         }
     }
