@@ -6,64 +6,59 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.med_list.schedule_medlist.DayList
-import com.shepherd.app.databinding.LayoutAddMedicineListBinding
+import com.shepherd.app.data.dto.med_list.schedule_medlist.DoseList
+import com.shepherd.app.databinding.AdapterFrequencyBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.view_model.AddMedicationViewModel
 
-
-class DaysAdapter(
+class DoseAdapter (
     private val viewModel: AddMedicationViewModel,
     val context: Context,
-    var doseList: MutableList<DayList> = ArrayList()
+    var doseList: MutableList<DoseList> = ArrayList()
 ) :
-    RecyclerView.Adapter<DaysAdapter.DayViewHolder>() {
-    lateinit var binding: LayoutAddMedicineListBinding
+    RecyclerView.Adapter<DoseAdapter.AddTimeViewHolder>() {
+    lateinit var binding: AdapterFrequencyBinding
 
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.setDayData(itemData[0] as Int)
+            viewModel.setSelectedDose(itemData[0] as DoseList)
         }
     }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): DayViewHolder {
+    ): AddTimeViewHolder {
         binding =
-            LayoutAddMedicineListBinding.inflate(
+            AdapterFrequencyBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return DayViewHolder(binding)
+        return AddTimeViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        Log.e("catch_exception", "list: ${doseList.size}")
+        Log.e("catch_exception","list: ${doseList.size}")
         return doseList.size
     }
 
-    override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AddTimeViewHolder, position: Int) {
         holder.bind(doseList[position], onItemClickListener)
     }
 
 
-    inner class DayViewHolder(private val itemBinding: LayoutAddMedicineListBinding) :
+    inner class AddTimeViewHolder(private val itemBinding: AdapterFrequencyBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(timelist: DayList, recyclerItemListener: RecyclerItemListener) {
-            if ((timelist.time ?: "").isNotEmpty()) {
-                itemBinding.cbDay.text = timelist.time
-            }
-            itemBinding.cbDay.isChecked = false
-            if (timelist.isSelected) {
-                itemBinding.cbDay.isChecked = true
+        fun bind(timelist: DoseList, recyclerItemListener: RecyclerItemListener) {
+            if ((timelist.name ?: "").isNotEmpty()) {
+                itemBinding.textViewTitle.text = timelist.name
             }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    absoluteAdapterPosition
+                    timelist
                 )
             }
         }
@@ -80,7 +75,7 @@ class DaysAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addData(doseListAdded: MutableList<DayList>) {
+    fun addData(doseListAdded: MutableList<DoseList>) {
         doseList.addAll(doseListAdded)
         notifyDataSetChanged()
     }

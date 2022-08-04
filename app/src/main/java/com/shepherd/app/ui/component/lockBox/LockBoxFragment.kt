@@ -108,7 +108,6 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
                     fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
                     resetPageNumber()
-//            isSearch = true
                     isSearch = false
                     lockBoxList!!.clear()
 

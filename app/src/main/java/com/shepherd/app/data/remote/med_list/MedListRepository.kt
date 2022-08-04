@@ -1,5 +1,6 @@
 package com.shepherd.app.data.remote.med_list
 
+import com.shepherd.app.data.dto.med_list.GetAllDoseListResponseModel
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
@@ -27,6 +28,33 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
             NetworkOnlineDataRepo<GetAllMedListResponseModel, GetAllMedListResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<GetAllMedListResponseModel> {
                 return apiService.getAllMedLists(pageNumber, limit)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // search All MedLists
+    suspend fun searchMedList(
+        pageNumber: Int,
+        limit: Int,
+        search:String
+    ): Flow<DataResult<GetAllMedListResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<GetAllMedListResponseModel, GetAllMedListResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetAllMedListResponseModel> {
+                return apiService.SearchMedList(pageNumber, limit,search)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Get All DoseList
+    suspend fun getAllDoseList(
+        pageNumber: Int,
+        limit: Int
+    ): Flow<DataResult<GetAllDoseListResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<GetAllDoseListResponseModel, GetAllDoseListResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetAllDoseListResponseModel> {
+                return apiService.getAllDose(pageNumber, limit)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

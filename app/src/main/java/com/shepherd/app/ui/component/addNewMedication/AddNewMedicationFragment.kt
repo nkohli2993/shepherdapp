@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.addNewMedication
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -29,10 +30,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>(),
     View.OnClickListener {
-
-    private val addMedicationViewModel: AddMedicationViewModel by viewModels()
-
     private lateinit var fragmentAddNewMedicationBinding: FragmentAddNewMedicationBinding
+    private var isSearch: Boolean = false
+    private val addMedicationViewModel: AddMedicationViewModel by viewModels()
     private var pageNumber = 1
     private val limit = 10
     private var addMedicineListAdapter: AddMedicineListAdapter? = null
@@ -64,7 +64,19 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         addMedicationViewModel.getAllMedLists(pageNumber, limit)
 
         setMedicineListAdapter()
-        // Search Care Team Members
+
+        // Search med list
+
+        fragmentAddNewMedicationBinding.imgCancel.setOnClickListener {
+            fragmentAddNewMedicationBinding.editTextSearch.setText("")
+            pageNumber = 1
+            isSearch = false
+            medLists.clear()
+
+            addMedicationViewModel.getAllMedLists(pageNumber, limit)
+        }
+
+
         fragmentAddNewMedicationBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
@@ -74,14 +86,27 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (s != null) {
+                if (s.toString().isEmpty()) {
+                    fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
+                    pageNumber = 1
+                    isSearch = false
+                    medLists.clear()
 
+                    addMedicationViewModel.getAllMedLists(pageNumber, limit)
+                } else {
+                    fragmentAddNewMedicationBinding.imgCancel.visibility = View.VISIBLE
+                    //Hit search api
+                    addMedicationViewModel.searchMedList(
+                        pageNumber,
+                        limit,
+                        s.toString()
+                    )
                 }
-
             }
         })
     }
 
+    @SuppressLint("SetTextI18n")
     override fun observeViewModel() {
         observe(addMedicationViewModel.selectedMedicationDetail, ::selectedMedicationDetail)
         // Observe Get All Med List Live Data
@@ -104,19 +129,61 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                     }
 
                     if (medLists.isNullOrEmpty()) return@observeEvent
-                    addMedicineListAdapter?.addData(medLists)
+                    addMedicineListAdapter?.addData(medLists,isSearch)
 
                 }
             }
         }
+
+        // Observe the response of get all searched medicine list
+        addMedicationViewModel.searchMedListResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    Log.d(TAG, "Get Uploaded LockBox :${it.message} ")
+                    // If searched string is not available in the database , it returns 404
+                    fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility = View.GONE
+                    fragmentAddNewMedicationBinding.txtNoMedFound.visibility =
+                        View.VISIBLE
+                    fragmentAddNewMedicationBinding.txtNoMedFound.text =
+                        "Searched MedList Not Found..."
+                }
+                is DataResult.Loading -> {
+                    //  showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    medLists.clear()
+                    it.data.payload.let { payload ->
+                        medLists = it.data.payload?.medlists!!
+                        total = payload!!.total!!
+                        currentPage = payload.currentPage!!
+                        totalPage = payload.totalPages!!
+                    }
+                    if (medLists.isNullOrEmpty()) {
+                        fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility = View.GONE
+                        fragmentAddNewMedicationBinding.txtNoMedFound.visibility =
+                            View.VISIBLE
+                    } else {
+                        fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility =
+                            View.VISIBLE
+                        fragmentAddNewMedicationBinding.txtNoMedFound.visibility = View.GONE
+                        medLists.let { it1 ->
+                            addMedicineListAdapter?.addData(
+                                it1,
+                                true
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
     }
 
     private fun selectedMedicationDetail(navigateEvent: SingleEvent<Int>) {
         navigateEvent.getContentIfNotHandled()?.let {
-//            medLists.onEach { it.isSelected = false }
-//            medLists[it].isSelected = !medLists[it].isSelected
             selectedMedication = medLists[it]
-//            addMedicineListAdapter?.setList(medLists)
             findNavController().navigate(
                 AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
                     selectedMedication!!

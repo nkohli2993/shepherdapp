@@ -61,11 +61,22 @@ class TimeAdapter(
                 itemBinding.selectedTimeTV.text = timelist.time
             }
             itemBinding.selectedTimeTV.doOnTextChanged { text, start, before, count ->
-                if (itemBinding.selectedTimeTV.text.toString().isNotEmpty()) {
-                    if (timelist.isAmPM == "am") {
-                        setColorTimePicked(R.color._192032, R.color.colorBlackTrans50, itemBinding)
-                    } else {
-                        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032, itemBinding)
+                when {
+                    itemBinding.selectedTimeTV.text.toString().isNotEmpty() -> {
+                        when (timelist.isAmPM) {
+                            "am" -> {
+                                setColorTimePicked(R.color._192032, R.color.colorBlackTrans50, itemBinding)
+                            }
+                            "pm" -> {
+                                setColorTimePicked(R.color.colorBlackTrans50, R.color._192032, itemBinding)
+                            }
+                            else -> {
+                                setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50, itemBinding)
+                            }
+                        }
+                    }
+                    else -> {
+                        setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50, itemBinding)
                     }
                 }
             }

@@ -74,8 +74,12 @@ class AddMedicineListAdapter(
     }
 
 
-    fun addData(medLists: ArrayList<Medlist>) {
-        this.medLists.addAll(medLists)
+    fun addData(medLists: ArrayList<Medlist>, isSearchData: Boolean = false) {
+        if (isSearchData) {
+            this.medLists = medLists
+        } else {
+            this.medLists.addAll(medLists)
+        }
         notifyDataSetChanged()
     }
 

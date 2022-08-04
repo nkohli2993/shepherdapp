@@ -25,6 +25,7 @@ import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseM
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.med_list.GetAllDoseListResponseModel
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
@@ -252,7 +253,21 @@ interface ApiService {
     @GET(ApiConstants.MedList.GET_ALL_MED_LIST)
     suspend fun getAllMedLists(
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
+        @Query("search") search :String = ""
     ): Response<GetAllMedListResponseModel>
+
+    @GET(ApiConstants.MedList.GET_ALL_MED_LIST)
+    suspend fun SearchMedList(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("search") search :String
+    ): Response<GetAllMedListResponseModel>
+
+    @GET(ApiConstants.MedList.GET_ALL_DOSE_LIST)
+    suspend fun getAllDose(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): Response<GetAllDoseListResponseModel>
 
 }

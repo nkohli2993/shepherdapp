@@ -14,7 +14,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#E6FFFFFF">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivBack"
@@ -56,6 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
+
             app:layout_constraintTop_toBottomOf="@+id/tvMedTitle">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,19 +112,58 @@
                     android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@+id/tvDose">
 
-                    <Spinner
-                        android:id="@+id/spDose"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/doseTV"
                         android:layout_width="0dp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:dropDownWidth="match_parent"
-                        android:dropDownVerticalOffset="@dimen/_40sdp"
-                        android:dropDownSelector="@drawable/ic_arrow_spinner"
-                        android:spinnerMode="dropdown"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/transparent"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/gotham_medium"
+                        android:hint="@string/select_dose"
+                        android:inputType="textMultiLine"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_15sdp"
+                        android:textColor="@color/_192032"
+                        android:textColorHint="@color/_192032"
+                        android:textSize="@dimen/_13ssp"
+                        app:fontFamily="@font/gotham_bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlSymmetry" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/doseIM"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_4sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_spinner"
+                        app:tint="@color/colorGreyDark" />
+
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/doseRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:background="@color/colorWhite"
+                    android:elevation="@dimen/_2sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/clDoseWrapper"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/adapter_frequency" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvFrequency"
@@ -134,7 +175,7 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clDoseWrapper" />
+                    app:layout_constraintTop_toBottomOf="@+id/doseRV" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clFrequencyWrapper"
@@ -178,7 +219,7 @@
                         android:backgroundTint="@color/transparent"
                         android:ellipsize="end"
                         android:fontFamily="@font/gotham_medium"
-                        android:hint="@string/select"
+                        android:hint="@string/select_frequency"
                         android:inputType="textMultiLine"
                         android:onClick="@{listener::onClick}"
                         android:paddingHorizontal="@dimen/_8sdp"
@@ -213,7 +254,9 @@
                     android:id="@+id/frequencyRV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
                     android:background="@color/colorWhite"
+                    android:elevation="@dimen/_2sdp"
                     android:nestedScrollingEnabled="false"
                     android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -241,18 +284,57 @@
                     android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                     app:layout_constraintTop_toBottomOf="@+id/tvDays">
 
-                    <Spinner
-                        android:id="@+id/spDays"
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/daysTV"
                         android:layout_width="0dp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:dropDownWidth="match_parent"
-                        android:dropDownVerticalOffset="@dimen/_40sdp"
-                        android:dropDownSelector="@drawable/ic_arrow_spinner"
-                        android:spinnerMode="dropdown"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/transparent"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/gotham_medium"
+                        android:hint="@string/select_days"
+                        android:inputType="textMultiLine"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_15sdp"
+                        android:textColor="@color/_192032"
+                        android:textColorHint="@color/_192032"
+                        android:textSize="@dimen/_13ssp"
+                        app:fontFamily="@font/gotham_bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlSymmetry" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/dayIM"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_4sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_spinner"
+                        app:tint="@color/colorGreyDark" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/daysRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:background="@color/colorWhite"
+                    android:elevation="@dimen/_2sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:visibility="gone"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/clDaysWrapper"
+                    tools:itemCount="4"
+                    tools:listitem="@layout/adapter_frequency" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvNote"
@@ -264,7 +346,7 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clDaysWrapper" />
+                    app:layout_constraintTop_toBottomOf="@+id/daysRV" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clNoteWrapper"
