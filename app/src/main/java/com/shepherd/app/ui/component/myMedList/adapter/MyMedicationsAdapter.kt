@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.med_list.Medlist
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlists
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.view_model.MyMedListViewModel
@@ -12,7 +12,7 @@ import com.shepherd.app.view_model.MyMedListViewModel
 
 class MyMedicationsAdapter(
     private val viewModel: MyMedListViewModel,
-    var medLists: MutableList<Medlist> = ArrayList()
+    var medLists: MutableList<Medlists> = ArrayList()
 ) :
     RecyclerView.Adapter<MyMedicationsAdapter.MyMedicationsViewHolder>() {
     lateinit var binding: AdapterMyMedicationsListBinding
@@ -51,7 +51,7 @@ class MyMedicationsAdapter(
     class MyMedicationsViewHolder(private val itemBinding: AdapterMyMedicationsListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(medList: Medlist, recyclerItemListener: RecyclerItemListener) {
+        fun bind(medList: Medlists, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
@@ -70,7 +70,7 @@ class MyMedicationsAdapter(
         return position
     }
 
-    fun addData(medLists: ArrayList<Medlist>) {
+    fun addData(medLists: ArrayList<Medlists>) {
 //        this.requestList.clear()
         this.medLists.addAll(medLists)
         notifyDataSetChanged()
