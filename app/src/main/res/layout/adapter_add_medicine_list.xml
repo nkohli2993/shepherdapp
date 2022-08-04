@@ -27,19 +27,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/_10sdp">
-
-            <androidx.appcompat.widget.AppCompatCheckBox
+            <!--android:button="@drawable/checkbox_selector"-->
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/cbReminder"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
-                android:button="@drawable/checkbox_selector"
-                android:fontFamily="@font/gotham_book"
+                android:clickable="false"
+                android:fontFamily="@font/gotham_medium"
                 android:gravity="start"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:text="@{data.name}"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

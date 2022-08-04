@@ -41,6 +41,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private var total: Int = 0
     var medLists: ArrayList<Medlist> = arrayListOf()
     private val medListViewModel: MyMedListViewModel by viewModels()
+    private var selectedMedication: Medlist? = null
     private val TAG: String = "Add medlist"
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -112,9 +113,16 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     private fun selectedMedicationDetail(navigateEvent: SingleEvent<Int>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            Log.d(TAG, "selected med Detail detail : ${medLists[it].id}  ${medLists[it].name}")
-            medLists[it].isSelected = !medLists[it].isSelected
-            addMedicineListAdapter?.setList(medLists)
+//            medLists.onEach { it.isSelected = false }
+//            medLists[it].isSelected = !medLists[it].isSelected
+            selectedMedication = medLists[it]
+//            addMedicineListAdapter?.setList(medLists)
+            findNavController().navigate(
+                AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
+                    selectedMedication!!
+                )
+            )
+
         }
     }
 
@@ -131,15 +139,9 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                 findNavController().popBackStack()
             }
             R.id.btnNext -> {
-                val selectedMedList:ArrayList<Medlist> = arrayListOf()
-                for(i in medLists){
-                    if(i.isSelected){
-                        selectedMedList.add(i)
-                    }
-                }
                 findNavController().navigate(
                     AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                        selectedMedList.toTypedArray()
+                        selectedMedication!!
                     )
                 )
             }

@@ -5,29 +5,37 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.RotateAnimation
 import android.widget.ArrayAdapter
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.med_list.Medlist
+import com.shepherd.app.data.dto.med_list.schedule_medlist.FrequencyData
+import com.shepherd.app.data.dto.med_list.schedule_medlist.TimeSelectedlist
 import com.shepherd.app.databinding.FragmentSchedulweMedicineBinding
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.schedule_medicine.adapter.DaysAdapter
+import com.shepherd.app.ui.component.schedule_medicine.adapter.FrequencyAdapter
+import com.shepherd.app.ui.component.schedule_medicine.adapter.TimeAdapter
+import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.utils.observe
+import com.shepherd.app.view_model.AddMedicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
-    View.OnClickListener {
+    View.OnClickListener, FrequencyAdapter.selectedFrequency {
+    private val frequencyList: ArrayList<FrequencyData> = arrayListOf()
+    private var timeAdapter: TimeAdapter? = null
     private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding
-    var alDose = arrayOf( "160 mg", "80 mg", "40 mg", "20 mg", "10 mg")
-    var alFrequency = arrayOf(
-        "Select Frequency",
-        "Once a day",
-        "Twice a day",
-        "Three times a day",
-        "Four times a day"
-    )
+    private val medicationViewModel: AddMedicationViewModel by viewModels()
+    var alDose = arrayOf("160 mg", "80 mg", "40 mg", "20 mg", "10 mg")
     var alDays =
         arrayOf(
             "Select Day",
@@ -39,7 +47,9 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             "Saturday",
             "Sunday"
         )
-
+    private val args: ScheduleMedicineFragmentArgs by navArgs()
+    private var selectedMedList: Medlist? = null
+    private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,29 +63,64 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
     override fun observeViewModel() {
 
+        observe(medicationViewModel.timeSelectedlist, ::selectedTime)
+
     }
 
     override fun initViewBinding() {
+        selectedMedList = args.medlist
+        // set title of selected med
+        fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
+
         fragmentScheduleMedicineBinding.listener = this
         val doseAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, alDose)
         doseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         fragmentScheduleMedicineBinding.spDose.adapter = doseAdapter
-        val frequencyAdapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                alFrequency
-            )
-        frequencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        fragmentScheduleMedicineBinding.spFrequency.adapter = frequencyAdapter
+
+
+        frequencyList.add(FrequencyData(frequencyList.size, "Select Frequency", 0))
+        frequencyList.add(FrequencyData(frequencyList.size, "Once a day", 1))
+        frequencyList.add(FrequencyData(frequencyList.size, "Twice a day", 2))
+        frequencyList.add(FrequencyData(frequencyList.size, "Three times a day", 3))
+        frequencyList.add(FrequencyData(frequencyList.size, "Four times a day", 4))
+
+        fragmentScheduleMedicineBinding.frequencyRV.adapter = FrequencyAdapter(
+            requireContext(),
+            this,
+            frequencyList
+        )
+
         fragmentScheduleMedicineBinding.spDays.adapter =
             DaysAdapter(requireContext(), alDays)
+        timeList.add(TimeSelectedlist())
+        timeAdapter = TimeAdapter(medicationViewModel, requireContext(),timeList)
+        fragmentScheduleMedicineBinding.recycleviewTime.adapter = timeAdapter
 
+    }
+
+    private fun selectedTime(navigateEvent: SingleEvent<Int>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            //set time selected adapter
+//            timeList.add(it)
+            timePicker(it)
+            // timeAdapter!!.addData(it)
+        }
     }
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_schedulwe_medicine
+    }
+
+    private fun rotate(degree: Float, image: AppCompatImageView) {
+        val rotateAnim = RotateAnimation(
+            0.0f, degree,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+        )
+        rotateAnim.duration = 0
+        rotateAnim.fillAfter = true
+        image.startAnimation(rotateAnim)
     }
 
     override fun onClick(v: View?) {
@@ -83,52 +128,38 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
-            R.id.clTimeWrapper ->{
-                timePicker()
-            }
-            R.id.btnSubmit ->{
-                if(isValid){
+            R.id.btnSubmit -> {
+                if (isValid) {
 
                 }
+            }
+            R.id.frequencyET -> {
+                showFrequencyView()
+
             }
         }
     }
 
 
-    private fun timePicker() {
+    private fun timePicker(position: Int) {
         val mCurrentTime = Calendar.getInstance()
         val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
         val minute = mCurrentTime.get(Calendar.MINUTE)
 
         val mTimePicker = TimePickerDialog(
-            context,R.style.datepicker,
+            context, R.style.datepicker,
             { view, hourOfDay, selectedMinute ->
-                fragmentScheduleMedicineBinding.tvTime.text =
-                    String.format("%02d:%02d", hourOfDay, selectedMinute)
-
+                timeList[position].time = String.format("%02d:%02d", hourOfDay, selectedMinute)
                 if (hourOfDay < 12) {
-                    setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                    timeList[position].isAmPM = "am"
                 } else {
-                    setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                    timeList[position].isAmPM = "pm"
                 }
+                timeAdapter!!.notifyDataSetChanged()
             }, hour,
             minute, true
         )
         mTimePicker.show()
-    }
-    private fun setColorTimePicked(selected: Int, unselected: Int) {
-        fragmentScheduleMedicineBinding.tvam.setTextColor(
-            ContextCompat.getColor(
-                requireContext().applicationContext,
-                selected
-            )
-        )
-        fragmentScheduleMedicineBinding.tvpm.setTextColor(
-            ContextCompat.getColor(
-                requireContext().applicationContext,
-                unselected
-            )
-        )
     }
 
     private val isValid: Boolean
@@ -150,5 +181,28 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             }
             return false
         }
+
+    override fun onSelected(position: Int) {
+        val list :ArrayList<TimeSelectedlist> = arrayListOf()
+        val timeCount = frequencyList[position].time!!
+        for (i in 0 until timeCount) {
+            list.add(TimeSelectedlist())
+        }
+        timeAdapter?.removeData(list)
+        timeList.clear()
+        timeList.addAll(list)
+        showFrequencyView()
+        fragmentScheduleMedicineBinding.frequencyET.text = frequencyList[position].name
+    }
+
+    private fun showFrequencyView() {
+        if (fragmentScheduleMedicineBinding.frequencyRV.visibility == View.VISIBLE) {
+            fragmentScheduleMedicineBinding.frequencyRV.visibility = View.GONE
+            rotate(0f, fragmentScheduleMedicineBinding.frequencyIM)
+        } else {
+            fragmentScheduleMedicineBinding.frequencyRV.visibility = View.VISIBLE
+            rotate(180f, fragmentScheduleMedicineBinding.frequencyIM)
+        }
+    }
 
 }

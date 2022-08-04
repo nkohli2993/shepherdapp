@@ -39,19 +39,16 @@ class DaysAdapter(context: Context, val alFrequency: Array<String>) :
             view = convertView
             vh = view.tag as ItemHolder
         }
-        vh.cbReminder.isVisible = position != 0
-        vh.tvName.text = alFrequency.get(position)
+        vh.cbDay.isVisible = position != 0
+        vh.cbDay.text = alFrequency.get(position)
 
         return view
     }
 
     private class ItemHolder(row: View?) {
-        val tvName: TextView
-        val cbReminder: CheckBox
-
+        val cbDay: CheckBox
         init {
-            tvName = row?.findViewById(R.id.tvName) as TextView
-            cbReminder = row.findViewById(R.id.cbReminder) as CheckBox
+            cbDay = row!!.findViewById(R.id.cbDay) as CheckBox
         }
     }
 }

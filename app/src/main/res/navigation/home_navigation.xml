@@ -117,7 +117,7 @@
         tools:layout="@layout/fragment_schedulwe_medicine" >
         <argument
             android:name="medlist"
-            app:argType="com.shepherd.app.data.dto.med_list.Medlist[]" />
+            app:argType="com.shepherd.app.data.dto.med_list.Medlist" />
     </fragment>
 
     <fragment
