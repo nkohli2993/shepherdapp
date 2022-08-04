@@ -58,13 +58,11 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     ): View {
         myMedlistBinding =
             FragmentMyMedlistBinding.inflate(inflater, container, false)
-
-        medListViewModel.getAllMedLists(pageNumber, limit)
         return myMedlistBinding.root
     }
 
     override fun initViewBinding() {
-
+        medListViewModel.getAllMedLists(pageNumber, limit)
 //        setRemindersAdapter()
         setMyMedicationsAdapter()
         setSelectedDayMedicineAdapter()

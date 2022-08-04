@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.dashboard.DashboardModel
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
@@ -41,23 +40,22 @@ class MyMedicationsAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
         return medLists.size
     }
 
     override fun onBindViewHolder(holder: MyMedicationsViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(medLists[position], onItemClickListener)
     }
 
 
     class MyMedicationsViewHolder(private val itemBinding: AdapterMyMedicationsListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
-            // itemBinding.data = dashboard
+        fun bind(medList: Medlist, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = medList
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    dashboard
+                    medList
                 )
             }
         }
