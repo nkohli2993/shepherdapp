@@ -1,6 +1,7 @@
 package com.shepherd.app.data.remote.med_list
 
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.NetworkOnlineDataRepo
@@ -27,6 +28,18 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
             NetworkOnlineDataRepo<GetAllMedListResponseModel, GetAllMedListResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<GetAllMedListResponseModel> {
                 return apiService.getAllMedLists(pageNumber, limit)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Get MedLists of LovedOne
+    suspend fun getLovedOneMedLists(
+        lovedOneUUID: String
+    ): Flow<DataResult<GetLovedOneMedList>> {
+        return object :
+            NetworkOnlineDataRepo<GetLovedOneMedList, GetLovedOneMedList>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetLovedOneMedList> {
+                return apiService.getLovedOneMedList(lovedOneUUID)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

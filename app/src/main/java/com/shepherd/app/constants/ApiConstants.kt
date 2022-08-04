@@ -87,6 +87,7 @@ object ApiConstants {
     object MedList {
         // Get All Medications
         const val GET_ALL_MED_LIST = "$BASE_URL${API_VERSION}medlists"
+        const val GET_LOVED_ONE_MED_LIST = "$BASE_URL${API_VERSION}user_medications/lovedone-user/{id}"
     }
 }
 

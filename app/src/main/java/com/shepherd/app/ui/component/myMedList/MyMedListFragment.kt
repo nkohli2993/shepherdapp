@@ -46,8 +46,10 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     var totalPage: Int = 0
     var total: Int = 0
     var pageCount: Int = 0
-    var medLists: ArrayList<Medlist> = arrayListOf()
 
+    //    var medLists: ArrayList<Medlist> = arrayListOf()
+    var medLists: ArrayList<Medlist> = arrayListOf()
+//    var medlist: Medlist? = Medlist()
 
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
@@ -62,6 +64,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     override fun initViewBinding() {
+        // Get Loved One's Medication Listing
+//        medListViewModel.getLovedOneMedLists()
         medListViewModel.getAllMedLists(pageNumber, limit)
 //        setRemindersAdapter()
         setMyMedicationsAdapter()
@@ -155,6 +159,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     override fun observeViewModel() {
 //        observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
+
         // Observe Get All Med List Live Data
         medListViewModel.getMedListResponseLiveData.observeEvent(this) {
             when (it) {
@@ -181,6 +186,24 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
             }
         }
+
+        // Observe get loved one med lists response
+        /* medListViewModel.getLovedOneMedListsResponseLiveData.observeEvent(this) {
+             when (it) {
+                 is DataResult.Failure -> {
+                     hideLoading()
+                     showError(requireContext(), it.message.toString())
+                 }
+                 is DataResult.Loading -> {
+                     showLoading("")
+                 }
+                 is DataResult.Success -> {
+                     medlist = it.data.payload?.medlist
+ //                    myMedicationsAdapter?.addData(medList)
+                 }
+             }
+
+         }*/
 
     }
 
