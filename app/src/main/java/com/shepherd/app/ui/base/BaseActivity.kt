@@ -12,16 +12,26 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.Navigation
-import com.shepherd.app.R
-import com.shepherd.app.utils.ProgressBarDialog
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
 import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
+import com.shepherd.app.R
+import com.shepherd.app.ui.component.carePoints.CarePointsFragment
+import com.shepherd.app.ui.component.carePoints.CarePointsFragmentDirections
+import com.shepherd.app.ui.component.careTeamMembers.CareTeamMembersFragment
+import com.shepherd.app.ui.component.lockBox.LockBoxFragment
+import com.shepherd.app.ui.component.myMedList.MyMedListFragment
+import com.shepherd.app.utils.ProgressBarDialog
 import java.io.File
+import androidx.navigation.fragment.findNavController
+import com.shepherd.app.ui.component.dashboard.DashboardFragment
 
 /**
  * Created by Sumit Kumar
@@ -144,14 +154,30 @@ abstract class BaseActivity : AppCompatActivity() {
                     } else {
                         File(selectedMedia[0].path!!)
                     }
-                    selectedFile.value = file
+                    selectedFile.value = file!!
                 }
             }
         }
 
 
     override fun onBackPressed() {
-        super.onBackPressed()
+        val navController = findNavController(R.id.nav_host_fragment_content_dashboard)
+        // to check navigation fragments
+        val navHostFragment = supportFragmentManager.primaryNavigationFragment as NavHostFragment?
+        val fragmentManager: FragmentManager = navHostFragment!!.childFragmentManager
+        val fragment: Fragment = fragmentManager.getPrimaryNavigationFragment()!!
+        when (fragment) {
+            is CarePointsFragment, is MyMedListFragment, is LockBoxFragment, is CareTeamMembersFragment -> {
+                navController.navigate(R.id.nav_dashboard)
+            }
+            is DashboardFragment -> {
+                finishActivity()
+            }
+            else -> {
+                super.onBackPressed()
+            }
+
+        }
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)    // for close
 
     }
