@@ -3,25 +3,26 @@ package com.shepherd.app.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.shepherd.app.constants.ApiConstants
+import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.DataRepository
-import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
+import com.shepherd.app.data.dto.med_list.AddScheduledMedicationResponseModel
 import com.shepherd.app.data.dto.med_list.GetAllDoseListResponseModel
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
-import com.shepherd.app.data.dto.med_list.Medlist
-import com.shepherd.app.data.dto.med_list.schedule_medlist.DayList
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.schedule_medlist.DoseList
-import com.shepherd.app.data.dto.med_list.schedule_medlist.TimeSelectedlist
+import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
+import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.med_list.MedListRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
 import com.shepherd.app.ui.base.BaseViewModel
+import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.sql.Time
 import javax.inject.Inject
 
 /**
@@ -30,7 +31,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddMedicationViewModel @Inject constructor(
     private val dataRepository: DataRepository,
-    private val medListRepository: MedListRepository
+    private val medListRepository: MedListRepository,
+    private val userRepository: UserRepository
 ) :
     BaseViewModel() {
     // selected med list data
@@ -64,6 +66,15 @@ class AddMedicationViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<GetAllDoseListResponseModel>>>()
     var getDoseListResponseLiveData: LiveData<Event<DataResult<GetAllDoseListResponseModel>>> =
         _getDoseListResponseLiveData
+
+
+    // add medication for loved ones
+    private var _addScheduledMedicationResponseLiveData =
+        MutableLiveData<Event<DataResult<AddScheduledMedicationResponseModel>>>()
+    var addScheduledMedicationResponseLiveData: LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> =
+        _addScheduledMedicationResponseLiveData
+
+
 
     // Get All MedLists
     fun getAllMedLists(
@@ -129,6 +140,26 @@ class AddMedicationViewModel @Inject constructor(
     }
     fun setDayData(dayList: Int) {
         _dayListSelectedData.value = SingleEvent(dayList)
+    }
+
+    fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+
+    fun getLovedOneId(): String? {
+        return userRepository.getLovedOneId()
+    }
+
+
+    // add scheduled medication for loved ones
+    fun addScheduledMedication(scheduledMedication: ScheduledMedicationRequestModel): LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> {
+        viewModelScope.launch {
+            val response = scheduledMedication.let { medListRepository.addScheduledMedication(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _addScheduledMedicationResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return addScheduledMedicationResponseLiveData
     }
 
 

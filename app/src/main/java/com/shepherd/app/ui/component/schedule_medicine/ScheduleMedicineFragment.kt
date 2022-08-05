@@ -3,22 +3,18 @@ package com.shepherd.app.ui.component.schedule_medicine
 import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
-import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.Medlist
-import com.shepherd.app.data.dto.med_list.schedule_medlist.DayList
-import com.shepherd.app.data.dto.med_list.schedule_medlist.DoseList
-import com.shepherd.app.data.dto.med_list.schedule_medlist.FrequencyData
-import com.shepherd.app.data.dto.med_list.schedule_medlist.TimeSelectedlist
+import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
+import com.shepherd.app.data.dto.med_list.schedule_medlist.*
 import com.shepherd.app.databinding.FragmentSchedulweMedicineBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -53,18 +49,10 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var timeAdapter: TimeAdapter? = null
     private var pageNumber = 1
     private var limit = 10
+    private var frequencyId: Int? = null
+    private var doseID: String? = null
+    private var daysIds: String? = null
     private val medicationViewModel: AddMedicationViewModel by viewModels()
-    var alDays =
-        arrayOf(
-            "Select Day",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday",
-            "Saturday",
-            "Sunday"
-        )
     private val args: ScheduleMedicineFragmentArgs by navArgs()
     private var selectedMedList: Medlist? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
@@ -105,6 +93,22 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     if (doseList.isNullOrEmpty()) return@observeEvent
                     doseAdapter?.addData(doseList)
 
+                }
+            }
+        }
+        medicationViewModel.addScheduledMedicationResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    showInfo(requireContext(),getString(R.string.scheduled_medication_created_successfully))
+                    hideLoading()
+                    backPress()
                 }
             }
         }
@@ -176,16 +180,28 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         navigateEvent.getContentIfNotHandled()?.let {
             dayList[it].isSelected = !dayList[it].isSelected
             dayAdapter!!.notifyDataSetChanged()
+            val selected: ArrayList<String> = arrayListOf()
+            val selectedDays: ArrayList<String> = arrayListOf()
+            for (i in dayList) {
+                if (i.isSelected) {
+                    selected.add(i.id.toString())
+                    selectedDays.add(i.time.toString())
+                }
+            }
+            if (selected.size > 0) {
+                daysIds = selected.joinToString().replace(" ", "")
+                fragmentScheduleMedicineBinding.daysTV.text = selectedDays.joinToString().replace(" ", "")
+            }
         }
     }
 
     private fun selectedDoseData(navigateEvent: SingleEvent<DoseList>) {
         navigateEvent.getContentIfNotHandled()?.let {
             //show selected dose
+            doseID = it.id.toString()
             selectedDose = it
             fragmentScheduleMedicineBinding.doseTV.text = selectedDose?.name ?: ""
             showDoseView()
-            Log.e("catch_exception", "dose ${selectedDose?.name}")
         }
     }
 
@@ -211,7 +227,22 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             }
             R.id.btnSubmit -> {
                 if (isValid) {
-
+                    // call create medication api for scheduling
+                    val timeAddedList: ArrayList<Time> = arrayListOf()
+                    for (i in timeList) {
+                        timeAddedList.add(Time(i.time, i.isAmPM))
+                    }
+                    val scheduledMedication =
+                        ScheduledMedicationRequestModel(
+                            medicationViewModel.getLovedOneUUId(),
+                            doseID!!,
+                            frequencyId!!.toString(),
+                            selectedMedList?.id.toString(),
+                            daysIds!!,
+                            timeAddedList,
+                            fragmentScheduleMedicineBinding.etNote.text.toString().trim()
+                        )
+                    medicationViewModel.addScheduledMedication(scheduledMedication)
                 }
             }
             R.id.doseTV -> {
@@ -237,8 +268,11 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             { view, hourOfDay, selectedMinute ->
                 timeList[position].time = String.format("%02d:%02d", hourOfDay, selectedMinute)
                 if (hourOfDay < 12) {
+                    timeList[position].time = String.format("%02d:%02d", hourOfDay, selectedMinute)
                     timeList[position].isAmPM = "am"
                 } else {
+                    timeList[position].time =
+                        String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
                     timeList[position].isAmPM = "pm"
                 }
                 timeAdapter!!.notifyDataSetChanged()
@@ -251,16 +285,36 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private val isValid: Boolean
         get() {
             when {
-                fragmentScheduleMedicineBinding.tvTime.text.toString().trim().isEmpty() -> {
-                    showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
-                    fragmentScheduleMedicineBinding.tvTime.requestFocus()
+                doseID == null -> {
+                    showError(
+                        requireContext(),
+                        getString(R.string.please_select_dose_for_medication)
+                    )
                 }
-
+                frequencyId == null -> {
+                    showError(
+                        requireContext(),
+                        getString(R.string.please_select_frequcny_for_dose)
+                    )
+                }
+                timeListCheck() -> {
+                    showError(
+                        requireContext(),
+                        getString(R.string.please_select_timing_all_medication)
+                    )
+                }
+                daysIds == null -> {
+                    showError(
+                        requireContext(),
+                        getString(R.string.please_select_days_for_medication)
+                    )
+                }
                 fragmentScheduleMedicineBinding.etNote.text.toString().trim().isEmpty() -> {
                     fragmentScheduleMedicineBinding.etNote.error =
                         getString(R.string.please_enter_med_list_notes)
                     fragmentScheduleMedicineBinding.etNote.requestFocus()
                 }
+
                 else -> {
                     return true
                 }
@@ -268,12 +322,26 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             return false
         }
 
+    private fun timeListCheck(): Boolean {
+        var allfiled = false
+
+        for (i in timeList) {
+            if (i.time.isNullOrEmpty()) {
+                allfiled = true
+                break
+            }
+        }
+        return allfiled
+    }
+
     override fun onSelected(position: Int) {
+        frequencyId = frequencyList[position].time!!
         val list: ArrayList<TimeSelectedlist> = arrayListOf()
         val timeCount = frequencyList[position].time!!
         for (i in 0 until timeCount) {
             list.add(TimeSelectedlist())
         }
+
         timeAdapter?.removeData(list)
         timeList.clear()
         timeList.addAll(list)

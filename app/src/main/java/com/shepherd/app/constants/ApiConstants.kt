@@ -90,6 +90,8 @@ object ApiConstants {
 
         //const val GET_LOVED_ONE_MED_LIST = "$BASE_URL${API_VERSION}user_medications/lovedone-user/{id}"
         const val GET_LOVED_ONE_MED_LIST = "$BASE_URL${API_VERSION}user_medications/loved-one/{id}"
+
+        const val ADD_SCHEDULED_MEDICATION = "$BASE_URL${API_VERSION}user_medications"
     }
 }
 

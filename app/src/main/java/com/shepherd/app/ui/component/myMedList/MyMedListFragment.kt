@@ -47,9 +47,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     var total: Int = 0
     var pageCount: Int = 0
 
-    //    var medLists: ArrayList<Medlist> = arrayListOf()
-//    var medLists: ArrayList<Medlist> = arrayListOf()
-//    var medlist: Medlist? = Medlist()
+
     var medlists: ArrayList<Medlists> = arrayListOf()
 
     private val calendar = Calendar.getInstance()

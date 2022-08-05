@@ -56,7 +56,8 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun onResume() {
         super.onResume()
-        medListViewModel.getAllMedLists(pageNumber, limit)
+        /*medLists?.clear()
+        medListViewModel.getAllMedLists(pageNumber, limit)*/
     }
 
     override fun initViewBinding() {

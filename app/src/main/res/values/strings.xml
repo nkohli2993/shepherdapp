@@ -411,5 +411,10 @@
     <string name="not_implmented">Not Implemented</string>
     <string name="select_frequency">Select Frequency</string>
     <string name="select_days">Select Days</string>
+    <string name="please_select_dose_for_medication">Please select dose for medication</string>
+    <string name="please_select_frequcny_for_dose">Please select frequency for dose</string>
+    <string name="please_select_timing_all_medication">Please select timing of all medication dose</string>
+    <string name="please_select_days_for_medication">Please select days for medication.</string>
+    <string name="scheduled_medication_created_successfully">Scheduled Medication created successfully…</string>
 
 </resources>

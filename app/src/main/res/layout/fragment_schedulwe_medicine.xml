@@ -67,39 +67,15 @@
                 android:paddingBottom="@dimen/_20sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/gotham_medium"
-                    android:text="@string/time"
-                    android:textColor="@color/_192032"
-                    android:textSize="@dimen/_12ssp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycleviewTime"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvTime"
-                    tools:itemCount="2"
-                    tools:listitem="@layout/layout_add_time" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
                     android:fontFamily="@font/gotham_medium"
                     android:text="@string/dose"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recycleviewTime" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clDoseWrapper"
@@ -265,6 +241,29 @@
                     tools:listitem="@layout/adapter_frequency" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:text="@string/time"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/frequencyRV" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycleviewTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTime"
+                    tools:itemCount="2"
+                    tools:listitem="@layout/layout_add_time" />
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDays"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -274,7 +273,7 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/frequencyRV" />
+                    app:layout_constraintTop_toBottomOf="@+id/recycleviewTime" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clDaysWrapper"

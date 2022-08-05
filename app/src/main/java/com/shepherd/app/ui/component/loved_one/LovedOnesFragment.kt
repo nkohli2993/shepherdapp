@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
+import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.care_team.CareTeam
 import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.FragmentLovedOnesBinding
@@ -14,6 +15,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.Status
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.LovedOneViewModel
@@ -31,6 +33,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     private var limit = 10
     private var status = Status.One.status
     private var careTeams: ArrayList<CareTeamModel> = arrayListOf()
+    private var selectedCare: CareTeamModel? = null
 
 
     override fun onCreateView(
@@ -66,7 +69,14 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                     hideLoading()
                     careTeams = it.data.payload.data
                     setLovedOnesAdapter(careTeams)
-
+                    val lovedOneIDInPrefs =
+                        Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+                    for (i in careTeams) {
+                        if (lovedOneIDInPrefs.equals(i.love_user_id_details.uid)) {
+                            selectedCare = i
+                            break
+                        }
+                    }
                 }
             }
         }
@@ -97,7 +107,13 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                     )
                 )
             }
+            R.id.btnDone -> {
+                selectedCare?.let {
+                    it.love_user_id_details.let { lovedOneViewModel.saveLovedOneUUID(it.uid!!) }
+                }
 
+                backPress()
+            }
             R.id.ivBack -> {
                 backPress()
             }
@@ -106,6 +122,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
 
     override fun onItemClick(careTeam: CareTeamModel) {
         // Save the selected lovedOne UUID in shared prefs
-        careTeam.love_user_id_details.let { lovedOneViewModel.saveLovedOneUUID(it.uid!!) }
+        selectedCare = careTeam
+//        careTeam.love_user_id_details.let { lovedOneViewModel.saveLovedOneUUID(it.uid!!) }
     }
 }
