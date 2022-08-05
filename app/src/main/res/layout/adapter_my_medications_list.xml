@@ -33,27 +33,44 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewMedicineName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:fontFamily="@font/gotham_medium"
                 android:text="@{data.name}"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_14ssp"
+                app:layout_constraintEnd_toStartOf="@+id/imgMore"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewMedicineSalt"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:fontFamily="@font/gotham_book"
                 android:text="@{data.description}"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_11ssp"
+                app:layout_constraintEnd_toStartOf="@+id/imgMore"
                 app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
                 app:layout_constraintTop_toBottomOf="@+id/textViewMedicineName" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingStart="@dimen/_25sdp"
+                android:paddingEnd="@dimen/_3sdp"
+                android:src="@drawable/ic_dots"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

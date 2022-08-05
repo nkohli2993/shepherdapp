@@ -11,7 +11,9 @@ import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
 import com.shepherd.app.R
 import com.shepherd.app.utils.ProgressBarDialog
 import com.lassi.common.utils.KeyUtils
@@ -142,7 +144,7 @@ abstract class BaseActivity : AppCompatActivity() {
                     } else {
                         File(selectedMedia[0].path!!)
                     }
-                    selectedFile.value = file!!
+                    selectedFile.value = file
                 }
             }
         }
@@ -153,4 +155,5 @@ abstract class BaseActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)    // for close
 
     }
+
 }

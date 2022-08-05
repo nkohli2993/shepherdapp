@@ -31,11 +31,12 @@
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/medicationCL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_8sdp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imgMore"
                 app:layout_constraintStart_toEndOf="@+id/cbReminder"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -79,6 +80,20 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingStart="@dimen/_25sdp"
+                android:paddingEnd="@dimen/_3sdp"
+                android:src="@drawable/ic_dots"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

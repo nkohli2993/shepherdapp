@@ -20,6 +20,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.myMedList.adapter.MyMedicationsAdapter
+import com.shepherd.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.setupSnackbar

@@ -3,9 +3,14 @@ package com.shepherd.app.ui.component.myMedList.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherd.app.R
+import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.databinding.AdapterSelectedDayMedicineBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
+import com.shepherd.app.utils.ClickType
 import com.shepherd.app.view_model.MedListViewModel
 
 
@@ -49,7 +54,7 @@ class SelectedDayMedicineAdapter(
     }
 
 
-    class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
+   inner class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(dashboard: String, recyclerItemListener: RecyclerItemListener) {
@@ -59,8 +64,35 @@ class SelectedDayMedicineAdapter(
                     dashboard
                 )
             }
+
+            itemBinding.imgMore.setOnClickListener {
+                openEditOption(absoluteAdapterPosition,itemBinding.imgMore,context,recyclerItemListener)
+            }
         }
-    }
+       private fun openEditOption(
+           position: Int,
+           optionsImg: AppCompatImageView,
+           context: Context,
+           recyclerItemListener: RecyclerItemListener) {
+
+           val popup = PopupMenu(context, optionsImg)
+           popup.inflate(R.menu.options_menu_medication)
+           popup.setOnMenuItemClickListener { item ->
+               when (item.itemId) {
+                   R.id.edit_medication -> {
+
+                       true
+                   }
+                   R.id.delete_medication -> {
+                       true
+                   }
+                   else -> false
+               }
+           }
+           popup.show()
+       }
+
+   }
 
 
     override fun getItemId(position: Int): Long {
