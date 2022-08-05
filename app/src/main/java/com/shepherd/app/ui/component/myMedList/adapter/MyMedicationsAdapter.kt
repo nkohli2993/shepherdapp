@@ -4,8 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.dashboard.DashboardModel
-import com.shepherd.app.data.dto.med_list.Medlist
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlists
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.view_model.MyMedListViewModel
@@ -13,7 +12,7 @@ import com.shepherd.app.view_model.MyMedListViewModel
 
 class MyMedicationsAdapter(
     private val viewModel: MyMedListViewModel,
-    var medLists: MutableList<Medlist> = ArrayList()
+    var medLists: MutableList<Medlists> = ArrayList()
 ) :
     RecyclerView.Adapter<MyMedicationsAdapter.MyMedicationsViewHolder>() {
     lateinit var binding: AdapterMyMedicationsListBinding
@@ -41,23 +40,22 @@ class MyMedicationsAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
         return medLists.size
     }
 
     override fun onBindViewHolder(holder: MyMedicationsViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(medLists[position], onItemClickListener)
     }
 
 
     class MyMedicationsViewHolder(private val itemBinding: AdapterMyMedicationsListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
-            // itemBinding.data = dashboard
+        fun bind(medList: Medlists, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = medList
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    dashboard
+                    medList
                 )
             }
         }
@@ -72,7 +70,7 @@ class MyMedicationsAdapter(
         return position
     }
 
-    fun addData(medLists: ArrayList<Medlist>) {
+    fun addData(medLists: ArrayList<Medlists>) {
 //        this.requestList.clear()
         this.medLists.addAll(medLists)
         notifyDataSetChanged()

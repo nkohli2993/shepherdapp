@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlists" />
+    </data>
 
 
     <androidx.cardview.widget.CardView
@@ -31,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:fontFamily="@font/gotham_medium"
-                android:text="@string/test_medicine_name"
+                android:text="@{data.name}"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_3sdp"
                 android:fontFamily="@font/gotham_book"
-                android:text="(rosuvastatin)"
+                android:text="@{data.description}"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"

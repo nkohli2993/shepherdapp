@@ -14,7 +14,7 @@ import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.med_list.Medlist
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlists
 import com.shepherd.app.databinding.FragmentMyMedlistBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -46,8 +46,11 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     var totalPage: Int = 0
     var total: Int = 0
     var pageCount: Int = 0
-    var medLists: ArrayList<Medlist> = arrayListOf()
 
+    //    var medLists: ArrayList<Medlist> = arrayListOf()
+//    var medLists: ArrayList<Medlist> = arrayListOf()
+//    var medlist: Medlist? = Medlist()
+    var medlists: ArrayList<Medlists> = arrayListOf()
 
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
@@ -58,13 +61,13 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     ): View {
         myMedlistBinding =
             FragmentMyMedlistBinding.inflate(inflater, container, false)
-
-        medListViewModel.getAllMedLists(pageNumber, limit)
         return myMedlistBinding.root
     }
 
     override fun initViewBinding() {
-
+        // Get Loved One's Medication Listing
+        medListViewModel.getLovedOneMedLists()
+//        medListViewModel.getAllMedLists(pageNumber, limit)
 //        setRemindersAdapter()
         setMyMedicationsAdapter()
         setSelectedDayMedicineAdapter()
@@ -157,8 +160,36 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     override fun observeViewModel() {
 //        observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
+
         // Observe Get All Med List Live Data
-        medListViewModel.getMedListResponseLiveData.observeEvent(this) {
+        /*   medListViewModel.getMedListResponseLiveData.observeEvent(this) {
+               when (it) {
+                   is DataResult.Failure -> {
+                       hideLoading()
+                       showError(requireContext(), it.message.toString())
+                   }
+                   is DataResult.Loading -> {
+                       showLoading("")
+                   }
+                   is DataResult.Success -> {
+                       hideLoading()
+                       it.data.payload.let { payload ->
+                           medLists = payload?.medlists!!
+                           total = payload.total!!
+                           currentPage = payload.currentPage!!
+                           totalPage = payload.totalPages!!
+
+                       }
+
+                       if (medLists.isNullOrEmpty()) return@observeEvent
+                       myMedicationsAdapter?.addData(medLists)
+
+                   }
+               }
+           }*/
+
+        // Observe get loved one med lists response
+        medListViewModel.getLovedOneMedListsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -169,21 +200,12 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    it.data.payload.let { payload ->
-                        medLists = payload?.medlists!!
-                        total = payload.total!!
-                        currentPage = payload.currentPage!!
-                        totalPage = payload.totalPages!!
-
-                    }
-
-                    if (medLists.isNullOrEmpty()) return@observeEvent
-                    myMedicationsAdapter?.addData(medLists)
-
+                    medlists = it.data.payload?.medlists!!
+                    if (medlists.isNullOrEmpty()) return@observeEvent
+                    myMedicationsAdapter?.addData(medlists)
                 }
             }
         }
-
     }
 
     private fun navigateToMedDetail(navigateEvent: SingleEvent<String>) {

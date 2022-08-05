@@ -76,16 +76,20 @@ object ApiConstants {
         const val CREATE_LOCK_BOX = "$BASE_URL${API_VERSION}lockboxs"
 
         const val GET_ALL_UPLOADED_DOCUMENTS_BY_LOVED_ONE_UUID =
-             "$BASE_URL${API_VERSION}lockboxs/loved_one"
-      /*  const val GET_ALL_UPLOADED_DOCUMENTS_BY_LOVED_ONE_UUID =
-            "$BASE_URL${API_VERSION}lockboxs"*/
+            "$BASE_URL${API_VERSION}lockboxs/loved_one"
+
+        /*  const val GET_ALL_UPLOADED_DOCUMENTS_BY_LOVED_ONE_UUID =
+              "$BASE_URL${API_VERSION}lockboxs"*/
         const val DELETE_UPLOADED_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
         const val UPDATE_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
     }
 
     object MedList {
-        const val GET_ALL_MED_LIST ="$BASE_URL${API_VERSION}medlists"
-        const val GET_ALL_DOSE_LIST ="$BASE_URL${API_VERSION}dosages"
+        const val GET_ALL_MED_LIST = "$BASE_URL${API_VERSION}medlists"
+        const val GET_ALL_DOSE_LIST = "$BASE_URL${API_VERSION}dosages"
+
+        //const val GET_LOVED_ONE_MED_LIST = "$BASE_URL${API_VERSION}user_medications/lovedone-user/{id}"
+        const val GET_LOVED_ONE_MED_LIST = "$BASE_URL${API_VERSION}user_medications/loved-one/{id}"
     }
 }
 

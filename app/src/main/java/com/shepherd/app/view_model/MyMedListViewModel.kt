@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
+import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.med_list.MedListRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
@@ -23,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MyMedListViewModel @Inject constructor(
     private val dataRepository: DataRepository,
-    private val medListRepository: MedListRepository
+    private val medListRepository: MedListRepository,
+    private val userRepository: UserRepository
 ) :
     BaseViewModel() {
 
@@ -31,6 +34,11 @@ class MyMedListViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<GetAllMedListResponseModel>>>()
     var getMedListResponseLiveData: LiveData<Event<DataResult<GetAllMedListResponseModel>>> =
         _getMedListResponseLiveData
+
+    private var _getLovedOneMedListsResponseLiveData =
+        MutableLiveData<Event<DataResult<GetLovedOneMedList>>>()
+    var getLovedOneMedListsResponseLiveData: LiveData<Event<DataResult<GetLovedOneMedList>>> =
+        _getLovedOneMedListsResponseLiveData
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<String>>()
@@ -55,6 +63,20 @@ class MyMedListViewModel @Inject constructor(
         }
         return getMedListResponseLiveData
 
+    }
+
+    // Get MedLists of loved one
+    fun getLovedOneMedLists(): LiveData<Event<DataResult<GetLovedOneMedList>>> {
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = lovedOneUUID?.let { medListRepository.getLovedOneMedLists(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _getLovedOneMedListsResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return getLovedOneMedListsResponseLiveData
     }
 
 }
