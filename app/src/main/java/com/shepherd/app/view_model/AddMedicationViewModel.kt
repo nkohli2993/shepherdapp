@@ -161,6 +161,18 @@ class AddMedicationViewModel @Inject constructor(
         }
         return addScheduledMedicationResponseLiveData
     }
+  // add scheduled medication for loved ones
+    fun updateScheduledMedication(scheduledMedication: ScheduledMedicationRequestModel,id:Int): LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> {
+        viewModelScope.launch {
+            val response = scheduledMedication.let { medListRepository.updateScheduledMedication(id,it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _addScheduledMedicationResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return addScheduledMedicationResponseLiveData
+    }
 
 
 

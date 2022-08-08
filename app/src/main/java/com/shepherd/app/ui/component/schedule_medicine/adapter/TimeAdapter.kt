@@ -60,23 +60,57 @@ class TimeAdapter(
             if ((timelist.time ?: "").isNotEmpty()) {
                 itemBinding.selectedTimeTV.text = timelist.time
             }
+            if ((timelist.isAmPM ?: "").isNotEmpty()) {
+                when (timelist.isAmPM) {
+                    "am" -> {
+                        setColorTimePicked(R.color._192032, R.color.colorBlackTrans50, itemBinding)
+                    }
+                    "pm" -> {
+                        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032, itemBinding)
+                    }
+                    else -> {
+                        setColorTimePicked(
+                            R.color.colorBlackTrans50,
+                            R.color.colorBlackTrans50,
+                            itemBinding
+                        )
+                    }
+                }
+
+            }
             itemBinding.selectedTimeTV.doOnTextChanged { text, start, before, count ->
                 when {
                     itemBinding.selectedTimeTV.text.toString().isNotEmpty() -> {
                         when (timelist.isAmPM) {
                             "am" -> {
-                                setColorTimePicked(R.color._192032, R.color.colorBlackTrans50, itemBinding)
+                                setColorTimePicked(
+                                    R.color._192032,
+                                    R.color.colorBlackTrans50,
+                                    itemBinding
+                                )
                             }
                             "pm" -> {
-                                setColorTimePicked(R.color.colorBlackTrans50, R.color._192032, itemBinding)
+                                setColorTimePicked(
+                                    R.color.colorBlackTrans50,
+                                    R.color._192032,
+                                    itemBinding
+                                )
                             }
                             else -> {
-                                setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50, itemBinding)
+                                setColorTimePicked(
+                                    R.color.colorBlackTrans50,
+                                    R.color.colorBlackTrans50,
+                                    itemBinding
+                                )
                             }
                         }
                     }
                     else -> {
-                        setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50, itemBinding)
+                        setColorTimePicked(
+                            R.color.colorBlackTrans50,
+                            R.color.colorBlackTrans50,
+                            itemBinding
+                        )
                     }
                 }
             }

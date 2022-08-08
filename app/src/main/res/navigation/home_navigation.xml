@@ -115,9 +115,6 @@
         android:name="com.shepherd.app.ui.component.schedule_medicine.ScheduleMedicineFragment"
         android:label="@string/schedule_medicine"
         tools:layout="@layout/fragment_schedulwe_medicine">
-        <!--   <argument
-               android:name="bundle"
-               app:argType="Bundle" />-->
         <argument
             android:name="medlist"
             android:defaultValue="@null"
@@ -251,6 +248,9 @@
         <action
             android:id="@+id/action_my_medlist_to_med_detail"
             app:destination="@+id/nav_med_detail" />
+        <action
+            android:id="@+id/action_add_new_medication_to_add_medication"
+            app:destination="@+id/nav_schedule_medication" />
 
     </fragment>
     <fragment

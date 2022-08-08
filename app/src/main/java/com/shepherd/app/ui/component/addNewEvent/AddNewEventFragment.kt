@@ -247,7 +247,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     requireActivity(), R.style.datepicker,
                     { _, year, monthOfYear, dayOfMonth ->
                         fragmentAddNewEventBinding.tvDate.text =
-                            dayOfMonth.toString() + "-" + if (monthOfYear + 1 < 10) {
+                            "$dayOfMonth-" + if (monthOfYear + 1 < 10) {
                                 "0${(monthOfYear + 1)}"
                             } else {
                                 (monthOfYear + 1)

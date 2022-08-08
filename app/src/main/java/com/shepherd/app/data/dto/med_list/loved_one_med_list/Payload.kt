@@ -24,6 +24,7 @@ data class Payload(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
+    @SerializedName("end_date") var endDate: String? = null,
     @SerializedName("medlist") var medlist: com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
 
     //for function

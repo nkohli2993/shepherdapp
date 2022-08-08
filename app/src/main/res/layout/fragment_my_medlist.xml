@@ -78,6 +78,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/srCalender"
@@ -90,11 +91,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_150sdp"
                     android:gravity="center"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewSelectedDayMedicine"
                     android:paddingVertical="@dimen/_8sdp"
                     android:text="@string/no_scheduled_medication_found"
                     android:textSize="@dimen/_14ssp"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewSelectedDayMedicine" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMyMedications"
@@ -112,6 +113,7 @@
                     android:id="@+id/recyclerViewMyMedications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewMyMedications"

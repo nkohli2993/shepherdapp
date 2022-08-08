@@ -16,6 +16,7 @@ import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.utils.MedListAction
+import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.MyMedListViewModel
 
 
@@ -64,9 +65,9 @@ class MyMedicationsAdapter(
             itemBinding.data = medList
             itemBinding.root.setOnClickListener {
                 medList?.let { it1 ->
-                    recyclerItemListener.onItemSelected(
-                        it1
-                    )
+//                    recyclerItemListener.onItemSelected(
+//                        it1
+//                    )
                 }
             }
             itemBinding.imgMore.setOnClickListener {
@@ -165,15 +166,11 @@ class MyMedicationsAdapter(
         }
 
         editTV.setOnClickListener {
-
+            showInfo(context, "Edit")
         }
         deleteTV.setOnClickListener {
-            //add delete scehduled medication
-            medList?.actionType = MedListAction.Delete.value
-            medList?.deletePosition = position
-            itemListener.onItemSelected(
-                medList!!
-            )
+            showInfo(context, "delete")
+
         }
 
     }

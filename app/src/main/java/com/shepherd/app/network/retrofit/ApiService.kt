@@ -257,14 +257,14 @@ interface ApiService {
     suspend fun getAllMedLists(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("search") search :String = ""
+        @Query("search") search: String = ""
     ): Response<GetAllMedListResponseModel>
 
     @GET(ApiConstants.MedList.GET_ALL_MED_LIST)
     suspend fun SearchMedList(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("search") search :String
+        @Query("search") search: String
     ): Response<GetAllMedListResponseModel>
 
 
@@ -282,6 +282,12 @@ interface ApiService {
     // scheduled medication
     @POST(ApiConstants.MedList.ADD_SCHEDULED_MEDICATION)
     suspend fun addScheduledMedication(
+        @Body addNewLockBoxRequestModel: ScheduledMedicationRequestModel
+    ): Response<AddScheduledMedicationResponseModel>
+
+    @PUT(ApiConstants.MedList.UPDATE_SCHEDULED_MEDICATION)
+    suspend fun updateScheduledMedication(
+        @Path("id") id:Int,
         @Body addNewLockBoxRequestModel: ScheduledMedicationRequestModel
     ): Response<AddScheduledMedicationResponseModel>
 

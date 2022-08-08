@@ -56,6 +56,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvMedTitle">
 
@@ -264,6 +265,52 @@
                     tools:listitem="@layout/layout_add_time" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/endTimeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:text="@string/end_date"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycleviewTime" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clEndDateWrapper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    app:layout_constraintTop_toBottomOf="@+id/endTimeTV">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/endDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/transparent"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/gotham_medium"
+                        android:hint="@string/dd_mm_year"
+                        android:inputType="textMultiLine"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_30sdp"
+                        android:textColor="@color/_192032"
+                        android:textColorHint="@color/_192032"
+                        android:textSize="@dimen/_13ssp"
+                        app:fontFamily="@font/gotham_bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlSymmetry" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvDays"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -273,7 +320,7 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recycleviewTime" />
+                    app:layout_constraintTop_toBottomOf="@+id/clEndDateWrapper" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clDaysWrapper"
@@ -295,6 +342,7 @@
                         android:onClick="@{listener::onClick}"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:paddingVertical="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_30sdp"
                         android:textColor="@color/_192032"
                         android:textColorHint="@color/_192032"
                         android:textSize="@dimen/_13ssp"

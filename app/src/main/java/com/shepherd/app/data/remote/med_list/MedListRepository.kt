@@ -87,6 +87,19 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    // update scheduled medication
+    suspend fun updateScheduledMedication(
+        id:Int,
+        scheduledMedication: ScheduledMedicationRequestModel
+    ): Flow<DataResult<AddScheduledMedicationResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AddScheduledMedicationResponseModel, AddScheduledMedicationResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AddScheduledMedicationResponseModel> {
+                return apiService.updateScheduledMedication(id,scheduledMedication)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
     // delete schedule medication
     suspend fun deletedSceduledMedication(
         id: Int
