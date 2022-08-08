@@ -11,15 +11,23 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
+<<<<<<< HEAD
 import com.shepherd.app.databinding.AdapterSelectedDayMedicineBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.utils.extensions.showInfo
+=======
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlist
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
+import com.shepherd.app.databinding.AdapterSelectedDayMedicineBinding
+import com.shepherd.app.ui.base.listeners.RecyclerItemListener
+>>>>>>> b94fcb01d70a12cb18efce56683f01e28c20dbe8
 import com.shepherd.app.view_model.MedListViewModel
+import com.shepherd.app.view_model.MyMedListViewModel
 
 
 class SelectedDayMedicineAdapter(
-    private val viewModel: MedListViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    private val viewModel: MyMedListViewModel,
+    var payload: MutableList<Payload> = ArrayList()
 ) :
     RecyclerView.Adapter<SelectedDayMedicineAdapter.SelectedDayMedicineViewHolder>() {
     lateinit var binding: AdapterSelectedDayMedicineBinding
@@ -28,7 +36,11 @@ class SelectedDayMedicineAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
+<<<<<<< HEAD
             viewModel.openMedDetail(itemData[0] as String)
+=======
+//            viewModel.openMedDetail(itemData[0] as Medlist)
+>>>>>>> b94fcb01d70a12cb18efce56683f01e28c20dbe8
         }
     }
 
@@ -48,33 +60,40 @@ class SelectedDayMedicineAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 4
+        return payload.size
     }
 
     override fun onBindViewHolder(holder: SelectedDayMedicineViewHolder, position: Int) {
 //        holder.bind(requestList[position], onItemClickListener)
-        holder.bind("", onItemClickListener)
+        holder.bind(payload[position].medlist, onItemClickListener)
     }
 
 
     inner class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: String, recyclerItemListener: RecyclerItemListener) {
-            // itemBinding.data = dashboard
+        fun bind(medList: Medlist?, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = medList
             itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    dashboard
-                )
+                medList?.let { it1 ->
+                    recyclerItemListener.onItemSelected(
+                        it1
+                    )
+                }
             }
 
             itemBinding.imgMore.setOnClickListener {
+<<<<<<< HEAD
                 showPopupReportPost(
+=======
+                openEditOption(
+>>>>>>> b94fcb01d70a12cb18efce56683f01e28c20dbe8
                     absoluteAdapterPosition,
                     itemBinding.imgMore,
                     context,
                     recyclerItemListener
                 )
+<<<<<<< HEAD
             }
         }
 
@@ -86,6 +105,8 @@ class SelectedDayMedicineAdapter(
             } catch (npe: NullPointerException) {
                 //Happens when the view doesn't exist on screen anymore.
                 return null
+=======
+>>>>>>> b94fcb01d70a12cb18efce56683f01e28c20dbe8
             }
             val location = Rect()
             location.left = locInt[0]
@@ -95,6 +116,7 @@ class SelectedDayMedicineAdapter(
             return location
         }
 
+<<<<<<< HEAD
         @SuppressLint("ClickableViewAccessibility")
         private fun showPopupReportPost(
             position: Int,
@@ -154,6 +176,32 @@ class SelectedDayMedicineAdapter(
             }
 
         }
+=======
+        private fun openEditOption(
+            position: Int,
+            optionsImg: AppCompatImageView,
+            context: Context,
+            recyclerItemListener: RecyclerItemListener
+        ) {
+
+            val popup = PopupMenu(context, optionsImg)
+            popup.inflate(R.menu.options_menu_medication)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.edit_medication -> {
+
+                        true
+                    }
+                    R.id.delete_medication -> {
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
+
+>>>>>>> b94fcb01d70a12cb18efce56683f01e28c20dbe8
     }
 
 
@@ -165,9 +213,10 @@ class SelectedDayMedicineAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+    fun addData(payload: ArrayList<Payload>) {
+//        this.requestList.clear()
+//        this.requestList.addAll(dashboard)
+        this.payload = payload
         notifyDataSetChanged()
     }
 

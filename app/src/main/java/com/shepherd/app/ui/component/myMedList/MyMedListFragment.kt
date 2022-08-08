@@ -24,7 +24,12 @@ import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewMedication.AddNewMedicationFragmentDirections
 import com.shepherd.app.ui.component.myMedList.adapter.MyMedicationsAdapter
+<<<<<<< HEAD
 import com.shepherd.app.utils.*
+=======
+import com.shepherd.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
+import com.shepherd.app.utils.SingleEvent
+>>>>>>> b94fcb01d70a12cb18efce56683f01e28c20dbe8
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.MyMedListViewModel
@@ -41,6 +46,11 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     private val medListViewModel: MyMedListViewModel by viewModels()
     private var myMedicationsAdapter: MyMedicationsAdapter? = null
+<<<<<<< HEAD
+=======
+    private var selectedDayMedicineAdapter: SelectedDayMedicineAdapter? = null
+
+>>>>>>> b94fcb01d70a12cb18efce56683f01e28c20dbe8
     private lateinit var myMedlistBinding: FragmentMyMedlistBinding
 
     private var deletePostion: Int = -1
@@ -208,6 +218,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     payload = it.data.payload
                     if (payload.isNullOrEmpty()) return@observeEvent
                     myMedicationsAdapter?.addData(payload)
+                    selectedDayMedicineAdapter?.addData(payload)
                 }
             }
         }
@@ -297,8 +308,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     private fun setSelectedDayMedicineAdapter() {
-//        val selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
-//        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
+        selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
+        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
 
     }
 
