@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlist" />
+            type="com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:fontFamily="@font/gotham_medium"
-                    android:text="@{data.name}"
+                    android:text="@{data.medlist.name}"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:fontFamily="@font/gotham_book"
-                    android:text="@{data.description}"
+                    android:text="@{data.medlist.description}"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_11ssp"
                     app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
@@ -77,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:fontFamily="@font/gotham_medium"
-                    android:text="9:00 am"
+                    android:text="@{data.time.time.concat(` `).concat(data.time.hour)}"
                     android:textColor="@color/_399282"
                     android:textSize="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"

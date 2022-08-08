@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlist
@@ -71,7 +70,7 @@ class MyMedicationsAdapter(
                 }
             }
             itemBinding.imgMore.setOnClickListener {
-                showPopupReportPost(context,itemBinding.imgMore)
+                showPopupReportPost(context, itemBinding.imgMore)
                 openEditOption(
                     absoluteAdapterPosition,
                     itemBinding.imgMore,
@@ -119,6 +118,7 @@ class MyMedicationsAdapter(
     fun addData(payload: ArrayList<Payload>) {
 //        this.requestList.clear()
 //        this.payload.addAll(medLists)
+        this.payload.clear()
         this.payload = payload
         notifyDataSetChanged()
     }
@@ -188,10 +188,10 @@ class MyMedicationsAdapter(
         }
 
         editTV.setOnClickListener {
-            showInfo(context,"Edit")
+            showInfo(context, "Edit")
         }
         deleteTV.setOnClickListener {
-            showInfo(context,"delete")
+            showInfo(context, "delete")
         }
 
     }
