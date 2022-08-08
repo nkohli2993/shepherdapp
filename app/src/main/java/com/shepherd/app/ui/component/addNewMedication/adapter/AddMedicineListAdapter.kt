@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.AdapterAddMedicineListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
@@ -23,7 +22,7 @@ class AddMedicineListAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-             viewModel.openScheduleMedication(itemData[0] as Int)
+            viewModel.openScheduleMedication(itemData[0] as Int)
         }
     }
 
@@ -52,10 +51,10 @@ class AddMedicineListAdapter(
 
         fun bind(medList: Medlist, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList
-         /*   itemBinding.cbReminder.isChecked = false
-            if (medList.isSelected) {
-                itemBinding.cbReminder.isChecked = true
-            }*/
+            /*   itemBinding.cbReminder.isChecked = false
+               if (medList.isSelected) {
+                   itemBinding.cbReminder.isChecked = true
+               }*/
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     absoluteAdapterPosition
@@ -86,6 +85,10 @@ class AddMedicineListAdapter(
     fun setList(medLists: ArrayList<Medlist>) {
         this.medLists = medLists
         notifyDataSetChanged()
+    }
+
+    fun clearData() {
+        this.medLists.clear()
     }
 
 }

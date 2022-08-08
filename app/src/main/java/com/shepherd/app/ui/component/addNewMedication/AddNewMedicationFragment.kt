@@ -56,8 +56,8 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun onResume() {
         super.onResume()
-        /*medLists?.clear()
-        medListViewModel.getAllMedLists(pageNumber, limit)*/
+        /* medLists.clear()
+         medListViewModel.getAllMedLists(pageNumber, limit)*/
     }
 
     override fun initViewBinding() {
@@ -67,7 +67,6 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         setMedicineListAdapter()
 
         // Search med list
-
         fragmentAddNewMedicationBinding.imgCancel.setOnClickListener {
             fragmentAddNewMedicationBinding.editTextSearch.setText("")
             pageNumber = 1
@@ -130,8 +129,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                     }
 
                     if (medLists.isNullOrEmpty()) return@observeEvent
-                    addMedicineListAdapter?.addData(medLists,isSearch)
-
+                    addMedicineListAdapter?.addData(medLists, isSearch)
                 }
             }
         }
@@ -221,6 +219,10 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         return R.layout.fragment_add_new_medication
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        addMedicineListAdapter?.clearData()
+    }
 
 }
 
