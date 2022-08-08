@@ -23,6 +23,7 @@ import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.CareTeamMembersViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Exception
 
 
 /**
@@ -141,15 +142,17 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     careTeams = it.data.payload.data
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     // Get the uuid of Care Team Leader
-                    val uuidTeamLead = careTeams?.filter {
-                        it.careRoles?.slug == CareRole.CareTeamLead.slug
-                    }?.map {
-                        it.user_id
-                    }?.get(0)
-                    Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
-                    uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }
-
-
+                    try {
+                        val uuidTeamLead = careTeams?.filter {
+                            it.careRoles?.slug == CareRole.CareTeamLead.slug
+                        }?.map {
+                            it.user_id
+                        }?.get(0)
+                        Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
+                        uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }
+                    }catch (e:Exception){
+                        Log.d(TAG,"Error: ${e.toString()}")
+                    }
                     careTeamAdapter?.updateCareTeams(careTeams!!)
                 }
                 is DataResult.Failure -> {

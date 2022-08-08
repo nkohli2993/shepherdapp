@@ -62,7 +62,10 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     fragmentAddMemberBinding.edtEmail.requestFocus()
                 }
                 selectedCareRole?.id == null -> {
-                    showInfo(requireContext(), "Please select any role...")
+                    showError(requireContext(), "Please select any role...")
+                }
+                selectedModule.isEmpty() ->{
+                    showError(requireContext(), "Please select atleast one permission")
                 }
                 else -> {
                     return true
@@ -242,6 +245,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     selectedModule = selectedModule.substring(0, selectedModule.length - 1)
                 }
                 Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
+
 
                 if (isValid) {
                     val addNewMemberRequestModel = AddNewMemberCareTeamRequestModel(

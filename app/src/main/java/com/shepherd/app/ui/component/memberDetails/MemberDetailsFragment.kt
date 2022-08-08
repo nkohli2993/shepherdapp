@@ -110,7 +110,16 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
                 ?: false
         if (isLoggedInUserTeamLead) {
-            fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
+            val loggedInUserUUID =
+                Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+
+            if (loggedInUserUUID == careTeam?.user_id_details!!.uid){
+                fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
+            }
+            else{
+                fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
+            }
+
             fragmentMemberDetailsBinding.btnUpdate.visibility = View.VISIBLE
         } else {
             fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
@@ -131,20 +140,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 checkPermission(perList[i].toInt())
             }
         }
-
-
-        /* fragmentMemberDetailsBinding.txtCareTeamMemberName.text =
-             careTeam?.user?.userProfiles?.fullName
- */
-        //Set EmailID
-        /* fragmentMemberDetailsBinding.txtEmailCare.text =
-             careTeam?.user?.userProfiles?.*/
-
-        //Set Phone Number
-        /*  fragmentMemberDetailsBinding.txtCareTeamMemberName.text =
-              careTeam?.user?.userProfiles?*/
-
-        //Set Address
     }
 
     fun getStringWithHyphen(str: String): String {
@@ -292,11 +287,16 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
 
                 // Update Care Team Member Detail
-                careTeam?.id?.let {
-                    memberDetailsViewModel.updateCareTeamMember(
-                        it,
-                        UpdateCareTeamMemberRequestModel(selectedModule)
-                    )
+                if(selectedModule.isEmpty()){
+                    showError(requireContext(),"Please select atleast one permission.")
+                }
+                else{
+                    careTeam?.id?.let {
+                        memberDetailsViewModel.updateCareTeamMember(
+                            it,
+                            UpdateCareTeamMemberRequestModel(selectedModule)
+                        )
+                    }
                 }
 
             }

@@ -89,12 +89,24 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/srCalender"
                     tools:itemCount="3"
                     tools:listitem="@layout/adapter_selected_day_medicine" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtNoScehduled"
+                    style="@style/TextViewGothamMedium"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_150sdp"
+                    android:gravity="center"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:text="@string/no_scheduled_medication_found"
+                    android:textSize="@dimen/_14ssp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewSelectedDayMedicine" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMyMedications"
@@ -106,7 +118,7 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewSelectedDayMedicine" />
+                    app:layout_constraintTop_toBottomOf="@+id/txtNoScehduled" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtMedication"
@@ -124,6 +136,7 @@
                     android:id="@+id/recyclerViewMyMedications"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewMyMedications"

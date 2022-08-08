@@ -7,6 +7,7 @@ import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.DeleteAddedMedicationResponseModel
 import com.shepherd.app.network.retrofit.NetworkOnlineDataRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -82,6 +83,31 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
             NetworkOnlineDataRepo<AddScheduledMedicationResponseModel, AddScheduledMedicationResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AddScheduledMedicationResponseModel> {
                 return apiService.addScheduledMedication(scheduledMedication)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // update scheduled medication
+    suspend fun updateScheduledMedication(
+        id:Int,
+        scheduledMedication: ScheduledMedicationRequestModel
+    ): Flow<DataResult<AddScheduledMedicationResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AddScheduledMedicationResponseModel, AddScheduledMedicationResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AddScheduledMedicationResponseModel> {
+                return apiService.updateScheduledMedication(id,scheduledMedication)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // delete schedule medication
+    suspend fun deletedSceduledMedication(
+        id: Int
+    ): Flow<DataResult<DeleteAddedMedicationResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<DeleteAddedMedicationResponseModel, DeleteAddedMedicationResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<DeleteAddedMedicationResponseModel> {
+                return apiService.deleteAddedMedication(id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

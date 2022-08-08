@@ -40,7 +40,6 @@ class DoseAdapter (
     }
 
     override fun getItemCount(): Int {
-        Log.e("catch_exception","list: ${doseList.size}")
         return doseList.size
     }
 

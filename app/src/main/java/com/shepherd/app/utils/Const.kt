@@ -78,3 +78,15 @@ enum class ClickType(val value: Int){
     View(1),
     Delete(2)
 }
+
+enum class MedListAction(val value: Int){
+    View(1),
+    EDIT(2),
+    Delete(3)
+}
+enum class FrequencyType(val value :String){
+    ONCE("1"),
+    TWICE("2"),
+    THRICE("3"),
+    FOUR("4")
+}

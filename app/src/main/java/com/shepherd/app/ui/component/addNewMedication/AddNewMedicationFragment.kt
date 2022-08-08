@@ -186,9 +186,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             findNavController().navigate(
                 AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
                     selectedMedication!!
-                )
-            )
-
+                ))
         }
     }
 
@@ -205,11 +203,6 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                 findNavController().popBackStack()
             }
             R.id.btnNext -> {
-                findNavController().navigate(
-                    AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                        selectedMedication!!
-                    )
-                )
             }
         }
     }

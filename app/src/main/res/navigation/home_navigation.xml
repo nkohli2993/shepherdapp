@@ -114,10 +114,17 @@
         android:id="@+id/nav_schedule_medication"
         android:name="com.shepherd.app.ui.component.schedule_medicine.ScheduleMedicineFragment"
         android:label="@string/schedule_medicine"
-        tools:layout="@layout/fragment_schedulwe_medicine" >
+        tools:layout="@layout/fragment_schedulwe_medicine">
         <argument
             android:name="medlist"
-            app:argType="com.shepherd.app.data.dto.med_list.Medlist" />
+            android:defaultValue="@null"
+            app:argType="com.shepherd.app.data.dto.med_list.Medlist"
+            app:nullable="true" />
+        <argument
+            android:name="medication_scheduled"
+            android:defaultValue="@null"
+            app:argType="com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -223,7 +230,7 @@
         android:id="@+id/nav_lock_box_doc_info"
         android:name="com.shepherd.app.ui.component.lockBoxDocInfo.LockBoxDocInfoFragment"
         android:label="@string/menu_lock_box_info"
-        tools:layout="@layout/fragment_uploaded_lock_box_doc_detail" >
+        tools:layout="@layout/fragment_uploaded_lock_box_doc_detail">
         <argument
             android:name="lock_box"
             app:argType="com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox" />
@@ -241,6 +248,9 @@
         <action
             android:id="@+id/action_my_medlist_to_med_detail"
             app:destination="@+id/nav_med_detail" />
+        <action
+            android:id="@+id/action_add_new_medication_to_add_medication"
+            app:destination="@+id/nav_schedule_medication" />
 
     </fragment>
     <fragment
@@ -332,8 +342,8 @@
         tools:layout="@layout/fragment_add_new_lock_box">
         <argument
             android:name="lock_box_type"
+            android:defaultValue="@null"
             app:argType="com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
     </fragment>
 </navigation>
