@@ -7,16 +7,17 @@ import android.widget.PopupMenu
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlist
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.databinding.AdapterSelectedDayMedicineBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.utils.ClickType
 import com.shepherd.app.view_model.MedListViewModel
+import com.shepherd.app.view_model.MyMedListViewModel
 
 
 class SelectedDayMedicineAdapter(
-    private val viewModel: MedListViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    private val viewModel: MyMedListViewModel,
+    var payload: MutableList<Payload> = ArrayList()
 ) :
     RecyclerView.Adapter<SelectedDayMedicineAdapter.SelectedDayMedicineViewHolder>() {
     lateinit var binding: AdapterSelectedDayMedicineBinding
@@ -25,7 +26,7 @@ class SelectedDayMedicineAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-             viewModel.openMedDetail(itemData[0] as String)
+//            viewModel.openMedDetail(itemData[0] as Medlist)
         }
     }
 
@@ -45,54 +46,63 @@ class SelectedDayMedicineAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return 4
+        return payload.size
     }
 
     override fun onBindViewHolder(holder: SelectedDayMedicineViewHolder, position: Int) {
 //        holder.bind(requestList[position], onItemClickListener)
-        holder.bind("", onItemClickListener)
+        holder.bind(payload[position].medlist, onItemClickListener)
     }
 
 
-   inner class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
+    inner class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: String, recyclerItemListener: RecyclerItemListener) {
-            // itemBinding.data = dashboard
+        fun bind(medList: Medlist?, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = medList
             itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    dashboard
-                )
+                medList?.let { it1 ->
+                    recyclerItemListener.onItemSelected(
+                        it1
+                    )
+                }
             }
 
             itemBinding.imgMore.setOnClickListener {
-                openEditOption(absoluteAdapterPosition,itemBinding.imgMore,context,recyclerItemListener)
+                openEditOption(
+                    absoluteAdapterPosition,
+                    itemBinding.imgMore,
+                    context,
+                    recyclerItemListener
+                )
             }
         }
-       private fun openEditOption(
-           position: Int,
-           optionsImg: AppCompatImageView,
-           context: Context,
-           recyclerItemListener: RecyclerItemListener) {
 
-           val popup = PopupMenu(context, optionsImg)
-           popup.inflate(R.menu.options_menu_medication)
-           popup.setOnMenuItemClickListener { item ->
-               when (item.itemId) {
-                   R.id.edit_medication -> {
+        private fun openEditOption(
+            position: Int,
+            optionsImg: AppCompatImageView,
+            context: Context,
+            recyclerItemListener: RecyclerItemListener
+        ) {
 
-                       true
-                   }
-                   R.id.delete_medication -> {
-                       true
-                   }
-                   else -> false
-               }
-           }
-           popup.show()
-       }
+            val popup = PopupMenu(context, optionsImg)
+            popup.inflate(R.menu.options_menu_medication)
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.edit_medication -> {
 
-   }
+                        true
+                    }
+                    R.id.delete_medication -> {
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popup.show()
+        }
+
+    }
 
 
     override fun getItemId(position: Int): Long {
@@ -103,9 +113,10 @@ class SelectedDayMedicineAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+    fun addData(payload: ArrayList<Payload>) {
+//        this.requestList.clear()
+//        this.requestList.addAll(dashboard)
+        this.payload = payload
         notifyDataSetChanged()
     }
 

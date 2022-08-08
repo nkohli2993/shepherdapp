@@ -20,6 +20,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.myMedList.adapter.MyMedicationsAdapter
+import com.shepherd.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.setupSnackbar
@@ -38,6 +39,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     private val medListViewModel: MyMedListViewModel by viewModels()
     private var myMedicationsAdapter: MyMedicationsAdapter? = null
+    private var selectedDayMedicineAdapter: SelectedDayMedicineAdapter? = null
 
     private lateinit var myMedlistBinding: FragmentMyMedlistBinding
     private var pageNumber = 1
@@ -203,6 +205,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     payload = it.data.payload
                     if (payload.isNullOrEmpty()) return@observeEvent
                     myMedicationsAdapter?.addData(payload)
+                    selectedDayMedicineAdapter?.addData(payload)
                 }
             }
         }
@@ -230,8 +233,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     private fun setSelectedDayMedicineAdapter() {
-//        val selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
-//        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
+        selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
+        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
 
     }
 
