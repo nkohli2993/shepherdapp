@@ -238,7 +238,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                                 payload.createdAt,
                                 payload.updatedAt,
                                 payload.deletedAt,
-                                payload.medlist
+                                payload.medlist,
+                                payload.endDate
                             )
                             medListReminderList.add(medListRem)
                         }
@@ -281,9 +282,9 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     }
 
-    private fun navigateToMedDetail(navigateEvent: SingleEvent<Payload>) {
+    private fun navigateToMedDetail(navigateEvent: SingleEvent<MedListReminder>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            when(it.actionType?:MedListAction.View.value){
+            when(it.medlist?.actionType?:MedListAction.View.value){
                 MedListAction.View.value ->{
                     findNavController().navigate(R.id.action_my_medlist_to_med_detail)
                 }
@@ -302,7 +303,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         setTitle("Delete Medication Schedule")
                         setMessage("Sure you want to delete this medication schedule")
                         setPositiveButton("Yes") { _, _ ->
-                            deletePostion = it.deletePosition!!
+                            deletePostion = it.medlist!!.deletePosition!!
                             medListViewModel.deletedSceduledMedication(it.id!!)
                         }
                         setNegativeButton("Cancel") { _, _ ->

@@ -16,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.data.dto.med_list.schedule_medlist.*
 import com.shepherd.app.databinding.FragmentSchedulweMedicineBinding
@@ -60,7 +61,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private val medicationViewModel: AddMedicationViewModel by viewModels()
     private val args: ScheduleMedicineFragmentArgs by navArgs()
     private var selectedMedList: Medlist? = null
-    private var addedMedication: Payload? = null
+    private var addedMedication: MedListReminder? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -180,9 +181,10 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     SimpleDateFormat("dd-MM-yyyy").format(formatedDate)
             }
             timeList.clear()
-            for (i in addedMedication?.time!!) {
+          /*  for (i in addedMedication?.time!!) {
                 timeList.add(TimeSelectedlist(timeList.size, i.time, i.hour!!.lowercase()))
-            }
+            }*/
+            timeList.add(TimeSelectedlist(timeList.size, addedMedication?.time!!.time, addedMedication?.time!!.hour!!.lowercase()))
             setTimeAdapter()
             addDays(isEdit = true, addedMedication?.days!!)
             setDayAdapter()

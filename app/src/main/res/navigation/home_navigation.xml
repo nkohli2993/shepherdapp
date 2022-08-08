@@ -123,7 +123,7 @@
         <argument
             android:name="medication_scheduled"
             android:defaultValue="@null"
-            app:argType="com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload"
+            app:argType="com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder"
             app:nullable="true" />
     </fragment>
 
