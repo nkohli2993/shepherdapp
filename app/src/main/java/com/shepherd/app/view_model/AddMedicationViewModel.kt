@@ -8,7 +8,6 @@ import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.AddScheduledMedicationResponseModel
 import com.shepherd.app.data.dto.med_list.GetAllDoseListResponseModel
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.schedule_medlist.DoseList
 import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
 import com.shepherd.app.data.local.UserRepository
@@ -55,7 +54,8 @@ class AddMedicationViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<GetAllMedListResponseModel>>>()
     var getMedListResponseLiveData: LiveData<Event<DataResult<GetAllMedListResponseModel>>> =
         _getMedListResponseLiveData
-// search med list
+
+    // search med list
     private var _searchMedListResponseLiveData =
         MutableLiveData<Event<DataResult<GetAllMedListResponseModel>>>()
     var searchMedListResponseLiveData: LiveData<Event<DataResult<GetAllMedListResponseModel>>> =
@@ -74,8 +74,6 @@ class AddMedicationViewModel @Inject constructor(
     var addScheduledMedicationResponseLiveData: LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> =
         _addScheduledMedicationResponseLiveData
 
-
-
     // Get All MedLists
     fun getAllMedLists(
         pageNumber: Int,
@@ -92,14 +90,15 @@ class AddMedicationViewModel @Inject constructor(
         return getMedListResponseLiveData
 
     }
+
     // Get All MedLists
     fun searchMedList(
         pageNumber: Int,
         limit: Int,
-        search:String
+        search: String
     ): LiveData<Event<DataResult<GetAllMedListResponseModel>>> {
         viewModelScope.launch {
-            val response = medListRepository.searchMedList(pageNumber, limit,search)
+            val response = medListRepository.searchMedList(pageNumber, limit, search)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _searchMedListResponseLiveData.postValue(Event(it))
@@ -138,6 +137,7 @@ class AddMedicationViewModel @Inject constructor(
     fun setSelectedDose(doseList: DoseList) {
         _doseListData.value = SingleEvent(doseList)
     }
+
     fun setDayData(dayList: Int) {
         _dayListSelectedData.value = SingleEvent(dayList)
     }
@@ -161,6 +161,8 @@ class AddMedicationViewModel @Inject constructor(
         }
         return addScheduledMedicationResponseLiveData
     }
+
+
 
 
 }

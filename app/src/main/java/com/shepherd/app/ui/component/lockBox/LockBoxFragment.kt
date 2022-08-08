@@ -320,6 +320,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }.create()
                 dialog.show()
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
             }
 
         }

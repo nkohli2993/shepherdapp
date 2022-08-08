@@ -78,3 +78,9 @@ enum class ClickType(val value: Int){
     View(1),
     Delete(2)
 }
+
+enum class MedListAction(val value: Int){
+    View(1),
+    EDIT(2),
+    Delete(3)
+}

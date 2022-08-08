@@ -416,5 +416,6 @@
     <string name="please_select_timing_all_medication">Please select timing of all medication dose</string>
     <string name="please_select_days_for_medication">Please select days for medication.</string>
     <string name="scheduled_medication_created_successfully">Scheduled Medication created successfully…</string>
-
+    <string name="no_scheduled_medication_found">No Scheduled reminder found</string>
+    <string name="schedule_medication_deleted_successfully">Scheduled Medication deleted successfully…</string>
 </resources>

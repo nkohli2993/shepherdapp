@@ -279,10 +279,14 @@ interface ApiService {
         @Path("id") id: String
     ): Response<GetLovedOneMedList>
 
+    // scheduled medication
     @POST(ApiConstants.MedList.ADD_SCHEDULED_MEDICATION)
     suspend fun addScheduledMedication(
         @Body addNewLockBoxRequestModel: ScheduledMedicationRequestModel
     ): Response<AddScheduledMedicationResponseModel>
 
-
+    @DELETE(ApiConstants.MedList.DELETE_SCHEDULED_MEDICATION)
+    suspend fun deleteAddedMedication(
+        @Path("id") id: Int
+    ): Response<DeleteAddedMedicationResponseModel>
 }

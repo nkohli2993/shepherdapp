@@ -7,9 +7,11 @@ import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.med_list.MedListRepository
 import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.DeleteAddedMedicationResponseModel
 import com.shepherd.app.network.retrofit.Event
 import com.shepherd.app.ui.base.BaseViewModel
 import com.shepherd.app.utils.SingleEvent
@@ -41,12 +43,21 @@ class MyMedListViewModel @Inject constructor(
         _getLovedOneMedListsResponseLiveData
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<String>>()
-    val openMedDetailItems: LiveData<SingleEvent<String>> get() = openMedDetailItemsPrivate
+    private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<Payload>>()
+    val openMedDetailItems: LiveData<SingleEvent<Payload>> get() = openMedDetailItemsPrivate
 
-    fun openMedDetail(item: String) {
+    fun openMedDetail(item: Payload) {
         openMedDetailItemsPrivate.value = SingleEvent(item)
     }
+
+
+    // delete medication for loved ones
+    private var _deletedScheduledMedicationResponseLiveData =
+        MutableLiveData<Event<DataResult<DeleteAddedMedicationResponseModel>>>()
+    var deletedScheduledMedicationResponseLiveData: LiveData<Event<DataResult<DeleteAddedMedicationResponseModel>>> =
+        _deletedScheduledMedicationResponseLiveData
+
+
 
     // Get All MedLists
     fun getAllMedLists(
@@ -79,5 +90,18 @@ class MyMedListViewModel @Inject constructor(
         return getLovedOneMedListsResponseLiveData
     }
 
+    // add scheduled medication for loved ones
+    fun deletedSceduledMedication(scheduledMedicationId: Int): LiveData<Event<DataResult<DeleteAddedMedicationResponseModel>>> {
+        viewModelScope.launch {
+            val response =
+                scheduledMedicationId.let { medListRepository.deletedSceduledMedication(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _deletedScheduledMedicationResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return deletedScheduledMedicationResponseLiveData
+    }
 
 }

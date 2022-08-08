@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.data.dto.med_list.schedule_medlist.*
 import com.shepherd.app.databinding.FragmentSchedulweMedicineBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -55,6 +56,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private val medicationViewModel: AddMedicationViewModel by viewModels()
     private val args: ScheduleMedicineFragmentArgs by navArgs()
     private var selectedMedList: Medlist? = null
+//    private var addedMedication: Payload? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -117,9 +119,24 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
     override fun initViewBinding() {
         fragmentScheduleMedicineBinding.listener = this
-        selectedMedList = args.medlist
-        // set title of selected med
-        fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
+        if(args.medlist!=null){
+            selectedMedList = args.medlist
+            fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
+        }
+
+        if(args.medicationScheduled!=null){
+            //set paymload data
+
+        }
+        /*if(args.bundle.contains("selected_medlist")){
+            selectedMedList = args.bundle.getParcable("selected_medlist")  // if view open to add new schedule
+            // set title of selected med
+            fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
+        }
+       *//* else if(args.bundle.contains("medlist_payload")){
+            addedMedication = args.bundle.getParcable("medlist_payload")  // if view open to edit schedule
+        }*/
+
 
 
         addFrequencyType()
