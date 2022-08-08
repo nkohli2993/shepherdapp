@@ -129,13 +129,15 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         fragmentScheduleMedicineBinding.listener = this
         if (args.medlist != null) {
             selectedMedList = args.medlist
+            fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
         }
 
         if (args.medicationScheduled != null) {
             //set paymload data
             addedMedication = args.medicationScheduled
+            fragmentScheduleMedicineBinding.tvMedTitle.text = addedMedication?.medlist?.name
         }
-        fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
+
         addFrequencyType()
         fragmentScheduleMedicineBinding.frequencyRV.adapter = FrequencyAdapter(
             requireContext(),

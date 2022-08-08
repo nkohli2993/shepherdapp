@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.med_list.MedListRepository
@@ -43,10 +44,10 @@ class MyMedListViewModel @Inject constructor(
         _getLovedOneMedListsResponseLiveData
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<Payload>>()
-    val openMedDetailItems: LiveData<SingleEvent<Payload>> get() = openMedDetailItemsPrivate
+    private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<MedListReminder>>()
+    val openMedDetailItems: LiveData<SingleEvent<MedListReminder>> get() = openMedDetailItemsPrivate
 
-    fun openMedDetail(item: Payload) {
+    fun openMedDetail(item: MedListReminder) {
         openMedDetailItemsPrivate.value = SingleEvent(item)
     }
 

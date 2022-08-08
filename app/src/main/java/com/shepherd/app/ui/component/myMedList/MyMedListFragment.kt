@@ -17,6 +17,7 @@ import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.databinding.FragmentMyMedlistBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -29,6 +30,8 @@ import com.shepherd.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapte
 import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.utils.setupSnackbar
+import com.shepherd.app.utils.showToast
 import com.shepherd.app.view_model.MyMedListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.calendar_item.view.*
@@ -53,11 +56,11 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     var totalPage: Int = 0
     var total: Int = 0
     var pageCount: Int = 0
+    var medListReminderList: ArrayList<MedListReminder> = arrayListOf()
 
 
     //    var medlists: ArrayList<Medlists> = arrayListOf()
     var payload: ArrayList<Payload> = arrayListOf()
-
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
     override fun onCreateView(
@@ -80,8 +83,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
         setCalender()
-
-
     }
 
     private fun setCalender() {
@@ -200,18 +201,50 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    showError(requireContext(), it.message.toString())
+//                    showError(requireContext(), it.message.toString())
+                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+                    myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
+                    myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
+                    myMedlistBinding.txtMedication.visibility = View.VISIBLE
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    payload.clear()
+                    medListReminderList.clear()
+                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
+                    myMedlistBinding.recyclerViewMyMedications.visibility = View.VISIBLE
+                    myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
+                    myMedlistBinding.txtMedication.visibility = View.GONE
 //                    medlists = it.data.payload?.medlists!!
                     payload = it.data.payload
                     if (payload.isNullOrEmpty()) return@observeEvent
+                    for (i in payload.indices) {
+                        val payload = payload[i]
+                        payload.time.forEach {
+                            val medListRem = MedListReminder(
+                                payload.id,
+                                payload.assignedBy,
+                                payload.assignedTo,
+                                payload.loveUserId,
+                                payload.dosageId,
+                                payload.medlistId,
+                                payload.frequency,
+                                payload.days,
+                                it,
+                                payload.note,
+                                payload.createdAt,
+                                payload.updatedAt,
+                                payload.deletedAt,
+                                payload.medlist
+                            )
+                            medListReminderList.add(medListRem)
+                        }
+                    }
                     myMedicationsAdapter?.addData(payload)
-                    selectedDayMedicineAdapter?.addData(payload)
+                    selectedDayMedicineAdapter?.addData(medListReminderList)
                 }
             }
         }
@@ -258,7 +291,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     //open edit view
                     findNavController().navigate(
                         AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                           it.medlist,it
+                          medicationScheduled = it
                         ))
                 }
                 MedListAction.Delete.value ->{

@@ -11,18 +11,16 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.med_list.Medlist
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.databinding.AdapterSelectedDayMedicineBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.utils.MedListAction
-import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.view_model.MyMedListViewModel
 
 
 class SelectedDayMedicineAdapter(
     private val viewModel: MyMedListViewModel,
-    var payload: MutableList<Payload> = ArrayList()
+    var payload: MutableList<MedListReminder> = ArrayList()
 ) :
     RecyclerView.Adapter<SelectedDayMedicineAdapter.SelectedDayMedicineViewHolder>() {
     lateinit var binding: AdapterSelectedDayMedicineBinding
@@ -31,7 +29,7 @@ class SelectedDayMedicineAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openMedDetail(itemData[0] as Payload)
+            viewModel.openMedDetail(itemData[0] as MedListReminder)
         }
     }
 
@@ -62,11 +60,10 @@ class SelectedDayMedicineAdapter(
 
     inner class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-
-        fun bind(medList: Payload, recyclerItemListener: RecyclerItemListener) {
-            itemBinding.data = medList.medlist
+        fun bind(medListReminder: MedListReminder?, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = medListReminder
             itemBinding.root.setOnClickListener {
-                medList?.let { it1 ->
+                medListReminder?.let { it1 ->
                     recyclerItemListener.onItemSelected(
                         it1
                     )
@@ -78,7 +75,7 @@ class SelectedDayMedicineAdapter(
                 showPopupReportPost(
                     absoluteAdapterPosition,
                     itemBinding.imgMore,
-                    recyclerItemListener, medList
+                    recyclerItemListener, medListReminder
                 )
             }
         }
@@ -105,7 +102,7 @@ class SelectedDayMedicineAdapter(
             position: Int,
             view: AppCompatImageView,
             itemListener: RecyclerItemListener,
-            medList: Payload?
+            medList: MedListReminder?
         ) {
             val popupView: View =
                 LayoutInflater.from(this@SelectedDayMedicineAdapter.context).inflate(
@@ -152,8 +149,8 @@ class SelectedDayMedicineAdapter(
             }
 
             editTV.setOnClickListener {
-                medList?.actionType = MedListAction.EDIT.value
-                medList?.deletePosition = position
+                medList?.medlist?.actionType = MedListAction.EDIT.value
+                medList?.medlist?.deletePosition = position
                 itemListener.onItemSelected(
                     medList!!
                 )
@@ -161,8 +158,8 @@ class SelectedDayMedicineAdapter(
             }
             deleteTV.setOnClickListener {
                 //add delete scehduled medication
-                medList?.actionType = MedListAction.Delete.value
-                medList?.deletePosition = position
+                medList?.medlist?.actionType = MedListAction.Delete.value
+                medList?.medlist?.deletePosition = position
                 itemListener.onItemSelected(
                     medList!!
                 )
@@ -181,7 +178,11 @@ class SelectedDayMedicineAdapter(
         return position
     }
 
-    fun addData(payload: ArrayList<Payload>) {
+
+    fun addData(payload: ArrayList<MedListReminder>) {
+//        this.requestList.clear()
+//        this.requestList.addAll(dashboard)
+        this.payload.clear()
         this.payload = payload
         notifyDataSetChanged()
     }

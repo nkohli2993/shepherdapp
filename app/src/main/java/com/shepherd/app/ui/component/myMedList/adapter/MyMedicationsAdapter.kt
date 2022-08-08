@@ -12,10 +12,10 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.Medlist
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.utils.MedListAction
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.MyMedListViewModel
 
@@ -31,7 +31,7 @@ class MyMedicationsAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-             viewModel.openMedDetail(itemData[0] as Payload)
+             viewModel.openMedDetail(itemData[0] as MedListReminder)
         }
     }
 
@@ -61,7 +61,7 @@ class MyMedicationsAdapter(
     inner class MyMedicationsViewHolder(private val itemBinding: AdapterMyMedicationsListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(medList: Medlist?, recyclerItemListener: RecyclerItemListener) {
+        fun bind(medList:Medlist?, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList
             itemBinding.root.setOnClickListener {
                 medList?.let { it1 ->
@@ -71,12 +71,6 @@ class MyMedicationsAdapter(
                 }
             }
             itemBinding.imgMore.setOnClickListener {
-                showPopupReportPost(
-                    absoluteAdapterPosition,
-                    itemBinding.imgMore,
-                    context,
-                    recyclerItemListener,medList
-                )
             }
         }
 
@@ -94,6 +88,7 @@ class MyMedicationsAdapter(
     fun addData(payload: ArrayList<Payload>) {
 //        this.requestList.clear()
 //        this.payload.addAll(medLists)
+        this.payload.clear()
         this.payload = payload
         notifyDataSetChanged()
     }
@@ -170,7 +165,6 @@ class MyMedicationsAdapter(
         }
         deleteTV.setOnClickListener {
             showInfo(context, "delete")
-
         }
 
     }
