@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Deepak Rattan on 04/08/22
  */
-data class Medlists(
+data class Medlist(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("name") var name: String? = null,
     @SerializedName("slug") var slug: String? = null,

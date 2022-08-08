@@ -14,13 +14,12 @@ import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlists
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.databinding.FragmentMyMedlistBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.myMedList.adapter.MyMedicationsAdapter
-import com.shepherd.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.setupSnackbar
@@ -49,7 +48,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     var pageCount: Int = 0
 
 
-    var medlists: ArrayList<Medlists> = arrayListOf()
+    //    var medlists: ArrayList<Medlists> = arrayListOf()
+    var payload: ArrayList<Payload> = arrayListOf()
 
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
@@ -199,9 +199,10 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    medlists = it.data.payload?.medlists!!
-                    if (medlists.isNullOrEmpty()) return@observeEvent
-                    myMedicationsAdapter?.addData(medlists)
+//                    medlists = it.data.payload?.medlists!!
+                    payload = it.data.payload
+                    if (payload.isNullOrEmpty()) return@observeEvent
+                    myMedicationsAdapter?.addData(payload)
                 }
             }
         }

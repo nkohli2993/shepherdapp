@@ -6,7 +6,8 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlists
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Medlist
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.view_model.MyMedListViewModel
@@ -14,7 +15,7 @@ import com.shepherd.app.view_model.MyMedListViewModel
 
 class MyMedicationsAdapter(
     private val viewModel: MyMedListViewModel,
-    var medLists: MutableList<Medlists> = ArrayList()
+    var payload: MutableList<Payload> = ArrayList()
 ) :
     RecyclerView.Adapter<MyMedicationsAdapter.MyMedicationsViewHolder>() {
     lateinit var binding: AdapterMyMedicationsListBinding
@@ -42,23 +43,25 @@ class MyMedicationsAdapter(
     }
 
     override fun getItemCount(): Int {
-        return medLists.size
+        return payload.size
     }
 
     override fun onBindViewHolder(holder: MyMedicationsViewHolder, position: Int) {
-        holder.bind(medLists[position], onItemClickListener)
+        holder.bind(payload[position].medlist, onItemClickListener)
     }
 
 
     inner class MyMedicationsViewHolder(private val itemBinding: AdapterMyMedicationsListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(medList: Medlists, recyclerItemListener: RecyclerItemListener) {
+        fun bind(medList: Medlist?, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList
             itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    medList
-                )
+                medList?.let { it1 ->
+                    recyclerItemListener.onItemSelected(
+                        it1
+                    )
+                }
             }
             itemBinding.imgMore.setOnClickListener {
                 openEditOption(
@@ -105,9 +108,10 @@ class MyMedicationsAdapter(
         return position
     }
 
-    fun addData(medLists: ArrayList<Medlists>) {
+    fun addData(payload: ArrayList<Payload>) {
 //        this.requestList.clear()
-        this.medLists.addAll(medLists)
+//        this.payload.addAll(medLists)
+        this.payload = payload
         notifyDataSetChanged()
     }
 
