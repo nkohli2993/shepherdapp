@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.my_med_detail
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
     private val medDetailViewModel: MyMedDetailVM by viewModels()
     private var textToSpeech: TextToSpeech? = null
     private lateinit var fragmentMyMedDetailBinding: FragmentMyMedDetialBinding
+    private val TAG = "MyMedDetailFragment"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,6 +48,9 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
             }
         }
 
+        val id = arguments?.getInt("id")
+        Log.d(TAG, "id : $id ")
+
     }
 
     override fun getLayoutRes(): Int {
@@ -56,10 +62,10 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
-            R.id.speakIV ->{
+            R.id.speakIV -> {
                 val toSpeak: String = fragmentMyMedDetailBinding.tvMedTitle.text.toString()
                 Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show()
-                textToSpeech?.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null,null)
+                textToSpeech?.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
             }
         }
     }

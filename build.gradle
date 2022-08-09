@@ -68,10 +68,6 @@ ext {
     base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""
     base_url_live = "\"\""
 
-    // Base URL for Authentication
-    base_url_user = "\"https://usersherperd.itechnolabs.tech/\""
-    // Base URL for Shepherd
-    base_url = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
 
     // Staging Urls
     // Base URL for Authentication
@@ -79,9 +75,13 @@ ext {
     // Base URL for Shepherd
     base_url_staging = "\"https://shepherdapp.itechnolabs.tech/\""
 
+    // client urls
+    base_url_user_client = "\"https://shepherduser-uat.itechnolabs.tech:6001/\""
+    base_url_client = "\"https://shepherdapp.itechnolabs.tech/\""
+
     // dev urls
-    base_url_user_dev = "\"https://shepherduser-uat.itechnolabs.tech:6001/\""
-    base_url_dev = "\"https://shepherdapp.itechnolabs.tech/\""
+    base_url_user_dev = "\"https://usersherperd.itechnolabs.tech/\""
+    base_url_dev = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
 }
 
 //ext.base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""

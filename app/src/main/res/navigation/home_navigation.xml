@@ -257,7 +257,7 @@
         android:id="@+id/nav_med_detail"
         android:name="com.shepherd.app.ui.component.my_med_detail.MyMedDetailFragment"
         android:label="@string/medicine_detail"
-        tools:layout="@layout/fragment_member_details" />
+        tools:layout="@layout/fragment_my_med_detial" />
 
     <fragment
         android:id="@+id/nav_messages"

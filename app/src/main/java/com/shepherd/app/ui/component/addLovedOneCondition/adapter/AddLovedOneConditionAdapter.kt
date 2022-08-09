@@ -49,7 +49,7 @@ class AddLovedOneConditionAdapter(
     }
 
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
-            holder.bind(conditionList[position])
+        holder.bind(conditionList[position])
     }
 
     inner class ContentViewHolder(private var itemBinding: AdapterAddLovedOneConditionBinding) :
@@ -59,13 +59,11 @@ class AddLovedOneConditionAdapter(
             itemBinding.data = conditions
             binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
                 conditions.isSelected = isChecked
-
                 onItemClickListener?.itemSelected(conditions)
             }
             itemBinding.cardView.setOnClickListener { itemBinding.checkbox.performClick() }
             itemBinding.textViewCondition.setOnClickListener { itemBinding.checkbox.performClick() }
         }
-
     }
 
     override fun getItemId(position: Int): Long {

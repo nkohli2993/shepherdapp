@@ -95,6 +95,7 @@ object ApiConstants {
         const val ADD_SCHEDULED_MEDICATION = "$BASE_URL${API_VERSION}user_medications"
         const val DELETE_SCHEDULED_MEDICATION = "$BASE_URL${API_VERSION}user_medications/{id}"
         const val UPDATE_SCHEDULED_MEDICATION = "$BASE_URL${API_VERSION}user_medications/{id}"
+        const val ADD_USER_MEDICATION_RECORD = "$BASE_URL${API_VERSION}user_medication_records"
     }
 }
 
