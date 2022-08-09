@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.view.animation.RotateAnimation
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -42,7 +41,7 @@ import java.util.*
 
 
 @AndroidEntryPoint
-@SuppressLint("NotifyDataSetChanged,SetTextI18n")
+@SuppressLint("NotifyDataSetChanged,SetTextI18n,SimpleDateFormat")
 class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
     View.OnClickListener, FrequencyAdapter.selectedFrequency {
     private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding
@@ -101,21 +100,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         totalPage = payload.totalPages
                     }
 
-                    if (doseList.isNullOrEmpty()) return@observeEvent
+                    if (doseList.isEmpty()) return@observeEvent
                     doseAdapter?.addData(doseList)
-
-                    //to check dose name
-                    if (doseList.size > 0 ) {
-                        for (i in doseList) {
-                            if (addedMedication!=null && addedMedication!!.dosageId == i.id) {
-                                fragmentScheduleMedicineBinding.doseTV.text = i.name
-                                break
-                            }
-                            else if(medicationPayload!=null && medicationPayload!!.dosageId == i.id){
-                                fragmentScheduleMedicineBinding.doseTV.text = i.name
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -169,7 +155,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
         medicationViewModel.getAllDoseList(pageNumber, limit)
 
-        fragmentScheduleMedicineBinding.etNote.setOnTouchListener { view, motionEvent ->
+        fragmentScheduleMedicineBinding.etNote.setOnTouchListener { _, _ ->
             //check days view open
             if (fragmentScheduleMedicineBinding.daysRV.visibility == View.VISIBLE) {
                 fragmentScheduleMedicineBinding.daysRV.visibility = View.GONE
@@ -179,6 +165,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         }
         //set data according to value added
         if (addedMedication != null) {
+            doseID = addedMedication!!.dosageId.toString()
+            fragmentScheduleMedicineBinding.doseTV.text = addedMedication!!.dosage!!.name
             setFrequency(addedMedication?.frequency!!)
             if(addedMedication?.endDate!=null){
                 setEndDate(addedMedication?.endDate!!)
@@ -197,6 +185,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             setDayAdapter()
             fragmentScheduleMedicineBinding.etNote.setText(addedMedication?.note)
         }else if(medicationPayload!=null){
+            doseID = medicationPayload!!.dosageId.toString()
+            fragmentScheduleMedicineBinding.doseTV.text = medicationPayload!!.dosage!!.name
             setFrequency(medicationPayload?.frequency!!)
             if(medicationPayload?.endDate!=null){
                 setEndDate(medicationPayload?.endDate!!)
@@ -220,13 +210,11 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         setDoseAdapter()
     }
 
+    
     private fun setEndDate(date:String) {
-        if (date != null) {
-            var selectedDate = date
-            val formatedDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)!!
-            fragmentScheduleMedicineBinding.endDate.text =
-                SimpleDateFormat("dd-MM-yyyy").format(formatedDate)
-        }
+        val formattedDate = SimpleDateFormat("yyyy-MM-dd").parse(date)!!
+        fragmentScheduleMedicineBinding.endDate.text =
+            SimpleDateFormat("dd-MM-yyyy").format(formattedDate)
     }
 
     private fun setFrequency(frequencyValue:String) {
@@ -326,7 +314,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         }
     }
 
-    fun stringToWords(s: String) = s.trim().splitToSequence(',')
+    private fun stringToWords(s: String) = s.trim().splitToSequence(',')
         .filter { it.isNotEmpty() } // or: .filter { it.isNotBlank() }
         .toList()
 
@@ -381,7 +369,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         image.startAnimation(rotateAnim)
     }
 
-    @SuppressLint("SimpleDateFormat")
+    
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.endDate -> {
@@ -424,10 +412,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     if (fragmentScheduleMedicineBinding.endDate.text.toString().trim()
                             .isNotEmpty()
                     ) {
-                        var selectedDate =
-                            fragmentScheduleMedicineBinding.endDate.text.toString().trim()
                         var dateFormat = SimpleDateFormat("dd-MM-yyyy")
-                        val formatedDate: Date = dateFormat.parse(selectedDate)!!
+                        val formatedDate: Date = dateFormat.parse(fragmentScheduleMedicineBinding.endDate.text.toString().trim())!!
                         dateFormat = SimpleDateFormat("yyyy-MM-dd")
                         endDate = dateFormat.format(formatedDate)
                     }
@@ -496,7 +482,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
         val mTimePicker = TimePickerDialog(
             context, R.style.datepicker,
-            { view, hourOfDay, selectedMinute ->
+            { _, hourOfDay, selectedMinute ->
                 timeList[position].time = String.format("%02d:%02d", hourOfDay, selectedMinute)
                 if (hourOfDay < 12) {
                     timeList[position].time = String.format("%02d:%02d", hourOfDay, selectedMinute)
@@ -604,7 +590,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         hideKeyboard(fragmentScheduleMedicineBinding.scrollView)
     }
 
-    fun hideKeyboard(view: View) {
+    private fun hideKeyboard(view: View) {
         val inputMethodManager =
             requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
         inputMethodManager!!.hideSoftInputFromWindow(view.windowToken, 0)

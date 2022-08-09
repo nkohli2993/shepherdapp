@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,14 +46,9 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private var myMedicationsAdapter: MyMedicationsAdapter? = null
     private var selectedDayMedicineAdapter: SelectedDayMedicineAdapter? = null
     private lateinit var myMedlistBinding: FragmentMyMedlistBinding
-    private var TAG = "MyMedListFragment"
-    private var deletePostion: Int = -1
-    var currentPage: Int = 0
-    var totalPage: Int = 0
-    var total: Int = 0
-    var pageCount: Int = 0
-    var medListReminderList: ArrayList<MedListReminder> = arrayListOf()
-    var payload: ArrayList<Payload> = arrayListOf()
+    private var deletePosition: Int = -1
+    private var medListReminderList: ArrayList<MedListReminder> = arrayListOf()
+    private var payload: ArrayList<Payload> = arrayListOf()
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
     override fun onCreateView(
@@ -70,8 +64,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     override fun initViewBinding() {
         // Get Loved One's Medication Listing
         medListViewModel.getLovedOneMedLists()
-//        medListViewModel.getAllMedLists(pageNumber, limit)
-//        setRemindersAdapter()
         setMyMedicationsAdapter()
         setSelectedDayMedicineAdapter()
         calendar.time = Date()
@@ -215,7 +207,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     myMedlistBinding.txtMedication.visibility = View.GONE
 //                    medlists = it.data.payload?.medlists!!
                     payload = it.data.payload
-                    if (payload.isNullOrEmpty()) return@observeEvent
+                    if (payload.isEmpty()) return@observeEvent
                     for (i in payload.indices) {
                         val payload = payload[i]
                         payload.time.forEach {
@@ -234,7 +226,9 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                                 payload.updatedAt,
                                 payload.deletedAt,
                                 payload.medlist,
-                                payload.endDate
+                                payload.endDate,
+                                false,
+                                payload.dosage
                             )
                             medListReminderList.add(medListRem)
                         }
@@ -314,7 +308,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         setMessage("Sure you want to delete this medication schedule")
                         setPositiveButton("Yes") { _, _ ->
 //                            deletePostion = it.medlist!!.deletePosition!!
-                            deletePostion = it.id!!
+                            deletePosition = it.id!!
                             medListViewModel.deletedSceduledMedication(it.id!!)
                         }
                         setNegativeButton("Cancel") { _, _ ->
@@ -355,7 +349,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         setMessage("Sure you want to delete this medication schedule")
                         setPositiveButton("Yes") { _, _ ->
 //                            deletePostion = it.medlist!!.deletePosition!!
-                            deletePostion = it.id!!
+                            deletePosition = it.id!!
                             medListViewModel.deletedSceduledMedication(it.id!!)
                         }
                         setNegativeButton("Cancel") { _, _ ->
