@@ -433,7 +433,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     if (lastName.isNullOrEmpty()) {
                         lastName = null
                     }
-                    dob = yearSelected+"-"+if(monthIdSelected!!<10) "0$monthIdSelected" else monthIdSelected!!.toString() +"-"+if(dateSelected.toInt()<10) "0$dateSelected" else dateSelected
+                    dob = yearSelected+"-"+(if(monthIdSelected!!<10) "0$monthIdSelected" else monthIdSelected!!.toString())+"-"+(if(dateSelected.toInt()<10) "0$dateSelected" else dateSelected)
                     addLovedOneViewModel.createLovedOne(
                         email,
                         firstName,
