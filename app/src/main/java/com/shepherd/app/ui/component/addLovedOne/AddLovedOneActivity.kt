@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.addLovedOne
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
@@ -7,12 +8,11 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.Button
-import android.widget.ImageView
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.relation.Relation
@@ -33,7 +33,9 @@ import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add_loved_one.*
 import java.io.File
+import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -46,6 +48,11 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private val addLovedOneViewModel: AddLovedOneViewModel by viewModels()
     private lateinit var binding: ActivityAddLovedOneBinding
     private var selectedRelationship: Relation? = null
+    private var monthSelected: String = ""
+    private var monthIdSelected: Int? = null
+    private var dateSelected: String = ""
+    private var yearSelected: String = ""
+    private val daysAr: ArrayList<String> = arrayListOf()
     private var mYear = 0
     private var mMonth: Int = 0
     private var relationshipsAdapter: RelationshipsAdapter? = null
@@ -67,7 +74,27 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var lovedOneID: String? = null
     private var customAddress: String? = null
     private var lastName: String? = null
-
+    val alMonths = arrayOf(
+        "Month",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    )
+    val alDays = arrayOf(
+        "Day",
+    )
+    val alYears = arrayOf(
+        "Year",
+    )
 
     // Handle Validation
     private val isValid: Boolean
@@ -77,10 +104,6 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     binding.edtFirstName.error = getString(R.string.please_enter_first_name)
                     binding.edtFirstName.requestFocus()
                 }
-                /* binding.edtLastName.text.toString().isEmpty() -> {
-                     binding.edtLastName.error = getString(R.string.please_enter_last_name)
-                     binding.edtLastName.requestFocus()
-                 }*/
                 binding.editTextEmail.text.toString().isEmpty() -> {
                     binding.editTextEmail.error = getString(R.string.please_enter_email_id)
                     binding.editTextEmail.requestFocus()
@@ -89,17 +112,15 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     binding.editTextEmail.error = getString(R.string.please_enter_valid_email_id)
                     binding.editTextEmail.requestFocus()
                 }
-                /* binding.edtPhoneNumber.text.toString().isEmpty() -> {
-                     binding.edtPhoneNumber.error = getString(R.string.enter_phone_number)
-                     binding.edtPhoneNumber.requestFocus()
-                 }*/
-                dob.isNullOrEmpty() -> {
+                monthSelected.isEmpty() || dateSelected.isEmpty() || yearSelected.isEmpty() -> {
                     showInfo(this, "Please enter date of birth")
                 }
-                /* binding.edtAddress.text.toString().isEmpty() -> {
-                     binding.edtAddress.error = getString(R.string.enter_address)
-                     binding.edtAddress.requestFocus()
-                 }*/
+                monthSelected == "Month" || dateSelected == "Date" || yearSelected == "Year" -> {
+                    showInfo(this, "Please enter date of birth")
+                }
+                /*  dob.isNullOrEmpty() -> {
+                      showInfo(this, "Please enter date of birth")
+                  }*/
                 else -> {
                     return true
                 }
@@ -113,6 +134,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             if (result.resultCode == 10101) onPlaceSelected(result.data)
         }
 
+    @SuppressLint("SimpleDateFormat")
     override fun initViewBinding() {
         binding = ActivityAddLovedOneBinding.inflate(layoutInflater)
         val view = binding.root
@@ -125,6 +147,141 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         binding.relationshipSpinner.onItemSelectedListener = this
 
         addLovedOneViewModel.getRelations(pageNumber, limit)
+
+        val monthAdapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                alMonths
+            )
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.monthSpinner.adapter = monthAdapter
+
+        val dayAdapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                alDays
+            )
+        dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.daySpinner.adapter = dayAdapter
+
+        var yearAr: ArrayList<String> = arrayListOf()
+
+        val currentYear = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+        for (i in currentYear.toInt() - 100 until currentYear.toInt() + 1) {
+            yearAr.add(i.toString())
+        }
+        yearAr.reverse()
+        yearAr.add(0, "Year")
+        setYearAdapter(yearAr)
+
+        binding.monthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                //add days to day list
+                monthSelected = p0?.getItemAtPosition(p2) as String
+                monthIdSelected = p2
+                if (yearSelected.isEmpty()) {
+                    yearSelected = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+                }
+                if(monthIdSelected == 0){
+                    monthIdSelected = SimpleDateFormat("MM").format(Calendar.getInstance().time).toInt()
+                }
+                calculateDays(monthIdSelected!!, yearSelected)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+        binding.yearSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                //add days to day list
+                yearSelected = p0?.getItemAtPosition(p2) as String
+                if (yearSelected == "Year") {
+                    yearSelected = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+                }
+                if (monthIdSelected == null) {
+                    monthIdSelected =
+                        SimpleDateFormat("MM").format(Calendar.getInstance().time).toInt()
+                }
+
+                calculateDays(monthIdSelected!!, yearSelected)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+        binding.daySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                //add days to day list
+                dateSelected = p0?.getItemAtPosition(p2) as String
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+    }
+
+    private fun calculateDays(month: Int, year: String) {
+        daysAr.clear()
+        for (i in 0 until getDayCount(month.toString(), year) + 1) {
+            daysAr.add(i.toString())
+        }
+        daysAr.add(0, "Date")
+        setDateAdapter(daysAr)
+        val dayCount = getDayCount(month.toString(), year)
+
+        if (dateSelected == "" || dateSelected == "Date" || dateSelected.toInt() > dayCount) {
+            binding.daySpinner.setSelection(0)
+        }else{
+            binding.daySpinner.setSelection(dateSelected.toInt()+1)
+        }
+    }
+
+    private fun setDateAdapter(daysAr: ArrayList<String>) {
+        val dayAdapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                daysAr
+            )
+        dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.daySpinner.adapter = dayAdapter
+    }
+
+    private fun setYearAdapter(yearAr: ArrayList<String>) {
+        val adapter: ArrayAdapter<String> =
+            ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_spinner_item,
+                yearAr
+            )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.yearSpinner.adapter = adapter
+    }
+
+    private fun getDayCount(month: String, year: String): Int {
+        val days = when (month) {
+            "1", "3", "5", "7", "8", "10", "12", "01", "03", "05", "07", "08" -> {
+                31
+            }
+            "4", "6", "9", "11", "04", "06", "09" -> {
+                30
+            }
+            else -> {
+                when {
+                    year.toInt() % 400 == 0 || year.toInt() % 4 == 0 -> 29
+                    else -> 28
+                }
+            }
+        }
+        return days
     }
 
     override fun observeViewModel() {
@@ -276,7 +433,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     if (lastName.isNullOrEmpty()) {
                         lastName = null
                     }
-
+                    dob = yearSelected+"-"+(if(monthIdSelected!!<10) "0$monthIdSelected" else monthIdSelected!!.toString())+"-"+(if(dateSelected.toInt()<10) "0$dateSelected" else dateSelected)
                     addLovedOneViewModel.createLovedOne(
                         email,
                         firstName,
@@ -292,27 +449,6 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
                 }
 
-                /* val email = binding.editTextEmail.text.toString().trim()
-                 val firstName = binding.edtFirstName.text.toString().trim()
-                 val lastName = binding.edtLastName.text.toString().trim()
-                 val relationId = selectedRelationship?.id
-                 val phoneCode = ccp.selectedCountryCode
-                 val phoneNumber = binding.edtPhoneNumber.text.toString().trim()
-
-                 addLovedOneViewModel.createLovedOne(
-                     email,
-                     firstName,
-                     lastName,
-                     relationId,
-                     phoneCode,
-                     dob,
-                     placeId,
-                     phoneNumber,
-                     BuildConfig.BASE_URL + lovedOnePicUrl
-                 )*/
-
-
-                // navigateToAddLovedOneConditionScreen()
             }
             R.id.layoutAddress -> {
                 navLauncher.launch(Intent(this, SearchPlacesActivity::class.java))
@@ -401,7 +537,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             mDay
         )
         // set maximum date to be selected as today
-        datePickerDialog.datePicker.maxDate = calendar.timeInMillis;
+        datePickerDialog.datePicker.maxDate = calendar.timeInMillis
         datePickerDialog.show()
         datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
         datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)

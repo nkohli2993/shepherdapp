@@ -32,6 +32,8 @@ import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
+import com.shepherd.app.data.dto.med_list.*
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
@@ -289,8 +291,8 @@ interface ApiService {
 
     @PUT(ApiConstants.MedList.UPDATE_SCHEDULED_MEDICATION)
     suspend fun updateScheduledMedication(
-        @Path("id") id: Int,
-        @Body addNewLockBoxRequestModel: ScheduledMedicationRequestModel
+        @Path("id") id:Int,
+        @Body addNewLockBoxRequestModel: UpdateScheduledMedList
     ): Response<AddScheduledMedicationResponseModel>
 
     @DELETE(ApiConstants.MedList.DELETE_SCHEDULED_MEDICATION)

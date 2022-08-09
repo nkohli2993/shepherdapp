@@ -186,13 +186,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_34sdp"
                         android:layout_marginTop="@dimen/_4sdp"
-                        android:singleLine="true"
-                        android:inputType="textEmailAddress"
                         android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                         android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="@dimen/_5sdp"
                         android:hint="@string/enter_your_email"
+                        android:inputType="textEmailAddress"
                         android:paddingHorizontal="@dimen/_8sdp"
+                        android:singleLine="true"
                         android:textSize="14sp"
                         app:layout_constraintTop_toBottomOf="@id/label_email" />
 
@@ -277,20 +277,57 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/label_date_of_birth">
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/edtDay"
+                        <androidx.appcompat.widget.LinearLayoutCompat
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:layout_marginEnd="@dimen/_5sdp"
                             android:layout_weight="1"
-                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                            android:fontFamily="@font/gotham_medium"
-                            android:hint="@string/day"
-                            android:onClick="@{listener::onClick}"
-                            android:paddingHorizontal="@dimen/_10sdp"
-                            android:paddingVertical="@dimen/_10sdp"
-                            android:textSize="@dimen/_12ssp" />
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey">
+
+                            <Spinner
+                                android:id="@+id/monthSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:dropDownWidth="@dimen/_80sdp"
+                                android:dropDownVerticalOffset="@dimen/_40sdp"
+                                android:spinnerMode="dropdown" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey">
+
+                            <Spinner
+                                android:id="@+id/daySpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:dropDownWidth="@dimen/_80sdp"
+                                android:dropDownVerticalOffset="@dimen/_40sdp"
+                                android:spinnerMode="dropdown" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey">
+
+                            <Spinner
+                                android:id="@+id/yearSpinner"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:dropDownWidth="@dimen/_80sdp"
+                                android:dropDownVerticalOffset="@dimen/_40sdp"
+                                android:spinnerMode="dropdown" />
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/edtMonth"
@@ -305,7 +342,24 @@
                             android:onClick="@{listener::onClick}"
                             android:paddingHorizontal="@dimen/_10sdp"
                             android:paddingVertical="@dimen/_10sdp"
-                            android:textSize="@dimen/_12ssp" />
+                            android:textSize="@dimen/_12ssp"
+                            android:visibility="gone" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/edtDay"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_5sdp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:fontFamily="@font/gotham_medium"
+                            android:hint="@string/day"
+                            android:onClick="@{listener::onClick}"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:visibility="gone" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/edtYear"
@@ -319,7 +373,8 @@
                             android:onClick="@{listener.onClick}"
                             android:paddingHorizontal="@dimen/_10sdp"
                             android:paddingVertical="@dimen/_10sdp"
-                            android:textSize="@dimen/_12ssp" />
+                            android:textSize="@dimen/_12ssp"
+                            android:visibility="gone" />
 
 
                     </LinearLayout>
@@ -404,9 +459,9 @@
                             android:id="@+id/edtCustomAddress"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_80sdp"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*()"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:background="@null"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*()"
                             android:drawablePadding="@dimen/_5sdp"
                             android:gravity="top|start"
                             android:hint="@string/address"

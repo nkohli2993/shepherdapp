@@ -393,6 +393,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 if (isValid) {
                     doLogin(false)
                 }
+//                navigateToAddLovedOneScreen()
             }
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()

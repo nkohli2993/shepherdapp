@@ -7,6 +7,8 @@ import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
+import com.shepherd.app.data.dto.med_list.*
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.DeleteAddedMedicationResponseModel
@@ -91,13 +93,13 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
 
     // update scheduled medication
     suspend fun updateScheduledMedication(
-        id: Int,
-        scheduledMedication: ScheduledMedicationRequestModel
+        id:Int,
+        scheduledMedication: UpdateScheduledMedList
     ): Flow<DataResult<AddScheduledMedicationResponseModel>> {
         return object :
             NetworkOnlineDataRepo<AddScheduledMedicationResponseModel, AddScheduledMedicationResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AddScheduledMedicationResponseModel> {
-                return apiService.updateScheduledMedication(id, scheduledMedication)
+                return apiService.updateScheduledMedication(id,scheduledMedication)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

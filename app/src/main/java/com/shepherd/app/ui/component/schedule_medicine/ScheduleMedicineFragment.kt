@@ -16,6 +16,7 @@ import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
+import com.shepherd.app.data.dto.med_list.UpdateScheduledMedList
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.data.dto.med_list.schedule_medlist.*
@@ -373,24 +374,32 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         dateFormat = SimpleDateFormat("yyyy-MM-dd")
                         endDate = dateFormat.format(formatedDate)
                     }
-                    val scheduledMedication =
-                        ScheduledMedicationRequestModel(
-                            medicationViewModel.getLovedOneUUId(),
+                    if (addedMedication != null) {
+                        val scheduledMedication = UpdateScheduledMedList(
                             doseID!!,
                             frequencyId!!.toString(),
-                            selectedMedList?.id.toString(),
                             daysIds!!,
                             timeAddedList,
                             fragmentScheduleMedicineBinding.etNote.text.toString().trim(),
                             endDate
                         )
-                    if (addedMedication != null) {
-
                         medicationViewModel.updateScheduledMedication(
                             scheduledMedication,
                             addedMedication!!.id!!
                         )
                     } else {
+                        val scheduledMedication =
+                            ScheduledMedicationRequestModel(
+                                medicationViewModel.getLovedOneUUId(),
+                                doseID!!,
+                                frequencyId!!.toString(),
+                                selectedMedList?.id.toString(),
+                                daysIds!!,
+                                timeAddedList,
+                                fragmentScheduleMedicineBinding.etNote.text.toString().trim(),
+                                endDate
+                            )
+
                         medicationViewModel.addScheduledMedication(scheduledMedication)
                     }
 

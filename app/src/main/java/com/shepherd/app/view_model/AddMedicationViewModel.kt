@@ -5,11 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.DataRepository
-import com.shepherd.app.data.dto.med_list.AddScheduledMedicationResponseModel
-import com.shepherd.app.data.dto.med_list.GetAllDoseListResponseModel
-import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
+import com.shepherd.app.data.dto.med_list.*
 import com.shepherd.app.data.dto.med_list.schedule_medlist.DoseList
-import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.med_list.MedListRepository
 import com.shepherd.app.network.retrofit.DataResult
@@ -162,7 +159,7 @@ class AddMedicationViewModel @Inject constructor(
         return addScheduledMedicationResponseLiveData
     }
   // add scheduled medication for loved ones
-    fun updateScheduledMedication(scheduledMedication: ScheduledMedicationRequestModel,id:Int): LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> {
+    fun updateScheduledMedication(scheduledMedication: UpdateScheduledMedList, id:Int): LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> {
         viewModelScope.launch {
             val response = scheduledMedication.let { medListRepository.updateScheduledMedication(id,it) }
             withContext(Dispatchers.Main) {

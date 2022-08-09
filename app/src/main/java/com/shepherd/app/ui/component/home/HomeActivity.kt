@@ -7,8 +7,11 @@ import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.shepherd.app.R
@@ -19,7 +22,12 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseActivity
 import com.shepherd.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherd.app.ui.component.carePoints.CarePointsFragment
+import com.shepherd.app.ui.component.careTeamMembers.CareTeamMembersFragment
+import com.shepherd.app.ui.component.dashboard.DashboardFragment
+import com.shepherd.app.ui.component.lockBox.LockBoxFragment
 import com.shepherd.app.ui.component.login.LoginActivity
+import com.shepherd.app.ui.component.myMedList.MyMedListFragment
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.extensions.showError
@@ -358,6 +366,28 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     override fun msgFromChildFragmentToActivity() {
         viewModel.getHomeData()
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment_content_dashboard)
+        // to check navigation fragments
+        val navHostFragment = supportFragmentManager.primaryNavigationFragment as NavHostFragment?
+        val fragmentManager: FragmentManager = navHostFragment!!.childFragmentManager
+        val fragment: Fragment = fragmentManager.getPrimaryNavigationFragment()!!
+        when (fragment) {
+            is CarePointsFragment, is MyMedListFragment, is LockBoxFragment, is CareTeamMembersFragment -> {
+                navController.navigate(R.id.nav_dashboard)
+            }
+            is DashboardFragment -> {
+                finishActivity()
+            }
+            else -> {
+                super.onBackPressed()
+            }
+
+        }
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)    // for close
+
     }
 
 }
