@@ -8,7 +8,8 @@ import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
+import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
+import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.med_list.MedListRepository
 import com.shepherd.app.network.retrofit.DataResult
@@ -43,21 +44,31 @@ class MyMedListViewModel @Inject constructor(
     var getLovedOneMedListsResponseLiveData: LiveData<Event<DataResult<GetLovedOneMedList>>> =
         _getLovedOneMedListsResponseLiveData
 
+    private var _medicationRecordResponseLiveData =
+        MutableLiveData<Event<DataResult<MedicationRecordResponseModel>>>()
+    var medicationRecordResponseLiveData: LiveData<Event<DataResult<MedicationRecordResponseModel>>> =
+        _medicationRecordResponseLiveData
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<MedListReminder>>()
     val openMedDetailItems: LiveData<SingleEvent<MedListReminder>> get() = openMedDetailItemsPrivate
+
+    private val _selectedMedicationLiveData = MutableLiveData<SingleEvent<MedListReminder>>()
+    val selectedMedicationLiveData: LiveData<SingleEvent<MedListReminder>> get() = _selectedMedicationLiveData
 
     fun openMedDetail(item: MedListReminder) {
         openMedDetailItemsPrivate.value = SingleEvent(item)
     }
 
+    fun selectedMedication(item: MedListReminder) {
+        _selectedMedicationLiveData.value = SingleEvent(item)
+    }
 
     // delete medication for loved ones
     private var _deletedScheduledMedicationResponseLiveData =
         MutableLiveData<Event<DataResult<DeleteAddedMedicationResponseModel>>>()
     var deletedScheduledMedicationResponseLiveData: LiveData<Event<DataResult<DeleteAddedMedicationResponseModel>>> =
         _deletedScheduledMedicationResponseLiveData
-
 
 
     // Get All MedLists
@@ -97,7 +108,7 @@ class MyMedListViewModel @Inject constructor(
             val response =
                 scheduledMedicationId.let { medListRepository.deletedSceduledMedication(it) }
             withContext(Dispatchers.Main) {
-                response?.collect {
+                response.collect {
                     _deletedScheduledMedicationResponseLiveData.postValue(Event(it))
                 }
             }
@@ -105,4 +116,16 @@ class MyMedListViewModel @Inject constructor(
         return deletedScheduledMedicationResponseLiveData
     }
 
+    // Add Medication Record
+    fun addUserMedicationRecord(medicationRecordRequestModel: MedicationRecordRequestModel): LiveData<Event<DataResult<MedicationRecordResponseModel>>> {
+        viewModelScope.launch {
+            val response = medListRepository.addUserMedicationRecord(medicationRecordRequestModel)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _medicationRecordResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return medicationRecordResponseLiveData
+    }
 }

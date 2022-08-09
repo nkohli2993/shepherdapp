@@ -11,10 +11,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.databinding.AdapterSelectedDayMedicineBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.utils.MedListAction
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.view_model.MyMedListViewModel
 
 
@@ -30,6 +30,12 @@ class SelectedDayMedicineAdapter(
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
             viewModel.openMedDetail(itemData[0] as MedListReminder)
+        }
+    }
+
+    private val onItemCheckedListener: RecyclerItemListener = object : RecyclerItemListener {
+        override fun onItemSelected(vararg itemData: Any) {
+            viewModel.selectedMedication(itemData[0] as MedListReminder)
         }
     }
 
@@ -53,14 +59,17 @@ class SelectedDayMedicineAdapter(
     }
 
     override fun onBindViewHolder(holder: SelectedDayMedicineViewHolder, position: Int) {
-//        holder.bind(requestList[position], onItemClickListener)
-        holder.bind(payload[position], onItemClickListener)
+        holder.bind(payload[position], onItemClickListener, onItemCheckedListener)
     }
 
 
     inner class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(medListReminder: MedListReminder?, recyclerItemListener: RecyclerItemListener) {
+        fun bind(
+            medListReminder: MedListReminder?,
+            recyclerItemListener: RecyclerItemListener,
+            recyclerItemListener1: RecyclerItemListener
+        ) {
             itemBinding.data = medListReminder
             itemBinding.root.setOnClickListener {
                 medListReminder?.let { it1 ->
@@ -68,6 +77,11 @@ class SelectedDayMedicineAdapter(
                         it1
                     )
                 }
+            }
+
+            itemBinding.cbReminder.setOnCheckedChangeListener { compoundButton, _isChecked ->
+                medListReminder?.isSelected = _isChecked
+                medListReminder?.let { recyclerItemListener1.onItemSelected(it) }
             }
 
             itemBinding.imgMore.setOnClickListener {

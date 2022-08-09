@@ -3,8 +3,10 @@ package com.shepherd.app.data.remote.med_list
 import com.shepherd.app.data.dto.med_list.AddScheduledMedicationResponseModel
 import com.shepherd.app.data.dto.med_list.GetAllDoseListResponseModel
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
+import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
+import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.DeleteAddedMedicationResponseModel
@@ -89,13 +91,13 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
 
     // update scheduled medication
     suspend fun updateScheduledMedication(
-        id:Int,
+        id: Int,
         scheduledMedication: ScheduledMedicationRequestModel
     ): Flow<DataResult<AddScheduledMedicationResponseModel>> {
         return object :
             NetworkOnlineDataRepo<AddScheduledMedicationResponseModel, AddScheduledMedicationResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AddScheduledMedicationResponseModel> {
-                return apiService.updateScheduledMedication(id,scheduledMedication)
+                return apiService.updateScheduledMedication(id, scheduledMedication)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
@@ -109,6 +111,17 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
             override suspend fun fetchDataFromRemoteSource(): Response<DeleteAddedMedicationResponseModel> {
                 return apiService.deleteAddedMedication(id)
             }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Add User's Medication Record
+    suspend fun addUserMedicationRecord(medicationRecordRequestModel: MedicationRecordRequestModel): Flow<DataResult<MedicationRecordResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<MedicationRecordResponseModel, MedicationRecordResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<MedicationRecordResponseModel> {
+                return apiService.addUserMedicationRecord(medicationRecordRequestModel)
+            }
+
         }.asFlow().flowOn(Dispatchers.IO)
     }
 }
