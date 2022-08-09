@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.os.Build
+import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.PopupWindow
@@ -20,7 +21,7 @@ import com.shepherd.app.view_model.MyMedListViewModel
 
 class SelectedDayMedicineAdapter(
     private val viewModel: MyMedListViewModel,
-    var payload: MutableList<MedListReminder> = ArrayList()
+    var medListReminderList: MutableList<MedListReminder> = ArrayList()
 ) :
     RecyclerView.Adapter<SelectedDayMedicineAdapter.SelectedDayMedicineViewHolder>() {
     lateinit var binding: AdapterSelectedDayMedicineBinding
@@ -55,11 +56,12 @@ class SelectedDayMedicineAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return payload.size
+        Log.e("catch_exception","medlisst: ${medListReminderList.size}")
+        return medListReminderList.size
     }
 
     override fun onBindViewHolder(holder: SelectedDayMedicineViewHolder, position: Int) {
-        holder.bind(payload[position], onItemClickListener, onItemCheckedListener)
+        holder.bind(medListReminderList[position], onItemClickListener, onItemCheckedListener)
     }
 
 
@@ -193,11 +195,9 @@ class SelectedDayMedicineAdapter(
     }
 
 
-    fun addData(payload: ArrayList<MedListReminder>) {
-//        this.requestList.clear()
-//        this.requestList.addAll(dashboard)
-        this.payload.clear()
-        this.payload = payload
+    fun addData(medListReminderList: ArrayList<MedListReminder>) {
+//        this.medListReminderList.clear()
+        this.medListReminderList = medListReminderList
         notifyDataSetChanged()
     }
 

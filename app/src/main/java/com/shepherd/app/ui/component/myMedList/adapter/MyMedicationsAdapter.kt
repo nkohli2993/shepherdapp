@@ -11,12 +11,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.med_list.Medlist
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.utils.MedListAction
 import com.shepherd.app.view_model.MyMedListViewModel
 
 
@@ -31,7 +29,7 @@ class MyMedicationsAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-             viewModel.openMedDetail(itemData[0] as MedListReminder)
+             viewModel.openMedicineDetail(itemData[0] as Payload)
         }
     }
 
@@ -54,23 +52,30 @@ class MyMedicationsAdapter(
     }
 
     override fun onBindViewHolder(holder: MyMedicationsViewHolder, position: Int) {
-        holder.bind(payload[position].medlist, onItemClickListener)
+        holder.bind(payload[position], onItemClickListener)
     }
 
 
     inner class MyMedicationsViewHolder(private val itemBinding: AdapterMyMedicationsListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(medList:Medlist?, recyclerItemListener: RecyclerItemListener) {
-            itemBinding.data = medList
+        fun bind(medList: Payload, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = medList.medlist
             itemBinding.root.setOnClickListener {
-                medList?.let { it1 ->
-//                    recyclerItemListener.onItemSelected(
-//                        it1
-//                    )
+                medList.let { it1 ->
+                    medList.actionType = MedListAction.View.value
+                    medList.deletePosition = absoluteAdapterPosition
+                    recyclerItemListener.onItemSelected(
+                        it1
+                    )
                 }
             }
             itemBinding.imgMore.setOnClickListener {
+                showPopupReportPost(
+                    absoluteAdapterPosition,
+                    itemBinding.imgMore,
+                    recyclerItemListener, medList
+                )
             }
         }
 
@@ -86,8 +91,6 @@ class MyMedicationsAdapter(
     }
 
     fun addData(payload: ArrayList<Payload>) {
-//        this.requestList.clear()
-//        this.payload.addAll(medLists)
         this.payload.clear()
         this.payload = payload
         notifyDataSetChanged()
@@ -114,20 +117,21 @@ class MyMedicationsAdapter(
     private fun showPopupReportPost(
         position: Int,
         view: AppCompatImageView,
-        ctx: Context,
         itemListener: RecyclerItemListener,
-        medList: Medlist?
+        medList: Payload
     ) {
-        val popupView: View = LayoutInflater.from(context).inflate(
-            R.layout.popup_report,
-            null
-        )
+        val popupView: View =
+            LayoutInflater.from(this@MyMedicationsAdapter.context).inflate(
+                R.layout.popup_report,
+                null
+            )
         val width: Int = LinearLayout.LayoutParams.WRAP_CONTENT
         val height: Int = LinearLayout.LayoutParams.WRAP_CONTENT
         val focusable = true // lets taps outside the popup also dismiss it
         val popupWindow = PopupWindow(popupView, width, height, focusable)
         val editTV: AppCompatTextView = popupView.findViewById(R.id.editTV) as AppCompatTextView
-        val deleteTV: AppCompatTextView = popupView.findViewById(R.id.deleteTV) as AppCompatTextView
+        val deleteTV: AppCompatTextView =
+            popupView.findViewById(R.id.deleteTV) as AppCompatTextView
         popupWindow.showAtLocation(
             popupView,
             Gravity.TOP or Gravity.LEFT,
@@ -161,10 +165,21 @@ class MyMedicationsAdapter(
         }
 
         editTV.setOnClickListener {
-            showInfo(context, "Edit")
+            medList.actionType = MedListAction.EDIT.value
+            medList.deletePosition = position
+            itemListener.onItemSelected(
+                medList
+            )
+            popupWindow.dismiss()
         }
         deleteTV.setOnClickListener {
-            showInfo(context, "delete")
+            //add delete scehduled medication
+            medList.actionType = MedListAction.Delete.value
+            medList.deletePosition = position
+            itemListener.onItemSelected(
+                medList
+            )
+            popupWindow.dismiss()
         }
 
     }

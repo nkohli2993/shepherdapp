@@ -43,6 +43,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private val medListViewModel: MyMedListViewModel by viewModels()
     private var selectedMedication: Medlist? = null
     private val TAG: String = "Add medlist"
+    private var searchFlag = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,8 +57,9 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun onResume() {
         super.onResume()
-        /* medLists.clear()
-         medListViewModel.getAllMedLists(pageNumber, limit)*/
+         medLists.clear()
+        searchFlag = false
+        /* medListViewModel.getAllMedLists(pageNumber, limit)*/
     }
 
     override fun initViewBinding() {
@@ -65,14 +67,14 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         addMedicationViewModel.getAllMedLists(pageNumber, limit)
 
         setMedicineListAdapter()
-
+        fragmentAddNewMedicationBinding.llSearch.visibility = View.GONE
         // Search med list
         fragmentAddNewMedicationBinding.imgCancel.setOnClickListener {
             fragmentAddNewMedicationBinding.editTextSearch.setText("")
             pageNumber = 1
             isSearch = false
             medLists.clear()
-
+            searchFlag = false
             addMedicationViewModel.getAllMedLists(pageNumber, limit)
         }
 
@@ -82,19 +84,21 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
             override fun afterTextChanged(s: Editable?) {
-                if (s.toString().isEmpty()) {
-                    fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
+                if (s.toString().isEmpty() && searchFlag) {
+                    fragmentAddNewMedicationBinding.llSearch.visibility = View.GONE
                     pageNumber = 1
                     isSearch = false
+                    searchFlag = false
                     medLists.clear()
-
                     addMedicationViewModel.getAllMedLists(pageNumber, limit)
                 } else {
-                    fragmentAddNewMedicationBinding.imgCancel.visibility = View.VISIBLE
+                    searchFlag = true
+                    fragmentAddNewMedicationBinding.llSearch.visibility = View.VISIBLE
                     //Hit search api
                     addMedicationViewModel.searchMedList(
                         pageNumber,
@@ -102,9 +106,11 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         s.toString()
                     )
                 }
+
             }
         })
     }
+
 
     @SuppressLint("SetTextI18n")
     override fun observeViewModel() {
@@ -182,6 +188,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     private fun selectedMedicationDetail(navigateEvent: SingleEvent<Int>) {
         navigateEvent.getContentIfNotHandled()?.let {
+            searchFlag = false
             selectedMedication = medLists[it]
             findNavController().navigate(
                 AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(

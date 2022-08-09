@@ -1,15 +1,17 @@
 package com.shepherd.app.ui.component.schedule_medicine
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -37,7 +39,7 @@ import com.shepherd.app.view_model.AddMedicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+
 
 @AndroidEntryPoint
 @SuppressLint("NotifyDataSetChanged,SetTextI18n")
@@ -63,6 +65,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private val args: ScheduleMedicineFragmentArgs by navArgs()
     private var selectedMedList: Medlist? = null
     private var addedMedication: MedListReminder? = null
+    private var medicationPayload: Payload? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -101,6 +104,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     if (doseList.isNullOrEmpty()) return@observeEvent
                     doseAdapter?.addData(doseList)
 
+                    //to check dose name
+                    if (doseList.size > 0 ) {
+                        for (i in doseList) {
+                            if (addedMedication!=null && addedMedication!!.dosageId == i.id) {
+                                fragmentScheduleMedicineBinding.doseTV.text = i.name
+                                break
+                            }
+                            else if(medicationPayload!=null && medicationPayload!!.dosageId == i.id){
+                                fragmentScheduleMedicineBinding.doseTV.text = i.name
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -126,7 +141,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentScheduleMedicineBinding.listener = this
         if (args.medlist != null) {
@@ -139,6 +154,11 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             addedMedication = args.medicationScheduled
             fragmentScheduleMedicineBinding.tvMedTitle.text = addedMedication?.medlist?.name
         }
+        if (args.medicationScheduledPayload != null) {
+            //set paymload data
+            medicationPayload = args.medicationScheduledPayload
+            fragmentScheduleMedicineBinding.tvMedTitle.text = medicationPayload?.medlist?.name
+        }
 
         addFrequencyType()
         fragmentScheduleMedicineBinding.frequencyRV.adapter = FrequencyAdapter(
@@ -149,54 +169,90 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
         medicationViewModel.getAllDoseList(pageNumber, limit)
 
+        fragmentScheduleMedicineBinding.etNote.setOnTouchListener { view, motionEvent ->
+            //check days view open
+            if (fragmentScheduleMedicineBinding.daysRV.visibility == View.VISIBLE) {
+                fragmentScheduleMedicineBinding.daysRV.visibility = View.GONE
+                rotate(0f, fragmentScheduleMedicineBinding.dayIM)
+            }
+            return@setOnTouchListener false
+        }
         //set data according to value added
         if (addedMedication != null) {
-            val frequency = when (addedMedication?.frequency) {
-                FrequencyType.ONCE.value -> {
-                    frequencyId = FrequencyType.ONCE.value.toInt()
-                    getString(R.string.once_a_day)
-                }
-                FrequencyType.TWICE.value -> {
-                    frequencyId = FrequencyType.TWICE.value.toInt()
-                    getString(R.string.twice_a_day)
-                }
-                FrequencyType.THRICE.value -> {
-                    frequencyId = FrequencyType.THRICE.value.toInt()
-                    getString(R.string.three_times_a_day)
-                }
-                FrequencyType.FOUR.value -> {
-                    frequencyId = FrequencyType.FOUR.value.toInt()
-                    getString(R.string.four_times_a_day)
-                }
-                else -> {
-                    frequencyId = FrequencyType.ONCE.value.toInt()
-                    getString(R.string.once_a_day)
-                }
+            setFrequency(addedMedication?.frequency!!)
+            if(addedMedication?.endDate!=null){
+                setEndDate(addedMedication?.endDate!!)
             }
-            fragmentScheduleMedicineBinding.frequencyET.text = frequency
-            fragmentScheduleMedicineBinding.doseTV.text = addedMedication?.dosageId.toString()
-            if (addedMedication?.endDate != null) {
-                var selectedDate = addedMedication?.endDate
-                val formatedDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)!!
-                fragmentScheduleMedicineBinding.endDate.text =
-                    SimpleDateFormat("dd-MM-yyyy").format(formatedDate)
-            }
+
             timeList.clear()
-          /*  for (i in addedMedication?.time!!) {
-                timeList.add(TimeSelectedlist(timeList.size, i.time, i.hour!!.lowercase()))
-            }*/
-            timeList.add(TimeSelectedlist(timeList.size, addedMedication?.time!!.time, addedMedication?.time!!.hour!!.lowercase()))
+            timeList.add(
+                TimeSelectedlist(
+                    timeList.size,
+                    addedMedication?.time!!.time,
+                    addedMedication?.time!!.hour!!.lowercase()
+                )
+            )
             setTimeAdapter()
             addDays(isEdit = true, addedMedication?.days!!)
             setDayAdapter()
             fragmentScheduleMedicineBinding.etNote.setText(addedMedication?.note)
-        } else {
+        }else if(medicationPayload!=null){
+            setFrequency(medicationPayload?.frequency!!)
+            if(medicationPayload?.endDate!=null){
+                setEndDate(medicationPayload?.endDate!!)
+            }
+            timeList.clear()
+              for (i in medicationPayload?.time!!) {
+                  timeList.add(TimeSelectedlist(timeList.size, i.time, i.hour!!.lowercase()))
+              }
+            setTimeAdapter()
+            addDays(isEdit = true, medicationPayload?.days!!)
+            setDayAdapter()
+            fragmentScheduleMedicineBinding.etNote.setText(medicationPayload?.note)
+        }
+
+        else {
             timeList.add(TimeSelectedlist())
             addDays()
             setDayAdapter()
             setTimeAdapter()
         }
         setDoseAdapter()
+    }
+
+    private fun setEndDate(date:String) {
+        if (date != null) {
+            var selectedDate = date
+            val formatedDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)!!
+            fragmentScheduleMedicineBinding.endDate.text =
+                SimpleDateFormat("dd-MM-yyyy").format(formatedDate)
+        }
+    }
+
+    private fun setFrequency(frequencyValue:String) {
+        val frequency = when (frequencyValue) {
+            FrequencyType.ONCE.value -> {
+                frequencyId = FrequencyType.ONCE.value.toInt()
+                getString(R.string.once_a_day)
+            }
+            FrequencyType.TWICE.value -> {
+                frequencyId = FrequencyType.TWICE.value.toInt()
+                getString(R.string.twice_a_day)
+            }
+            FrequencyType.THRICE.value -> {
+                frequencyId = FrequencyType.THRICE.value.toInt()
+                getString(R.string.three_times_a_day)
+            }
+            FrequencyType.FOUR.value -> {
+                frequencyId = FrequencyType.FOUR.value.toInt()
+                getString(R.string.four_times_a_day)
+            }
+            else -> {
+                frequencyId = FrequencyType.ONCE.value.toInt()
+                getString(R.string.once_a_day)
+            }
+        }
+        fragmentScheduleMedicineBinding.frequencyET.text = frequency
     }
 
     private fun setDoseAdapter() {
@@ -325,6 +381,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         image.startAnimation(rotateAnim)
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.endDate -> {
@@ -363,7 +420,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     for (i in timeList) {
                         timeAddedList.add(Time(i.time, i.isAmPM))
                     }
-                    var endDate = ""
+                    var endDate:String? = null
                     if (fragmentScheduleMedicineBinding.endDate.text.toString().trim()
                             .isNotEmpty()
                     ) {
@@ -386,6 +443,20 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         medicationViewModel.updateScheduledMedication(
                             scheduledMedication,
                             addedMedication!!.id!!
+                        )
+                    }
+                   else if (medicationPayload != null) {
+                        val scheduledMedication = UpdateScheduledMedList(
+                            doseID!!,
+                            frequencyId!!.toString(),
+                            daysIds!!,
+                            timeAddedList,
+                            fragmentScheduleMedicineBinding.etNote.text.toString().trim(),
+                            endDate
+                        )
+                        medicationViewModel.updateScheduledMedication(
+                            scheduledMedication,
+                            medicationPayload!!.id!!
                         )
                     } else {
                         val scheduledMedication =
@@ -517,6 +588,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.frequencyRV.visibility = View.VISIBLE
             rotate(180f, fragmentScheduleMedicineBinding.frequencyIM)
         }
+        //if keyboard open
+        hideKeyboard(fragmentScheduleMedicineBinding.scrollView)
     }
 
     private fun showDayView() {
@@ -527,8 +600,15 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.daysRV.visibility = View.VISIBLE
             rotate(180f, fragmentScheduleMedicineBinding.dayIM)
         }
+        //if keyboard open
+        hideKeyboard(fragmentScheduleMedicineBinding.scrollView)
     }
 
+    fun hideKeyboard(view: View) {
+        val inputMethodManager =
+            requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
+        inputMethodManager!!.hideSoftInputFromWindow(view.windowToken, 0)
+    }
     private fun showDoseView() {
         if (fragmentScheduleMedicineBinding.doseRV.visibility == View.VISIBLE) {
             fragmentScheduleMedicineBinding.doseRV.visibility = View.GONE
@@ -537,6 +617,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.doseRV.visibility = View.VISIBLE
             rotate(180f, fragmentScheduleMedicineBinding.doseIM)
         }
+        //if keyboard open
+        hideKeyboard(fragmentScheduleMedicineBinding.scrollView)
     }
 
 }
