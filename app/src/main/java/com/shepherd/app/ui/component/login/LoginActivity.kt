@@ -390,9 +390,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 navigateToForgotPasswordScreen()
             }
             R.id.btnLogin -> {
-                if (isValid) {
-                    doLogin(false)
-                }
+//                if (isValid) {
+//                    doLogin(false)
+//                }
+                navigateToAddLovedOneScreen()
             }
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()

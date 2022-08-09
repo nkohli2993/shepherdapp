@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        tools:context="com.shepherd.app.ui.component.addLovedOne.AddLovedOneActivity">
+        >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivBack"

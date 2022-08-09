@@ -161,23 +161,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
     override fun onBackPressed() {
-        val navController = findNavController(R.id.nav_host_fragment_content_dashboard)
-        // to check navigation fragments
-        val navHostFragment = supportFragmentManager.primaryNavigationFragment as NavHostFragment?
-        val fragmentManager: FragmentManager = navHostFragment!!.childFragmentManager
-        val fragment: Fragment = fragmentManager.getPrimaryNavigationFragment()!!
-        when (fragment) {
-            is CarePointsFragment, is MyMedListFragment, is LockBoxFragment, is CareTeamMembersFragment -> {
-                navController.navigate(R.id.nav_dashboard)
-            }
-            is DashboardFragment -> {
-                finishActivity()
-            }
-            else -> {
-                super.onBackPressed()
-            }
-
-        }
+        super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)    // for close
 
     }

@@ -18,7 +18,7 @@
         android:background="@color/_FCFCFC"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/_10sdp"
-        tools:context="com.shepherd.app.ui.component.addLovedOne.AddLovedOneActivity">
+        >
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
