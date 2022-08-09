@@ -3,6 +3,7 @@ package com.shepherd.app.ui.component.myMedList
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,17 +26,16 @@ import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewMedication.AddNewMedicationFragmentDirections
 import com.shepherd.app.ui.component.myMedList.adapter.MyMedicationsAdapter
-import com.shepherd.app.utils.*
 import com.shepherd.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
-import com.shepherd.app.utils.SingleEvent
+import com.shepherd.app.utils.*
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
-import com.shepherd.app.utils.setupSnackbar
-import com.shepherd.app.utils.showToast
 import com.shepherd.app.view_model.MyMedListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import java.util.*
+import java.util.function.Predicate
+import java.util.stream.Collectors
 
 
 /**
@@ -262,19 +262,43 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    showInfo(requireContext(), getString(R.string.schedule_medication_deleted_successfully))
+                    showInfo(
+                        requireContext(),
+                        getString(R.string.schedule_medication_deleted_successfully)
+                    )
                     //remove from list
-                    payload.removeAt(deletePostion)
-                    myMedicationsAdapter!!.addData(payload)
-                    myMedicationsAdapter!!.notifyDataSetChanged()
-                    if (payload.isNullOrEmpty()) {
+                    /*   payload.removeAt(deletePostion)
+                       myMedicationsAdapter!!.addData(payload)
+                       myMedicationsAdapter!!.notifyDataSetChanged()
+                       if (payload.isNullOrEmpty()) {
+                           myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+                           myMedlistBinding.txtNoScehduled.visibility =
+                               View.VISIBLE
+                       } else {
+                           myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
+                           myMedlistBinding.txtNoScehduled.visibility = View.GONE
+                       }*/
+                   /* val filteredMedListReminderList: List<MedListReminder> =
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            medListReminderList.stream().filter { medicationReminder: MedListReminder ->
+                                deletePostion == medicationReminder.id!!
+                            }.collect(Collectors.toList())
+                        } else {
+                            TODO("VERSION.SDK_INT < N")
+                        }
+                    medListReminderList.removeAll(filteredMedListReminderList)
+                    selectedDayMedicineAdapter?.addData(medListReminderList)
+                    selectedDayMedicineAdapter!!.notifyDataSetChanged()
+                    if (medListReminderList.isNullOrEmpty()) {
                         myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
                         myMedlistBinding.txtNoScehduled.visibility =
                             View.VISIBLE
                     } else {
                         myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
                         myMedlistBinding.txtNoScehduled.visibility = View.GONE
-                    }
+                    }*/
+
+                    medListViewModel.getLovedOneMedLists()
 
                 }
             }
@@ -284,18 +308,19 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     private fun navigateToMedDetail(navigateEvent: SingleEvent<MedListReminder>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            when(it.medlist?.actionType?:MedListAction.View.value){
-                MedListAction.View.value ->{
+            when (it.medlist?.actionType ?: MedListAction.View.value) {
+                MedListAction.View.value -> {
                     findNavController().navigate(R.id.action_my_medlist_to_med_detail)
                 }
-                MedListAction.EDIT.value ->{
+                MedListAction.EDIT.value -> {
                     //open edit view
                     findNavController().navigate(
                         AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                          medicationScheduled = it
-                        ))
+                            medicationScheduled = it
+                        )
+                    )
                 }
-                MedListAction.Delete.value ->{
+                MedListAction.Delete.value -> {
                     //delete medlist schedules
                     //show delete dialog
                     val builder = AlertDialog.Builder(requireContext())
@@ -303,7 +328,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         setTitle("Delete Medication Schedule")
                         setMessage("Sure you want to delete this medication schedule")
                         setPositiveButton("Yes") { _, _ ->
-                            deletePostion = it.medlist!!.deletePosition!!
+//                            deletePostion = it.medlist!!.deletePosition!!
+                            deletePostion = it.id!!
                             medListViewModel.deletedSceduledMedication(it.id!!)
                         }
                         setNegativeButton("Cancel") { _, _ ->
