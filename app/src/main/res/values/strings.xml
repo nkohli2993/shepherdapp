@@ -423,4 +423,6 @@
     <string name="twice_a_day">Twice a day</string>
     <string name="three_times_a_day">Three times a day</string>
     <string name="four_times_a_day">Four times a day</string>
+    <string name="no_medication_reminder_found">No Medication Reminder Found...</string>
+    <string name="no_medication_found">No Medication Found...</string>
 </resources>

@@ -298,12 +298,12 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                   /* it.data.message?.let { it1 ->
-                        showSuccess(
-                            requireContext(), it1
-                        )
-                    }*/
-                    showSuccess(requireContext(),"Medication Record Added Successfully...")
+                    /* it.data.message?.let { it1 ->
+                         showSuccess(
+                             requireContext(), it1
+                         )
+                     }*/
+                    showSuccess(requireContext(), "Medication Record Added Successfully...")
                 }
             }
         }
@@ -317,7 +317,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 val date = sdf.format(Date())
                 val time = it.time?.time + " " + it.time?.hour
                 val medicationRecordRequest =
-                    it?.id?.let { it1 -> MedicationRecordRequestModel(it1, date, time) }
+                    it.id?.let { it1 -> MedicationRecordRequestModel(it1, date, time) }
                 medicationRecordRequest?.let { it1 -> medListViewModel.addUserMedicationRecord(it1) }
             }
         }
@@ -327,7 +327,9 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         navigateEvent.getContentIfNotHandled()?.let {
             when (it.medlist?.actionType ?: MedListAction.View.value) {
                 MedListAction.View.value -> {
-                    findNavController().navigate(R.id.action_my_medlist_to_med_detail)
+                    val bundle = Bundle()
+                    it.id?.let { it1 -> bundle.putInt("id", it1) }
+                    findNavController().navigate(R.id.action_my_medlist_to_med_detail, bundle)
                 }
                 MedListAction.EDIT.value -> {
                     //open edit view

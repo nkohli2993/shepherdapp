@@ -74,14 +74,13 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtNoMedicationReminder"
-                    style="@style/TextViewGothamMedium"
+                    style="@style/TextViewGothamLight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/srCalender"
-                    android:text="No Medication Reminder Found..."
-                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:text="@string/no_medication_reminder_found"
                     android:visibility="gone" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -118,17 +117,17 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14sdp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtNoScehduled" />
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewSelectedDayMedicine" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtMedication"
-                    style="@style/TextViewGothamMedium"
+                    style="@style/TextViewGothamLight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textViewMyMedications"
-                    android:text="No Medication Found..."
+                    android:text="@string/no_medication_found"
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:visibility="gone" />
 
