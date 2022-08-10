@@ -45,6 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/_10sdp"
             android:onClick="@{listener::onClick}"
+            android:paddingVertical="@dimen/_10sdp"
             android:paddingEnd="@dimen/_20sdp"
             android:src="@drawable/ic_volume"
             app:layout_constraintBottom_toBottomOf="@+id/tvMedTitle"
@@ -65,8 +66,8 @@
             app:layout_constraintTop_toBottomOf="@id/ivBack" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextViewGothamMedium"
             android:id="@+id/txtBrandName"
+            style="@style/TextViewGothamMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
@@ -76,15 +77,15 @@
             app:layout_constraintTop_toBottomOf="@id/genricNameTV" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextViewGothamMedium"
             android:id="@+id/brandNameTV"
+            style="@style/TextViewGothamMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/_399282"
-            app:layout_constraintTop_toBottomOf="@id/genricNameTV"
-            app:layout_constraintStart_toEndOf="@+id/txtBrandName" />
+            app:layout_constraintStart_toEndOf="@+id/txtBrandName"
+            app:layout_constraintTop_toBottomOf="@id/genricNameTV" />
 
 
         <LinearLayout
@@ -109,19 +110,19 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextViewGothamBold"
             android:id="@+id/txtAssignedBy"
+            style="@style/TextViewGothamBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:text="Assigned By : "
             app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
             app:layout_constraintTop_toBottomOf="@id/brandNameTV" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextViewGothamMedium"
             android:id="@+id/tv_username"
+            style="@style/TextViewGothamMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
@@ -130,19 +131,19 @@
             app:layout_constraintTop_toBottomOf="@+id/brandNameTV" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextViewGothamBold"
             android:id="@+id/txtDescription"
+            style="@style/TextViewGothamBold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:text="Description : "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_username" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextViewGothamMedium"
             android:id="@+id/txtDescription1"
+            style="@style/TextViewGothamMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
