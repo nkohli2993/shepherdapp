@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.loved_one
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.shepherd.app.databinding.FragmentLovedOnesBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.Status
@@ -120,9 +122,19 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
         }
     }
 
-    override fun onItemClick(careTeam: CareTeamModel) {
-        // Save the selected lovedOne UUID in shared prefs
-        selectedCare = careTeam
-//        careTeam.love_user_id_details.let { lovedOneViewModel.saveLovedOneUUID(it.uid!!) }
+    override fun onItemClick(careTeam: CareTeamModel,type:String) {
+        when(type){
+            "Medical"->{
+                val intent = Intent(requireContext(), AddLovedOneConditionActivity::class.java)
+                intent.putExtra("source",Const.MEDICAL_CONDITION)
+                intent.putExtra("love_one_id",careTeam.love_user_id)
+                intent.putExtra("care_conditions",careTeam.careConditions)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+            else->{
+                selectedCare = careTeam
+            }
+        }
     }
 }

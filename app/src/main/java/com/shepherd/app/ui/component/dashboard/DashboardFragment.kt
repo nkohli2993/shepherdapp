@@ -124,11 +124,11 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
             val careTeamMembersCount = careTeamMembersProfileList.size
 
-            if (careTeamMembersCount == 0 || careTeamMembersCount == 1) {
+           /* if (careTeamMembersCount == 0 || careTeamMembersCount == 1) {
                 fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Member"
             } else {
                 fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Members"
-            }
+            }*/
 
             if (!careTeamMembersProfileList.isNullOrEmpty()) {
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)

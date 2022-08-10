@@ -25,6 +25,7 @@ object Const {
     const val TERM_OF_USE = "TERM_OF_USE"
     const val ADD_LOVE_ONE = "ADD_LOVE_ONE"
     const val LOVED_USER_DETAILS = "LOVED USER DETAILS"
+    const val MEDICAL_CONDITION = "MEDICAL CONDITION"
 }
 
 object Drawable {

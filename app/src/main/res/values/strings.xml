@@ -425,4 +425,5 @@
     <string name="four_times_a_day">Four times a day</string>
     <string name="no_medication_reminder_found">No Medication Reminder Found...</string>
     <string name="no_medication_found">No Medication Found...</string>
+    <string name="view_medical_conditions">View Medical Conditions</string>
 </resources>

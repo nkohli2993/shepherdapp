@@ -123,7 +123,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                 Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
 
             if (payload?.isActive == true) {
-                startActivity<AddLovedOneActivity>()
+                startActivityWithFinish<AddLovedOneActivity>()
             } else {
                 val builder = AlertDialog.Builder(this)
                 val dialog = builder.apply {

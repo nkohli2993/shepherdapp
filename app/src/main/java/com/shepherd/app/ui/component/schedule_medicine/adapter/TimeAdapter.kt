@@ -152,7 +152,7 @@ class TimeAdapter(
     }
 
     fun addData(timeListAdded: MutableList<TimeSelectedlist>) {
-        timeList.addAll(timeListAdded)
+        this.timeList = timeListAdded
         notifyDataSetChanged()
     }
 
