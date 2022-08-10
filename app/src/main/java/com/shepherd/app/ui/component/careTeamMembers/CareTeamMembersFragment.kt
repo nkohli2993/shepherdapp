@@ -144,7 +144,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Get the uuid of Care Team Leader
                     try {
                         val uuidTeamLead = careTeams?.filter {
-                            it.careRoles?.slug == CareRole.CareTeamLead.slug
+                            it.careRoles.slug == CareRole.CareTeamLead.slug
                         }?.map {
                             it.user_id
                         }?.get(0)
