@@ -3,6 +3,7 @@ package com.shepherd.app.ui.component.home
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
@@ -27,11 +28,13 @@ import com.shepherd.app.ui.component.careTeamMembers.CareTeamMembersFragment
 import com.shepherd.app.ui.component.dashboard.DashboardFragment
 import com.shepherd.app.ui.component.lockBox.LockBoxFragment
 import com.shepherd.app.ui.component.login.LoginActivity
+import com.shepherd.app.ui.component.messages.MessagesFragment
 import com.shepherd.app.ui.component.myMedList.MyMedListFragment
+import com.shepherd.app.ui.component.resources.ResourcesFragment
+import com.shepherd.app.ui.component.vital_stats.VitalStatsFragment
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.extensions.showError
-import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.HomeViewModel
 import com.squareup.picasso.Picasso
@@ -368,25 +371,41 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         viewModel.getHomeData()
     }
 
+    private var backPressed: Long = 0
+
     override fun onBackPressed() {
-        val navController = findNavController(R.id.nav_host_fragment_content_dashboard)
         // to check navigation fragments
         val navHostFragment = supportFragmentManager.primaryNavigationFragment as NavHostFragment?
         val fragmentManager: FragmentManager = navHostFragment!!.childFragmentManager
-        val fragment: Fragment = fragmentManager.getPrimaryNavigationFragment()!!
-        when (fragment) {
-            is CarePointsFragment, is MyMedListFragment, is LockBoxFragment, is CareTeamMembersFragment -> {
+        when (fragmentManager.primaryNavigationFragment!!) {
+            is CarePointsFragment, is MyMedListFragment, is LockBoxFragment, is CareTeamMembersFragment,
+            is ResourcesFragment, is VitalStatsFragment, is MessagesFragment -> {
+                val navController = findNavController(R.id.nav_host_fragment_content_dashboard)
                 navController.navigate(R.id.nav_dashboard)
+                overridePendingTransition(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
             }
             is DashboardFragment -> {
-                finishActivity()
+                if (backPressed + 2000 > System.currentTimeMillis()) super.onBackPressed()
+                else Toast.makeText(
+                    applicationContext,
+                    "Press once again to exit!",
+                    Toast.LENGTH_SHORT
+                ).show()
+                backPressed = System.currentTimeMillis()
             }
             else -> {
                 super.onBackPressed()
+                overridePendingTransition(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
             }
 
         }
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)    // for close
+
 
     }
 

@@ -14,8 +14,9 @@ data class CareTeamModel(
     @SerializedName("created_at") var created_at: String? = null,
 
 //    @SerializedName("careteams") var careTeams: ArrayList<CareTeam> = arrayListOf(),
+    @SerializedName("care_conditions") var careConditions: ArrayList<CareCondition> = arrayListOf(),
     @SerializedName("care_roles") var careRoles: CareTeamRoles = CareTeamRoles(),
     @SerializedName("user_id_details") var user_id_details: LoveUser = LoveUser(),
     @SerializedName("love_user_id_details") var love_user_id_details: LoveUser = LoveUser(),
-    @SerializedName("is_selected") var isSelected: Boolean = false
+    @SerializedName("is_selected") var isSelected: Boolean = false,
 ):Parcelable

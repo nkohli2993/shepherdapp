@@ -11,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
+import com.shepherd.app.data.dto.care_team.CareCondition
 import com.shepherd.app.data.dto.medical_conditions.Conditions
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherd.app.databinding.ActivityAddLovedOneConditionBinding
@@ -46,16 +47,16 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         ArrayList()
     private var lovedOneID: Int? = null
     private var TAG = "AddLovedOneConditionActivity"
-
+    private var loveOneId: String? = null
+    private var careConditions: ArrayList<CareCondition>? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // binding.toolBarNew.listener = this
-
-        // Get LovedOneID from AddLovedOneActivity
-        // lovedOneID = intent.getIntExtra(Const.LOVED_ONE_ID, 0)
-        //Log.d(TAG, "LovedOneID : $lovedOneID")
-
         binding.listener = this
+        //check if intent has loved used id
+        if (intent.hasExtra("love_one_id")) {
+            loveOneId = intent.getStringExtra("love_one_id")
+            careConditions = intent.getParcelableArrayListExtra("care_conditions")
+        }
 
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
 
@@ -106,6 +107,15 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 is DataResult.Success -> {
                     hideLoading()
                     conditions = it.data.payload?.conditions
+                    if (careConditions != null) { // to check already added care conditions
+                        for (i in conditions!!) {
+                            for (j in careConditions!!) {
+                                if (j.id == i.id) {
+                                    i.isSelected = true
+                                }
+                            }
+                        }
+                    }
                     addLovedOneConditionAdapter = conditions?.let { it1 ->
                         AddLovedOneConditionAdapter(
                             addLovedOneConditionViewModel,
@@ -163,13 +173,9 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.buttonFinish -> {
                 //navigateToWelcomeScreen()
-                // Get user id from shared preference
-                val userID = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.USER_ID, 0)
-
                 // Get LovedOne UUID from shared Pref
                 val lovedOneUUID =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
-
                 val ids = selectedConditions?.map {
                     it.id
                 }
@@ -191,9 +197,20 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     "Size of selected medical conditions array :${medicalConditionsLovedOneArray.size} "
                 )
                 if (medicalConditionsLovedOneArray.size != 0) {
-                    addLovedOneConditionViewModel.createMedicalConditions(
-                        medicalConditionsLovedOneArray
-                    )
+
+                    when (intent.getStringExtra("source")) {
+                        Const.MEDICAL_CONDITION -> {
+                            // api to update medical condition
+
+                        }
+                        else -> {
+                            addLovedOneConditionViewModel.createMedicalConditions(
+                                medicalConditionsLovedOneArray
+                            )
+                        }
+                    }
+
+
                 } else {
                     showError(this, "Please select at least once medical condition...")
                 }
@@ -209,6 +226,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private fun navigateToHomeScreen() {
         if (intent.getStringExtra("source") == Const.ADD_LOVE_ONE) {
             onBackPressed()
+        } else if (intent.getStringExtra("source") == Const.MEDICAL_CONDITION) {
+            finishActivity()
         } else {
             startActivityWithFinish<HomeActivity>()
         }

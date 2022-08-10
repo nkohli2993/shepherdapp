@@ -242,34 +242,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         }
 
 
-                        /* // Save User Detail to SharedPref
-                         it.payload?.userProfile?.let { it1 -> loginViewModel.saveUser(it1) }*/
-
-                        // Save user ID
-                        /* it.payload?.userProfile?.let { it1 ->
-                             it1.userId?.let { it2 ->
-                                 loginViewModel.saveUserId(
-                                     it2
-                                 )
-                             }
-                         }*/
-
-                        // Save UUID
-                        /*it.payload?.uuid.let { uuid ->
-                            uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
-                        }*/
-
-                        // Save token
-                        /* it.payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
-                         token = it.payload?.token*/
-
-                        // Save Loved One UUID
-                        /* it.payload?.userLovedOne?.let {
-                             if (it.isNotEmpty()) {
-                                 it[0].loveUserId?.let { it1 -> loginViewModel.saveLovedOneUUID(it1) }
-                             }
-                         }*/
-
                         userLovedOneArrayList = it.payload?.userLovedOne
 
                         // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
@@ -393,7 +365,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 if (isValid) {
                     doLogin(false)
                 }
-//                navigateToAddLovedOneScreen()
             }
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()

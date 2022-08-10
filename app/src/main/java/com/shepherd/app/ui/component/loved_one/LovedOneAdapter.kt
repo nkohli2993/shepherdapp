@@ -31,7 +31,7 @@ class LovedOneAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(careTeam: CareTeamModel)
+        fun onItemClick(careTeam: CareTeamModel,type:String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -88,6 +88,9 @@ class LovedOneAdapter(
                     careTeam.isSelected = false
                 }
             }
+            itemBinding.viewMedicalTV.setOnClickListener {
+                onItemClickListener?.onItemClick(careTeam,"Medical")
+            }
 
             itemBinding.checkbox.setOnClickListener {
                 deselectCareTeams()
@@ -95,7 +98,7 @@ class LovedOneAdapter(
                 dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
                 lastSelectedPosition = bindingAdapterPosition
                 itemBinding.checkbox.isChecked = true
-                onItemClickListener?.onItemClick(careTeam)
+                onItemClickListener?.onItemClick(careTeam,"Detail")
             }
 
         }

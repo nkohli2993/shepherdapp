@@ -42,6 +42,15 @@ class MedicalConditionRepository @Inject constructor(private val apiService: Api
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+    // edit Medical Conditions for loved one id based
+    suspend fun editMedicalConditions(conditions: ArrayList<MedicalConditionsLovedOneRequestModel>): Flow<DataResult<UserConditionsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<UserConditionsResponseModel, UserConditionsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UserConditionsResponseModel> {
+                return apiService.editBulkOneConditions(conditions)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 
 
 }

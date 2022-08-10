@@ -168,7 +168,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             doseID = addedMedication!!.dosageId.toString()
             fragmentScheduleMedicineBinding.doseTV.text = addedMedication!!.dosage!!.name
             setFrequency(addedMedication?.frequency!!)
-            if(addedMedication?.endDate!=null){
+            if (addedMedication?.endDate != null) {
                 setEndDate(addedMedication?.endDate!!)
             }
 
@@ -184,24 +184,22 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             addDays(isEdit = true, addedMedication?.days!!)
             setDayAdapter()
             fragmentScheduleMedicineBinding.etNote.setText(addedMedication?.note)
-        }else if(medicationPayload!=null){
+        } else if (medicationPayload != null) {
             doseID = medicationPayload!!.dosageId.toString()
             fragmentScheduleMedicineBinding.doseTV.text = medicationPayload!!.dosage!!.name
             setFrequency(medicationPayload?.frequency!!)
-            if(medicationPayload?.endDate!=null){
+            if (medicationPayload?.endDate != null) {
                 setEndDate(medicationPayload?.endDate!!)
             }
             timeList.clear()
-              for (i in medicationPayload?.time!!) {
-                  timeList.add(TimeSelectedlist(timeList.size, i.time, i.hour!!.lowercase()))
-              }
+            for (i in medicationPayload?.time!!) {
+                timeList.add(TimeSelectedlist(timeList.size, i.time, i.hour!!.lowercase()))
+            }
             setTimeAdapter()
             addDays(isEdit = true, medicationPayload?.days!!)
             setDayAdapter()
             fragmentScheduleMedicineBinding.etNote.setText(medicationPayload?.note)
-        }
-
-        else {
+        } else {
             timeList.add(TimeSelectedlist())
             addDays()
             setDayAdapter()
@@ -210,14 +208,14 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         setDoseAdapter()
     }
 
-    
-    private fun setEndDate(date:String) {
+
+    private fun setEndDate(date: String) {
         val formattedDate = SimpleDateFormat("yyyy-MM-dd").parse(date)!!
         fragmentScheduleMedicineBinding.endDate.text =
             SimpleDateFormat("dd-MM-yyyy").format(formattedDate)
     }
 
-    private fun setFrequency(frequencyValue:String) {
+    private fun setFrequency(frequencyValue: String) {
         val frequency = when (frequencyValue) {
             FrequencyType.ONCE.value -> {
                 frequencyId = FrequencyType.ONCE.value.toInt()
@@ -369,7 +367,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         image.startAnimation(rotateAnim)
     }
 
-    
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.endDate -> {
@@ -408,12 +406,14 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     for (i in timeList) {
                         timeAddedList.add(Time(i.time, i.isAmPM))
                     }
-                    var endDate:String? = null
+                    var endDate: String? = null
                     if (fragmentScheduleMedicineBinding.endDate.text.toString().trim()
                             .isNotEmpty()
                     ) {
                         var dateFormat = SimpleDateFormat("dd-MM-yyyy")
-                        val formatedDate: Date = dateFormat.parse(fragmentScheduleMedicineBinding.endDate.text.toString().trim())!!
+                        val formatedDate: Date = dateFormat.parse(
+                            fragmentScheduleMedicineBinding.endDate.text.toString().trim()
+                        )!!
                         dateFormat = SimpleDateFormat("yyyy-MM-dd")
                         endDate = dateFormat.format(formatedDate)
                     }
@@ -430,8 +430,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                             scheduledMedication,
                             addedMedication!!.id!!
                         )
-                    }
-                   else if (medicationPayload != null) {
+                    } else if (medicationPayload != null) {
                         val scheduledMedication = UpdateScheduledMedList(
                             doseID!!,
                             frequencyId!!.toString(),
@@ -558,10 +557,10 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         for (i in 0 until timeCount) {
             list.add(TimeSelectedlist())
         }
-
-        timeAdapter?.removeData(list)
         timeList.clear()
         timeList.addAll(list)
+        timeAdapter = null
+        setTimeAdapter()
         showFrequencyView()
         fragmentScheduleMedicineBinding.frequencyET.text = frequencyList[position].name
     }
@@ -595,6 +594,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
         inputMethodManager!!.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
     private fun showDoseView() {
         if (fragmentScheduleMedicineBinding.doseRV.visibility == View.VISIBLE) {
             fragmentScheduleMedicineBinding.doseRV.visibility = View.GONE
