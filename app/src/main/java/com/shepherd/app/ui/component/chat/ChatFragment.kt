@@ -86,10 +86,10 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonSubmit,R.id.imageViewBack -> {
+          /*  R.id.buttonSubmit,R.id.imageViewBack -> {
                //backPress()
                 startActivity(Intent(requireContext(), HomeActivity::class.java))
-            }
+            }*/
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
