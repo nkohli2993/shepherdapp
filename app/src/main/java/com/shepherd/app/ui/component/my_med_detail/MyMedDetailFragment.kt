@@ -2,17 +2,22 @@ package com.shepherd.app.ui.component.my_med_detail
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.text.SpannableString
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import com.shepherd.app.R
 import com.shepherd.app.databinding.FragmentMyMedDetialBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.extensions.showSuccess
+import com.shepherd.app.view_model.MyMedDetailVM
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -36,6 +41,34 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
     }
 
     override fun observeViewModel() {
+        medDetailViewModel.getMedicationDetailResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), it.data.message.toString())
+                    Log.d(TAG, "Medication Detail :${it.data.payload} ")
+                    fragmentMyMedDetailBinding.tvMedTitle.text = it.data.payload.medlist.name
+                    fragmentMyMedDetailBinding.brandNameTV.text =it.data.payload.medlist.name
+                    fragmentMyMedDetailBinding.txtDescription1.text = it.data.payload.medlist.description
+
+                    it.data.payload.assigned_by_details.let { assignedByDetail ->
+                        fragmentMyMedDetailBinding.tvUsername.text = "${assignedByDetail.firstname} ${assignedByDetail.lastname}"
+
+                    }
+                    Picasso.get().load(it.data.payload.assigned_by_details.profile_photo)
+                        .placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(fragmentMyMedDetailBinding.imageViewUser)
+
+                }
+            }
+        }
     }
 
     override fun initViewBinding() {
@@ -50,7 +83,8 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
 
         val id = arguments?.getInt("id")
         Log.d(TAG, "id : $id ")
-
+        // Get Medication Detail
+        id?.let { medDetailViewModel.getMedicationDetail(it) }
     }
 
     override fun getLayoutRes(): Int {
@@ -63,9 +97,9 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                 findNavController().popBackStack()
             }
             R.id.speakIV -> {
-                val toSpeak: String = fragmentMyMedDetailBinding.tvMedTitle.text.toString()
+                /*val toSpeak: String = fragmentMyMedDetailBinding.tvMedTitle.text.toString()
                 Toast.makeText(getApplicationContext(), toSpeak, Toast.LENGTH_SHORT).show()
-                textToSpeech?.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null, null)
+                textToSpeech?.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null, null)*/
             }
         }
     }

@@ -25,14 +25,11 @@ import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseM
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
-import com.shepherd.app.data.dto.med_list.AddScheduledMedicationResponseModel
-import com.shepherd.app.data.dto.med_list.GetAllDoseListResponseModel
-import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
-import com.shepherd.app.data.dto.med_list.ScheduledMedicationRequestModel
+import com.shepherd.app.data.dto.med_list.*
+import com.shepherd.app.data.dto.med_list.get_medication_detail.GetMedicationDetailResponse
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
-import com.shepherd.app.data.dto.med_list.*
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
@@ -290,7 +287,7 @@ interface ApiService {
 
     @PUT(ApiConstants.MedList.UPDATE_SCHEDULED_MEDICATION)
     suspend fun updateScheduledMedication(
-        @Path("id") id:Int,
+        @Path("id") id: Int,
         @Body addNewLockBoxRequestModel: UpdateScheduledMedList
     ): Response<AddScheduledMedicationResponseModel>
 
@@ -303,4 +300,9 @@ interface ApiService {
     suspend fun addUserMedicationRecord(
         @Body medicationRecordRequestModel: MedicationRecordRequestModel
     ): Response<MedicationRecordResponseModel>
+
+    @GET(ApiConstants.MedList.GET_MEDICATION_DETAIL)
+    suspend fun getMedicationDetails(
+        @Path("id") id: Int
+    ): Response<GetMedicationDetailResponse>
 }

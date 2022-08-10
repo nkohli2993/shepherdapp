@@ -65,16 +65,27 @@
             app:layout_constraintTop_toBottomOf="@id/ivBack" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextViewGothamMedium"
+            android:id="@+id/txtBrandName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:text="Brand Name :"
+            app:layout_constraintStart_toStartOf="@id/ivBack"
+            app:layout_constraintTop_toBottomOf="@id/genricNameTV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextViewGothamMedium"
             android:id="@+id/brandNameTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_5sdp"
-            android:fontFamily="@font/gotham_medium"
-            android:textColor="@color/_192032"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/ivBack"
-            app:layout_constraintTop_toBottomOf="@id/genricNameTV" />
+            android:textColor="@color/_399282"
+            app:layout_constraintTop_toBottomOf="@id/genricNameTV"
+            app:layout_constraintStart_toEndOf="@+id/txtBrandName" />
+
 
         <LinearLayout
             android:id="@+id/llImageWrapper"
@@ -98,17 +109,47 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextViewGothamBold"
+            android:id="@+id/txtAssignedBy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="Assigned By : "
+            app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
+            app:layout_constraintTop_toBottomOf="@id/brandNameTV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextViewGothamMedium"
             android:id="@+id/tv_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
             android:fontFamily="@font/gotham_medium"
-            android:paddingHorizontal="@dimen/_10sdp"
+            app:layout_constraintStart_toEndOf="@+id/txtAssignedBy"
+            app:layout_constraintTop_toBottomOf="@+id/brandNameTV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextViewGothamBold"
+            android:id="@+id/txtDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:text="Description : "
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_username" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/TextViewGothamMedium"
+            android:id="@+id/txtDescription1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
             android:textColor="@color/_192032"
-            android:textSize="@dimen/_12ssp"
-            app:layout_constraintEnd_toEndOf="@id/brandNameTV"
-            app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
-            app:layout_constraintTop_toBottomOf="@id/brandNameTV" />
+            app:layout_constraintStart_toEndOf="@+id/txtDescription"
+            app:layout_constraintTop_toBottomOf="@id/tv_username" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleviewMedRV"
@@ -126,7 +167,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="@id/recycleviewMedRV"
             app:layout_constraintStart_toStartOf="@+id/recycleviewMedRV"
-            app:layout_constraintTop_toBottomOf="@+id/recycleviewMedRV"/>
+            app:layout_constraintTop_toBottomOf="@+id/recycleviewMedRV" />
 
         <com.shepherd.app.ui.component.myMedList.TouchyWebView
             android:id="@+id/medDetailWV"
