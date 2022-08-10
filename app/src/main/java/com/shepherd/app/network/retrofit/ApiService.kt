@@ -257,11 +257,11 @@ interface ApiService {
     suspend fun getAllMedLists(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("search") search: String = ""
+//        @Query("search") search: String = ""
     ): Response<GetAllMedListResponseModel>
 
     @GET(ApiConstants.MedList.GET_ALL_MED_LIST)
-    suspend fun SearchMedList(
+    suspend fun searchMedList(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("search") search: String

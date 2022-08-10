@@ -57,7 +57,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun onResume() {
         super.onResume()
-         medLists.clear()
+        medLists.clear()
         searchFlag = false
         /* medListViewModel.getAllMedLists(pageNumber, limit)*/
     }
@@ -85,17 +85,13 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             }
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s.toString().isEmpty() && searchFlag) {
-                    fragmentAddNewMedicationBinding.llSearch.visibility = View.GONE
+                if (s.toString().isEmpty()) {
+                   /* fragmentAddNewMedicationBinding.llSearch.visibility = View.GONE
                     pageNumber = 1
                     isSearch = false
                     searchFlag = false
                     medLists.clear()
-                    addMedicationViewModel.getAllMedLists(pageNumber, limit)
+                    addMedicationViewModel.getAllMedLists(pageNumber, limit)*/
                 } else {
                     searchFlag = true
                     fragmentAddNewMedicationBinding.llSearch.visibility = View.VISIBLE
@@ -106,6 +102,10 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         s.toString()
                     )
                 }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+
 
             }
         })
@@ -193,7 +193,8 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             findNavController().navigate(
                 AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
                     selectedMedication!!
-                ))
+                )
+            )
         }
     }
 
@@ -223,6 +224,5 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         super.onDestroyView()
         addMedicineListAdapter?.clearData()
     }
-
 }
 

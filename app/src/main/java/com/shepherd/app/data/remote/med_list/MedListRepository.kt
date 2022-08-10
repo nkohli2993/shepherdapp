@@ -45,7 +45,7 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
         return object :
             NetworkOnlineDataRepo<GetAllMedListResponseModel, GetAllMedListResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<GetAllMedListResponseModel> {
-                return apiService.SearchMedList(pageNumber, limit, search)
+                return apiService.searchMedList(pageNumber, limit, search)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
