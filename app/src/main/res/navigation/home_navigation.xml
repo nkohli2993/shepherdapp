@@ -125,6 +125,11 @@
             android:defaultValue="@null"
             app:argType="com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder"
             app:nullable="true" />
+        <argument
+            android:name="medication_scheduled_payload"
+            android:defaultValue="@null"
+            app:argType="com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload"
+            app:nullable="true" />
     </fragment>
 
     <fragment

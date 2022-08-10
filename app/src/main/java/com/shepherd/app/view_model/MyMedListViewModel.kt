@@ -8,6 +8,7 @@ import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
 import com.shepherd.app.data.local.UserRepository
@@ -53,11 +54,17 @@ class MyMedListViewModel @Inject constructor(
     private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<MedListReminder>>()
     val openMedDetailItems: LiveData<SingleEvent<MedListReminder>> get() = openMedDetailItemsPrivate
 
+    private val medDetailItemsPrivate = MutableLiveData<SingleEvent<Payload>>()
+    val medDetailItems: LiveData<SingleEvent<Payload>> get() = medDetailItemsPrivate
+
     private val _selectedMedicationLiveData = MutableLiveData<SingleEvent<MedListReminder>>()
     val selectedMedicationLiveData: LiveData<SingleEvent<MedListReminder>> get() = _selectedMedicationLiveData
 
     fun openMedDetail(item: MedListReminder) {
         openMedDetailItemsPrivate.value = SingleEvent(item)
+    }
+    fun openMedicineDetail(item: Payload) {
+        medDetailItemsPrivate.value = SingleEvent(item)
     }
 
     fun selectedMedication(item: MedListReminder) {

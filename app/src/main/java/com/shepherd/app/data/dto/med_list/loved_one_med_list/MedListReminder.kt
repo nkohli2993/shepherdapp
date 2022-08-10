@@ -23,5 +23,6 @@ data class MedListReminder(
     var deletedAt: String? = null,
     var medlist: com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
     var endDate: String? = null,
-    var isSelected: Boolean = false
+    var isSelected: Boolean = false,
+    var dosage: com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
 ) : Parcelable
