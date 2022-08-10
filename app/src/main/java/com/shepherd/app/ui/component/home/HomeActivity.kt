@@ -31,7 +31,6 @@ import com.shepherd.app.ui.component.myMedList.MyMedListFragment
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.extensions.showError
-import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.HomeViewModel
 import com.squareup.picasso.Picasso
