@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,7 @@ import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.MyMedListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.calendar_item.view.*
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -51,6 +53,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private var payload: ArrayList<Payload> = arrayListOf()
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
+    private var dayId = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,7 +66,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     override fun initViewBinding() {
         // Get Loved One's Medication Listing
-        medListViewModel.getLovedOneMedLists()
         setMyMedicationsAdapter()
         setSelectedDayMedicineAdapter()
         calendar.time = Date()
@@ -72,7 +74,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     private fun setCalender() {
-
         val myCalendarViewManager = object :
             CalendarViewManager {
             override fun setCalendarViewResourceId(
@@ -101,19 +102,34 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         }
         val myCalendarChangesObserver = object :
             CalendarChangesObserver {
+            @SuppressLint("SimpleDateFormat")
             override fun whenSelectionChanged(isSelected: Boolean, position: Int, date: Date) {
                 super.whenSelectionChanged(isSelected, position, date)
+                // check day id based on date id
+                val day = SimpleDateFormat("EEE").format(date)
+                dayId = when (day) {
+                    "Mon" -> "1"
+                    "Tue" -> "2"
+                    "Wed" -> "3"
+                    "Thu" -> "4"
+                    "Fri" -> "5"
+                    "Sat" -> "6"
+                    else -> "7"
+                }
+                if (isSelected) {
+                    payload.clear()
+                    medListReminderList.clear()
+                    medListViewModel.getLovedOneMedLists()
+                }
             }
-
-
         }
         val mySelectionManager = object : CalendarSelectionManager {
             override fun canBeItemSelected(position: Int, date: Date): Boolean {
                 val cal = Calendar.getInstance()
                 cal.time = date
                 return when (cal[Calendar.DAY_OF_WEEK]) {
-                    Calendar.SATURDAY -> false
-                    Calendar.SUNDAY -> false
+                    Calendar.SATURDAY -> true
+                    Calendar.SUNDAY -> true
                     else -> true
                 }
             }
@@ -124,31 +140,10 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
             calendarSelectionManager = mySelectionManager
             futureDaysCount = 30
             includeCurrentDate = true
-//            setDates(getFutureDatesOfCurrentMonth())
             init()
             select(0)
         }
-//        singleRowCalendar.set
-    }
 
-    private fun getFutureDatesOfCurrentMonth(): List<Date> {
-        // get all next dates of current month
-        currentMonth = calendar[Calendar.MONTH]
-        return getDates(mutableListOf())
-    }
-
-    private fun getDates(list: MutableList<Date>): List<Date> {
-        // load dates of whole month
-        calendar.set(Calendar.MONTH, currentMonth)
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        list.add(calendar.time)
-        while (currentMonth == calendar[Calendar.MONTH]) {
-            calendar.add(Calendar.DATE, +1)
-            if (calendar[Calendar.MONTH] == currentMonth)
-                list.add(calendar.time)
-        }
-        calendar.add(Calendar.DATE, -1)
-        return list
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -205,8 +200,19 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     myMedlistBinding.recyclerViewMyMedications.visibility = View.VISIBLE
                     myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
                     myMedlistBinding.txtMedication.visibility = View.GONE
-//                    medlists = it.data.payload?.medlists!!
-                    payload = it.data.payload
+                    // check day for payload data
+                    val data = it.data.payload
+                    for (i in data) {
+                        if (i.days!!.contains(dayId)) {
+                            payload.add(i)
+                        }
+                    }
+                    if (payload.size <= 0) {
+                        myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
+                        myMedlistBinding.txtMedication.visibility = View.VISIBLE
+                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
+                    }
                     if (payload.isEmpty()) return@observeEvent
                     for (i in payload.indices) {
                         val payload = payload[i]
