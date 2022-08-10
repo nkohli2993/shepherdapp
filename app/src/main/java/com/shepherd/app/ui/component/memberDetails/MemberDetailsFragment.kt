@@ -110,16 +110,17 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
                 ?: false
         if (isLoggedInUserTeamLead) {
-            val loggedInUserUUID =
-                Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+            /*val loggedInUserUUID =
+                Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")*/
 
-            if (loggedInUserUUID == careTeam?.user_id_details!!.uid){
-                fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
-            }
-            else{
-                fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
-            }
+            /*  if (loggedInUserUUID == careTeam?.user_id_details!!.uid){
+                  fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
+              }
+              else{
+                  fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
+              }*/
 
+            fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
             fragmentMemberDetailsBinding.btnUpdate.visibility = View.VISIBLE
         } else {
             fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
@@ -287,10 +288,9 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
 
                 // Update Care Team Member Detail
-                if(selectedModule.isEmpty()){
-                    showError(requireContext(),"Please select atleast one permission.")
-                }
-                else{
+                if (selectedModule.isEmpty()) {
+                    showError(requireContext(), "Please select atleast one permission.")
+                } else {
                     careTeam?.id?.let {
                         memberDetailsViewModel.updateCareTeamMember(
                             it,
