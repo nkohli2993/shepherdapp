@@ -12,7 +12,6 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.relation.Relation
@@ -121,6 +120,9 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 /*  dob.isNullOrEmpty() -> {
                       showInfo(this, "Please enter date of birth")
                   }*/
+                selectedRelationship?.id == -1->{
+                    showInfo(this, "Please select relationship")
+                }
                 else -> {
                     return true
                 }
@@ -298,7 +300,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     val payload = it.data.payload
                     payload?.relations?.let { it1 -> relations?.addAll(it1) }
 
-
+                    relations?.add(0,Relation(-1,"Select Relationship"))
                     relationshipsAdapter =
                         relations?.let { relation ->
                             RelationshipsAdapter(

@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:fontFamily="@font/gotham_medium"
     android:padding="@dimen/_10sdp"
-    android:text="@string/hint_select_one">
+    android:text="@string/hint_select_one"
+    android:textColor="@color/_192032">
 
 </TextView>
