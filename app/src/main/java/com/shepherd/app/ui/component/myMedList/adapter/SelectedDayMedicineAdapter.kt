@@ -56,7 +56,6 @@ class SelectedDayMedicineAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        Log.e("catch_exception","medlisst: ${medListReminderList.size}")
         return medListReminderList.size
     }
 

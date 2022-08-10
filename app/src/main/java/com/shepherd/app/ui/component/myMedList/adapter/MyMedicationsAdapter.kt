@@ -91,7 +91,7 @@ class MyMedicationsAdapter(
     }
 
     fun addData(payload: ArrayList<Payload>) {
-        this.payload.clear()
+//        this.payload.clear()
         this.payload = payload
         notifyDataSetChanged()
     }
