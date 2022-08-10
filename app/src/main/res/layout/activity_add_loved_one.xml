@@ -498,7 +498,9 @@
                             android:layout_width="0dp"
                             android:layout_height="@dimen/_40sdp"
                             android:layout_weight="1"
-                            android:background="@color/transparent" />
+                            android:background="@color/transparent"
+                            android:dropDownWidth="match_parent"
+                            android:dropDownVerticalOffset="@dimen/_40sdp" />
 
                         <ImageView
                             android:id="@+id/spinner_down_arrow_image"
