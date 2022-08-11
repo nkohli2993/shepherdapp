@@ -1,5 +1,7 @@
 package com.shepherd.app.ui.component.newMessage
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,14 +9,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.databinding.FragmentNewMessageBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.newMessage.adapter.UsersAdapter
-import com.shepherd.app.utils.*
-import com.google.android.material.snackbar.Snackbar
+import com.shepherd.app.utils.SingleEvent
+import com.shepherd.app.utils.observe
+import com.shepherd.app.utils.setupSnackbar
+import com.shepherd.app.utils.showToast
+import com.shepherd.app.view_model.NewMessageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -28,6 +37,11 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     private val newMessageViewModel: NewMessageViewModel by viewModels()
 
     private lateinit var fragmentNewMessageBinding: FragmentNewMessageBinding
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    private var status: Int = 1
+    private var careTeams: ArrayList<CareTeamModel>? = ArrayList()
+    private var usersAdapter: UsersAdapter? = null
 
 
     override fun onCreateView(
@@ -43,7 +57,8 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
 
     override fun initViewBinding() {
         fragmentNewMessageBinding.listener = this
-
+        // Get Care Team Members
+        newMessageViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
         setUsersAdapter()
     }
 
@@ -51,6 +66,34 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         observe(newMessageViewModel.loginLiveData, ::handleLoginResult)
         observeSnackBarMessages(newMessageViewModel.showSnackBar)
         observeToast(newMessageViewModel.showToast)
+
+        newMessageViewModel.careTeamsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    careTeams?.clear()
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle("Care Teams")
+                        setMessage("No Care Team Found")
+                        setPositiveButton("OK") { _, _ ->
+                            // navigateToDashboardScreen()
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    careTeams = it.data.payload.data
+                    if (careTeams.isNullOrEmpty()) return@observeEvent
+                    usersAdapter?.addData(careTeams!!)
+                }
+            }
+        }
     }
 
 
@@ -76,7 +119,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
 
 
     private fun setUsersAdapter() {
-        val usersAdapter = UsersAdapter(newMessageViewModel)
+        usersAdapter = UsersAdapter(newMessageViewModel)
         fragmentNewMessageBinding.recyclerViewUsers.adapter = usersAdapter
 
     }
