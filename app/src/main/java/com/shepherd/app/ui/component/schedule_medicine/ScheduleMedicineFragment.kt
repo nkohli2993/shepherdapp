@@ -493,7 +493,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 }
                 timeAdapter!!.notifyDataSetChanged()
             }, hour,
-            minute, true
+            minute, false
         )
         mTimePicker.show()
     }

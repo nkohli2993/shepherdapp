@@ -64,7 +64,7 @@ class CarePointsDateBasedAdapter(
                 itemBinding.timeTV.text = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             }
             itemBinding.root.setOnClickListener {
-                listener.selectedCarePoint(carePointList[position].id!!)
+                listener.selectedCarePoint(carePointList[position])
             }
             itemBinding.view.visibility = View.VISIBLE
             if (position + 1 == carePointList.size) {
@@ -96,6 +96,6 @@ class CarePointsDateBasedAdapter(
     }
 
     interface OnCarePointSelected {
-        fun selectedCarePoint(id: Int)
+        fun selectedCarePoint(detail: AddedEventModel)
     }
 }

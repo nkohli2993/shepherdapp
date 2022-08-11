@@ -298,8 +298,8 @@
         android:label="@string/menu_care_point_detail"
         tools:layout="@layout/fragment_care_point_detail">
         <argument
-            android:name="source"
-            app:argType="integer" />
+            android:name="event_detail"
+            app:argType="com.shepherd.app.data.dto.added_events.AddedEventModel" />
     </fragment>
     <fragment
         android:id="@+id/nav_chat"

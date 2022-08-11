@@ -1,7 +1,10 @@
 package com.shepherd.app.data.dto.added_events
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class UserAssigneDetail(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: Int? = null,
@@ -17,4 +20,4 @@ data class UserAssigneDetail(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
-)
+):Parcelable

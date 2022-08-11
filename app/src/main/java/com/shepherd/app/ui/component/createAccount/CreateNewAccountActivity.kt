@@ -1,7 +1,13 @@
 package com.shepherd.app.ui.component.createAccount
 
+import android.Manifest.permission.*
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.app.Dialog
+import android.content.DialogInterface
+import android.content.pm.PackageManager
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
@@ -11,6 +17,8 @@ import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
 import com.shepherd.app.databinding.ActivityCreateNewAccountBinding
@@ -54,7 +62,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var TAG = "CreateNewAccountActivity"
-
+    private val PERMISSION_REQUEST_CODE = 200
 
     // Handle Validation
     private val isValid: Boolean
@@ -289,7 +297,12 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             }
             // Upload Profile Pic
             R.id.imgUploadProfilePic -> {
-                openImagePicker()
+                if (!checkPermission()) {
+                    requestPermission();
+                } else {
+                    openImagePicker()
+                }
+
             }
             // Create Account
             R.id.btnCreate -> {
@@ -319,7 +332,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         phoneNumber,
                         roleId
                     )
-
                 }
                 /*else {
                         showInfo(
@@ -375,5 +387,67 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         Prefs.with(this)!!.save(Const.SECOND_TIME_LOGIN, true)
         startActivityWithFinish<WelcomeUserActivity>()
     }
+
+/*    private fun checkPermission(): Boolean {
+        val readStorageresult =
+            ContextCompat.checkSelfPermission(applicationContext, READ_EXTERNAL_STORAGE)
+        val writeStorageresult =
+            ContextCompat.checkSelfPermission(applicationContext, WRITE_EXTERNAL_STORAGE)
+        val cameraResult = ContextCompat.checkSelfPermission(applicationContext, CAMERA)
+        return readStorageresult == PackageManager.PERMISSION_GRANTED && writeStorageresult == PackageManager.PERMISSION_GRANTED && cameraResult == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, CAMERA),
+            PERMISSION_REQUEST_CODE
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty()) {
+                val readAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                val writeAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
+                val cameraAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED
+                if (readAccepted && writeAccepted  && cameraAccepted)
+                    openImagePicker()
+                 else {
+                    showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)) {
+                            val builder = AlertDialog.Builder(this)
+                            val dialog = builder.apply {
+                                setMessage("You need to allow access to both the permissions")
+                                setPositiveButton("OK") { _, _ ->
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        requestPermissions(
+                                            arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, CAMERA),
+                                            PERMISSION_REQUEST_CODE
+                                        )
+                                    }
+
+                                }
+                                setNegativeButton("Cancel") { _, _ ->
+
+                                }
+                            }.create()
+                            dialog.show()
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                            return
+                        }
+                    }
+                }
+            }
+        }
+
+    }*/
 
 }

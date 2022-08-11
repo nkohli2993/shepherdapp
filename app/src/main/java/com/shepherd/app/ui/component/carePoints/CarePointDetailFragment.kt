@@ -40,6 +40,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     private var commentList: ArrayList<EventCommentUserDetailModel> = ArrayList()
     private val carePointsViewModel: CreatedCarePointsViewModel by viewModels()
     private var id: Int? = null
+    private var eventDetail: AddedEventModel? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
     override fun onCreateView(
@@ -54,10 +55,14 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     @SuppressLint("SimpleDateFormat", "ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentCarePointDetailBinding.listener = this
-        id = args.source
+        eventDetail = args.eventDetail
 
         setCommentAdapter()
-        carePointsViewModel.getCarePointsDetailId(id ?: 0)
+//        carePointsViewModel.getCarePointsDetailId(id ?: 0)
+        if (eventDetail != null) {
+            initCarePointDetailViews(eventDetail!!)
+        }
+
         carePointsViewModel.getCarePointsEventCommentsId(pageNumber, limit, id ?: 0)
         fragmentCarePointDetailBinding.tvNotes.setOnTouchListener { view, event ->
             view.parent.requestDisallowInterceptTouchEvent(true)
