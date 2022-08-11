@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
@@ -42,6 +44,9 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     private var status: Int = 1
     private var careTeams: ArrayList<CareTeamModel>? = ArrayList()
     private var usersAdapter: UsersAdapter? = null
+    var currentPage: Int = 0
+    var totalPage: Int = 0
+    var total: Int = 0
 
 
     override fun onCreateView(
@@ -89,6 +94,9 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     careTeams = it.data.payload.data
+                    total = it.data.payload.total!!
+                    currentPage = it.data.payload.currentPage!!
+                    totalPage = it.data.payload.totalPages!!
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     usersAdapter?.addData(careTeams!!)
                 }
@@ -121,7 +129,34 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     private fun setUsersAdapter() {
         usersAdapter = UsersAdapter(newMessageViewModel)
         fragmentNewMessageBinding.recyclerViewUsers.adapter = usersAdapter
+        handlePagination()
+    }
 
+    private fun handlePagination() {
+        var isScrolling = true
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisibleItems: Int
+        fragmentNewMessageBinding.recyclerViewUsers.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    isScrolling = true
+                    visibleItemCount = recyclerView.layoutManager!!.childCount
+                    totalItemCount = recyclerView.layoutManager!!.itemCount
+                    pastVisibleItems =
+                        (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    if (isScrolling && visibleItemCount + pastVisibleItems >= totalItemCount && (currentPage < totalPage)) {
+                        isScrolling = false
+                        currentPage++
+                        pageNumber++
+                        newMessageViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
+                    }
+                }
+            }
+        })
     }
 
 
@@ -141,6 +176,15 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         return R.layout.fragment_new_message
     }
 
+    override fun onResume() {
+        super.onResume()
+        resetPageNumber()
+        newMessageViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
+    }
+
+    private fun resetPageNumber() {
+        pageNumber = 1
+    }
 
 }
 
