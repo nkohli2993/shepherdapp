@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.newMessage.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.data.dto.care_team.CareTeamModel
@@ -53,6 +54,11 @@ class UsersAdapter(
 
         fun bind(careTeam: CareTeamModel, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = careTeam
+            if (careTeam.isSelected) {
+                itemBinding.cbReminder.visibility = View.VISIBLE
+            } else {
+                itemBinding.cbReminder.visibility = View.GONE
+            }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     careTeam
@@ -75,4 +81,10 @@ class UsersAdapter(
         notifyDataSetChanged()
     }
 
+    fun selectUnselect(isSelected: Boolean) {
+        this.careTeams.map {
+            it.isSelected = isSelected
+        }
+        notifyDataSetChanged()
+    }
 }

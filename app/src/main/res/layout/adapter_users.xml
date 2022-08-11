@@ -34,13 +34,10 @@
 
             <CheckBox
                 android:id="@+id/cbReminder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/checkbox_background"
                 android:button="@null"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +49,8 @@
                 android:layout_height="@dimen/_56sdp"
                 android:background="@drawable/bg_image_place_holder"
                 android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@+id/cbReminder"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.imageview.ShapeableImageView

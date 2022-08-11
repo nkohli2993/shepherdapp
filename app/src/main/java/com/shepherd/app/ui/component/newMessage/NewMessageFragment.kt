@@ -65,6 +65,11 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         // Get Care Team Members
         newMessageViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
         setUsersAdapter()
+
+        fragmentNewMessageBinding.chkDiscussion.setOnCheckedChangeListener { compoundButton, isChecked ->
+            usersAdapter?.selectUnselect(isChecked)
+        }
+
     }
 
     override fun observeViewModel() {
