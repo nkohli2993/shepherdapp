@@ -36,6 +36,11 @@ class NewMessageViewModel @Inject constructor(
     var careTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
         _careTeamsResponseLiveData
 
+    private var _searchCareTeamsResponseLiveData =
+        MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
+    var searchCareTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
+        _searchCareTeamsResponseLiveData
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
     val loginLiveData: LiveData<Resource<LoginResponseModel>> get() = loginLiveDataPrivate
@@ -69,6 +74,28 @@ class NewMessageViewModel @Inject constructor(
             }
         }
         return careTeamsResponseLiveData
+    }
+
+    fun searchCareTeamsByLovedOneId(
+        pageNumber: Int,
+        limit: Int,
+        status: Int,
+        search: String
+    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response =
+                lovedOneUUID?.let {
+                    careTeamsRepository.searchCareTeamsByLovedOneId(
+                        pageNumber, limit, status,
+                        it, search
+                    )
+                }
+            withContext(Dispatchers.Main) {
+                response?.collect { _searchCareTeamsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return searchCareTeamsResponseLiveData
     }
 
 

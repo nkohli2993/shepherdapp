@@ -3,6 +3,8 @@ package com.shepherd.app.ui.component.newMessage
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +72,26 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
             usersAdapter?.selectUnselect(isChecked)
         }
 
+        // Search
+        fragmentNewMessageBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (!s.isNullOrEmpty()) {
+                    newMessageViewModel.searchCareTeamsByLovedOneId(
+                        pageNumber,
+                        limit,
+                        status,
+                        s.toString()
+                    )
+                }
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
+
     }
 
     override fun observeViewModel() {
@@ -86,6 +108,37 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                     val dialog = builder.apply {
                         setTitle("Care Teams")
                         setMessage("No Care Team Found")
+                        setPositiveButton("OK") { _, _ ->
+                            // navigateToDashboardScreen()
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    careTeams = it.data.payload.data
+                    total = it.data.payload.total!!
+                    currentPage = it.data.payload.currentPage!!
+                    totalPage = it.data.payload.totalPages!!
+                    if (careTeams.isNullOrEmpty()) return@observeEvent
+                    usersAdapter?.addData(careTeams!!)
+                }
+            }
+        }
+
+        newMessageViewModel.searchCareTeamsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    careTeams?.clear()
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle("Users")
+                        setMessage("No Users Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()
                         }
@@ -168,7 +221,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.buttonSubmit -> {
-                findNavController().navigate(R.id.action_new_message_to_chat)
+//                findNavController().navigate(R.id.action_new_message_to_chat)
             }
             R.id.ivBack -> {
                 findNavController().popBackStack()

@@ -155,6 +155,15 @@ interface ApiService {
     ): Response<CareTeamsResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun searchCareTeamsByLovedOneId(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int,
+        @Query("loved_one_id") lovedOneUUID: String,
+        @Query("search") search: String,
+    ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
     suspend fun getMembers(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
