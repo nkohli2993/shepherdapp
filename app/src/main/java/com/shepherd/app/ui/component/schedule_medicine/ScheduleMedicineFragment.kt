@@ -36,6 +36,7 @@ import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddMedicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -205,6 +206,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             setDayAdapter()
             setTimeAdapter()
         }
+
+//        Log.e("catch_exception", getDates("2022-08-10", "2022-08-15").toString())
         setDoseAdapter()
     }
 
@@ -252,6 +255,11 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     }
 
     private fun setDayAdapter() {
+        Collections.sort(dayList,
+            Comparator<DayList?> { o1, o2 ->
+                if (o1.id == null || o2.id!! == null) 0 else o1.id!!
+                    .compareTo(o2.id!!)
+            })
         dayAdapter = DaysAdapter(medicationViewModel, requireContext(), dayList)
         fragmentScheduleMedicineBinding.daysRV.adapter = dayAdapter
     }
@@ -288,6 +296,29 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     }
 
     private fun addDays(isEdit: Boolean = false, dayId: String = "") {
+        //to get days according to date selected
+/*
+        if (fragmentScheduleMedicineBinding.endDate.text.isEmpty()) {
+            dayList.add(DayList(dayList.size + 1, "Monday", false))
+            dayList.add(DayList(dayList.size + 1, "Tuesday", false))
+            dayList.add(DayList(dayList.size + 1, "Wednesday", false))
+            dayList.add(DayList(dayList.size + 1, "Thursday", false))
+            dayList.add(DayList(dayList.size + 1, "Friday", false))
+            dayList.add(DayList(dayList.size + 1, "Saturday", false))
+            dayList.add(DayList(dayList.size + 1, "Sunday", false))
+        } else {
+            var dateFormat = SimpleDateFormat("dd-MM-yyyy")
+            val formattedDate: Date = dateFormat.parse(
+                fragmentScheduleMedicineBinding.endDate.text.toString().trim()
+            )!!
+            dateFormat = SimpleDateFormat("yyyy-MM-dd")
+            dayList = getDates(
+                SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
+                dateFormat.format(formattedDate)
+            )
+        }
+*/
+
         dayList.add(DayList(dayList.size + 1, "Monday", false))
         dayList.add(DayList(dayList.size + 1, "Tuesday", false))
         dayList.add(DayList(dayList.size + 1, "Wednesday", false))
@@ -382,15 +413,17 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         fragmentScheduleMedicineBinding.endDate.text =
                             "${
                                 if (dayOfMonth + 1 < 10) {
-                                    "0${(dayOfMonth + 1)}"
+                                    "0$dayOfMonth}"
                                 } else {
-                                    (dayOfMonth + 1)
+                                    dayOfMonth
                                 }
                             }" + "-" + if (monthOfYear + 1 < 10) {
                                 "0${(monthOfYear + 1)}"
                             } else {
                                 (monthOfYear + 1)
                             } + "-" + year
+                        addDays()
+                        setDayAdapter()
                     }, mYear, mMonth, mDay
                 )
                 datePickerDialog.datePicker.minDate = c.timeInMillis
@@ -573,7 +606,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.frequencyRV.visibility = View.VISIBLE
             rotate(180f, fragmentScheduleMedicineBinding.frequencyIM)
         }
-        //if keyboard open
         hideKeyboard(fragmentScheduleMedicineBinding.scrollView)
     }
 
@@ -585,7 +617,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.daysRV.visibility = View.VISIBLE
             rotate(180f, fragmentScheduleMedicineBinding.dayIM)
         }
-        //if keyboard open
         hideKeyboard(fragmentScheduleMedicineBinding.scrollView)
     }
 
@@ -603,8 +634,42 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.doseRV.visibility = View.VISIBLE
             rotate(180f, fragmentScheduleMedicineBinding.doseIM)
         }
-        //if keyboard open
+
         hideKeyboard(fragmentScheduleMedicineBinding.scrollView)
+    }
+
+    private fun getDates(dateString1: String, dateString2: String): ArrayList<DayList> {
+        val dates = ArrayList<DayList>()
+        val df1: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+        var date1: Date? = null
+        var date2: Date? = null
+        try {
+            date1 = df1.parse(dateString1)
+            date2 = df1.parse(dateString2)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        val cal1 = Calendar.getInstance()
+        cal1.time = date1
+        val cal2 = Calendar.getInstance()
+        cal2.time = date2
+        while (!cal1.after(cal2)) {
+            val id = when (SimpleDateFormat("EEE").format(cal1.time)) {
+                "Mon" -> "1"
+                "Tue" -> "2"
+                "Wed" -> "3"
+                "Thu" -> "4"
+                "Fri" -> "5"
+                "Sat" -> "6"
+                else -> "7"
+            }
+           /* if(!dates.contains(SimpleDateFormat("EEEE").format(cal1.time))){
+                dates.add(DayList(id.toInt(), SimpleDateFormat("EEEE").format(cal1.time), false))
+            }*/
+
+            cal1.add(Calendar.DATE, 1)
+        }
+        return dates
     }
 
 }
