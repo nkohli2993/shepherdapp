@@ -24,6 +24,7 @@ import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.CreatedCarePointsViewModel
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
+import com.shepherd.app.data.dto.added_events.AddedEventModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -181,7 +182,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     }
 
     override fun observeViewModel() {
-        observe(carePointsViewModel.openMemberDetails, ::openCarePointDetails)
+//        observe(carePointsViewModel.openMemberDetails, ::openCarePointDetails)
         carePointsViewModel.carePointsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -219,11 +220,13 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
     private fun openCarePointDetails(navigateEvent: SingleEvent<Int>) {
         navigateEvent.getContentIfNotHandled()?.let {
+/*
             findNavController().navigate(
                 CarePointsFragmentDirections.actionCarePointsToDetailFragment(
                     it
                 )
             )
+*/
         }
     }
 
@@ -399,11 +402,11 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         )
     }
 
-    override fun onEventSelected(id: Int) {
+    override fun onEventSelected(detail: AddedEventModel) {
         //open event detail page
         findNavController().navigate(
             CarePointsFragmentDirections.actionCarePointsToDetailFragment(
-                id
+                detail
             )
         )
     }

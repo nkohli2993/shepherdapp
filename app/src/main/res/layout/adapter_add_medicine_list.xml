@@ -11,43 +11,35 @@
     </data>
 
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:background="@color/colorWhite"
-        app:cardCornerRadius="@dimen/_8sdp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
+        android:background="@drawable/background_white_round_med"
+        android:elevation="@dimen/_1sdp"
+        android:paddingVertical="@dimen/_12sdp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/cbReminder"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/_10sdp">
-            <!--android:button="@drawable/checkbox_selector"-->
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/cbReminder"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:clickable="false"
-                android:fontFamily="@font/gotham_medium"
-                android:gravity="start"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:text="@{data.name}"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginHorizontal="@dimen/_8sdp"
+            android:button="@drawable/checkbox_selector"
+            android:clickable="false"
+            android:fontFamily="@font/gotham_medium"
+            android:gravity="center_vertical"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:text="@{data.name}"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

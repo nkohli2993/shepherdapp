@@ -125,12 +125,12 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     override fun onItemClick(careTeam: CareTeamModel,type:String) {
         when(type){
             "Medical"->{
-                val intent = Intent(requireContext(), AddLovedOneConditionActivity::class.java)
-                intent.putExtra("source",Const.MEDICAL_CONDITION)
-                intent.putExtra("love_one_id",careTeam.love_user_id)
-                intent.putExtra("care_conditions",careTeam.careConditions)
-                startActivity(intent)
-                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+//                val intent = Intent(requireContext(), AddLovedOneConditionActivity::class.java)
+//                intent.putExtra("source",Const.MEDICAL_CONDITION)
+//                intent.putExtra("love_one_id",careTeam.love_user_id)
+//                intent.putExtra("care_conditions",careTeam.careConditions)
+//                startActivity(intent)
+//                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
             else->{
                 selectedCare = careTeam

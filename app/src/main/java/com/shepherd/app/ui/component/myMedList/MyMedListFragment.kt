@@ -54,6 +54,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
     private var dayId = ""
+    private var selectedDate = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -107,6 +108,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 super.whenSelectionChanged(isSelected, position, date)
                 // check day id based on date id
                 val day = SimpleDateFormat("EEE").format(date)
+                selectedDate =  SimpleDateFormat("yyyy-MM-dd").format(date)
                 dayId = when (day) {
                     "Mon" -> "1"
                     "Tue" -> "2"
@@ -146,7 +148,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     }
 
-    @SuppressLint("NotifyDataSetChanged")
+    @SuppressLint("NotifyDataSetChanged", "SimpleDateFormat")
     override fun observeViewModel() {
         observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
         observeEvent(medListViewModel.medDetailItems, ::selectedMedication)
@@ -201,10 +203,13 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
                     myMedlistBinding.txtMedication.visibility = View.GONE
                     // check day for payload data
+                    val currentDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
                     val data = it.data.payload
                     for (i in data) {
                         if (i.days!!.contains(dayId)) {
-                            payload.add(i)
+                            if(i.endDate!=null && (SimpleDateFormat("yyyy-MM-dd").parse(i.endDate!!)!! == currentDate ||SimpleDateFormat("yyyy-MM-dd").parse(i.endDate!!)!!.after(currentDate))) {
+                                payload.add(i)
+                            }
                         }
                     }
                     if (payload.size <= 0) {
@@ -279,11 +284,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    /* it.data.message?.let { it1 ->
-                         showSuccess(
-                             requireContext(), it1
-                         )
-                     }*/
                     showSuccess(requireContext(), "Medication Record Added Successfully...")
                 }
             }
@@ -313,7 +313,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         setTitle("Delete Medication Schedule")
                         setMessage("Sure you want to delete this medication schedule")
                         setPositiveButton("Yes") { _, _ ->
-//                            deletePostion = it.medlist!!.deletePosition!!
                             deletePosition = it.id!!
                             medListViewModel.deletedSceduledMedication(it.id!!)
                         }

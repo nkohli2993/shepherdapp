@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -28,6 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/gotham_bold"
+            android:lineSpacingMultiplier="0.7"
+            android:paddingVertical="@dimen/_4sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,6 +61,7 @@
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvShare"
                 android:layout_width="wrap_content"
@@ -67,10 +70,10 @@
                 android:fontFamily="@font/gotham_medium"
                 android:paddingHorizontal="@dimen/_12sdp"
                 android:paddingVertical="@dimen/_5sdp"
-                android:visibility="gone"
                 android:text="@string/send"
                 android:textColor="@color/_A26DCB"
                 android:textSize="@dimen/_15ssp"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -129,4 +132,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include layout="@layout/content_dashboard" />
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

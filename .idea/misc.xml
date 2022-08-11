@@ -120,6 +120,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/backgroun_green_choose.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_white_round_corner.xml" value="0.177" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_white_round_corner_less.xml" value="0.177" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_white_round_med.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_defalut_profile_pic.xml" value="0.168" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_pdf.xml" value="0.177" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/rounded_box_green.xml" value="0.159" />
@@ -147,6 +148,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_restriction_modules.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_uploaded_files.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/app_bar_dashboard.xml" value="0.2518518518518518" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/calendar_item.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/content_dashboard.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/dialog_choose_lockbox_file.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_medication_details.xml" value="0.2609375" />
@@ -172,6 +174,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/layout_add_medicine_list.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/layout_add_time.xml" value="0.2598958333333333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/rv_love_ones.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.67" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/menu/details_menu.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/menu/options_menu.xml" value="1.0525210084033614" />
         <entry key="app/src/main/res/drawable-v24/rounded_box_12.xml" value="0.255" />

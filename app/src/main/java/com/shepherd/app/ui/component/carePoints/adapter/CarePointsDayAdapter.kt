@@ -88,11 +88,11 @@ class CarePointsDayAdapter(
         notifyDataSetChanged()
     }
 
-    override fun selectedCarePoint(id: Int) {
-        listener.onEventSelected(id)
+    override fun selectedCarePoint(detail: AddedEventModel) {
+        listener.onEventSelected(detail)
     }
 
     interface  EventSelected{
-        fun onEventSelected(id:Int)
+        fun onEventSelected(detail: AddedEventModel)
     }
 }

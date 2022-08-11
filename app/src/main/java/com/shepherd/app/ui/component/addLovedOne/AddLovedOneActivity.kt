@@ -392,7 +392,13 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.imageViewLovedOne -> {
-                openImagePicker()
+                if (!checkPermission()) {
+                    requestPermission();
+                } else {
+                    openImagePicker()
+                }
+
+//                openImagePicker()
             }
             R.id.edtDay -> {
                 initDatePicker()

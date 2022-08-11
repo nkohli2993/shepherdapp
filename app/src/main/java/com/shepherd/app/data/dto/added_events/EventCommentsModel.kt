@@ -1,7 +1,10 @@
 package com.shepherd.app.data.dto.added_events
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class EventCommentsModel(
     @SerializedName("user_id") var user_id: String? = null,
     @SerializedName("event_id") var event_id: String? = null,
@@ -10,4 +13,4 @@ data class EventCommentsModel(
     @SerializedName("updated_at") var updated_at: String? = null,
     @SerializedName("deleted_at") var deleted_at: String? = null,
     @SerializedName("user_image") var user_image: String? = null,
-)
+):Parcelable

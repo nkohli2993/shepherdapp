@@ -182,6 +182,7 @@
                         android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="@dimen/_5sdp"
                         android:singleLine="true"
+                        android:inputType="textEmailAddress"
                         android:hint="@string/enter_your_email"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:text="@={viewModel.signUpData.email}"

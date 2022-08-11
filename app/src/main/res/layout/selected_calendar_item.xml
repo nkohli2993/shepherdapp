@@ -1,33 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cl_calendar_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="2dp"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:paddingHorizontal="@dimen/_7sdp"
+    android:paddingVertical="@dimen/_8sdp">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_day_calendar_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/gotham_book"
         android:textColor="@color/_192032"
-        android:textSize="14sp" />
+        android:textSize="@dimen/_14sdp" />
 
-    <TextView
-        android:layout_marginTop="5dp"
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_date_calendar_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
         android:background="@drawable/selected_calendar_item_background"
         android:fontFamily="@font/gotham_medium"
         android:gravity="center"
-        android:padding="5dp"
-        android:textColor="@android:color/white"
-        android:textSize="20sp" />
+        android:text="11"
+        android:minWidth="@dimen/_30sdp"
+        android:paddingHorizontal="@dimen/_6sdp"
+        android:paddingVertical="@dimen/_6sdp"
+         android:textColor="@android:color/white"
+        android:textSize="@dimen/_15sdp" />
 
 
-</LinearLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>

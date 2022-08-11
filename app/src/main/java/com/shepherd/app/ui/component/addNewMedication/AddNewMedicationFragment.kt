@@ -67,7 +67,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         addMedicationViewModel.getAllMedLists(pageNumber, limit)
 
         setMedicineListAdapter()
-        fragmentAddNewMedicationBinding.llSearch.visibility = View.GONE
+        fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
         // Search med list
         fragmentAddNewMedicationBinding.imgCancel.setOnClickListener {
             fragmentAddNewMedicationBinding.editTextSearch.setText("")
@@ -86,15 +86,15 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (s.toString().isEmpty()) {
-                   /* fragmentAddNewMedicationBinding.llSearch.visibility = View.GONE
-                    pageNumber = 1
-                    isSearch = false
-                    searchFlag = false
-                    medLists.clear()
-                    addMedicationViewModel.getAllMedLists(pageNumber, limit)*/
+                     fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
+                     pageNumber = 1
+                     isSearch = false
+                     searchFlag = false
+                     medLists.clear()
+                     addMedicationViewModel.getAllMedLists(pageNumber, limit)
                 } else {
                     searchFlag = true
-                    fragmentAddNewMedicationBinding.llSearch.visibility = View.VISIBLE
+                    fragmentAddNewMedicationBinding.imgCancel.visibility = View.VISIBLE
                     //Hit search api
                     addMedicationViewModel.searchMedList(
                         pageNumber,
@@ -134,8 +134,23 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         totalPage = payload.totalPages!!
                     }
 
-                    if (medLists.isNullOrEmpty()) return@observeEvent
-                    addMedicineListAdapter?.addData(medLists, isSearch)
+                    if (medLists.isEmpty()) return@observeEvent
+
+                    if (medLists.isEmpty()) {
+                        fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility = View.GONE
+                        fragmentAddNewMedicationBinding.txtNoMedFound.visibility =
+                            View.VISIBLE
+                    } else {
+                        fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility =
+                            View.VISIBLE
+                        fragmentAddNewMedicationBinding.txtNoMedFound.visibility = View.GONE
+                        medLists.let { it1 ->
+                            addMedicineListAdapter?.addData(
+                                it1,
+                                true
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -145,7 +160,6 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    Log.d(TAG, "Get Uploaded LockBox :${it.message} ")
                     // If searched string is not available in the database , it returns 404
                     fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility = View.GONE
                     fragmentAddNewMedicationBinding.txtNoMedFound.visibility =
@@ -165,7 +179,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         currentPage = payload.currentPage!!
                         totalPage = payload.totalPages!!
                     }
-                    if (medLists.isNullOrEmpty()) {
+                    if (medLists.isEmpty()) {
                         fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility = View.GONE
                         fragmentAddNewMedicationBinding.txtNoMedFound.visibility =
                             View.VISIBLE

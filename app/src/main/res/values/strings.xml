@@ -318,7 +318,7 @@
     <string name="create_and_join_conversations_among_careteam_members">Create and join conversations among CareTeam members.</string>
     <string name="create_care_team">Create a supportive care team of family, friends and professionals.</string>
     <string name="home">Home</string>
-    <string name="medlist_reminder">MedList Reminder</string>
+    <string name="medlist_reminder">MedList\n\nReminder</string>
     <string name="my_profile">My Profile</string>
     <string name="no_care_team_found">No Care Team Found</string>
     <string name="discover_health_and_well_being_resources_for_caregivers_and_loved_ones">Discover health and well-being resources for caregivers and loved ones.</string>
