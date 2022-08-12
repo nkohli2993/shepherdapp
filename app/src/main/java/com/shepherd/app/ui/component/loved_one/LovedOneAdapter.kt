@@ -31,7 +31,7 @@ class LovedOneAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(careTeam: CareTeamModel,type:String)
+        fun onItemClick(careTeam: CareTeamModel, type: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -62,7 +62,8 @@ class LovedOneAdapter(
             if (careTeam == null) return
             careTeam.let {
                 // Set full name
-                val fullName = it.love_user_id_details.firstname + " " + it.love_user_id_details.lastname
+                val fullName =
+                    it.love_user_id_details.firstname + " " + it.love_user_id_details.lastname
                 itemBinding.textViewCareTeamName.text = fullName
 
                 //Set Image
@@ -76,7 +77,8 @@ class LovedOneAdapter(
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
-                itemBinding.checkbox.isChecked = lovedOneIDInPrefs.equals(it.love_user_id_details.uid)
+                itemBinding.checkbox.isChecked =
+                    lovedOneIDInPrefs.equals(it.love_user_id_details.uid)
 
                 if (lovedOneIDInPrefs.equals(it.love_user_id_details.uid)) {
                     dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
@@ -89,7 +91,7 @@ class LovedOneAdapter(
                 }
             }
             itemBinding.viewMedicalTV.setOnClickListener {
-                onItemClickListener?.onItemClick(careTeam,"Medical")
+                onItemClickListener?.onItemClick(careTeam, "Medical")
             }
 
             itemBinding.checkbox.setOnClickListener {
@@ -98,7 +100,7 @@ class LovedOneAdapter(
                 dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
                 lastSelectedPosition = bindingAdapterPosition
                 itemBinding.checkbox.isChecked = true
-                onItemClickListener?.onItemClick(careTeam,"Detail")
+                onItemClickListener?.onItemClick(careTeam, "Detail")
             }
 
         }

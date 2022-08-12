@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
-import com.shepherd.app.data.dto.care_team.CareTeam
 import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.FragmentLovedOnesBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -46,7 +45,6 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
         fragmentLovedOnesBinding =
             FragmentLovedOnesBinding.inflate(inflater, container, false)
 
-        // Get care Teams for loggedIn User
 
 
         return fragmentLovedOnesBinding.root
@@ -54,6 +52,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
 
     override fun onResume() {
         super.onResume()
+        // Get care Teams for loggedIn User
         lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
     }
 
@@ -122,17 +121,20 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
         }
     }
 
-    override fun onItemClick(careTeam: CareTeamModel,type:String) {
-        when(type){
-            "Medical"->{
-//                val intent = Intent(requireContext(), AddLovedOneConditionActivity::class.java)
-//                intent.putExtra("source",Const.MEDICAL_CONDITION)
-//                intent.putExtra("love_one_id",careTeam.love_user_id)
-//                intent.putExtra("care_conditions",careTeam.careConditions)
-//                startActivity(intent)
-//                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    override fun onItemClick(careTeam: CareTeamModel, type: String) {
+        when (type) {
+            "Medical" -> {
+                val intent = Intent(requireContext(), AddLovedOneConditionActivity::class.java)
+                intent.putExtra("source", Const.MEDICAL_CONDITION)
+                intent.putExtra("love_one_id", careTeam.love_user_id)
+                intent.putExtra("care_conditions", careTeam.careConditions)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
             }
-            else->{
+            else -> {
                 selectedCare = careTeam
             }
         }

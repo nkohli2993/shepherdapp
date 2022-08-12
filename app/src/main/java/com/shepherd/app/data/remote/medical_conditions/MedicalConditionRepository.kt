@@ -3,6 +3,7 @@ package com.shepherd.app.data.remote.medical_conditions
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
+import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.NetworkOnlineDataRepo
@@ -32,6 +33,16 @@ class MedicalConditionRepository @Inject constructor(private val apiService: Api
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    // Get Loved One's Medical Conditions
+    suspend fun getLovedOneMedicalConditions(lovedOneUUID: String): Flow<DataResult<GetLovedOneMedicalConditionsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<GetLovedOneMedicalConditionsResponseModel, GetLovedOneMedicalConditionsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetLovedOneMedicalConditionsResponseModel> {
+                return apiService.getLovedOneMedicalConditions(lovedOneUUID)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 
     // Create Bulk One Medical Conditions
     suspend fun createMedicalConditions(conditions: ArrayList<MedicalConditionsLovedOneRequestModel>): Flow<DataResult<UserConditionsResponseModel>> {
@@ -42,6 +53,7 @@ class MedicalConditionRepository @Inject constructor(private val apiService: Api
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
     // edit Medical Conditions for loved one id based
     suspend fun editMedicalConditions(conditions: ArrayList<MedicalConditionsLovedOneRequestModel>): Flow<DataResult<UserConditionsResponseModel>> {
         return object :

@@ -33,6 +33,7 @@ import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResp
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
+import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.dto.relation.RelationResponseModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
 import com.shepherd.app.data.dto.signup.BioMetricData
@@ -86,6 +87,11 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int
     ): Response<MedicalConditionResponseModel>
+
+    @GET(ApiConstants.MedicalConditions.GET_LOVED_ONE_MEDICAL_CONDITION)
+    suspend fun getLovedOneMedicalConditions(
+        @Path("id") id: String
+    ): Response<GetLovedOneMedicalConditionsResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAM_ROLES)
     suspend fun getCareTeamRoles(
