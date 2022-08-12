@@ -70,7 +70,11 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
 
-        binding.imgCancel.setOnClickListener { binding.editTextSearch.setText("") }
+        binding.imgCancel.setOnClickListener {
+            binding.editTextSearch.setText("")
+            binding.txtNoResultFound.visibility = View.GONE
+            binding.recyclerViewCondition.visibility = View.VISIBLE
+        }
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
@@ -82,6 +86,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     if (s.isEmpty()) {
                         conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                         binding.imgCancel.visibility = View.GONE
+
                     }
                     if (s.isNotEmpty()) {
                         binding.imgCancel.visibility = View.VISIBLE
@@ -90,6 +95,10 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             if (it.name?.startsWith(s, true) == true) {
                                 searchedConditions?.add(it)
                             }
+                        }
+                        if (searchedConditions.isNullOrEmpty()) {
+                            binding.txtNoResultFound.visibility = View.VISIBLE
+                            binding.recyclerViewCondition.visibility = View.GONE
                         }
                         searchedConditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                     }
