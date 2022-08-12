@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.R
+import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.Resource
 import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
@@ -23,10 +24,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.newMessage.adapter.UsersAdapter
-import com.shepherd.app.utils.SingleEvent
-import com.shepherd.app.utils.observe
-import com.shepherd.app.utils.setupSnackbar
-import com.shepherd.app.utils.showToast
+import com.shepherd.app.utils.*
 import com.shepherd.app.view_model.NewMessageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -125,7 +123,14 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                     currentPage = it.data.payload.currentPage!!
                     totalPage = it.data.payload.totalPages!!
                     if (careTeams.isNullOrEmpty()) return@observeEvent
-                    usersAdapter?.addData(careTeams!!)
+                    // Get the UUID of loggedIn User
+                    val loggedInUserUUID =
+                        Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+                    // User list should not contain loggedIn User
+                    val careTeamList = careTeams?.filterNot { careTeamModel ->
+                        careTeamModel.user_id_details.uid == loggedInUserUUID
+                    } as ArrayList
+                    usersAdapter?.addData(careTeamList)
                 }
             }
         }
@@ -156,7 +161,13 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                     currentPage = it.data.payload.currentPage!!
                     totalPage = it.data.payload.totalPages!!
                     if (careTeams.isNullOrEmpty()) return@observeEvent
-                    usersAdapter?.addData(careTeams!!)
+                    val loggedInUserUUID =
+                        Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+                    // User list should not contain loggedIn User
+                    val careTeamList = careTeams?.filterNot { careTeamModel ->
+                        careTeamModel.user_id_details.uid == loggedInUserUUID
+                    } as ArrayList
+                    usersAdapter?.addData(careTeamList)
                 }
             }
         }
