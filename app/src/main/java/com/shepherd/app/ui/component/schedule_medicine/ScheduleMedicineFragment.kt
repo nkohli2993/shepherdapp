@@ -141,7 +141,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             selectedMedList = args.medlist
             fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
         }
-
+        frequencyId = FrequencyType.ONCE.value.toInt()
         if (args.medicationScheduled != null) {
             // set medicine name based on selected medicine from med list
             addedMedication = args.medicationScheduled
@@ -312,6 +312,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
     private fun addDays(isEdit: Boolean = false, dayId: String = "") {
         //to get days according to date selected
+        fragmentScheduleMedicineBinding.daysTV.text = ""
         if (fragmentScheduleMedicineBinding.endDate.text.isEmpty()) {
             addWeekDays()
         } else {
