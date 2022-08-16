@@ -1,11 +1,13 @@
 package com.shepherd.app.ui.component.chat
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
 import com.shepherd.app.data.dto.login.LoginResponseModel
@@ -24,8 +26,11 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
     View.OnClickListener {
 
     private val chatViewModel: ChatViewModel by viewModels()
+    private val args: ChatFragmentArgs by navArgs()
+
 
     private lateinit var fragmentChatBinding: FragmentChatBinding
+    private val TAG = "ChatFragment"
 
 
     override fun onCreateView(
@@ -41,9 +46,13 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
 
     override fun initViewBinding() {
         fragmentChatBinding.listener = this
+        val source = args.source
+        Log.d(TAG, "Source : $source ")
+        val chatModel = args.chatModel
+        Log.d(TAG, "Chat Model : $chatModel ")
 
+        fragmentChatBinding.data = chatModel
         setChatAdapter()
-
     }
 
     override fun observeViewModel() {
