@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
+import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.remote.medical_conditions.MedicalConditionRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
@@ -30,6 +31,11 @@ class AddLovedOneConditionViewModel @Inject constructor(
     var medicalConditionResponseLiveData: LiveData<Event<DataResult<MedicalConditionResponseModel>>> =
         _medicalConditionResponseLiveData
 
+    private var _lovedOneMedicalConditionResponseLiveData =
+        MutableLiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>>()
+    var lovedOneMedicalConditionResponseLiveData: LiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>> =
+        _lovedOneMedicalConditionResponseLiveData
+
     private var _userConditionsResponseLiveData =
         MutableLiveData<Event<DataResult<UserConditionsResponseModel>>>()
     var userConditionsResponseLiveData: LiveData<Event<DataResult<UserConditionsResponseModel>>> =
@@ -51,6 +57,19 @@ class AddLovedOneConditionViewModel @Inject constructor(
             }
         }
         return medicalConditionResponseLiveData
+    }
+
+    // Get Loved One's Medical Conditions
+    fun getLovedOneMedicalConditions(lovedOneUUID: String): LiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>> {
+        viewModelScope.launch {
+            val response = medicalConditionRepository.getLovedOneMedicalConditions(lovedOneUUID)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _lovedOneMedicalConditionResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return lovedOneMedicalConditionResponseLiveData
     }
 
 

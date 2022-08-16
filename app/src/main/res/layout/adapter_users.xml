@@ -4,6 +4,13 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.shepherd.app.data.dto.care_team.CareTeamModel" />
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
 
     </data>
 
@@ -22,17 +29,15 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:paddingVertical="@dimen/_10sdp">
 
             <CheckBox
                 android:id="@+id/cbReminder"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:background="@drawable/checkbox_background"
                 android:button="@null"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,11 +45,12 @@
 
             <LinearLayout
                 android:id="@+id/llImageWrapper"
-                android:layout_width="@dimen/_58sdp"
-                android:layout_height="@dimen/_58sdp"
+                android:layout_width="@dimen/_56sdp"
+                android:layout_height="@dimen/_56sdp"
                 android:background="@drawable/bg_image_place_holder"
                 android:orientation="vertical"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="10dp"
+                app:layout_constraintStart_toEndOf="@+id/cbReminder"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -55,6 +61,7 @@
                     android:padding="@dimen/_2sdp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_defalut_profile_pic"
+                    app:imageUrl="@{data.user_id_details.profilePhoto}"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
             </LinearLayout>
 
@@ -75,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
                 android:fontFamily="@font/gotham_medium"
-                android:text="Mary Tyler"
+                android:text="@{data.user_id_details.firstname.concat(` `).concat(data.user_id_details.firstname)}"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -33,7 +33,7 @@ import com.shepherd.app.ui.component.schedule_medicine.adapter.TimeAdapter
 import com.shepherd.app.utils.FrequencyType
 import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
-import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddMedicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -119,12 +119,13 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    showInfo(
+                    hideLoading()
+                    showSuccess(
                         requireContext(),
                         getString(R.string.scheduled_medication_created_successfully)
                     )
-                    hideLoading()
-                    backPress()
+                    // Redirect to MedList reminder Screen
+                    findNavController().navigate(R.id.action_nav_schedule_medication_to_nav_my_medlist)
                 }
             }
         }

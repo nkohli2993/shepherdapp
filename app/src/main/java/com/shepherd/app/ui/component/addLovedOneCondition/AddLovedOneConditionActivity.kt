@@ -3,6 +3,8 @@ package com.shepherd.app.ui.component.addLovedOneCondition
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -52,18 +54,27 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-        //check if intent has loved used id
+        // Get Medical conditions
+        addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
+        //check if intent has loved used uuid
         if (intent.hasExtra("love_one_id")) {
             loveOneId = intent.getStringExtra("love_one_id")
+            Log.d(TAG, "LovedOneUUID: $lovedOneID")
             careConditions = intent.getParcelableArrayListExtra("care_conditions")
+            //Get loved one's medical conditions
+            Handler(Looper.getMainLooper()).postDelayed({
+                loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
+            }, 1000)
+//            loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
         }
 
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
 
-        // Get Medical conditions
-        addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
-
-        binding.imgCancel.setOnClickListener { binding.editTextSearch.setText("") }
+        binding.imgCancel.setOnClickListener {
+            binding.editTextSearch.setText("")
+            binding.txtNoResultFound.visibility = View.GONE
+            binding.recyclerViewCondition.visibility = View.VISIBLE
+        }
 
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
@@ -75,6 +86,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     if (s.isEmpty()) {
                         conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                         binding.imgCancel.visibility = View.GONE
+
                     }
                     if (s.isNotEmpty()) {
                         binding.imgCancel.visibility = View.VISIBLE
@@ -83,6 +95,10 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             if (it.name?.startsWith(s, true) == true) {
                                 searchedConditions?.add(it)
                             }
+                        }
+                        if (searchedConditions.isNullOrEmpty()) {
+                            binding.txtNoResultFound.visibility = View.VISIBLE
+                            binding.recyclerViewCondition.visibility = View.GONE
                         }
                         searchedConditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                     }
@@ -99,6 +115,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun observeViewModel() {
+        //Observe the response of get all medical conditions api
         addLovedOneConditionViewModel.medicalConditionResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -124,6 +141,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     }
                     addLovedOneConditionAdapter?.setClickListener(this)
                     binding.recyclerViewCondition.adapter = addLovedOneConditionAdapter
+
                 }
 
                 is DataResult.Failure -> {
@@ -133,8 +151,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
-
-
+        //Observe the response of adding loved one's medical conditions api
         addLovedOneConditionViewModel.userConditionsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -161,7 +178,45 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
                 }
             }
+        }
+        //Observe the response of get loved one's medical conditions api
+        addLovedOneConditionViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val payLoad = it.data.payload
+                    val conditionIDs = payLoad.map {
+                        it.conditions?.id
+                    }
+                    Log.d(TAG, "condition ids :$conditionIDs")
+                    Log.d(TAG, "conditions :$conditions ")
+                    for (i in conditions?.indices!!) {
+                        for (j in conditionIDs.indices) {
+                            if (conditions!![i].id == conditionIDs[j]) {
+                                conditions!![i].isSelected = true
+                            }
+                        }
+                    }
 
+
+                    /* if (!conditions.isNullOrEmpty()) {
+                         conditions?.forEach { condition ->
+                             for (i in conditionIDs.indices) {
+                                 condition.isSelected = condition.id == conditionIDs[i]
+                             }
+                         }
+                     }*/
+                    Log.d(TAG, "conditions updated :$conditions ")
+                    conditions?.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
+                }
+            }
         }
 
     }
@@ -191,7 +246,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         }, lovedOneUUID))
                     }
                 }
-
                 Log.d(
                     TAG,
                     "Size of selected medical conditions array :${medicalConditionsLovedOneArray.size} "
@@ -209,8 +263,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             )
                         }
                     }
-
-
                 } else {
                     showError(this, "Please select at least once medical condition...")
                 }

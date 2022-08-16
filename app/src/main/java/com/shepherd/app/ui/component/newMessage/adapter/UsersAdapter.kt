@@ -2,17 +2,18 @@ package com.shepherd.app.ui.component.newMessage.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.dashboard.DashboardModel
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.databinding.AdapterUsersBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.ui.component.newMessage.NewMessageViewModel
+import com.shepherd.app.view_model.NewMessageViewModel
 
 
 class UsersAdapter(
     private val viewModel: NewMessageViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    var careTeams: MutableList<CareTeamModel> = ArrayList()
 ) :
     RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
     lateinit var binding: AdapterUsersBinding
@@ -21,7 +22,7 @@ class UsersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+            viewModel.opnChat(itemData[0] as CareTeamModel)
         }
     }
 
@@ -40,23 +41,27 @@ class UsersAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return 12
+        return careTeams.size
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(careTeams[position], onItemClickListener)
     }
 
 
     class UsersViewHolder(private val itemBinding: AdapterUsersBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
-            // itemBinding.data = dashboard
+        fun bind(careTeam: CareTeamModel, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.data = careTeam
+            if (careTeam.isSelected) {
+                itemBinding.cbReminder.visibility = View.VISIBLE
+            } else {
+                itemBinding.cbReminder.visibility = View.GONE
+            }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    dashboard
+                    careTeam
                 )
             }
         }
@@ -71,10 +76,15 @@ class UsersAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+    fun addData(careTeams: ArrayList<CareTeamModel>) {
+        this.careTeams = careTeams
         notifyDataSetChanged()
     }
 
+    fun selectUnselect(isSelected: Boolean) {
+        this.careTeams.map {
+            it.isSelected = isSelected
+        }
+        notifyDataSetChanged()
+    }
 }

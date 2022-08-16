@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.addLovedOneCondition.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -15,6 +16,7 @@ class AddLovedOneConditionAdapter(
     var conditionList: MutableList<Conditions> = ArrayList()
 ) :
     RecyclerView.Adapter<AddLovedOneConditionAdapter.ContentViewHolder>() {
+    private val TAG = "AddLovedOneConAdapter"
     lateinit var binding: AdapterAddLovedOneConditionBinding
 
     private var onItemClickListener: ItemSelectedListener? = null
@@ -25,6 +27,7 @@ class AddLovedOneConditionAdapter(
 
     fun updateConditions(conditions: ArrayList<Conditions>) {
         conditionList = conditions
+        Log.d(TAG, "updateConditions:$conditionList ")
         notifyDataSetChanged()
     }
 
@@ -57,6 +60,7 @@ class AddLovedOneConditionAdapter(
 
         fun bind(conditions: Conditions) {
             itemBinding.data = conditions
+//            binding.checkbox.isChecked = conditions.isSelected
             binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
                 conditions.isSelected = isChecked
                 onItemClickListener?.itemSelected(conditions)

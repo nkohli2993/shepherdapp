@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
 import com.shepherd.app.data.dto.login.LoginResponseModel
@@ -14,7 +15,7 @@ import com.shepherd.app.databinding.FragmentMessagesBinding
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.messages.adapter.DirectMessagesAdapter
 import com.shepherd.app.utils.*
-import com.google.android.material.snackbar.Snackbar
+import com.shepherd.app.view_model.MessagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -25,9 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
     private val messagesViewModel: MessagesViewModel by viewModels()
-
     private lateinit var fragmentMessagesBinding: FragmentMessagesBinding
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,9 +40,7 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
     }
 
     override fun initViewBinding() {
-
         setDirectMessagesAdapter()
-
     }
 
     override fun observeViewModel() {

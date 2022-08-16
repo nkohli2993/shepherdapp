@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.databinding.AdapterDirectMessagesBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.ui.component.messages.MessagesViewModel
+import com.shepherd.app.view_model.MessagesViewModel
 
 
 class DirectMessagesAdapter(

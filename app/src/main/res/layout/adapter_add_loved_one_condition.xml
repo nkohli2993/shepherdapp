@@ -35,6 +35,7 @@
                 android:layout_width="@dimen/_24sdp"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:checked="@{data.isSelected}"
                 android:layout_marginStart="@dimen/_10sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
