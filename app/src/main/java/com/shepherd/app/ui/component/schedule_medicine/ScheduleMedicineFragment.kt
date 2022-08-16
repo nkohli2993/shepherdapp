@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-
+/**
+ * Created by Nikita kohli on 08-08-22
+ */
 
 @AndroidEntryPoint
 @SuppressLint("NotifyDataSetChanged,SetTextI18n,SimpleDateFormat")
@@ -295,37 +298,39 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         )
     }
 
+    // to get gap between two dates
+    open fun printDifference(startDate: Date, endDate: Date): Long {
+        var different = endDate.time - startDate.time
+        val secondsInMilli: Long = 1000
+        val minutesInMilli = secondsInMilli * 60
+        val hoursInMilli = minutesInMilli * 60
+        val daysInMilli = hoursInMilli * 24
+        val elapsedDays = different / daysInMilli
+        Log.e("catch_exception", "days: $elapsedDays")
+        return elapsedDays
+    }
+
     private fun addDays(isEdit: Boolean = false, dayId: String = "") {
         //to get days according to date selected
-/*
         if (fragmentScheduleMedicineBinding.endDate.text.isEmpty()) {
-            dayList.add(DayList(dayList.size + 1, "Monday", false))
-            dayList.add(DayList(dayList.size + 1, "Tuesday", false))
-            dayList.add(DayList(dayList.size + 1, "Wednesday", false))
-            dayList.add(DayList(dayList.size + 1, "Thursday", false))
-            dayList.add(DayList(dayList.size + 1, "Friday", false))
-            dayList.add(DayList(dayList.size + 1, "Saturday", false))
-            dayList.add(DayList(dayList.size + 1, "Sunday", false))
+            addWeekDays()
         } else {
-            var dateFormat = SimpleDateFormat("dd-MM-yyyy")
-            val formattedDate: Date = dateFormat.parse(
+            var dateFormatDD = SimpleDateFormat("dd-MM-yyyy")
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+            val formattedDate: Date = dateFormatDD.parse(
                 fragmentScheduleMedicineBinding.endDate.text.toString().trim()
             )!!
-            dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            dayList = getDates(
-                SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
-                dateFormat.format(formattedDate)
-            )
+            val currentDate = dateFormatDD.format(Calendar.getInstance().time)
+            val date = dateFormatDD.parse(currentDate)
+            if (printDifference(date, formattedDate) >= 7L) {  // checked days to remove date duplicity
+                addWeekDays()
+            } else {
+                dayList = getDates(
+                    dateFormat.format(Calendar.getInstance().time),
+                    dateFormat.format(formattedDate)
+                )
+            }
         }
-*/
-
-        dayList.add(DayList(dayList.size + 1, "Monday", false))
-        dayList.add(DayList(dayList.size + 1, "Tuesday", false))
-        dayList.add(DayList(dayList.size + 1, "Wednesday", false))
-        dayList.add(DayList(dayList.size + 1, "Thursday", false))
-        dayList.add(DayList(dayList.size + 1, "Friday", false))
-        dayList.add(DayList(dayList.size + 1, "Saturday", false))
-        dayList.add(DayList(dayList.size + 1, "Sunday", false))
         val selectedDays: ArrayList<String> = arrayListOf()
         if (isEdit) {
             daysIds = dayId
@@ -341,6 +346,17 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.daysTV.text =
                 selectedDays.joinToString().replace(" ", "")
         }
+    }
+
+    private fun addWeekDays() {
+        dayList.clear()
+        dayList.add(DayList(dayList.size + 1, "Monday", false))
+        dayList.add(DayList(dayList.size + 1, "Tuesday", false))
+        dayList.add(DayList(dayList.size + 1, "Wednesday", false))
+        dayList.add(DayList(dayList.size + 1, "Thursday", false))
+        dayList.add(DayList(dayList.size + 1, "Friday", false))
+        dayList.add(DayList(dayList.size + 1, "Saturday", false))
+        dayList.add(DayList(dayList.size + 1, "Sunday", false))
     }
 
     private fun stringToWords(s: String) = s.trim().splitToSequence(',')
@@ -663,10 +679,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 "Sat" -> "6"
                 else -> "7"
             }
-           /* if(!dates.contains(SimpleDateFormat("EEEE").format(cal1.time))){
-                dates.add(DayList(id.toInt(), SimpleDateFormat("EEEE").format(cal1.time), false))
-            }*/
-
+            dates.add(DayList(id.toInt(), SimpleDateFormat("EEEE").format(cal1.time), false))
             cal1.add(Calendar.DATE, 1)
         }
         return dates

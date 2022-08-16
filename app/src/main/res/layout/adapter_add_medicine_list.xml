@@ -10,36 +10,62 @@
 
     </data>
 
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_15sdp"
-        android:layout_marginVertical="@dimen/_5sdp"
-        android:background="@drawable/background_white_round_med"
-        android:elevation="@dimen/_1sdp"
-        android:paddingVertical="@dimen/_12sdp">
+        android:layout_margin="@dimen/_4sdp"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/_12sdp"
+        app:cardElevation="@dimen/_1sdp">
 
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/cbReminder"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_8sdp"
-            android:button="@drawable/checkbox_selector"
-            android:clickable="false"
-            android:fontFamily="@font/gotham_medium"
-            android:gravity="center_vertical"
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:text="@{data.name}"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_14ssp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingTop="@dimen/_15sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_15sdp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cbReminder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:button="@drawable/checkbox_selector"
+                android:clickable="false"
+                android:fontFamily="@font/gotham_medium"
+                android:gravity="center_vertical"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingEnd="@dimen/_10sdp"
+                android:text="@{data.name}"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <!--
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:background="@drawable/background_white_round_med"
+            android:elevation="@dimen/_2sdp"
+            android:paddingVertical="@dimen/_12sdp">
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    -->
 
 </layout>

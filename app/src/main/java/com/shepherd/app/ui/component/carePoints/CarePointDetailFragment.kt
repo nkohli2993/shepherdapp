@@ -30,7 +30,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-
+/**
+ * Created by Nikita kohli on 22-07-22
+ */
 @AndroidEntryPoint
 class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     View.OnClickListener {
@@ -58,7 +60,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         eventDetail = args.eventDetail
 
         setCommentAdapter()
-//        carePointsViewModel.getCarePointsDetailId(id ?: 0)
         if (eventDetail != null) {
             initCarePointDetailViews(eventDetail!!)
         }

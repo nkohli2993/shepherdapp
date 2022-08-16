@@ -109,6 +109,7 @@
                             android:text="@string/task_s_for_today"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvTaskCount" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -327,7 +328,8 @@
                             android:textSize="@dimen/_20ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvMedListMessage"
                             app:layout_constraintEnd_toEndOf="@+id/tvMedListMessage"
-                            app:layout_constraintStart_toStartOf="@+id/tvMedListMessage" />
+                            app:layout_constraintStart_toStartOf="@+id/tvMedListMessage"
+                            tools:ignore="HardcodedText" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvMedListMessage"
