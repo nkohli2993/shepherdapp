@@ -50,6 +50,7 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp"
+            android:lineSpacingMultiplier="1.1"
             app:layout_constraintEnd_toStartOf="@id/recyclerViewEventAssigne"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitleCarePoint" />
@@ -65,16 +66,16 @@
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toStartOf="@+id/tv_time"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recyclerViewEventAssigne" />
+            app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_medium"
+            android:gravity="end"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/_399282"
-            android:gravity="end"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date"
             app:layout_constraintEnd_toEndOf="parent"
@@ -152,6 +153,7 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:ellipsize="end"
             android:fontFamily="@font/gotham_book"
+            android:lineSpacingMultiplier="1.1"
             android:paddingVertical="@dimen/_2sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp"
@@ -184,9 +186,11 @@
             android:background="@drawable/rounded_box_6"
             android:backgroundTint="@color/_E7E8EA"
             android:hint="@string/write__"
+            android:inputType="textCapSentences|textMultiLine"
             android:maxHeight="@dimen/_100sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
             android:paddingVertical="@dimen/_15sdp"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_35sdp"
             android:textColorHint="@color/_192032"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

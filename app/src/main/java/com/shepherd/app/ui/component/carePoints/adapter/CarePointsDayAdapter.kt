@@ -16,20 +16,12 @@ import java.text.SimpleDateFormat
 class CarePointsDayAdapter(
     val viewModel: CreatedCarePointsViewModel,
     var carePointList: MutableList<ResultEventModel> = java.util.ArrayList(),
-    val clickType: Int,
     val listener: EventSelected,
 ) :
     RecyclerView.Adapter<CarePointsDayAdapter.CarePointsDayViewHolder>(),
     CarePointsDateBasedAdapter.OnCarePointSelected {
     lateinit var binding: AdapterCarePointsDayDateBasedBinding
     lateinit var context: Context
-
-
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
-        override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openEventChat(itemData[0] as Int)
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsDayViewHolder {
         context = parent.context

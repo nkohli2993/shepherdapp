@@ -37,9 +37,9 @@ import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddMedicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+
 /**
  * Created by Nikita kohli on 08-08-22
  */
@@ -70,6 +70,9 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var addedMedication: MedListReminder? = null
     private var medicationPayload: Payload? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
+    private var selectedDateFormat = SimpleDateFormat("dd-MM-yyyy")
+    private var selectedDateTimeFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
+    private var serverDateFormat = SimpleDateFormat("yyyy-MM-dd")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -124,7 +127,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         requireContext(),
                         getString(R.string.scheduled_medication_created_successfully)
                     )
-                    // Redirect to MedList reminder Screen
                     findNavController().navigate(R.id.action_nav_schedule_medication_to_nav_my_medlist)
                 }
             }
@@ -141,12 +143,12 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         }
 
         if (args.medicationScheduled != null) {
-            //set paymload data
+            // set medicine name based on selected medicine from med list
             addedMedication = args.medicationScheduled
             fragmentScheduleMedicineBinding.tvMedTitle.text = addedMedication?.medlist?.name
         }
         if (args.medicationScheduledPayload != null) {
-            //set paymload data
+            //set medicine name based on added medication
             medicationPayload = args.medicationScheduledPayload
             fragmentScheduleMedicineBinding.tvMedTitle.text = medicationPayload?.medlist?.name
         }
@@ -210,16 +212,14 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             setDayAdapter()
             setTimeAdapter()
         }
-
-//        Log.e("catch_exception", getDates("2022-08-10", "2022-08-15").toString())
         setDoseAdapter()
     }
 
 
     private fun setEndDate(date: String) {
-        val formattedDate = SimpleDateFormat("yyyy-MM-dd").parse(date)!!
+        val formattedDate = serverDateFormat.parse(date)!!
         fragmentScheduleMedicineBinding.endDate.text =
-            SimpleDateFormat("dd-MM-yyyy").format(formattedDate)
+            selectedDateFormat.format(formattedDate)
     }
 
     private fun setFrequency(frequencyValue: String) {
@@ -300,14 +300,13 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     }
 
     // to get gap between two dates
-    open fun printDifference(startDate: Date, endDate: Date): Long {
-        var different = endDate.time - startDate.time
+    private fun printDifference(startDate: Date, endDate: Date): Long {
+        val different = endDate.time - startDate.time
         val secondsInMilli: Long = 1000
         val minutesInMilli = secondsInMilli * 60
         val hoursInMilli = minutesInMilli * 60
         val daysInMilli = hoursInMilli * 24
         val elapsedDays = different / daysInMilli
-        Log.e("catch_exception", "days: $elapsedDays")
         return elapsedDays
     }
 
@@ -316,19 +315,21 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         if (fragmentScheduleMedicineBinding.endDate.text.isEmpty()) {
             addWeekDays()
         } else {
-            var dateFormatDD = SimpleDateFormat("dd-MM-yyyy")
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            val formattedDate: Date = dateFormatDD.parse(
+            val addedEndDate: Date = selectedDateFormat.parse(
                 fragmentScheduleMedicineBinding.endDate.text.toString().trim()
             )!!
-            val currentDate = dateFormatDD.format(Calendar.getInstance().time)
-            val date = dateFormatDD.parse(currentDate)
-            if (printDifference(date, formattedDate) >= 7L) {  // checked days to remove date duplicity
+            val currentDate =
+                selectedDateFormat.parse(selectedDateFormat.format(Calendar.getInstance().time))
+            if (printDifference(
+                    currentDate!!,
+                    addedEndDate
+                ) >= 7L
+            ) {  // checked days to remove date duplicity
                 addWeekDays()
             } else {
                 dayList = getDates(
-                    dateFormat.format(Calendar.getInstance().time),
-                    dateFormat.format(formattedDate)
+                    serverDateFormat.format(Calendar.getInstance().time),
+                    serverDateFormat.format(addedEndDate)
                 )
             }
         }
@@ -460,13 +461,37 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     if (fragmentScheduleMedicineBinding.endDate.text.toString().trim()
                             .isNotEmpty()
                     ) {
-                        var dateFormat = SimpleDateFormat("dd-MM-yyyy")
-                        val formatedDate: Date = dateFormat.parse(
+                        val formattedDate: Date = selectedDateFormat.parse(
                             fragmentScheduleMedicineBinding.endDate.text.toString().trim()
                         )!!
-                        dateFormat = SimpleDateFormat("yyyy-MM-dd")
-                        endDate = dateFormat.format(formatedDate)
+                        // check current day medication creation
+                        if (formattedDate == selectedDateFormat.parse(
+                                selectedDateFormat.format(
+                                    Calendar.getInstance().time
+                                )
+                            )
+                        ) {
+                            // check for current day entry for medication
+                            if (timeAddedList.size == 1) {
+                                val currentDateTime = selectedDateTimeFormat.parse(
+                                    selectedDateTimeFormat.format(Calendar.getInstance().time)
+                                )
+                                val medicationDateTime = selectedDateTimeFormat.parse(
+                                    serverDateFormat.format(formattedDate) + " " + timeAddedList[0].time + " " + timeAddedList[0].hour
+                                )
+
+                                if (medicationDateTime!!.before(currentDateTime)) {
+                                    showError(
+                                        requireContext(),
+                                        "Please add medication for future time."
+                                    )
+                                    return
+                                }
+                            }
+                        }
+                        endDate = serverDateFormat.format(formattedDate)
                     }
+
                     if (addedMedication != null) {
                         val scheduledMedication = UpdateScheduledMedList(
                             doseID!!,
@@ -657,12 +682,11 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
     private fun getDates(dateString1: String, dateString2: String): ArrayList<DayList> {
         val dates = ArrayList<DayList>()
-        val df1: DateFormat = SimpleDateFormat("yyyy-MM-dd")
         var date1: Date? = null
         var date2: Date? = null
         try {
-            date1 = df1.parse(dateString1)
-            date2 = df1.parse(dateString2)
+            date1 = serverDateFormat.parse(dateString1)
+            date2 = serverDateFormat.parse(dateString2)
         } catch (e: Exception) {
             e.printStackTrace()
         }

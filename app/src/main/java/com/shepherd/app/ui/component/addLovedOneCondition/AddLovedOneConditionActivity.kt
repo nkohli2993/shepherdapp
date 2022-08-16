@@ -28,7 +28,7 @@ import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
+import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload
 
 /**
  * Created by Sumit Kumar on 26-04-22
@@ -51,6 +51,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var TAG = "AddLovedOneConditionActivity"
     private var loveOneId: String? = null
     private var careConditions: ArrayList<CareCondition>? = null
+    private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
@@ -65,7 +66,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             Handler(Looper.getMainLooper()).postDelayed({
                 loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
             }, 1000)
-//            loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
         }
 
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
@@ -191,12 +191,27 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val payLoad = it.data.payload
-                    val conditionIDs = payLoad.map {
+                    addedConditionPayload = it.data.payload
+                    val conditionIDs = addedConditionPayload.map {
                         it.conditions?.id
                     }
-                    Log.d(TAG, "condition ids :$conditionIDs")
-                    Log.d(TAG, "conditions :$conditions ")
+                    if (addedConditionPayload.size <= 0) {
+                        // show popup for no medical conditions
+                        val builder = AlertDialog.Builder(this)
+                        val dialog = builder.apply {
+                            setMessage("No medical condition added, Please add medical condition for loved one.")
+                            setPositiveButton("Add") { _, _ ->
+
+                            }
+                            setNegativeButton("Cancel") { _, _ ->
+                                finishActivity()
+                            }
+                        }.create()
+                        dialog.show()
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                        return@observeEvent
+                    }
                     for (i in conditions?.indices!!) {
                         for (j in conditionIDs.indices) {
                             if (conditions!![i].id == conditionIDs[j]) {
@@ -204,15 +219,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             }
                         }
                     }
-
-
-                    /* if (!conditions.isNullOrEmpty()) {
-                         conditions?.forEach { condition ->
-                             for (i in conditionIDs.indices) {
-                                 condition.isSelected = condition.id == conditionIDs[i]
-                             }
-                         }
-                     }*/
                     Log.d(TAG, "conditions updated :$conditions ")
                     conditions?.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
                 }
@@ -231,6 +237,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 // Get LovedOne UUID from shared Pref
                 val lovedOneUUID =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+
                 val ids = selectedConditions?.map {
                     it.id
                 }
@@ -238,36 +245,46 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 if (medicalConditionsLovedOneArray.isNotEmpty()) {
                     medicalConditionsLovedOneArray.clear()
                 }
-
-                if (ids != null) {
-                    for (i in ids.indices) {
-                        medicalConditionsLovedOneArray.add(MedicalConditionsLovedOneRequestModel(i?.let {
-                            ids[it]
-                        }, lovedOneUUID))
-                    }
-                }
-                Log.d(
-                    TAG,
-                    "Size of selected medical conditions array :${medicalConditionsLovedOneArray.size} "
-                )
-                if (medicalConditionsLovedOneArray.size != 0) {
-
-                    when (intent.getStringExtra("source")) {
-                        Const.MEDICAL_CONDITION -> {
+                when (intent.getStringExtra("source")) {
+                    Const.MEDICAL_CONDITION -> {
+                        if (addedConditionPayload.size <= 0) {
+                            // api to add medical condition
+                            addMedicalConditons(ids, loveOneId)
+                        } else {
                             // api to update medical condition
-
-                        }
-                        else -> {
-                            addLovedOneConditionViewModel.createMedicalConditions(
-                                medicalConditionsLovedOneArray
-                            )
+                            showError(this, "Update medical condition")
                         }
                     }
-                } else {
-                    showError(this, "Please select at least once medical condition...")
+                    else -> {
+                        addMedicalConditons(ids, lovedOneUUID)
+                    }
                 }
+
+
             }
         }
+    }
+
+    private fun addMedicalConditons(
+        ids: List<Int?>?,
+        lovedOneUUID: String?
+    ) {
+        if (ids != null) {
+            for (i in ids.indices) {
+                medicalConditionsLovedOneArray.add(MedicalConditionsLovedOneRequestModel(i?.let {
+                    ids[it]
+                }, lovedOneUUID))
+            }
+        }
+
+        if (medicalConditionsLovedOneArray.size != 0) {
+            addLovedOneConditionViewModel.createMedicalConditions(
+                medicalConditionsLovedOneArray
+            )
+        } else {
+            showError(this, "Please select at least once medical condition...")
+        }
+
     }
 
 

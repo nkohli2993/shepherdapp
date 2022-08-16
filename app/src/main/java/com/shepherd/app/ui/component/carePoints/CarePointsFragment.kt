@@ -217,21 +217,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
     }
 
-    private fun openCarePointDetails(navigateEvent: SingleEvent<Int>) {
-        navigateEvent.getContentIfNotHandled()?.let {
-/*
-            findNavController().navigate(
-                CarePointsFragmentDirections.actionCarePointsToDetailFragment(
-                    it
-                )
-            )
-*/
-        }
-    }
-
-
     private fun setCarePointsAdapter() {
-        carePointsAdapter = CarePointsDayAdapter(carePointsViewModel, carePoints!!, clickType, this)
+        carePointsAdapter = CarePointsDayAdapter(carePointsViewModel, carePoints!!, this)
         fragmentCarePointsBinding.recyclerViewEventDays.adapter = carePointsAdapter
     }
 

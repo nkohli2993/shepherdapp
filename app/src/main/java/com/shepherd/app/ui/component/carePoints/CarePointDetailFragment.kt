@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
@@ -34,6 +36,7 @@ import kotlin.collections.ArrayList
  * Created by Nikita kohli on 22-07-22
  */
 @AndroidEntryPoint
+@SuppressLint("SimpleDateFormat", "ClickableViewAccessibility")
 class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     View.OnClickListener {
     private lateinit var fragmentCarePointDetailBinding: FragmentCarePointDetailBinding
@@ -41,7 +44,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     private val args: CarePointDetailFragmentArgs by navArgs()
     private var commentList: ArrayList<EventCommentUserDetailModel> = ArrayList()
     private val carePointsViewModel: CreatedCarePointsViewModel by viewModels()
-    private var id: Int? = null
     private var eventDetail: AddedEventModel? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
@@ -54,7 +56,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         return fragmentCarePointDetailBinding.root
     }
 
-    @SuppressLint("SimpleDateFormat", "ClickableViewAccessibility")
+
     override fun initViewBinding() {
         fragmentCarePointDetailBinding.listener = this
         eventDetail = args.eventDetail
@@ -64,7 +66,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             initCarePointDetailViews(eventDetail!!)
         }
 
-        carePointsViewModel.getCarePointsEventCommentsId(pageNumber, limit, id ?: 0)
+        carePointsViewModel.getCarePointsEventCommentsId(pageNumber, limit, eventDetail?.id ?: 0)
         fragmentCarePointDetailBinding.tvNotes.setOnTouchListener { view, event ->
             view.parent.requestDisallowInterceptTouchEvent(true)
             when (event.action and MotionEvent.ACTION_MASK) {
@@ -107,7 +109,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     commentList.add(
                         commentList.size,
                         EventCommentUserDetailModel(
-                            event_id = id ?: 0,
+                            event_id = eventDetail?.id ?: 0,
                             comment = fragmentCarePointDetailBinding.editTextMessage.text.toString(),
                             created_at = it.data.payload.created_at,
                             user_details = UserAssigneDetail(
@@ -144,7 +146,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     hideLoading()
                     // show comments on
                     commentList = it.data.payload.data
-                    if (commentList.isNullOrEmpty()) return@observeEvent
+                    if (commentList.isEmpty()) return@observeEvent
                     commentAdapter?.updateAddedComment(commentList)
                     fragmentCarePointDetailBinding.recyclerViewChat.smoothScrollToPosition(
                         commentList.size
@@ -196,22 +198,46 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             val date: Date =
                 df.parse(SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(commentTime!!))!!
             df.timeZone = TimeZone.getDefault()
-            it.tvPostedDate.text = SimpleDateFormat("EEE, MMM dd").format(date);
+            it.tvPostedDate.text = SimpleDateFormat("EEE, MMM dd").format(date)
             if ((payload.notes ?: "").length > 50) {
-                setNotesClickForLong(payload.notes!!, true)
+                setNotesClickForLong(payload.notes!!, true, it.tvNotes)
             } else {
                 it.tvNotes.text = payload.notes
             }
+            if ((payload.location ?: "").length > 50) {
+                setNotesClickForLong(payload.location!!, true, it.tvLocation)
+            } else {
+                it.tvLocation.text = payload.location
+            }
+
             it.editTextMessage.visibility = View.VISIBLE
             it.sendCommentIV.visibility = View.VISIBLE
-            if (payload.user_assignes.size == 1) {
-                if (payload.user_assignes[0].user_details.id == carePointsViewModel.getUserDetail()?.userId) {
+            when (payload.user_assignes.size) {
+                1 -> {
                     it.editTextMessage.visibility = View.GONE
                     it.sendCommentIV.visibility = View.GONE
+                }
+                else -> {
+                    it.editTextMessage.visibility = View.VISIBLE
+                    it.sendCommentIV.visibility = View.VISIBLE
+                    if (!isListContainMethod(payload.user_assignes)) {
+                        it.editTextMessage.visibility = View.GONE
+                        it.sendCommentIV.visibility = View.GONE
+                    }
                 }
             }
         }
     }
+
+    private fun isListContainMethod(arraylist: ArrayList<UserAssigneeModel>): Boolean {
+        for (str in arraylist) {
+            if (str.user_details.id == carePointsViewModel.getUserDetail()?.userId!!) {
+                return true
+            }
+        }
+        return false
+    }
+
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_care_point_detail
@@ -230,7 +256,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     }
                     else -> {
                         val addEventComment = EventCommentModel(
-                            event_id = id ?: 0,
+                            event_id = eventDetail?.id ?: 0,
                             comment = fragmentCarePointDetailBinding.editTextMessage.text.toString()
                                 .trim()
                         )
@@ -241,7 +267,11 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
     }
 
-    private fun setNotesClickForLong(notes: String, isSpanned: Boolean) {
+    private fun setNotesClickForLong(
+        notes: String,
+        isSpanned: Boolean,
+        textView: AppCompatTextView
+    ) {
         val showNotes = if (isSpanned) {
             notes.substring(0, 50).plus(" ... View more.")
         } else {
@@ -252,15 +282,15 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             override fun onClick(p0: View) {
                 //click to show whole note
-                setNotesClickForLong(notes, !isSpanned)
+                setNotesClickForLong(notes, !isSpanned,textView)
             }
 
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
                 ds.isUnderlineText = false
                 ds.isFakeBoldText = true
-                ds.color = resources.getColor(R.color._399282)
-                ds.linkColor = resources.getColor(R.color._399282)
+                ds.color = ContextCompat.getColor(requireContext(), R.color._399282)
+                ds.linkColor = ContextCompat.getColor(requireContext(), R.color._399282)
             }
         }
         if (showNotes.length <= 65) {
@@ -274,8 +304,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             )
         }
 
-        fragmentCarePointDetailBinding.tvNotes.text = ss
-        fragmentCarePointDetailBinding.tvNotes.movementMethod = LinkMovementMethod.getInstance()
-        fragmentCarePointDetailBinding.tvNotes.highlightColor = Color.GREEN
+        textView.text = ss
+        textView.movementMethod = LinkMovementMethod.getInstance()
+        textView.highlightColor = Color.GREEN
     }
 }

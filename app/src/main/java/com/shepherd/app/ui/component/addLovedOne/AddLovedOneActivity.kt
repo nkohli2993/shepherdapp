@@ -120,7 +120,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 /*  dob.isNullOrEmpty() -> {
                       showInfo(this, "Please enter date of birth")
                   }*/
-                selectedRelationship?.id == -1->{
+                selectedRelationship?.id == -1 -> {
                     showInfo(this, "Please select relationship")
                 }
                 else -> {
@@ -186,8 +186,9 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 if (yearSelected.isEmpty()) {
                     yearSelected = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
                 }
-                if(monthIdSelected == 0){
-                    monthIdSelected = SimpleDateFormat("MM").format(Calendar.getInstance().time).toInt()
+                if (monthIdSelected == 0) {
+                    monthIdSelected =
+                        SimpleDateFormat("MM").format(Calendar.getInstance().time).toInt()
                 }
                 calculateDays(monthIdSelected!!, yearSelected)
             }
@@ -241,8 +242,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
         if (dateSelected == "" || dateSelected == "Date" || dateSelected.toInt() > dayCount) {
             binding.daySpinner.setSelection(0)
-        }else{
-            binding.daySpinner.setSelection(dateSelected.toInt()+1)
+        } else {
+            binding.daySpinner.setSelection(dateSelected.toInt() + 1)
         }
     }
 
@@ -300,7 +301,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     val payload = it.data.payload
                     payload?.relations?.let { it1 -> relations?.addAll(it1) }
 
-                    relations?.add(0,Relation(-1,"Select Relationship"))
+                    relations?.add(0, Relation(-1, "Select Relationship"))
                     relationshipsAdapter =
                         relations?.let { relation ->
                             RelationshipsAdapter(
@@ -393,7 +394,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.imageViewLovedOne -> {
                 if (!checkPermission()) {
-                    requestPermission();
+                    requestPermission()
                 } else {
                     openImagePicker()
                 }
@@ -441,7 +442,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     if (lastName.isNullOrEmpty()) {
                         lastName = null
                     }
-                    dob = yearSelected+"-"+(if(monthIdSelected!!<10) "0$monthIdSelected" else monthIdSelected!!.toString())+"-"+(if(dateSelected.toInt()<10) "0$dateSelected" else dateSelected)
+                    dob =
+                        yearSelected + "-" + (if (monthIdSelected!! < 10) "0$monthIdSelected" else monthIdSelected!!.toString()) + "-" + (if (dateSelected.toInt() < 10) "0$dateSelected" else dateSelected)
                     addLovedOneViewModel.createLovedOne(
                         email,
                         firstName,
@@ -473,8 +475,12 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             R.id.spinner_down_arrow_image -> {
                 binding.relationshipSpinner.performClick()
             }
-            R.id.imgUploadLovedOnePic -> {
-                openImagePicker()
+            R.id.imgUploadLovedOnePic, R.id.imgLoveOne -> {
+                if (!checkPermission()) {
+                    requestPermission()
+                } else {
+                    openImagePicker()
+                }
             }
             R.id.ivInfo -> {
                 showPopUp()
