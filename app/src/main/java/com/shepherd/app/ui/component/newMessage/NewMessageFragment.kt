@@ -193,19 +193,21 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         )
         val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
         val loggedInUserId = loggedInUser?.id
+
         singleEvent.getContentIfNotHandled()?.let {
             val receiverName = it.user_id_details.firstname + " " + it.user_id_details.lastname
             val receiverID = it.user_id_details.id
             val receiverPicUrl = it.user_id_details.profilePhoto
             // Create Chat Model
             val chatModel = ChatModel(
+                null,
                 loggedInUserId,
                 loggedInUserName,
                 receiverID,
                 receiverName,
                 receiverPicUrl,
                 null,
-                null
+                null, null
             )
             Log.d(TAG, "ChatModel : $chatModel ")
             findNavController().navigate(

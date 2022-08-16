@@ -9,12 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
-import com.shepherd.app.data.Resource
-import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.chat.ChatModel
 import com.shepherd.app.databinding.FragmentChatBinding
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.chat.adapter.ChatAdapter
-import com.shepherd.app.utils.observe
+import com.shepherd.app.utils.extensions.showInfo
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -27,6 +26,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
 
     private val chatViewModel: ChatViewModel by viewModels()
     private val args: ChatFragmentArgs by navArgs()
+    private var chatModel: ChatModel? = null
 
 
     private lateinit var fragmentChatBinding: FragmentChatBinding
@@ -48,7 +48,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
         fragmentChatBinding.listener = this
         val source = args.source
         Log.d(TAG, "Source : $source ")
-        val chatModel = args.chatModel
+        chatModel = args.chatModel
         Log.d(TAG, "Chat Model : $chatModel ")
 
         fragmentChatBinding.data = chatModel
@@ -56,21 +56,8 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
     }
 
     override fun observeViewModel() {
-        observe(chatViewModel.loginLiveData, ::handleLoginResult)
     }
 
-
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
-
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { chatViewModel.showToastMessage(it) }
-            }
-        }
-    }
 
     private fun setChatAdapter() {
         val chatAdapter = ChatAdapter(chatViewModel)
@@ -86,6 +73,16 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
               }*/
             R.id.ivBack -> {
                 findNavController().popBackStack()
+            }
+            R.id.ivSend -> {
+                val message = fragmentChatBinding.edtMessage.text.toString().trim()
+                if(message.isNullOrEmpty()){
+                    showInfo(requireContext(),"Please enter message...")
+                }else{
+                    chatModel?.message = message
+                    Log.d(TAG, "Send Message :$chatModel ")
+                }
+
             }
         }
     }
