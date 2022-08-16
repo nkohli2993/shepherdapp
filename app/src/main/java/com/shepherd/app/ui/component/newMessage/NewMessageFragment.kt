@@ -68,6 +68,12 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
 
         fragmentNewMessageBinding.chkDiscussion.setOnCheckedChangeListener { compoundButton, isChecked ->
             usersAdapter?.selectUnselect(isChecked)
+            if (isChecked) {
+                fragmentNewMessageBinding.buttonSubmit.visibility = View.VISIBLE
+            } else {
+                fragmentNewMessageBinding.buttonSubmit.visibility = View.GONE
+
+            }
         }
 
         // Search
