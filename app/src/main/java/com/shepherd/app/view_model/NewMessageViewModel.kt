@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.Resource
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.local.UserRepository
@@ -40,6 +41,9 @@ class NewMessageViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
     var searchCareTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
         _searchCareTeamsResponseLiveData
+
+    private val _openChatMessage = MutableLiveData<SingleEvent<CareTeamModel>>()
+    val openChatMessage: LiveData<SingleEvent<CareTeamModel>> get() = _openChatMessage
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
@@ -102,5 +106,9 @@ class NewMessageViewModel @Inject constructor(
     fun showToastMessage(errorCode: Int) {
         val error = errorManager.getError(errorCode)
         showToastPrivate.value = SingleEvent(error.description)
+    }
+
+    fun opnChat(careTeamModel: CareTeamModel) {
+        _openChatMessage.value = SingleEvent(careTeamModel)
     }
 }

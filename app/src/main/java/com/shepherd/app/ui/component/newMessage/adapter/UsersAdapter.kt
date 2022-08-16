@@ -22,7 +22,7 @@ class UsersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+            viewModel.opnChat(itemData[0] as CareTeamModel)
         }
     }
 

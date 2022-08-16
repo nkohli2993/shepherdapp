@@ -100,6 +100,8 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
 
     override fun observeViewModel() {
         observe(newMessageViewModel.loginLiveData, ::handleLoginResult)
+        observeEvent(newMessageViewModel.openChatMessage, ::navigateToChat)
+
         observeSnackBarMessages(newMessageViewModel.showSnackBar)
         observeToast(newMessageViewModel.showToast)
 
@@ -176,6 +178,12 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                     usersAdapter?.addData(careTeamList)
                 }
             }
+        }
+    }
+
+    private fun navigateToChat(singleEvent: SingleEvent<CareTeamModel>) {
+        singleEvent.getContentIfNotHandled()?.let {
+            findNavController().navigate(R.id.action_new_message_to_chat)
         }
     }
 
