@@ -7,9 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
@@ -47,20 +47,16 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var addLovedOneConditionAdapter: AddLovedOneConditionAdapter? = null
     private var medicalConditionsLovedOneArray: ArrayList<MedicalConditionsLovedOneRequestModel> =
         ArrayList()
-    private var lovedOneID: Int? = null
-    private var TAG = "AddLovedOneConditionActivity"
     private var loveOneId: String? = null
     private var careConditions: ArrayList<CareCondition>? = null
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-        // Get Medical conditions
         addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
         //check if intent has loved used uuid
         if (intent.hasExtra("love_one_id")) {
             loveOneId = intent.getStringExtra("love_one_id")
-            Log.d(TAG, "LovedOneUUID: $lovedOneID")
             careConditions = intent.getParcelableArrayListExtra("care_conditions")
             //Get loved one's medical conditions
             Handler(Looper.getMainLooper()).postDelayed({
@@ -105,6 +101,30 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         })
+
+        binding.editTextSearch.doAfterTextChanged { it ->
+            if (it != null) {
+                if (it.isEmpty()) {
+                    conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
+                    binding.imgCancel.visibility = View.GONE
+
+                }
+                if (it.isNotEmpty()) {
+                    binding.imgCancel.visibility = View.VISIBLE
+                    searchedConditions?.clear()
+                    conditions?.forEach {
+                        if (it.name?.startsWith(it.toString(), true) == true) {
+                            searchedConditions?.add(it)
+                        }
+                    }
+                    if (searchedConditions.isNullOrEmpty()) {
+                        binding.txtNoResultFound.visibility = View.VISIBLE
+                        binding.recyclerViewCondition.visibility = View.GONE
+                    }
+                    searchedConditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
+                }
+            }
+        }
     }
 
 
@@ -146,7 +166,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it) }
 
                 }
             }
@@ -162,7 +182,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     //it.data.message?.let { it1 -> showSuccess(this, it1) }
                     val builder = AlertDialog.Builder(this)
                     val dialog = builder.apply {
-                        setTitle("Medical Conditions")
                         setMessage("Medical Conditions added successfully...")
                         setPositiveButton("OK") { _, _ ->
                             navigateToHomeScreen()
@@ -219,7 +238,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             }
                         }
                     }
-                    Log.d(TAG, "conditions updated :$conditions ")
                     conditions?.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
                 }
             }
@@ -233,7 +251,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 finishActivity()
             }
             R.id.buttonFinish -> {
-                //navigateToWelcomeScreen()
                 // Get LovedOne UUID from shared Pref
                 val lovedOneUUID =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")

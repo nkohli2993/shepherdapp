@@ -40,7 +40,7 @@ class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnecti
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -158,8 +158,7 @@ class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnecti
                 val selectedMedia =
                     it.data?.getSerializableExtra(KeyUtils.SELECTED_MEDIA) as ArrayList<MiMedia>
                 if (!selectedMedia.isNullOrEmpty()) {
-                    var file: File? = null
-                    file = if (selectedMedia[0].path?.startsWith("content")!!) {
+                    var file: File = if (selectedMedia[0].path?.startsWith("content")!!) {
                         CommonFunctions.fileFromContentUri(
                             this,
                             selectedMedia[0].path.toString().toUri()
@@ -169,7 +168,7 @@ class UploadLockBoxDocumentActivity : BaseActivity(), GoogleApiClient.OnConnecti
                     }
                     selectedFile.value = file
 
-                    if (file != null && file.exists()) {
+                    if (file.exists()) {
                         addNewLockBoxViewModel.imageFile = file
                         addNewLockBoxViewModel.uploadLockBoxDoc(file)
                     }

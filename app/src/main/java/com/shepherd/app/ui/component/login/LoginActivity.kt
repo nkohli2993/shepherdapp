@@ -89,8 +89,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
-//        loginViewModel.loginData.value!!.email = "rony@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "Admin@123"
+        loginViewModel.loginData.value!!.email = "daman@yopmail.com"
+        loginViewModel.loginData.value!!.password = "Admin@123"
         binding.viewModel = loginViewModel
 
 
