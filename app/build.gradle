@@ -12,6 +12,15 @@ plugins {
 
 
 android {
+    // To fix the issue of "Duplicate class com.google.firebase" while building project
+    // protobuf-java and protobuf-lite are incompatible packages. They both include classes in the com.google.protobuf package.
+    // Firebase packages depend upon protobuf-lite. Something else in the project must depend on protobuf-java
+    // To exclude the duplicate classes that's causing the problem added the followings:
+
+    configurations {
+        implementation.exclude module: 'protobuf-lite'
+    }
+
     compileSdkVersion rootProject.compileSdkVersion
 
     defaultConfig {
@@ -145,11 +154,13 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation ('com.google.firebase:firebase-firestore-ktx'){
+    implementation('com.google.firebase:firebase-firestore-ktx') {
         // Excluded the protobuf-javalite and protobuf-lite to fix the issue of "Duplicate class com.google.firebase" while building project
-        exclude group: 'com.google.protobuf',module: 'protobuf-javalite'
-        exclude group: 'com.google.protobuf',module: 'protobuf-lite'
+//        exclude group: 'com.google.protobuf',module: 'protobuf-javalite'
+//        exclude group: 'com.google.protobuf',module: 'protobuf-lite'
+//        exclude group: "com.google.protobuf", module: "protobuf-java"
     }
+
 //    implementation 'com.google.firebase:firebase-messaging-ktx'
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
