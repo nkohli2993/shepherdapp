@@ -13,10 +13,7 @@ plugins {
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
-    configurations {
-        implementation.exclude module:'protobuf-lite'
-        implementation.exclude module:'protobuf-java'
-    }
+
     defaultConfig {
         applicationId "com.shepherd.app"
         minSdkVersion rootProject.minSdkVersion
@@ -148,17 +145,15 @@ dependencies {
     // Firebase
     implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-    implementation ('com.google.firebase:firebase-firestore-ktx')
+    implementation ('com.google.firebase:firebase-firestore-ktx'){
         // Excluded the protobuf-javalite and protobuf-lite to fix the issue of "Duplicate class com.google.firebase" while building project
-       // exclude group: 'com.google.protobuf',module: 'protobuf-javalite'
-        //exclude group: 'com.google.protobuf',module: 'protobuf-lite'
-
- //   implementation 'com.google.firebase:firebase-config:21.1.1'
- //   implementation 'com.google.protobuf:protobuf-java:3.10.0'
+        exclude group: 'com.google.protobuf',module: 'protobuf-javalite'
+        exclude group: 'com.google.protobuf',module: 'protobuf-lite'
+    }
 //    implementation 'com.google.firebase:firebase-messaging-ktx'
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
-  //  implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.firebase:firebase-auth'
 
     androidTestImplementation "androidx.test.ext:junit-ktx:$androidXJunitVersion"
     /**-------------------testing libs------------------------------------------**/
@@ -234,6 +229,7 @@ dependencies {
     implementation('com.google.apis:google-api-services-drive:v3-rev136-1.25.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:2.1.0'
     implementation 'com.github.barteksc:android-pdf-viewer:2.8.2'
