@@ -11,6 +11,8 @@ import com.shepherd.app.data.dto.added_events.UserAssigneeModel
 import com.shepherd.app.databinding.AdapterCarePointsDayBinding
 import com.shepherd.app.view_model.CreatedCarePointsViewModel
 import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CarePointsDateBasedAdapter(
     val viewModel: CreatedCarePointsViewModel,
@@ -78,13 +80,28 @@ class CarePointsDateBasedAdapter(
             }
             //check assignee and remove chat multiple
             itemBinding.ivMessage.visibility = View.VISIBLE
-            if (carePoints.user_assignes.size == 1) {
-                if (carePoints.user_assignes[0].user_details.id == viewModel.getUserDetail()?.userId) {
+            when (carePoints.user_assignes.size) {
+                1 -> {
                     itemBinding.ivMessage.visibility = View.GONE
+                }
+                else -> {
+                    itemBinding.ivMessage.visibility = View.VISIBLE
+                    if (!isListContainMethod(carePoints.user_assignes)) {
+                        itemBinding.ivMessage.visibility = View.GONE
+                    }
                 }
             }
             setCarePointsAdapter(binding.recyclerViewEvents, carePoints.user_assignes)
         }
+    }
+
+    fun isListContainMethod(arraylist: ArrayList<UserAssigneeModel>): Boolean {
+        for (str in arraylist) {
+            if (str.user_details.id == viewModel.getUserDetail()?.userId!!) {
+                return true
+            }
+        }
+        return false
     }
 
     override fun getItemId(position: Int): Long {

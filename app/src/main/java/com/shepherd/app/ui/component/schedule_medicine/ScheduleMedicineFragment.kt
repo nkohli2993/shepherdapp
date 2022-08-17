@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,10 +37,12 @@ import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddMedicationViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+/**
+ * Created by Nikita kohli on 08-08-22
+ */
 
 @AndroidEntryPoint
 @SuppressLint("NotifyDataSetChanged,SetTextI18n,SimpleDateFormat")
@@ -67,6 +70,9 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var addedMedication: MedListReminder? = null
     private var medicationPayload: Payload? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
+    private var selectedDateFormat = SimpleDateFormat("dd-MM-yyyy")
+    private var selectedDateTimeFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
+    private var serverDateFormat = SimpleDateFormat("yyyy-MM-dd")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -121,7 +127,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         requireContext(),
                         getString(R.string.scheduled_medication_created_successfully)
                     )
-                    // Redirect to MedList reminder Screen
                     findNavController().navigate(R.id.action_nav_schedule_medication_to_nav_my_medlist)
                 }
             }
@@ -136,14 +141,14 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             selectedMedList = args.medlist
             fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
         }
-
+        frequencyId = FrequencyType.ONCE.value.toInt()
         if (args.medicationScheduled != null) {
-            //set paymload data
+            // set medicine name based on selected medicine from med list
             addedMedication = args.medicationScheduled
             fragmentScheduleMedicineBinding.tvMedTitle.text = addedMedication?.medlist?.name
         }
         if (args.medicationScheduledPayload != null) {
-            //set paymload data
+            //set medicine name based on added medication
             medicationPayload = args.medicationScheduledPayload
             fragmentScheduleMedicineBinding.tvMedTitle.text = medicationPayload?.medlist?.name
         }
@@ -207,16 +212,14 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             setDayAdapter()
             setTimeAdapter()
         }
-
-//        Log.e("catch_exception", getDates("2022-08-10", "2022-08-15").toString())
         setDoseAdapter()
     }
 
 
     private fun setEndDate(date: String) {
-        val formattedDate = SimpleDateFormat("yyyy-MM-dd").parse(date)!!
+        val formattedDate = serverDateFormat.parse(date)!!
         fragmentScheduleMedicineBinding.endDate.text =
-            SimpleDateFormat("dd-MM-yyyy").format(formattedDate)
+            selectedDateFormat.format(formattedDate)
     }
 
     private fun setFrequency(frequencyValue: String) {
@@ -296,37 +299,41 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         )
     }
 
+    // to get gap between two dates
+    private fun printDifference(startDate: Date, endDate: Date): Long {
+        val different = endDate.time - startDate.time
+        val secondsInMilli: Long = 1000
+        val minutesInMilli = secondsInMilli * 60
+        val hoursInMilli = minutesInMilli * 60
+        val daysInMilli = hoursInMilli * 24
+        val elapsedDays = different / daysInMilli
+        return elapsedDays
+    }
+
     private fun addDays(isEdit: Boolean = false, dayId: String = "") {
         //to get days according to date selected
-/*
+        fragmentScheduleMedicineBinding.daysTV.text = ""
         if (fragmentScheduleMedicineBinding.endDate.text.isEmpty()) {
-            dayList.add(DayList(dayList.size + 1, "Monday", false))
-            dayList.add(DayList(dayList.size + 1, "Tuesday", false))
-            dayList.add(DayList(dayList.size + 1, "Wednesday", false))
-            dayList.add(DayList(dayList.size + 1, "Thursday", false))
-            dayList.add(DayList(dayList.size + 1, "Friday", false))
-            dayList.add(DayList(dayList.size + 1, "Saturday", false))
-            dayList.add(DayList(dayList.size + 1, "Sunday", false))
+            addWeekDays()
         } else {
-            var dateFormat = SimpleDateFormat("dd-MM-yyyy")
-            val formattedDate: Date = dateFormat.parse(
+            val addedEndDate: Date = selectedDateFormat.parse(
                 fragmentScheduleMedicineBinding.endDate.text.toString().trim()
             )!!
-            dateFormat = SimpleDateFormat("yyyy-MM-dd")
-            dayList = getDates(
-                SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
-                dateFormat.format(formattedDate)
-            )
+            val currentDate =
+                selectedDateFormat.parse(selectedDateFormat.format(Calendar.getInstance().time))
+            if (printDifference(
+                    currentDate!!,
+                    addedEndDate
+                ) >= 7L
+            ) {  // checked days to remove date duplicity
+                addWeekDays()
+            } else {
+                dayList = getDates(
+                    serverDateFormat.format(Calendar.getInstance().time),
+                    serverDateFormat.format(addedEndDate)
+                )
+            }
         }
-*/
-
-        dayList.add(DayList(dayList.size + 1, "Monday", false))
-        dayList.add(DayList(dayList.size + 1, "Tuesday", false))
-        dayList.add(DayList(dayList.size + 1, "Wednesday", false))
-        dayList.add(DayList(dayList.size + 1, "Thursday", false))
-        dayList.add(DayList(dayList.size + 1, "Friday", false))
-        dayList.add(DayList(dayList.size + 1, "Saturday", false))
-        dayList.add(DayList(dayList.size + 1, "Sunday", false))
         val selectedDays: ArrayList<String> = arrayListOf()
         if (isEdit) {
             daysIds = dayId
@@ -342,6 +349,17 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.daysTV.text =
                 selectedDays.joinToString().replace(" ", "")
         }
+    }
+
+    private fun addWeekDays() {
+        dayList.clear()
+        dayList.add(DayList(dayList.size + 1, "Monday", false))
+        dayList.add(DayList(dayList.size + 1, "Tuesday", false))
+        dayList.add(DayList(dayList.size + 1, "Wednesday", false))
+        dayList.add(DayList(dayList.size + 1, "Thursday", false))
+        dayList.add(DayList(dayList.size + 1, "Friday", false))
+        dayList.add(DayList(dayList.size + 1, "Saturday", false))
+        dayList.add(DayList(dayList.size + 1, "Sunday", false))
     }
 
     private fun stringToWords(s: String) = s.trim().splitToSequence(',')
@@ -444,13 +462,37 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     if (fragmentScheduleMedicineBinding.endDate.text.toString().trim()
                             .isNotEmpty()
                     ) {
-                        var dateFormat = SimpleDateFormat("dd-MM-yyyy")
-                        val formatedDate: Date = dateFormat.parse(
+                        val formattedDate: Date = selectedDateFormat.parse(
                             fragmentScheduleMedicineBinding.endDate.text.toString().trim()
                         )!!
-                        dateFormat = SimpleDateFormat("yyyy-MM-dd")
-                        endDate = dateFormat.format(formatedDate)
+                        // check current day medication creation
+                        if (formattedDate == selectedDateFormat.parse(
+                                selectedDateFormat.format(
+                                    Calendar.getInstance().time
+                                )
+                            )
+                        ) {
+                            // check for current day entry for medication
+                            if (timeAddedList.size == 1) {
+                                val currentDateTime = selectedDateTimeFormat.parse(
+                                    selectedDateTimeFormat.format(Calendar.getInstance().time)
+                                )
+                                val medicationDateTime = selectedDateTimeFormat.parse(
+                                    serverDateFormat.format(formattedDate) + " " + timeAddedList[0].time + " " + timeAddedList[0].hour
+                                )
+
+                                if (medicationDateTime!!.before(currentDateTime)) {
+                                    showError(
+                                        requireContext(),
+                                        "Please add medication for future time."
+                                    )
+                                    return
+                                }
+                            }
+                        }
+                        endDate = serverDateFormat.format(formattedDate)
                     }
+
                     if (addedMedication != null) {
                         val scheduledMedication = UpdateScheduledMedList(
                             doseID!!,
@@ -641,12 +683,11 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
     private fun getDates(dateString1: String, dateString2: String): ArrayList<DayList> {
         val dates = ArrayList<DayList>()
-        val df1: DateFormat = SimpleDateFormat("yyyy-MM-dd")
         var date1: Date? = null
         var date2: Date? = null
         try {
-            date1 = df1.parse(dateString1)
-            date2 = df1.parse(dateString2)
+            date1 = serverDateFormat.parse(dateString1)
+            date2 = serverDateFormat.parse(dateString2)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -664,10 +705,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 "Sat" -> "6"
                 else -> "7"
             }
-            /* if(!dates.contains(SimpleDateFormat("EEEE").format(cal1.time))){
-                 dates.add(DayList(id.toInt(), SimpleDateFormat("EEEE").format(cal1.time), false))
-             }*/
-
+            dates.add(DayList(id.toInt(), SimpleDateFormat("EEEE").format(cal1.time), false))
             cal1.add(Calendar.DATE, 1)
         }
         return dates

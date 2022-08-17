@@ -296,9 +296,9 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 navigateToLoginScreen()
             }
             // Upload Profile Pic
-            R.id.imgUploadProfilePic -> {
+            R.id.imgUploadProfilePic, R.id.imgProfile -> {
                 if (!checkPermission()) {
-                    requestPermission();
+                    requestPermission()
                 } else {
                     openImagePicker()
                 }
