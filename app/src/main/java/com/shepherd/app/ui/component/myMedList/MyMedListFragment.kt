@@ -108,7 +108,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 super.whenSelectionChanged(isSelected, position, date)
                 // check day id based on date id
                 val day = SimpleDateFormat("EEE").format(date)
-                selectedDate =  SimpleDateFormat("yyyy-MM-dd").format(date)
+                selectedDate = SimpleDateFormat("yyyy-MM-dd").format(date)
                 dayId = when (day) {
                     "Mon" -> "1"
                     "Tue" -> "2"
@@ -152,40 +152,11 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     override fun observeViewModel() {
         observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
         observeEvent(medListViewModel.medDetailItems, ::selectedMedication)
-
-        // Observe Get All Med List Live Data
-        /*   medListViewModel.getMedListResponseLiveData.observeEvent(this) {
-               when (it) {
-                   is DataResult.Failure -> {
-                       hideLoading()
-                       showError(requireContext(), it.message.toString())
-                   }
-                   is DataResult.Loading -> {
-                       showLoading("")
-                   }
-                   is DataResult.Success -> {
-                       hideLoading()
-                       it.data.payload.let { payload ->
-                           medLists = payload?.medlists!!
-                           total = payload.total!!
-                           currentPage = payload.currentPage!!
-                           totalPage = payload.totalPages!!
-
-                       }
-
-                       if (medLists.isNullOrEmpty()) return@observeEvent
-                       myMedicationsAdapter?.addData(medLists)
-
-                   }
-               }
-           }*/
-
         // Observe get loved one med lists response
         medListViewModel.getLovedOneMedListsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-//                    showError(requireContext(), it.message.toString())
                     myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
                     myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
                     myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
@@ -207,7 +178,15 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     val data = it.data.payload
                     for (i in data) {
                         if (i.days!!.contains(dayId)) {
-                            if(i.endDate!=null && (SimpleDateFormat("yyyy-MM-dd").parse(i.endDate!!)!! == currentDate ||SimpleDateFormat("yyyy-MM-dd").parse(i.endDate!!)!!.after(currentDate))) {
+                            if (i.endDate != null) {
+                                if (SimpleDateFormat("yyyy-MM-dd").parse(i.endDate!!)!! == currentDate || SimpleDateFormat(
+                                        "yyyy-MM-dd"
+                                    ).parse(i.endDate!!)!!.after(currentDate)
+                                ) {
+                                    payload.add(i)
+                                }
+                            }
+                            else{
                                 payload.add(i)
                             }
                         }
@@ -302,7 +281,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     //open edit view
                     findNavController().navigate(
                         AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                            medicationScheduledPayload = it
+                            medicationId = it.id.toString()
                         )
                     )
                 }
@@ -310,13 +289,13 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     //delete medlist schedules
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
-                        setTitle("Delete Medication Schedule")
-                        setMessage("Sure you want to delete this medication schedule")
-                        setPositiveButton("Yes") { _, _ ->
+                        setTitle(getString(R.string.delete_medication_schedules))
+                        setMessage(getString(R.string.sure_you_want_to_delte_medication))
+                        setPositiveButton(getString(R.string.yes)) { _, _ ->
                             deletePosition = it.id!!
                             medListViewModel.deletedSceduledMedication(it.id!!)
                         }
-                        setNegativeButton("Cancel") { _, _ ->
+                        setNegativeButton(getString(R.string.cancel)) { _, _ ->
 
                         }
                     }.create()
@@ -341,7 +320,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     //open edit view
                     findNavController().navigate(
                         AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                            medicationScheduled = it
+                            medicationId = it.id.toString()
                         )
                     )
                 }
@@ -353,7 +332,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         setTitle("Delete Medication Schedule")
                         setMessage("Sure you want to delete this medication schedule")
                         setPositiveButton("Yes") { _, _ ->
-//                            deletePostion = it.medlist!!.deletePosition!!
                             deletePosition = it.id!!
                             medListViewModel.deletedSceduledMedication(it.id!!)
                         }

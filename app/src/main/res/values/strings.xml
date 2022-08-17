@@ -414,6 +414,7 @@
     <string name="please_select_dose_for_medication">Please select dose for medication</string>
     <string name="please_select_frequcny_for_dose">Please select frequency for dose</string>
     <string name="please_select_timing_all_medication">Please select timing of all medication dose</string>
+    <string name="please_select_timing_medication">Please select timing of medication dose</string>
     <string name="please_select_days_for_medication">Please select days for medication.</string>
     <string name="scheduled_medication_created_successfully">Scheduled Medication created successfully…</string>
     <string name="no_scheduled_medication_found">No Scheduled reminder found</string>
@@ -423,7 +424,12 @@
     <string name="twice_a_day">Twice a day</string>
     <string name="three_times_a_day">Three times a day</string>
     <string name="four_times_a_day">Four times a day</string>
-    <string name="no_medication_reminder_found">No Medication Reminder Found...</string>
-    <string name="no_medication_found">No Medication Found...</string>
+    <string name="no_medication_reminder_found">No Medication Reminder Found…</string>
+    <string name="no_medication_found">No Medication Found…</string>
     <string name="view_medical_conditions">View Medical Conditions</string>
+    <string name="timing_already_added_for_dose_">This dose timing is already added to list. Please select other timing.</string>
+    <string name="delete_medication_schedules">Delete Medication Schedule</string>
+    <string name="sure_you_want_to_delte_medication">Sure you want to delete this medication schedule</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
 </resources>

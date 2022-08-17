@@ -51,8 +51,8 @@ import java.io.File
  */
 @AndroidEntryPoint
 class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
-    View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener,
-    EasyPermissions.PermissionCallbacks {
+    View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener{
+//     EasyPermissions.PermissionCallbacks
 
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     private lateinit var fragmentAddNewLockBoxBinding: FragmentAddNewLockBoxBinding
@@ -269,27 +269,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         }
     }
 
-    private fun hasStoragePermissions(): Boolean {
-        return EasyPermissions.hasPermissions(
-            requireContext(),
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-    }
-
-    private fun storageAccess() {
-        if (hasStoragePermissions()) {
-            openMultipleDocPicker()
-        } else {
-            // Ask for one permission
-            EasyPermissions.requestPermissions(
-                this,
-                getString(R.string.rationale_external_storage),
-                RC_STORAGE_PERM,
-                Manifest.permission.MANAGE_EXTERNAL_STORAGE
-            )
-        }
-    }
-
     private fun showChooseFileDialog() {
         dialog = Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar_Fullscreen)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -306,7 +285,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         // Click Local Storage
         cvLocalStorage.setOnClickListener {
             //call back after permission granted
-            methodRequiresTwoPermission()
+            if (!checkPermission()) {
+                requestPermission(300)
+            } else {
+                openMultipleDocPicker()
+            }
+
+//            methodRequiresTwoPermission()
         }
 
         // Click Cancel
@@ -359,7 +344,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         )
     }
 
-    @AfterPermissionGranted(REQUEST_CODE_OPEN_DOCUMENT)
+   /* @AfterPermissionGranted(REQUEST_CODE_OPEN_DOCUMENT)
     private fun methodRequiresTwoPermission() {
         val perms = arrayOf(
             Manifest.permission.CAMERA,
@@ -375,7 +360,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 REQUEST_CODE_OPEN_DOCUMENT, *perms
             )
         }
-    }
+    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         when (requestCode) {
@@ -538,7 +523,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
         }
 
-    override fun onRequestPermissionsResult(
+   /* override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
@@ -554,6 +539,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         showError(requireContext(), "Permission denied for local storage access.")
-    }
+    }*/
 }
 

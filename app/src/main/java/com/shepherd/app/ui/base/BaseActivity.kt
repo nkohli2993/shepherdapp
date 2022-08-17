@@ -8,38 +8,28 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.MutableLiveData
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
 import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
 import com.shepherd.app.R
-import com.shepherd.app.ui.component.carePoints.CarePointsFragment
-import com.shepherd.app.ui.component.carePoints.CarePointsFragmentDirections
-import com.shepherd.app.ui.component.careTeamMembers.CareTeamMembersFragment
-import com.shepherd.app.ui.component.lockBox.LockBoxFragment
-import com.shepherd.app.ui.component.myMedList.MyMedListFragment
 import com.shepherd.app.utils.ProgressBarDialog
-import java.io.File
-import androidx.navigation.fragment.findNavController
-import com.shepherd.app.ui.component.dashboard.DashboardFragment
 import com.shepherd.app.utils.extensions.showError
+import java.io.File
 
 /**
  * Created by Sumit Kumar
@@ -213,34 +203,31 @@ abstract class BaseActivity : AppCompatActivity() {
                 if (readAccepted && writeAccepted  && cameraAccepted)
                     openImagePicker()
                 else {
-                    showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
+                   // showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            val builder = AlertDialog.Builder(this)
-                            val dialog = builder.apply {
-                                setMessage("You need to allow access to both the permissions")
-                                setPositiveButton("OK") { _, _ ->
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        requestPermissions(
-                                            arrayOf(
-                                                Manifest.permission.READ_EXTERNAL_STORAGE,
-                                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                                Manifest.permission.CAMERA
-                                            ),
-                                            PERMISSION_REQUEST_CODE
-                                        )
-                                    }
-
+                        val builder = AlertDialog.Builder(this)
+                        val dialog = builder.apply {
+                            setMessage("Permission Denied, You need to allow Gallery data and Camera permissions")
+                            setPositiveButton("OK") { _, _ ->
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    //open app setting to access
+                                    val intent = Intent()
+                                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                                    val uri: Uri =
+                                        Uri.fromParts("package", applicationContext.packageName, null)
+                                    intent.data = uri
+                                    context.startActivity(intent)
                                 }
-                                setNegativeButton("Cancel") { _, _ ->
 
-                                }
-                            }.create()
-                            dialog.show()
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-                            return
-                        }
+                            }
+                            setNegativeButton("Cancel") { _, _ ->
+
+                            }
+                        }.create()
+                        dialog.show()
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                        return
                     }
                 }
             }

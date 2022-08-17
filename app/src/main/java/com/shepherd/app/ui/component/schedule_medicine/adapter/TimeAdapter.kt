@@ -57,9 +57,11 @@ class TimeAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(timelist: TimeSelectedlist, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.selectedTimeTV.text = ""
             if ((timelist.time ?: "").isNotEmpty()) {
                 itemBinding.selectedTimeTV.text = timelist.time
             }
+
             if ((timelist.isAmPM ?: "").isNotEmpty()) {
                 when (timelist.isAmPM) {
                     "am" -> {

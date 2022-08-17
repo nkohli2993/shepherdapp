@@ -52,7 +52,7 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    showSuccess(requireContext(), it.data.message.toString())
+                    //showSuccess(requireContext(), it.data.message.toString())
                     Log.d(TAG, "Medication Detail :${it.data.payload} ")
                     fragmentMyMedDetailBinding.tvMedTitle.text = it.data.payload.medlist.name
                     fragmentMyMedDetailBinding.brandNameTV.text =it.data.payload.medlist.name
