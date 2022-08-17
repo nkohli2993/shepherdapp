@@ -150,9 +150,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         if (payLoad!!.end_date != null) {
                             setEndDate(payLoad!!.end_date)
                         }
-
-                        timeList.clear()
-
                         timeList.clear()
                         for (i in payLoad?.time!!) {
                             timeList.add(
@@ -168,12 +165,9 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         setDayAdapter()
                         fragmentScheduleMedicineBinding.etNote.setText(payLoad!!.note)
                     }
-
                 }
             }
         }
-
-
     }
 
     @SuppressLint("SimpleDateFormat", "ClickableViewAccessibility")

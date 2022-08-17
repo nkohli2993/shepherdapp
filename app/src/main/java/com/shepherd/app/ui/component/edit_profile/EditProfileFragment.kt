@@ -54,6 +54,13 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
+            R.id.imageViewUser, R.id.llImageWrapper ->{
+                if (!checkPermission()) {
+                    requestPermission(200)
+                } else {
+                    openImagePicker()
+                }
+            }
         }
     }
 

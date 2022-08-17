@@ -152,40 +152,11 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     override fun observeViewModel() {
         observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
         observeEvent(medListViewModel.medDetailItems, ::selectedMedication)
-
-        // Observe Get All Med List Live Data
-        /*   medListViewModel.getMedListResponseLiveData.observeEvent(this) {
-               when (it) {
-                   is DataResult.Failure -> {
-                       hideLoading()
-                       showError(requireContext(), it.message.toString())
-                   }
-                   is DataResult.Loading -> {
-                       showLoading("")
-                   }
-                   is DataResult.Success -> {
-                       hideLoading()
-                       it.data.payload.let { payload ->
-                           medLists = payload?.medlists!!
-                           total = payload.total!!
-                           currentPage = payload.currentPage!!
-                           totalPage = payload.totalPages!!
-
-                       }
-
-                       if (medLists.isNullOrEmpty()) return@observeEvent
-                       myMedicationsAdapter?.addData(medLists)
-
-                   }
-               }
-           }*/
-
         // Observe get loved one med lists response
         medListViewModel.getLovedOneMedListsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-//                    showError(requireContext(), it.message.toString())
                     myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
                     myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
                     myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
