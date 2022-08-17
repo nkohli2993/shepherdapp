@@ -14,6 +14,7 @@ import com.shepherd.app.databinding.FragmentChatBinding
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.chat.adapter.ChatAdapter
 import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.view_model.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -76,11 +77,13 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
             }
             R.id.ivSend -> {
                 val message = fragmentChatBinding.edtMessage.text.toString().trim()
-                if(message.isNullOrEmpty()){
-                    showInfo(requireContext(),"Please enter message...")
-                }else{
+                if (message.isNullOrEmpty()) {
+                    showInfo(requireContext(), "Please enter message...")
+                } else {
                     chatModel?.message = message
                     Log.d(TAG, "Send Message :$chatModel ")
+                    chatModel?.let { chatViewModel.sendMessage(it) }
+                    fragmentChatBinding.edtMessage.text?.clear()
                 }
 
             }

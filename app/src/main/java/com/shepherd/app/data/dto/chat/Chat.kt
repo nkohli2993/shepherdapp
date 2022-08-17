@@ -11,8 +11,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ChatModel(
-    // Chat Id
-    var chatId: String? = null,
+    // id is the document id
+    var id: String? = null,
     //Sender
     var senderID: Int? = null,
     var senderName: String? = null,
@@ -23,6 +23,7 @@ data class ChatModel(
     var message: String? = null,
     //Chat Type
     var chatType: Int? = null,
-    @ServerTimestamp() var created: Timestamp? = null,
+    @ServerTimestamp()
+    var created: Timestamp? = null,
 ) : Parcelable
 
