@@ -571,7 +571,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
         when (parent?.id) {
             R.id.relationship_spinner -> {
-                if (position > 0) selectState(position)
+                if (position > 0) selectState(position) else selectState(0)
             }
         }
     }

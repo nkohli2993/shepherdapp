@@ -72,6 +72,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             binding.recyclerViewCondition.visibility = View.VISIBLE
         }
 
+/*
         binding.editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
 
@@ -82,13 +83,16 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     if (s.isEmpty()) {
                         conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                         binding.imgCancel.visibility = View.GONE
+                        binding.txtNoResultFound.visibility = View.GONE
+                        binding.recyclerViewCondition.visibility = View.VISIBLE
 
                     }
                     if (s.isNotEmpty()) {
                         binding.imgCancel.visibility = View.VISIBLE
                         searchedConditions?.clear()
                         conditions?.forEach {
-                            if (it.name?.startsWith(s, true) == true) {
+//                            if (it.name?.startsWith(s.toString(), true) == true) {
+                            if (it.name?.contains(s.toString(), true) == true) {
                                 searchedConditions?.add(it)
                             }
                         }
@@ -101,19 +105,23 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         })
+*/
 
-        binding.editTextSearch.doAfterTextChanged { it ->
-            if (it != null) {
-                if (it.isEmpty()) {
+        binding.editTextSearch.doAfterTextChanged { search ->
+            if (search != null) {
+                if (search.isEmpty()) {
                     conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                     binding.imgCancel.visibility = View.GONE
+                    binding.txtNoResultFound.visibility = View.GONE
+                    binding.recyclerViewCondition.visibility = View.VISIBLE
 
                 }
-                if (it.isNotEmpty()) {
+                if (search.isNotEmpty()) {
                     binding.imgCancel.visibility = View.VISIBLE
                     searchedConditions?.clear()
                     conditions?.forEach {
-                        if (it.name?.startsWith(it.toString(), true) == true) {
+//                            if (it.name?.startsWith(s.toString(), true) == true) {
+                        if (it.name?.contains(search.toString(), true) == true) {
                             searchedConditions?.add(it)
                         }
                     }
@@ -124,6 +132,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     searchedConditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                 }
             }
+
         }
     }
 

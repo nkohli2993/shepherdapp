@@ -425,7 +425,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 val mYear = c[Calendar.YEAR]
                 val mMonth = c[Calendar.MONTH]
                 val mDay = c[Calendar.DAY_OF_MONTH]
-
+                c.add(Calendar.DATE,1)
                 val datePickerDialog = DatePickerDialog(
                     requireActivity(), R.style.datepicker,
                     { _, year, monthOfYear, dayOfMonth ->

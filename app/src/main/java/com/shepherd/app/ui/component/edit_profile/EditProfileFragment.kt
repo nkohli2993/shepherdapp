@@ -39,7 +39,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
         fragmentEditProfileBinding.etEmailId.setText(editProfileViewModel.getUserEmail())
         Picasso.get().load(editProfileViewModel.getUserDetail()?.profilePhoto)
             .placeholder(R.drawable.ic_defalut_profile_pic)
-            .into(ivLovedOneProfile)
+            .into(fragmentEditProfileBinding.imageViewUser)
         if(editProfileViewModel.getUserDetail()?.phoneCode!=null){
             fragmentEditProfileBinding.ccp.setCountryForPhoneCode(editProfileViewModel.getUserDetail()?.phoneCode!!.toInt())
         }
