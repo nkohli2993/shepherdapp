@@ -130,6 +130,11 @@
             android:defaultValue="@null"
             app:argType="com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload"
             app:nullable="true" />
+        <argument
+            android:name="medication_id"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_nav_schedule_medication_to_nav_my_medlist"
             app:destination="@id/nav_my_medlist" />

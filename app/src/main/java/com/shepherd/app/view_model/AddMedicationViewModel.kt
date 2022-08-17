@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.*
+import com.shepherd.app.data.dto.med_list.get_medication_detail.GetMedicationDetailResponse
 import com.shepherd.app.data.dto.med_list.schedule_medlist.DoseList
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.med_list.MedListRepository
@@ -70,6 +71,12 @@ class AddMedicationViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<AddScheduledMedicationResponseModel>>>()
     var addScheduledMedicationResponseLiveData: LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> =
         _addScheduledMedicationResponseLiveData
+
+    private var _getMedicationDetailResponseLiveData =
+        MutableLiveData<Event<DataResult<GetMedicationDetailResponse>>>()
+
+    var getMedicationDetailResponseLiveData: LiveData<Event<DataResult<GetMedicationDetailResponse>>> =
+        _getMedicationDetailResponseLiveData
 
     // Get All MedLists
     fun getAllMedLists(
@@ -172,6 +179,17 @@ class AddMedicationViewModel @Inject constructor(
     }
 
 
+    fun getMedicationDetail(id: Int): LiveData<Event<DataResult<GetMedicationDetailResponse>>> {
+        viewModelScope.launch {
+            val response = medListRepository.getMedicationDetail(id)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _getMedicationDetailResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return getMedicationDetailResponseLiveData
+    }
 
 
 }

@@ -72,41 +72,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             binding.recyclerViewCondition.visibility = View.VISIBLE
         }
 
-/*
-        binding.editTextSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) = Unit
-
-            override fun afterTextChanged(s: Editable?) {
-                if (s != null) {
-                    if (s.isEmpty()) {
-                        conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
-                        binding.imgCancel.visibility = View.GONE
-                        binding.txtNoResultFound.visibility = View.GONE
-                        binding.recyclerViewCondition.visibility = View.VISIBLE
-
-                    }
-                    if (s.isNotEmpty()) {
-                        binding.imgCancel.visibility = View.VISIBLE
-                        searchedConditions?.clear()
-                        conditions?.forEach {
-//                            if (it.name?.startsWith(s.toString(), true) == true) {
-                            if (it.name?.contains(s.toString(), true) == true) {
-                                searchedConditions?.add(it)
-                            }
-                        }
-                        if (searchedConditions.isNullOrEmpty()) {
-                            binding.txtNoResultFound.visibility = View.VISIBLE
-                            binding.recyclerViewCondition.visibility = View.GONE
-                        }
-                        searchedConditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
-                    }
-                }
-            }
-        })
-*/
-
         binding.editTextSearch.doAfterTextChanged { search ->
             if (search != null) {
                 if (search.isEmpty()) {
@@ -120,7 +85,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     binding.imgCancel.visibility = View.VISIBLE
                     searchedConditions?.clear()
                     conditions?.forEach {
-//                            if (it.name?.startsWith(s.toString(), true) == true) {
                         if (it.name?.contains(search.toString(), true) == true) {
                             searchedConditions?.add(it)
                         }
