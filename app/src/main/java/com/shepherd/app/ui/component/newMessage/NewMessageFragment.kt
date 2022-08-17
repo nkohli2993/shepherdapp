@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,9 @@ import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.Resource
 import com.shepherd.app.data.dto.care_team.CareTeamModel
+import com.shepherd.app.data.dto.chat.ChatModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.databinding.FragmentNewMessageBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -47,6 +50,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     var currentPage: Int = 0
     var totalPage: Int = 0
     var total: Int = 0
+    private var TAG = "NewMessageFragment"
 
 
     override fun onCreateView(
@@ -182,8 +186,36 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     }
 
     private fun navigateToChat(singleEvent: SingleEvent<CareTeamModel>) {
+        // Get Login User's detail
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.USER_DETAILS,
+            UserProfile::class.java
+        )
+        val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+        val loggedInUserId = loggedInUser?.id
+
         singleEvent.getContentIfNotHandled()?.let {
-            findNavController().navigate(R.id.action_new_message_to_chat)
+            val receiverName = it.user_id_details.firstname + " " + it.user_id_details.lastname
+            val receiverID = it.user_id_details.id
+            val receiverPicUrl = it.user_id_details.profilePhoto
+            // Create Chat Model
+            val chatModel = ChatModel(
+                null,
+                loggedInUserId,
+                loggedInUserName,
+                receiverID,
+                receiverName,
+                receiverPicUrl,
+                null,
+                null, null
+            )
+            Log.d(TAG, "ChatModel : $chatModel ")
+            findNavController().navigate(
+                NewMessageFragmentDirections.actionNewMessageToChat(
+                    "NewMessageFragment",
+                    chatModel
+                )
+            )
         }
     }
 

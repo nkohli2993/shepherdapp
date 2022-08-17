@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.shepherd.app.data.dto.chat.ChatModel" />
 
         <variable
             name="listener"
@@ -20,6 +23,7 @@
         android:orientation="vertical"
         tools:context="com.shepherd.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivBack"
             android:layout_width="wrap_content"
@@ -30,18 +34,40 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/llImageWrapper"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:background="@drawable/bg_image_place_holder_1"
+            android:orientation="vertical"
+            android:layout_marginStart="5dp"
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toTopOf="@+id/ivBack"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBack">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/imgChatUser"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/_1sdp"
+                android:padding="@dimen/_2sdp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_defalut_profile_pic"
+                app:imageUrl="@{data.receiverPicUrl}"
+                app:shapeAppearanceOverlay="@style/roundedCornersImageView10" />
+        </LinearLayout>
+
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvMedList"
+            style="@style/TextViewGothamMedium"
+            android:id="@+id/txtName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@+id/ivBack"
-            android:fontFamily="@font/gotham_bold"
-            android:text="John"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_20ssp"
+            android:text="@{data.receiverName}"
+            android:layout_marginStart="5dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivBack"
-            app:layout_constraintTop_toTopOf="@id/ivBack" />
+            app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
+            app:layout_constraintTop_toTopOf="@id/llImageWrapper" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewChat"
@@ -49,29 +75,64 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_5sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
+            app:layout_constraintBottom_toTopOf="@+id/messageCL"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivBack"
             tools:itemCount="3"
             tools:listitem="@layout/adapter_chat" />
 
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/editTextMessage"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/messageCL"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_box_6"
-            android:backgroundTint="@color/_E7E8EA"
-            android:drawableEnd="@drawable/ic_send_msg"
-            android:hint="@string/write"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:paddingVertical="@dimen/_15sdp"
-            android:textColorHint="@color/_192032"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtMessage"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_box_6"
+                android:backgroundTint="@color/_E7E8EA"
+                android:hint="@string/write"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:paddingVertical="@dimen/_15sdp"
+                android:textColorHint="@color/_192032"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/_5sdp"
+                android:src="@drawable/ic_send_msg"
+                android:layout_marginEnd="5dp"
+                android:onClick="@{listener::onClick}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!-- <androidx.appcompat.widget.AppCompatEditText
+             android:id="@+id/editTextMessage"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:background="@drawable/rounded_box_6"
+             android:backgroundTint="@color/_E7E8EA"
+             android:drawableEnd="@drawable/ic_send_msg"
+             android:hint="@string/write"
+             android:paddingHorizontal="@dimen/_10sdp"
+             android:paddingVertical="@dimen/_15sdp"
+             android:textColorHint="@color/_192032"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
