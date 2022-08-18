@@ -1,28 +1,42 @@
 package com.shepherd.app.ui.component.edit_profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
 import com.shepherd.app.databinding.FragmentEditProfileBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.utils.UserSlug
 import com.shepherd.app.utils.extensions.isValidEmail
+import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.utils.extensions.showSuccess
+import com.shepherd.app.utils.loadImageCentreCrop
+import com.shepherd.app.utils.observe
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_create_new_account.*
 import kotlinx.android.synthetic.main.app_bar_dashboard.*
+import java.io.File
 
 @AndroidEntryPoint
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnClickListener {
 
+    private var roleId: String? = null
     private val editProfileViewModel: EditProfileViewModel by viewModels()
-
     private lateinit var fragmentEditProfileBinding: FragmentEditProfileBinding
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    private var profilePicUrl: String? = null
+    private var TAG = "Edit_profile_screen"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +49,50 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
     }
 
     override fun observeViewModel() {
+        observe(selectedFile, ::handleSelectedImage)
+
+        // Observe the response of upload image api
+        editProfileViewModel.uploadImageLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.let { it1 ->
+                        it1.message?.let { it2 -> showSuccess(requireContext(), it2) }
+                        profilePicUrl = it1.payload?.profilePhoto
+                        Log.d(TAG, "ProfilePicURL:$profilePicUrl ")
+                    }
+                }
+            }
+        }
+
+        // Observe the response of Roles api
+        editProfileViewModel.rolesResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                }
+                is DataResult.Loading -> {
+
+                }
+                is DataResult.Success -> {
+                    roleId = it.data.payload.users.filter { users ->
+                        users.slug == UserSlug.User.slug
+                    }.map { user ->
+                        user.id
+                    }[0].toString()
+                }
+            }
+        }
+
     }
+
 
     override fun initViewBinding() {
         fragmentEditProfileBinding.listener = this
@@ -47,6 +104,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
         if(editProfileViewModel.getUserDetail()?.phoneCode!=null){
             fragmentEditProfileBinding.ccp.setCountryForPhoneCode(editProfileViewModel.getUserDetail()?.phoneCode!!.toInt())
         }
+        // Get Roles
+        editProfileViewModel.getRoles(pageNumber, limit)
     }
 
     override fun getLayoutRes(): Int {
@@ -67,21 +126,21 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
             }
             R.id.btnSaveChange ->{
                 if (isValid) {
-                  /*  val profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
+                    val profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
                         null
                     } else {
                         BuildConfig.BASE_URL_USER + profilePicUrl
                     }
 
-                    createNewAccountViewModel.createAccount(
+                    editProfileViewModel.updateAccount(
                         ccp.selectedCountryCode,
                         profilePicCompleteUrl,
                         edtFirstName.text.toString().trim(),
                         edtLastName.text.toString().trim(),
                         editTextEmail.text.toString().trim(),
                         edtPhoneNumber.text.toString().trim(),
-                        roleId
-                    )*/
+                        roleId = roleId
+                    )
                 }
 
             }
@@ -119,4 +178,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
         }
 
 
+    private fun handleSelectedImage(file: File?) {
+        if (file != null && file.exists()) {
+            //imgUploadProfilePic.visibility = View.GONE
+
+            editProfileViewModel.imageFile = file
+            editProfileViewModel.uploadImage(file)
+            imgProfile.loadImageCentreCrop(R.drawable.ic_outline_person, file)
+            imgProfile.scaleType = ImageView.ScaleType.FIT_XY
+        }
+    }
 }

@@ -17,6 +17,7 @@ import com.shepherd.app.view_model.AddMedicationViewModel
 class DaysAdapter(
     private val viewModel: AddMedicationViewModel,
     val context: Context,
+    val listener: selectedDay,
     var doseList: MutableList<DayList> = ArrayList()
 ) :
     RecyclerView.Adapter<DaysAdapter.DayViewHolder>() {
@@ -72,9 +73,10 @@ class DaysAdapter(
                 itemBinding.cbDay.isChecked = true
             }
             itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
+             recyclerItemListener.onItemSelected(
                     absoluteAdapterPosition
                 )
+//                listener.selected(absoluteAdapterPosition)
             }
         }
 
@@ -93,6 +95,10 @@ class DaysAdapter(
     fun addData(doseListAdded: MutableList<DayList>) {
         doseList.addAll(doseListAdded)
         notifyDataSetChanged()
+    }
+
+    interface selectedDay{
+        fun selected(id:Int)
     }
 
 

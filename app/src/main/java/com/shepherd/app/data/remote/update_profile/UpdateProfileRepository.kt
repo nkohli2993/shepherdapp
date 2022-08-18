@@ -73,4 +73,16 @@ class UpdateProfileRepository @Inject constructor(private val apiService: ApiSer
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
+    //get login user role
+    suspend fun getRoles(
+        pageNumber: Int,
+        limit: Int,
+    ): Flow<DataResult<RolesResponseModel>> {
+        return object : NetworkOnlineDataRepo<RolesResponseModel, RolesResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<RolesResponseModel> {
+                return apiService.getUserRoles(pageNumber, limit)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 }

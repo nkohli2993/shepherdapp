@@ -6,11 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.DataRepository
+import com.shepherd.app.data.dto.add_loved_one.UploadPicResponseModel
 import com.shepherd.app.data.dto.added_events.*
 import com.shepherd.app.data.dto.dashboard.LoveUser
 import com.shepherd.app.data.dto.edit_profile.UserUpdateData
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.login.UserProfile
+import com.shepherd.app.data.dto.roles.RolesResponseModel
 import com.shepherd.app.data.dto.signup.UserSignupData
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.care_point.CarePointRepository
@@ -25,6 +27,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 
@@ -34,6 +37,7 @@ class EditProfileViewModel @Inject constructor(
     private val userRepository: UserRepository,
 ) :
     BaseViewModel() {
+    var imageFile: File? = null
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
@@ -57,6 +61,44 @@ class EditProfileViewModel @Inject constructor(
 
     var updateData = MutableLiveData<UserUpdateData>().apply {
         value = UserUpdateData()
+    }
+
+
+    private var _rolesResponseLiveData = MutableLiveData<Event<DataResult<RolesResponseModel>>>()
+    var rolesResponseLiveData: LiveData<Event<DataResult<RolesResponseModel>>> =
+        _rolesResponseLiveData
+
+    private var _uploadImageLiveData = MutableLiveData<Event<DataResult<UploadPicResponseModel>>>()
+    var uploadImageLiveData: LiveData<Event<DataResult<UploadPicResponseModel>>> =
+        _uploadImageLiveData
+
+    //Upload Image
+    fun uploadImage(file: File?): LiveData<Event<DataResult<UploadPicResponseModel>>> {
+        viewModelScope.launch {
+            val response = updateProfileRespository.uploadImage(file)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _uploadImageLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return uploadImageLiveData
+    }
+
+    //Get Roles
+    fun getRoles(
+        pageNumber: Int,
+        limit: Int,
+    ): LiveData<Event<DataResult<RolesResponseModel>>> {
+        viewModelScope.launch {
+            val response = updateProfileRespository.getRoles(pageNumber, limit)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _rolesResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return rolesResponseLiveData
     }
 
     fun updateAccount(
@@ -88,7 +130,7 @@ class EditProfileViewModel @Inject constructor(
             }
         }
 
-          return updateProfileLiveData
+        return updateProfileLiveData
     }
 
 }

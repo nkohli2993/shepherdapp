@@ -47,7 +47,7 @@ import java.util.*
 @AndroidEntryPoint
 @SuppressLint("NotifyDataSetChanged,SetTextI18n,SimpleDateFormat")
 class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
-    View.OnClickListener, FrequencyAdapter.selectedFrequency {
+    View.OnClickListener, FrequencyAdapter.selectedFrequency, DaysAdapter.selectedDay {
     private var payLoad: Payload? = null
     private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding
     private var dayAdapter: DaysAdapter? = null
@@ -270,7 +270,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             if (o1.id == null) 0 else o1.id!!
                 .compareTo(o2.id!!)
         }
-        dayAdapter = DaysAdapter(medicationViewModel, requireContext(), dayList)
+        dayAdapter = DaysAdapter(medicationViewModel, requireContext(),this, dayList)
         fragmentScheduleMedicineBinding.daysRV.adapter = dayAdapter
     }
 
@@ -369,8 +369,15 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     }
                 }
             }
-            fragmentScheduleMedicineBinding.daysTV.text =
-                selectedDays.joinToString().replace(" ", "")
+            if(selectedDays.size>0){
+                fragmentScheduleMedicineBinding.daysTV.text =
+                    selectedDays.joinToString().replace(" ", "")
+            }
+            else{
+                fragmentScheduleMedicineBinding.daysTV.text =
+                   ""
+            }
+
         }
     }
 
@@ -407,7 +414,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         navigateEvent.getContentIfNotHandled()?.let {
             if (dayList[it].isClickabled) {
                 dayList[it].isSelected = !dayList[it].isSelected
-                dayAdapter!!.notifyDataSetChanged()
+
                 val selected: ArrayList<String> = arrayListOf()
                 val selectedDays: ArrayList<String> = arrayListOf()
                 for (i in dayList) {
@@ -416,15 +423,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         selectedDays.add(i.time.toString())
                     }
                 }
-                if (selected.size > 0) {
+                if (selectedDays.size > 0) {
                     daysIds = selected.joinToString().replace(" ", "")
                     fragmentScheduleMedicineBinding.daysTV.text =
                         selectedDays.joinToString().replace(" ", "")
                 }
+                else{
+                    fragmentScheduleMedicineBinding.daysTV.text = ""
+                }
             } else {
                 showError(
                     requireContext(),
-                    "This day does not lie berween selected end date of medication."
+                    "This day does not lie between selected end date of medication."
                 )
             }
 
@@ -757,6 +767,35 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             cal1.add(Calendar.DATE, 1)
         }
         return dates
+    }
+
+    override fun selected(it: Int) {
+        if (dayList[it].isClickabled) {
+            dayList[it].isSelected = !dayList[it].isSelected
+            dayAdapter!!.notifyDataSetChanged()
+            val selected: ArrayList<String> = arrayListOf()
+            val selectedDays: ArrayList<String> = arrayListOf()
+            for (i in dayList) {
+                if (i.isSelected) {
+                    selected.add(i.id.toString())
+                    selectedDays.add(i.time.toString())
+                }
+            }
+            if (selectedDays.size > 0) {
+                daysIds = selected.joinToString().replace(" ", "")
+                fragmentScheduleMedicineBinding.daysTV.text =
+                    selectedDays.joinToString().replace(" ", "")
+            }
+            else{
+                fragmentScheduleMedicineBinding.daysTV.text = ""
+            }
+        } else {
+            showError(
+                requireContext(),
+                "This day does not lie between selected end date of medication."
+            )
+        }
+
     }
 
 }
