@@ -16,9 +16,13 @@ import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.databinding.AdapterSelectedDayMedicineBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.utils.MedListAction
+import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.MyMedListViewModel
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
-
+@SuppressLint("SimpleDateFormat")
 class SelectedDayMedicineAdapter(
     private val viewModel: MyMedListViewModel,
     var medListReminderList: MutableList<MedListReminder> = ArrayList()
@@ -66,25 +70,36 @@ class SelectedDayMedicineAdapter(
 
     inner class SelectedDayMedicineViewHolder(private val itemBinding: AdapterSelectedDayMedicineBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
+
         fun bind(
             medListReminder: MedListReminder?,
             recyclerItemListener: RecyclerItemListener,
             recyclerItemListener1: RecyclerItemListener
         ) {
             itemBinding.data = medListReminder
-            itemBinding.root.setOnClickListener {
+            itemBinding.medicationCL.setOnClickListener {
                 medListReminder?.let { it1 ->
                     recyclerItemListener.onItemSelected(
                         it1
                     )
                 }
             }
-
+            itemBinding.cbReminder.isChecked = false
             itemBinding.cbReminder.setOnCheckedChangeListener { compoundButton, _isChecked ->
-                medListReminder?.isSelected = _isChecked
-                medListReminder?.let { recyclerItemListener1.onItemSelected(it) }
+                val (selectedDate: Date, currentDate) = clickDate(medListReminder)
+                if (selectedDate.after(currentDate)) {
+                    itemBinding.cbReminder.isChecked = false
+                    showError(context, context.getString(R.string.not_allowed_to_update_future_medication))
+                } else {
+                    medListReminder?.isSelected = _isChecked
+                    medListReminder?.let { recyclerItemListener1.onItemSelected(it) }
+                }
             }
-
+            val (selectedDate: Date, currentDate) = clickDate(medListReminder)
+            itemBinding.cbReminder.setButtonDrawable(R.drawable.checkbox_selector)
+            if (selectedDate.after(currentDate)) {
+                itemBinding.cbReminder.setButtonDrawable(R.drawable.checkbox_selectot_grey)
+            }
             itemBinding.imgMore.setOnClickListener {
 
                 showPopupReportPost(
@@ -93,6 +108,14 @@ class SelectedDayMedicineAdapter(
                     recyclerItemListener, medListReminder
                 )
             }
+        }
+
+        private fun clickDate(medListReminder: MedListReminder?): Pair<Date, Date?> {
+            val selectedDate: Date =
+                SimpleDateFormat("yyyy-MM-dd").parse(medListReminder?.selectedDate)
+            val current = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+            val currentDate = SimpleDateFormat("yyyy-MM-dd").parse(current)
+            return Pair(selectedDate, currentDate)
         }
 
         private fun popupLocateView(v: View?): Rect? {

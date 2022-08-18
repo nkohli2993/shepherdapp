@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_bold"
-            android:maxWidth="@dimen/_100sdp"
+            android:maxWidth="@dimen/_200sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
             app:layout_constraintBottom_toBottomOf="@+id/ivBack"

@@ -242,7 +242,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             addMedicalConditons(ids, loveOneId)
                         } else {
                             // api to update medical condition
-                            showError(this, "Update medical condition")
+                            showError(this, "Update not implemented")
                         }
                     }
                     else -> {

@@ -25,4 +25,5 @@ data class MedListReminder(
     var endDate: String? = null,
     var isSelected: Boolean = false,
     var dosage: com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
+    var selectedDate:String? = null
 ) : Parcelable

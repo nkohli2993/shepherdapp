@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -179,8 +180,12 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
         }
         frequencyId = FrequencyType.ONCE.value.toInt()
+        fragmentScheduleMedicineBinding.btnSubmit.text = getString(R.string.add_medication)
+        fragmentScheduleMedicineBinding.tvMedList.text = getString(R.string.schedule_medication)
         if (args.medicationId != null) {
             medicationId = args.medicationId!!.toInt()
+            fragmentScheduleMedicineBinding.tvMedList.text = getString(R.string.update_medication)
+            fragmentScheduleMedicineBinding.btnSubmit.text = getString(R.string.update_medication)
         }
         addFrequencyType()
         fragmentScheduleMedicineBinding.frequencyRV.adapter = FrequencyAdapter(
@@ -191,7 +196,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
         medicationViewModel.getAllDoseList(pageNumber, limit)
 
-        fragmentScheduleMedicineBinding.etNote.setOnTouchListener {  view, event ->
+        fragmentScheduleMedicineBinding.etNote.setOnTouchListener { view, event ->
             //check days view open
             if (fragmentScheduleMedicineBinding.daysRV.visibility == View.VISIBLE) {
                 fragmentScheduleMedicineBinding.daysRV.visibility = View.GONE
@@ -314,7 +319,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         //to get days according to date selected
         fragmentScheduleMedicineBinding.daysTV.text = ""
         if (fragmentScheduleMedicineBinding.endDate.text.isEmpty()) {
-            addWeekDays()
+            dayList = addWeekDays()
         } else {
             val addedEndDate: Date = selectedDateFormat.parse(
                 fragmentScheduleMedicineBinding.endDate.text.toString().trim()
@@ -326,12 +331,30 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     addedEndDate
                 ) >= 7L
             ) {  // checked days to remove date duplicity
-                addWeekDays()
+                dayList = addWeekDays()
             } else {
-                dayList = getDates(
-                    serverDateFormat.format(Calendar.getInstance().time),
+                val cal = Calendar.getInstance()
+                val availDayList = getDates(
+                    serverDateFormat.format(cal.time),
                     serverDateFormat.format(addedEndDate)
                 )
+                val allDayList = addWeekDays()
+                dayList.clear()
+                val notAvailableDays: ArrayList<DayList> = ArrayList()
+                for (allDay in allDayList) {
+                    var found = false
+                    for (availableDay in availDayList) {
+                        if (allDay.id === availableDay.id) {
+                            found = true
+                        }
+                    }
+                    if (!found) {
+                        allDay.isClickabled = false
+                        notAvailableDays.add(allDay)
+                    }
+                }
+                dayList.addAll(availDayList)
+                dayList.addAll(notAvailableDays)
             }
         }
         val selectedDays: ArrayList<String> = arrayListOf()
@@ -351,15 +374,23 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         }
     }
 
-    private fun addWeekDays() {
-        dayList.clear()
-        dayList.add(DayList(dayList.size + 1, "Monday", false))
-        dayList.add(DayList(dayList.size + 1, "Tuesday", false))
-        dayList.add(DayList(dayList.size + 1, "Wednesday", false))
-        dayList.add(DayList(dayList.size + 1, "Thursday", false))
-        dayList.add(DayList(dayList.size + 1, "Friday", false))
-        dayList.add(DayList(dayList.size + 1, "Saturday", false))
-        dayList.add(DayList(dayList.size + 1, "Sunday", false))
+    private fun addWeekDays(): ArrayList<DayList> {
+        val dayList: ArrayList<DayList> = arrayListOf()
+        dayList.add(DayList(dayList.size + 1, "Monday", isSelected = false, isClickabled = true))
+        dayList.add(DayList(dayList.size + 1, "Tuesday", isSelected = false, isClickabled = true))
+        dayList.add(
+            DayList(
+                dayList.size + 1,
+                "Wednesday",
+                isSelected = false,
+                isClickabled = true
+            )
+        )
+        dayList.add(DayList(dayList.size + 1, "Thursday", isSelected = false, isClickabled = true))
+        dayList.add(DayList(dayList.size + 1, "Friday", isSelected = false, isClickabled = true))
+        dayList.add(DayList(dayList.size + 1, "Saturday", isSelected = false, isClickabled = true))
+        dayList.add(DayList(dayList.size + 1, "Sunday", isSelected = false, isClickabled = true))
+        return dayList
     }
 
     private fun stringToWords(s: String) = s.trim().splitToSequence(',')
@@ -374,21 +405,29 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
     private fun selectedDay(navigateEvent: SingleEvent<Int>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            dayList[it].isSelected = !dayList[it].isSelected
-            dayAdapter!!.notifyDataSetChanged()
-            val selected: ArrayList<String> = arrayListOf()
-            val selectedDays: ArrayList<String> = arrayListOf()
-            for (i in dayList) {
-                if (i.isSelected) {
-                    selected.add(i.id.toString())
-                    selectedDays.add(i.time.toString())
+            if (dayList[it].isClickabled) {
+                dayList[it].isSelected = !dayList[it].isSelected
+                dayAdapter!!.notifyDataSetChanged()
+                val selected: ArrayList<String> = arrayListOf()
+                val selectedDays: ArrayList<String> = arrayListOf()
+                for (i in dayList) {
+                    if (i.isSelected) {
+                        selected.add(i.id.toString())
+                        selectedDays.add(i.time.toString())
+                    }
                 }
+                if (selected.size > 0) {
+                    daysIds = selected.joinToString().replace(" ", "")
+                    fragmentScheduleMedicineBinding.daysTV.text =
+                        selectedDays.joinToString().replace(" ", "")
+                }
+            } else {
+                showError(
+                    requireContext(),
+                    "This day does not lie berween selected end date of medication."
+                )
             }
-            if (selected.size > 0) {
-                daysIds = selected.joinToString().replace(" ", "")
-                fragmentScheduleMedicineBinding.daysTV.text =
-                    selectedDays.joinToString().replace(" ", "")
-            }
+
         }
     }
 
@@ -706,15 +745,15 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         cal2.time = date2!!
         while (!cal1.after(cal2)) {
             val id = when (SimpleDateFormat("EEE").format(cal1.time)) {
-                "Mon" -> "1"
-                "Tue" -> "2"
-                "Wed" -> "3"
-                "Thu" -> "4"
-                "Fri" -> "5"
-                "Sat" -> "6"
-                else -> "7"
+                "Mon" -> 1
+                "Tue" -> 2
+                "Wed" -> 3
+                "Thu" -> 4
+                "Fri" -> 5
+                "Sat" -> 6
+                else -> 7
             }
-            dates.add(DayList(id.toInt(), SimpleDateFormat("EEEE").format(cal1.time), false))
+            dates.add(DayList(id, SimpleDateFormat("EEEE").format(cal1.time), false, true))
             cal1.add(Calendar.DATE, 1)
         }
         return dates

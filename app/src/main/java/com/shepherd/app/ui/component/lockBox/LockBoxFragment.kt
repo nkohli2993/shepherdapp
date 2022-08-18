@@ -68,14 +68,15 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     ): View {
         fragmentLockboxBinding =
             FragmentLockboxBinding.inflate(inflater, container, false)
-
-        //   lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         return fragmentLockboxBinding.root
     }
 
     override fun initViewBinding() {
         fragmentLockboxBinding.listener = this
         lockBoxViewModel.getAllLockBoxTypes(pageNumber, limit)
+        resetPageNumber()
+        lockBoxList?.clear()
+        lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         setRecommendedDocumentsAdapter()
         setOtherDocumentsAdapter()
         fragmentLockboxBinding.cvRecommendedDocuments.setOnClickListener {
@@ -384,8 +385,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     override fun onResume() {
         super.onResume()
-        resetPageNumber()
-        lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
+
     }
 
 }

@@ -51,10 +51,10 @@ class AddMedicineListAdapter(
 
         fun bind(medList: Medlist, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList
-               itemBinding.cbReminder.isChecked = false
+              /* itemBinding.cbReminder.isChecked = false
                if (medList.isSelected) {
                    itemBinding.cbReminder.isChecked = true
-               }
+               }*/
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     absoluteAdapterPosition

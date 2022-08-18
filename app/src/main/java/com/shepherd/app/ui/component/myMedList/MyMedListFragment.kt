@@ -220,7 +220,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                                 payload.medlist,
                                 payload.endDate,
                                 false,
-                                payload.dosage
+                                payload.dosage,
+                                selectedDate
                             )
                             medListReminderList.add(medListRem)
                         }

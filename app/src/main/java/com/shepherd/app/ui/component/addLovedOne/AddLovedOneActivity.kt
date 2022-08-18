@@ -233,8 +233,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
     private fun calculateDays(month: Int, year: String) {
         daysAr.clear()
-        for (i in 0 until getDayCount(month.toString(), year) + 1) {
-            daysAr.add(i.toString())
+        for (i in 0 until getDayCount(month.toString(), year) ) {
+            daysAr.add((i+1).toString())
         }
         daysAr.add(0, "Date")
         setDateAdapter(daysAr)

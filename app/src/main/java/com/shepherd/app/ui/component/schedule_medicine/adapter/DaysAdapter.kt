@@ -5,7 +5,9 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.schedule_medlist.DayList
 import com.shepherd.app.databinding.LayoutAddMedicineListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
@@ -57,6 +59,14 @@ class DaysAdapter(
             if ((timelist.time ?: "").isNotEmpty()) {
                 itemBinding.cbDay.text = timelist.time
             }
+            itemBinding.cbDay.setButtonDrawable(R.drawable.checkbox_selectot_grey)
+            itemBinding.cbDay.setTextColor(ContextCompat.getColor(context, R.color._A3A5AD))
+            if (timelist.isClickabled) {
+                itemBinding.cbDay.setButtonDrawable(R.drawable.checkbox_selector)
+                itemBinding.cbDay.isClickable = timelist.isClickabled
+                itemBinding.cbDay.setTextColor(ContextCompat.getColor(context, R.color._192032))
+            }
+
             itemBinding.cbDay.isChecked = false
             if (timelist.isSelected) {
                 itemBinding.cbDay.isChecked = true
