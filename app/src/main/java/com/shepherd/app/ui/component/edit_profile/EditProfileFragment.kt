@@ -67,8 +67,21 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
             }
             R.id.btnSaveChange ->{
                 if (isValid) {
+                  /*  val profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
+                        null
+                    } else {
+                        BuildConfig.BASE_URL_USER + profilePicUrl
+                    }
 
-
+                    createNewAccountViewModel.createAccount(
+                        ccp.selectedCountryCode,
+                        profilePicCompleteUrl,
+                        edtFirstName.text.toString().trim(),
+                        edtLastName.text.toString().trim(),
+                        editTextEmail.text.toString().trim(),
+                        edtPhoneNumber.text.toString().trim(),
+                        roleId
+                    )*/
                 }
 
             }
