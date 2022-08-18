@@ -207,7 +207,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                 receiverName,
                 receiverPicUrl,
                 null,
-                null, null
+                Chat.CHAT_SINGLE
             )
             Log.d(TAG, "ChatModel : $chatModel ")
             findNavController().navigate(
