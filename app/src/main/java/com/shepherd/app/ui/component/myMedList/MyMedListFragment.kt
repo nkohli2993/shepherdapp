@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.michalsvec.singlerowcalendar.calendar.CalendarChangesObserver
 import com.michalsvec.singlerowcalendar.calendar.CalendarViewManager
 import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
@@ -20,6 +18,7 @@ import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
+import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherd.app.databinding.FragmentMyMedlistBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -27,10 +26,12 @@ import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addNewMedication.AddNewMedicationFragmentDirections
 import com.shepherd.app.ui.component.myMedList.adapter.MyMedicationsAdapter
 import com.shepherd.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
-import com.shepherd.app.utils.*
+import com.shepherd.app.utils.MedListAction
+import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
+import com.shepherd.app.utils.observeEvent
 import com.shepherd.app.view_model.MyMedListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.calendar_item.view.*
@@ -55,6 +56,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private var currentMonth = 0
     private var dayId = ""
     private var selectedDate = ""
+    private var TAG = "MyMedListFragment"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -152,6 +154,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     override fun observeViewModel() {
         observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
         observeEvent(medListViewModel.medDetailItems, ::selectedMedication)
+        observeEvent(medListViewModel.selectedMedicationLiveData, ::recordMedication)
         // Observe get loved one med lists response
         medListViewModel.getLovedOneMedListsResponseLiveData.observeEvent(this) {
             when (it) {
@@ -185,8 +188,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                                 ) {
                                     payload.add(i)
                                 }
-                            }
-                            else{
+                            } else {
                                 payload.add(i)
                             }
                         }
@@ -265,6 +267,20 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     hideLoading()
                     showSuccess(requireContext(), "Medication Record Added Successfully...")
                 }
+            }
+        }
+    }
+
+    private fun recordMedication(singleEvent: SingleEvent<MedListReminder>) {
+        singleEvent.getContentIfNotHandled()?.let {
+            if (it.isSelected) {
+                Log.d(TAG, "selectedMedication: $it")
+                val sdf = SimpleDateFormat("yyyy-MM-dd")
+                val date = sdf.format(Date())
+                val time = it.time?.time + " " + it.time?.hour
+                val medicationRecordRequest =
+                    it.id?.let { it1 -> MedicationRecordRequestModel(it1, date, time) }
+                medicationRecordRequest?.let { it1 -> medListViewModel.addUserMedicationRecord(it1) }
             }
         }
     }
@@ -348,14 +364,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         }
     }
 
-
-    private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
-        myMedlistBinding.root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
-    }
-
-    private fun observeToast(event: LiveData<SingleEvent<Any>>) {
-        myMedlistBinding.root.showToast(this, event, Snackbar.LENGTH_LONG)
-    }
 
     private fun setMyMedicationsAdapter() {
         myMedicationsAdapter = MyMedicationsAdapter(medListViewModel)
