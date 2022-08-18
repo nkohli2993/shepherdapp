@@ -6,6 +6,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
@@ -190,12 +191,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
         medicationViewModel.getAllDoseList(pageNumber, limit)
 
-        fragmentScheduleMedicineBinding.etNote.setOnTouchListener { _, _ ->
+        fragmentScheduleMedicineBinding.etNote.setOnTouchListener {  view, event ->
             //check days view open
             if (fragmentScheduleMedicineBinding.daysRV.visibility == View.VISIBLE) {
                 fragmentScheduleMedicineBinding.daysRV.visibility = View.GONE
                 rotate(0f, fragmentScheduleMedicineBinding.dayIM)
             }
+
+            view.parent.requestDisallowInterceptTouchEvent(true)    /// for edit text scroll issue
+            when (event.action and MotionEvent.ACTION_MASK) {
+                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+
             return@setOnTouchListener false
         }
         //set data according to value added

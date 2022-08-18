@@ -432,4 +432,5 @@
     <string name="sure_you_want_to_delte_medication">Sure you want to delete this medication schedule</string>
     <string name="yes">Yes</string>
     <string name="cancel">Cancel</string>
+    <string name="start_time">Start Time</string>
 </resources>
