@@ -102,5 +102,9 @@ object ApiConstants {
         const val ADD_USER_MEDICATION_RECORD = "$BASE_URL${API_VERSION}user_medication_records"
         const val GET_MEDICATION_DETAIL = "$BASE_URL${API_VERSION}user_medications/{id}"
     }
+
+    object UpdateProfile {
+        const val UPDATE_LOGIN_USER_PROFILE ="$BASE_URL${API_VERSION}user_profiles"
+    }
 }
 

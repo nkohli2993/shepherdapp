@@ -6,11 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
 import com.shepherd.app.databinding.FragmentEditProfileBinding
 import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.utils.extensions.isValidEmail
+import com.shepherd.app.utils.extensions.showInfo
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.activity_create_new_account.*
 import kotlinx.android.synthetic.main.app_bar_dashboard.*
 
 @AndroidEntryPoint
@@ -61,7 +65,45 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
                     openImagePicker()
                 }
             }
+            R.id.btnSaveChange ->{
+                if (isValid) {
+
+
+                }
+
+            }
         }
     }
+
+    private val isValid: Boolean
+        get() {
+            when {
+                binding.edtFirstName.text.toString().isEmpty() -> {
+                    binding.edtFirstName.error = getString(R.string.please_enter_first_name)
+                    binding.edtFirstName.requestFocus()
+                }
+                binding.edtLastName.text.toString().isEmpty() -> {
+                    binding.edtLastName.error = getString(R.string.please_enter_last_name)
+                    binding.edtLastName.requestFocus()
+                }
+                binding.etEmailId.text.toString().isEmpty() -> {
+                    binding.etEmailId.error = getString(R.string.please_enter_email_id)
+                    binding.etEmailId.requestFocus()
+                }
+                !binding.etEmailId.text.toString().isValidEmail() -> {
+                    binding.etEmailId.error = getString(R.string.please_enter_valid_email_id)
+                    binding.etEmailId.requestFocus()
+                }
+                binding.edtPhoneNumber.text.toString().isEmpty() -> {
+                    binding.edtPhoneNumber.error = getString(R.string.enter_phone_number)
+                    binding.edtPhoneNumber.requestFocus()
+                }
+                else -> {
+                    return true
+                }
+            }
+            return false
+        }
+
 
 }

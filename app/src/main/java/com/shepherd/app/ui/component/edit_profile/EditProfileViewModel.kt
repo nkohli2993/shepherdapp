@@ -8,7 +8,9 @@ import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.added_events.*
 import com.shepherd.app.data.dto.dashboard.LoveUser
+import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.login.UserProfile
+import com.shepherd.app.data.dto.signup.UserSignupData
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.care_point.CarePointRepository
 import com.shepherd.app.network.retrofit.DataResult
@@ -53,4 +55,44 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun getUserEmail() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.EMAIL_ID, "")
+    /*var updateData = MutableLiveData<UserUpdateData>().apply {
+        value = UserSignupData()
+    }*/
+/*
+    fun updateAccount(
+        phoneCode: String?,
+        profilePicUrl: String?,
+        firstName: String?,
+        lastName: String?,
+        email: String?,
+        phoneNumber: String?,
+        roleId: String?
+    ): LiveData<Event<DataResult<LoginResponseModel>>> {
+        //Update the phone code
+     */
+/*   updateData.value.let {
+            it?.firstname = firstName
+            it?.lastname = lastName
+            it?.email = email
+            it?.password = passwd
+            it?.phoneCode = phoneCode
+            it?.phoneNo = phoneNumber
+            it?.profilePhoto = profilePicUrl
+            it?.roleId = roleId
+        }*//*
+
+      */
+/*  viewModelScope.launch {
+            val response = signUpData.value?.let { authRepository.signup(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _signUpLiveData.postValue(Event(it))
+                }
+            }
+        }*//*
+
+      //  return signUpLiveData
+    }
+*/
+
 }
