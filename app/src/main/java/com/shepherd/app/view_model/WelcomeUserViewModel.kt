@@ -10,6 +10,7 @@ import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.auth_repository.AuthRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
+import com.shepherd.app.ui.base.BaseResponseModel
 import com.shepherd.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -82,5 +83,21 @@ class WelcomeUserViewModel @Inject constructor(
     //Save UserRole
     fun saveUserRole(role: String) {
         userRepository.saveUserRole(role)
+    }
+    private var _verificationResponseLiveData = MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+    var verificationResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+        _verificationResponseLiveData
+
+    //Send user verification email
+    fun sendUserVerificationEmail(): LiveData<Event<DataResult<BaseResponseModel>>> {
+        viewModelScope.launch {
+            val response = authRepository.sendUserVerificationEmail()
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _verificationResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return verificationResponseLiveData
     }
 }

@@ -22,6 +22,7 @@ object ApiConstants {
         const val BIOMETRIC = "$BASE_URL_USER${API_VERSION}user_profiles/biomertic"
         const val LOGOUT = "$BASE_URL_USER${API_VERSION}users/logout"
         const val USER_ROLES = "$BASE_URL_USER${API_VERSION}roles"
+        const val USER_RESEND_VERIFICATION = "$BASE_URL_USER${API_VERSION}users/resend"
     }
 
     object Relations {
@@ -101,6 +102,8 @@ object ApiConstants {
         const val UPDATE_SCHEDULED_MEDICATION = "$BASE_URL${API_VERSION}user_medications/{id}"
         const val ADD_USER_MEDICATION_RECORD = "$BASE_URL${API_VERSION}user_medication_records"
         const val GET_MEDICATION_DETAIL = "$BASE_URL${API_VERSION}user_medications/{id}"
+        // get medication records
+        const val GET_MEDICATION_RECORD = "$BASE_URL${API_VERSION}user_medication_records/loved_one/{id}"
     }
 
     object UpdateProfile {

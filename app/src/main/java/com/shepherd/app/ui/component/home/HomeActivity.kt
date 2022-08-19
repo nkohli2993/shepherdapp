@@ -209,7 +209,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = false
                         tvNew.isVisible = false
                         ivEditProfile.setOnClickListener() {
-                            navController.navigate(R.id.nav_edit_profile)
+//                            navController.navigate(R.id.nav_edit_profile)
                         }
                         ivSetting.setOnClickListener() {
                             navController.navigate(R.id.nav_setting)

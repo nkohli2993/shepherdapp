@@ -68,14 +68,15 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     ): View {
         fragmentLockboxBinding =
             FragmentLockboxBinding.inflate(inflater, container, false)
-
-        //   lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         return fragmentLockboxBinding.root
     }
 
     override fun initViewBinding() {
         fragmentLockboxBinding.listener = this
         lockBoxViewModel.getAllLockBoxTypes(pageNumber, limit)
+        resetPageNumber()
+        lockBoxList?.clear()
+        lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         setRecommendedDocumentsAdapter()
         setOtherDocumentsAdapter()
         fragmentLockboxBinding.cvRecommendedDocuments.setOnClickListener {
@@ -103,14 +104,17 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                if (s.toString().isEmpty()) {
+            override fun onTextChanged(s: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
+                if (s.toString().isEmpty() && (lengthBefore == 0 && lengthAfter == 0)) {
+                    fragmentLockboxBinding.imgCancel.visibility = View.GONE
+                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                }
+                else if (s.toString().isEmpty() && (lengthBefore > 0 && lengthAfter >= 0)) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
                     fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
                     resetPageNumber()
                     isSearch = false
                     lockBoxList!!.clear()
-
                     lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
                 } else {
                     fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
@@ -384,8 +388,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     override fun onResume() {
         super.onResume()
-        resetPageNumber()
-        lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
+
     }
 
 }

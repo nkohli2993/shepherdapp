@@ -1,7 +1,8 @@
-package com.shepherd.app.data.remote.auth_repository
+package com.shepherd.app.data.remote.update_profile
 
 import android.webkit.MimeTypeMap
 import com.shepherd.app.data.dto.add_loved_one.UploadPicResponseModel
+import com.shepherd.app.data.dto.edit_profile.UserUpdateData
 import com.shepherd.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
@@ -25,26 +26,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 /**
- * Created by Deepak Rattan on 27/05/22
+ * Created by Nikita kohli on 18/08/2022
  */
 
 @Singleton
-class AuthRepository @Inject constructor(private val apiService: ApiService) {
+class UpdateProfileRepository @Inject constructor(private val apiService: ApiService) {
 
-    //login
-    suspend fun login(
-        value: UserSignupData,
-        isBioMetric: Boolean
-    ): Flow<DataResult<LoginResponseModel>> {
-        return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
-                if (isBioMetric) {
-                    return apiService.loginWithDevice(value)
-                }
-                return apiService.login(value)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
 
     //Upload Image
     suspend fun uploadImage(file: File?): Flow<DataResult<UploadPicResponseModel>> {
@@ -69,26 +56,16 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
     }
 
 
-    //Sign Up
-    suspend fun signup(value: UserSignupData): Flow<DataResult<LoginResponseModel>> {
+    //Update Profile fragment
+    suspend fun updateProfile(value: UserUpdateData): Flow<DataResult<LoginResponseModel>> {
         return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
-                return apiService.signUp(value)
+                return apiService.updateProfile(value)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
-    //BioMetric
-    suspend fun registerBioMetric(value: BioMetricData): Flow<DataResult<LoginResponseModel>> {
-        return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
-                return apiService.registerBioMetric(value)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
-
-    // Forgot Password
+    // Change Password
     suspend fun forgotPassword(value: ForgotPasswordModel): Flow<DataResult<LoginResponseModel>> {
         return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
@@ -97,36 +74,7 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
-    // Get User Details
-    suspend fun getUserDetails(id: Int): Flow<DataResult<UserDetailsResponseModel>> {
-        return object :
-            NetworkOnlineDataRepo<UserDetailsResponseModel, UserDetailsResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailsResponseModel> {
-                return apiService.getUserDetails(id)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
-    // Get User Details By UUID
-    suspend fun getUserDetailsByUUID(id: String): Flow<DataResult<UserDetailByUUIDResponseModel>> {
-        return object :
-            NetworkOnlineDataRepo<UserDetailByUUIDResponseModel, UserDetailByUUIDResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailByUUIDResponseModel> {
-                return apiService.getUserDetailByUUID(id)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
-
-    //logout
-    suspend fun logout(): Flow<DataResult<BaseResponseModel>> {
-        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
-                return apiService.logout()
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-
+    //get login user role
     suspend fun getRoles(
         pageNumber: Int,
         limit: Int,
@@ -134,13 +82,6 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<RolesResponseModel, RolesResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<RolesResponseModel> {
                 return apiService.getUserRoles(pageNumber, limit)
-            }
-        }.asFlow().flowOn(Dispatchers.IO)
-    }
-    suspend fun sendUserVerificationEmail(): Flow<DataResult<BaseResponseModel>> {
-        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
-                return apiService.sendUserVerificationEmail()
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

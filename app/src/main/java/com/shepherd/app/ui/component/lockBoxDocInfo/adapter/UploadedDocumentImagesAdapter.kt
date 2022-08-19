@@ -3,16 +3,12 @@ package com.shepherd.app.ui.component.lockBoxDocInfo.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
-import com.bumptech.glide.load.Options
-import com.github.barteksc.pdfviewer.PDFView
 import com.google.android.material.imageview.ShapeableImageView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.DocumentUrl
@@ -46,7 +42,6 @@ class UploadedDocumentImagesAdapter(
             mLayoutInflater.inflate(R.layout.adapter_document_pager, container, false)
 
         val imageView = itemView.findViewById<View>(R.id.imgDoc) as ShapeableImageView
-        val pdfVIew = itemView.findViewById<View>(R.id.pdfView) as PDFView
 
         if(list!![position].url!!.lowercase().endsWith(".png") ||list!![position].url!!.lowercase().endsWith(".jpg")  ||list!![position].url!!.lowercase().endsWith("jpeg") ) {
             imageView.loadImageCentreCrop(

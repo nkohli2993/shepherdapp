@@ -12,6 +12,7 @@ import com.shepherd.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.shepherd.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherd.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherd.app.data.dto.dashboard.HomeResponseModel
+import com.shepherd.app.data.dto.edit_profile.UserUpdateData
 import com.shepherd.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherd.app.data.dto.invitation.InvitationsResponseModel
 import com.shepherd.app.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
@@ -105,6 +106,9 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): Response<RolesResponseModel>
+
+    @GET(ApiConstants.Authentication.USER_RESEND_VERIFICATION)
+    suspend fun sendUserVerificationEmail(): Response<BaseResponseModel>
 
     @GET(ApiConstants.UserDetails.GET_USER_DETAILS)
     suspend fun getUserDetails(
@@ -323,4 +327,15 @@ interface ApiService {
     suspend fun getMedicationDetails(
         @Path("id") id: Int
     ): Response<GetMedicationDetailResponse>
+
+    @GET(ApiConstants.MedList.GET_MEDICATION_RECORD)
+    suspend fun getMedicationRecords(
+        @Path("id") id: String,
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("date") date:String
+    ): Response<GetMedicationRecordResponse>
+
+    @POST(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
+    suspend fun updateProfile(@Body value: UserUpdateData): Response<LoginResponseModel>
 }

@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_light"
+                    android:fontFamily="@font/gotham_book"
                     android:text="@string/heart_rate"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp" />
@@ -83,14 +83,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="@null"
+                        android:digits="0123456789"
                         android:fontFamily="@font/gotham_medium"
-                        android:hint="68"
+                        android:hint="@string/enter_heart_rate"
                         android:inputType="number"
                         android:maxLength="3"
                         android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_20sdp"
+                        android:paddingVertical="@dimen/_10sdp"
                         android:textColor="@color/_192032"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tvBpm"
                         app:layout_constraintStart_toEndOf="@+id/ivHeart"
@@ -115,8 +116,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_light"
+                    android:fontFamily="@font/gotham_book"
                     android:text="@string/time"
+                    android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
@@ -126,7 +128,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/shape_rectangle_circular_corner_border_grey">
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:onClick="@{listener::onClick}">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivClock"
@@ -143,8 +146,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_medium"
-                        android:text="12:00"
+                        android:hint="@string/choose_time"
                         android:textColor="@color/_192032"
+                        android:textColorHint="@color/_A3A5AD"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/llAmPm"
@@ -161,11 +165,12 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvam"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="AM"
-                            android:textColor="@color/_192032"
+                            android:text="@string/am"
+                            android:textColor="@color/_A3A5AD"
                             android:textSize="@dimen/_14ssp" />
 
                         <View
@@ -175,12 +180,13 @@
                             android:background="@color/_192032" />
 
                         <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvpm"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="PM"
-                            android:textColor="@color/_192032"
+                            android:text="@string/pm"
+                            android:textColor="@color/_A3A5AD"
                             android:textSize="@dimen/_14ssp" />
 
                     </LinearLayout>
@@ -190,13 +196,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="@dimen/_20ssp"
-                    android:background="@color/_192032" />
+                    android:background="@color/transparent_black" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_light"
+                    android:fontFamily="@font/gotham_book"
                     android:text="@string/body_temp"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp" />
@@ -224,13 +230,13 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:fontFamily="@font/gotham_medium"
-                        android:hint="68"
+                        android:hint="@string/enter_body_temp"
                         android:inputType="number"
                         android:maxLength="3"
                         android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_20sdp"
+                        android:paddingVertical="@dimen/_10sdp"
                         android:textColor="@color/_192032"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tvTemp"
                         app:layout_constraintStart_toEndOf="@+id/ivTemp"
@@ -255,7 +261,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_light"
+                    android:fontFamily="@font/gotham_book"
                     android:text="@string/blood_pressure"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp" />
@@ -283,11 +289,13 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:fontFamily="@font/gotham_medium"
-                        android:hint="80/120"
+                        android:hint="@string/enter_blood_pressure"
                         android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_20sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:inputType="number"
+                        android:maxLength="8"
                         android:textColor="@color/_192032"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivBp"
@@ -299,7 +307,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_light"
+                    android:fontFamily="@font/gotham_book"
                     android:text="@string/oxygen"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp" />
@@ -327,13 +335,13 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:fontFamily="@font/gotham_medium"
-                        android:hint="89%"
+                        android:hint="@string/enter_body_oxygen"
                         android:inputType="number"
                         android:maxLength="3"
                         android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_20sdp"
+                        android:paddingVertical="@dimen/_10sdp"
                         android:textColor="@color/_192032"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tvSp0"
                         app:layout_constraintStart_toEndOf="@+id/ivOxygen"
@@ -359,7 +367,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginVertical="@dimen/_10sdp"
+                    android:layout_marginVertical="@dimen/_30sdp"
                     android:background="@drawable/button_primary"
                     android:backgroundTint="@color/_399282"
                     android:fontFamily="@font/gotham_medium"

@@ -21,6 +21,7 @@ import com.shepherd.app.ui.component.login.LoginActivity
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.WelcomeUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_welcome_user.*
@@ -86,6 +87,21 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+        welcomeViewModel.verificationResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showInfo(this, it.data.message.toString())
+                }
+            }
+        }
     }
 
 
@@ -101,6 +117,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
             R.id.ivCareTeam -> navigateToJoinCareTeamScreen()
             R.id.txtJoin -> navigateToJoinCareTeamScreen()
             R.id.txtCareTeam -> navigateToJoinCareTeamScreen()
+            R.id.btnResend -> welcomeViewModel.sendUserVerificationEmail()
         }
     }
 

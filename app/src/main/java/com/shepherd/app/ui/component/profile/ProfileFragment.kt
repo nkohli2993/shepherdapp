@@ -154,7 +154,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.clProfileWrapper -> {
-                p0.findNavController().navigate(R.id.action_nav_profile_to_editProfile)
+               // p0.findNavController().navigate(R.id.action_nav_profile_to_editProfile)
             }
         }
     }

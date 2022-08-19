@@ -5,7 +5,9 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.schedule_medlist.DayList
 import com.shepherd.app.databinding.LayoutAddMedicineListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
@@ -15,6 +17,7 @@ import com.shepherd.app.view_model.AddMedicationViewModel
 class DaysAdapter(
     private val viewModel: AddMedicationViewModel,
     val context: Context,
+    val listener: selectedDay,
     var doseList: MutableList<DayList> = ArrayList()
 ) :
     RecyclerView.Adapter<DaysAdapter.DayViewHolder>() {
@@ -57,12 +60,18 @@ class DaysAdapter(
             if ((timelist.time ?: "").isNotEmpty()) {
                 itemBinding.cbDay.text = timelist.time
             }
+            itemBinding.cbDay.setButtonDrawable(R.drawable.checkbox_selectot_grey)
+            itemBinding.cbDay.setTextColor(ContextCompat.getColor(context, R.color._A3A5AD))
+            if (timelist.isClickabled) {
+                itemBinding.cbDay.setButtonDrawable(R.drawable.checkbox_selector)
+                itemBinding.cbDay.setTextColor(ContextCompat.getColor(context, R.color._192032))
+            }
             itemBinding.cbDay.isChecked = false
             if (timelist.isSelected) {
                 itemBinding.cbDay.isChecked = true
             }
             itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
+             recyclerItemListener.onItemSelected(
                     absoluteAdapterPosition
                 )
             }
@@ -83,6 +92,10 @@ class DaysAdapter(
     fun addData(doseListAdded: MutableList<DayList>) {
         doseList.addAll(doseListAdded)
         notifyDataSetChanged()
+    }
+
+    interface selectedDay{
+        fun selected(id:Int)
     }
 
 

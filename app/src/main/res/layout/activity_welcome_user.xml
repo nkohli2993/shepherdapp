@@ -13,8 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/colorWhite"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorWhite">
 
         <LinearLayout
             android:id="@+id/container"
@@ -24,24 +24,24 @@
             android:orientation="vertical"
             tools:context="com.shepherd.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
-          <!--  <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{listener::onClick}"
-                android:padding="@dimen/_10sdp"
-                android:src="@drawable/ic_back" />-->
+            <!--  <androidx.appcompat.widget.AppCompatImageView
+                  android:id="@+id/ivBack"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:onClick="@{listener::onClick}"
+                  android:padding="@dimen/_10sdp"
+                  android:src="@drawable/ic_back" />-->
 
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTitle"
-                android:fontFamily="@font/gotham_bold"
-                android:textColor="@color/_192032"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_22sdp"
                 android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:fontFamily="@font/gotham_bold"
                 android:text="@string/hi_firstname"
+                android:textColor="@color/_192032"
                 android:textSize="@dimen/_15ssp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -153,12 +153,12 @@
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_120sdp"
                         android:layout_gravity="center_vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:onClick="@{listener::onClick}"
                         android:padding="@dimen/_18sdp"
-                        android:src="@drawable/ic_careteam" />
+                        android:src="@drawable/ic_careteam"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtJoin"
@@ -166,34 +166,54 @@
                         android:layout_height="0dp"
                         android:focusable="false"
                         android:fontFamily="@font/gotham_light"
+                        android:gravity="bottom"
                         android:onClick="@{listener::onClick}"
                         android:paddingVertical="@dimen/_2sdp"
-                        android:gravity="bottom"
-                        app:layout_constraintBottom_toTopOf="@id/txtCareTeam"
-                        app:layout_constraintStart_toEndOf="@id/ivCareTeam"
-                        app:layout_constraintTop_toTopOf="parent"
                         android:text="@string/join_an_existing"
                         android:textColor="#399282"
-                        android:textSize="@dimen/_16ssp" />
+                        android:textSize="@dimen/_16ssp"
+                        app:layout_constraintBottom_toTopOf="@id/txtCareTeam"
+                        app:layout_constraintStart_toEndOf="@id/ivCareTeam"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtCareTeam"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:focusable="false"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/ivCareTeam"
-                        app:layout_constraintTop_toBottomOf="@id/txtJoin"
                         android:fontFamily="@font/gotham_bold"
                         android:onClick="@{listener::onClick}"
                         android:paddingVertical="@dimen/_2sdp"
                         android:text="@string/care_team"
                         android:textColor="#399282"
-                        android:textSize="@dimen/_18ssp" />
+                        android:textSize="@dimen/_18ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivCareTeam"
+                        app:layout_constraintTop_toBottomOf="@id/txtJoin" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnResend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="@dimen/_30sdp"
+                android:background="@drawable/button_primary_green"
+                android:backgroundTint="@color/_399282"
+                android:fontFamily="@font/gotham_medium"
+                android:onClick="@{listener::onClick}"
+                android:paddingHorizontal="@dimen/_30sdp"
+                android:paddingVertical="@dimen/_15sdp"
+                android:text="@string/resend_verification_email"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/clNoteWrapper" />
 
         </LinearLayout>
 

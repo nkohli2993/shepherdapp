@@ -16,6 +16,8 @@ import com.michalsvec.singlerowcalendar.calendar.SingleRowCalendarAdapter
 import com.michalsvec.singlerowcalendar.selection.CalendarSelectionManager
 import com.michalsvec.singlerowcalendar.utils.DateUtils
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.med_list.get_medication_record.MedicationRecordData
+import com.shepherd.app.data.dto.med_list.get_medication_record.RecordPayload
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
@@ -57,6 +59,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private var dayId = ""
     private var selectedDate = ""
     private var TAG = "MyMedListFragment"
+    private var medicationRecordPayload: ArrayList<MedicationRecordData> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,7 +71,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     override fun initViewBinding() {
-        // Get Loved One's Medication Listing
+
         setMyMedicationsAdapter()
         setSelectedDayMedicineAdapter()
         calendar.time = Date()
@@ -121,9 +124,16 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     else -> "7"
                 }
                 if (isSelected) {
-                    payload.clear()
-                    medListReminderList.clear()
-                    medListViewModel.getLovedOneMedLists()
+//                    payload.clear()
+//                    medListReminderList.clear()
+//                    medListViewModel.getLovedOneMedLists()
+                    //get medication recordes of loved one
+                    medListViewModel.getMedicationRecords(
+                        medListViewModel.getLovedOneUUId() ?: "",
+                        1,
+                        1000,
+                        selectedDate
+                    )
                 }
             }
         }
@@ -143,11 +153,13 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
             calendarChangesObserver = myCalendarChangesObserver
             calendarSelectionManager = mySelectionManager
             futureDaysCount = 30
-            includeCurrentDate = true
+            pastDaysCount = 30
             init()
-            select(0)
+            includeCurrentDate = true
+            initialPositionIndex = 30
+            scrollToPosition(30)
+            select(30)
         }
-
     }
 
     @SuppressLint("NotifyDataSetChanged", "SimpleDateFormat")
@@ -166,7 +178,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     myMedlistBinding.txtMedication.visibility = View.VISIBLE
                 }
                 is DataResult.Loading -> {
-                    showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
@@ -200,6 +211,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
                     }
                     if (payload.isEmpty()) return@observeEvent
+                    val medListList: ArrayList<MedListReminder> = arrayListOf()
                     for (i in payload.indices) {
                         val payload = payload[i]
                         payload.time.forEach {
@@ -220,17 +232,74 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                                 payload.medlist,
                                 payload.endDate,
                                 false,
-                                payload.dosage
+                                payload.dosage,
+                                selectedDate
                             )
-                            medListReminderList.add(medListRem)
+                            medListList.add(medListRem)
                         }
+                    }
+                    val matchedList: ArrayList<MedListReminder> = arrayListOf()
+                    for (i in medListList) {
+                        var found = false
+                        for (j in medicationRecordPayload) {
+                            if (i.selectedDate == j.date && i.time!!.time!!.plus(" ")
+                                    .plus(i.time!!.hour) == j.time!!
+                            ) {
+                                found = true
+                            }
+                        }
+                        if (found) {
+                            val data = i
+                            data.isSelected = true
+                            matchedList.add(data)
+                        }
+                    }
+                    medListList.removeAll(matchedList)
+                    medListReminderList.addAll(medListList)
+                    medListReminderList.addAll(matchedList)
+
+                    // do sort the list based on time
+                    medListReminderList.sortWith { o1, o2 ->
+
+                        o1.selectedDate.plus(
+                            " ${
+                                o1.time!!.time!!.plus(" ").plus(o1.time!!.hour)
+                            }"
+                        )
+                            .compareTo(
+                                o2.selectedDate.plus(
+                                    " ${
+                                        o2.time!!.time!!.plus(" ").plus(o2.time!!.hour)
+                                    }"
+                                )
+                            )
                     }
                     selectedDayMedicineAdapter?.addData(medListReminderList)
                     myMedicationsAdapter?.addData(payload)
                 }
             }
         }
-
+        // Observe get loved one med lists response
+        medListViewModel.getMedicationRecordResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    payload.clear()
+                    medListReminderList.clear()
+                    medListViewModel.getLovedOneMedLists()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+//                    hideLoading()
+                    // records for medication
+                    medicationRecordPayload = it.data.payload.data
+                    payload.clear()
+                    medListReminderList.clear()
+                    medListViewModel.getLovedOneMedLists()
+                }
+            }
+        }
         // observe when medlist deleted from list
         medListViewModel.deletedScheduledMedicationResponseLiveData.observeEvent(this) {
             when (it) {
@@ -252,7 +321,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
             }
         }
-
         // Observe medication record response live data
         medListViewModel.medicationRecordResponseLiveData.observeEvent(this) {
             when (it) {
@@ -274,12 +342,10 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private fun recordMedication(singleEvent: SingleEvent<MedListReminder>) {
         singleEvent.getContentIfNotHandled()?.let {
             if (it.isSelected) {
-                Log.d(TAG, "selectedMedication: $it")
-                val sdf = SimpleDateFormat("yyyy-MM-dd")
-                val date = sdf.format(Date())
+                val date = it.selectedDate
                 val time = it.time?.time + " " + it.time?.hour
                 val medicationRecordRequest =
-                    it.id?.let { it1 -> MedicationRecordRequestModel(it1, date, time) }
+                    it.id?.let { it1 -> MedicationRecordRequestModel(it1, date!!, time) }
                 medicationRecordRequest?.let { it1 -> medListViewModel.addUserMedicationRecord(it1) }
             }
         }

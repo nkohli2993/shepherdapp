@@ -132,5 +132,14 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+ // Get Medication Records
+    suspend fun getMedicationRecords(id: String,page:Int,limit:Int,date:String): Flow<DataResult<GetMedicationRecordResponse>> {
+        return object :
+            NetworkOnlineDataRepo<GetMedicationRecordResponse, GetMedicationRecordResponse>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetMedicationRecordResponse> {
+                return apiService.getMedicationRecords(id,page,limit,date)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 
 }
