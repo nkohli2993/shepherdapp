@@ -257,6 +257,8 @@
         <entry key="app/src/main/res/layout/adapter_care_points_events.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members_dashboard.xml" value="0.2579162410623085" />
+        <entry key="app/src/main/res/layout/adapter_chat.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/adapter_chat_group.xml" value="0.215234375" />
         <entry key="app/src/main/res/layout/adapter_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_date_picker.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_direct_messages.xml" value="0.25" />

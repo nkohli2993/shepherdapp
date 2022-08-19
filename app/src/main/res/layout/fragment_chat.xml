@@ -70,7 +70,7 @@
             app:layout_constraintTop_toTopOf="@id/llImageWrapper" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewChat"
+            android:id="@+id/rvMsg"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_5sdp"
@@ -79,8 +79,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivBack"
-            tools:itemCount="3"
-            tools:listitem="@layout/adapter_chat" />
+            tools:listitem="@layout/adapter_chat_group" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/messageCL"

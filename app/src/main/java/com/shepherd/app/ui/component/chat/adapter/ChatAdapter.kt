@@ -4,17 +4,20 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.dashboard.DashboardModel
+import com.shepherd.app.ShepherdApp
+import com.shepherd.app.data.dto.chat.MessageData
 import com.shepherd.app.databinding.AdapterChatBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
+import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.Prefs
+import com.shepherd.app.utils.extensions.changeDateFormat
 import com.shepherd.app.view_model.ChatViewModel
 
 
 class ChatAdapter(
     private val viewModel: ChatViewModel,
-    var requestList: MutableList<String> = ArrayList()
-) :
-    RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+    var requestList: MutableList<MessageData> = ArrayList()
+) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
     lateinit var binding: AdapterChatBinding
     lateinit var context: Context
 
@@ -40,23 +43,42 @@ class ChatAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return 10
+        return requestList.size
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(requestList[position], onItemClickListener)
     }
 
 
     class ChatViewHolder(private val itemBinding: AdapterChatBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
-            // itemBinding.data = dashboard
+        fun bind(messageData: MessageData, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.messageData = messageData
+            // Get loggedIn User Id
+            val loggedInUserId = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.USER_ID)
+            itemBinding.userId = loggedInUserId.toString()
+            // Check if loggedIn User is the sender of the message
+            /* if (messageData.senderID == loggedInUserId.toString()) {
+                 itemBinding.cvSender.visibility = View.VISIBLE
+             } else {
+                 itemBinding.cvReceiver.visibility = View.VISIBLE
+             }*/
+
+            itemBinding.executePendingBindings()
+
+            itemBinding.tvReceivedTime.text = messageData.date?.changeDateFormat(
+                sourceDateFormat = "yyyy-MM-dd HH:mm:ss",
+                targetDateFormat = "hh:mm a"
+            )
+            itemBinding.tvSendTime.text = messageData.date?.changeDateFormat(
+                sourceDateFormat = "yyyy-MM-dd HH:mm:ss",
+                targetDateFormat = "hh:mm a"
+            )
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    dashboard
+                    messageData
                 )
             }
         }
@@ -71,9 +93,9 @@ class ChatAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
+    fun addData(messageData: MutableList<MessageData>) {
         this.requestList.clear()
-        this.requestList.addAll(dashboard)
+        this.requestList.addAll(messageData)
         notifyDataSetChanged()
     }
 

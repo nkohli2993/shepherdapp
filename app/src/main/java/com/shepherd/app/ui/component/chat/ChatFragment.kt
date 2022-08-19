@@ -1,6 +1,7 @@
 package com.shepherd.app.ui.component.chat
 
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +9,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.chat.ChatModel
+import com.shepherd.app.data.dto.chat.ChatUserDetail
+import com.shepherd.app.data.dto.chat.MessageGroupData
 import com.shepherd.app.databinding.FragmentChatBinding
+import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.chat.adapter.ChatAdapter
+import com.shepherd.app.ui.component.chat.adapter.ChatGroupAdapter
+import com.shepherd.app.utils.Chat
+import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.ChatViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +36,10 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
     private val chatViewModel: ChatViewModel by viewModels()
     private val args: ChatFragmentArgs by navArgs()
     private var chatModel: ChatModel? = null
+    private var allMsgLoaded: Boolean = false
+    private var msgGroupList: ArrayList<MessageGroupData> = ArrayList()
+    private var chatAdapter: ChatAdapter? = null
+    private var adapter: ChatGroupAdapter? = null
 
 
     private lateinit var fragmentChatBinding: FragmentChatBinding
@@ -53,16 +65,73 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
         Log.d(TAG, "Chat Model : $chatModel ")
 
         fragmentChatBinding.data = chatModel
-        setChatAdapter()
+
+        chatViewModel.setToUserDetail(chatModel?.toChatUserDetail())
+        loadChat()
+//        setChatAdapter()
+        setGroupChatAdapter()
+    }
+
+    private fun setGroupChatAdapter() {
+        adapter = ChatGroupAdapter(chatViewModel)
+        fragmentChatBinding.rvMsg.adapter = adapter
+    }
+
+
+    private fun loadChat() {
+        chatViewModel.getChatMessages()
+            .observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+
+                    when (it) {
+                        is DataResult.Loading -> {
+                            showLoading("")
+                        }
+                        is DataResult.Failure -> {
+                            hideLoading()
+                            allMsgLoaded = true
+                            showError(requireContext(), it.exception?.message ?: "")
+                        }
+
+                        is DataResult.Success -> {
+                            hideLoading()
+                            msgGroupList.clear()
+                            msgGroupList.addAll(it.data.groupList)
+                            Log.d(TAG, "loadChat: $msgGroupList")
+                            /* chatAdapter?.addData(
+                                 msgGroupList,
+                                 chatViewModel.loggedInUser.id.toString()
+                             )*/
+                            setAdapter(it.data.scrollToBottom ?: false)
+                        }
+                    }
+                }
+            }
+    }
+
+    private fun setAdapter(scrollToBottom: Boolean) {
+        adapter?.addData(msgGroupList)
+
+        if (scrollToBottom) {
+            Handler().postDelayed({
+                (fragmentChatBinding.rvMsg.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                    0,
+                    0
+                )
+
+            }, 200)
+        }
+    }
+
+    private fun ChatModel.toChatUserDetail(): ChatUserDetail {
+        return ChatUserDetail(
+            id = this.receiverID.toString() ?: "",
+            name = this.receiverName ?: "",
+            imageUrl = this.receiverPicUrl ?: ""
+        )
     }
 
     override fun observeViewModel() {
-    }
-
-
-    private fun setChatAdapter() {
-        val chatAdapter = ChatAdapter(chatViewModel)
-        fragmentChatBinding.recyclerViewChat.adapter = chatAdapter
     }
 
 
@@ -82,10 +151,10 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
                 } else {
                     chatModel?.message = message
                     Log.d(TAG, "Send Message :$chatModel ")
-                    chatModel?.let { chatViewModel.sendMessage(it) }
+//                    chatModel?.let { chatViewModel.sendMessage(it) }
+                    chatViewModel.getAndSaveMessageData(Chat.MESSAGE_TEXT, message = message)
                     fragmentChatBinding.edtMessage.text?.clear()
                 }
-
             }
         }
     }
