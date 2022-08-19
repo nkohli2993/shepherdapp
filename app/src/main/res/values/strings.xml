@@ -438,4 +438,13 @@
     <string name="this_medication_record_marked_as_complete">This medication dose already marked as complete.</string>
     <string name="resend_verification_email">Resend Verification Email</string>
     <string name="verification_email_send_successfully">Verification email send to your email successfully. Please check your email.</string>
+    <string name="enter_heart_rate">Enter Heart Rate</string>
+    <string name="enter_body_temp">Enter Body Temperature</string>
+    <string name="enter_blood_pressure">Enter Blood Pressure</string>
+    <string name="enter_body_oxygen">Enter body oxygen</string>
+    <string name="please_enter_your_heart_rate">Please enter your heart beat.</string>
+    <string name="please_choose_temp">Please choose time.</string>
+    <string name="please_choose_time">Please enter body temperature.</string>
+    <string name="please_enter_your_blood_pressure">Please enter blood pressure.</string>
+    <string name="please_enter_body_oxygen">Please enter body oxygen.</string>
 </resources>
