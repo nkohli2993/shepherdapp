@@ -34,9 +34,9 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{listener::onClick}"
                 android:padding="@dimen/_10sdp"
+                android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:src="@drawable/ic_back" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvMedList"
@@ -58,7 +58,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/heading_background">
+            android:background="@color/heading_background"
+            android:fillViewport="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -82,18 +83,16 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_body"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:background="@color/colorWhite"
                     android:elevation="@dimen/_10sdp"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:paddingTop="@dimen/_80sdp"
+                    android:paddingHorizontal="@dimen/_15sdp"
+                    android:paddingTop="@dimen/_90sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/layout_header"
-                    app:layout_constraintVertical_bias="0.0">
+                    app:layout_constraintTop_toBottomOf="@id/layout_header">
 
                     <LinearLayout
                         android:id="@+id/layout_first_name"
@@ -109,15 +108,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/gotham_book"
-                            android:textColor="@color/_192032"
                             android:text="@string/first_name"
+                            android:textColor="@color/_192032"
                             android:textSize="@dimen/_12ssp" />
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/edtFirstName"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_34sdp"
-                            android:text="@{userDetail.firstname}"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -126,6 +124,7 @@
                             android:hint="@string/first_name"
                             android:inputType="textCapWords"
                             android:paddingHorizontal="@dimen/_8sdp"
+                            android:text="@{userDetail.firstname}"
                             android:textSize="14sp"
                             bind:getNameError="@{@string/first_name}" />
                     </LinearLayout>
@@ -154,7 +153,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_34sdp"
                             android:layout_marginTop="@dimen/_4sdp"
-                            android:text="@{userDetail.lastname}"
                             android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                             android:drawableStart="@drawable/ic_profile"
@@ -162,6 +160,7 @@
                             android:hint="@string/last_name"
                             android:inputType="textCapWords"
                             android:paddingHorizontal="@dimen/_8sdp"
+                            android:text="@{userDetail.lastname}"
                             android:textSize="14sp"
                             bind:getNameError="@{@string/last_name}" />
                     </LinearLayout>
@@ -171,9 +170,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_15sdp"
-                        android:textColor="@color/_192032"
                         android:fontFamily="@font/gotham_book"
                         android:text="@string/email"
+                        android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/layout_first_name" />
@@ -184,17 +183,17 @@
                         android:layout_height="@dimen/_34sdp"
                         android:layout_marginTop="@dimen/_4sdp"
                         android:background="@drawable/shape_rectangle_circular_corner_border"
+                        android:cursorVisible="false"
                         android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:cursorVisible="false"
-                        android:focusableInTouchMode="false"
-                        android:focusable="false"
                         android:drawableTint="@color/_A3A5AD"
-                        android:textColor="@color/_A3A5AD"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:hint="@string/enter_your_email"
                         android:inputType="textEmailAddress"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:singleLine="true"
+                        android:textColor="@color/_A3A5AD"
                         android:textSize="14sp"
                         app:layout_constraintTop_toBottomOf="@id/label_email" />
 
@@ -253,9 +252,9 @@
                             android:layout_gravity="center"
                             android:background="@null"
                             android:hint="@string/enter_phone_number"
-                            android:text="@{userDetail.phoneNo}"
                             android:inputType="number"
                             android:paddingVertical="@dimen/_10sdp"
+                            android:text="@{userDetail.phoneNo}"
                             app:layout_constraintTop_toBottomOf="@id/label_phone_number"
                             bind:setPhoneError="@{@string/mobile_number}" />
 
@@ -297,8 +296,8 @@
                         android:id="@+id/imageViewUser"
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="@dimen/_100sdp"
-                        android:scaleType="fitXY"
                         android:onClick="@{listener::onClick}"
+                        android:scaleType="fitXY"
                         android:src="@drawable/ic_defalut_profile_pic"
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />
 
