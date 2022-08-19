@@ -435,4 +435,7 @@
     <string name="cancel">Cancel</string>
     <string name="start_time">Start Time</string>
     <string name="not_allowed_to_update_future_medication">Not allowed to update future medication.</string>
+    <string name="this_medication_record_marked_as_complete">This medication dose already marked as complete.</string>
+    <string name="resend_verification_email">Resend Verification Email</string>
+    <string name="verification_email_send_successfully">Verification email send to your email successfully. Please check your email.</string>
 </resources>

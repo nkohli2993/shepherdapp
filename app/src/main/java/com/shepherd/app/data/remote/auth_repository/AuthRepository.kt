@@ -137,4 +137,11 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+    suspend fun sendUserVerificationEmail(): Flow<DataResult<BaseResponseModel>> {
+        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.sendUserVerificationEmail()
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 }

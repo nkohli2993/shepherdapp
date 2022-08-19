@@ -429,6 +429,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         selectedDays.joinToString().replace(" ", "")
                 }
                 else{
+                    daysIds = null
                     fragmentScheduleMedicineBinding.daysTV.text = ""
                 }
             } else {
@@ -618,7 +619,14 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         return@TimePickerDialog
                     }
                 }
-                timeList[position].time = String.format("%02d:%02d", hourOfDay, selectedMinute)
+                if (hourOfDay < 12) {
+                    timeList[position].time = String.format("%02d:%02d", hourOfDay, selectedMinute)
+                    timeList[position].isAmPM = "am"
+                } else {
+                    timeList[position].time =
+                        String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                    timeList[position].isAmPM = "pm"
+                }
                 timeList[position].isAmPM = amPm
                 timeAdapter!!.notifyDataSetChanged()
             }, hour,

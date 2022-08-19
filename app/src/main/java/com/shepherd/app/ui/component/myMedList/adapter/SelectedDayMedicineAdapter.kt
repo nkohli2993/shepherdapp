@@ -86,15 +86,34 @@ class SelectedDayMedicineAdapter(
             }
             itemBinding.cbReminder.isChecked = false
             itemBinding.cbReminder.setOnCheckedChangeListener { compoundButton, _isChecked ->
-                val (selectedDate: Date, currentDate) = clickDate(medListReminder)
-                if (selectedDate.after(currentDate)) {
-                    itemBinding.cbReminder.isChecked = false
-                    showError(context, context.getString(R.string.not_allowed_to_update_future_medication))
-                } else {
-                    medListReminder?.isSelected = _isChecked
-                    medListReminder?.let { recyclerItemListener1.onItemSelected(it) }
+                if (compoundButton.isPressed) {
+                    if (itemBinding.cbReminder.isChecked) {
+                        val (selectedDate: Date, currentDate) = clickDate(medListReminder)
+                        if (selectedDate.after(currentDate)) {
+                            itemBinding.cbReminder.isChecked = false
+                            showError(
+                                context,
+                                context.getString(R.string.not_allowed_to_update_future_medication)
+                            )
+                        } else {
+                            medListReminder?.isSelected = _isChecked
+                            medListReminder?.let { recyclerItemListener1.onItemSelected(it) }
+                        }
+                    } else {
+                        itemBinding.cbReminder.isChecked = true
+                        showError(
+                            context,
+                            context.getString(R.string.this_medication_record_marked_as_complete)
+                        )
+                    }
+
                 }
             }
+            itemBinding.cbReminder.isChecked = false
+            if(medListReminder?.isSelected == true){
+                itemBinding.cbReminder.isChecked = true
+            }
+
             val (selectedDate: Date, currentDate) = clickDate(medListReminder)
             itemBinding.cbReminder.setButtonDrawable(R.drawable.checkbox_selector)
             if (selectedDate.after(currentDate)) {
