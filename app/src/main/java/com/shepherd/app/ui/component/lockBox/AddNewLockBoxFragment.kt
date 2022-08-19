@@ -41,8 +41,6 @@ import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddNewLockBoxViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import pub.devrel.easypermissions.AfterPermissionGranted
-import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 
 

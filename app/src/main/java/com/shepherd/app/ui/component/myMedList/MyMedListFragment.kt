@@ -143,11 +143,13 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
             calendarChangesObserver = myCalendarChangesObserver
             calendarSelectionManager = mySelectionManager
             futureDaysCount = 30
-            includeCurrentDate = true
+            pastDaysCount = 30
             init()
-            select(0)
+            includeCurrentDate = true
+            initialPositionIndex =30
+            scrollToPosition(30)
+            select(30)
         }
-
     }
 
     @SuppressLint("NotifyDataSetChanged", "SimpleDateFormat")

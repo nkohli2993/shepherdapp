@@ -64,10 +64,8 @@ class DaysAdapter(
             itemBinding.cbDay.setTextColor(ContextCompat.getColor(context, R.color._A3A5AD))
             if (timelist.isClickabled) {
                 itemBinding.cbDay.setButtonDrawable(R.drawable.checkbox_selector)
-                itemBinding.cbDay.isClickable = timelist.isClickabled
                 itemBinding.cbDay.setTextColor(ContextCompat.getColor(context, R.color._192032))
             }
-
             itemBinding.cbDay.isChecked = false
             if (timelist.isSelected) {
                 itemBinding.cbDay.isChecked = true
@@ -76,7 +74,6 @@ class DaysAdapter(
              recyclerItemListener.onItemSelected(
                     absoluteAdapterPosition
                 )
-//                listener.selected(absoluteAdapterPosition)
             }
         }
 

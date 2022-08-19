@@ -297,6 +297,7 @@
                         android:id="@+id/imageViewUser"
                         android:layout_width="@dimen/_100sdp"
                         android:layout_height="@dimen/_100sdp"
+                        android:scaleType="fitXY"
                         android:onClick="@{listener::onClick}"
                         android:src="@drawable/ic_defalut_profile_pic"
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize10Percent" />

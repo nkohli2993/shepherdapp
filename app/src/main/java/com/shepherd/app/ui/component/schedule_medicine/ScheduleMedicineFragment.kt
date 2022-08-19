@@ -437,6 +437,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     "This day does not lie between selected end date of medication."
                 )
             }
+             dayAdapter?.notifyDataSetChanged()
 
         }
     }
