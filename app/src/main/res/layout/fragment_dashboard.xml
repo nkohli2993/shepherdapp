@@ -27,6 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{listener::onClick}"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintTop_toTopOf="parent">
@@ -79,7 +80,7 @@
                             android:layout_marginStart="@dimen/_2sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="@string/schedule_medication_reminders_set_refill_alerts_research"
+                            android:text="@string/schedule_events_set_reminders_assign_tasks"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -122,6 +123,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{listener::onClick}"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintTop_toBottomOf="@+id/cvCarePoints">
@@ -258,6 +260,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{listener::onClick}"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintTop_toBottomOf="@+id/cvDiscussion">
@@ -353,6 +356,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{listener::onClick}"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintTop_toBottomOf="@+id/cvMedList">
@@ -447,6 +451,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{listener::onClick}"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintTop_toBottomOf="@+id/cvResources">
@@ -541,6 +546,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{listener::onClick}"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintTop_toBottomOf="@+id/cvLockBox">
@@ -645,6 +651,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="@{listener::onClick}"
+                android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintTop_toBottomOf="@+id/cvVitalStats">

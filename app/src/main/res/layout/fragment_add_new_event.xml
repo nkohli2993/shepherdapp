@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*()"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*():';|\/?~+-"
                     android:fontFamily="@font/gotham_medium"
                     android:hint="@string/event_name"
                     android:inputType="textCapSentences|textMultiLine"
@@ -123,7 +123,7 @@
                         android:layout_height="@dimen/_80sdp"
                         android:layout_marginTop="@dimen/_4sdp"
                         android:background="@null"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*()"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*():';|\/?~+-"
                         android:fontFamily="@font/gotham_medium"
                         android:gravity="top|start"
                         android:hint="@string/address"
@@ -305,7 +305,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/am"
-                            android:textColor="@color/_192032"
+                            android:textColor="@color/colorBlackTrans50"
                             android:textSize="@dimen/_12ssp" />
 
                         <View
@@ -321,7 +321,7 @@
                             android:layout_marginEnd="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/pm"
-                            android:textColor="@color/_192032"
+                            android:textColor="@color/colorBlackTrans50"
                             android:textSize="@dimen/_12ssp" />
 
                     </LinearLayout>
@@ -350,16 +350,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*()"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*():';|\/?~+-"
                         android:fontFamily="@font/gotham_medium"
                         android:gravity="top|start"
-                        android:hint="@string/write"
                         android:inputType="textCapSentences|textMultiLine"
                         android:lines="8"
                         android:maxLength="200"
                         android:padding="@dimen/_10sdp"
                         android:textColor="@color/_192032"
-                        android:textColorHint="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />

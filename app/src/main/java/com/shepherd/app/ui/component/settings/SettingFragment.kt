@@ -131,7 +131,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                 )
             }
             R.id.tvLogout -> {
-                homeActivity.navigateToLoginScreen()
+                homeActivity.viewModel.logOut()
             }
         }
     }

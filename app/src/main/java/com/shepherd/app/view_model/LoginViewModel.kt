@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.login.UserLovedOne
 import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.data.dto.signup.BioMetricData
 import com.shepherd.app.data.dto.signup.UserSignupData
@@ -127,5 +128,9 @@ class LoginViewModel @Inject constructor(
     // Save User's Role
     fun saveUserRole(role: String) {
         userRepository.saveUserRole(role)
+    }
+
+    fun saveLovedOneDetail(userLovedOne: UserLovedOne){
+        userRepository.saveLovedOneUserDetail(userLovedOne)
     }
 }

@@ -31,11 +31,9 @@ import java.io.File
 @AndroidEntryPoint
 class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnClickListener {
 
-    private var roleId: String? = null
+    private var profilePicCompleteUrl: String? = null
     private val editProfileViewModel: EditProfileViewModel by viewModels()
     private lateinit var fragmentEditProfileBinding: FragmentEditProfileBinding
-    private var pageNumber: Int = 1
-    private var limit: Int = 10
     private var profilePicUrl: String? = null
     private var TAG = "Edit_profile_screen"
     override fun onCreateView(
@@ -45,7 +43,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
     ): View {
         fragmentEditProfileBinding =
             FragmentEditProfileBinding.inflate(inflater, container, false)
-
         return fragmentEditProfileBinding.root
     }
 
@@ -98,26 +95,6 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
                 }
             }
         }
-
-        // Observe the response of Roles api
-        editProfileViewModel.rolesResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    it.message?.let { showError(requireContext(), it.toString()) }
-                }
-                is DataResult.Loading -> {
-
-                }
-                is DataResult.Success -> {
-                    roleId = it.data.payload.users.filter { users ->
-                        users.slug == UserSlug.User.slug
-                    }.map { user ->
-                        user.id
-                    }[0].toString()
-                }
-            }
-        }
-
     }
 
 
@@ -125,15 +102,13 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
         fragmentEditProfileBinding.listener = this
         fragmentEditProfileBinding.userDetail = editProfileViewModel.getUserDetail()
         fragmentEditProfileBinding.etEmailId.setText(editProfileViewModel.getUserEmail())
-        profilePicUrl = editProfileViewModel.getUserDetail()?.profilePhoto
+        profilePicCompleteUrl = editProfileViewModel.getUserDetail()?.profilePhoto
         Picasso.get().load(editProfileViewModel.getUserDetail()?.profilePhoto)
             .placeholder(R.drawable.ic_defalut_profile_pic)
             .into(fragmentEditProfileBinding.imageViewUser)
         if (editProfileViewModel.getUserDetail()?.phoneCode != null) {
             fragmentEditProfileBinding.ccp.setCountryForPhoneCode(editProfileViewModel.getUserDetail()?.phoneCode!!.toInt())
         }
-        // Get Roles
-        editProfileViewModel.getRoles(pageNumber, limit)
     }
 
     override fun getLayoutRes(): Int {
@@ -154,7 +129,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
             }
             R.id.btnContinue -> {
                 if (isValid) {
-                    /* val profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
+                     profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
                          null
                      } else {
                          when {
@@ -165,15 +140,14 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
                                  profilePicUrl
                              }
                          }
-                     }*/
+                     }
                     editProfileViewModel.updateAccount(
                         ccp.selectedCountryCode,
-                        profilePicUrl,
+                        profilePicCompleteUrl,
                         fragmentEditProfileBinding.edtFirstName.text.toString().trim(),
                         fragmentEditProfileBinding.edtLastName.text.toString().trim(),
-                        fragmentEditProfileBinding.etEmailId.text.toString().trim(),
                         fragmentEditProfileBinding.edtPhoneNumber.text.toString().trim(),
-                        roleId = roleId
+                        editProfileViewModel.getUserDetail()?.id!!
                     )
                 }
 

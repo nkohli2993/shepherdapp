@@ -4,9 +4,11 @@ import android.util.Log
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.dashboard.LoveUser
 import com.shepherd.app.data.dto.login.Payload
+import com.shepherd.app.data.dto.login.UserLovedOne
 import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.Const.LOVED_ONE_DETAIL
 import com.shepherd.app.utils.Const.LOVED_ONE_ID
 import com.shepherd.app.utils.Const.LOVED_ONE_UUID
 import com.shepherd.app.utils.Const.LOVED_USER_DETAILS
@@ -124,5 +126,11 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
         Prefs.with(ShepherdApp.appContext)?.removeAll()
     }
 
+    fun saveLovedOneUserDetail(userLovedOne: UserLovedOne) {
+        Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_DETAIL, userLovedOne)
+    }
+    fun getLovedOneUserDetail(): UserLovedOne?{
+       return Prefs.with(ShepherdApp.appContext)!!.getObject(LOVED_ONE_DETAIL, UserLovedOne::class.java )
+    }
 
 }

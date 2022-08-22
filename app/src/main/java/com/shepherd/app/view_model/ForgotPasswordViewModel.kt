@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
-import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.auth_repository.AuthRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
@@ -22,9 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForgotPasswordViewModel @Inject constructor(
-    private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
-) : BaseViewModel() {
+    private val authRepository: AuthRepository) : BaseViewModel() {
 
     var forgotPasswordData = MutableLiveData<ForgotPasswordModel>().apply {
         value = ForgotPasswordModel()

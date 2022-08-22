@@ -8,8 +8,6 @@ import com.google.gson.annotations.SerializedName
 
 data class UserUpdateData(
 
-    @SerializedName("email") var email: String? = null,
-    @SerializedName("role_id") var roleId: String? = null,
     @SerializedName("firstname") var firstname: String? = null,
     @SerializedName("lastname") var lastname: String? = null,
     @SerializedName("phone_code") var phoneCode: String? = null,

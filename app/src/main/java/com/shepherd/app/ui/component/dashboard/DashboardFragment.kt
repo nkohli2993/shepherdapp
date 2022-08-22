@@ -19,6 +19,7 @@ import com.shepherd.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherd.app.ui.component.dashboard.adapter.CareTeamMembersDashBoardAdapter
 import com.shepherd.app.ui.component.dashboard.adapter.DashboardAdapter
 import com.shepherd.app.ui.component.home.HomeActivity
+import com.shepherd.app.utils.Modules
 import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.observeEvent
@@ -54,12 +55,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.inflateDashboardList(requireContext())
-
-        // Get Care Teams
-        // viewModel.getCareTeams(pageNumber, limit, status)
-
-        //Get Home Data
-        //viewModel.getHomeData()
     }
 
     override fun onCreateView(
@@ -124,16 +119,47 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
             val careTeamMembersCount = careTeamMembersProfileList.size
 
-           /* if (careTeamMembersCount == 0 || careTeamMembersCount == 1) {
-                fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Member"
-            } else {
-                fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Members"
-            }*/
+            /* if (careTeamMembersCount == 0 || careTeamMembersCount == 1) {
+                 fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Member"
+             } else {
+                 fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Members"
+             }*/
 
             if (!careTeamMembersProfileList.isNullOrEmpty()) {
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
             }
+
+            // show accessed cards only to users
+            val perList = viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
+            for (i in perList?.indices!!) {
+                checkPermission(perList[i].toInt())
+            }
         }
+    }
+
+    private fun checkPermission(permission: Int?) {
+        fragmentDashboardBinding.cvCarePoints.visibility = View.GONE
+        fragmentDashboardBinding.cvLockBox.visibility = View.GONE
+        fragmentDashboardBinding.cvMedList.visibility = View.GONE
+        fragmentDashboardBinding.cvResources.visibility = View.GONE
+        fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
+        fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
+        fragmentDashboardBinding.cvDiscussion.visibility = View.VISIBLE
+        when {
+            Modules.CareTeam.value == permission -> {
+                fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE
+            }
+            Modules.LockBox.value == permission -> {
+                fragmentDashboardBinding.cvLockBox.visibility = View.VISIBLE
+            }
+            Modules.MedList.value == permission -> {
+                fragmentDashboardBinding.cvMedList.visibility = View.VISIBLE
+            }
+            Modules.Resources.value == permission -> {
+                fragmentDashboardBinding.cvResources.visibility = View.VISIBLE
+            }
+        }
+
     }
 
     override fun initViewBinding() {

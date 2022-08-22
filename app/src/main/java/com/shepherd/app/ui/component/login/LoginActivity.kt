@@ -216,6 +216,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             payload?.userLovedOne?.let {
                                 if (it.isNotEmpty()) {
                                     // Save Loved One UUID
+                                    it[0].let {
+                                        loginViewModel.saveLovedOneDetail(it)
+                                    }
                                     it[0].loveUserId?.let { it1 ->
                                         loginViewModel.saveLovedOneUUID(
                                             it1

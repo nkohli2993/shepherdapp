@@ -29,6 +29,7 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
+                android:clickable="true"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/tvLogout"
                 app:layout_constraintTop_toTopOf="parent">

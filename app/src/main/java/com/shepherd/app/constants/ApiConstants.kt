@@ -23,6 +23,7 @@ object ApiConstants {
         const val LOGOUT = "$BASE_URL_USER${API_VERSION}users/logout"
         const val USER_ROLES = "$BASE_URL_USER${API_VERSION}roles"
         const val USER_RESEND_VERIFICATION = "$BASE_URL_USER${API_VERSION}users/resend"
+        const val CHANGE_PASSWORD = "$BASE_URL_USER${API_VERSION}users/change-password"
     }
 
     object Relations {
@@ -107,7 +108,11 @@ object ApiConstants {
     }
 
     object UpdateProfile {
-        const val UPDATE_LOGIN_USER_PROFILE ="$BASE_URL${API_VERSION}user_profiles"
+        const val UPDATE_LOGIN_USER_PROFILE ="$BASE_URL_USER${API_VERSION}user_profiles/{id}"
+    }
+
+    object VitalStats{
+        const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}vital_stats/loved_one/{id}"
     }
 }
 

@@ -15,6 +15,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.view.MenuItem
+import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -28,8 +29,10 @@ import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
 import com.shepherd.app.R
 import com.shepherd.app.utils.ProgressBarDialog
+import com.shepherd.app.utils.extensions.checkString
 import com.shepherd.app.utils.extensions.showError
 import java.io.File
+import java.util.regex.Pattern
 
 /**
  * Created by Sumit Kumar
@@ -233,5 +236,11 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    fun EditText.isValidPassword(): Boolean {
+        return Pattern
+            .compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!&^%$#@()=*/.+_-])(?=\\S+$).{8,}$")
+            .matcher(this.checkString()).matches()
     }
 }

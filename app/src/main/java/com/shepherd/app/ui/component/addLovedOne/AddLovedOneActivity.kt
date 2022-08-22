@@ -107,7 +107,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 //                    binding.editTextEmail.error = getString(R.string.please_enter_email_id)
 //                    binding.editTextEmail.requestFocus()
 //                }
-                binding.editTextEmail.text.toString().isNotEmpty()  && !binding.editTextEmail.text.toString().isValidEmail() -> {
+                binding.editTextEmail.text.toString()
+                    .isNotEmpty() && !binding.editTextEmail.text.toString().isValidEmail() -> {
                     binding.editTextEmail.error = getString(R.string.please_enter_valid_email_id)
                     binding.editTextEmail.requestFocus()
                 }
@@ -239,8 +240,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
     private fun calculateDays(month: Int, year: String) {
         daysAr.clear()
-        for (i in 0 until getDayCount(month.toString(), year) ) {
-            daysAr.add((i+1).toString())
+        for (i in 0 until getDayCount(month.toString(), year)) {
+            daysAr.add((i + 1).toString())
         }
         daysAr.add(0, "Date")
         setDateAdapter(daysAr)

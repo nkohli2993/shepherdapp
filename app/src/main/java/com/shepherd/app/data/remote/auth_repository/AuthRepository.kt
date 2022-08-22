@@ -2,6 +2,7 @@ package com.shepherd.app.data.remote.auth_repository
 
 import android.webkit.MimeTypeMap
 import com.shepherd.app.data.dto.add_loved_one.UploadPicResponseModel
+import com.shepherd.app.data.dto.change_password.ChangePasswordModel
 import com.shepherd.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
@@ -141,6 +142,15 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
                 return apiService.sendUserVerificationEmail()
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Change Password
+    suspend fun changePassword(value: ChangePasswordModel): Flow<DataResult<BaseResponseModel>> {
+        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.changePassword(value)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

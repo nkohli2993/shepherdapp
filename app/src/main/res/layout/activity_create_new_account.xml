@@ -309,7 +309,7 @@
                             android:textSize="14sp"
                             bind:getPassError="@{@string/password}" />
 
-                        <ImageView
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imageViewPasswordToggle"
                             android:layout_width="@dimen/_24sdp"
                             android:layout_height="@dimen/_24sdp"
