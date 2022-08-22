@@ -145,7 +145,7 @@
                 android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                 android:fontFamily="@font/gotham_medium"
                 android:gravity="start"
-                android:hint="@string/desc_text"
+                android:hint="@string/note"
                 android:inputType="textMultiLine"
                 android:maxLength="500"
                 android:maxLines="10"

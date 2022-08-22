@@ -6,11 +6,14 @@ import com.shepherd.app.data.dto.add_loved_one.CreateLovedOneResponseModel
 import com.shepherd.app.data.dto.add_loved_one.UploadPicResponseModel
 import com.shepherd.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.shepherd.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
+import com.shepherd.app.data.dto.add_vital_stats.AddVitalStatsResponseModel
+import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherd.app.data.dto.added_events.*
 import com.shepherd.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherd.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.shepherd.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherd.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
+import com.shepherd.app.data.dto.change_password.ChangePasswordModel
 import com.shepherd.app.data.dto.dashboard.HomeResponseModel
 import com.shepherd.app.data.dto.edit_profile.UserUpdateData
 import com.shepherd.app.data.dto.forgot_password.ForgotPasswordModel
@@ -73,6 +76,9 @@ interface ApiService {
 
     @POST(ApiConstants.Authentication.FORGOT_PASSWORD)
     suspend fun forgotPassword(@Body value: ForgotPasswordModel): Response<LoginResponseModel>
+
+    @POST(ApiConstants.Authentication.CHANGE_PASSWORD)
+    suspend fun changePassword(@Body value: ChangePasswordModel): Response<BaseResponseModel>
 
     @GET(ApiConstants.Relations.GET_RELATIONS)
     suspend fun getRelations(
@@ -336,6 +342,13 @@ interface ApiService {
         @Query("date") date:String
     ): Response<GetMedicationRecordResponse>
 
-    @POST(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
-    suspend fun updateProfile(@Body value: UserUpdateData): Response<LoginResponseModel>
+    @PUT(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
+    suspend fun updateProfile(@Body value: UserUpdateData,@Path("id") id:Int): Response<LoginResponseModel>
+
+    // add vital stats for loginLoved one
+    @POST(ApiConstants.VitalStats.ADD_VITAL_STATS)
+    suspend fun addVitalStats(
+        @Body addNewLockBoxRequestModel: VitalStatsRequestModel
+    ): Response<AddVitalStatsResponseModel>
+
 }

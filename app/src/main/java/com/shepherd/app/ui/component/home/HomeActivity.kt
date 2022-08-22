@@ -33,6 +33,7 @@ import com.shepherd.app.ui.component.myMedList.MyMedListFragment
 import com.shepherd.app.ui.component.resources.ResourcesFragment
 import com.shepherd.app.ui.component.vital_stats.VitalStatsFragment
 import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.Modules
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showSuccess
@@ -49,7 +50,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     private var drawerLayout: DrawerLayout? = null
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityHomeBinding
-    private val viewModel: HomeViewModel by viewModels()
+    val viewModel: HomeViewModel by viewModels()
     private val TAG = "HomeActivity"
     private var profilePicLovedOne: String? = null
 
@@ -69,6 +70,14 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             binding.drawerLayout.openDrawer(GravityCompat.START, true)
         })
         setOnClickListeners()
+
+        // show accessed cards only to users
+        if(viewModel.getLovedUserDetail()!=null){
+            val perList = viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
+            for (i in perList?.indices!!) {
+                checkPermission(perList[i].toInt())
+            }
+        }
     }
 
     private fun setOnClickListeners() {
@@ -90,7 +99,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     showLoading("")
                 }
                 is DataResult.Success -> {
-
                     navigateToLoginScreen()
                 }
             }
@@ -209,7 +217,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = false
                         tvNew.isVisible = false
                         ivEditProfile.setOnClickListener() {
-//                            navController.navigate(R.id.nav_edit_profile)
+                            // navController.navigate(R.id.nav_edit_profile)
                         }
                         ivSetting.setOnClickListener() {
                             navController.navigate(R.id.nav_setting)
@@ -226,7 +234,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
-                                navController.navigate(R.id.nav_add_vitals)
+                                //  navController.navigate(R.id.nav_add_vitals)
                             }
                         }
                     }
@@ -408,5 +416,28 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
 
     }
+
+    private fun checkPermission(permission: Int?) {
+        binding.llCarePoint.visibility = View.GONE
+        binding.llLockBox.visibility = View.GONE
+        binding.llMedList.visibility = View.GONE
+        binding.llResources.visibility = View.GONE
+        when {
+            Modules.CareTeam.value == permission -> {
+                binding.llCarePoint.visibility = View.VISIBLE
+            }
+            Modules.LockBox.value == permission -> {
+                binding.llLockBox.visibility = View.VISIBLE
+            }
+            Modules.MedList.value == permission -> {
+                binding.llMedList.visibility = View.VISIBLE
+            }
+            Modules.Resources.value == permission -> {
+                binding.llResources.visibility = View.VISIBLE
+            }
+        }
+
+    }
+
 
 }

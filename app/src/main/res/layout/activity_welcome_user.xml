@@ -24,15 +24,6 @@
             android:orientation="vertical"
             tools:context="com.shepherd.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
-            <!--  <androidx.appcompat.widget.AppCompatImageView
-                  android:id="@+id/ivBack"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:onClick="@{listener::onClick}"
-                  android:padding="@dimen/_10sdp"
-                  android:src="@drawable/ic_back" />-->
-
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
@@ -200,7 +191,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginVertical="@dimen/_30sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
                 android:background="@drawable/button_primary_green"
                 android:backgroundTint="@color/_399282"
                 android:fontFamily="@font/gotham_medium"

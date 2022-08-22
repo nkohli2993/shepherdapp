@@ -11,6 +11,7 @@ import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.dashboard.HomeResponseModel
 import com.shepherd.app.data.dto.dashboard.LoveUser
+import com.shepherd.app.data.dto.login.UserLovedOne
 import com.shepherd.app.data.dto.menuItem.MenuItemModel
 import com.shepherd.app.data.dto.user.UserDetailsResponseModel
 import com.shepherd.app.data.local.UserRepository
@@ -204,6 +205,9 @@ class HomeViewModel @Inject constructor(
         }
         return homeResponseLiveData
     }
-
+    //get userinfo from Shared Pref
+    fun getLovedUserDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
+    }
 
 }

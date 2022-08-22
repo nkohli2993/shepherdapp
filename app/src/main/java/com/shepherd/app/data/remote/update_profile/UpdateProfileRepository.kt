@@ -57,10 +57,10 @@ class UpdateProfileRepository @Inject constructor(private val apiService: ApiSer
 
 
     //Update Profile fragment
-    suspend fun updateProfile(value: UserUpdateData): Flow<DataResult<LoginResponseModel>> {
+    suspend fun updateProfile(value: UserUpdateData,id:Int): Flow<DataResult<LoginResponseModel>> {
         return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
-                return apiService.updateProfile(value)
+                return apiService.updateProfile(value,id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

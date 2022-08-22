@@ -106,23 +106,20 @@ class EditProfileViewModel @Inject constructor(
         profilePicUrl: String?,
         firstName: String?,
         lastName: String?,
-        email: String?,
         phoneNumber: String?,
-        roleId: String?
+        id:Int
     ): LiveData<Event<DataResult<LoginResponseModel>>> {
         //Update the phone code
         updateData.value.let {
             it?.firstname = firstName
             it?.lastname = lastName
-            it?.email = email
             it?.phoneCode = phoneCode
             it?.phoneNo = phoneNumber
             it?.profilePhoto = profilePicUrl
-            it?.roleId = roleId
         }
 
         viewModelScope.launch {
-            val response = updateData.value?.let { updateProfileRespository.updateProfile(it) }
+            val response = updateData.value?.let { updateProfileRespository.updateProfile(it,id) }
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _updateProfileLiveData.postValue(Event(it))

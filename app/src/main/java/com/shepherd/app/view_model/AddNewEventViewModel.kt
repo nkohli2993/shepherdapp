@@ -98,7 +98,7 @@ class AddNewEventViewModel @Inject constructor(
         createEventData.value.let {
             it?.loved_one_user_id = loved_one_user_id
             it?.name = name
-            it?.location = location
+            it?.location = location.ifEmpty { null }
             it?.date = date
             it?.time = time
             it?.notes = notes

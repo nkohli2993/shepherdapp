@@ -256,7 +256,7 @@
     <string name="agree_to_terms_and_conditions_and_privacy_policy">I agree to the Terms &amp; \nConditions and Privacy Policy</string>
     <string name="I_agree_to_terms_and_conditions_and_privacy_policy">I agree to the <font color="#A26DCB"><b>Terms &amp; \nConditions</b></font> and <font color="#A26DCB"><b>Privacy Policy.</b></font></string>
     <string name="enter_phone_number">Enter phone number</string>
-    <string name="enter_address">Enter address</string>
+    <string name="enter_address">Please enter address</string>
     <string name="please_enter_date_of_birth">Please enter date of birth</string>
     <string name="should_be_minimum_5_digits">Length Should Be of 5 to 15 Digits</string>
     <string name="should_be_minimum_3_characters">should be minimum of 3 characters</string>
@@ -382,7 +382,7 @@
     <string name="choose_time">Choose time</string>
     <string name="please_enter_date_of_event">Please enter date of event</string>
     <string name="please_enter_time_of_birth">Please enter time of event</string>
-    <string name="please_select_whome_to_assign_event">Please select atleast one assigne to create event</string>
+    <string name="please_select_whome_to_assign_event">Please select at least one assignee to create event</string>
     <string name="write__">Write…</string>
     <string name="google_drive">Google Drive</string>
     <string name="local_storage">Local Storage</string>
@@ -403,7 +403,8 @@
     <string name="lockbox_deleted_successfully">LockBox Document deleted successfully…</string>
     <string name="rationale_external_storage">This app needs access to your external storage so you can upload documents</string>
     <string name="document_name">Document Name</string>
-    <string name="new_care_point_added_successfully">New carePoint added successfully…</string>
+    <string name="new_care_point_added_successfully">Care point added successfully…</string>
+    <string name="vital_stats_added_successfully">Vital stats added successfully…</string>
     <string name="please_select_new_care_point_date_firts">Please select new CarePoint date first.</string>
     <string name="please_select_future_time">Please select future time for new CarePoint.</string>
     <string name="view_more"> … View more.</string>
@@ -423,7 +424,7 @@
     <string name="end_date">End Date</string>
     <string name="once_a_day">Once a day</string>
     <string name="twice_a_day">Twice a day</string>
-    <string name="three_times_a_day">Three times a day</string>
+    <string name="three_times_a_day">Thrice times a day</string>
     <string name="four_times_a_day">Four times a day</string>
     <string name="no_medication_reminder_found">No Medication Reminder Found…</string>
     <string name="no_medication_found">No Medication Found…</string>

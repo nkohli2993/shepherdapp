@@ -1,26 +1,32 @@
 package com.shepherd.app.ui.component.add_vitals
 
+import android.annotation.SuppressLint
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherd.app.databinding.FragmentAddVitalsBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.utils.extensions.showError
-import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.utils.extensions.showSuccess
+import com.shepherd.app.view_model.AddNewVitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
+@SuppressLint("SimpleDateFormat")
 class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClickListener {
-
     private lateinit var fragmentAddVitalsBinding: FragmentAddVitalsBinding
-
+    private val addVitalStatsViewModel: AddNewVitalStatsViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,6 +39,26 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
     }
 
     override fun observeViewModel() {
+        addVitalStatsViewModel.addVitatStatsLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(
+                        requireContext(),
+                        getString(R.string.vital_stats_added_successfully)
+                    )
+                    backPress()
+                }
+
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it) }
+                }
+            }
+        }
     }
 
     override fun initViewBinding() {
@@ -51,9 +77,11 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
             R.id.clTimeWrapper -> {
                 timePicker()
             }
-            R.id.btnAdd ->{
-                if(isValid){
-
+            R.id.btnAdd -> {
+                if (isValid) {
+                    // add params for vital stats
+                    val stats = VitalStatsRequestModel()
+                    addVitalStatsViewModel.addVitalStats(stats)
                 }
             }
         }
@@ -61,6 +89,12 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
 
     private fun timePicker() {
         val mCurrentTime = Calendar.getInstance()
+        if (fragmentAddVitalsBinding.tvTime.text.toString().isNotEmpty()) {
+            val dateTime = SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().time)
+                .plus(fragmentAddVitalsBinding.tvTime.text.toString())
+            mCurrentTime.time = SimpleDateFormat("dd-MM-yyyy HH:mm").parse(dateTime)!!
+        }
+
         val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
         val minute = mCurrentTime.get(Calendar.MINUTE)
 
@@ -113,11 +147,13 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                     fragmentAddVitalsBinding.etTemp.requestFocus()
                 }
                 fragmentAddVitalsBinding.etBp.text.toString().trim().isEmpty() -> {
-                    fragmentAddVitalsBinding.etBp.error = getString(R.string.please_enter_your_blood_pressure)
+                    fragmentAddVitalsBinding.etBp.error =
+                        getString(R.string.please_enter_your_blood_pressure)
                     fragmentAddVitalsBinding.etBp.requestFocus()
                 }
                 fragmentAddVitalsBinding.etSpo.text.toString().trim().isEmpty() -> {
-                    fragmentAddVitalsBinding.etSpo.error = getString(R.string.please_enter_body_oxygen)
+                    fragmentAddVitalsBinding.etSpo.error =
+                        getString(R.string.please_enter_body_oxygen)
                     fragmentAddVitalsBinding.etSpo.requestFocus()
                 }
                 else -> {

@@ -14,6 +14,8 @@ import com.shepherd.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherd.app.data.dto.dashboard.DashboardModel
 import com.shepherd.app.data.dto.dashboard.HomeResponseModel
 import com.shepherd.app.data.dto.dashboard.LoveUser
+import com.shepherd.app.data.dto.login.UserLovedOne
+import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.care_teams.CareTeamsRepository
 import com.shepherd.app.data.remote.home_repository.HomeRepository
@@ -168,5 +170,10 @@ class DashboardViewModel @Inject constructor(
             }
         }
         return homeResponseLiveData
+    }
+
+    //get userinfo from Shared Pref
+    fun getLovedUserDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
     }
 }
