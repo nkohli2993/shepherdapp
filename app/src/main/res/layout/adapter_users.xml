@@ -33,7 +33,7 @@
             android:paddingVertical="@dimen/_10sdp">
 
             <CheckBox
-                android:id="@+id/cbReminder"
+                android:id="@+id/chkUser"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:background="@drawable/checkbox_background"
@@ -50,7 +50,7 @@
                 android:background="@drawable/bg_image_place_holder"
                 android:orientation="vertical"
                 android:layout_marginStart="10dp"
-                app:layout_constraintStart_toEndOf="@+id/cbReminder"
+                app:layout_constraintStart_toEndOf="@+id/chkUser"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.imageview.ShapeableImageView

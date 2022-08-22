@@ -22,7 +22,13 @@ class UsersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.opnChat(itemData[0] as CareTeamModel)
+            viewModel.openChat(itemData[0] as CareTeamModel)
+        }
+    }
+
+    private val onItemCheckedListener: RecyclerItemListener = object : RecyclerItemListener {
+        override fun onItemSelected(vararg itemData: Any) {
+            viewModel.selectUser(itemData[0] as CareTeamModel)
         }
     }
 
@@ -45,20 +51,35 @@ class UsersAdapter(
     }
 
     override fun onBindViewHolder(holder: UsersViewHolder, position: Int) {
-        holder.bind(careTeams[position], onItemClickListener)
+        holder.bind(careTeams[position], onItemClickListener, onItemCheckedListener)
     }
 
 
     class UsersViewHolder(private val itemBinding: AdapterUsersBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(careTeam: CareTeamModel, recyclerItemListener: RecyclerItemListener) {
+        fun bind(
+            careTeam: CareTeamModel,
+            recyclerItemListener: RecyclerItemListener,
+            recyclerViewItemCheckedListener: RecyclerItemListener
+        ) {
             itemBinding.data = careTeam
             if (careTeam.isSelected) {
-                itemBinding.cbReminder.visibility = View.VISIBLE
+                itemBinding.chkUser.visibility = View.VISIBLE
             } else {
-                itemBinding.cbReminder.visibility = View.GONE
+                itemBinding.chkUser.visibility = View.GONE
             }
+
+            itemBinding.chkUser.setOnCheckedChangeListener { compoundButton, _isChecked ->
+                if (_isChecked) {
+                    careTeam.isSelected = true
+                    recyclerViewItemCheckedListener.onItemSelected(careTeam)
+                } else {
+                    careTeam.isSelected = false
+                }
+            }
+
+            // Click User
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     careTeam

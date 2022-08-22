@@ -46,6 +46,10 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     private var limit: Int = 10
     private var status: Int = 1
     private var careTeams: ArrayList<CareTeamModel>? = ArrayList()
+    private var selectedCareTeams: ArrayList<CareTeamModel>? = ArrayList()
+    private var chatModelList: ArrayList<ChatModel>? = ArrayList()
+
+    private var loggedInUser: UserProfile? = null
     private var usersAdapter: UsersAdapter? = null
     var currentPage: Int = 0
     var totalPage: Int = 0
@@ -65,18 +69,17 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     }
 
     override fun initViewBinding() {
+        chatModelList?.clear()
         fragmentNewMessageBinding.listener = this
         // Get Care Team Members
         newMessageViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
         setUsersAdapter()
-
         fragmentNewMessageBinding.chkDiscussion.setOnCheckedChangeListener { compoundButton, isChecked ->
             usersAdapter?.selectUnselect(isChecked)
             if (isChecked) {
-                fragmentNewMessageBinding.buttonSubmit.visibility = View.VISIBLE
+                fragmentNewMessageBinding.btnStartDiscussion.visibility = View.VISIBLE
             } else {
-                fragmentNewMessageBinding.buttonSubmit.visibility = View.GONE
-
+                fragmentNewMessageBinding.btnStartDiscussion.visibility = View.GONE
             }
         }
 
@@ -100,11 +103,17 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
             }
         })
 
+        // Get Login User's detail
+        loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.USER_DETAILS,
+            UserProfile::class.java
+        )
     }
 
     override fun observeViewModel() {
         observe(newMessageViewModel.loginLiveData, ::handleLoginResult)
         observeEvent(newMessageViewModel.openChatMessage, ::navigateToChat)
+        observeEvent(newMessageViewModel.selectUser, ::selectUsers)
 
         observeSnackBarMessages(newMessageViewModel.showSnackBar)
         observeToast(newMessageViewModel.showToast)
@@ -185,12 +194,43 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         }
     }
 
+    private fun selectUsers(singleEvent: SingleEvent<CareTeamModel>) {
+        singleEvent.getContentIfNotHandled()?.let {
+            val careTeam = it
+            selectedCareTeams?.add(careTeam)
+            /*   val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+               val loggedInUserId = loggedInUser?.id
+               for (i in selectedCareTeams?.indices!!) {
+                   val selectedCareTeam = selectedCareTeams!![i]
+                   val receiverName =
+                       selectedCareTeam.user_id_details.firstname + " " + selectedCareTeam.user_id_details.lastname
+                   val receiverID = selectedCareTeam.user_id_details.id
+                   val receiverPicUrl = selectedCareTeam.user_id_details.profilePhoto
+                   // Create Chat Model
+                   val chatModel = ChatModel(
+                       null,
+                       loggedInUserId,
+                       loggedInUserName,
+                       receiverID,
+                       receiverName,
+                       receiverPicUrl,
+                       null,
+                       Chat.CHAT_GROUP
+                   )
+                   chatModelList?.add(chatModel)
+               }*/
+        }
+
+
+    }
+
     private fun navigateToChat(singleEvent: SingleEvent<CareTeamModel>) {
         // Get Login User's detail
-        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
-            Const.USER_DETAILS,
-            UserProfile::class.java
-        )
+        /* val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+             Const.USER_DETAILS,
+             UserProfile::class.java
+         )*/
+        chatModelList?.clear()
         val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
         val loggedInUserId = loggedInUser?.id
 
@@ -209,11 +249,12 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                 null,
                 Chat.CHAT_SINGLE
             )
+            chatModelList?.add(chatModel)
             Log.d(TAG, "ChatModel : $chatModel ")
             findNavController().navigate(
                 NewMessageFragmentDirections.actionNewMessageToChat(
                     "NewMessageFragment",
-                    chatModel
+                    chatModelList?.toTypedArray()
                 )
             )
         }
@@ -277,8 +318,39 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.buttonSubmit -> {
+            R.id.btnStartDiscussion -> {
+                Log.d(TAG, "Selected Users :${selectedCareTeams?.size} ")
+                Log.d(TAG, "Users :${selectedCareTeams} ")
 //                findNavController().navigate(R.id.action_new_message_to_chat)
+
+                val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+                val loggedInUserId = loggedInUser?.id
+                for (i in selectedCareTeams?.indices!!) {
+                    val selectedCareTeam = selectedCareTeams!![i]
+                    val receiverName =
+                        selectedCareTeam.user_id_details.firstname + " " + selectedCareTeam.user_id_details.lastname
+                    val receiverID = selectedCareTeam.user_id_details.id
+                    val receiverPicUrl = selectedCareTeam.user_id_details.profilePhoto
+                    // Create Chat Model
+                    val chatModel = ChatModel(
+                        null,
+                        loggedInUserId,
+                        loggedInUserName,
+                        receiverID,
+                        receiverName,
+                        receiverPicUrl,
+                        null,
+                        Chat.CHAT_GROUP
+                    )
+                    chatModelList?.add(chatModel)
+                }
+                Log.d(TAG, "GroupChatData :$chatModelList ")
+                findNavController().navigate(
+                    NewMessageFragmentDirections.actionNewMessageToChat(
+                        "NewMessageFragment",
+                        chatModelList?.toTypedArray()
+                    )
+                )
             }
             R.id.ivBack -> {
                 findNavController().popBackStack()
@@ -301,5 +373,21 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         pageNumber = 1
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // To fix the issue : When moving back from Chat Screen to User Listing Screen , toggle is always on
+        fragmentNewMessageBinding.chkDiscussion.isChecked = false
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        selectedCareTeams?.clear()
+    }
 }
 

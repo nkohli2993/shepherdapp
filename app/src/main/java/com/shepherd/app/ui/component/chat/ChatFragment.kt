@@ -36,10 +36,14 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
     private val chatViewModel: ChatViewModel by viewModels()
     private val args: ChatFragmentArgs by navArgs()
     private var chatModel: ChatModel? = null
+    private var chatModelList: Array<ChatModel>? = null
+    private var chatUserDetailList: ArrayList<ChatUserDetail>? = ArrayList()
     private var allMsgLoaded: Boolean = false
     private var msgGroupList: ArrayList<MessageGroupData> = ArrayList()
     private var chatAdapter: ChatAdapter? = null
     private var adapter: ChatGroupAdapter? = null
+
+    var chatType: Int? = null
 
 
     private lateinit var fragmentChatBinding: FragmentChatBinding
@@ -61,12 +65,24 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
         fragmentChatBinding.listener = this
         val source = args.source
         Log.d(TAG, "Source : $source ")
-        chatModel = args.chatModel
-        Log.d(TAG, "Chat Model : $chatModel ")
 
-        fragmentChatBinding.data = chatModel
+//        chatModel = args.chatModel
+        chatModelList = args.chatModel
+        Log.d(TAG, "Chat ModelList : $chatModelList ")
 
-        chatViewModel.setToUserDetail(chatModel?.toChatUserDetail())
+        chatType = chatModelList?.get(0)?.chatType
+        Log.d(TAG, "ChatType :$chatType ")
+
+//        fragmentChatBinding.data = chatModel
+        chatModelList?.forEach {
+            val chatUserDetail = it.toChatUserDetail()
+            chatUserDetailList?.add(chatUserDetail)
+        }
+
+
+        // Set User Details
+//        chatViewModel.setToUserDetail(chatModel?.toChatUserDetail())
+        chatViewModel.setToUserDetail(chatType, chatUserDetailList)
         loadChat()
 //        setChatAdapter()
         setGroupChatAdapter()
@@ -149,6 +165,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
                 if (message.isNullOrEmpty()) {
                     showInfo(requireContext(), "Please enter message...")
                 } else {
+                    chatModel?.chatType = chatType
                     chatModel?.message = message
                     Log.d(TAG, "Send Message :$chatModel ")
 //                    chatModel?.let { chatViewModel.sendMessage(it) }

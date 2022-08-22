@@ -319,9 +319,8 @@
             app:argType="string" />
         <argument
             android:name="chatModel"
-            app:argType="com.shepherd.app.data.dto.chat.ChatModel"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:argType="com.shepherd.app.data.dto.chat.ChatModel[]"
+            app:nullable="true" />
     </fragment>
 
 

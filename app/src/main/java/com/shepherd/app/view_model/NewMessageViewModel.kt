@@ -45,6 +45,10 @@ class NewMessageViewModel @Inject constructor(
     private val _openChatMessage = MutableLiveData<SingleEvent<CareTeamModel>>()
     val openChatMessage: LiveData<SingleEvent<CareTeamModel>> get() = _openChatMessage
 
+    private val _selectUser = MutableLiveData<SingleEvent<CareTeamModel>>()
+    val selectUser: LiveData<SingleEvent<CareTeamModel>> get() = _selectUser
+
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
     val loginLiveData: LiveData<Resource<LoginResponseModel>> get() = loginLiveDataPrivate
@@ -108,7 +112,12 @@ class NewMessageViewModel @Inject constructor(
         showToastPrivate.value = SingleEvent(error.description)
     }
 
-    fun opnChat(careTeamModel: CareTeamModel) {
+    fun openChat(careTeamModel: CareTeamModel) {
         _openChatMessage.value = SingleEvent(careTeamModel)
     }
+
+    fun selectUser(careTeamModel: CareTeamModel) {
+        _selectUser.value = SingleEvent(careTeamModel)
+    }
+
 }

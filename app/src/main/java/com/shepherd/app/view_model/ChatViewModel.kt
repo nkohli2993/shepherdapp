@@ -1,5 +1,6 @@
 package com.shepherd.app.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.*
@@ -52,14 +53,39 @@ class ChatViewModel @Inject constructor(
     }
 
 
-    fun setToUserDetail(toUser: ChatUserDetail?) {
+    /* fun setToUserDetail(toUser: ChatUserDetail?) {
+         val memberList = ArrayList<ChatUserDetail?>()
+         memberList.add(toUser)
+         val loggedInChatUser = loggedInUser?.toChatUser()
+         memberList.add(loggedInChatUser)
+         chatListData = createChatListData(memberList).apply {
+             chatType = Chat.CHAT_SINGLE
+         }
+         findChatId()
+     }*/
+
+    fun setToUserDetail(chatType: Int?, toUsers: ArrayList<ChatUserDetail>?) {
         val memberList = ArrayList<ChatUserDetail?>()
-        memberList.add(toUser)
+        toUsers?.let { memberList.addAll(it) }
         val loggedInChatUser = loggedInUser?.toChatUser()
         memberList.add(loggedInChatUser)
-        chatListData = createChatListData(memberList).apply {
-            chatType = Chat.CHAT_SINGLE
-        }
+
+        /* if (chatType == Chat.CHAT_SINGLE) {
+             chatListData = createChatListData(memberList).apply {
+                 chatType = Chat.CHAT_SINGLE
+             }
+         } else if (chatType == Chat.CHAT_GROUP) {
+             chatListData = createChatListData(memberList).apply {
+                 chatType = Chat.CHAT_GROUP
+             }
+         }*/
+
+        chatListData = createChatListData(chatType, memberList)
+        Log.d(TAG, "setToUserDetail: ChatListData : $chatListData")
+
+        /* chatListData = createChatListData(memberList).apply {
+             chatType = Chat.CHAT_SINGLE
+         }*/
         findChatId()
     }
 
@@ -74,11 +100,12 @@ class ChatViewModel @Inject constructor(
         }
 
         db.collection(TableName.CHATS).whereEqualTo("userIDs", userIDs)
-            .whereEqualTo("chat_type", Chat.CHAT_SINGLE).get()
+//            .whereEqualTo("chat_type", Chat.CHAT_SINGLE)
+            .get()
             .addOnSuccessListener {
                 if (!it.documents.isNullOrEmpty()) {
 
-
+                    // Get the document id of the messages
                     chatListData?.id = it.documents[0].id
                     /* Prefs.with(CheckmateForeverApp.appContext)!!.save(
                          Const.CHAT_ID, chatListData?.id
@@ -110,7 +137,7 @@ class ChatViewModel @Inject constructor(
             }
     }
 
-    fun createChatListData(userList: ArrayList<ChatUserDetail?>?): ChatListData {
+    fun createChatListData(chatType: Int?, userList: ArrayList<ChatUserDetail?>?): ChatListData {
         return ChatListData().apply {
             userIDs = ArrayList<String>()
             usersDataMap = HashMap()
@@ -118,6 +145,7 @@ class ChatViewModel @Inject constructor(
                 userIDs?.add(it?.id ?: "")
                 usersDataMap.put(it?.id ?: "", it)
             }
+            this.chatType = chatType
         }
     }
 
@@ -190,27 +218,27 @@ class ChatViewModel @Inject constructor(
             }
     }*/
 
-   /* private fun createNewChat(onChatCreated: (created: Boolean) -> Unit) {
-        if (chatModel?.id.isNullOrEmpty()) {
-            db.collection(TableName.CHATS).add(chatModel.serializeToMap())
-                .addOnSuccessListener {
+    /* private fun createNewChat(onChatCreated: (created: Boolean) -> Unit) {
+         if (chatModel?.id.isNullOrEmpty()) {
+             db.collection(TableName.CHATS).add(chatModel.serializeToMap())
+                 .addOnSuccessListener {
 
-                    db.collection(TableName.CHATS).document(it.id).update("id", it.id)
-//                    chatModel?.id = it.id
-                    chatListData?.id = it.id
-                    initChatListener()
-                    onChatCreated(true)
-                }
-        } else {
-            db.collection(TableName.CHATS).document(chatModel?.id ?: "")
-                .set(chatModel.serializeToMap())
-                .addOnSuccessListener {
-                    initChatListener()
-                    onChatCreated(true)
-                }
-        }
+                     db.collection(TableName.CHATS).document(it.id).update("id", it.id)
+ //                    chatModel?.id = it.id
+                     chatListData?.id = it.id
+                     initChatListener()
+                     onChatCreated(true)
+                 }
+         } else {
+             db.collection(TableName.CHATS).document(chatModel?.id ?: "")
+                 .set(chatModel.serializeToMap())
+                 .addOnSuccessListener {
+                     initChatListener()
+                     onChatCreated(true)
+                 }
+         }
 
-    }*/
+     }*/
 
     fun createNewChat(onChatCreated: (created: Boolean) -> Unit) {
         if (chatListData?.id.isNullOrEmpty()) {
@@ -220,10 +248,10 @@ class ChatViewModel @Inject constructor(
                     db.collection(TableName.CHATS).document(it.id).update("id", it.id)
                     chatListData?.id = it.id
 
-                   /* Prefs.with(CheckmateForeverApp.appContext)!!.save(
-                        Const.CHAT_ID,
-                        chatListData?.id
-                    )*/
+                    /* Prefs.with(CheckmateForeverApp.appContext)!!.save(
+                         Const.CHAT_ID,
+                         chatListData?.id
+                     )*/
                     initChatListener()
                     onChatCreated(true)
 
