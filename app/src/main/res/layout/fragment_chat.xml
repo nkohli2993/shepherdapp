@@ -67,7 +67,7 @@
             android:layout_marginStart="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
-            app:layout_constraintTop_toTopOf="@id/llImageWrapper" />
+            app:layout_constraintTop_toTopOf="@id/ivBack" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMsg"

@@ -1,11 +1,15 @@
 package com.shepherd.app.ui.component.chat
 
+import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,6 +20,7 @@ import com.shepherd.app.data.dto.chat.ChatUserDetail
 import com.shepherd.app.data.dto.chat.MessageGroupData
 import com.shepherd.app.databinding.FragmentChatBinding
 import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.chat.adapter.ChatAdapter
 import com.shepherd.app.ui.component.chat.adapter.ChatGroupAdapter
@@ -23,6 +28,7 @@ import com.shepherd.app.utils.Chat
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.ChatViewModel
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -44,6 +50,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
     private var adapter: ChatGroupAdapter? = null
 
     var chatType: Int? = null
+    var groupName: String? = null
 
 
     private lateinit var fragmentChatBinding: FragmentChatBinding
@@ -72,6 +79,20 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
 
         chatType = chatModelList?.get(0)?.chatType
         Log.d(TAG, "ChatType :$chatType ")
+        // Check if One to one or Group Chat
+        if (chatType == Chat.CHAT_SINGLE) {
+            fragmentChatBinding.llImageWrapper.visibility = View.VISIBLE
+            // Set Name of the Chat User
+            fragmentChatBinding.txtName.text = chatModelList?.get(0)?.receiverName
+            // Set Profile Pic
+            Picasso.get().load(chatModelList?.get(0)?.receiverPicUrl)
+                .placeholder(R.drawable.ic_defalut_profile_pic)
+                .into(fragmentChatBinding.imgChatUser)
+
+        } else if (chatType == Chat.CHAT_GROUP) {
+            fragmentChatBinding.txtName.text = chatModelList?.get(0)?.groupName
+            fragmentChatBinding.llImageWrapper.visibility = View.GONE
+        }
 
         val count = chatModelList?.filter {
             it.chatType == Chat.CHAT_SINGLE
@@ -82,6 +103,17 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
                 fragmentChatBinding.data = chatModelList?.get(0)
             }
         }
+
+        val countGroup = chatModelList?.filter {
+            it.chatType == Chat.CHAT_GROUP
+        }?.count()
+
+        if (countGroup != null) {
+            if (countGroup > 0) {
+                fragmentChatBinding.txtName.text = chatModelList?.get(0)?.groupName
+            }
+        }
+
 //        fragmentChatBinding.data = chatModel
         chatModelList?.forEach {
             val chatUserDetail = it.toChatUserDetail()
@@ -117,7 +149,6 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
                             allMsgLoaded = true
                             showError(requireContext(), it.exception?.message ?: "")
                         }
-
                         is DataResult.Success -> {
                             hideLoading()
                             msgGroupList.clear()
@@ -157,6 +188,48 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
     }
 
     override fun observeViewModel() {
+
+        chatViewModel.noChatDataFoundLiveData.observeEvent(this) {
+            if (it) {
+                Log.d(TAG, "observeViewModel: No Chat Data Found")
+
+                // Check if chat room is opened for group chat
+                val countGroup = chatModelList?.filter { chatModel ->
+                    chatModel.chatType == Chat.CHAT_GROUP
+                }?.count()
+
+                if (countGroup != null) {
+                    if (countGroup > 0) {
+                        showEnterGroupNameDialog()
+                    }
+                }
+            }
+        }
+
+        chatViewModel.groupNameLiveData.observeEvent(this) {
+            fragmentChatBinding.txtName.text = it
+            fragmentChatBinding.llImageWrapper.visibility = View.GONE
+        }
+    }
+
+    private fun showEnterGroupNameDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_enter_group_name)
+        val edtGroupName = dialog.findViewById(R.id.edtGroupName) as EditText
+        val btnOkay = dialog.findViewById(R.id.btnOkay) as TextView
+        val btnCancel = dialog.findViewById(R.id.btnCancel) as TextView
+        btnOkay.setOnClickListener {
+            groupName = edtGroupName.text.toString().trim()
+            chatViewModel.chatListData?.groupName = groupName
+            fragmentChatBinding.txtName.text = groupName
+            dialog.dismiss()
+        }
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
 
