@@ -210,4 +210,5 @@ class HomeViewModel @Inject constructor(
         return userRepository.getLovedOneUserDetail()
     }
 
+    fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 }

@@ -72,12 +72,28 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         setOnClickListeners()
 
         // show accessed cards only to users
-        if(viewModel.getLovedUserDetail()!=null){
-            val perList = viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
-            for (i in perList?.indices!!) {
-                checkPermission(perList[i].toInt())
-            }
+        if(!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail()!=null){
+            if(viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
+                if(viewModel.getLovedUserDetail()!=null){
+                    val perList = viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
+                    for (i in perList?.indices!!) {
+                        checkPermission(perList[i].toInt())
+                    }
+                }
+                else{
+                    permissionShowHide(View.VISIBLE)
+                }
         }
+        else{
+            permissionShowHide(View.VISIBLE)
+        }
+    }
+
+    private fun permissionShowHide(value:Int){
+        binding.llCarePoint.visibility = value
+        binding.llLockBox.visibility = value
+        binding.llMedList.visibility = value
+        binding.llResources.visibility = value
     }
 
     private fun setOnClickListeners() {
@@ -418,10 +434,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     }
 
     private fun checkPermission(permission: Int?) {
-        binding.llCarePoint.visibility = View.GONE
-        binding.llLockBox.visibility = View.GONE
-        binding.llMedList.visibility = View.GONE
-        binding.llResources.visibility = View.GONE
+        permissionShowHide(View.GONE)
         when {
             Modules.CareTeam.value == permission -> {
                 binding.llCarePoint.visibility = View.VISIBLE

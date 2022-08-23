@@ -176,4 +176,6 @@ class DashboardViewModel @Inject constructor(
     fun getLovedUserDetail(): UserLovedOne? {
         return userRepository.getLovedOneUserDetail()
     }
+
+    fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 }
