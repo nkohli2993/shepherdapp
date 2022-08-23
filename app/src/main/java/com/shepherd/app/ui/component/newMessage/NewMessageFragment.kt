@@ -1,6 +1,7 @@
 package com.shepherd.app.ui.component.newMessage
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.EditText
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
@@ -28,6 +32,7 @@ import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.newMessage.adapter.UsersAdapter
 import com.shepherd.app.utils.*
+import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.NewMessageViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -54,6 +59,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     var currentPage: Int = 0
     var totalPage: Int = 0
     var total: Int = 0
+    var groupName: String? = null
     private var TAG = "NewMessageFragment"
 
 
@@ -319,9 +325,14 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btnStartDiscussion -> {
+
+
+                // Create a dialog to enter the Group name
+//                showEnterGroupNameDialog()
+
                 Log.d(TAG, "Selected Users :${selectedCareTeams?.size} ")
                 Log.d(TAG, "Users :${selectedCareTeams} ")
-//                findNavController().navigate(R.id.action_new_message_to_chat)
+                //                findNavController().navigate(R.id.action_new_message_to_chat)
 
                 val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
                 val loggedInUserId = loggedInUser?.id
@@ -356,6 +367,61 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                 findNavController().popBackStack()
             }
         }
+    }
+
+    private fun showEnterGroupNameDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_enter_group_name)
+        val edtGroupName = dialog.findViewById(R.id.edtGroupName) as EditText
+        val btnOkay = dialog.findViewById(R.id.btnOkay) as TextView
+        val btnCancel = dialog.findViewById(R.id.btnCancel) as TextView
+        btnOkay.setOnClickListener {
+            groupName = edtGroupName.text.toString().trim()
+            if (groupName.isNullOrEmpty()) {
+                showInfo(requireContext(), "Please enter Group Name")
+            } else {
+                Log.d(TAG, "Selected Users :${selectedCareTeams?.size} ")
+                Log.d(TAG, "Users :${selectedCareTeams} ")
+//                findNavController().navigate(R.id.action_new_message_to_chat)
+
+                val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+                val loggedInUserId = loggedInUser?.id
+                for (i in selectedCareTeams?.indices!!) {
+                    val selectedCareTeam = selectedCareTeams!![i]
+                    val receiverName =
+                        selectedCareTeam.user_id_details.firstname + " " + selectedCareTeam.user_id_details.lastname
+                    val receiverID = selectedCareTeam.user_id_details.id
+                    val receiverPicUrl = selectedCareTeam.user_id_details.profilePhoto
+                    // Create Chat Model
+                    val chatModel = ChatModel(
+                        null,
+                        loggedInUserId,
+                        loggedInUserName,
+                        receiverID,
+                        receiverName,
+                        receiverPicUrl,
+                        null,
+                        Chat.CHAT_GROUP,
+                        groupName
+                    )
+                    chatModelList?.add(chatModel)
+                }
+                Log.d(TAG, "GroupChatData :$chatModelList ")
+                findNavController().navigate(
+                    NewMessageFragmentDirections.actionNewMessageToChat(
+                        "NewMessageFragment",
+                        chatModelList?.toTypedArray()
+                    )
+                )
+                dialog.dismiss()
+            }
+        }
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
 

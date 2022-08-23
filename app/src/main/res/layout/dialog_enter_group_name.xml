@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_box_12"
+    android:backgroundTint="@color/colorWhite">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/gotham_bold"
+        android:text="Shepherd Cares"
+        android:textColor="@color/_192032"
+        android:textSize="@dimen/_12ssp" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edtGroupName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTitle"
+        android:layout_centerHorizontal="true"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/gotham_book"
+        android:gravity="center"
+        android:hint="Enter group name"
+        android:lineSpacingExtra="@dimen/_5sdp"
+        android:textColor="@color/_192032"
+        android:textSize="@dimen/_14ssp" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/edtGroupName"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:background="@color/_192032" />
+
+    <LinearLayout
+        android:id="@+id/clBottomWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view1"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnCancel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/gotham_bold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/_D7293F"
+            android:textSize="@dimen/_13ssp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/_192032" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/btnOkay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/gotham_bold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Okay"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/_13ssp" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/clBottomWrapper"
+        android:background="@color/_192032" />
+
+</RelativeLayout>

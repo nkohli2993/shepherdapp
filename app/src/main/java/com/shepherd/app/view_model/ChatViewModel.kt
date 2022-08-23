@@ -39,6 +39,12 @@ class ChatViewModel @Inject constructor(
     private var chatResponseData = MutableLiveData<Event<DataResult<MessageGroupResponse>>>()
     fun getChatMessages(): LiveData<Event<DataResult<MessageGroupResponse>>> = chatResponseData
 
+    private var _noChatDataFoundLiveData = MutableLiveData<Event<Boolean>>()
+    var noChatDataFoundLiveData: LiveData<Event<Boolean>> = _noChatDataFoundLiveData
+
+    private var _groupNameLiveData = MutableLiveData<Event<String>>()
+    var groupNameLiveData: LiveData<Event<String>> = _groupNameLiveData
+
     var messageListener: ListenerRegistration? = null
     var chatListener: ListenerRegistration? = null
     private var TAG = "chat_data"
@@ -115,6 +121,13 @@ class ChatViewModel @Inject constructor(
                             JSONObject(it.documents[0].data).toString(),
                             ChatListData::class.java
                         )
+                        if (chatListData?.chatType == Chat.CHAT_GROUP) {
+                            val groupName = chatListData?.groupName
+                            if (!groupName.isNullOrEmpty()) {
+                                _groupNameLiveData.postValue(Event(groupName))
+                            }
+                        }
+
                     }
 //                    showLog(TAG, "id>>> ${it.documents[0].id}")
                     onFound(true)
@@ -127,6 +140,7 @@ class ChatViewModel @Inject constructor(
                         }
                     } else {
                         onFound(false)
+                        _noChatDataFoundLiveData.postValue(Event(true))
                     }
                 }
             }.addOnFailureListener {

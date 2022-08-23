@@ -23,6 +23,7 @@ data class ChatModel(
     var message: String? = null,
     //Chat Type
     var chatType: Int? = null,
+    var groupName: String? = null,
     @ServerTimestamp()
     var created: Timestamp? = null,
 ) : Parcelable
