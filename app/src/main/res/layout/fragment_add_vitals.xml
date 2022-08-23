@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -56,61 +56,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_book"
-                    android:text="@string/heart_rate"
+                    android:fontFamily="@font/gotham_light"
+                    android:text="@string/date"
                     android:textColor="@color/_192032"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/shape_rectangle_circular_corner_border_grey">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/ivHeart"
-                        android:layout_width="17dp"
-                        android:layout_height="37dp"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:src="@drawable/ic_heart"
-                        android:tint="@color/_192032"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etHeartRate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:digits="0123456789"
-                        android:fontFamily="@font/gotham_medium"
-                        android:hint="@string/enter_heart_rate"
-                        android:inputType="number"
-                        android:maxLength="3"
-                        android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_10sdp"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/tvBpm"
-                        app:layout_constraintStart_toEndOf="@+id/ivHeart"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvBpm"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:fontFamily="@font/gotham_book"
-                        android:text="bpm"
-                        android:textColor="@color/_A3A5AD"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:drawableStart="@drawable/ic_calendar_care_event"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:gravity="center_vertical"
+                    android:hint="@string/dd_mm_year"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="@dimen/_15sdp"
+                    android:textColor="@color/_192032"
+                    android:textColorHint="@color/_A3A5AD"
+                    android:textSize="@dimen/_12ssp"
+                    app:fontFamily="@font/gotham_medium" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -122,6 +92,7 @@
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
+
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clTimeWrapper"
@@ -203,6 +174,69 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_book"
+                    android:text="@string/heart_rate"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14ssp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivHeart"
+                        android:layout_width="17dp"
+                        android:layout_height="37dp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:src="@drawable/ic_heart"
+                        android:tint="@color/_192032"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etHeartRate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:digits="0123456789"
+                        android:fontFamily="@font/gotham_medium"
+                        android:hint="@string/enter_heart_rate"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:maxLength="3"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_13ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/tvBpm"
+                        app:layout_constraintStart_toEndOf="@+id/ivHeart"
+                        app:layout_constraintTop_toTopOf="parent"
+                        bind:getValidHeartRate="@{@string/heart_rate}" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvBpm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:fontFamily="@font/gotham_book"
+                        android:text="@string/bpm"
+                        android:textColor="@color/_A3A5AD"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_book"
                     android:text="@string/body_temp"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp" />
@@ -231,16 +265,19 @@
                         android:background="@null"
                         android:fontFamily="@font/gotham_medium"
                         android:hint="@string/enter_body_temp"
+                        android:imeOptions="actionNext"
                         android:inputType="number"
                         android:maxLength="3"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_13ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tvTemp"
                         app:layout_constraintStart_toEndOf="@+id/ivTemp"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        bind:getValidBodyTemperature="@{@string/body_temp}" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvTemp"
@@ -248,7 +285,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_book"
-                        android:text="F"
+                        android:text="@string/f"
                         android:textColor="@color/_A3A5AD"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -267,41 +304,113 @@
                     android:textSize="@dimen/_14ssp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bloodPressureCl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/shape_rectangle_circular_corner_border_grey">
+                    android:layout_marginTop="@dimen/_3sdp">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/ivBp"
-                        android:layout_width="17dp"
-                        android:layout_height="37dp"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:src="@drawable/ic_blood_pressure"
-                        android:tint="@color/_192032"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etBp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/sbpCL"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:fontFamily="@font/gotham_medium"
-                        android:hint="@string/enter_blood_pressure"
-                        android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_10sdp"
-                        android:inputType="number"
-                        android:maxLength="8"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                        app:layout_constraintEnd_toStartOf="@id/splashTV"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivBp"
+                            android:layout_width="17dp"
+                            android:layout_height="37dp"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:src="@drawable/ic_blood_pressure"
+                            android:tint="@color/_192032"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etSbp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:fontFamily="@font/gotham_medium"
+                            android:hint="@string/sbp"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:paddingHorizontal="@dimen/_8sdp"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_13ssp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/ivBp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/splashTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_book"
+                        android:padding="@dimen/_10ssp"
+                        android:text="/"
                         android:textColor="@color/_192032"
-                        android:textSize="@dimen/_13ssp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintBottom_toBottomOf="@id/sbpCL"
+                        app:layout_constraintEnd_toStartOf="@id/dbpCL"
+                        app:layout_constraintStart_toEndOf="@+id/sbpCL"
+                        app:layout_constraintTop_toTopOf="@id/sbpCL" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/dbpCL"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/ivBp"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintStart_toEndOf="@id/splashTV"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivdBp"
+                            android:layout_width="17dp"
+                            android:layout_height="37dp"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:src="@drawable/ic_blood_pressure"
+                            android:tint="@color/_192032"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etDbp"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:fontFamily="@font/gotham_medium"
+                            android:hint="@string/dbp"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLength="3"
+                            android:paddingHorizontal="@dimen/_8sdp"
+                            android:paddingVertical="@dimen/_10sdp"
+                            android:singleLine="true"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_13ssp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/ivdBp"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -336,16 +445,19 @@
                         android:background="@null"
                         android:fontFamily="@font/gotham_medium"
                         android:hint="@string/enter_body_oxygen"
+                        android:imeOptions="actionDone"
                         android:inputType="number"
                         android:maxLength="3"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_13ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tvSp0"
                         app:layout_constraintStart_toEndOf="@+id/ivOxygen"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        bind:getValidOxygen="@{@string/oxygen}" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSp0"
@@ -353,7 +465,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_book"
-                        android:text="Spo2"
+                        android:text="@string/spO2"
                         android:textColor="@color/_A3A5AD"
                         android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="parent"

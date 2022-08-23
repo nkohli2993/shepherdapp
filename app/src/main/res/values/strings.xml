@@ -309,7 +309,7 @@
     <string name="bpm">bpm</string>
     <string name="body_temp">Body Temp</string>
     <string name="blood_pressure">Blood Pressure</string>
-    <string name="oxygen">Oxygen</string>
+    <string name="oxygen">Oxygen(%)</string>
     <string name="log_out">Log out</string>
     <string name="_2022_the_shepherd_company_llc_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>
     <string name="reminders">Reminders</string>
@@ -404,7 +404,7 @@
     <string name="rationale_external_storage">This app needs access to your external storage so you can upload documents</string>
     <string name="document_name">Document Name</string>
     <string name="new_care_point_added_successfully">Care point added successfully…</string>
-    <string name="vital_stats_added_successfully">Vital stats added successfully…</string>
+    <string name="vital_stats_added_successfully">VitalStats added successfully…</string>
     <string name="please_select_new_care_point_date_firts">Please select new CarePoint date first.</string>
     <string name="please_select_future_time">Please select future time for new CarePoint.</string>
     <string name="view_more"> … View more.</string>
@@ -444,8 +444,18 @@
     <string name="enter_blood_pressure">Enter Blood Pressure</string>
     <string name="enter_body_oxygen">Enter body oxygen</string>
     <string name="please_enter_your_heart_rate">Please enter your heart beat.</string>
-    <string name="please_choose_temp">Please choose time.</string>
-    <string name="please_choose_time">Please enter body temperature.</string>
+    <string name="please_choose_date">Please choose date</string>
+    <string name="please_choose_time">Please choose time</string>
+    <string name="please_choose_temp">Please enter body temperature.</string>
     <string name="please_enter_your_blood_pressure">Please enter blood pressure.</string>
+    <string name="please_enter_your_blood_pressure_sbp">Please enter SBP.</string>
+    <string name="please_enter_your_blood_pressure_dbp">Please enter DBP.</string>
     <string name="please_enter_body_oxygen">Please enter body oxygen.</string>
+    <string name="slash">-</string>
+    <string name="spO2">SpO2</string>
+    <string name="f">F</string>
+    <string name="please_enter_valid_oxygen_level">Please enter valid oxygen level</string>
+    <string name="sbp">SBP</string>
+    <string name="dbp">DBP</string>
+    <string name="reset_security_code">Reset Security Code</string>
 </resources>

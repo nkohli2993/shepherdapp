@@ -8,9 +8,8 @@ import com.shepherd.app.data.dto.med_list.schedule_medlist.Time
  */
 
 data class VitalStatsRequestModel(
-    @SerializedName("love_user_id") var love_user_id: String? = null,
-    @SerializedName("heart_rate") var heart_rate: String? = null,
+    @SerializedName("loveone_user_id") var loveone_user_id: String? = null,
+    @SerializedName("date") var heart_rate: String? = null,
     @SerializedName("time") var time: String? = null,
-
-
-    )
+    @SerializedName("data") var data: AddVitalData? = null
+)

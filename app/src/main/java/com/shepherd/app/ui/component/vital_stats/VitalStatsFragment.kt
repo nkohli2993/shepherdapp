@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.vital_stats
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,12 +15,22 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.VitalStatsData
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
+import com.shepherd.app.view_model.VitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
+@SuppressLint("SimpleDateFormat")
 class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>() {
     private val vitalStatsViewModel: VitalStatsViewModel by viewModels()
     private lateinit var fragmentVitalStatsBinding: FragmentVitalStatsBinding
+    private var vitalStats: ArrayList<VitalStatsData>? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,10 +43,47 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>() {
     }
 
     override fun observeViewModel() {
+        vitalStatsViewModel.getVitatStatsLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    vitalStats = it.data.payload.data
+                    vitalStats.let { stats ->
+                        if((stats?.size?:0)>0){
+                            Collections.sort(vitalStats!!, object : Comparator<VitalStatsData?> {
+                                var df: DateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
+                                override fun compare(o1: VitalStatsData?, o2: VitalStatsData?): Int {
+                                    return try {
+                                        df.parse(o1!!.date!!.plus(" ${o1.time}"))!!.compareTo(df.parse(o2!!.date!!.plus(" ${o1.time}")))
+                                    } catch (e: Exception) {
+                                        throw IllegalArgumentException(e)
+                                    }
+                                }
+                            })
+                            vitalStats!!.reverse()
+                            //set data on dash board
+                            fragmentVitalStatsBinding.tvHeartRateValue.text = vitalStats!![0].data?.heartRate
+                            fragmentVitalStatsBinding.tvBodyTempValue.text = vitalStats!![0].data?.bodyTemp
+                            fragmentVitalStatsBinding.tvBloodPressureValue.text = vitalStats!![0].data?.bloodPressure
+                            fragmentVitalStatsBinding.tvOxygenValue.text = vitalStats!![0].data?.oxygen
+                        }
+                    }
+                }
+                is DataResult.Failure -> {
+                    hideLoading()
+
+                }
+            }
+        }
+
     }
 
     override fun initViewBinding() {
         setLineChartData()
+        vitalStatsViewModel.getVitalStats(SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),vitalStatsViewModel.getLovedOneUUId()!!)
     }
 
     private fun setLineChartData() {

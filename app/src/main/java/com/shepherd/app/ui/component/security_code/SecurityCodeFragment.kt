@@ -1,16 +1,21 @@
 package com.shepherd.app.ui.component.security_code
 
+//import com.example.numpad.NumPadClick
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.poovam.pinedittextfield.PinField
 import com.shepherd.app.R
 import com.shepherd.app.databinding.FragmentSecurityCodeBinding
 import com.shepherd.app.ui.base.BaseFragment
-//import com.example.numpad.NumPadClick
 import dagger.hilt.android.AndroidEntryPoint
+import org.jetbrains.annotations.NotNull
 
 
 @AndroidEntryPoint
@@ -41,6 +46,14 @@ class SecurityCodeFragment : BaseFragment<FragmentSecurityCodeBinding>(), View.O
 ////                "onNumpadClicked: $nums"
 ////            )
 //        })
+        fragmentSecurityCodeBinding.squareField.highlightPaintColor  = ContextCompat.getColor(requireContext(),R.color._192032)
+        fragmentSecurityCodeBinding.squareField.fieldColor  = ContextCompat.getColor(requireContext(),R.color._192032)
+        fragmentSecurityCodeBinding.squareField.onTextCompleteListener = object : PinField.OnTextCompleteListener {
+            override fun onTextComplete(@NotNull enteredText: String): Boolean {
+                Toast.makeText(requireContext(), enteredText, Toast.LENGTH_SHORT).show()
+                return true // Return false to keep the keyboard open else return true to close the keyboard
+            }
+        }
     }
 
     override fun getLayoutRes(): Int {

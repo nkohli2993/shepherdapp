@@ -76,6 +76,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             if(viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                 if(viewModel.getLovedUserDetail()!=null){
                     val perList = viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
+                    permissionShowHide(View.GONE)
                     for (i in perList?.indices!!) {
                         checkPermission(perList[i].toInt())
                     }
@@ -233,7 +234,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = false
                         tvNew.isVisible = false
                         ivEditProfile.setOnClickListener() {
-                            // navController.navigate(R.id.nav_edit_profile)
+                             navController.navigate(R.id.nav_edit_profile)
                         }
                         ivSetting.setOnClickListener() {
                             navController.navigate(R.id.nav_setting)
@@ -250,7 +251,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
-                                //  navController.navigate(R.id.nav_add_vitals)
+                                  navController.navigate(R.id.nav_add_vitals)
                             }
                         }
                     }
@@ -434,7 +435,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     }
 
     private fun checkPermission(permission: Int?) {
-        permissionShowHide(View.GONE)
         when {
             Modules.CareTeam.value == permission -> {
                 binding.llCarePoint.visibility = View.VISIBLE

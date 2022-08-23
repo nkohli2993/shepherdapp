@@ -112,7 +112,7 @@ object ApiConstants {
     }
 
     object VitalStats{
-        const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}vital_stats/loved_one/{id}"
+        const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital"
     }
 }
 

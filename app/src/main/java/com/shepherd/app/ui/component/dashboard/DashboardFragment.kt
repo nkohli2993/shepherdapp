@@ -135,6 +135,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                     if (viewModel.getLovedUserDetail() != null) {
                         val perList = viewModel.getLovedUserDetail()?.permission?.split(',')
                             ?.map { it.trim() }
+                        permissionCards(View.GONE)
                         for (i in perList?.indices!!) {
                             checkPermission(perList[i].toInt())
                         }
@@ -158,7 +159,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     }
 
     private fun checkPermission(permission: Int?) {
-        permissionCards(View.GONE)
         when {
             Modules.CareTeam.value == permission -> {
                 fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE

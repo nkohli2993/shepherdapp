@@ -6,7 +6,8 @@ sealed class DataResult<out T> {
     data class Failure(
         val message: String? = null,
         val errorCode: Int? = null,
-        val exception: Exception? = null
+        val exception: Exception? = null,
+        val error: String=""
     ) :
         DataResult<Nothing>()
 }
