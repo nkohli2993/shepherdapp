@@ -73,6 +73,15 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
         chatType = chatModelList?.get(0)?.chatType
         Log.d(TAG, "ChatType :$chatType ")
 
+        val count = chatModelList?.filter {
+            it.chatType == Chat.CHAT_SINGLE
+        }?.count()
+
+        if (count != null) {
+            if (count > 0) {
+                fragmentChatBinding.data = chatModelList?.get(0)
+            }
+        }
 //        fragmentChatBinding.data = chatModel
         chatModelList?.forEach {
             val chatUserDetail = it.toChatUserDetail()
