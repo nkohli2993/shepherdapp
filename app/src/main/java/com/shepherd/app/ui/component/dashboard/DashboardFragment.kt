@@ -130,21 +130,35 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
             }
 
             // show accessed cards only to users
-            val perList = viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
-            for (i in perList?.indices!!) {
-                checkPermission(perList[i].toInt())
+            if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
+                if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
+                    if (viewModel.getLovedUserDetail() != null) {
+                        val perList = viewModel.getLovedUserDetail()?.permission?.split(',')
+                            ?.map { it.trim() }
+                        for (i in perList?.indices!!) {
+                            checkPermission(perList[i].toInt())
+                        }
+                    } else {
+                        permissionCards(View.VISIBLE)
+                    }
+            } else {
+                permissionCards(View.VISIBLE)
             }
         }
     }
 
-    private fun checkPermission(permission: Int?) {
-        fragmentDashboardBinding.cvCarePoints.visibility = View.GONE
-        fragmentDashboardBinding.cvLockBox.visibility = View.GONE
-        fragmentDashboardBinding.cvMedList.visibility = View.GONE
-        fragmentDashboardBinding.cvResources.visibility = View.GONE
+    private fun permissionCards(value: Int) {
+        fragmentDashboardBinding.cvCarePoints.visibility = value
+        fragmentDashboardBinding.cvLockBox.visibility = value
+        fragmentDashboardBinding.cvMedList.visibility = value
+        fragmentDashboardBinding.cvResources.visibility = value
         fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
         fragmentDashboardBinding.cvDiscussion.visibility = View.VISIBLE
+    }
+
+    private fun checkPermission(permission: Int?) {
+        permissionCards(View.GONE)
         when {
             Modules.CareTeam.value == permission -> {
                 fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE
