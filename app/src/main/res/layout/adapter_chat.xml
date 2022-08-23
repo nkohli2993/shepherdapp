@@ -104,7 +104,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tvSendTime"
             app:cardCornerRadius="@dimen/_18sdp"
             app:cardUseCompatPadding="true"
-            app:cardBackgroundColor="@color/_399282">
+            app:cardBackgroundColor="#EAF1EF">
 
             <androidx.appcompat.widget.AppCompatTextView
                 style="@style/TextViewGothamBook"
@@ -113,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{messageData.content}"
                 android:visibility="@{!messageData.content.empty &amp;&amp; messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
-                android:padding="10dp" />
+                android:padding="15dp" />
 
         </androidx.cardview.widget.CardView>
 
