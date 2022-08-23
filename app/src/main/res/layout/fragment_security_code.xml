@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:keyboard="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -117,8 +118,8 @@
                     android:background="@color/colorWhite"
                     android:elevation="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_15sdp"
-                    android:paddingTop="@dimen/_30sdp"
-                    android:paddingBottom="@dimen/_20sdp"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -129,7 +130,6 @@
                         android:id="@+id/squareField"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:inputType="number"
                         android:textSize="@dimen/_12sdp"
                         app:cornerRadius="@dimen/_10sdp"
@@ -138,19 +138,35 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <com.davidmiguel.numberkeyboard.NumberKeyboard
+                        android:id="@+id/numpad"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10ssp"
+                        android:layout_marginBottom="@dimen/_20ssp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toTopOf="@+id/tvSecure"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/squareField"
+                        app:numberkeyboard_keyPadding="10dp"
+                        keyboard:numberkeyboard_keyboardType="integer" />
+
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSecure"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_50sdp"
+                        android:layout_marginBottom="@dimen/_10ssp"
                         android:fontFamily="@font/gotham_book"
                         android:text="@string/this_keep_your_account_secure"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
+                        app:layout_constraintBottom_toTopOf="@+id/btnSaveChange"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/squareField" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnSaveChange"
@@ -167,9 +183,9 @@
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_13ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvSecure" />
+                        app:layout_constraintStart_toStartOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
