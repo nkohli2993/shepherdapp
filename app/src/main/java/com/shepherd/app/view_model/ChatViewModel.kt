@@ -202,9 +202,59 @@ class ChatViewModel @Inject constructor(
                         "id" to it.id, "created" to FieldValue.serverTimestamp()
                     ) as Map<String, Any>
                 )
-//                updateUnreadCount(chatReference, messageData, false)
+                updateUnreadCount(chatReference, messageData, false)
 //                sendNotification(messageData)
             }
+    }
+
+    private fun updateUnreadCount(
+        chatReference: DocumentReference,
+        messageData: MessageData,
+        isRead: Boolean
+    ) {
+        chatReference.get().addOnSuccessListener { documentSnapshot ->
+            try {
+
+                if (documentSnapshot != null && documentSnapshot.data != null) {
+                    val chatData = Gson().fromJson(
+                        JSONObject(documentSnapshot.data!!).toString(),
+                        ChatListData::class.java
+                    )
+
+                    showLog(
+                        "MSG_TIME",
+                        "chat data >> ${chatData} ,,, isRead >> $isRead,,,, uid>> ${loggedInUser} .... messageData .... $messageData"
+                    )
+                    if (isRead) {
+                        if (!chatData.senderId?.equals(loggedInUser?.id)!!) {
+//                            chatDence.update("unread_count", chatData.unread_count)
+                        }
+                    } else {
+                        chatData.usersDataMap.keys.forEach {
+                            if (!it.equals(loggedInUser?.id)) {
+                                var count = chatData.usersDataMap[it]?.unreadCount ?: 0
+                                count += 1
+                                chatData.usersDataMap[it]?.unreadCount = count
+                            }
+                        }
+                        chatReference.update(
+                            hashMapOf(
+                                "latest_message" to messageData.content,
+                                "last_message_type" to messageData.messageType,
+                                "updated_at" to FieldValue.serverTimestamp(),
+                                "users_data" to chatData.usersDataMap.serializeToMap(),
+                                "sender_id" to messageData.senderID
+                            ) as Map<String, Any?>
+                        )
+
+                    }
+
+
+                }
+            } catch (e: JSONException) {
+                showException(e)
+            }
+        }
     }
 
     /* fun sendMessage(chatModel: ChatModel) {
