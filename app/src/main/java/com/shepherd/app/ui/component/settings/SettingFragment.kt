@@ -22,10 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickListener {
-
     private lateinit var fragmentSettingBinding: FragmentSettingBinding
     private val settingViewModel: SettingViewModel by viewModels()
-
     private lateinit var homeActivity: HomeActivity
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -110,7 +108,22 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                 findNavController().navigate(R.id.action_nav_setting_to_changePassword)
             }
             R.id.tvReset -> {
-                findNavController().navigate(R.id.action_nav_setting_to_secureCode)
+                findNavController().navigate(
+                    SettingFragmentDirections.actionNavSettingToInformation(
+                        source = Const.RESET_SECURITY_CODE
+                    )
+                )
+
+                //findNavController().navigate(R.id.action_nav_setting_to_secureCode)
+            }
+            R.id.tvSet -> {
+                findNavController().navigate(
+                    SettingFragmentDirections.actionNavSettingToInformation(
+                        source = Const.SET_SECURITY_CODE
+                    )
+                )
+
+                //findNavController().navigate(R.id.action_nav_setting_to_secureCode)
             }
             R.id.clInvitations -> {
                 findNavController().navigate(R.id.action_nav_setting_to_invitation)

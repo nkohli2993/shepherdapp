@@ -26,7 +26,6 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(), Vi
     private val changePasswordViewModel: ChangePasswordViewModel by viewModels()
     private lateinit var fragmentChangePasswordBinding: FragmentChangePasswordBinding
     private var isPasswordShown = false
-
     private lateinit var homeActivity: HomeActivity
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,6 +57,7 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(), Vi
                     showLoading("")
                 }
                 is DataResult.Success -> {
+                    hideLoading()
                     homeActivity.navigateToLoginScreen()
                 }
             }

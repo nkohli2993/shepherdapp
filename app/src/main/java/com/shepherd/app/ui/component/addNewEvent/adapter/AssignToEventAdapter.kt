@@ -52,14 +52,14 @@ class AssignToEventAdapter(
             "catch_exception",
             "log: ${memberList.size} ${
                 memberList[position].user_id_details.firstname.plus(" ")
-                    .plus(memberList[position].user_id_details.lastname)
+                    .plus(if(memberList[position].user_id_details.lastname == null) "" else memberList[position].user_id_details.lastname)
             }"
         )
 
         vh.tvSelect.isVisible = false
         vh.clEventWrapper.isVisible = true
         vh.textViewCareTeamName.text = memberList[position].user_id_details.firstname.plus(" ")
-            .plus(memberList[position].user_id_details.lastname)
+            .plus(if(memberList[position].user_id_details.lastname == null) "" else memberList[position].user_id_details.lastname)
         vh.textViewCareTeamRole.text = memberList[position].careRoles.name
         Picasso.get().load(memberList[position].user_id_details.profilePhoto)
             .placeholder(R.drawable.ic_defalut_profile_pic)

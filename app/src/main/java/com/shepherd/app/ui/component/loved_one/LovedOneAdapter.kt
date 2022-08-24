@@ -63,7 +63,7 @@ class LovedOneAdapter(
             careTeam.let {
                 // Set full name
                 val fullName =
-                    it.love_user_id_details.firstname + " " + it.love_user_id_details.lastname
+                    it.love_user_id_details.firstname + " " + if(it.love_user_id_details.lastname == null) "" else it.love_user_id_details.lastname
                 itemBinding.textViewCareTeamName.text = fullName
 
                 //Set Image
@@ -72,7 +72,7 @@ class LovedOneAdapter(
                     .into(itemBinding.imageViewCareTeam)
 
                 // Set Role
-                itemBinding.txtRole.text = "As " + it.careRoles?.name
+                itemBinding.txtRole.text = "As " + it.careRoles.name
 
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
@@ -132,7 +132,7 @@ class LovedOneAdapter(
     }
 
     fun addData(careTeams: ArrayList<CareTeamModel>?) {
-        this.careTeams.clear()
+       // this.careTeams.clear()
         careTeams?.let { this.careTeams.addAll(it) }
         notifyDataSetChanged()
     }

@@ -41,6 +41,8 @@ import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.dto.relation.RelationResponseModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
+import com.shepherd.app.data.dto.security_code.SecurityCodeResponseModel
+import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
 import com.shepherd.app.data.dto.signup.BioMetricData
 import com.shepherd.app.data.dto.signup.UserSignupData
 import com.shepherd.app.data.dto.user.UserDetailsResponseModel
@@ -358,7 +360,19 @@ interface ApiService {
     // get vital stats for loginLoved one
     @GET(ApiConstants.VitalStats.ADD_VITAL_STATS)
     suspend fun getVitalStats(
-        @Query("date") date: String,@Query("loveone_user_id") loveone_user_id:String
+        @Query("date") date: String, @Query("loveone_user_id") loveone_user_id: String
     ): Response<VitalStatsResponseModel>
+
+    // send security code
+    @POST(ApiConstants.SecurityCode.ADD_SECURITY_CODE)
+    suspend fun addSecurityCode(
+        @Body sendSecurityCodeRequestModel: SendSecurityCodeRequestModel
+    ): Response<BaseResponseModel>
+
+    // resend security code
+    @POST(ApiConstants.SecurityCode.CHANGE_SECURITY_CODE)
+    suspend fun resetSecurityCode(
+        @Body sendSecurityCodeRequestModel: SendSecurityCodeRequestModel
+    ): Response<BaseResponseModel>
 
 }

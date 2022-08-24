@@ -118,11 +118,13 @@
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.26902173913043476" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.22402736212056434" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/backgroun_green_choose.xml" value="0.1765" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_black_round_corner.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_white_round_corner.xml" value="0.177" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_white_round_corner_less.xml" value="0.177" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/background_white_round_med.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/button_primary.xml" value="0.193" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/button_primary_green.xml" value="0.202" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_background.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selector.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selectot_grey.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_checkbox_checked.xml" value="0.1765" />
@@ -130,8 +132,10 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_checkbox_unchecked_grey.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_defalut_profile_pic.xml" value="0.168" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_pdf.xml" value="0.177" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/pin_background.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/rounded_box_green.xml" value="0.159" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/rounded_box_grey.xml" value="0.159" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/rounded_box_new.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/shape_rectangle_circular_corner_border.xml" value="0.1685" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/shape_rectangle_circular_corner_border_grey.xml" value="0.1685" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/act_welcome.xml" value="0.2609375" />
@@ -175,6 +179,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_points.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_team_members.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_change_password.xml" value="0.21419410004275333" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_confirm_security_code.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_dashboard.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_edit_profile.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_lockbox.xml" value="0.2518518518518518" />

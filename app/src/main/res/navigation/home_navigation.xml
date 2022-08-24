@@ -222,7 +222,26 @@
         android:id="@+id/nav_secure_code"
         android:name="com.shepherd.app.ui.component.security_code.SecurityCodeFragment"
         android:label="@string/secure_code"
-        tools:layout="@layout/fragment_security_code" />
+        tools:layout="@layout/fragment_security_code">
+        <argument
+            android:name="source"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_confirm_secure_code"
+            app:destination="@id/nav_confirm_secure_code" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_confirm_secure_code"
+        android:name="com.shepherd.app.ui.component.security_code.ConfirmSecurityCodeFragment"
+        android:label="@string/confirm_secure_code"
+        tools:layout="@layout/fragment_confirm_security_code">
+        <argument
+            android:name="type"
+            app:argType="string" />
+        <argument
+            android:name="code"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_lock_box"

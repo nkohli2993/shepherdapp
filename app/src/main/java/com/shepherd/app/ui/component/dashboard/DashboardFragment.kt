@@ -129,6 +129,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
             }
 
+         //   permissionCards(View.VISIBLE)
             // show accessed cards only to users
             if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
                 if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)

@@ -186,7 +186,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 .into(fragmentCarePointDetailBinding.imageViewUser)
             fragmentCarePointDetailBinding.tvUsername.text =
                 payload.loved_one_user_id_details.firstname.plus(" ")
-                    .plus(payload.loved_one_user_id_details.lastname)
+                    .plus(if(payload.loved_one_user_id_details.lastname == null) "" else payload.loved_one_user_id_details.lastname)
             // show created on time
             val dateTime = (payload.created_at ?: "").replace(".000Z", "").replace("T", " ")
             val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(

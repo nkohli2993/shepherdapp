@@ -72,6 +72,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         setOnClickListeners()
 
         // show accessed cards only to users
+       // permissionShowHide(View.VISIBLE)
         if(!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail()!=null){
             if(viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                 if(viewModel.getLovedUserDetail()!=null){
@@ -88,6 +89,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         else{
             permissionShowHide(View.VISIBLE)
         }
+
     }
 
     private fun permissionShowHide(value:Int){
