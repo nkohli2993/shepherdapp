@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
+class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickListener {
 
     private val messagesViewModel: MessagesViewModel by viewModels()
     private lateinit var fragmentMessagesBinding: FragmentMessagesBinding
@@ -46,6 +46,7 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
     }
 
     override fun initViewBinding() {
+        fragmentMessagesBinding.listener = this
         //Get One to One Chat Data
         messagesViewModel.getOneToOneChats()
         setDirectMessagesAdapter()
@@ -127,6 +128,19 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_messages
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.txtDirectMessages -> {
+                Log.d(TAG, "onClick: Direct message clicked")
+                //Get One to One Chat Data
+                messagesViewModel.getOneToOneChats()
+            }
+            R.id.txtDiscussionGroups -> {
+
+            }
+        }
     }
 
 
