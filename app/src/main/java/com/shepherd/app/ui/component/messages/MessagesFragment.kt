@@ -1,6 +1,7 @@
 package com.shepherd.app.ui.component.messages
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,12 @@ import com.shepherd.app.R
 import com.shepherd.app.data.Resource
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.databinding.FragmentMessagesBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.messages.adapter.DirectMessagesAdapter
 import com.shepherd.app.utils.*
+import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.MessagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,6 +31,8 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
     private val messagesViewModel: MessagesViewModel by viewModels()
     private lateinit var fragmentMessagesBinding: FragmentMessagesBinding
+    private var TAG = "MessagesFragment"
+    private var directMessagesAdapter: DirectMessagesAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +46,8 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
     }
 
     override fun initViewBinding() {
+        //Get One to One Chat Data
+        messagesViewModel.getOneToOneChats()
         setDirectMessagesAdapter()
     }
 
@@ -48,6 +56,24 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
         observeEvent(messagesViewModel.openChatMessageItem, ::navigateToChatItems)
         observeSnackBarMessages(messagesViewModel.showSnackBar)
         observeToast(messagesViewModel.showToast)
+        // Observe One To One Chat Data
+        messagesViewModel.getOneToOneChatList().observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val data = it.data.list
+                    Log.d(TAG, "One To One Chat Data :$data ")
+                    directMessagesAdapter?.addData(data)
+                }
+            }
+        }
     }
 
     private fun navigateToChatItems(navigateEvent: SingleEvent<Any>) {
@@ -79,7 +105,7 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>() {
 
 
     private fun setDirectMessagesAdapter() {
-        val directMessagesAdapter = DirectMessagesAdapter(messagesViewModel)
+        directMessagesAdapter = DirectMessagesAdapter(messagesViewModel)
         fragmentMessagesBinding.recyclerViewDirectMessages.adapter = directMessagesAdapter
 
 //        fragmentMessagesBinding.recyclerViewDirectMessages.addItemDecoration(

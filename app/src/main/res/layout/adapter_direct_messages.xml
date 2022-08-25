@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="data"
+            type="com.shepherd.app.data.dto.chat.ChatListData" />
 
     </data>
 
@@ -55,7 +58,7 @@
                 android:layout_marginStart="@dimen/_5sdp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/llImageWrapper"
-                app:layout_constraintEnd_toStartOf="@+id/imageViewInfo"
+                app:layout_constraintEnd_toStartOf="@+id/txtUnreadCount"
                 app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                 app:layout_constraintTop_toTopOf="@+id/llImageWrapper">
 
@@ -97,7 +100,7 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/imageViewInfo"
+                android:id="@+id/txtUnreadCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
