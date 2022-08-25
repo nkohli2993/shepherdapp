@@ -169,7 +169,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/llMessageType"
             tools:itemCount="3"
+            android:visibility="visible"
             tools:listitem="@layout/adapter_direct_messages" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDiscussionGroupMessages"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/_10sdp"
+            android:orientation="vertical"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/llMessageType"
+            tools:itemCount="3"
+            android:visibility="gone"
+            tools:listitem="@layout/adapter_discussion_groups" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

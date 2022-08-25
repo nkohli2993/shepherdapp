@@ -129,7 +129,7 @@ class MessagesViewModel @Inject constructor(
 
         val query = db.collection(TableName.CHATS)
             .whereArrayContains("userIDs", loggedInUserID ?: "")
-            .whereEqualTo("chat_type", Chat.CHAT_SINGLE)
+//            .whereEqualTo("chat_type", Chat.CHAT_SINGLE)
             .orderBy("updated_at", Query.Direction.DESCENDING)
 
         chatListener?.remove()

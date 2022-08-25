@@ -274,6 +274,7 @@
         <entry key="app/src/main/res/layout/adapter_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_date_picker.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_direct_messages.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/adapter_discussion_groups.xml" value="0.221875" />
         <entry key="app/src/main/res/layout/adapter_documents.xml" value="0.855" />
         <entry key="app/src/main/res/layout/adapter_event_chat.xml" value="0.638121546961326" />
         <entry key="app/src/main/res/layout/adapter_events.xml" value="0.855" />

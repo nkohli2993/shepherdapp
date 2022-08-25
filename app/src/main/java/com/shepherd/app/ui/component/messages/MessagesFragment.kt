@@ -17,6 +17,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.messages.adapter.DirectMessagesAdapter
+import com.shepherd.app.ui.component.messages.adapter.DiscussionGroupsAdapter
 import com.shepherd.app.utils.*
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.MessagesViewModel
@@ -33,6 +34,7 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
     private lateinit var fragmentMessagesBinding: FragmentMessagesBinding
     private var TAG = "MessagesFragment"
     private var directMessagesAdapter: DirectMessagesAdapter? = null
+    private var discussionsGroupAdapter: DiscussionGroupsAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +51,10 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
         fragmentMessagesBinding.listener = this
         //Get One to One Chat Data
         messagesViewModel.getOneToOneChats()
+        fragmentMessagesBinding.rvDiscussionGroupMessages.visibility = View.GONE
+        fragmentMessagesBinding.recyclerViewDirectMessages.visibility = View.VISIBLE
         setDirectMessagesAdapter()
+        setDiscussionsGroupAdapter()
     }
 
     override fun observeViewModel() {
@@ -70,8 +75,22 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
                 is DataResult.Success -> {
                     hideLoading()
                     val data = it.data.list
-                    Log.d(TAG, "One To One Chat Data :$data ")
-                    directMessagesAdapter?.addData(data)
+                    Log.d(TAG, "Chat Data :$data ")
+                    val oneToOneChatData = data.filter {
+                        it?.chatType == Chat.CHAT_SINGLE
+                    } as ArrayList
+                    Log.d(TAG, "One to One Chat Data :$oneToOneChatData ")
+
+                    if (!oneToOneChatData.isNullOrEmpty())
+                        directMessagesAdapter?.addData(oneToOneChatData)
+
+                    val groupChatData = data.filter {
+                        it?.chatType == Chat.CHAT_GROUP
+                    } as ArrayList
+                    Log.d(TAG, "Group Chat Data :$groupChatData ")
+
+                    if (!groupChatData.isNullOrEmpty())
+                        discussionsGroupAdapter?.addData(groupChatData)
                 }
             }
         }
@@ -116,14 +135,13 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
 
     }
 
-//    private fun setDiscussionsGroupAdapter() {
-//        val discussionsGroupAdapter = DiscussionGroupsAdapter(messagesViewModel)
-//        fragmentMessagesBinding.recyclerViewDiscussionGroups.adapter = discussionsGroupAdapter
-//
+    private fun setDiscussionsGroupAdapter() {
+        discussionsGroupAdapter = DiscussionGroupsAdapter(messagesViewModel)
+        fragmentMessagesBinding.rvDiscussionGroupMessages.adapter = discussionsGroupAdapter
 //        fragmentMessagesBinding.recyclerViewDiscussionGroups.addItemDecoration(
 //            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
 //        )
-//    }
+    }
 
 
     override fun getLayoutRes(): Int {
@@ -134,11 +152,14 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
         when (view?.id) {
             R.id.txtDirectMessages -> {
                 Log.d(TAG, "onClick: Direct message clicked")
-                //Get One to One Chat Data
+                fragmentMessagesBinding.rvDiscussionGroupMessages.visibility = View.GONE
+                fragmentMessagesBinding.recyclerViewDirectMessages.visibility = View.VISIBLE
                 messagesViewModel.getOneToOneChats()
             }
             R.id.txtDiscussionGroups -> {
-
+                fragmentMessagesBinding.rvDiscussionGroupMessages.visibility = View.VISIBLE
+                fragmentMessagesBinding.recyclerViewDirectMessages.visibility = View.GONE
+                messagesViewModel.getOneToOneChats()
             }
         }
     }
