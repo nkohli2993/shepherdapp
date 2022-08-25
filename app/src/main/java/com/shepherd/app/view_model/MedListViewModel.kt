@@ -69,17 +69,6 @@ class MedListViewModel  @Inject constructor(
         return userConditionsResponseLiveData
     }
 
-    // edit Medical Conditions for loved one id based
-    fun editMedicalConditions(conditions: ArrayList<MedicalConditionsLovedOneRequestModel>): LiveData<Event<DataResult<UserConditionsResponseModel>>> {
-        viewModelScope.launch {
-            val response = medicalConditionRepository.editMedicalConditions(conditions)
-            withContext(Dispatchers.Main) {
-                response.collect { _userConditionsResponseLiveData.postValue(Event(it)) }
-            }
-        }
-        return userConditionsResponseLiveData
-    }
-
     fun showToastMessage(errorCode: Int) {
         val error = errorManager.getError(errorCode)
         showToastPrivate.value = SingleEvent(error.description)

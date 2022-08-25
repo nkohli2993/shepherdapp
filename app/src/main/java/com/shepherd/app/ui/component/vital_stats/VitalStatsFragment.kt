@@ -83,7 +83,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>() {
 
     override fun initViewBinding() {
         setLineChartData()
-        vitalStatsViewModel.getVitalStats(SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),vitalStatsViewModel.getLovedOneUUId()!!)
+//        vitalStatsViewModel.getVitalStats(SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),vitalStatsViewModel.getLovedOneUUId()!!)
     }
 
     private fun setLineChartData() {

@@ -418,7 +418,7 @@
                             android:background="@null"
                             android:drawablePadding="@dimen/_5sdp"
                             android:gravity="top|start"
-                            android:hint="@string/address"
+                            android:hint="Please enter the Loved One's address"
                             android:lines="6"
                             android:paddingHorizontal="@dimen/_8sdp"
                             android:textSize="@dimen/_12ssp" />

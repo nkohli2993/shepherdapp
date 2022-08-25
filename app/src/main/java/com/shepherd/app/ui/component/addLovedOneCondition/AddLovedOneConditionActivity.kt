@@ -3,19 +3,16 @@ package com.shepherd.app.ui.component.addLovedOneCondition
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
-import com.shepherd.app.data.dto.care_team.CareCondition
 import com.shepherd.app.data.dto.medical_conditions.Conditions
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
+import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
 import com.shepherd.app.databinding.ActivityAddLovedOneConditionBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -48,20 +45,22 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var medicalConditionsLovedOneArray: ArrayList<MedicalConditionsLovedOneRequestModel> =
         ArrayList()
     private var loveOneId: String? = null
-    private var careConditions: ArrayList<CareCondition>? = null
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
+    private var conditionIDs: List<Int?>? = null
+    private var isLoading = false
+    private var deletedIds: ArrayList<Int> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-        addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
+
         //check if intent has loved used uuid
         if (intent.hasExtra("love_one_id")) {
             loveOneId = intent.getStringExtra("love_one_id")
-            careConditions = intent.getParcelableArrayListExtra("care_conditions")
-            //Get loved one's medical conditions
-            Handler(Looper.getMainLooper()).postDelayed({
-                loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
-            }, 1000)
+            isLoading = false
+            loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
+        } else {
+            isLoading = true
+            callAllMedicalCondition()
         }
 
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
@@ -108,24 +107,68 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun observeViewModel() {
-        //Observe the response of get all medical conditions api
-        addLovedOneConditionViewModel.medicalConditionResponseLiveData.observeEvent(this) {
+        //Observe the response of get loved one's medical conditions api
+        addLovedOneConditionViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
             when (it) {
+                is DataResult.Failure -> {
+                    // hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                    callAllMedicalCondition()
+                }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
+                    //   hideLoading()
+                    addedConditionPayload = it.data.payload
+                    conditionIDs = addedConditionPayload.map {
+                        it.conditionId
+                    }
+                    callAllMedicalCondition()
+                    if (addedConditionPayload.size <= 0) {
+                        // show popup for no medical conditions
+                        val builder = AlertDialog.Builder(this)
+                        val dialog = builder.apply {
+                            setMessage(getString(R.string.no_medical_condition_added_for_loved_one))
+                            setPositiveButton(getString(R.string.add)) { _, _ ->
+
+                            }
+                            setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                                finishActivity()
+                            }
+                        }.create()
+                        dialog.show()
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                        return@observeEvent
+                    }
+                }
+            }
+        }
+        //Observe the response of get all medical conditions api
+        addLovedOneConditionViewModel.medicalConditionResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    if (isLoading) {
+                        showLoading("")
+                    }
+                }
+                is DataResult.Success -> {
                     hideLoading()
                     conditions = it.data.payload?.conditions
-                    if (careConditions != null) { // to check already added care conditions
-                        for (i in conditions!!) {
-                            for (j in careConditions!!) {
-                                if (j.id == i.id) {
-                                    i.isSelected = true
+
+                    if (conditionIDs != null) {
+                        for (i in conditions?.indices!!) {
+                            for (j in addedConditionPayload.indices) {
+                                if (conditions!![i].id == conditionIDs!![j]) {
+                                    conditions!![i].isSelected = true
+                                    conditions!![i].isAlreadySelected = true
                                 }
                             }
                         }
                     }
+                    conditions?.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
+
                     addLovedOneConditionAdapter = conditions?.let { it1 ->
                         AddLovedOneConditionAdapter(
                             addLovedOneConditionViewModel,
@@ -155,7 +198,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     //it.data.message?.let { it1 -> showSuccess(this, it1) }
                     val builder = AlertDialog.Builder(this)
                     val dialog = builder.apply {
-                        setMessage("Medical Conditions added successfully...")
+                        setMessage(getString(R.string.medical_condition_added_successfully))
                         setPositiveButton("OK") { _, _ ->
                             navigateToHomeScreen()
                         }
@@ -171,51 +214,12 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
-        //Observe the response of get loved one's medical conditions api
-        addLovedOneConditionViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    addedConditionPayload = it.data.payload
-                    val conditionIDs = addedConditionPayload.map {
-                        it.conditions?.id
-                    }
-                    if (addedConditionPayload.size <= 0) {
-                        // show popup for no medical conditions
-                        val builder = AlertDialog.Builder(this)
-                        val dialog = builder.apply {
-                            setMessage("No medical condition added, Please add medical condition for loved one.")
-                            setPositiveButton("Add") { _, _ ->
 
-                            }
-                            setNegativeButton("Cancel") { _, _ ->
-                                finishActivity()
-                            }
-                        }.create()
-                        dialog.show()
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-                        return@observeEvent
-                    }
-                    for (i in conditions?.indices!!) {
-                        for (j in conditionIDs.indices) {
-                            if (conditions!![i].id == conditionIDs[j]) {
-                                conditions!![i].isSelected = true
-                            }
-                        }
-                    }
-                    conditions?.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
-                }
-            }
-        }
 
+    }
+
+    private fun callAllMedicalCondition() {
+        addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
     }
 
     override fun onClick(p0: View?) {
@@ -241,8 +245,20 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             // api to add medical condition
                             addMedicalConditons(ids, loveOneId)
                         } else {
-                            // api to update medical condition
-                            showError(this, "Update not implemented")
+                          /*  // api to update medical condition
+                            val deleteId :ArrayList<Int> = arrayListOf()
+                            val newAdded :ArrayList<MedicalConditionsLovedOneRequestModel> = arrayListOf()
+                            for (i in conditions!!) {
+                                if (i.isSelected && i.isAlreadySelected == null) {
+                                  newAdded.add(MedicalConditionsLovedOneRequestModel(i.id,loveOneId))
+                                } else if (i.isAlreadySelected!= null && (!i.isSelected && !i.isAlreadySelected!!)) {
+                                    deleteId.add(i.id!!)
+                                }
+                            }
+                            addLovedOneConditionViewModel.updateMedicalConditions(
+                                UpdateMedicalConditionRequestModel(newAdded,deleteId)
+                            )*/
+                            showError(this,"Not implemented")
                         }
                     }
                     else -> {
@@ -261,7 +277,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     ) {
         if (ids != null) {
             for (i in ids.indices) {
-                medicalConditionsLovedOneArray.add(MedicalConditionsLovedOneRequestModel(i?.let {
+                medicalConditionsLovedOneArray.add(MedicalConditionsLovedOneRequestModel(i.let {
                     ids[it]
                 }, lovedOneUUID))
             }
@@ -292,14 +308,24 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    override fun itemSelected(conditions: Conditions) {
+    /*
+        override fun itemSelected(conditions: Conditions) {
+        when {
+            selectedConditions?.isEmpty() == true -> conditions.let { selectedConditions?.add(it) }
+            conditions.isSelected -> selectedConditions?.add(conditions)
+            !conditions.isSelected && selectedConditions?.contains(conditions) == true -> selectedConditions?.remove(
+                conditions
+            )
+        }
 
-        if (selectedConditions?.isEmpty() == true)
-            conditions.let { selectedConditions?.add(it) }
-        else if (conditions.isSelected == true) selectedConditions?.add(conditions)
-        else if (conditions.isSelected == false && selectedConditions?.contains(conditions) == true)
-            selectedConditions?.remove(conditions)
     }
-
+*/
+    override fun itemSelected(position: Int) {
+        conditions!![position].isSelected = !conditions!![position].isSelected
+        if (conditions!![position].isAlreadySelected != null) {
+            conditions!![position].isAlreadySelected = !conditions!![position].isAlreadySelected!!
+        }
+        conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
+    }
 }
 

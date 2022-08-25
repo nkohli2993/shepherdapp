@@ -37,6 +37,7 @@ import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequ
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
+import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.dto.relation.RelationResponseModel
@@ -151,6 +152,9 @@ interface ApiService {
 
     @POST(ApiConstants.MedicalConditions.CREATE_BULK_ONE_CONDITIONS)
     suspend fun createBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
+
+    @PUT(ApiConstants.MedicalConditions.UPDATE_MEDICAL_CONDITIONS)
+    suspend fun updateMedicalConditions(@Body value: UpdateMedicalConditionRequestModel): Response<BaseResponseModel>
 
     @POST(ApiConstants.MedicalConditions.EDIT_BULK_ONE_CONDITIONS)
     suspend fun editBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
