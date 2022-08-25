@@ -7,6 +7,7 @@ import com.shepherd.app.data.dto.add_loved_one.UploadPicResponseModel
 import com.shepherd.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.shepherd.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.shepherd.app.data.dto.add_vital_stats.AddVitalStatsResponseModel
+import com.shepherd.app.data.dto.add_vital_stats.VitalStatsResponseModel
 import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherd.app.data.dto.added_events.*
 import com.shepherd.app.data.dto.care_team.CareTeamsResponseModel
@@ -40,6 +41,8 @@ import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.dto.relation.RelationResponseModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
+import com.shepherd.app.data.dto.security_code.SecurityCodeResponseModel
+import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
 import com.shepherd.app.data.dto.signup.BioMetricData
 import com.shepherd.app.data.dto.signup.UserSignupData
 import com.shepherd.app.data.dto.user.UserDetailsResponseModel
@@ -339,16 +342,38 @@ interface ApiService {
         @Path("id") id: String,
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("date") date:String
+        @Query("date") date: String
     ): Response<GetMedicationRecordResponse>
 
     @PUT(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
-    suspend fun updateProfile(@Body value: UserUpdateData,@Path("id") id:Int): Response<LoginResponseModel>
+    suspend fun updateProfile(
+        @Body value: UserUpdateData,
+        @Path("id") id: Int
+    ): Response<LoginResponseModel>
 
     // add vital stats for loginLoved one
     @POST(ApiConstants.VitalStats.ADD_VITAL_STATS)
     suspend fun addVitalStats(
         @Body addNewLockBoxRequestModel: VitalStatsRequestModel
     ): Response<AddVitalStatsResponseModel>
+
+    // get vital stats for loginLoved one
+    @GET(ApiConstants.VitalStats.ADD_VITAL_STATS)
+    suspend fun getVitalStats(
+        @Query("date") date: String, @Query("loveone_user_id") loveone_user_id: String
+    ): Response<VitalStatsResponseModel>
+
+    // send security code
+    @POST(ApiConstants.SecurityCode.ADD_SECURITY_CODE)
+    suspend fun addSecurityCode(
+        @Body sendSecurityCodeRequestModel: SendSecurityCodeRequestModel
+    ): Response<BaseResponseModel>
+
+    // resend security code
+    @POST(ApiConstants.SecurityCode.CHANGE_SECURITY_CODE)
+    suspend fun resetSecurityCode(
+        @Body sendSecurityCodeRequestModel: SendSecurityCodeRequestModel
+    ): Response<SecurityCodeResponseModel>
+
 
 }

@@ -22,10 +22,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickListener {
-
     private lateinit var fragmentSettingBinding: FragmentSettingBinding
     private val settingViewModel: SettingViewModel by viewModels()
-
     private lateinit var homeActivity: HomeActivity
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -89,12 +87,17 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
         } else {
             fragmentSettingBinding.clBioMetricLogin.isVisible = false
         }
+        fragmentSettingBinding.tvReset.visibility = View.VISIBLE
+        fragmentSettingBinding.tvSet.visibility = View.GONE
+        if (settingViewModel.getUserDetail()?.security_code == null || settingViewModel.getUserDetail()?.security_code!!.isEmpty()) {
+            fragmentSettingBinding.tvReset.visibility = View.GONE
+            fragmentSettingBinding.tvSet.visibility = View.VISIBLE
+        }
+
     }
 
     private fun registerBiometric(checked: Boolean) {
-        settingViewModel.registerBioMetric(
-            checked
-        )
+        settingViewModel.registerBioMetric(checked)
     }
 
     override fun getLayoutRes(): Int {
@@ -110,7 +113,18 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                 findNavController().navigate(R.id.action_nav_setting_to_changePassword)
             }
             R.id.tvReset -> {
-                findNavController().navigate(R.id.action_nav_setting_to_secureCode)
+                findNavController().navigate(
+                    SettingFragmentDirections.actionNavSettingToSecureCode(
+                        source = Const.RESET_SECURITY_CODE
+                    )
+                )
+            }
+            R.id.tvSet -> {
+                findNavController().navigate(
+                    SettingFragmentDirections.actionNavSettingToSecureCode(
+                        source = Const.SET_SECURITY_CODE
+                    )
+                )
             }
             R.id.clInvitations -> {
                 findNavController().navigate(R.id.action_nav_setting_to_invitation)

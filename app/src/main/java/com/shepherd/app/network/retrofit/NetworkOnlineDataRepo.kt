@@ -25,13 +25,13 @@ abstract class NetworkOnlineDataRepo<RESULT, REQUEST> {
                     getErrorResponse(data)?.let {
                         emit(
                             DataResult.Failure(
-                                it.message, apiResponse.code()
+                                message = it.message,errorCode = apiResponse.code(), error=  (it.error.let { "" })
                                 /*it.apiVersion?.toInt()*/
                             )
                         )
                     } ?: emit(
                         DataResult.Failure(
-                            "some thing went wrong",
+                            "Some thing went wrong, try again later!",
                             7887877
                         )
                     )

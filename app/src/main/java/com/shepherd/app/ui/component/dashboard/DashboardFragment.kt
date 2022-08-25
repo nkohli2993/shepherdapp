@@ -129,12 +129,14 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
             }
 
+         //   permissionCards(View.VISIBLE)
             // show accessed cards only to users
             if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
                 if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                     if (viewModel.getLovedUserDetail() != null) {
                         val perList = viewModel.getLovedUserDetail()?.permission?.split(',')
                             ?.map { it.trim() }
+                        permissionCards(View.GONE)
                         for (i in perList?.indices!!) {
                             checkPermission(perList[i].toInt())
                         }
@@ -158,7 +160,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     }
 
     private fun checkPermission(permission: Int?) {
-        permissionCards(View.GONE)
         when {
             Modules.CareTeam.value == permission -> {
                 fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE

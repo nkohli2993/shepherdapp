@@ -2,6 +2,7 @@ package com.shepherd.app.constants
 
 import com.shepherd.app.BuildConfig.BASE_URL
 import com.shepherd.app.BuildConfig.BASE_URL_USER
+import com.shepherd.app.utils.convert
 
 
 /**
@@ -112,7 +113,12 @@ object ApiConstants {
     }
 
     object VitalStats{
-        const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}vital_stats/loved_one/{id}"
+        const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital"
+    }
+    object SecurityCode{
+        const val ADD_SECURITY_CODE = "$BASE_URL_USER${API_VERSION}user_profiles/sendotp-pin"
+        const val VERIFTY_SECURITY_CODE = "$BASE_URL_USER${API_VERSION}user_profiles/verifyotp-pin"
+        const val CHANGE_SECURITY_CODE = "$BASE_URL_USER${API_VERSION}user_profiles/change-pin"
     }
 }
 

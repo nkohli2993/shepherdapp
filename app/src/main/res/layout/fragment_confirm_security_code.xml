@@ -110,8 +110,7 @@
                     android:elevation="@dimen/_10sdp"
                     android:paddingHorizontal="@dimen/_15sdp"
                     android:paddingTop="@dimen/_45sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                   >
+                    android:paddingBottom="@dimen/_5sdp">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivSecurity"
@@ -129,7 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_book"
-                        android:text="@string/enter_new_code"
+                        android:text="@string/confirm_code"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintEnd_toEndOf="parent"

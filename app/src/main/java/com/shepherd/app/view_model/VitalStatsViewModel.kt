@@ -5,8 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.ShepherdApp
-import com.shepherd.app.data.dto.add_vital_stats.AddVitalStatsResponseModel
-import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
+import com.shepherd.app.data.dto.add_vital_stats.VitalStatsResponseModel
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.vital_stats.VitalStatsRepository
 import com.shepherd.app.network.retrofit.DataResult
@@ -22,10 +21,10 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
- * Created by Nikita kohli 22/08/2022
+ * Created by Nikita kohli 23/08/2022
  */
 @HiltViewModel
-class AddNewVitalStatsViewModel @Inject constructor(
+class VitalStatsViewModel @Inject constructor(
     private val dataRepository: VitalStatsRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
@@ -38,25 +37,26 @@ class AddNewVitalStatsViewModel @Inject constructor(
     private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
-    private var _addVitatStatsLiveData =
-        MutableLiveData<Event<DataResult<AddVitalStatsResponseModel>>>()
-    var addVitatStatsLiveData: LiveData<Event<DataResult<AddVitalStatsResponseModel>>> =
-        _addVitatStatsLiveData
+    private var _getVitatStatsLiveData =
+        MutableLiveData<Event<DataResult<VitalStatsResponseModel>>>()
+    var getVitatStatsLiveData: LiveData<Event<DataResult<VitalStatsResponseModel>>> =
+        _getVitatStatsLiveData
 
-    // add vital stats
-    fun addVitalStats(
-        vitalStats: VitalStatsRequestModel
-    ): LiveData<Event<DataResult<AddVitalStatsResponseModel>>> {
+    //get vital stats
+    fun getVitalStats(
+        date: String,loveone_user_id:String
+    ): LiveData<Event<DataResult<VitalStatsResponseModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.addVitalStatsForLovedOne(vitalStats)
+            val response = dataRepository.getVitalStats(date,loveone_user_id)
             withContext(Dispatchers.Main) {
                 response.collect {
-                    _addVitatStatsLiveData.postValue(Event(it))
+                    _getVitatStatsLiveData.postValue(Event(it))
                 }
             }
         }
-        return addVitatStatsLiveData
+        return getVitatStatsLiveData
     }
+
 
     fun showToastMessage(errorCode: Int) {
         val error = errorManager.getError(errorCode)

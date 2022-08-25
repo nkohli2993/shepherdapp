@@ -229,6 +229,10 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     lockBoxList?.clear()
+                    if(pageNumber == 1){
+                        otherDocumentsAdapter= null
+                        setOtherDocumentsAdapter()
+                    }
                     it.data.payload.let {
                         lockBoxList = it?.lockBox
                         total = it?.total!!

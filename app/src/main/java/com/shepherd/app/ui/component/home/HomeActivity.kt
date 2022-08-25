@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -30,7 +29,9 @@ import com.shepherd.app.ui.component.lockBox.LockBoxFragment
 import com.shepherd.app.ui.component.login.LoginActivity
 import com.shepherd.app.ui.component.messages.MessagesFragment
 import com.shepherd.app.ui.component.myMedList.MyMedListFragment
+import com.shepherd.app.ui.component.profile.ProfileFragment
 import com.shepherd.app.ui.component.resources.ResourcesFragment
+import com.shepherd.app.ui.component.settings.SettingFragment
 import com.shepherd.app.ui.component.vital_stats.VitalStatsFragment
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Modules
@@ -72,24 +73,26 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         setOnClickListeners()
 
         // show accessed cards only to users
-        if(!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail()!=null){
-            if(viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
-                if(viewModel.getLovedUserDetail()!=null){
-                    val perList = viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
+        // permissionShowHide(View.VISIBLE)
+        if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
+            if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
+                if (viewModel.getLovedUserDetail() != null) {
+                    val perList =
+                        viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
+                    permissionShowHide(View.GONE)
                     for (i in perList?.indices!!) {
                         checkPermission(perList[i].toInt())
                     }
-                }
-                else{
+                } else {
                     permissionShowHide(View.VISIBLE)
                 }
-        }
-        else{
+        } else {
             permissionShowHide(View.VISIBLE)
         }
+
     }
 
-    private fun permissionShowHide(value:Int){
+    private fun permissionShowHide(value: Int) {
         binding.llCarePoint.visibility = value
         binding.llLockBox.visibility = value
         binding.llMedList.visibility = value
@@ -233,7 +236,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = false
                         tvNew.isVisible = false
                         ivEditProfile.setOnClickListener() {
-                            // navController.navigate(R.id.nav_edit_profile)
+                            navController.navigate(R.id.nav_edit_profile)
                         }
                         ivSetting.setOnClickListener() {
                             navController.navigate(R.id.nav_setting)
@@ -250,7 +253,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
-                                //  navController.navigate(R.id.nav_add_vitals)
+                                navController.navigate(R.id.nav_add_vitals)
                             }
                         }
                     }
@@ -403,13 +406,15 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         val fragmentManager: FragmentManager = navHostFragment!!.childFragmentManager
         when (fragmentManager.primaryNavigationFragment!!) {
             is CarePointsFragment, is MyMedListFragment, is LockBoxFragment, is CareTeamMembersFragment,
-            is ResourcesFragment, is VitalStatsFragment, is MessagesFragment -> {
-                val navController = findNavController(R.id.nav_host_fragment_content_dashboard)
-                navController.navigate(R.id.nav_dashboard)
+            is ResourcesFragment, is VitalStatsFragment, is MessagesFragment, is ProfileFragment -> {
+                findNavController(R.id.nav_host_fragment_content_dashboard).navigate(R.id.nav_dashboard)
                 overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
+            }
+            is SettingFragment -> {
+                findNavController(R.id.nav_host_fragment_content_dashboard).navigate(R.id.nav_profile)
             }
             is DashboardFragment -> {
                 if (backPressed + 2000 > System.currentTimeMillis()) super.onBackPressed()
@@ -434,7 +439,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     }
 
     private fun checkPermission(permission: Int?) {
-        permissionShowHide(View.GONE)
         when {
             Modules.CareTeam.value == permission -> {
                 binding.llCarePoint.visibility = View.VISIBLE

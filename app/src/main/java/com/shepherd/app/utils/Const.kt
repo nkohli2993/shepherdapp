@@ -27,6 +27,8 @@ object Const {
     const val LOVED_USER_DETAILS = "LOVED USER DETAILS"
     const val MEDICAL_CONDITION = "MEDICAL CONDITION"
     const val LOVED_ONE_DETAIL = "LOVED ONE DETAIL"
+    const val RESET_SECURITY_CODE = "RESET"
+    const val SET_SECURITY_CODE = "SET"
 }
 
 object Drawable {

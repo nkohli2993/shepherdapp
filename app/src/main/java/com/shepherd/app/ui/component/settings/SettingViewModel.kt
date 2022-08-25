@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.data.dto.signup.BioMetricData
+import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.auth_repository.AuthRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
@@ -18,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingViewModel @Inject constructor(
     private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) :
     BaseViewModel() {
 
@@ -47,4 +50,7 @@ class SettingViewModel @Inject constructor(
         return bioMetricLiveData
     }
 
+    fun getUserDetail(): UserProfile?{
+        return userRepository.getCurrentUser()
+    }
 }

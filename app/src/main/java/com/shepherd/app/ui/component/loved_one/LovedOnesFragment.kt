@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.care_team.CareTeamModel
@@ -35,7 +37,9 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     private var status = Status.One.status
     private var careTeams: ArrayList<CareTeamModel> = arrayListOf()
     private var selectedCare: CareTeamModel? = null
-
+    var currentPage: Int = 0
+    var totalPage: Int = 0
+    var total: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,16 +48,40 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     ): View {
         fragmentLovedOnesBinding =
             FragmentLovedOnesBinding.inflate(inflater, container, false)
-
-
-
         return fragmentLovedOnesBinding.root
     }
 
     override fun onResume() {
         super.onResume()
-        // Get care Teams for loggedIn User
+        careTeams.clear()
+        page = 1
         lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+    }
+
+    private fun handleAddedLovedOnePagination() {
+        var isScrolling = true
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisiblesItems: Int
+        fragmentLovedOnesBinding.recyclerViewMembers.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    isScrolling = true
+                    visibleItemCount = recyclerView.layoutManager!!.childCount
+                    totalItemCount = recyclerView.layoutManager!!.itemCount
+                    pastVisiblesItems =
+                        (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
+                        isScrolling = false
+                        currentPage++
+                        page++
+                        lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+                    }
+                }
+            }
+        })
     }
 
     override fun observeViewModel() {
@@ -68,8 +96,18 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.data
-                    setLovedOnesAdapter(careTeams)
+                    careTeams.clear()
+                    if(page == 1){
+                        lovedOneAdapter = null
+                        setLovedOnesAdapter(careTeams)
+                    }
+                    it.data.payload.let { payload ->
+                        careTeams = payload.data
+                        total = payload.total!!
+                        currentPage = payload.currentPage!!
+                        totalPage = payload.totalPages!!
+                    }
+                    lovedOneAdapter?.addData(careTeams)
                     val lovedOneIDInPrefs =
                         Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
                     for (i in careTeams) {
@@ -85,14 +123,15 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
 
     override fun initViewBinding() {
         fragmentLovedOnesBinding.listener = this
-        //setLoveOneAdapter()
+        setLovedOnesAdapter(careTeams)
     }
 
     private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeamModel>?) {
         lovedOneAdapter = LovedOneAdapter(lovedOneViewModel)
-        lovedOneAdapter?.addData(careTeams)
+
         recyclerViewMembers.adapter = lovedOneAdapter
         lovedOneAdapter?.setClickListener(this)
+        handleAddedLovedOnePagination()
     }
 
     override fun getLayoutRes(): Int {

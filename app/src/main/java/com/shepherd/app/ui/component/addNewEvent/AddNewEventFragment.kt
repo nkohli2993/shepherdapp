@@ -115,7 +115,12 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    if (it.error.isNotEmpty()) {
+                        showError(requireContext(), it.error)
+                    } else {
+                        it.message?.let { showError(requireContext(), it) }
+                    }
+
 
                 }
             }

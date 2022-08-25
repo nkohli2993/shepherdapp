@@ -9,6 +9,8 @@ import com.google.gson.annotations.SerializedName
 open class BaseResponseModel(
     @SerializedName("msg")
     var message: String? = null,
+    @SerializedName("error")
+    var error: String? = null,
 
     @SerializedName("api_ver")
     var apiVersion: String? = null,

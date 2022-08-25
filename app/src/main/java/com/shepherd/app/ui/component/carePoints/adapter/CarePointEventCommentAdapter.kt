@@ -62,7 +62,7 @@ class CarePointEventCommentAdapter(
                 }
                 else{
                     it.tvUsername.text = commentData.user_details.firstname.plus(" ")
-                        .plus(commentData.user_details.lastname)
+                        .plus(if(commentData.user_details.lastname == null) "" else commentData.user_details.lastname)
                     it.viewCL.setBackgroundResource(R.drawable.rounded_box_grey)
                 }
 
