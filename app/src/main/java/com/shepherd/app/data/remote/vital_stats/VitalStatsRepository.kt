@@ -6,6 +6,7 @@ import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsReque
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.NetworkOnlineDataRepo
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn

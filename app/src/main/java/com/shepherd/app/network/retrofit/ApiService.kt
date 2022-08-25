@@ -373,6 +373,7 @@ interface ApiService {
     @POST(ApiConstants.SecurityCode.CHANGE_SECURITY_CODE)
     suspend fun resetSecurityCode(
         @Body sendSecurityCodeRequestModel: SendSecurityCodeRequestModel
-    ): Response<BaseResponseModel>
+    ): Response<SecurityCodeResponseModel>
+
 
 }

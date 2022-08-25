@@ -12,8 +12,10 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.gson.annotations.SerializedName
 import com.poovam.pinedittextfield.PinField
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
 import com.shepherd.app.databinding.FragmentConfirmSecurityCodeBinding
 import com.shepherd.app.databinding.FragmentSecurityCodeBinding
@@ -25,8 +27,10 @@ import com.shepherd.app.utils.extensions.hideKeyboard
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.SecurityCodeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import org.jetbrains.annotations.NotNull
 
+@AndroidEntryPoint
 class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBinding>(),
     View.OnClickListener {
     private val securityCodeViewModel: SecurityCodeViewModel by viewModels()
@@ -47,7 +51,7 @@ class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBind
     }
 
     override fun observeViewModel() {
-        securityCodeViewModel.addSecurityCodeLiveData.observeEvent(this) {
+        securityCodeViewModel.changeSecurityCodeLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -58,6 +62,26 @@ class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBind
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    val payload = it.data.payload
+                    securityCodeViewModel.saveDetail(
+                        UserProfile(
+                            payload!!.id,
+                            payload.userId,
+                            payload.firstname,
+                            payload.lastname,
+                            payload.dob,
+                            payload.address,
+                            payload.phoneCode,
+                            payload.phoneNo,
+                            payload.profilePhoto,
+                            payload.isBiometric,
+                            payload.isEmailVerified,
+                            payload.createdAt,
+                            payload.updatedAt,
+                            payload.deletedAt,
+                            payload.securityCode
+                        )
+                    )
                     when (type) {
                         Const.SET_SECURITY_CODE -> {
                             showInfo(
@@ -72,7 +96,7 @@ class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBind
                             )
                         }
                     }
-                    backPress()
+                    findNavController().navigate(R.id.nav_setting)
                 }
             }
         }
@@ -178,6 +202,7 @@ class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBind
                     .plus(fragmentConfirmSecurityCodeBinding.etThird.text.toString())
                     .plus(fragmentConfirmSecurityCodeBinding.etFourth.text.toString())
                 if (otp!!.length == 4 && otp == code) {
+/*
                     when (type) {
                         Const.SET_SECURITY_CODE -> {
                             securityCodeViewModel.addSecurityCode(SendSecurityCodeRequestModel(otp))
@@ -186,7 +211,9 @@ class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBind
                             securityCodeViewModel.resetSecurityCode(SendSecurityCodeRequestModel(otp))
                         }
                     }
+*/
 
+                    securityCodeViewModel.resetSecurityCode(SendSecurityCodeRequestModel(otp))
                 } else {
                     if (otp!!.length < 4) {
                         showError(requireContext(), getString(R.string.please_enter_confirm_code))

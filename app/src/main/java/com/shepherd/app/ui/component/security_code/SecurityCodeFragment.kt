@@ -192,4 +192,17 @@ class SecurityCodeFragment : BaseFragment<FragmentSecurityCodeBinding>(), View.O
             }
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+        fragmentSecurityCodeBinding.etFirst.setText("")
+        fragmentSecurityCodeBinding.etSecond.setText("")
+        fragmentSecurityCodeBinding.etThird.setText("")
+        fragmentSecurityCodeBinding.etFourth.setText("")
+        fragmentSecurityCodeBinding.etFirst.clearFocus()
+        fragmentSecurityCodeBinding.etSecond.clearFocus()
+        fragmentSecurityCodeBinding.etThird.clearFocus()
+        fragmentSecurityCodeBinding.etFourth.clearFocus()
+        otp = null
+    }
 }

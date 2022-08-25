@@ -1,4 +1,5 @@
 package com.shepherd.app.data.remote.security_code
+import com.shepherd.app.data.dto.security_code.SecurityCodeResponseModel
 import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
@@ -28,10 +29,10 @@ class SecurityCodeRepository @Inject constructor(private val apiService: ApiServ
     // Add security code for loved one
     suspend fun resetSecurityCode(
      response :SendSecurityCodeRequestModel
-    ): Flow<DataResult<BaseResponseModel>> {
+    ): Flow<DataResult<SecurityCodeResponseModel>> {
         return object :
-            NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+            NetworkOnlineDataRepo<SecurityCodeResponseModel, SecurityCodeResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<SecurityCodeResponseModel> {
                 return apiService.resetSecurityCode(response)
             }
         }.asFlow().flowOn(Dispatchers.IO)

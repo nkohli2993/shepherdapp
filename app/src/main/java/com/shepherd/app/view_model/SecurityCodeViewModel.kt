@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.add_vital_stats.VitalStatsResponseModel
+import com.shepherd.app.data.dto.login.UserProfile
+import com.shepherd.app.data.dto.security_code.SecurityCodeResponseModel
 import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.security_code.SecurityCodeRepository
@@ -16,11 +18,13 @@ import com.shepherd.app.ui.base.BaseViewModel
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.SingleEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@HiltViewModel
 class SecurityCodeViewModel@Inject constructor(
     private val dataRepository: SecurityCodeRepository,
     private val userRepository: UserRepository
@@ -39,6 +43,11 @@ class SecurityCodeViewModel@Inject constructor(
     var addSecurityCodeLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _addSecurityCodeLiveData
 
+    private var _changeSecurityCodeLiveData =
+        MutableLiveData<Event<DataResult<SecurityCodeResponseModel>>>()
+    var changeSecurityCodeLiveData: LiveData<Event<DataResult<SecurityCodeResponseModel>>> =
+        _changeSecurityCodeLiveData
+
     //add security code
     fun addSecurityCode(
         response : SendSecurityCodeRequestModel
@@ -56,16 +65,16 @@ class SecurityCodeViewModel@Inject constructor(
     //reset security code
     fun resetSecurityCode(
         response : SendSecurityCodeRequestModel
-    ): LiveData<Event<DataResult<BaseResponseModel>>> {
+    ): LiveData<Event<DataResult<SecurityCodeResponseModel>>> {
         viewModelScope.launch {
             val response = dataRepository.resetSecurityCode(response)
             withContext(Dispatchers.Main) {
                 response.collect {
-                    _addSecurityCodeLiveData.postValue(Event(it))
+                    _changeSecurityCodeLiveData.postValue(Event(it))
                 }
             }
         }
-        return addSecurityCodeLiveData
+        return changeSecurityCodeLiveData
     }
 
 
@@ -76,8 +85,10 @@ class SecurityCodeViewModel@Inject constructor(
 
     fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
 
-    fun getLovedOneId(): String? {
-        return userRepository.getLovedOneId()
+    fun getUserDetail(): UserProfile?{
+        return userRepository.getCurrentUser()
     }
-
+    fun saveDetail(userDetail:UserProfile){
+        userRepository.saveUser(userDetail)
+    }
 }

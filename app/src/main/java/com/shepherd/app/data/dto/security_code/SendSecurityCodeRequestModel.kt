@@ -8,5 +8,5 @@ import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.AddVitalData
  */
 
 data class SendSecurityCodeRequestModel(
-    @SerializedName("otp") var otp: String? = null,
+    @SerializedName("security_code") var securityCode: String? = null,
 )

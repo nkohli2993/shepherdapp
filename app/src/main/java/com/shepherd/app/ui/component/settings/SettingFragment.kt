@@ -87,12 +87,17 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
         } else {
             fragmentSettingBinding.clBioMetricLogin.isVisible = false
         }
+        fragmentSettingBinding.tvReset.visibility = View.VISIBLE
+        fragmentSettingBinding.tvSet.visibility = View.GONE
+        if (settingViewModel.getUserDetail()?.security_code == null || settingViewModel.getUserDetail()?.security_code!!.isEmpty()) {
+            fragmentSettingBinding.tvReset.visibility = View.GONE
+            fragmentSettingBinding.tvSet.visibility = View.VISIBLE
+        }
+
     }
 
     private fun registerBiometric(checked: Boolean) {
-        settingViewModel.registerBioMetric(
-            checked
-        )
+        settingViewModel.registerBioMetric(checked)
     }
 
     override fun getLayoutRes(): Int {
@@ -109,21 +114,17 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             }
             R.id.tvReset -> {
                 findNavController().navigate(
-                    SettingFragmentDirections.actionNavSettingToInformation(
+                    SettingFragmentDirections.actionNavSettingToSecureCode(
                         source = Const.RESET_SECURITY_CODE
                     )
                 )
-
-                //findNavController().navigate(R.id.action_nav_setting_to_secureCode)
             }
             R.id.tvSet -> {
                 findNavController().navigate(
-                    SettingFragmentDirections.actionNavSettingToInformation(
+                    SettingFragmentDirections.actionNavSettingToSecureCode(
                         source = Const.SET_SECURITY_CODE
                     )
                 )
-
-                //findNavController().navigate(R.id.action_nav_setting_to_secureCode)
             }
             R.id.clInvitations -> {
                 findNavController().navigate(R.id.action_nav_setting_to_invitation)
