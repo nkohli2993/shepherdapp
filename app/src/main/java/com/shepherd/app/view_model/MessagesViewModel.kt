@@ -50,8 +50,8 @@ class MessagesViewModel @Inject constructor(
     BaseViewModel() {
 
     private var TAG = "MessagesViewModel"
-    private val openChatMessage = MutableLiveData<SingleEvent<Any>>()
-    val openChatMessageItem: LiveData<SingleEvent<Any>> get() = openChatMessage
+    private val _openChatMessage = MutableLiveData<SingleEvent<ChatListData>>()
+    val openChatMessageItem: LiveData<SingleEvent<ChatListData>> get() = _openChatMessage
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
@@ -74,7 +74,7 @@ class MessagesViewModel @Inject constructor(
 
     var chatListener: ListenerRegistration? = null
     private var lastDocument: DocumentSnapshot? = null
-    val messageList = ArrayList<ChatListData?>()
+    private val messageList = ArrayList<ChatListData?>()
     var oldMsgList = ArrayList<ChatListData>()
     var scrollType: Boolean = false
 
@@ -105,9 +105,10 @@ class MessagesViewModel @Inject constructor(
     }
 
 
-    fun openChat(item: Any) {
-        openChatMessage.value = SingleEvent(item)
+    fun openChat(item: ChatListData) {
+        _openChatMessage.value = SingleEvent(item)
     }
+
 
     fun showToastMessage(errorCode: Int) {
         val error = errorManager.getError(errorCode)
@@ -173,6 +174,7 @@ class MessagesViewModel @Inject constructor(
     // Get One to One Chat messages
     fun getChats() {
         messageList.clear()
+        Log.d(TAG, "Message List :${messageList.size} ")
         val loggedInUserID = userRepository.getCurrentUser()?.id.toString()
 
         val query = db.collection(TableName.CHATS)
@@ -213,7 +215,9 @@ class MessagesViewModel @Inject constructor(
                         showLog("New message: ${document.document.data}")
                         try {
                             val messageModel = getMessageModel(document)
-                            messageModel?.let { messageList.add(it) }
+                            messageModel?.let {
+                                messageList.add(it)
+                            }
 
                         } catch (e: JSONException) {
                             showException(e)

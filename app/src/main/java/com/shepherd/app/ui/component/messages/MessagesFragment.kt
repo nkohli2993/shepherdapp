@@ -12,8 +12,12 @@ import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.R
+import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.Resource
+import com.shepherd.app.data.dto.chat.ChatListData
+import com.shepherd.app.data.dto.chat.ChatModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.databinding.FragmentMessagesBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -42,6 +46,10 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
     // keep track of Direct message or Discussions group
     // true means  Direct Message and false means discussion group
     private var isDirectMessage: Boolean? = null
+
+    private var chatModelList: ArrayList<ChatModel>? = ArrayList()
+    private var loggedInUser: UserProfile? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -72,7 +80,8 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                messagesViewModel.searchChat(p0.toString(), isDirectMessage!!)
+                if (!p0.isNullOrEmpty())
+                    messagesViewModel.searchChat(p0.toString(), isDirectMessage!!)
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -92,11 +101,18 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
                 messagesViewModel.getChats()
             }
         }
+
+        // Get Login User's detail
+        loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.USER_DETAILS,
+            UserProfile::class.java
+        )
     }
 
     override fun observeViewModel() {
         observe(messagesViewModel.loginLiveData, ::handleLoginResult)
         observeEvent(messagesViewModel.openChatMessageItem, ::navigateToChatItems)
+//        observeEvent(messagesViewModel.openChat, ::navigateToChatItems)
         observeSnackBarMessages(messagesViewModel.showSnackBar)
         observeToast(messagesViewModel.showToast)
         // Observe One To One Chat Data
@@ -153,11 +169,42 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
         }
     }
 
-    private fun navigateToChatItems(navigateEvent: SingleEvent<Any>) {
-        navigateEvent.getContentIfNotHandled()?.let {
-            findNavController().navigate(R.id.action_messages_to_chat)
-        }
+    private fun navigateToChatItems(navigateEvent: SingleEvent<ChatListData>) {
+        chatModelList?.clear()
+        val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+        val loggedInUserId = loggedInUser?.id
 
+
+        navigateEvent.getContentIfNotHandled()?.let { chatListData ->
+            val data = chatListData.usersDataMap.filter {
+                it.value?.id != loggedInUser?.id.toString()
+            }.map {
+                it.value
+            }
+            val receiverName = data[0]?.name
+            val receiverID = data[0]?.id
+            val receiverPicUrl = data[0]?.imageUrl
+            val documentID = chatListData.id
+            // Create Chat Model
+            val chatModel = ChatModel(
+                documentID,
+                loggedInUserId,
+                loggedInUserName,
+                receiverID?.toInt(),
+                receiverName,
+                receiverPicUrl,
+                null,
+                Chat.CHAT_SINGLE
+            )
+            chatModelList?.add(chatModel)
+            Log.d(TAG, "ChatModel : $chatModel ")
+            findNavController().navigate(
+                MessagesFragmentDirections.actionMessagesToChat(
+                    "Discussions",
+                    chatModelList?.toTypedArray()
+                )
+            )
+        }
     }
 
     private fun handleLoginResult(status: Resource<LoginResponseModel>) {

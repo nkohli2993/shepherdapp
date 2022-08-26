@@ -85,9 +85,11 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
             // Set Name of the Chat User
             fragmentChatBinding.txtName.text = chatModelList?.get(0)?.receiverName
             // Set Profile Pic
-            Picasso.get().load(chatModelList?.get(0)?.receiverPicUrl)
-                .placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(fragmentChatBinding.imgChatUser)
+            if (!chatModelList?.get(0)?.receiverPicUrl.isNullOrEmpty()) {
+                Picasso.get().load(chatModelList?.get(0)?.receiverPicUrl)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(fragmentChatBinding.imgChatUser)
+            }
 
         } else if (chatType == Chat.CHAT_GROUP) {
             fragmentChatBinding.txtName.text = chatModelList?.get(0)?.groupName

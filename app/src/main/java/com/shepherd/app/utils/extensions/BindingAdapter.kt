@@ -113,10 +113,13 @@ fun setPhoneError(view: EditText, data: String) {
 // Load image url into ImageView Using Picasso
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, imageUrl: String?) {
-    Picasso.get().load(imageUrl)
-        .placeholder(R.drawable.ic_defalut_profile_pic)
-        .into(view)
+    if (!imageUrl.isNullOrEmpty()) {
+        Picasso.get().load(imageUrl)
+            .placeholder(R.drawable.ic_defalut_profile_pic)
+            .into(view)
+    }
 }
+
 
 
 

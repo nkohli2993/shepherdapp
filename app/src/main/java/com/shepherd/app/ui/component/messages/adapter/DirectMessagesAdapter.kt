@@ -27,7 +27,7 @@ class DirectMessagesAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-//            viewModel.openChat(itemData)
+            viewModel.openChat(itemData[0] as ChatListData)
         }
     }
 
