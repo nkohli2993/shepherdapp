@@ -24,7 +24,6 @@ import com.shepherd.app.data.remote.care_teams.CareTeamsRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
 import com.shepherd.app.ui.base.BaseViewModel
-import com.shepherd.app.utils.Chat
 import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.TableName
 import com.shepherd.app.utils.extensions.createDate
@@ -81,7 +80,7 @@ class MessagesViewModel @Inject constructor(
 
 
     private var _responseLiveData = MutableLiveData<Event<DataResult<ChatListResponse>>>()
-    fun getOneToOneChatList(): LiveData<Event<DataResult<ChatListResponse>>> = _responseLiveData
+    fun getChatList(): LiveData<Event<DataResult<ChatListResponse>>> = _responseLiveData
 
 
     fun getCareTeamsByLovedOneId(
@@ -122,8 +121,57 @@ class MessagesViewModel @Inject constructor(
         }
     }
 
+    // Search Chat
+    fun searchChat(textToSearch: String, isDirectMessage: Boolean) {
+        val loggedInUser = userRepository.getCurrentUser()
+        val list = ArrayList<ChatListData>()
+        // Searching in One to One Chat
+        if (isDirectMessage) {
+            oldMsgList.forEach { chatListData ->
+                val data = chatListData.usersDataMap.filter {
+                    it.value?.id != loggedInUser?.id.toString()
+                }.map {
+                    it.value
+                }
+
+                if (data[0]?.name?.lowercase(Locale.getDefault())
+                        ?.contains(textToSearch.lowercase(Locale.getDefault())) == true
+                ) {
+                    list.add(chatListData)
+                }
+            }
+            messageList.clear()
+            if (!textToSearch.isNullOrEmpty()) {
+                if (!list.isNullOrEmpty()) {
+                    messageList.addAll(list.clone() as ArrayList<ChatListData>)
+                }
+            } else messageList.addAll(oldMsgList)
+            val chatResponse = ChatListResponse(messageList, false)
+            _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
+
+        } else {
+            // Searching in Group Chat
+            oldMsgList.forEach {
+                if (it.groupName?.lowercase(Locale.getDefault())
+                        ?.contains(textToSearch.lowercase(Locale.getDefault())) == true
+                ) {
+                    list.add(it)
+                }
+            }
+            messageList.clear()
+            if (!textToSearch.isNullOrEmpty()) {
+                if (!list.isNullOrEmpty()) {
+                    messageList.addAll(list.clone() as ArrayList<ChatListData>)
+                }
+            } else messageList.addAll(oldMsgList)
+            val chatResponse = ChatListResponse(messageList, false)
+            _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
+
+        }
+    }
+
     // Get One to One Chat messages
-    fun getOneToOneChats() {
+    fun getChats() {
         messageList.clear()
         val loggedInUserID = userRepository.getCurrentUser()?.id.toString()
 
