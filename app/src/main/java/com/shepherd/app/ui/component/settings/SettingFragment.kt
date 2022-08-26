@@ -113,7 +113,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             R.id.tvChange -> {
                 findNavController().navigate(R.id.action_nav_setting_to_changePassword)
             }
-          /*  R.id.tvReset -> {
+            R.id.tvReset -> {
                 findNavController().navigate(
                     SettingFragmentDirections.actionNavSettingToSecureCode(
                         source = Const.RESET_SECURITY_CODE
@@ -126,7 +126,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                         source = Const.SET_SECURITY_CODE
                     )
                 )
-            }*/
+            }
             R.id.clInvitations -> {
                 findNavController().navigate(R.id.action_nav_setting_to_invitation)
 

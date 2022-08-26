@@ -457,6 +457,10 @@
     <string name="spO2">SpO2</string>
     <string name="f">F</string>
     <string name="please_enter_valid_oxygen_level">Please enter valid oxygen level</string>
+    <string name="please_enter_valid_heart_rate">Please enter valid heart rate</string>
+    <string name="please_enter_valid_body_temperature">Please enter valid body temperature</string>
+    <string name="please_enter_valid_sbp_bp">Please enter valid SBP.</string>
+    <string name="please_enter_valid_dbp_bp">Please enter valid DBP.</string>
     <string name="sbp">SBP</string>
     <string name="dbp">DBP</string>
     <string name="reset_security_code">Reset Security Code</string>
@@ -469,4 +473,6 @@
     <string name="entered_confrim_code_doesnot_matched_with_entered_code">Entered confirm code does not matched with security code.</string>
     <string name="medical_condition_added_successfully">Medical Conditions added successfully…</string>
     <string name="no_medical_condition_added_for_loved_one">No medical condition added, Please add medical condition for loved one.</string>
+    <string name="please_select_at_least_one_condition">Please select at least once medical condition…</string>
+    <string name="no_result_found">No Result Found…</string>
 </resources>

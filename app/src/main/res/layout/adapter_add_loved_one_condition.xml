@@ -32,21 +32,14 @@
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/checkbox"
                 style="@style/CustomCheckbox"
-                android:layout_width="@dimen/_24sdp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:text="@{data.name}"
+                android:padding="@dimen/_5sdp"
                 android:layout_marginStart="@dimen/_10sdp"
-                android:checked="@{data.isSelected}"
                 android:clickable="false" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewCondition"
-                style="@style/TextViewGothamMedium"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/checkbox"
-                android:paddingHorizontal="@dimen/_8sdp"
-                android:text="@{data.name}"
-                android:textSize="@dimen/_13ssp" />
 
         </RelativeLayout>
 

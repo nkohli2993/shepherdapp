@@ -1,8 +1,11 @@
 package com.shepherd.app.ui.component.addLovedOneCondition
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
@@ -34,12 +37,12 @@ import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_condit
 class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     AddLovedOneConditionAdapter.ItemSelectedListener {
 
-    private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
     private lateinit var binding: ActivityAddLovedOneConditionBinding
+    private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var conditions: ArrayList<Conditions>? = ArrayList()
-    private var selectedConditions: ArrayList<Conditions>? = ArrayList()
+    private var selectedConditions: ArrayList<Conditions> = ArrayList()
     private var searchedConditions: ArrayList<Conditions>? = ArrayList()
     private var addLovedOneConditionAdapter: AddLovedOneConditionAdapter? = null
     private var medicalConditionsLovedOneArray: ArrayList<MedicalConditionsLovedOneRequestModel> =
@@ -157,13 +160,13 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     hideLoading()
                     conditions = it.data.payload?.conditions
 
-                    if (conditionIDs != null) {
-                        for (i in conditions?.indices!!) {
-                            for (j in addedConditionPayload.indices) {
-                                if (conditions!![i].id == conditionIDs!![j]) {
-                                    conditions!![i].isSelected = true
-                                    conditions!![i].isAlreadySelected = true
-                                }
+                    for (i in conditions?.indices!!) {
+                        for (j in addedConditionPayload.indices) {
+                            if (conditions!![i].id == addedConditionPayload[j].conditionId) {
+                                conditions!![i].isSelected = true
+                                conditions!![i].isAlreadySelected = 1
+//                                conditions!![i].isAlreadySelected = true
+                                conditions!![i].addConditionId = addedConditionPayload[j].id
                             }
                         }
                     }
@@ -214,8 +217,22 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
-
-
+        //Observe the response of updating loved one's medical conditions api
+        addLovedOneConditionViewModel.updateConditionsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    onBackPressed()
+                }
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+            }
+        }
     }
 
     private fun callAllMedicalCondition() {
@@ -231,11 +248,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 // Get LovedOne UUID from shared Pref
                 val lovedOneUUID =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
-
-                val ids = selectedConditions?.map {
-                    it.id
-                }
-
                 if (medicalConditionsLovedOneArray.isNotEmpty()) {
                     medicalConditionsLovedOneArray.clear()
                 }
@@ -243,38 +255,50 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     Const.MEDICAL_CONDITION -> {
                         if (addedConditionPayload.size <= 0) {
                             // api to add medical condition
-                            addMedicalConditons(ids, loveOneId)
+                            addMedicalConditons(loveOneId)
                         } else {
-                          /*  // api to update medical condition
-                            val deleteId :ArrayList<Int> = arrayListOf()
-                            val newAdded :ArrayList<MedicalConditionsLovedOneRequestModel> = arrayListOf()
+                            // api to update medical condition
+                            val deleteId: ArrayList<Int> = arrayListOf()
+                            val newAdded: ArrayList<MedicalConditionsLovedOneRequestModel> =
+                                arrayListOf()
                             for (i in conditions!!) {
-                                if (i.isSelected && i.isAlreadySelected == null) {
-                                  newAdded.add(MedicalConditionsLovedOneRequestModel(i.id,loveOneId))
-                                } else if (i.isAlreadySelected!= null && (!i.isSelected && !i.isAlreadySelected!!)) {
-                                    deleteId.add(i.id!!)
+                                if (i.isSelected && i.isAlreadySelected == 0) {
+                                    newAdded.add(
+                                        MedicalConditionsLovedOneRequestModel(
+                                            i.id,
+                                            loveOneId
+                                        )
+                                    )
+                                }
+                                if (i.isAlreadySelected == 2 && !i.isSelected) {
+                                    deleteId.add(i.addConditionId!!)
                                 }
                             }
                             addLovedOneConditionViewModel.updateMedicalConditions(
-                                UpdateMedicalConditionRequestModel(newAdded,deleteId)
-                            )*/
-                            showError(this,"Not implemented")
+                                UpdateMedicalConditionRequestModel(newAdded, deleteId)
+                            )
                         }
                     }
                     else -> {
-                        addMedicalConditons(ids, lovedOneUUID)
+                        addMedicalConditons(lovedOneUUID)
                     }
                 }
-
-
             }
         }
     }
 
     private fun addMedicalConditons(
-        ids: List<Int?>?,
         lovedOneUUID: String?
     ) {
+        for (i in conditions!!) {
+            if (i.isSelected && i.isAlreadySelected == 0) {
+                selectedConditions.add(i)
+            }
+        }
+        val ids = selectedConditions.map {
+            it.id
+        }
+
         if (ids != null) {
             for (i in ids.indices) {
                 medicalConditionsLovedOneArray.add(MedicalConditionsLovedOneRequestModel(i.let {
@@ -288,14 +312,9 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 medicalConditionsLovedOneArray
             )
         } else {
-            showError(this, "Please select at least once medical condition...")
+            showError(this, getString(R.string.please_select_at_least_one_condition))
         }
 
-    }
-
-
-    private fun navigateToWelcomeScreen() {
-        startActivityWithFinishAffinity<WelcomeActivity>()
     }
 
     private fun navigateToHomeScreen() {
@@ -308,23 +327,14 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
-    /*
-        override fun itemSelected(conditions: Conditions) {
-        when {
-            selectedConditions?.isEmpty() == true -> conditions.let { selectedConditions?.add(it) }
-            conditions.isSelected -> selectedConditions?.add(conditions)
-            !conditions.isSelected && selectedConditions?.contains(conditions) == true -> selectedConditions?.remove(
-                conditions
-            )
-        }
-
-    }
-*/
     override fun itemSelected(position: Int) {
-        conditions!![position].isSelected = !conditions!![position].isSelected
-        if (conditions!![position].isAlreadySelected != null) {
-            conditions!![position].isAlreadySelected = !conditions!![position].isAlreadySelected!!
+        if (conditions!![position].isAlreadySelected == 1 && conditions!![position].isSelected) {
+            conditions!![position].isAlreadySelected = 2
         }
+        if (conditions!![position].isAlreadySelected == 2 && !conditions!![position].isSelected) {
+            conditions!![position].isAlreadySelected = 1
+        }
+        conditions!![position].isSelected = !conditions!![position].isSelected
         conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
     }
 }

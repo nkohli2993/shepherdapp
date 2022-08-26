@@ -75,9 +75,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         })
         setOnClickListeners()
 
+//         permissionShowHide(View.VISIBLE)
         // show accessed cards only to users
-         permissionShowHide(View.VISIBLE)
-       /* if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
+        if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                 if (viewModel.getLovedUserDetail() != null) {
                     val perList =
@@ -91,7 +91,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
         } else {
             permissionShowHide(View.VISIBLE)
-        }*/
+        }
 
         binding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
 
@@ -241,7 +241,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = false
                         tvNew.isVisible = false
                         ivEditProfile.setOnClickListener() {
-//                            navController.navigate(R.id.nav_edit_profile)
+                            navController.navigate(R.id.nav_edit_profile)
                         }
                         ivSetting.setOnClickListener() {
                             navController.navigate(R.id.nav_setting)
@@ -258,7 +258,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
-//                                navController.navigate(R.id.nav_add_vitals)
+                                navController.navigate(R.id.nav_add_vitals)
                             }
                         }
                     }

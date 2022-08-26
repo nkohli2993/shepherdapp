@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.DocumentUrl
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherd.app.databinding.FragmentUploadedLockBoxDocDetailBinding
@@ -34,14 +33,11 @@ import kotlinx.android.synthetic.main.fragment_uploaded_lock_box_doc_detail.*
 class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBinding>(),
     View.OnClickListener {
 
+    private lateinit var fragmentUploadedLockBoxDocDetailBinding: FragmentUploadedLockBoxDocDetailBinding
     private val lockBoxDocInfoViewModel: LockBoxDocInfoViewModel by viewModels()
     private var documentImagesAdapter: UploadedDocumentImagesAdapter? = null
-    private lateinit var fragmentUploadedLockBoxDocDetailBinding: FragmentUploadedLockBoxDocDetailBinding
     private val args: LockBoxDocInfoFragmentArgs by navArgs()
     private var lockBox: LockBox? = null
-    private var list: ArrayList<DocumentUrl> =
-        arrayListOf()  //TODO: Change type according to type of file to show on view pager
-
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -194,8 +194,28 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                         getString(R.string.please_enter_your_heart_rate)
                     fragmentAddVitalsBinding.etHeartRate.requestFocus()
                 }
+                fragmentAddVitalsBinding.etHeartRate.text.toString().toDouble() < 60 -> {
+                    fragmentAddVitalsBinding.etHeartRate.error =
+                        getString(R.string.please_enter_valid_heart_rate)
+                    fragmentAddVitalsBinding.etHeartRate.requestFocus()
+                }
+                fragmentAddVitalsBinding.etHeartRate.text.toString().toDouble() > 100 -> {
+                    fragmentAddVitalsBinding.etHeartRate.error =
+                        getString(R.string.please_enter_valid_heart_rate)
+                    fragmentAddVitalsBinding.etHeartRate.requestFocus()
+                }
                 fragmentAddVitalsBinding.etTemp.text.toString().trim().isEmpty() -> {
                     fragmentAddVitalsBinding.etTemp.error = getString(R.string.please_choose_temp)
+                    fragmentAddVitalsBinding.etTemp.requestFocus()
+                }
+                fragmentAddVitalsBinding.etTemp.checkString().toDouble() < 95.9 -> {
+                    fragmentAddVitalsBinding.etTemp.error =
+                        getString(R.string.please_enter_valid_body_temperature)
+                    fragmentAddVitalsBinding.etTemp.requestFocus()
+                }
+                fragmentAddVitalsBinding.etTemp.checkString().toDouble() > 105 -> {
+                    fragmentAddVitalsBinding.etTemp.error =
+                        getString(R.string.please_enter_valid_body_temperature)
                     fragmentAddVitalsBinding.etTemp.requestFocus()
                 }
                 fragmentAddVitalsBinding.etSbp.text.toString().trim().isEmpty() -> {
@@ -203,14 +223,41 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                         getString(R.string.please_enter_your_blood_pressure_sbp)
                     fragmentAddVitalsBinding.etSbp.requestFocus()
                 }
+                fragmentAddVitalsBinding.etSbp.checkString().toDouble() < 60 -> {
+                    fragmentAddVitalsBinding.etSbp.error =
+                        getString(R.string.please_enter_valid_sbp_bp)
+                    fragmentAddVitalsBinding.etSbp.requestFocus()
+                }
+                fragmentAddVitalsBinding.etSbp.checkString().toDouble() > 180 -> {
+                    fragmentAddVitalsBinding.etSbp.error =
+                        getString(R.string.please_enter_valid_sbp_bp)
+                    fragmentAddVitalsBinding.etSbp.requestFocus()
+                }
                 fragmentAddVitalsBinding.etDbp.text.toString().trim().isEmpty() -> {
                     fragmentAddVitalsBinding.etDbp.error =
                         getString(R.string.please_enter_your_blood_pressure_dbp)
                     fragmentAddVitalsBinding.etDbp.requestFocus()
                 }
+                fragmentAddVitalsBinding.etDbp.checkString().toDouble() < 60 -> {
+                    fragmentAddVitalsBinding.etDbp.error =
+                        getString(R.string.please_enter_valid_dbp_bp)
+                    fragmentAddVitalsBinding.etDbp.requestFocus()
+                }
+                fragmentAddVitalsBinding.etDbp.checkString().toDouble() > 180 -> {
+                    fragmentAddVitalsBinding.etDbp.error =
+                        getString(R.string.please_enter_valid_dbp_bp)
+                    fragmentAddVitalsBinding.etDbp.requestFocus()
+                }
                 fragmentAddVitalsBinding.etSpo.text.toString().trim().isEmpty() -> {
                     fragmentAddVitalsBinding.etSpo.error =
                         getString(R.string.please_enter_body_oxygen)
+                    fragmentAddVitalsBinding.etSpo.requestFocus()
+                }
+                fragmentAddVitalsBinding.etSpo.checkString()
+                    .isNotEmpty() && fragmentAddVitalsBinding.etSpo.checkString()
+                    .toInt() <= 0 && fragmentAddVitalsBinding.etSpo.checkString().toInt() > 100 -> {
+                    fragmentAddVitalsBinding.etSpo.error =
+                        getString(R.string.please_enter_valid_oxygen_level)
                     fragmentAddVitalsBinding.etSpo.requestFocus()
                 }
                 else -> {
@@ -219,6 +266,4 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
             }
             return false
         }
-
-
 }
