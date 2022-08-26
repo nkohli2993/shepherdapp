@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -30,7 +31,7 @@
             android:paddingHorizontal="@dimen/_12sdp"
             android:paddingVertical="@dimen/_12ssp">
 
-            <LinearLayout
+            <!--<LinearLayout
                 android:id="@+id/llImageWrapper"
                 android:layout_width="@dimen/_58sdp"
                 android:layout_height="@dimen/_58sdp"
@@ -49,18 +50,30 @@
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_defalut_profile_pic"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
-            </LinearLayout>
+            </LinearLayout>-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMembersDiscussionsGroup"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_1sdp"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+                tools:itemCount="5"
+                tools:listitem="@layout/adapter_discussion_groups_members" />
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/llImageWrapper"
-                app:layout_constraintEnd_toStartOf="@+id/txtUnreadCount"
-                app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
-                app:layout_constraintTop_toTopOf="@+id/llImageWrapper">
+                app:layout_constraintStart_toEndOf="@+id/rvMembersDiscussionsGroup"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/txtUnreadCount">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtGroupName"

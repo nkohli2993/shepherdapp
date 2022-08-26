@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.chat.ChatListData
+import com.shepherd.app.data.dto.chat.ChatUserDetail
 import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.databinding.AdapterDiscussionGroupsBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
@@ -53,7 +54,7 @@ class DiscussionGroupsAdapter(
     }
 
 
-    class DiscussionGroupViewHolder(private val itemBinding: AdapterDiscussionGroupsBinding) :
+    inner class DiscussionGroupViewHolder(private val itemBinding: AdapterDiscussionGroupsBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
@@ -84,6 +85,16 @@ class DiscussionGroupsAdapter(
 
             // Set Unread count
             itemBinding.txtUnreadCount.text = data?.get(0)?.unreadCount.toString()
+
+            /*  // profile pics of members
+              var membersPic = data?.map {
+                  it?.imageUrl
+              } as ArrayList*/
+
+            val adapter = DiscussionGroupMemberAdapter(viewModel)
+            itemBinding.rvMembersDiscussionsGroup.adapter = adapter
+            adapter.addData(data as ArrayList<ChatUserDetail?>)
+
 
             itemBinding.root.setOnClickListener {
                 chatListData?.let { it1 ->

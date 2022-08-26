@@ -133,7 +133,7 @@ class MessagesViewModel @Inject constructor(
                 }.map {
                     it.value
                 }
-
+                // Search is based on name
                 if (data[0]?.name?.lowercase(Locale.getDefault())
                         ?.contains(textToSearch.lowercase(Locale.getDefault())) == true
                 ) {
@@ -150,7 +150,7 @@ class MessagesViewModel @Inject constructor(
             _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
 
         } else {
-            // Searching in Group Chat
+            // Searching in Group Chat based on group name
             oldMsgList.forEach {
                 if (it.groupName?.lowercase(Locale.getDefault())
                         ?.contains(textToSearch.lowercase(Locale.getDefault())) == true
