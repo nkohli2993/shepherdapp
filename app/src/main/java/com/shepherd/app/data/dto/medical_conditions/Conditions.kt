@@ -16,5 +16,7 @@ data class Conditions(
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
     @SerializedName("is_selected") var isSelected: Boolean = false,
-    @SerializedName("is_already_selected") var isAlreadySelected: Boolean? = null
+//    @SerializedName("is_already_selected") var isAlreadySelected: Boolean? = null,
+    @SerializedName("is_already_selected") var isAlreadySelected: Int = 0,
+    @SerializedName("add_condition_id") var addConditionId: Int? = null
 )

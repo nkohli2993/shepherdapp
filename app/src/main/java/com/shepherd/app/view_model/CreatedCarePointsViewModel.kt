@@ -41,10 +41,8 @@ class CreatedCarePointsViewModel @Inject constructor(
     val openMemberDetails: LiveData<SingleEvent<Int>> get() = addedCarePointLiveData
 
     // for care point listing
-    private var _addedCarePointLiveData =
-        MutableLiveData<Event<DataResult<AddedEventResponseModel>>>()
-    var carePointsResponseLiveData: LiveData<Event<DataResult<AddedEventResponseModel>>> =
-        _addedCarePointLiveData
+    private var _addedCarePointLiveData = MutableLiveData<Event<DataResult<AddedEventResponseModel>>>()
+    var carePointsResponseLiveData: LiveData<Event<DataResult<AddedEventResponseModel>>> = _addedCarePointLiveData
 
     // for care point event detail
     private var _addedCarePointDetailLiveData =

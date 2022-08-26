@@ -11,13 +11,13 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/_FCFCFC"
         android:orientation="vertical"
-        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:paddingHorizontal="@dimen/_10sdp"
         tools:context="com.shepherd.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity">
 
 
@@ -25,24 +25,24 @@
             android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             android:onClick="@{listener::onClick}"
-            android:layout_marginHorizontal="@dimen/_10sdp"
             android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_back" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtMedicalCondition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/medical_conditions"
-            android:textSize="@dimen/_16ssp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/_192032"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             android:fontFamily="@font/gotham_bold"
-            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:text="@string/medical_conditions"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_16ssp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivBack" />
 
@@ -51,11 +51,11 @@
             android:id="@+id/cardViewSearch"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_24sdp"
             android:orientation="horizontal"
             app:cardCornerRadius="@dimen/_20sdp"
             app:cardElevation="@dimen/_5sdp"
-            android:layout_marginHorizontal="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtMedicalCondition">
@@ -63,16 +63,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:background="#F3F3F4"
-                android:paddingHorizontal="@dimen/_3sdp">
+                android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imgSearch"
                     android:layout_width="@dimen/_32sdp"
                     android:layout_height="match_parent"
-                    android:padding="@dimen/_2sdp"
                     android:layout_gravity="center_vertical"
+                    android:padding="@dimen/_2sdp"
                     android:src="@drawable/ic_search_colored" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -81,42 +80,26 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@null"
+                    android:fontFamily="@font/gotham_book"
                     android:gravity="center_vertical"
                     android:hint="@string/search"
-                    android:textColorHint="#192032"
-                    android:fontFamily="@font/gotham_book"
                     android:imeOptions="actionDone"
                     android:inputType="textCapSentences"
                     android:maxLines="1"
                     android:paddingHorizontal="@dimen/_12sdp"
                     android:textColor="@android:color/black"
+                    android:textColorHint="#192032"
                     android:textSize="@dimen/_15ssp" />
 
                 <ImageView
                     android:id="@+id/imgCancel"
                     android:layout_width="@dimen/_15sdp"
                     android:layout_height="@dimen/_15sdp"
-                    android:padding="@dimen/_2sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:padding="@dimen/_2sdp"
                     android:src="@drawable/ic_cancel" />
 
-
-                <!--  <LinearLayout
-                      android:id="@+id/llSearch"
-                      android:layout_width="@dimen/_34sdp"
-                      android:layout_height="match_parent"
-                      android:layout_alignParentEnd="true"
-                      android:layout_marginHorizontal="@dimen/_8sdp"
-                      android:gravity="center">
-
-                      <androidx.appcompat.widget.AppCompatImageView
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:clickable="false"
-                          android:focusable="false"
-                          android:src="@drawable/ic_search" />
-                  </LinearLayout>-->
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -126,75 +109,48 @@
             style="@style/TextViewGothamMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No Result Found..."
             android:layout_margin="@dimen/_10sdp"
             android:layout_marginTop="30dp"
-            android:paddingVertical="@dimen/_20sdp"
             android:gravity="center"
+            android:paddingVertical="@dimen/_20sdp"
+            android:text="@string/no_result_found"
             android:textSize="18dp"
-            android:visibility="gone" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewCondition"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            android:layout_margin="@dimen/_10sdp"
-            android:visibility="visible"
-            tools:listitem="@layout/adapter_add_loved_one_condition"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardViewSearch" />
 
-        <!--<androidx.cardview.widget.CardView
-            android:id="@+id/cardViewDetails"
-            android:layout_width="0dp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/_6sdp"
-            app:cardElevation="0dp"
-            android:layout_marginTop="@dimen/_10sdp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCondition"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/buttonFinish"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/Id_const_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewCondition"
-                    android:layout_width="0dp"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    tools:listitem="@layout/adapter_add_loved_one_condition"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_marginBottom="@dimen/_200sdp" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>-->
-
+            app:layout_constraintTop_toBottomOf="@id/cardViewSearch"
+            tools:listitem="@layout/adapter_add_loved_one_condition" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonFinish"
             style="@style/ButtonPrimary"
             android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:backgroundTint="#399282"
             android:onClick="@{listener::onClick}"
-            android:layout_marginBottom="@dimen/_15sdp"
             android:text="@string/finish"
-            android:layout_gravity="center"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

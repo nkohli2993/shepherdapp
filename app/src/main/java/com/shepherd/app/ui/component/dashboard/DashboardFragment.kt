@@ -33,11 +33,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     private lateinit var fragmentDashboardBinding: FragmentDashboardBinding
     private val viewModel: DashboardViewModel by viewModels()
-    private var pageNumber: Int = 1
-    private var limit: Int = 10
-    private var status: Int = 1
-    private var careTeams: ArrayList<CareTeam>? = ArrayList()
-    private var dashBoardAdapter: DashboardAdapter? = null
     private var careTeamMembersDashBoardAdapter: CareTeamMembersDashBoardAdapter? = null
     private var parentActivityListener: ChildFragmentToActivityListener? = null
 
@@ -117,21 +112,12 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 careTeamProfiles.user?.profilePhoto
             } as ArrayList<String>
 
-            val careTeamMembersCount = careTeamMembersProfileList.size
-
-            /* if (careTeamMembersCount == 0 || careTeamMembersCount == 1) {
-                 fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Member"
-             } else {
-                 fragmentDashboardBinding.tvMember.text = "$careTeamMembersCount Members"
-             }*/
-
             if (!careTeamMembersProfileList.isNullOrEmpty()) {
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
             }
 
-            permissionCards(View.VISIBLE)
+            //     permissionCards(View.VISIBLE)
             // show accessed cards only to users
-/*
             if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
                 if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                     if (viewModel.getLovedUserDetail() != null) {
@@ -147,7 +133,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
             } else {
                 permissionCards(View.VISIBLE)
             }
-*/
         }
     }
 
