@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -14,6 +15,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.user.UserProfiles
@@ -56,6 +58,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     private var profilePicLovedOne: String? = null
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,8 +76,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         setOnClickListeners()
 
         // show accessed cards only to users
-        // permissionShowHide(View.VISIBLE)
-        if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
+         permissionShowHide(View.VISIBLE)
+       /* if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                 if (viewModel.getLovedUserDetail() != null) {
                     val perList =
@@ -88,7 +91,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
         } else {
             permissionShowHide(View.VISIBLE)
-        }
+        }*/
+
+        binding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
 
     }
 
@@ -236,7 +241,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = false
                         tvNew.isVisible = false
                         ivEditProfile.setOnClickListener() {
-                            navController.navigate(R.id.nav_edit_profile)
+//                            navController.navigate(R.id.nav_edit_profile)
                         }
                         ivSetting.setOnClickListener() {
                             navController.navigate(R.id.nav_setting)
@@ -253,7 +258,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
-                                navController.navigate(R.id.nav_add_vitals)
+//                                navController.navigate(R.id.nav_add_vitals)
                             }
                         }
                     }

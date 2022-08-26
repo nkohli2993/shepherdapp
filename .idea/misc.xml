@@ -146,9 +146,11 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_forgot_password.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_home.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_reset_password.xml" value="0.21419410004275333" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_search_places.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_splash.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_walk_through.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_welcome_user.xml" value="0.22" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_add_loved_one_condition.xml" value="0.10260795211628901" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_add_medicine_list.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_assign_to_event.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_assignee_menrbers.xml" value="0.2609375" />

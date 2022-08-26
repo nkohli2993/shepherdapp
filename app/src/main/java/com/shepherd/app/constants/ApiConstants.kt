@@ -43,6 +43,8 @@ object ApiConstants {
             "$BASE_URL${API_VERSION}user_conditions/create-bulkone"
         const val GET_LOVED_ONE_MEDICAL_CONDITION =
             "$BASE_URL${API_VERSION}user_conditions/getAllByLovedOne/{id}"
+        const val UPDATE_MEDICAL_CONDITIONS =
+            "$BASE_URL${API_VERSION}user_conditions/updateOne"
     }
 
     object CareTeams {

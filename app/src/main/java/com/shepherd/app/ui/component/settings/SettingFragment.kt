@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
 import com.shepherd.app.databinding.FragmentSettingBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -93,7 +94,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             fragmentSettingBinding.tvReset.visibility = View.GONE
             fragmentSettingBinding.tvSet.visibility = View.VISIBLE
         }
-
+        fragmentSettingBinding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
     }
 
     private fun registerBiometric(checked: Boolean) {
@@ -112,7 +113,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             R.id.tvChange -> {
                 findNavController().navigate(R.id.action_nav_setting_to_changePassword)
             }
-            R.id.tvReset -> {
+          /*  R.id.tvReset -> {
                 findNavController().navigate(
                     SettingFragmentDirections.actionNavSettingToSecureCode(
                         source = Const.RESET_SECURITY_CODE
@@ -125,7 +126,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                         source = Const.SET_SECURITY_CODE
                     )
                 )
-            }
+            }*/
             R.id.clInvitations -> {
                 findNavController().navigate(R.id.action_nav_setting_to_invitation)
 

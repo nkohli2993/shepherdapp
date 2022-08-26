@@ -32,7 +32,7 @@ class AddLovedOneConditionAdapter(
     }
 
     interface ItemSelectedListener {
-        fun itemSelected(conditions: Conditions)
+        fun itemSelected(position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -61,9 +61,13 @@ class AddLovedOneConditionAdapter(
         fun bind(conditions: Conditions) {
             itemBinding.data = conditions
 //            binding.checkbox.isChecked = conditions.isSelected
-            binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
-                conditions.isSelected = isChecked
-                onItemClickListener?.itemSelected(conditions)
+            binding.checkbox.setOnCheckedChangeListener { compoundButton, isChecked ->
+                if (compoundButton.isPressed) {
+                    //                conditions.isSelected = isChecked
+                    //                onItemClickListener?.itemSelected(conditions)
+                    onItemClickListener?.itemSelected(absoluteAdapterPosition)
+
+                }
             }
             itemBinding.cardView.setOnClickListener { itemBinding.checkbox.performClick() }
             itemBinding.textViewCondition.setOnClickListener { itemBinding.checkbox.performClick() }

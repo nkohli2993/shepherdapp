@@ -38,12 +38,13 @@
                     android:background="@null"
                     android:drawableStart="@drawable/ic_search"
                     android:drawableTint="@color/colorBlack"
-                    android:hint="@string/search"
+                    android:hint="Please enter the Loved One's address"
                     android:padding="@dimen/_10sdp"
                     android:imeOptions="actionSearch"
                     android:lines="1"
+                    android:textSize="@dimen/_12sdp"
                     android:id="@+id/editTextSearch"
-                    android:drawablePadding="@dimen/_10sdp"
+                    android:drawablePadding="@dimen/_5sdp"
                     android:inputType="textCapSentences"
                     android:importantForAutofill="no">
 

@@ -467,4 +467,6 @@
     <string name="confirm_code">Confirm Code</string>
     <string name="please_enter_confirm_code">Please enter the confirm otp</string>
     <string name="entered_confrim_code_doesnot_matched_with_entered_code">Entered confirm code does not matched with security code.</string>
+    <string name="medical_condition_added_successfully">Medical Conditions added successfully…</string>
+    <string name="no_medical_condition_added_for_loved_one">No medical condition added, Please add medical condition for loved one.</string>
 </resources>

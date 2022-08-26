@@ -29,8 +29,8 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
                 android:layout_width="match_parent"
-                android:clickable="true"
                 android:layout_height="0dp"
+                android:clickable="true"
                 app:layout_constraintBottom_toTopOf="@+id/tvLogout"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -395,10 +395,24 @@
                 android:text="@string/log_out"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_14ssp"
-                app:layout_constraintBottom_toTopOf="@+id/tvCopyRight"
+                app:layout_constraintBottom_toTopOf="@+id/tvVersion"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvVersion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:fontFamily="@font/gotham_light"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_8ssp"
+                app:layout_constraintBottom_toTopOf="@+id/tvCopyRight"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+             />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvCopyRight"

@@ -2,11 +2,13 @@ package com.shepherd.app.data.remote.medical_conditions
 
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
+import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.NetworkOnlineDataRepo
+import com.shepherd.app.ui.base.BaseResponseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -55,11 +57,11 @@ class MedicalConditionRepository @Inject constructor(private val apiService: Api
     }
 
     // edit Medical Conditions for loved one id based
-    suspend fun editMedicalConditions(conditions: ArrayList<MedicalConditionsLovedOneRequestModel>): Flow<DataResult<UserConditionsResponseModel>> {
+    suspend fun updateMedicalConditions(conditions: UpdateMedicalConditionRequestModel): Flow<DataResult<BaseResponseModel>> {
         return object :
-            NetworkOnlineDataRepo<UserConditionsResponseModel, UserConditionsResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<UserConditionsResponseModel> {
-                return apiService.editBulkOneConditions(conditions)
+            NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.updateMedicalConditions(conditions)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

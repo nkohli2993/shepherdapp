@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
+import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.remote.medical_conditions.MedicalConditionRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
+import com.shepherd.app.ui.base.BaseResponseModel
 import com.shepherd.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -40,6 +42,11 @@ class AddLovedOneConditionViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<UserConditionsResponseModel>>>()
     var userConditionsResponseLiveData: LiveData<Event<DataResult<UserConditionsResponseModel>>> =
         _userConditionsResponseLiveData
+
+    private var _updateConditionsResponseLiveData =
+        MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+    var updateConditionsResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+        _updateConditionsResponseLiveData
 
     private var _userIDLiveData = MutableLiveData<Event<DataResult<Int>>>()
     var userIDLiveData: LiveData<Event<DataResult<Int>>> = _userIDLiveData
@@ -82,6 +89,17 @@ class AddLovedOneConditionViewModel @Inject constructor(
             }
         }
         return userConditionsResponseLiveData
+    }
+
+ // update Medical Conditions
+    fun updateMedicalConditions(conditions: UpdateMedicalConditionRequestModel): LiveData<Event<DataResult<BaseResponseModel>>> {
+        viewModelScope.launch {
+            val response = medicalConditionRepository.updateMedicalConditions(conditions)
+            withContext(Dispatchers.Main) {
+                response.collect { _updateConditionsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return updateConditionsResponseLiveData
     }
 
 
