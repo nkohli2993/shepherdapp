@@ -109,6 +109,10 @@ class MessagesViewModel @Inject constructor(
         _openChatMessage.value = SingleEvent(item)
     }
 
+    fun openGroupChat(){
+
+    }
+
 
     fun showToastMessage(errorCode: Int) {
         val error = errorManager.getError(errorCode)

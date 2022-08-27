@@ -25,9 +25,9 @@ class DiscussionGroupsAdapter(
     lateinit var context: Context
 
 
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
+    val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+            viewModel.openChat(itemData[0] as ChatListData)
         }
     }
 
@@ -97,7 +97,7 @@ class DiscussionGroupsAdapter(
 
 
             itemBinding.root.setOnClickListener {
-                chatListData?.let { it1 ->
+                chatListData.let { it1 ->
                     recyclerItemListener.onItemSelected(
                         it1
                     )

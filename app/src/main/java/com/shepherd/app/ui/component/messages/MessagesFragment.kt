@@ -176,36 +176,109 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
 
 
         navigateEvent.getContentIfNotHandled()?.let { chatListData ->
+            // Single Chat
             val data = chatListData.usersDataMap.filter {
                 it.value?.id != loggedInUser?.id.toString()
             }.map {
                 it.value
             }
-            val receiverName = data[0]?.name
-            val receiverID = data[0]?.id
-            val receiverPicUrl = data[0]?.imageUrl
-            val documentID = chatListData.id
-            // Create Chat Model
-            val chatModel = ChatModel(
-                documentID,
-                loggedInUserId,
-                loggedInUserName,
-                receiverID?.toInt(),
-                receiverName,
-                receiverPicUrl,
-                null,
-                Chat.CHAT_SINGLE
-            )
-            chatModelList?.add(chatModel)
-            Log.d(TAG, "ChatModel : $chatModel ")
+            if (chatListData.chatType == Chat.CHAT_SINGLE) {
+                val receiverName = data[0]?.name
+                val receiverID = data[0]?.id
+                val receiverPicUrl = data[0]?.imageUrl
+                val documentID = chatListData.id
+                // Create Chat Model
+                val chatModel = ChatModel(
+                    documentID,
+                    loggedInUserId,
+                    loggedInUserName,
+                    receiverID?.toInt(),
+                    receiverName,
+                    receiverPicUrl,
+                    null,
+                    Chat.CHAT_SINGLE
+                )
+                chatModelList?.add(chatModel)
+            } else {
+                data.forEach {
+                    val receiverName = it?.name
+                    val receiverID = it?.id
+                    val receiverPicUrl = it?.imageUrl
+                    val documentID = chatListData.id
+                    val chatType = chatListData.chatType
+                    val groupName = chatListData.groupName
+                    // Create Chat Model
+                    val chatModel = ChatModel(
+                        documentID,
+                        loggedInUserId,
+                        loggedInUserName,
+                        receiverID?.toInt(),
+                        receiverName,
+                        receiverPicUrl,
+                        null,
+                        chatType,
+                        groupName
+                    )
+                    chatModelList?.add(chatModel)
+                }
+            }
+
+            /*  val receiverName = data[0]?.name
+              val receiverID = data[0]?.id
+              val receiverPicUrl = data[0]?.imageUrl
+              val documentID = chatListData.id
+              // Create Chat Model
+              val chatModel = ChatModel(
+                  documentID,
+                  loggedInUserId,
+                  loggedInUserName,
+                  receiverID?.toInt(),
+                  receiverName,
+                  receiverPicUrl,
+                  null,
+                  Chat.CHAT_SINGLE
+              )
+              chatModelList?.add(chatModel)*/
             findNavController().navigate(
                 MessagesFragmentDirections.actionMessagesToChat(
                     "Discussions",
                     chatModelList?.toTypedArray()
                 )
             )
-        }
+        } /*else {
+                // Group Chat
+                val data = chatListData.usersDataMap.filter {
+                    it.value?.id != loggedInUser?.id.toString()
+                }.map {
+                    it.value
+                }
+
+                data.forEach {
+                    val receiverName = it?.name
+                    val receiverID = it?.id
+                    val receiverPicUrl = it?.imageUrl
+                    val documentID = chatListData.id
+                    val chatType = chatListData.chatType
+                    val groupName = chatListData.groupName
+                    // Create Chat Model
+                    val chatModel = ChatModel(
+                        documentID,
+                        loggedInUserId,
+                        loggedInUserName,
+                        receiverID?.toInt(),
+                        receiverName,
+                        receiverPicUrl,
+                        null,
+                        chatType,
+                        groupName
+                    )
+                    chatModelList?.add(chatModel)
+                }
+
+
+            }*/
     }
+
 
     private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {

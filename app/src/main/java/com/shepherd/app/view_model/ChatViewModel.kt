@@ -76,6 +76,7 @@ class ChatViewModel @Inject constructor(
         val loggedInChatUser = loggedInUser?.toChatUser()
         memberList.add(loggedInChatUser)
 
+
         /* if (chatType == Chat.CHAT_SINGLE) {
              chatListData = createChatListData(memberList).apply {
                  chatType = Chat.CHAT_SINGLE
@@ -104,6 +105,7 @@ class ChatViewModel @Inject constructor(
         } else {
             chatListData?.userIDs?.reversed() as ArrayList<String>
         }
+        userIDs?.sort()
 
         db.collection(TableName.CHATS).whereEqualTo("userIDs", userIDs)
 //            .whereEqualTo("chat_type", Chat.CHAT_SINGLE)
@@ -159,6 +161,8 @@ class ChatViewModel @Inject constructor(
                 userIDs?.add(it?.id ?: "")
                 usersDataMap.put(it?.id ?: "", it)
             }
+            //sort userIds before storing into firebase as whereEqualTo function matches the ids in the order it is stored
+            userIDs?.sort()
             this.chatType = chatType
         }
     }

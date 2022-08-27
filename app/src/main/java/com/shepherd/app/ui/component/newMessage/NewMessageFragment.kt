@@ -325,8 +325,6 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.btnStartDiscussion -> {
-
-
                 // Create a dialog to enter the Group name
 //                showEnterGroupNameDialog()
 

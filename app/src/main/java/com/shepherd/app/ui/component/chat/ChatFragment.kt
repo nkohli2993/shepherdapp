@@ -95,7 +95,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
             fragmentChatBinding.txtName.text = chatModelList?.get(0)?.groupName
             fragmentChatBinding.llImageWrapper.visibility = View.GONE
         }
-
+        // Single Chat
         val count = chatModelList?.filter {
             it.chatType == Chat.CHAT_SINGLE
         }?.count()
@@ -105,7 +105,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
                 fragmentChatBinding.data = chatModelList?.get(0)
             }
         }
-
+        // Group Chat
         val countGroup = chatModelList?.filter {
             it.chatType == Chat.CHAT_GROUP
         }?.count()
