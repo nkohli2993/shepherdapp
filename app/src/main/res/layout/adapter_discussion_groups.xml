@@ -5,113 +5,129 @@
 
     <data>
 
+        <!--<variable
+            name="data"
+            type="com.shepherd.app.data.dto.chat.ChatListData" />-->
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_4sdp"
-            app:cardBackgroundColor="@color/colorWhite"
-            app:cardElevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:paddingVertical="@dimen/_12ssp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <!--<LinearLayout
+                android:id="@+id/llImageWrapper"
+                android:layout_width="@dimen/_58sdp"
+                android:layout_height="@dimen/_58sdp"
+                android:background="@drawable/bg_image_place_holder"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgChatUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_defalut_profile_pic"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
+            </LinearLayout>-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMembersDiscussionsGroup"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_1sdp"
                 android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/_12sdp"
-                android:paddingVertical="@dimen/_8sdp">
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+                tools:itemCount="5"
+                tools:listitem="@layout/adapter_discussion_groups_members" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/imageViewCareTeam"
-                    android:layout_width="@dimen/_44sdp"
-                    android:layout_height="@dimen/_44sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/appCompatImageView4"
-                        android:layout_width="@dimen/_24sdp"
-                        android:layout_height="@dimen/_24sdp"
-                        android:src="@drawable/test_image"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="@dimen/_24sdp"
-                        android:layout_height="@dimen/_24sdp"
-                        android:layout_gravity="bottom|end"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginBottom="8dp"
-                        android:src="@drawable/test_image_square"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toEndOf="@+id/rvMembersDiscussionsGroup"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/txtUnreadCount">
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewCareTeamName"
-                    style="@style/TextViewPoppinsSemiBold"
-                    android:layout_width="0dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:text="@string/test_name"
-                    android:textColor="@color/colorOrange"
-                    android:textSize="@dimen/_14ssp"
-                    app:layout_constraintStart_toEndOf="@+id/imageViewCareTeam"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewCareTeamRole"
-                    style="@style/TextViewPoppinsMedium"
-                    android:layout_width="0dp"
+                    android:id="@+id/txtGroupName"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
+                    android:fontFamily="@font/gotham_medium"
+                    android:singleLine="true"
+                    android:text="@string/test_name"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14ssp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_4sdp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/gotham_book"
                     android:maxLength="20"
                     android:maxLines="1"
                     android:text="@string/test_text_small"
-                    android:textSize="@dimen/_13ssp"
-                    app:layout_constraintEnd_toStartOf="@+id/imageViewInfo"
-                    app:layout_constraintStart_toStartOf="@+id/textViewCareTeamName"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />
+                    android:textSize="@dimen/_12ssp" />
 
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewTime"
-                    style="@style/TextViewPoppinsMedium"
-                    android:layout_width="0dp"
+                    android:id="@+id/txtTime"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/gotham_medium"
                     android:text="@string/test_time"
-                    android:textSize="@dimen/_11ssp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewCareTeamName"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:textColor="@color/_399282"
+                    android:textSize="@dimen/_10ssp" />
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imageViewInfo"
-                    android:layout_width="@dimen/_8sdp"
-                    android:layout_height="@dimen/_8sdp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/circle_white"
-                    app:layout_constraintBottom_toBottomOf="@+id/textViewCareTeamRole"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textViewCareTeamRole"
-                    app:tint="@color/colorOrange" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtUnreadCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circle_white"
+                android:backgroundTint="@color/_D7293F"
+                android:fontFamily="@font/gotham_medium"
+                android:paddingHorizontal="@dimen/_4sdp"
+                android:text="3"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>

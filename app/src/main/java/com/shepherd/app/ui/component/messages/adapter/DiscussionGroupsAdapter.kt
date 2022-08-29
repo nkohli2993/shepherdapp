@@ -4,24 +4,30 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.dashboard.DashboardModel
+import com.shepherd.app.ShepherdApp
+import com.shepherd.app.data.dto.chat.ChatListData
+import com.shepherd.app.data.dto.chat.ChatUserDetail
+import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.databinding.AdapterDiscussionGroupsBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
+import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.Prefs
 import com.shepherd.app.view_model.MessagesViewModel
+import java.text.SimpleDateFormat
 
 
 class DiscussionGroupsAdapter(
     private val viewModel: MessagesViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    var requestList: MutableList<ChatListData?> = ArrayList()
 ) :
     RecyclerView.Adapter<DiscussionGroupsAdapter.DiscussionGroupViewHolder>() {
     lateinit var binding: AdapterDiscussionGroupsBinding
     lateinit var context: Context
 
 
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
+    val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+            viewModel.openChat(itemData[0] as ChatListData)
         }
     }
 
@@ -40,24 +46,62 @@ class DiscussionGroupsAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return 3
+        return requestList.size
     }
 
     override fun onBindViewHolder(holder: DiscussionGroupViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(requestList[position], onItemClickListener)
     }
 
 
-    class DiscussionGroupViewHolder(private val itemBinding: AdapterDiscussionGroupsBinding) :
+    inner class DiscussionGroupViewHolder(private val itemBinding: AdapterDiscussionGroupsBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.USER_DETAILS,
+            UserProfile::class.java
+        )
+
+        fun bind(chatListData: ChatListData?, recyclerItemListener: RecyclerItemListener) {
             // itemBinding.data = dashboard
+
+            val data = chatListData?.usersDataMap?.filter {
+                it.value?.id != loggedInUser?.id.toString()
+            }?.map {
+                it.value
+            }
+            // Set Name
+            itemBinding.txtGroupName.text = chatListData?.groupName
+
+            // Set Message
+            itemBinding.txtMessage.text = chatListData?.latestMessage
+
+            // Set time
+            val date = chatListData?.updated_at?.toDate()
+            val sdf = SimpleDateFormat("hh:mm a")
+            val formattedTime = sdf.format(date)
+            itemBinding.txtTime.text = formattedTime
+
+
+            // Set Unread count
+            itemBinding.txtUnreadCount.text = data?.get(0)?.unreadCount.toString()
+
+            /*  // profile pics of members
+              var membersPic = data?.map {
+                  it?.imageUrl
+              } as ArrayList*/
+
+            val adapter = DiscussionGroupMemberAdapter(viewModel)
+            itemBinding.rvMembersDiscussionsGroup.adapter = adapter
+            adapter.addData(data as ArrayList<ChatUserDetail?>)
+
+
             itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    dashboard
-                )
+                chatListData.let { it1 ->
+                    recyclerItemListener.onItemSelected(
+                        it1
+                    )
+                }
             }
         }
     }
@@ -71,9 +115,9 @@ class DiscussionGroupsAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
+    fun addData(chatListData: ArrayList<ChatListData?>) {
         this.requestList.clear()
-        this.requestList.addAll(dashboard)
+        this.requestList.addAll(chatListData)
         notifyDataSetChanged()
     }
 
