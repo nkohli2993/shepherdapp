@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.messages.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
@@ -94,8 +95,20 @@ class DirectMessagesAdapter(
             itemBinding.txtTime.text = formattedTime
 
 
-            // Set Unread count
-            itemBinding.txtUnreadCount.text = data?.get(0)?.unreadCount.toString()
+            // Set Unread count for loggedIn User
+
+            val loggedInUserData = chatListData?.usersDataMap?.filter {
+                it.value?.id == loggedInUser?.id.toString()
+            }?.map {
+                it.value
+            }
+            if (loggedInUserData?.get(0)?.unreadCount == 0) {
+                itemBinding.txtUnreadCount.visibility = View.GONE
+            } else {
+                itemBinding.txtUnreadCount.visibility = View.VISIBLE
+            }
+
+            itemBinding.txtUnreadCount.text = loggedInUserData?.get(0)?.unreadCount.toString()
 
             itemBinding.root.setOnClickListener {
                 chatListData?.let { it1 ->
