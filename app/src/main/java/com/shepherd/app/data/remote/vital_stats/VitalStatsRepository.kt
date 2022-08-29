@@ -30,12 +30,23 @@ class VitalStatsRepository @Inject constructor(private val apiService: ApiServic
     }
     // get vital stats for loved one
     suspend fun getVitalStats(
-     date : String,lovedone_user_id:String
+     date : String,lovedone_user_id:String,type:String
     ): Flow<DataResult<VitalStatsResponseModel>> {
         return object :
             NetworkOnlineDataRepo<VitalStatsResponseModel, VitalStatsResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<VitalStatsResponseModel> {
-                return apiService.getVitalStats(date,lovedone_user_id)
+                return apiService.getVitalStats(date,lovedone_user_id,type)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+    // get vital stats for loved one
+    suspend fun getGraphDataVitalStats(
+     date : String,lovedone_user_id:String,type:String
+    ): Flow<DataResult<VitalStatsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<VitalStatsResponseModel, VitalStatsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<VitalStatsResponseModel> {
+                return apiService.getGraphDataVitalStats(date,lovedone_user_id,type)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

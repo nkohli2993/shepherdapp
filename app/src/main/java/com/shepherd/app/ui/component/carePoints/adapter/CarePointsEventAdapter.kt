@@ -20,12 +20,6 @@ class CarePointsEventAdapter(
     lateinit var binding: AdapterAssigneeMenrbersBinding
     lateinit var context: Context
 
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
-        override fun onItemSelected(vararg itemData: Any) {
-
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsEventsViewHolder {
         context = parent.context
         binding =
@@ -39,26 +33,18 @@ class CarePointsEventAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return when {
-            commentList.size <= 3 -> {
-                commentList.size
-            }
-            else -> {
-                3
-            }
-        }
-
+        return commentList.size
     }
 
     override fun onBindViewHolder(holder: CarePointsEventsViewHolder, position: Int) {
-        holder.bind(position, onItemClickListener)
+        holder.bind(position)
     }
 
 
     inner class CarePointsEventsViewHolder(private val itemBinding: AdapterAssigneeMenrbersBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
+        fun bind(position: Int) {
             // Set the margin end as zero for the last item
             if (position == commentList.size - 1) {
                 itemBinding.layout.updateLayoutParams<ViewGroup.MarginLayoutParams> {

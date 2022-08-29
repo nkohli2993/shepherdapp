@@ -33,7 +33,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * Created by Nikita kohli on 22-07-22
+ * Created by Nikita Kohli on 22-07-22
  */
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat", "ClickableViewAccessibility")

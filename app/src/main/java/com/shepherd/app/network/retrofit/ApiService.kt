@@ -364,7 +364,17 @@ interface ApiService {
     // get vital stats for loginLoved one
     @GET(ApiConstants.VitalStats.ADD_VITAL_STATS)
     suspend fun getVitalStats(
-        @Query("date") date: String, @Query("loveone_user_id") loveone_user_id: String
+        @Query("date") date: String,
+        @Query("loveone_user_id") loveone_user_id: String,
+        @Query("type") type: String
+    ): Response<VitalStatsResponseModel>
+
+    // get vital stats for loginLoved one
+    @GET(ApiConstants.VitalStats.GET_GRAPH_VITAL_STATS)
+    suspend fun getGraphDataVitalStats(
+        @Query("date") date: String,
+        @Query("loveone_user_id") loveone_user_id: String,
+        @Query("type") type: String
     ): Response<VitalStatsResponseModel>
 
     // send security code

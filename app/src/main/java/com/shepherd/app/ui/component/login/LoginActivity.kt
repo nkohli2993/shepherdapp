@@ -40,7 +40,6 @@ import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.shepherd.app.BuildConfig
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executor
 
@@ -89,7 +88,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
-        loginViewModel.loginData.value!!.email = "rony@yopmail.com"
+        loginViewModel.loginData.value!!.email = "daman@yopmail.com"
         loginViewModel.loginData.value!!.password = "Admin@123"
         binding.viewModel = loginViewModel
 
