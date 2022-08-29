@@ -5,12 +5,14 @@ package com.shepherd.app.utils.extensions
  */
 import android.annotation.SuppressLint
 import android.app.Service
+import android.content.Context
 import android.graphics.Typeface
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.StyleSpan
 import android.util.Patterns
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -49,6 +51,44 @@ fun EditText.onTextChanged(onTextChanged: (String) -> Unit) {
             onTextChanged.invoke(s.toString())
         }
     })
+}
+
+fun EditText.otpHelper() {
+    setOnKeyListener { v, keyCode, event ->
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
+            if (isBlank()) {
+                val view = focusSearch(View.FOCUS_LEFT)
+                view?.requestFocus()
+            }
+        }
+        false
+    }
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s.toString().length == 1) {
+                val view = focusSearch(View.FOCUS_RIGHT)
+                view?.let { it.requestFocus() } ?: run {
+                    this@otpHelper.hideKeyBoard()
+                }
+            } else {
+                background = ContextCompat.getDrawable(context, R.drawable.pin_background)
+            }
+        }
+    })
+}
+
+fun View.hideKeyBoard() {
+    this.let {
+        val imm =
+            this.context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+        imm?.hideSoftInputFromWindow(it.windowToken, 0)
+    }
 }
 
 

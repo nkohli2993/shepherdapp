@@ -17,6 +17,7 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.*
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.GraphData
 import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.TypeData
 import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.VitalStatsData
 import com.shepherd.app.databinding.FragmentVitalStatsBinding
@@ -38,7 +39,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private val typeList: ArrayList<TypeData> = arrayListOf()
     private val vitalStatsViewModel: VitalStatsViewModel by viewModels()
     private lateinit var fragmentVitalStatsBinding: FragmentVitalStatsBinding
-    private var vitalStats: ArrayList<VitalStatsData>? = null
+    private var vitalStats: VitalStatsData? = null
+    private var graphDataList: ArrayList<GraphData> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,34 +60,17 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    vitalStats = it.data.payload.data
+                    vitalStats = it.data.payload.latestOne
                     vitalStats.let { stats ->
-                        if ((stats?.size ?: 0) > 0) {
-                            Collections.sort(vitalStats!!, object : Comparator<VitalStatsData?> {
-                                var df: DateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
-                                override fun compare(
-                                    o1: VitalStatsData?,
-                                    o2: VitalStatsData?
-                                ): Int {
-                                    return try {
-                                        df.parse(o1!!.date!!.plus(" ${o1.time}"))!!
-                                            .compareTo(df.parse(o2!!.date!!.plus(" ${o1.time}")))
-                                    } catch (e: Exception) {
-                                        throw IllegalArgumentException(e)
-                                    }
-                                }
-                            })
-                            vitalStats!!.reverse()
-                            //set data on dash board
-                            fragmentVitalStatsBinding.tvHeartRateValue.text =
-                                vitalStats!![0].data?.heartRate
-                            fragmentVitalStatsBinding.tvBodyTempValue.text =
-                                vitalStats!![0].data?.bodyTemp
-                            fragmentVitalStatsBinding.tvBloodPressureValue.text =
-                                vitalStats!![0].data?.sbp.plus("/${vitalStats!![0].data?.dbp}")
-                            fragmentVitalStatsBinding.tvOxygenValue.text =
-                                vitalStats!![0].data?.oxygen
-                        }
+                        //set data on dash board
+                        fragmentVitalStatsBinding.tvHeartRateValue.text =
+                            vitalStats!!.data?.heartRate
+                        fragmentVitalStatsBinding.tvBodyTempValue.text =
+                            vitalStats!!.data?.bodyTemp
+                        fragmentVitalStatsBinding.tvBloodPressureValue.text =
+                            vitalStats!!.data?.sbp.plus("/${vitalStats!!.data?.dbp}")
+                        fragmentVitalStatsBinding.tvOxygenValue.text =
+                            vitalStats!!.data?.oxygen
                     }
                 }
                 is DataResult.Failure -> {
@@ -188,7 +173,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             )
         }
 
-        Log.e("catch_exception","value: ${values}")
+        Log.e("catch_exception", "value: ${values}")
         val set1 = CandleDataSet(values, "Data Set")
 
         set1.setDrawIcons(false)

@@ -19,7 +19,7 @@ data class Payload (
 	@SerializedName("days") val days : String,
 	@SerializedName("time") val time : List<Time>,
 	@SerializedName("note") val note : String,
-	@SerializedName("end_date") val end_date : String,
+	@SerializedName("end_date") val end_date : String? =null,
 	@SerializedName("created_at") val created_at : String,
 	@SerializedName("updated_at") val updated_at : String,
 	@SerializedName("deleted_at") val deleted_at : String,

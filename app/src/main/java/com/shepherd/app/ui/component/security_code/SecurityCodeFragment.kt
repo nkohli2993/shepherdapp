@@ -6,29 +6,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatEditText
-import androidx.core.content.ContextCompat
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.poovam.pinedittextfield.PinField
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
 import com.shepherd.app.databinding.FragmentSecurityCodeBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
-import com.shepherd.app.ui.component.carePoints.CarePointDetailFragmentArgs
-import com.shepherd.app.ui.component.settings.SettingFragmentDirections
 import com.shepherd.app.utils.Const
-import com.shepherd.app.utils.extensions.hideKeyboard
+import com.shepherd.app.utils.extensions.otpHelper
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.SecurityCodeViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import org.jetbrains.annotations.NotNull
 
 
 @AndroidEntryPoint
@@ -87,19 +78,8 @@ class SecurityCodeFragment : BaseFragment<FragmentSecurityCodeBinding>(), View.O
     override fun initViewBinding() {
         type = args.source
         fragmentSecurityCodeBinding.listener = this
-        fragmentSecurityCodeBinding.squareField.highlightPaintColor =
-            ContextCompat.getColor(requireContext(), R.color._192032)
-        fragmentSecurityCodeBinding.squareField.fieldColor =
-            ContextCompat.getColor(requireContext(), R.color._192032)
-        fragmentSecurityCodeBinding.squareField.onTextCompleteListener =
-            object : PinField.OnTextCompleteListener {
-                override fun onTextComplete(@NotNull enteredText: String): Boolean {
-                    Toast.makeText(requireContext(), enteredText, Toast.LENGTH_SHORT).show()
-                    return true
-                }
-            }
-
-        editTextViewHandling()
+        //editTextViewHandling()
+        editTextHandlers()
         if (type != null) {
             when (type) {
                 Const.SET_SECURITY_CODE -> {
@@ -113,56 +93,11 @@ class SecurityCodeFragment : BaseFragment<FragmentSecurityCodeBinding>(), View.O
         }
     }
 
-    private fun editTextViewHandling() {
-        fragmentSecurityCodeBinding.etFirst.isLongClickable = false
-        fragmentSecurityCodeBinding.etSecond.isLongClickable = false
-        fragmentSecurityCodeBinding.etThird.isLongClickable = false
-        fragmentSecurityCodeBinding.etFourth.isLongClickable = false
-        fragmentSecurityCodeBinding.etFirst.doOnTextChanged { text, start, before, count ->
-            if (text.toString().length == 1 && before == 0) {
-                fragmentSecurityCodeBinding.etSecond.requestFocus()
-            }
-
-        }
-        fragmentSecurityCodeBinding.etSecond.doOnTextChanged { text, start, before, count ->
-            editTextHandling(
-                text,
-                before,
-                count,
-                fragmentSecurityCodeBinding.etFirst,
-                fragmentSecurityCodeBinding.etThird
-            )
-        }
-        fragmentSecurityCodeBinding.etThird.doOnTextChanged { text, start, before, count ->
-            editTextHandling(
-                text,
-                before,
-                count,
-                fragmentSecurityCodeBinding.etSecond,
-                fragmentSecurityCodeBinding.etFourth
-            )
-        }
-        fragmentSecurityCodeBinding.etFourth.doOnTextChanged { text, start, before, count ->
-            if (text.toString().length == 1 && before == 0) {
-                hideKeyboard()
-            } else if (count == 0) {
-                fragmentSecurityCodeBinding.etThird.requestFocus()
-            }
-        }
-    }
-
-    private fun editTextHandling(
-        text: CharSequence?,
-        before: Int,
-        count: Int,
-        view: AppCompatEditText,
-        viewSecond: AppCompatEditText
-    ) {
-        if (text.toString().length == 1 && before == 0) {
-            viewSecond.requestFocus()
-        } else if (count == 0) {
-            view.requestFocus()
-        }
+    private fun editTextHandlers() {
+        fragmentSecurityCodeBinding.etFirst.otpHelper()
+        fragmentSecurityCodeBinding.etSecond.otpHelper()
+        fragmentSecurityCodeBinding.etThird.otpHelper()
+        fragmentSecurityCodeBinding.etFourth.otpHelper()
     }
 
     override fun getLayoutRes(): Int {

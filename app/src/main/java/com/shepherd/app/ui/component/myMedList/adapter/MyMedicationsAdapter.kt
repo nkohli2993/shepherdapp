@@ -11,7 +11,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.UserMedicationData
 import com.shepherd.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.utils.MedListAction
@@ -20,7 +20,7 @@ import com.shepherd.app.view_model.MyMedListViewModel
 
 class MyMedicationsAdapter(
     private val viewModel: MyMedListViewModel,
-    var payload: MutableList<Payload> = ArrayList()
+    var payload: MutableList<UserMedicationData> = ArrayList()
 ) :
     RecyclerView.Adapter<MyMedicationsAdapter.MyMedicationsViewHolder>() {
     lateinit var binding: AdapterMyMedicationsListBinding
@@ -29,7 +29,7 @@ class MyMedicationsAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-             viewModel.openMedicineDetail(itemData[0] as Payload)
+             viewModel.openMedicineDetail(itemData[0] as UserMedicationData)
         }
     }
 
@@ -59,7 +59,7 @@ class MyMedicationsAdapter(
     inner class MyMedicationsViewHolder(private val itemBinding: AdapterMyMedicationsListBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(medList: Payload, recyclerItemListener: RecyclerItemListener) {
+        fun bind(medList: UserMedicationData, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList.medlist
             itemBinding.root.setOnClickListener {
                 medList.let { it1 ->
@@ -90,7 +90,7 @@ class MyMedicationsAdapter(
         return position
     }
 
-    fun addData(payload: ArrayList<Payload>) {
+    fun addData(payload: ArrayList<UserMedicationData>) {
 //        this.payload.clear()
         this.payload = payload
         notifyDataSetChanged()
@@ -118,7 +118,7 @@ class MyMedicationsAdapter(
         position: Int,
         view: AppCompatImageView,
         itemListener: RecyclerItemListener,
-        medList: Payload
+        medList: UserMedicationData
     ) {
         val popupView: View =
             LayoutInflater.from(this@MyMedicationsAdapter.context).inflate(

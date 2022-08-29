@@ -311,7 +311,7 @@ interface ApiService {
 
     @GET(ApiConstants.MedList.GET_LOVED_ONE_MED_LIST)
     suspend fun getLovedOneMedList(
-        @Path("id") id: String
+        @Path("id") id: String,@Query("date") date:String
     ): Response<GetLovedOneMedList>
 
     // scheduled medication
