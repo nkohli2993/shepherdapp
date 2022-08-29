@@ -54,15 +54,49 @@ fun getValidBodyTemperature(view: EditText, data: String) {
 
 }
 
+@BindingAdapter("bind:getBloodPressureValid")
+fun getBloodPressureValid(view: EditText, data: String) {
+    view.onTextChanged {
+        if (view.isBlank()) {
+            if (view.id == R.id.etSbp) {
+                view.error = view.context.getString(R.string.please_enter_your_blood_pressure_sbp)
+            } else {
+                view.error = view.context.getString(R.string.please_enter_your_blood_pressure_dbp)
+            }
+            view.requestFocus()
+        }
+        if (view.checkString().isNotEmpty() && view.checkString().toDouble() < 60) {
+            if (view.id == R.id.etSbp) {
+                view.error = view.context.getString(R.string.please_enter_valid_sbp_bp)
+            } else {
+                view.error = view.context.getString(R.string.please_enter_valid_dbp_bp)
+            }
+            view.requestFocus()
+        }
+        if (view.checkString().isNotEmpty() && view.checkString().toDouble() > 180) {
+            if (view.id == R.id.etSbp) {
+                view.error = view.context.getString(R.string.please_enter_valid_sbp_bp)
+            } else {
+                view.error = view.context.getString(R.string.please_enter_valid_dbp_bp)
+            }
+            view.requestFocus()
+        }
+    }
+
+}
+
 @BindingAdapter("bind:getValidOxygen")
 fun getValidOxygen(view: EditText, data: String) {
     view.onTextChanged {
         if (view.isBlank()) {
             view.error = view.context.getString(R.string.please_enter_body_oxygen)
             view.requestFocus()
-        } else if (view.checkString().isNotEmpty() && view.checkString()
-                .toInt() <= 0 && view.checkString().toInt() > 100
-        ) {
+        }
+        if (view.checkString().isNotEmpty() && view.checkString().toInt() <= 0) {
+            view.error = view.context.getString(R.string.please_enter_valid_oxygen_level)
+            view.requestFocus()
+        }
+        if (view.checkString().isNotEmpty() && view.checkString().toInt() > 100) {
             view.error = view.context.getString(R.string.please_enter_valid_oxygen_level)
             view.requestFocus()
         }

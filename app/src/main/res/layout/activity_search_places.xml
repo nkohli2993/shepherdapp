@@ -38,7 +38,7 @@
                     android:background="@null"
                     android:drawableStart="@drawable/ic_search"
                     android:drawableTint="@color/colorBlack"
-                    android:hint="Please enter the Loved One's address"
+                    android:hint="@string/please_enter_the_loved_one_address"
                     android:padding="@dimen/_10sdp"
                     android:imeOptions="actionSearch"
                     android:lines="1"

@@ -116,6 +116,7 @@ object ApiConstants {
 
     object VitalStats{
         const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital"
+        const val GET_GRAPH_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital/graph-data"
     }
     object SecurityCode{
         const val ADD_SECURITY_CODE = "$BASE_URL_USER${API_VERSION}user_profiles/sendotp-pin"

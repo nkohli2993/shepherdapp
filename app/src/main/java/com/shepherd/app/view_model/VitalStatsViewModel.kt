@@ -44,10 +44,25 @@ class VitalStatsViewModel @Inject constructor(
 
     //get vital stats
     fun getVitalStats(
-        date: String,loveone_user_id:String
+        date: String,loveone_user_id:String,type:String
     ): LiveData<Event<DataResult<VitalStatsResponseModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.getVitalStats(date,loveone_user_id)
+            val response = dataRepository.getVitalStats(date,loveone_user_id,type)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _getVitatStatsLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return getVitatStatsLiveData
+    }
+
+    //get vital stats
+    fun getGraphDataVitalStats(
+        date: String,loveone_user_id:String,type:String
+    ): LiveData<Event<DataResult<VitalStatsResponseModel>>> {
+        viewModelScope.launch {
+            val response = dataRepository.getGraphDataVitalStats(date,loveone_user_id,type)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _getVitatStatsLiveData.postValue(Event(it))

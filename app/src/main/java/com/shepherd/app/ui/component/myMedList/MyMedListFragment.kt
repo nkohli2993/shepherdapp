@@ -189,7 +189,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     myMedlistBinding.txtMedication.visibility = View.GONE
                     // check day for payload data
                     val currentDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
-                    val data = it.data.payload
+                    val data = it.data.payload!!.userMedicationAll
                     for (i in data) {
                         if (i.days!!.contains(dayId)) {
                             if (i.endDate != null) {

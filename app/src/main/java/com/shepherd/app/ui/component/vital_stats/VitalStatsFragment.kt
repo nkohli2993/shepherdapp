@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -81,7 +82,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                             fragmentVitalStatsBinding.tvBodyTempValue.text =
                                 vitalStats!![0].data?.bodyTemp
                             fragmentVitalStatsBinding.tvBloodPressureValue.text =
-                                vitalStats!![0].data?.bloodPressure
+                                vitalStats!![0].data?.sbp.plus("/${vitalStats!![0].data?.dbp}")
                             fragmentVitalStatsBinding.tvOxygenValue.text =
                                 vitalStats!![0].data?.oxygen
                         }
@@ -122,12 +123,12 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             )
         )
 
-       val  typeAdapter =
-           TypeAdapter(
-               requireContext(),
-               R.layout.vehicle_spinner_drop_view_item,
-               typeList
-           )
+        val typeAdapter =
+            TypeAdapter(
+                requireContext(),
+                R.layout.vehicle_spinner_drop_view_item,
+                typeList
+            )
         typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         fragmentVitalStatsBinding.typeSpinner.adapter = typeAdapter
     }
@@ -136,9 +137,9 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         fragmentVitalStatsBinding.listener = this
         setData()
         addType()
-        vitalStatsViewModel.getVitalStats(
+        vitalStatsViewModel.getGraphDataVitalStats(
             SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
-            vitalStatsViewModel.getLovedOneUUId()!!
+            vitalStatsViewModel.getLovedOneUUId()!!, "heart_rate"
         )
     }
 
@@ -187,6 +188,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             )
         }
 
+        Log.e("catch_exception","value: ${values}")
         val set1 = CandleDataSet(values, "Data Set")
 
         set1.setDrawIcons(false)

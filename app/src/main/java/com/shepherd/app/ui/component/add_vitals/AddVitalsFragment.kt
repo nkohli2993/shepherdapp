@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,8 +41,8 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
     }
 
     override fun observeViewModel() {
-        addVitalStatsViewModel.addVitatStatsLiveData.observeEvent(this) {
-            when (it) {
+        addVitalStatsViewModel.addVitatStatsLiveData.observeEvent(this) { addedStatsResult ->
+            when (addedStatsResult) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
@@ -58,10 +57,10 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    if (it.error.isNotEmpty()) {
-                        showError(requireContext(), it.error)
+                    if (addedStatsResult.error.isNotEmpty()) {
+                        showError(requireContext(), addedStatsResult.error)
                     } else {
-                        it.message?.let { showError(requireContext(), it) }
+                        addedStatsResult.message?.let { showError(requireContext(), it) }
                     }
                 }
             }
@@ -102,6 +101,7 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                             } + "-" + year
                     }, mYear, mMonth, mDay
                 )
+                datePickerDialog.datePicker.maxDate = c.timeInMillis
                 datePickerDialog.show()
             }
 
@@ -109,13 +109,13 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                 if (isValid) {
                     var selectedDate = fragmentAddVitalsBinding.tvDate.text.toString().trim()
                     var dateFormat = SimpleDateFormat("dd-MM-yyyy")
-                    val formatedDate: Date = dateFormat.parse(selectedDate)!!
+                    val formattedDate: Date = dateFormat.parse(selectedDate)!!
                     dateFormat = SimpleDateFormat("yyyy-MM-dd")
-                    selectedDate = dateFormat.format(formatedDate)
+                    selectedDate = dateFormat.format(formattedDate)
                     val data = AddVitalData(
                         fragmentAddVitalsBinding.etHeartRate.text.toString().trim(),
-                        fragmentAddVitalsBinding.etSbp.text.toString().trim()
-                            .plus("/${fragmentAddVitalsBinding.etDbp.text.toString().trim()}"),
+                        fragmentAddVitalsBinding.etSbp.text.toString().trim(),
+                        fragmentAddVitalsBinding.etDbp.text.toString().trim(),
                         fragmentAddVitalsBinding.etTemp.text.toString().trim(),
                         fragmentAddVitalsBinding.etSpo.text.toString().trim()
                     )
@@ -144,18 +144,37 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
         val mTimePicker = TimePickerDialog(
             context, R.style.datepicker,
             { _, hourOfDay, selectedMinute ->
+                // check time for current date
+                val selectedDateTime =
+                    fragmentAddVitalsBinding.tvDate.text.toString().trim().plus(" ")
+                        .plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
+                val currentDateTime =
+                    SimpleDateFormat("dd-MM-yyyy HH:mm").format(Calendar.getInstance().time)
 
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
+                if (dateFormat.parse(selectedDateTime)!!
+                        .before(dateFormat.parse(currentDateTime)) || dateFormat.parse(
+                        selectedDateTime
+                    )!!
+                        .equals(dateFormat.parse(currentDateTime))
+                ) {
+                    if (hourOfDay < 12) {
+                        setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                        isAmPm = "am"
+                        fragmentAddVitalsBinding.tvTime.text =
+                            String.format("%02d:%02d", hourOfDay, selectedMinute)
+                    } else {
+                        isAmPm = "pm"
+                        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                        fragmentAddVitalsBinding.tvTime.text =
+                            String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                    }
 
-                if (hourOfDay < 12) {
-                    setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
-                    isAmPm = "am"
-                    fragmentAddVitalsBinding.tvTime.text =
-                        String.format("%02d:%02d", hourOfDay, selectedMinute)
                 } else {
-                    isAmPm = "pm"
-                    setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
-                    fragmentAddVitalsBinding.tvTime.text =
-                        String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                    showError(
+                        requireContext(),
+                        getString(R.string.unable_to_add_future_time_data_vital_stats)
+                    )
                 }
             }, hour,
             minute, true
@@ -256,6 +275,12 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                 fragmentAddVitalsBinding.etSpo.checkString()
                     .isNotEmpty() && fragmentAddVitalsBinding.etSpo.checkString()
                     .toInt() <= 0 && fragmentAddVitalsBinding.etSpo.checkString().toInt() > 100 -> {
+                    fragmentAddVitalsBinding.etSpo.error =
+                        getString(R.string.please_enter_valid_oxygen_level)
+                    fragmentAddVitalsBinding.etSpo.requestFocus()
+                }
+                fragmentAddVitalsBinding.etSpo.checkString()
+                    .isNotEmpty() && fragmentAddVitalsBinding.etSpo.checkString().toInt() > 100 -> {
                     fragmentAddVitalsBinding.etSpo.error =
                         getString(R.string.please_enter_valid_oxygen_level)
                     fragmentAddVitalsBinding.etSpo.requestFocus()

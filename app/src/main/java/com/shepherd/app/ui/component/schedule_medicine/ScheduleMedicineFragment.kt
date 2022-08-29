@@ -64,16 +64,19 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var limit = 10
     private var frequencyId: Int? = null
     private var doseID: String? = null
+    private var selectedDoseId: String? = null
     private var daysIds: String? = null
     private val medicationViewModel: AddMedicationViewModel by viewModels()
     private val args: ScheduleMedicineFragmentArgs by navArgs()
     private var selectedMedList: Medlist? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
+    private var addedTimeList: MutableList<TimeSelectedlist> = arrayListOf()
     private var selectedDateFormat = SimpleDateFormat("dd-MM-yyyy")
     private var selectedDateTimeFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
     private var serverDateFormat = SimpleDateFormat("yyyy-MM-dd")
     private var medicationId: Int? = null
-
+    private var isTimeChanged: Boolean? = null
+    private var isDoseChanged: Boolean? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -146,6 +149,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     hideLoading()
                     payLoad = it.data.payload
                     if (payLoad != null) {
+                        selectedDoseId = payLoad!!.dosage_id.toString()
                         doseID = payLoad!!.dosage_id.toString()
                         fragmentScheduleMedicineBinding.doseTV.text = payLoad!!.dosage.name
                         setFrequency(payLoad!!.frequency.toString())
@@ -153,6 +157,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                             setEndDate(payLoad!!.end_date)
                         }
                         timeList.clear()
+                        addedTimeList.clear()
                         for (i in payLoad?.time!!) {
                             timeList.add(
                                 TimeSelectedlist(
@@ -161,7 +166,16 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                                     i.hour.lowercase()
                                 )
                             )
+                            addedTimeList.add(
+                                TimeSelectedlist(
+                                    timeList.size,
+                                    i.time,
+                                    i.hour.lowercase()
+                                )
+                            )
                         }
+                        // added data to addedTimeList to maintain added time for medication
+//                        addedTimeList.addAll(timeList)
                         setTimeAdapter()
                         addDays(isEdit = true, payLoad!!.days)
                         setDayAdapter()
@@ -270,7 +284,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             if (o1.id == null) 0 else o1.id!!
                 .compareTo(o2.id!!)
         }
-        dayAdapter = DaysAdapter(medicationViewModel, requireContext(),this, dayList)
+        dayAdapter = DaysAdapter(medicationViewModel, requireContext(), this, dayList)
         fragmentScheduleMedicineBinding.daysRV.adapter = dayAdapter
     }
 
@@ -330,7 +344,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     currentDate!!,
                     addedEndDate
                 ) >= 7L
-            ) {  // checked days to remove date duplicity
+            ) {
                 dayList = addWeekDays()
             } else {
                 val cal = Calendar.getInstance()
@@ -369,15 +383,13 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     }
                 }
             }
-            if(selectedDays.size>0){
+            if (selectedDays.size > 0) {
                 fragmentScheduleMedicineBinding.daysTV.text =
                     selectedDays.joinToString().replace(" ", "")
-            }
-            else{
+            } else {
                 fragmentScheduleMedicineBinding.daysTV.text =
-                   ""
+                    ""
             }
-
         }
     }
 
@@ -427,18 +439,17 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     daysIds = selected.joinToString().replace(" ", "")
                     fragmentScheduleMedicineBinding.daysTV.text =
                         selectedDays.joinToString().replace(" ", "")
-                }
-                else{
+                } else {
                     daysIds = null
                     fragmentScheduleMedicineBinding.daysTV.text = ""
                 }
             } else {
                 showError(
                     requireContext(),
-                    "This day does not lie between selected end date of medication."
+                    getString(R.string.this_day_does_not_lie_between_selected_end_date_of_medication)
                 )
             }
-             dayAdapter?.notifyDataSetChanged()
+            dayAdapter?.notifyDataSetChanged()
 
         }
     }
@@ -483,7 +494,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         fragmentScheduleMedicineBinding.endDate.text =
                             "${
                                 if (dayOfMonth + 1 < 10) {
-                                    "0$dayOfMonth}"
+                                    "0${(dayOfMonth + 1)}"
                                 } else {
                                     dayOfMonth
                                 }
@@ -535,7 +546,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                                 if (medicationDateTime!!.before(currentDateTime)) {
                                     showError(
                                         requireContext(),
-                                        "Please add medication for future time."
+                                        getString(R.string.please_add_medication_for_future_time)
                                     )
                                     return
                                 }
@@ -545,13 +556,39 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     }
 
                     if (medicationId != null) {
+                        val timeChangeList: ArrayList<TimeSelectedlist> = ArrayList()
+                        for (addedTime in addedTimeList) {
+                            var found = false
+                            for (newTime in timeList) {
+                                if (addedTime.time.plus(" ${addedTime.isAmPM}") == newTime.time.plus(
+                                        " ${newTime.isAmPM}"
+                                    )
+                                ) {
+                                    found = true
+                                }
+                            }
+                            if (!found) {
+                                timeChangeList.add(addedTime)
+                            }
+                        }
+
+                        if (timeChangeList.size > 0) {
+                            isTimeChanged = true
+                        }
+                        when {
+                            (doseID ?: "0").toInt() != (selectedDoseId ?: "0").toInt() -> {
+                                isDoseChanged = true
+                            }
+                        }
                         val scheduledMedication = UpdateScheduledMedList(
                             doseID!!,
                             frequencyId!!.toString(),
                             daysIds!!,
                             timeAddedList,
                             fragmentScheduleMedicineBinding.etNote.text.toString().trim(),
-                            endDate
+                            endDate,
+                            isTimeChanged,
+                            isDoseChanged
                         )
                         medicationViewModel.updateScheduledMedication(
                             scheduledMedication,
@@ -569,7 +606,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                                 fragmentScheduleMedicineBinding.etNote.text.toString().trim(),
                                 endDate
                             )
-
                         medicationViewModel.addScheduledMedication(scheduledMedication)
                     }
 
@@ -794,8 +830,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 daysIds = selected.joinToString().replace(" ", "")
                 fragmentScheduleMedicineBinding.daysTV.text =
                     selectedDays.joinToString().replace(" ", "")
-            }
-            else{
+            } else {
                 fragmentScheduleMedicineBinding.daysTV.text = ""
             }
         } else {

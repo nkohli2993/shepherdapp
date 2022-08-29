@@ -10,7 +10,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Payload(
-//    @SerializedName("medlists") var medlists: ArrayList<Medlists> = arrayListOf()
+    @SerializedName("user_medication_all") var userMedicationAll: ArrayList<Payload> = arrayListOf(),
     @SerializedName("id") var id: Int? = null,
     @SerializedName("assigned_by") var assignedBy: String? = null,
     @SerializedName("assigned_to") var assignedTo: String? = null,
