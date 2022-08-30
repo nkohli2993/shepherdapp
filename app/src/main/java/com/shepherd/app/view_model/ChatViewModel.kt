@@ -74,6 +74,7 @@ class ChatViewModel @Inject constructor(
         val memberList = ArrayList<ChatUserDetail?>()
         toUsers?.let { memberList.addAll(it) }
         val loggedInChatUser = loggedInUser?.toChatUser()
+        Log.d(TAG, "loggedIn User id:${loggedInChatUser?.id} ")
         memberList.add(loggedInChatUser)
 
 
@@ -153,7 +154,10 @@ class ChatViewModel @Inject constructor(
             }
     }
 
-    fun createChatListData(chatType: Int?, userList: ArrayList<ChatUserDetail?>?): ChatListData {
+    private fun createChatListData(
+        chatType: Int?,
+        userList: ArrayList<ChatUserDetail?>?
+    ): ChatListData {
         return ChatListData().apply {
             userIDs = ArrayList<String>()
             usersDataMap = HashMap()
@@ -230,12 +234,12 @@ class ChatViewModel @Inject constructor(
                         "chat data >> ${chatData} ,,, isRead >> $isRead,,,, uid>> ${loggedInUser} .... messageData .... $messageData"
                     )
                     if (isRead) {
-                        if (!chatData.senderId?.equals(loggedInUser?.id)!!) {
+                        if (!chatData.senderId?.equals(loggedInUser?.id.toString())!!) {
 //                            chatDence.update("unread_count", chatData.unread_count)
                         }
                     } else {
                         chatData.usersDataMap.keys.forEach {
-                            if (!it.equals(loggedInUser?.id)) {
+                            if (it != loggedInUser?.id.toString()) {
                                 var count = chatData.usersDataMap[it]?.unreadCount ?: 0
                                 count += 1
                                 chatData.usersDataMap[it]?.unreadCount = count
@@ -250,10 +254,7 @@ class ChatViewModel @Inject constructor(
                                 "sender_id" to messageData.senderID
                             ) as Map<String, Any?>
                         )
-
                     }
-
-
                 }
             } catch (e: JSONException) {
                 showException(e)
@@ -308,7 +309,7 @@ class ChatViewModel @Inject constructor(
 
      }*/
 
-    fun createNewChat(onChatCreated: (created: Boolean) -> Unit) {
+    private fun createNewChat(onChatCreated: (created: Boolean) -> Unit) {
         if (chatListData?.id.isNullOrEmpty()) {
             db.collection(TableName.CHATS).add(chatListData.serializeToMap())
                 .addOnSuccessListener {
@@ -400,7 +401,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun updateReadByData() {
+    private fun updateReadByData() {
         db.runTransaction { transaction ->
             allMsgList.forEach { message ->
                 if (!message.readIds.contains(loggedInUser?.id.toString())) {
@@ -411,7 +412,8 @@ class ChatViewModel @Inject constructor(
                             JSONObject(it).toString(),
                             MessageData::class.java
                         )
-                        messageModel.readIds.add(loggedInUser?.id.toString() ?: "")
+                        val loggedInUserID = userRepository.getCurrentUser()?.id.toString()
+                        messageModel.readIds.add(loggedInUserID)
                         transaction.update(docRef, "readIds", messageModel.readIds)
                         if (messageModel.readIds.size >= chatListData?.userIDs?.size ?: 0) {
                             transaction.update(docRef, "isRead", true)
@@ -424,7 +426,7 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    fun listenUnreadUpdates() {
+    private fun listenUnreadUpdates() {
         val chatRef = db.collection(TableName.CHATS).document(chatListData?.id ?: "")
         chatListener?.remove()
         chatListener = null
@@ -435,12 +437,9 @@ class ChatViewModel @Inject constructor(
                         JSONObject(value.data!!).toString(),
                         ChatListData::class.java
                     )
-
-                    if (chatData.usersDataMap[loggedInUser?.id
-                            ?: ""]?.unreadCount ?: 0 > 0
-                    ) {
-                        chatData.usersDataMap[loggedInUser?.id
-                            ?: ""]?.unreadCount = 0
+                    val loggedInUserID = userRepository.getCurrentUser()?.id.toString()
+                    if (chatData.usersDataMap[loggedInUserID]?.unreadCount ?: 0 > 0) {
+                        chatData.usersDataMap[loggedInUserID]?.unreadCount = 0
                         chatRef.update("users_data", chatData.usersDataMap.serializeToMap())
                     }
                 }
