@@ -35,7 +35,6 @@ class CarePointsDayAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return carePointList.size
         return carePointList.size
     }
 

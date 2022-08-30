@@ -116,23 +116,5 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- <androidx.appcompat.widget.AppCompatEditText
-             android:id="@+id/editTextMessage"
-             android:layout_width="0dp"
-             android:layout_height="wrap_content"
-             android:background="@drawable/rounded_box_6"
-             android:backgroundTint="@color/_E7E8EA"
-             android:drawableEnd="@drawable/ic_send_msg"
-             android:hint="@string/write"
-             android:paddingHorizontal="@dimen/_10sdp"
-             android:paddingVertical="@dimen/_15sdp"
-             android:textColorHint="@color/_192032"
-             app:layout_constraintBottom_toBottomOf="parent"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toBottomOf="@+id/recyclerViewChat" />-->
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

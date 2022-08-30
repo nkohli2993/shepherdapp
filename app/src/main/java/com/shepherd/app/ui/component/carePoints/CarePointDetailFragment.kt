@@ -3,11 +3,13 @@ package com.shepherd.app.ui.component.carePoints
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -16,21 +18,33 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.added_events.*
+import com.shepherd.app.ShepherdApp
+import com.shepherd.app.data.dto.added_events.AddedEventModel
+import com.shepherd.app.data.dto.added_events.EventCommentUserDetailModel
+import com.shepherd.app.data.dto.added_events.UserAssigneDetail
+import com.shepherd.app.data.dto.added_events.UserAssigneeModel
+import com.shepherd.app.data.dto.chat.ChatModel
+import com.shepherd.app.data.dto.chat.ChatUserDetail
+import com.shepherd.app.data.dto.chat.MessageGroupData
+import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.databinding.FragmentCarePointDetailBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.carePoints.adapter.CarePointEventCommentAdapter
 import com.shepherd.app.ui.component.carePoints.adapter.CarePointsEventAdapter
-import com.shepherd.app.utils.extensions.isBlank
+import com.shepherd.app.utils.Chat
+import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.Prefs
+import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.CreatedCarePointsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by Nikita Kohli on 22-07-22
@@ -47,6 +61,15 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     private var eventDetail: AddedEventModel? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
+    private var chatModelList: ArrayList<ChatModel>? = ArrayList()
+    private var chatUserDetailList: ArrayList<ChatUserDetail>? = ArrayList()
+    private var allMsgLoaded: Boolean = false
+    private var msgGroupList: ArrayList<MessageGroupData> = ArrayList()
+    private var chatModel: ChatModel? = null
+
+
+    private var TAG = "CarePointDetailFragment"
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,14 +82,62 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     override fun initViewBinding() {
         fragmentCarePointDetailBinding.listener = this
+
+        // Get event Detail from Care Point Fragment
         eventDetail = args.eventDetail
+
+        // Get Login User's detail
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.USER_DETAILS,
+            UserProfile::class.java
+        )
+
+        val loggedInUserId = loggedInUser?.id
+        val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+
+        Log.d(TAG, "onEventSelected: $eventDetail ")
+        val eventName = eventDetail?.name
+        val eventLocation = eventDetail?.location
+        val eventDate = eventDetail?.date
+        val eventTime = eventDetail?.time
+        eventDetail?.user_assignes?.forEach {
+            val receiverName = it.user_details.firstname + " " + it.user_details.lastname
+            val receiverID = it.user_details.id
+            val receiverPicUrl = it.user_details.profilePhoto
+            val documentID = null
+            val chatType = Chat.CHAT_GROUP
+
+            // Create Chat Model
+            val chatModel = ChatModel(
+                documentID,
+                loggedInUserId,
+                loggedInUserName,
+                receiverID,
+                receiverName,
+                receiverPicUrl,
+                null,
+                chatType,
+                eventName
+            )
+            chatModelList?.add(chatModel)
+        }
+
+        chatModelList?.forEach {
+            val chatUserDetail = it.toChatUserDetail()
+            chatUserDetailList?.add(chatUserDetail)
+        }
+
+        // Set User Detail
+        carePointsViewModel.setToUserDetail(Chat.CHAT_GROUP, chatUserDetailList, eventName)
+        // Load Chat
+        loadChat()
 
         setCommentAdapter()
         if (eventDetail != null) {
             initCarePointDetailViews(eventDetail!!)
         }
 
-        carePointsViewModel.getCarePointsEventCommentsId(pageNumber, limit, eventDetail?.id ?: 0)
+//        carePointsViewModel.getCarePointsEventCommentsId(pageNumber, limit, eventDetail?.id ?: 0)
         fragmentCarePointDetailBinding.tvNotes.setOnTouchListener { view, event ->
             view.parent.requestDisallowInterceptTouchEvent(true)
             when (event.action and MotionEvent.ACTION_MASK) {
@@ -76,9 +147,62 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
     }
 
+
+    private fun loadChat() {
+        carePointsViewModel.getChatMessages()
+            .observe(viewLifecycleOwner) { event ->
+                event.getContentIfNotHandled()?.let {
+
+                    when (it) {
+                        is DataResult.Loading -> {
+                            showLoading("")
+                        }
+                        is DataResult.Failure -> {
+                            hideLoading()
+                            allMsgLoaded = true
+                            showError(requireContext(), it.exception?.message ?: "")
+                        }
+                        is DataResult.Success -> {
+                            hideLoading()
+                            msgGroupList.clear()
+                            msgGroupList.addAll(it.data.groupList)
+                            Log.d(TAG, "loadChat: $msgGroupList")
+                            /* chatAdapter?.addData(
+                                 msgGroupList,
+                                 chatViewModel.loggedInUser.id.toString()
+                             )*/
+                            setAdapter(it.data.scrollToBottom ?: false)
+                        }
+                    }
+                }
+            }
+    }
+
+    private fun setAdapter(scrollToBottom: Boolean) {
+        commentAdapter?.addData(msgGroupList)
+
+        if (scrollToBottom) {
+            Handler().postDelayed({
+                (fragmentCarePointDetailBinding.recyclerViewChat.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                    0,
+                    0
+                )
+
+            }, 200)
+        }
+    }
+
+    private fun ChatModel.toChatUserDetail(): ChatUserDetail {
+        return ChatUserDetail(
+            id = this.receiverID.toString() ?: "",
+            name = this.receiverName ?: "",
+            imageUrl = this.receiverPicUrl ?: ""
+        )
+    }
+
     private fun setCommentAdapter() {
         //set comment adapter added in list
-        commentAdapter = CarePointEventCommentAdapter(commentList, carePointsViewModel)
+        commentAdapter = CarePointEventCommentAdapter(carePointsViewModel)
         fragmentCarePointDetailBinding.recyclerViewChat.adapter = commentAdapter
     }
 
@@ -137,26 +261,26 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }
             }
         }
-        carePointsViewModel.addedCarePointDetailCommentsLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    // show comments on
-                    commentList = it.data.payload.data
-                    if (commentList.isEmpty()) return@observeEvent
-                    commentAdapter?.updateAddedComment(commentList)
-                    fragmentCarePointDetailBinding.recyclerViewChat.smoothScrollToPosition(
-                        commentList.size
-                    )
-                }
-                is DataResult.Failure -> {
-                    hideLoading()
-                }
-            }
-        }
+        /* carePointsViewModel.addedCarePointDetailCommentsLiveData.observeEvent(this) {
+             when (it) {
+                 is DataResult.Loading -> {
+                     showLoading("")
+                 }
+                 is DataResult.Success -> {
+                     hideLoading()
+                     // show comments on
+                     commentList = it.data.payload.data
+                     if (commentList.isEmpty()) return@observeEvent
+                     commentAdapter?.updateAddedComment(commentList)
+                     fragmentCarePointDetailBinding.recyclerViewChat.smoothScrollToPosition(
+                         commentList.size
+                     )
+                 }
+                 is DataResult.Failure -> {
+                     hideLoading()
+                 }
+             }
+         }*/
 
     }
 
@@ -186,7 +310,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 .into(fragmentCarePointDetailBinding.imageViewUser)
             fragmentCarePointDetailBinding.tvUsername.text =
                 payload.loved_one_user_id_details.firstname.plus(" ")
-                    .plus(if(payload.loved_one_user_id_details.lastname == null) "" else payload.loved_one_user_id_details.lastname)
+                    .plus(if (payload.loved_one_user_id_details.lastname == null) "" else payload.loved_one_user_id_details.lastname)
             // show created on time
             val dateTime = (payload.created_at ?: "").replace(".000Z", "").replace("T", " ")
             val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
@@ -212,20 +336,20 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             it.editTextMessage.visibility = View.VISIBLE
             it.sendCommentIV.visibility = View.VISIBLE
-            when (payload.user_assignes.size) {
-                1 -> {
-                    it.editTextMessage.visibility = View.GONE
-                    it.sendCommentIV.visibility = View.GONE
-                }
-                else -> {
-                    it.editTextMessage.visibility = View.VISIBLE
-                    it.sendCommentIV.visibility = View.VISIBLE
-                    if (!isListContainMethod(payload.user_assignes)) {
-                        it.editTextMessage.visibility = View.GONE
-                        it.sendCommentIV.visibility = View.GONE
-                    }
-                }
-            }
+            /* when (payload.user_assignes.size) {
+                 1 -> {
+                     it.editTextMessage.visibility = View.GONE
+                     it.sendCommentIV.visibility = View.GONE
+                 }
+                 else -> {
+                     it.editTextMessage.visibility = View.VISIBLE
+                     it.sendCommentIV.visibility = View.VISIBLE
+                     if (!isListContainMethod(payload.user_assignes)) {
+                         it.editTextMessage.visibility = View.GONE
+                         it.sendCommentIV.visibility = View.GONE
+                     }
+                 }
+             }*/
         }
     }
 
@@ -249,19 +373,31 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 backPress()
             }
             R.id.sendCommentIV -> {
-                when {
-                    fragmentCarePointDetailBinding.editTextMessage.isBlank() || fragmentCarePointDetailBinding.editTextMessage.text.toString()
-                        .isEmpty() -> {
-                        // do nothing for empty comment field
-                    }
-                    else -> {
-                        val addEventComment = EventCommentModel(
-                            event_id = eventDetail?.id ?: 0,
-                            comment = fragmentCarePointDetailBinding.editTextMessage.text.toString()
-                                .trim()
-                        )
-                        carePointsViewModel.addEventCommentCarePoint(addEventComment)
-                    }
+                /* when {
+                     fragmentCarePointDetailBinding.editTextMessage.isBlank() || fragmentCarePointDetailBinding.editTextMessage.text.toString()
+                         .isEmpty() -> {
+                         // do nothing for empty comment field
+                     }
+                     else -> {
+                         val addEventComment = EventCommentModel(
+                             event_id = eventDetail?.id ?: 0,
+                             comment = fragmentCarePointDetailBinding.editTextMessage.text.toString()
+                                 .trim()
+                         )
+                         carePointsViewModel.addEventCommentCarePoint(addEventComment)
+                     }
+                 }*/
+
+                val message = fragmentCarePointDetailBinding.editTextMessage.text.toString().trim()
+                if (message.isNullOrEmpty()) {
+                    showInfo(requireContext(), "Please enter message...")
+                } else {
+                    chatModel?.chatType = Chat.CHAT_GROUP
+                    chatModel?.message = message
+                    Log.d(TAG, "Send Message :$chatModel ")
+//                    chatModel?.let { chatViewModel.sendMessage(it) }
+                    carePointsViewModel.getAndSaveMessageData(Chat.MESSAGE_TEXT, message = message)
+                    fragmentCarePointDetailBinding.editTextMessage.text?.clear()
                 }
             }
         }
@@ -282,7 +418,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             override fun onClick(p0: View) {
                 //click to show whole note
-                setNotesClickForLong(notes, !isSpanned,textView)
+                setNotesClickForLong(notes, !isSpanned, textView)
             }
 
             override fun updateDrawState(ds: TextPaint) {
