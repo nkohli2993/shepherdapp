@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
 import com.shepherd.app.data.dto.login.LoginResponseModel
@@ -16,9 +18,12 @@ import com.shepherd.app.ui.component.resources.adapter.MedicalHistoryAdapter
 import com.shepherd.app.ui.component.resources.adapter.MedicalHistoryTopicsAdapter
 import com.shepherd.app.ui.component.resources.adapter.TopicsAdapter
 import com.shepherd.app.utils.*
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-
+import java.util.*
+import android.view.ViewGroup.LayoutParams;
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import com.shepherd.app.utils.extensions.showInfo
 
 /**
  * Created by Sumit Kumar on 26-04-22
@@ -82,7 +87,31 @@ class ResourcesFragment : BaseFragment<FragmentMessagesBinding>() {
         fragmentResourcesBinding.recyclerViewTopics.adapter = topicsAdapter
     }
 
+    private fun createTextView(text: String): View {
+        val textView = TextView(requireContext())
+        textView.text = text
+        textView.typeface = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
+        textView.setTextColor(ContextCompat.getColor(requireContext(),R.color._192032))
+        textView.setPadding(20,10,10,10)
+        textView.setOnClickListener {
+            showInfo(requireContext(),textView.text.toString())
+        }
+        textView.compoundDrawablePadding = 10
+        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_round_cancel,0)
+        textView.setBackgroundResource(R.drawable.shape_black_border)
+        return textView
+    }
+
     private fun setMedicalHistoryAdapter() {
+        for (locale in Locale.getAvailableLocales()) {
+            val countryName: String = locale.displayCountry
+            if (countryName.isNotEmpty()) {
+                fragmentResourcesBinding.flowContainer.addView(
+                    createTextView(countryName),
+                    LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+                )
+            }
+        }
         val medicalHistoryAdapter = MedicalHistoryAdapter(resourcesViewModel)
         fragmentResourcesBinding.recyclerViewMedicalHistory.adapter = medicalHistoryAdapter
     }

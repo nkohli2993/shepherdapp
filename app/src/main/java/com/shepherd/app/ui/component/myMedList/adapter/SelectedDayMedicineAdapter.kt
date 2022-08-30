@@ -12,7 +12,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.UserMedicationRemiderData
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.databinding.AdapterSelectedDayMedicineBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.utils.MedListAction
@@ -25,7 +25,7 @@ import kotlin.collections.ArrayList
 @SuppressLint("SimpleDateFormat")
 class SelectedDayMedicineAdapter(
     private val viewModel: MyMedListViewModel,
-    var medListReminderList: MutableList<UserMedicationRemiderData> = ArrayList()
+    var medListReminderList: MutableList<MedListReminder> = ArrayList()
 ) :
     RecyclerView.Adapter<SelectedDayMedicineAdapter.SelectedDayMedicineViewHolder>() {
     lateinit var binding: AdapterSelectedDayMedicineBinding
@@ -34,13 +34,13 @@ class SelectedDayMedicineAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openMedDetail(itemData[0] as UserMedicationRemiderData)
+            viewModel.openMedDetail(itemData[0] as MedListReminder)
         }
     }
 
     private val onItemCheckedListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.selectedMedication(itemData[0] as UserMedicationRemiderData)
+            viewModel.selectedMedication(itemData[0] as MedListReminder)
         }
     }
 
@@ -72,7 +72,7 @@ class SelectedDayMedicineAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(
-            medListReminder: UserMedicationRemiderData?,
+            medListReminder: MedListReminder?,
             recyclerItemListener: RecyclerItemListener,
             recyclerItemListener1: RecyclerItemListener
         ) {
@@ -96,7 +96,7 @@ class SelectedDayMedicineAdapter(
                                 context.getString(R.string.not_allowed_to_update_future_medication)
                             )
                         } else {
-                            medListReminder?.isRecordAdded = _isChecked
+                            medListReminder?.isSelected = _isChecked
                             medListReminder?.let { recyclerItemListener1.onItemSelected(it) }
                         }
                     } else {
@@ -110,7 +110,7 @@ class SelectedDayMedicineAdapter(
                 }
             }
             itemBinding.cbReminder.isChecked = false
-            if(medListReminder?.isRecordAdded == true){
+            if(medListReminder?.isSelected == true){
                 itemBinding.cbReminder.isChecked = true
             }
 
@@ -129,7 +129,7 @@ class SelectedDayMedicineAdapter(
             }
         }
 
-        private fun clickDate(medListReminder: UserMedicationRemiderData?): Pair<Date, Date?> {
+        private fun clickDate(medListReminder: MedListReminder?): Pair<Date, Date?> {
             val selectedDate: Date =
                 SimpleDateFormat("yyyy-MM-dd").parse(medListReminder?.selectedDate)
             val current = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
@@ -159,7 +159,7 @@ class SelectedDayMedicineAdapter(
             position: Int,
             view: AppCompatImageView,
             itemListener: RecyclerItemListener,
-            medList: UserMedicationRemiderData?
+            medList: MedListReminder?
         ) {
             val popupView: View =
                 LayoutInflater.from(this@SelectedDayMedicineAdapter.context).inflate(
@@ -236,7 +236,7 @@ class SelectedDayMedicineAdapter(
     }
 
 
-    fun addData(medListReminderList: ArrayList<UserMedicationRemiderData>) {
+    fun addData(medListReminderList: ArrayList<MedListReminder>) {
 //        this.medListReminderList.clear()
         this.medListReminderList = medListReminderList
         notifyDataSetChanged()

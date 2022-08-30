@@ -8,7 +8,10 @@ import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherd.app.data.dto.med_list.GetMedicationRecordResponse
-import com.shepherd.app.data.dto.med_list.loved_one_med_list.*
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.UserMedicationData
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
 import com.shepherd.app.data.local.UserRepository
@@ -58,24 +61,23 @@ class MyMedListViewModel @Inject constructor(
         _getMedicationRecordResponseLiveData
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<UserMedicationRemiderData>>()
-    val openMedDetailItems: LiveData<SingleEvent<UserMedicationRemiderData>> get() = openMedDetailItemsPrivate
+    private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<MedListReminder>>()
+    val openMedDetailItems: LiveData<SingleEvent<MedListReminder>> get() = openMedDetailItemsPrivate
 
     private val medDetailItemsPrivate = MutableLiveData<SingleEvent<UserMedicationData>>()
     val medDetailItems: LiveData<SingleEvent<UserMedicationData>> get() = medDetailItemsPrivate
 
-    private val _selectedMedicationLiveData = MutableLiveData<SingleEvent<UserMedicationRemiderData>>()
-    val selectedMedicationLiveData: LiveData<SingleEvent<UserMedicationRemiderData>> get() = _selectedMedicationLiveData
+    private val _selectedMedicationLiveData = MutableLiveData<SingleEvent<MedListReminder>>()
+    val selectedMedicationLiveData: LiveData<SingleEvent<MedListReminder>> get() = _selectedMedicationLiveData
 
-    fun openMedDetail(item: UserMedicationRemiderData) {
+    fun openMedDetail(item: MedListReminder) {
         openMedDetailItemsPrivate.value = SingleEvent(item)
     }
-
     fun openMedicineDetail(item: UserMedicationData) {
         medDetailItemsPrivate.value = SingleEvent(item)
     }
 
-    fun selectedMedication(item: UserMedicationRemiderData) {
+    fun selectedMedication(item: MedListReminder) {
         _selectedMedicationLiveData.value = SingleEvent(item)
     }
 
@@ -150,8 +152,7 @@ class MyMedListViewModel @Inject constructor(
     fun getMedicationRecords(
         lovedOneId: String,
         page: Int,
-        limit: Int,
-        date:String
+        limit: Int,date: String
     ): LiveData<Event<DataResult<GetMedicationRecordResponse>>> {
         viewModelScope.launch {
             val response = medListRepository.getMedicationRecords(lovedOneId, page, limit,date)

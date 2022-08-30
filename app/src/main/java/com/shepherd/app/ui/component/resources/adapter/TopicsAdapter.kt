@@ -3,6 +3,7 @@ package com.shepherd.app.ui.component.resources.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.data.dto.dashboard.DashboardModel
 import com.shepherd.app.databinding.AdapterTopicsBinding
@@ -49,10 +50,11 @@ class TopicsAdapter(
     }
 
 
-    class TopicsViewHolder(private val itemBinding: AdapterTopicsBinding) :
+    inner class TopicsViewHolder(private val itemBinding: AdapterTopicsBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
+
             // itemBinding.data = dashboard
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(

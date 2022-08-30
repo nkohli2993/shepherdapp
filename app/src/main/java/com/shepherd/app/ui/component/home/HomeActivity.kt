@@ -75,8 +75,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         })
         setOnClickListeners()
 
-//         permissionShowHide(View.VISIBLE)
+         permissionShowHide(View.VISIBLE)
         // show accessed cards only to users
+/*
         if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                 if (viewModel.getLovedUserDetail() != null) {
@@ -92,6 +93,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         } else {
             permissionShowHide(View.VISIBLE)
         }
+*/
 
         binding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
 
@@ -107,6 +109,10 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     private fun setOnClickListeners() {
         binding.appBarDashboard.ivLovedOneProfile.setOnClickListener {
             navController.navigate(R.id.nav_loved_one)
+        }
+        binding.appBarDashboard.ivNotification.setOnClickListener {
+            showError(this, "Not Implemented")
+//            navController.navigate(R.id.nav_notifications)
         }
     }
 
