@@ -57,8 +57,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite"
-                    android:orientation="vertical"
                     android:elevation="@dimen/_2sdp"
+                    android:orientation="vertical"
                     android:paddingHorizontal="@dimen/_5sdp"
                     android:paddingVertical="@dimen/_8sdp">
 
@@ -170,7 +170,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingHorizontal="@dimen/_5sdp"
-                            android:text="@string/careteam"
+                            android:text="@string/care_point"
                             android:textColor="@color/_192032"
                             android:textSize="@dimen/_12ssp"
                             app:fontFamily="@font/gotham_medium"
