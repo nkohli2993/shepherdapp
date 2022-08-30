@@ -61,6 +61,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     vitalStats = it.data.payload.latestOne
+                    graphDataList = it.data.payload.graphData
                     vitalStats.let { stats ->
                         //set data on dash board
                         fragmentVitalStatsBinding.tvHeartRateValue.text =
@@ -72,6 +73,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         fragmentVitalStatsBinding.tvOxygenValue.text =
                             vitalStats!!.data?.oxygen
                     }
+                    setData()
                 }
                 is DataResult.Failure -> {
                     hideLoading()
@@ -120,7 +122,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
     override fun initViewBinding() {
         fragmentVitalStatsBinding.listener = this
-        setData()
+
         addType()
         vitalStatsViewModel.getGraphDataVitalStats(
             SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
@@ -153,6 +155,20 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
         val values = ArrayList<CandleEntry>()
 
+        for(i in graphDataList.indices){
+            values.add(
+                CandleEntry(
+                    i.toFloat(),
+                    if(graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
+                    graphDataList[i].y.toFloat(),
+                    if(graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
+                    graphDataList[i].y.toFloat(),
+                    0
+                )
+            )
+
+        }
+/*
         for (i in 0 until 40) {
             val multi: Float = (40 + 1).toFloat()
             val `val` = (Math.random() * 40).toFloat() + multi
@@ -172,6 +188,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 )
             )
         }
+*/
 
         Log.e("catch_exception", "value: ${values}")
         val set1 = CandleDataSet(values, "Data Set")

@@ -118,7 +118,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         fragmentDashboardBinding.cvResources.visibility = value
         fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
-        fragmentDashboardBinding.cvDiscussion.visibility = View.VISIBLE
+        fragmentDashboardBinding.cvDiscussion.visibility = View.GONE
     }
 
     private fun checkPermission(permission: Int?) {

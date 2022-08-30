@@ -75,7 +75,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         })
         setOnClickListeners()
 
-         permissionShowHide(View.VISIBLE)
+        permissionShowHide(View.VISIBLE)
         // show accessed cards only to users
 /*
         if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
@@ -104,6 +104,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         binding.llLockBox.visibility = value
         binding.llMedList.visibility = value
         binding.llResources.visibility = value
+        binding.llCareTeam.visibility = View.VISIBLE
+        binding.llVitalStats.visibility = View.VISIBLE
+        binding.llDiscussions.visibility = View.GONE
     }
 
     private fun setOnClickListeners() {

@@ -93,12 +93,13 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                 val datePickerDialog = DatePickerDialog(
                     requireActivity(), R.style.datepicker,
                     { _, year, monthOfYear, dayOfMonth ->
-                        fragmentAddVitalsBinding.tvDate.text =
+                        fragmentAddVitalsBinding.tvDate.setText(
                             "$dayOfMonth-" + if (monthOfYear + 1 < 10) {
                                 "0${(monthOfYear + 1)}"
                             } else {
                                 (monthOfYear + 1)
                             } + "-" + year
+                        )
                     }, mYear, mMonth, mDay
                 )
                 datePickerDialog.datePicker.maxDate = c.timeInMillis
@@ -161,13 +162,15 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                     if (hourOfDay < 12) {
                         setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
                         isAmPm = "am"
-                        fragmentAddVitalsBinding.tvTime.text =
+                        fragmentAddVitalsBinding.tvTime.setText(
                             String.format("%02d:%02d", hourOfDay, selectedMinute)
+                        )
                     } else {
                         isAmPm = "pm"
                         setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
-                        fragmentAddVitalsBinding.tvTime.text =
+                        fragmentAddVitalsBinding.tvTime.setText(
                             String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                        )
                     }
 
                 } else {

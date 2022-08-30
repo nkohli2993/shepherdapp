@@ -146,7 +146,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/recyclerViewTopics" />
 
             <com.shepherd.app.ui.component.resources.FlowLayout
-                android:id="@+id/flow_container"
+                android:id="@+id/medicalHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorGreyLight"
@@ -154,22 +154,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewBasedOnMedicalHistory" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewMedicalHistory"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@color/colorGreyLight"
-                android:orientation="horizontal"
-                android:paddingTop="@dimen/_5sdp"
-                android:visibility="gone"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/flow_container"
-                app:spanCount="2"
-                tools:itemCount="5"
-                tools:listitem="@layout/adapter_medical_history" />
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -183,7 +167,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewMedicalHistory"
+                app:layout_constraintTop_toBottomOf="@+id/medicalHistory"
                 tools:itemCount="2"
                 tools:listitem="@layout/adapter_medical_history_topics" />
 

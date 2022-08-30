@@ -1,6 +1,7 @@
 package com.shepherd.app.ui.component.resources
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,14 +24,18 @@ import java.util.*
 import android.view.ViewGroup.LayoutParams;
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.navigation.fragment.findNavController
+import com.shepherd.app.data.dto.dashboard.DashboardModel
+import com.shepherd.app.ui.component.careTeamMembers.CareTeamMembersFragmentDirections
 import com.shepherd.app.utils.extensions.showInfo
 
 /**
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class ResourcesFragment : BaseFragment<FragmentMessagesBinding>() {
+class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
+    private val TAG: String = "ResourceList"
     private val resourcesViewModel: ResourcesViewModel by viewModels()
 
     private lateinit var fragmentResourcesBinding: FragmentResourcesBinding
@@ -55,11 +60,18 @@ class ResourcesFragment : BaseFragment<FragmentMessagesBinding>() {
     }
 
     override fun observeViewModel() {
-        observe(resourcesViewModel.loginLiveData, ::handleLoginResult)
+
+        observeEvent(resourcesViewModel.openResourceDetailItems, ::navigateToResourceItems)
         observeSnackBarMessages(resourcesViewModel.showSnackBar)
         observeToast(resourcesViewModel.showToast)
     }
+    private fun navigateToResourceItems(navigateEvent: SingleEvent<Int>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            Log.d(TAG, "openResopurceDetail: id :$it")
+            findNavController().navigate(ResourcesFragmentDirections.actionNavResourceToResourceToResourceDetail(it.toString()))
+        }
 
+    }
 
     private fun handleLoginResult(status: Resource<LoginResponseModel>) {
         when (status) {
@@ -94,7 +106,7 @@ class ResourcesFragment : BaseFragment<FragmentMessagesBinding>() {
         textView.setTextColor(ContextCompat.getColor(requireContext(),R.color._192032))
         textView.setPadding(20,10,10,10)
         textView.setOnClickListener {
-            showInfo(requireContext(),textView.text.toString())
+            //candle click
         }
         textView.compoundDrawablePadding = 10
         textView.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.ic_round_cancel,0)
@@ -106,14 +118,12 @@ class ResourcesFragment : BaseFragment<FragmentMessagesBinding>() {
         for (locale in Locale.getAvailableLocales()) {
             val countryName: String = locale.displayCountry
             if (countryName.isNotEmpty()) {
-                fragmentResourcesBinding.flowContainer.addView(
+                fragmentResourcesBinding.medicalHistory.addView(
                     createTextView(countryName),
                     LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
                 )
             }
         }
-        val medicalHistoryAdapter = MedicalHistoryAdapter(resourcesViewModel)
-        fragmentResourcesBinding.recyclerViewMedicalHistory.adapter = medicalHistoryAdapter
     }
 
     private fun setMedicalHistoryTopicsAdapter() {

@@ -108,7 +108,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.ivBack -> {
-                findNavController().popBackStack()
+                homeActivity.onBackPressed()
             }
             R.id.tvChange -> {
                 findNavController().navigate(R.id.action_nav_setting_to_changePassword)
