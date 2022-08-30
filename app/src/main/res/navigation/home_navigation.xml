@@ -173,6 +173,9 @@
         <action
             android:id="@+id/action_care_points_to_detailFragment"
             app:destination="@+id/nav_care_points_detail" />
+        <action
+            android:id="@+id/action_nav_care_points_to_nav_chat"
+            app:destination="@id/nav_chat" />
 
     </fragment>
     <fragment

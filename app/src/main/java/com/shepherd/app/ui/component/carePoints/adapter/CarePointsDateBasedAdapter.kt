@@ -11,8 +11,6 @@ import com.shepherd.app.data.dto.added_events.UserAssigneeModel
 import com.shepherd.app.databinding.AdapterCarePointsDayBinding
 import com.shepherd.app.view_model.CreatedCarePointsViewModel
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
 class CarePointsDateBasedAdapter(
     val viewModel: CreatedCarePointsViewModel,
@@ -35,7 +33,6 @@ class CarePointsDateBasedAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return carePointList.size
         return carePointList.size
     }
 

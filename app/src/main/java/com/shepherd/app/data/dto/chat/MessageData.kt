@@ -32,7 +32,8 @@ data class MessageData(
     @SerializedName("senderID")
     var senderID: String? = "",
     @SerializedName("senderName")
-    var senderName: String? = ""
+    var senderName: String? = "",
+    var senderProfilePic: String? = null
 ) : Parcelable
 
 

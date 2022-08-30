@@ -287,8 +287,9 @@
         <entry key="app/src/main/res/layout/adapter_care_points_events.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_team_members_dashboard.xml" value="0.2579162410623085" />
-        <entry key="app/src/main/res/layout/adapter_chat.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/adapter_chat.xml" value="0.5745341614906833" />
         <entry key="app/src/main/res/layout/adapter_chat_group.xml" value="0.209765625" />
+        <entry key="app/src/main/res/layout/adapter_comment.xml" value="0.26981981981981984" />
         <entry key="app/src/main/res/layout/adapter_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_date_picker.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_direct_messages.xml" value="0.25" />
@@ -332,7 +333,7 @@
         <entry key="app/src/main/res/layout/fragment_add_new_lock_box.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_add_new_medication.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_add_vitals.xml" value="0.3703125" />
-        <entry key="app/src/main/res/layout/fragment_care_point_detail.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_care_point_detail.xml" value="0.3473557692307692" />
         <entry key="app/src/main/res/layout/fragment_care_points.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.212890625" />

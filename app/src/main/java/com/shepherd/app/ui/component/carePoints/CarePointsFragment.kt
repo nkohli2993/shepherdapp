@@ -4,6 +4,7 @@ package com.shepherd.app.ui.component.carePoints
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,19 +13,23 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.shepherd.app.R
+import com.shepherd.app.ShepherdApp
+import com.shepherd.app.data.dto.added_events.AddedEventModel
 import com.shepherd.app.data.dto.added_events.ResultEventModel
+import com.shepherd.app.data.dto.chat.ChatModel
+import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.databinding.FragmentCarePointsBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.carePoints.adapter.CarePointsDayAdapter
 import com.shepherd.app.utils.CalendarState
-import com.shepherd.app.utils.SingleEvent
-import com.shepherd.app.utils.observe
+import com.shepherd.app.utils.Chat
+import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.Prefs
 import com.shepherd.app.view_model.CreatedCarePointsViewModel
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import com.shepherd.app.data.dto.added_events.AddedEventModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -50,6 +55,9 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private var endDate: String = ""
     private var clickType = CalendarState.Today.value
     private var sdf: SimpleDateFormat? = null
+    private var chatModelList: ArrayList<ChatModel>? = ArrayList()
+
+    private val TAG = "CarePointsFragment"
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,6 +92,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         val cal = Calendar.getInstance()
         fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
     }
+
     @SuppressLint("SimpleDateFormat")
     override fun initViewBinding() {
         typeFaceGothamBold = ResourcesCompat.getFont(requireContext(), R.font.gotham_bold)
@@ -99,10 +108,12 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { widget, date ->
             when (clickType) {
                 CalendarState.Month.value -> {
-                    fragmentCarePointsBinding.calendarPView.selectionMode = MaterialCalendarView.SELECTION_MODE_NONE
+                    fragmentCarePointsBinding.calendarPView.selectionMode =
+                        MaterialCalendarView.SELECTION_MODE_NONE
                     val month = SimpleDateFormat("MM").format(date.date)
                     val year = SimpleDateFormat("yyyy").format(date.date)
-                    fragmentCarePointsBinding.textViewSelectGroup.text = SimpleDateFormat("MMM yyyy").format(date.date)
+                    fragmentCarePointsBinding.textViewSelectGroup.text =
+                        SimpleDateFormat("MMM yyyy").format(date.date)
                     fragmentCarePointsBinding.calendarPView.clearSelection()
                     val calendar = Calendar.getInstance()
                     calendar.time = date.date
@@ -145,7 +156,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 calendar.add(Calendar.DATE, 7)
                 endDate = sdf!!.format(calendar.time)
                 val endDay = SimpleDateFormat("MMM dd").format(calendar.time)
-                fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.week).plus(", ").plus(startDay).plus(" to ").plus(endDay)
+                fragmentCarePointsBinding.textViewSelectGroup.text =
+                    getString(R.string.week).plus(", ").plus(startDay).plus(" to ").plus(endDay)
                 getCarePointList(startDate, endDate)
                 for (i in 0 until 7) {
                     val cal = Calendar.getInstance()
@@ -164,15 +176,15 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
     private fun getDayCount(month: String, year: String): Int {
         val days = when (month) {
-            "1", "3", "5", "7", "8", "10", "12","01", "03", "05","07","08" -> {
+            "1", "3", "5", "7", "8", "10", "12", "01", "03", "05", "07", "08" -> {
                 31
             }
-            "4", "6", "9", "11",  "04", "06", "09" -> {
+            "4", "6", "9", "11", "04", "06", "09" -> {
                 30
             }
             else -> {
                 when {
-                    year.toInt() % 400 == 0 || year.toInt() %  4 == 0 -> 29
+                    year.toInt() % 400 == 0 || year.toInt() % 4 == 0 -> 29
                     else -> 28
                 }
             }
@@ -267,7 +279,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 calendar.add(Calendar.DATE, 7)
                 endDate = sdf!!.format(calendar.time)
                 val endDay = SimpleDateFormat("MMM dd").format(calendar.time)
-                fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.week).plus(", ").plus(startDay).plus(" to ").plus(endDay)
+                fragmentCarePointsBinding.textViewSelectGroup.text =
+                    getString(R.string.week).plus(", ").plus(startDay).plus(" to ").plus(endDay)
                 getCarePointList(startDate, endDate)
                 for (i in 0 until 7) {
                     val cal = Calendar.getInstance()
@@ -281,7 +294,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.tvWeek.typeface = typeFaceGothamBook
                 fragmentCarePointsBinding.tvMonth.typeface = typeFaceGothamBold
                 clickType = CalendarState.Month.value
-                fragmentCarePointsBinding.textViewSelectGroup.text = SimpleDateFormat("MMM yyyy").format(Calendar.getInstance().time)
+                fragmentCarePointsBinding.textViewSelectGroup.text =
+                    SimpleDateFormat("MMM yyyy").format(Calendar.getInstance().time)
                 setColorBasedOnCarePOintsType(
                     fragmentCarePointsBinding.tvMonth,
                     fragmentCarePointsBinding.tvWeek,
@@ -301,11 +315,11 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 endDate = sdf!!.format(calendar.time)
                 getCarePointList(startDate, endDate)
 
-             /*   for (i in 0 until getDayCount(month, year)) {
-                    val cal = calendar
-                    cal.add(Calendar.DATE, i)
-                    fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
-                }*/
+                /*   for (i in 0 until getDayCount(month, year)) {
+                       val cal = calendar
+                       cal.add(Calendar.DATE, i)
+                       fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
+                   }*/
             }
         }
     }
@@ -389,12 +403,56 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     }
 
     override fun onEventSelected(detail: AddedEventModel) {
-        //open event detail page
-        findNavController().navigate(
-            CarePointsFragmentDirections.actionCarePointsToDetailFragment(
-                detail
-            )
+        // Get Login User's detail
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.USER_DETAILS,
+            UserProfile::class.java
         )
+
+        val loggedInUserId = loggedInUser?.id
+        val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+
+        Log.d(TAG, "onEventSelected: $detail ")
+        val eventName = detail.name
+        val eventLocation = detail.location
+        val eventDate = detail.date
+        val eventTime = detail.time
+        detail.user_assignes.forEach {
+            val receiverName = it.user_details.firstname + " " + it.user_details.lastname
+            val receiverID = it.user_details.id
+            val receiverPicUrl = it?.user_details.profilePhoto
+            val documentID = null
+            val chatType = Chat.CHAT_GROUP
+
+            // Create Chat Model
+            val chatModel = ChatModel(
+                documentID,
+                loggedInUserId,
+                loggedInUserName,
+                receiverID,
+                receiverName,
+                receiverPicUrl,
+                null,
+                chatType,
+                eventName
+            )
+            chatModelList?.add(chatModel)
+        }
+
+          //open event detail page
+          findNavController().navigate(
+              CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                  detail
+              )
+          )
+
+        // Navigate to chat screen
+       /* findNavController().navigate(
+            CarePointsFragmentDirections.actionNavCarePointsToNavChat(
+                "CarePoint",
+                chatModelList?.toTypedArray()
+            )
+        )*/
     }
 }
 
