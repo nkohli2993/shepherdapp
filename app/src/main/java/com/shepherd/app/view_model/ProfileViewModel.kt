@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.login.UserLovedOne
 import com.shepherd.app.data.dto.signup.BioMetricData
 import com.shepherd.app.data.dto.user.UserDetailsResponseModel
 import com.shepherd.app.data.dto.user_detail.UserDetailByUUIDResponseModel
@@ -164,6 +165,9 @@ class ProfileViewModel @Inject constructor(
     // Save Loved One UUID
     fun saveLovedOneUUID(lovedOneUUID: String) {
         userRepository.saveLovedOneUUId(lovedOneUUID)
+    }
+    fun saveLovedOneUserDetail(userLovedOne: UserLovedOne) {
+        userRepository.saveLovedOneUserDetail(userLovedOne)
     }
 
 }

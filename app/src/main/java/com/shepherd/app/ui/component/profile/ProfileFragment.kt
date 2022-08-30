@@ -1,18 +1,16 @@
 package com.shepherd.app.ui.component.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.care_team.CareTeam
 import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.login.Payload
 import com.shepherd.app.data.dto.login.UserLovedOne
-import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.databinding.FragmentProfileBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -34,18 +32,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     LovedOnesAdapter.OnItemClickListener {
 
     private val profileViewModel: ProfileViewModel by viewModels()
-    var lovedOnesAdapter: LovedOnesAdapter? = null
-
     private lateinit var fragmentProfileBinding: FragmentProfileBinding
-
+    var lovedOnesAdapter: LovedOnesAdapter? = null
     private var payload: Payload? = null
-    private var lovedOneArrayList: ArrayList<UserLovedOne>? = null
     private var careTeams: ArrayList<CareTeamModel> = arrayListOf()
-    private val TAG: String? = null
     private var page = 1
     private var limit = 10
     private var status = Status.One.status
-
+    var currentPage: Int = 0
+    var totalPage: Int = 0
+    var total: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,6 +57,36 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     override fun initViewBinding() {
         fragmentProfileBinding.listener = this
+        setLovedOnesAdapter()
+    }
+
+    private fun handleAddedLovedOnePagination() {
+        var isScrolling: Boolean
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisiblesItems: Int
+        fragmentProfileBinding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if (v.getChildAt(v.childCount - 1) != null) {
+                if (scrollY >= v.getChildAt(v.childCount - 1)
+                        .measuredHeight - v.measuredHeight &&
+                    scrollY > oldScrollY
+                ) {
+                    isScrolling = true
+                    visibleItemCount =
+                        fragmentProfileBinding.recyclerLovedOnes.layoutManager!!.childCount
+                    totalItemCount =
+                        fragmentProfileBinding.recyclerLovedOnes.layoutManager!!.itemCount
+                    pastVisiblesItems =
+                        (fragmentProfileBinding.recyclerLovedOnes.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
+                        isScrolling = false
+                        currentPage++
+                        page++
+                        profileViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+                    }
+                }
+            }
+        }
     }
 
     private fun initView() {
@@ -106,7 +132,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                     hideLoading()
                     payload = it.data.payload
                     initView()
-//                    getLovedOneInfo()
                 }
             }
         }
@@ -122,39 +147,35 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.data
-                    setLovedOnesAdapter(careTeams)
+                    careTeams.clear()
+                    if (page == 1) {
+                        lovedOnesAdapter = null
+                        setLovedOnesAdapter()
+                    }
+                    it.data.payload.let { payload ->
+                        careTeams = payload.data
+                        total = payload.total!!
+                        currentPage = payload.currentPage!!
+                        totalPage = payload.totalPages!!
+                    }
+                    lovedOnesAdapter?.addData(careTeams)
 
                 }
             }
         }
     }
 
-    private fun getLovedOneInfo() {
-        lovedOneArrayList = payload?.userLovedOne
-        if (!lovedOneArrayList.isNullOrEmpty()) {
-            val lovedOneUserIDs = lovedOneArrayList?.map {
-                it.loveUserId
-            } as ArrayList<String?>?
-            Log.d(TAG, "Loved One User Ids :$lovedOneUserIDs ")
-
-            for (i in lovedOneUserIDs?.indices!!) {
-                lovedOneUserIDs[i]?.let { profileViewModel.getLovedOneDetails(it) }
-            }
-        }
-    }
-
-    private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeamModel>?) {
+    private fun setLovedOnesAdapter() {
         lovedOnesAdapter = LovedOnesAdapter(profileViewModel)
-        lovedOnesAdapter?.addData(careTeams)
         fragmentProfileBinding.recyclerLovedOnes.adapter = lovedOnesAdapter
         lovedOnesAdapter?.setClickListener(this)
+        handleAddedLovedOnePagination()
     }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.clProfileWrapper -> {
-               // p0.findNavController().navigate(R.id.action_nav_profile_to_editProfile)
+                // p0.findNavController().navigate(R.id.action_nav_profile_to_editProfile)
             }
         }
     }
@@ -165,7 +186,17 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
     override fun onItemClick(careTeam: CareTeamModel) {
         // Save the selected lovedOne UUID in shared prefs
-        careTeam.love_user_id_details.let { profileViewModel.saveLovedOneUUID(it.uid!!) }
+        careTeam.love_user_id_details.let {
+            profileViewModel.saveLovedOneUUID(it.uid!!)
+            val lovedOneDetail = UserLovedOne(
+                it.id,
+                it.uid,
+                careTeam.love_user_id,
+                careTeam.role_id,
+                careTeam.permission
+            )
+            profileViewModel.saveLovedOneUserDetail(lovedOneDetail)
+        }
     }
 
 

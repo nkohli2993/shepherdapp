@@ -9,9 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.annotations.SerializedName
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.care_team.CareTeamModel
+import com.shepherd.app.data.dto.login.UserLovedOne
 import com.shepherd.app.databinding.FragmentLovedOnesBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -97,7 +99,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                 is DataResult.Success -> {
                     hideLoading()
                     careTeams.clear()
-                    if(page == 1){
+                    if (page == 1) {
                         lovedOneAdapter = null
                         setLovedOnesAdapter(careTeams)
                     }
@@ -128,7 +130,6 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
 
     private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeamModel>?) {
         lovedOneAdapter = LovedOneAdapter(lovedOneViewModel)
-
         recyclerViewMembers.adapter = lovedOneAdapter
         lovedOneAdapter?.setClickListener(this)
         handleAddedLovedOnePagination()
@@ -148,8 +149,18 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                 )
             }
             R.id.btnDone -> {
-                selectedCare?.let {
-                    it.love_user_id_details.let { lovedOneViewModel.saveLovedOneUUID(it.uid!!) }
+                selectedCare?.let { careTeams ->
+                    careTeams.love_user_id_details.let {
+                        lovedOneViewModel.saveLovedOneUUID(it.uid!!)
+                        val lovedOneDetail = UserLovedOne(
+                            it.id,
+                            it.uid,
+                            careTeams.love_user_id,
+                            careTeams.role_id,
+                            careTeams.permission
+                        )
+                        lovedOneViewModel.saveLovedOneUserDetail(lovedOneDetail)
+                    }
                 }
 
                 backPress()

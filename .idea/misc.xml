@@ -163,7 +163,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_events_members.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_frequency.xml" value="0.2598958333333333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_medical_history.xml" value="0.2609375" />
-        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_medical_history_topics.xml" value="0.21419410004275333" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_medical_history_topics.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_other_documents.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_restriction_modules.xml" value="0.2609375" />
@@ -196,7 +196,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_my_medlist.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_notifications.xml" value="0.21148163782186577" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_profile.xml" value="0.2609375" />
-        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_resources.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_resources.xml" value="0.247451343836886" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_schedulwe_medicine.xml" value="0.2569230769230769" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_security_code.xml" value="0.22" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_setting.xml" value="0.21419410004275333" />

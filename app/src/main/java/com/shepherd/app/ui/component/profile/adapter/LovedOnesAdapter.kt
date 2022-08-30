@@ -25,13 +25,6 @@ class LovedOnesAdapter(
     private var lastSelectedPosition = -1
     private var dismissLastSelectedOption: (() -> Unit)? = null
 
-
-    /* private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
-         override fun onItemSelected(vararg itemData: Any) {
-             // viewModel.openDashboardItems(itemData[0] as DashboardModel)
-         }
-     }*/
-
     interface OnItemClickListener {
         fun onItemClick(careTeam: CareTeamModel)
     }
@@ -71,7 +64,8 @@ class LovedOnesAdapter(
             // itemBinding.data = dashboard
             careTeam.let {
                 // Set full name
-                val fullName = it.love_user_id_details.firstname + " " + it.love_user_id_details.lastname
+                val fullName =
+                    it.love_user_id_details.firstname + " " + if (it.love_user_id_details.lastname != null) it.love_user_id_details.lastname else ""
                 itemBinding.txtLovedOneName.text = fullName
 
                 //Set Image
@@ -85,7 +79,8 @@ class LovedOnesAdapter(
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
-                itemBinding.checkbox.isChecked = lovedOneIDInPrefs.equals(it.love_user_id_details.uid)
+                itemBinding.checkbox.isChecked =
+                    lovedOneIDInPrefs.equals(it.love_user_id_details.uid)
 
                 if (lovedOneIDInPrefs.equals(it.love_user_id_details.uid)) {
                     dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
@@ -135,7 +130,6 @@ class LovedOnesAdapter(
     }
 
     fun addData(careTeams: ArrayList<CareTeamModel>?) {
-        this.careTeams.clear()
         careTeams?.let { this.careTeams.addAll(it) }
         notifyDataSetChanged()
     }
