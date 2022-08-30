@@ -11,6 +11,7 @@ import com.shepherd.app.data.dto.med_list.GetMedicationRecordResponse
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.UserMedicationData
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
 import com.shepherd.app.data.local.UserRepository
@@ -63,8 +64,8 @@ class MyMedListViewModel @Inject constructor(
     private val openMedDetailItemsPrivate = MutableLiveData<SingleEvent<MedListReminder>>()
     val openMedDetailItems: LiveData<SingleEvent<MedListReminder>> get() = openMedDetailItemsPrivate
 
-    private val medDetailItemsPrivate = MutableLiveData<SingleEvent<Payload>>()
-    val medDetailItems: LiveData<SingleEvent<Payload>> get() = medDetailItemsPrivate
+    private val medDetailItemsPrivate = MutableLiveData<SingleEvent<UserMedicationData>>()
+    val medDetailItems: LiveData<SingleEvent<UserMedicationData>> get() = medDetailItemsPrivate
 
     private val _selectedMedicationLiveData = MutableLiveData<SingleEvent<MedListReminder>>()
     val selectedMedicationLiveData: LiveData<SingleEvent<MedListReminder>> get() = _selectedMedicationLiveData
@@ -72,8 +73,7 @@ class MyMedListViewModel @Inject constructor(
     fun openMedDetail(item: MedListReminder) {
         openMedDetailItemsPrivate.value = SingleEvent(item)
     }
-
-    fun openMedicineDetail(item: Payload) {
+    fun openMedicineDetail(item: UserMedicationData) {
         medDetailItemsPrivate.value = SingleEvent(item)
     }
 
@@ -106,10 +106,10 @@ class MyMedListViewModel @Inject constructor(
     }
 
     // Get MedLists of loved one
-    fun getLovedOneMedLists(): LiveData<Event<DataResult<GetLovedOneMedList>>> {
+    fun getLovedOneMedLists(date:String): LiveData<Event<DataResult<GetLovedOneMedList>>> {
         val lovedOneUUID = userRepository.getLovedOneUUId()
         viewModelScope.launch {
-            val response = lovedOneUUID?.let { medListRepository.getLovedOneMedLists(it) }
+            val response = lovedOneUUID?.let { medListRepository.getLovedOneMedLists(it,date) }
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _getLovedOneMedListsResponseLiveData.postValue(Event(it))
@@ -152,8 +152,7 @@ class MyMedListViewModel @Inject constructor(
     fun getMedicationRecords(
         lovedOneId: String,
         page: Int,
-        limit: Int,
-        date:String
+        limit: Int,date: String
     ): LiveData<Event<DataResult<GetMedicationRecordResponse>>> {
         viewModelScope.launch {
             val response = medListRepository.getMedicationRecords(lovedOneId, page, limit,date)

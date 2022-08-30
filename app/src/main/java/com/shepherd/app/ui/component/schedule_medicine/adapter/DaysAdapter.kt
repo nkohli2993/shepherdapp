@@ -17,7 +17,7 @@ import com.shepherd.app.view_model.AddMedicationViewModel
 class DaysAdapter(
     private val viewModel: AddMedicationViewModel,
     val context: Context,
-    val listener: selectedDay,
+    val listener: SelectedDay,
     var doseList: MutableList<DayList> = ArrayList()
 ) :
     RecyclerView.Adapter<DaysAdapter.DayViewHolder>() {
@@ -94,8 +94,8 @@ class DaysAdapter(
         notifyDataSetChanged()
     }
 
-    interface selectedDay{
-        fun selected(id:Int)
+    interface SelectedDay{
+        fun selected(position:Int)
     }
 
 

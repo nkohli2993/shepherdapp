@@ -9,7 +9,7 @@ import kotlinx.android.parcel.Parcelize
  */
 
 @Parcelize
-data class Payload(
+data class UserMedicationData(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("assigned_by") var assignedBy: String? = null,
     @SerializedName("assigned_to") var assignedTo: String? = null,
@@ -24,13 +24,8 @@ data class Payload(
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
     @SerializedName("end_date") var endDate: String? = null,
-    @SerializedName("medlist") var medlist:  com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
-    @SerializedName("dosage") var dosage:  com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
-
-    //for function
+    @SerializedName("medlist") var medlist: com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
+    @SerializedName("dosage") var dosage: com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
     @SerializedName("action_type") var actionType: Int? = null,
     @SerializedName("delete_position") var deletePosition: Int? = null,
-
-    @SerializedName("user_medication_all") var userMedicationAll: ArrayList<UserMedicationData> = arrayListOf(),
-//    @SerializedName("user_medication_repeat") var userMedicationRepeat: ArrayList<UserMedicationRemiderData> = arrayListOf(),
 ) : Parcelable

@@ -353,7 +353,22 @@
         android:id="@+id/nav_resources"
         android:name="com.shepherd.app.ui.component.resources.ResourcesFragment"
         android:label="@string/menu_resources"
-        tools:layout="@layout/fragment_resources" />
+        tools:layout="@layout/fragment_resources">
+        <action
+            android:id="@+id/action_nav_resource_to_resource_to_resource_detail"
+            app:destination="@id/nav_resource_detail" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_resource_detail"
+        android:name="com.shepherd.app.ui.component.resources.ResourceDetailFragment"
+        android:label="ResourceDetailFragment"
+        tools:layout="@layout/fragment_resource_detail">
+        <argument
+            android:name="source"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <activity
         android:id="@+id/nav_add_loved_one"

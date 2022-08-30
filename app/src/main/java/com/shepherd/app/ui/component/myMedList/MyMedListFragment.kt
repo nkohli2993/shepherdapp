@@ -20,6 +20,8 @@ import com.shepherd.app.data.dto.med_list.get_medication_record.MedicationRecord
 import com.shepherd.app.data.dto.med_list.get_medication_record.RecordPayload
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder
 import com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.UserMedicationData
+import com.shepherd.app.data.dto.med_list.loved_one_med_list.UserMedicationRemiderData
 import com.shepherd.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherd.app.databinding.FragmentMyMedlistBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -53,7 +55,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private lateinit var myMedlistBinding: FragmentMyMedlistBinding
     private var deletePosition: Int = -1
     private var medListReminderList: ArrayList<MedListReminder> = arrayListOf()
-    private var payload: ArrayList<Payload> = arrayListOf()
+    private var payload: ArrayList<UserMedicationData> = arrayListOf()
     private val calendar = Calendar.getInstance()
     private var currentMonth = 0
     private var dayId = ""
@@ -128,12 +130,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 //                    medListReminderList.clear()
 //                    medListViewModel.getLovedOneMedLists()
                     //get medication recordes of loved one
-                    medListViewModel.getMedicationRecords(
-                        medListViewModel.getLovedOneUUId() ?: "",
-                        1,
-                        1000,
-                        selectedDate
-                    )
+                    medListViewModel.getMedicationRecords(medListViewModel.getLovedOneUUId() ?: "", 1, 1000,selectedDate)
                 }
             }
         }
@@ -178,6 +175,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     myMedlistBinding.txtMedication.visibility = View.VISIBLE
                 }
                 is DataResult.Loading -> {
+                    //showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
@@ -239,16 +237,14 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         }
                     }
                     val matchedList: ArrayList<MedListReminder> = arrayListOf()
-                    for (i in medListList) {
+                    for(i in medListList){
                         var found = false
-                        for (j in medicationRecordPayload) {
-                            if (i.selectedDate == j.date && i.time!!.time!!.plus(" ")
-                                    .plus(i.time!!.hour) == j.time!!
-                            ) {
+                        for(j in medicationRecordPayload){
+                            if(i.selectedDate == j.date && i.time!!.time!!.plus(" ").plus(i.time!!.hour) == j.time!!){
                                 found = true
                             }
                         }
-                        if (found) {
+                        if(found){
                             val data = i
                             data.isSelected = true
                             matchedList.add(data)
@@ -261,31 +257,21 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     // do sort the list based on time
                     medListReminderList.sortWith { o1, o2 ->
 
-                        o1.selectedDate.plus(
-                            " ${
-                                o1.time!!.time!!.plus(" ").plus(o1.time!!.hour)
-                            }"
-                        )
-                            .compareTo(
-                                o2.selectedDate.plus(
-                                    " ${
-                                        o2.time!!.time!!.plus(" ").plus(o2.time!!.hour)
-                                    }"
-                                )
-                            )
+                        if (o1.selectedDate.plus(" ${o1.time!!.time!!.plus(" ").plus(o1.time!!.hour)}") == null) 0 else o1.selectedDate.plus(" ${o1.time!!.time!!.plus(" ").plus(o1.time!!.hour)}")
+                            .compareTo(o2.selectedDate.plus(" ${o2.time!!.time!!.plus(" ").plus(o2.time!!.hour)}"))
                     }
                     selectedDayMedicineAdapter?.addData(medListReminderList)
                     myMedicationsAdapter?.addData(payload)
                 }
             }
-        }
-        // Observe get loved one med lists response
+        }// Observe get loved one med lists response
         medListViewModel.getMedicationRecordResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
+//                    hideLoading()
                     payload.clear()
                     medListReminderList.clear()
-                    medListViewModel.getLovedOneMedLists()
+                    medListViewModel.getLovedOneMedLists(selectedDate)
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -296,10 +282,11 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     medicationRecordPayload = it.data.payload.data
                     payload.clear()
                     medListReminderList.clear()
-                    medListViewModel.getLovedOneMedLists()
+                    medListViewModel.getLovedOneMedLists(selectedDate)
                 }
             }
         }
+
         // observe when medlist deleted from list
         medListViewModel.deletedScheduledMedicationResponseLiveData.observeEvent(this) {
             when (it) {
@@ -316,11 +303,12 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                         requireContext(),
                         getString(R.string.schedule_medication_deleted_successfully)
                     )
-                    medListViewModel.getLovedOneMedLists()
+                    medListViewModel.getLovedOneMedLists(selectedDate)
 
                 }
             }
         }
+
         // Observe medication record response live data
         medListViewModel.medicationRecordResponseLiveData.observeEvent(this) {
             when (it) {
@@ -342,16 +330,18 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private fun recordMedication(singleEvent: SingleEvent<MedListReminder>) {
         singleEvent.getContentIfNotHandled()?.let {
             if (it.isSelected) {
-                val date = it.selectedDate
+                Log.d(TAG, "selectedMedication: $it")
+                val sdf = SimpleDateFormat("yyyy-MM-dd")
+                val date = sdf.format(Date())
                 val time = it.time?.time + " " + it.time?.hour
                 val medicationRecordRequest =
-                    it.id?.let { it1 -> MedicationRecordRequestModel(it1, date!!, time) }
+                    it.id?.let { it1 -> MedicationRecordRequestModel(it1, date, time) }
                 medicationRecordRequest?.let { it1 -> medListViewModel.addUserMedicationRecord(it1) }
             }
         }
     }
 
-    private fun selectedMedication(navigateEvent: SingleEvent<Payload>) {
+    private fun selectedMedication(navigateEvent: SingleEvent<UserMedicationData>) {
         navigateEvent.getContentIfNotHandled()?.let {
             when (it.actionType ?: MedListAction.View.value) {
                 MedListAction.View.value -> {

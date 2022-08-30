@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.care_team.CareTeam
 import com.shepherd.app.data.dto.dashboard.DashboardModel
 import com.shepherd.app.data.dto.dashboard.Payload
 import com.shepherd.app.databinding.FragmentDashboardBinding
@@ -17,7 +16,6 @@ import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherd.app.ui.component.dashboard.adapter.CareTeamMembersDashBoardAdapter
-import com.shepherd.app.ui.component.dashboard.adapter.DashboardAdapter
 import com.shepherd.app.ui.component.home.HomeActivity
 import com.shepherd.app.utils.Modules
 import com.shepherd.app.utils.SingleEvent
@@ -116,11 +114,11 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     private fun permissionCards(value: Int) {
         fragmentDashboardBinding.cvCarePoints.visibility = value
         fragmentDashboardBinding.cvLockBox.visibility = value
-        fragmentDashboardBinding.cvMedList.visibility = value
+        fragmentDashboardBinding.cvMedList.visibility =  View.VISIBLE    //value
         fragmentDashboardBinding.cvResources.visibility = value
         fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
-        fragmentDashboardBinding.cvDiscussion.visibility = View.VISIBLE
+        fragmentDashboardBinding.cvDiscussion.visibility = View.GONE
     }
 
     private fun checkPermission(permission: Int?) {
@@ -143,8 +141,9 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     override fun initViewBinding() {
         fragmentDashboardBinding.listener = this
-        //     permissionCards(View.VISIBLE)
+             permissionCards(View.VISIBLE)
         // show accessed cards only to users
+/*
         if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                 if (viewModel.getLovedUserDetail() != null) {
@@ -160,6 +159,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         } else {
             permissionCards(View.VISIBLE)
         }
+*/
         setCareTeamAdapters()
     }
 

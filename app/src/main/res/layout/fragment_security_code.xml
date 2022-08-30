@@ -93,157 +93,159 @@
 
             </LinearLayout>
 
-            <ScrollView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_body"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:fillViewport="true"
+                android:background="@color/colorWhite"
+                android:elevation="@dimen/_10sdp"
+                android:paddingHorizontal="@dimen/_15sdp"
+                android:paddingTop="@dimen/_45sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/layout_header">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/layout_body"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:background="@color/colorWhite"
-                    android:elevation="@dimen/_10sdp"
-                    android:paddingHorizontal="@dimen/_15sdp"
-                    android:paddingTop="@dimen/_45sdp"
-                    android:paddingBottom="@dimen/_5sdp"
-                   >
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivSecurity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_security"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/ivSecurity"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_security"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/codeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="@string/enter_new_code"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ivSecurity" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/codeTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/gotham_book"
-                        android:text="@string/enter_new_code"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_12ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ivSecurity" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etFirst"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginHorizontal="@dimen/_8ssp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/pin_background"
+                    android:fontFamily="@font/gotham_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:nextFocusRight="@+id/etSecond"
+                    android:padding="0dp"
+                    android:singleLine="true"
+                    android:textColor="@color/_192032"
+                    app:layout_constraintEnd_toStartOf="@+id/etSecond"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/codeTV" />
 
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:id="@+id/pinLL"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/_50sdp"
-                        android:layout_marginHorizontal="@dimen/_20ssp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:orientation="horizontal"
-                        android:weightSum="4"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/codeTV">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etSecond"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@drawable/pin_background"
+                    android:fontFamily="@font/gotham_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:nextFocusLeft="@+id/etFirst"
+                    android:nextFocusRight="@+id/etThird"
+                    android:padding="0dp"
+                    android:singleLine="true"
+                    android:textColor="@color/_192032"
+                    app:layout_constraintEnd_toStartOf="@+id/etThird"
+                    app:layout_constraintStart_toEndOf="@+id/etFirst"
+                    app:layout_constraintTop_toTopOf="@+id/etFirst" />
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/etFirst"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="@dimen/_10ssp"
-                            android:layout_weight="1"
-                            android:background="@drawable/pin_background"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:maxLength="1" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etThird"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:background="@drawable/pin_background"
+                    android:fontFamily="@font/gotham_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:nextFocusLeft="@+id/etSecond"
+                    android:nextFocusRight="@+id/etFourth"
+                    android:padding="0dp"
+                    android:singleLine="true"
+                    android:textColor="@color/_192032"
+                    app:layout_constraintEnd_toStartOf="@+id/etFourth"
+                    app:layout_constraintStart_toEndOf="@+id/etSecond"
+                    app:layout_constraintTop_toTopOf="@+id/etFirst" />
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/etSecond"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="@dimen/_10ssp"
-                            android:layout_weight="1"
-                            android:background="@drawable/pin_background"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:maxLength="1" />
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etFourth"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:background="@drawable/pin_background"
+                    android:fontFamily="@font/gotham_bold"
+                    android:gravity="center"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:nextFocusLeft="@+id/etThird"
+                    android:padding="0dp"
+                    android:singleLine="true"
+                    android:textColor="@color/_192032"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread"
+                    app:layout_constraintStart_toEndOf="@+id/etThird"
+                    app:layout_constraintTop_toTopOf="@+id/etFirst" />
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/etThird"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="@dimen/_10ssp"
-                            android:layout_weight="1"
-                            android:background="@drawable/pin_background"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:maxLength="1" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvSecure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_10ssp"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="@string/this_keep_your_account_secure"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etFirst" />
 
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/etFourth"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="@drawable/pin_background"
-                            android:gravity="center"
-                            android:inputType="number"
-                            android:maxLength="1" />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSaveChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/button_primary"
+                    android:backgroundTint="@color/_399282"
+                    android:fontFamily="@font/gotham_medium"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingHorizontal="80dp"
+                    android:text="@string/str_continue"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_15ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvSecure" />
 
-                    </androidx.appcompat.widget.LinearLayoutCompat>
-
-                    <com.poovam.pinedittextfield.SquarePinField
-                        android:id="@+id/squareField"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:inputType="number"
-                        android:textSize="@dimen/_12sdp"
-                        android:visibility="gone"
-                        app:cornerRadius="@dimen/_10sdp"
-                        app:fieldBgColor="#FFFFFF"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/pinLL" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvSecure"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_10ssp"
-                        android:fontFamily="@font/gotham_book"
-                        android:text="@string/this_keep_your_account_secure"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_12ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/squareField" />
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnSaveChange"
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:background="@drawable/button_primary"
-                        android:backgroundTint="@color/_399282"
-                        android:fontFamily="@font/gotham_medium"
-                        android:onClick="@{listener::onClick}"
-                        android:paddingHorizontal="80dp"
-                        android:text="@string/str_continue"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_15ssp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tvSecure" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </ScrollView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

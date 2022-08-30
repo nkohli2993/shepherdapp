@@ -5,7 +5,6 @@ import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -47,7 +46,7 @@ import java.util.*
 @AndroidEntryPoint
 @SuppressLint("NotifyDataSetChanged,SetTextI18n,SimpleDateFormat")
 class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
-    View.OnClickListener, FrequencyAdapter.selectedFrequency, DaysAdapter.selectedDay {
+    View.OnClickListener, FrequencyAdapter.selectedFrequency, DaysAdapter.SelectedDay {
     private var payLoad: Payload? = null
     private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding
     private var dayAdapter: DaysAdapter? = null
@@ -154,7 +153,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         fragmentScheduleMedicineBinding.doseTV.text = payLoad!!.dosage.name
                         setFrequency(payLoad!!.frequency.toString())
                         if (payLoad!!.end_date != null) {
-                            setEndDate(payLoad!!.end_date)
+                            setEndDate(payLoad!!.end_date!!)
                         }
                         timeList.clear()
                         addedTimeList.clear()
@@ -166,6 +165,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                                     i.hour.lowercase()
                                 )
                             )
+                            // added data to addedTimeList to maintain added time for medication
                             addedTimeList.add(
                                 TimeSelectedlist(
                                     timeList.size,
@@ -174,8 +174,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                                 )
                             )
                         }
-                        // added data to addedTimeList to maintain added time for medication
-//                        addedTimeList.addAll(timeList)
                         setTimeAdapter()
                         addDays(isEdit = true, payLoad!!.days)
                         setDayAdapter()
@@ -718,15 +716,15 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         }
 
     private fun timeListCheck(): Boolean {
-        var allfiled = false
+        var allFiled = false
 
         for (i in timeList) {
             if (i.time.isNullOrEmpty()) {
-                allfiled = true
+                allFiled = true
                 break
             }
         }
-        return allfiled
+        return allFiled
     }
 
     override fun onSelected(position: Int) {
@@ -808,15 +806,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 "Sat" -> 6
                 else -> 7
             }
-            dates.add(DayList(id, SimpleDateFormat("EEEE").format(cal1.time), false, true))
+            dates.add(DayList(id, SimpleDateFormat("EEEE").format(cal1.time),
+                isSelected = false,
+                isClickabled = true
+            ))
             cal1.add(Calendar.DATE, 1)
         }
         return dates
     }
 
-    override fun selected(it: Int) {
-        if (dayList[it].isClickabled) {
-            dayList[it].isSelected = !dayList[it].isSelected
+    override fun selected(position: Int) {
+        if (dayList[position].isClickabled) {
+            dayList[position].isSelected = !dayList[position].isSelected
             dayAdapter!!.notifyDataSetChanged()
             val selected: ArrayList<String> = arrayListOf()
             val selectedDays: ArrayList<String> = arrayListOf()

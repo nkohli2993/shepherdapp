@@ -17,6 +17,7 @@ import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.*
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.GraphData
 import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.TypeData
 import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.VitalStatsData
 import com.shepherd.app.databinding.FragmentVitalStatsBinding
@@ -38,7 +39,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private val typeList: ArrayList<TypeData> = arrayListOf()
     private val vitalStatsViewModel: VitalStatsViewModel by viewModels()
     private lateinit var fragmentVitalStatsBinding: FragmentVitalStatsBinding
-    private var vitalStats: ArrayList<VitalStatsData>? = null
+    private var vitalStats: VitalStatsData? = null
+    private var graphDataList: ArrayList<GraphData> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,35 +60,20 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    vitalStats = it.data.payload.data
+                    vitalStats = it.data.payload.latestOne
+                    graphDataList = it.data.payload.graphData
                     vitalStats.let { stats ->
-                        if ((stats?.size ?: 0) > 0) {
-                            Collections.sort(vitalStats!!, object : Comparator<VitalStatsData?> {
-                                var df: DateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
-                                override fun compare(
-                                    o1: VitalStatsData?,
-                                    o2: VitalStatsData?
-                                ): Int {
-                                    return try {
-                                        df.parse(o1!!.date!!.plus(" ${o1.time}"))!!
-                                            .compareTo(df.parse(o2!!.date!!.plus(" ${o1.time}")))
-                                    } catch (e: Exception) {
-                                        throw IllegalArgumentException(e)
-                                    }
-                                }
-                            })
-                            vitalStats!!.reverse()
-                            //set data on dash board
-                            fragmentVitalStatsBinding.tvHeartRateValue.text =
-                                vitalStats!![0].data?.heartRate
-                            fragmentVitalStatsBinding.tvBodyTempValue.text =
-                                vitalStats!![0].data?.bodyTemp
-                            fragmentVitalStatsBinding.tvBloodPressureValue.text =
-                                vitalStats!![0].data?.sbp.plus("/${vitalStats!![0].data?.dbp}")
-                            fragmentVitalStatsBinding.tvOxygenValue.text =
-                                vitalStats!![0].data?.oxygen
-                        }
+                        //set data on dash board
+                        fragmentVitalStatsBinding.tvHeartRateValue.text =
+                            vitalStats!!.data?.heartRate
+                        fragmentVitalStatsBinding.tvBodyTempValue.text =
+                            vitalStats!!.data?.bodyTemp
+                        fragmentVitalStatsBinding.tvBloodPressureValue.text =
+                            vitalStats!!.data?.sbp.plus("/${vitalStats!!.data?.dbp}")
+                        fragmentVitalStatsBinding.tvOxygenValue.text =
+                            vitalStats!!.data?.oxygen
                     }
+                    setData()
                 }
                 is DataResult.Failure -> {
                     hideLoading()
@@ -135,7 +122,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
     override fun initViewBinding() {
         fragmentVitalStatsBinding.listener = this
-        setData()
+
         addType()
         vitalStatsViewModel.getGraphDataVitalStats(
             SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
@@ -168,6 +155,20 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
         val values = ArrayList<CandleEntry>()
 
+        for(i in graphDataList.indices){
+            values.add(
+                CandleEntry(
+                    i.toFloat(),
+                    if(graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
+                    graphDataList[i].y.toFloat(),
+                    if(graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
+                    graphDataList[i].y.toFloat(),
+                    0
+                )
+            )
+
+        }
+/*
         for (i in 0 until 40) {
             val multi: Float = (40 + 1).toFloat()
             val `val` = (Math.random() * 40).toFloat() + multi
@@ -187,8 +188,9 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 )
             )
         }
+*/
 
-        Log.e("catch_exception","value: ${values}")
+        Log.e("catch_exception", "value: ${values}")
         val set1 = CandleDataSet(values, "Data Set")
 
         set1.setDrawIcons(false)

@@ -62,25 +62,53 @@
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvDate"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clDateWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:drawableStart="@drawable/ic_calendar_care_event"
-                    android:drawablePadding="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_medium"
-                    android:gravity="center_vertical"
-                    android:hint="@string/dd_mm_year"
-                    android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="@dimen/_8sdp"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:textColor="@color/_192032"
-                    android:textColorHint="@color/_A3A5AD"
-                    android:textSize="@dimen/_12ssp"
-                    app:fontFamily="@font/gotham_medium" />
+                    android:onClick="@{listener::onClick}">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivCalender"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:src="@drawable/ic_calendar_care_event"
+                        android:tint="@color/_192032"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/tvDate"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:digits="0123456789"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:fontFamily="@font/gotham_medium"
+                        android:hint="@string/dd_mm_year"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:maxLength="5"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_13ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/ivCalender"
+                        app:layout_constraintTop_toTopOf="parent"
+                        bind:getValidHeartRate="@{@string/heart_rate}" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -93,7 +121,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/layoutAddress" />
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clTimeWrapper"
                     android:layout_width="match_parent"
@@ -104,27 +131,40 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivClock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_10sdp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_margin="@dimen/_10sdp"
                         android:src="@drawable/ic_clock"
+                        android:tint="@color/_192032"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/tvTime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:digits="0123456789"
+                        android:ellipsize="end"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
                         android:fontFamily="@font/gotham_medium"
                         android:hint="@string/choose_time"
+                        android:imeOptions="actionNext"
+                        android:inputType="numberDecimal"
+                        android:maxLength="5"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_10sdp"
+                        android:singleLine="true"
                         android:textColor="@color/_192032"
-                        android:textColorHint="@color/_A3A5AD"
-                        android:textSize="@dimen/_14ssp"
+                        android:textSize="@dimen/_13ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/llAmPm"
                         app:layout_constraintStart_toEndOf="@+id/ivClock"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        bind:getValidHeartRate="@{@string/heart_rate}" />
 
                     <LinearLayout
                         android:id="@+id/llAmPm"
@@ -161,6 +201,7 @@
                             android:textSize="@dimen/_14ssp" />
 
                     </LinearLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <View
@@ -186,8 +227,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivHeart"
-                        android:layout_width="17dp"
-                        android:layout_height="37dp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_margin="@dimen/_10sdp"
                         android:src="@drawable/ic_heart"
                         android:tint="@color/_192032"
@@ -249,8 +290,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivTemp"
-                        android:layout_width="17dp"
-                        android:layout_height="37dp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_margin="@dimen/_10sdp"
                         android:src="@drawable/ic_temperature"
                         android:tint="@color/_192032"
@@ -321,8 +362,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ivBp"
-                            android:layout_width="17dp"
-                            android:layout_height="37dp"
+                            android:layout_width="@dimen/_12sdp"
+                            android:layout_height="@dimen/_20sdp"
                             android:layout_margin="@dimen/_10sdp"
                             android:src="@drawable/ic_blood_pressure"
                             android:tint="@color/_192032"
@@ -379,8 +420,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/ivdBp"
-                            android:layout_width="17dp"
-                            android:layout_height="37dp"
+                            android:layout_width="@dimen/_12sdp"
+                            android:layout_height="@dimen/_20sdp"
                             android:layout_margin="@dimen/_10sdp"
                             android:src="@drawable/ic_blood_pressure"
                             android:tint="@color/_192032"
@@ -431,8 +472,8 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivOxygen"
-                        android:layout_width="17dp"
-                        android:layout_height="37dp"
+                        android:layout_width="@dimen/_12sdp"
+                        android:layout_height="@dimen/_20sdp"
                         android:layout_margin="@dimen/_10sdp"
                         android:src="@drawable/ic_oxygen"
                         android:tint="@color/_192032"
