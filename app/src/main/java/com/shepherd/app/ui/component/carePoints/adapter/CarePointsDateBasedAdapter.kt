@@ -83,12 +83,15 @@ class CarePointsDateBasedAdapter(
                     // Check if the loggedIn user is the only assignee of the event
                     // Make the visibility of chat icon gone
                     if (isListContainMethod(carePoints.user_assignes)) {
-                        itemBinding.ivMessage.visibility = View.GONE
+                        itemBinding.ivMessage.visibility = View.VISIBLE
                     } else if (viewModel.getUserDetail()?.id.toString() == carePoints.created_by) {
                         // Check if the loggedIn user is the assigner
                         // It means two user are there for the care point(event) ,one is assignee and other is the assigner,
                         // make the visibility of chat icon Visible
                         itemBinding.ivMessage.visibility = View.VISIBLE
+                    } else {
+                        // If the loggedIn User is neither the assigner nor assignee
+                        itemBinding.ivMessage.visibility = View.GONE
                     }
                 }
                 else -> {
@@ -98,6 +101,7 @@ class CarePointsDateBasedAdapter(
                     if (isListContainMethod(carePoints.user_assignes) || (viewModel.getUserDetail()?.id.toString() == carePoints.created_by)) {
                         itemBinding.ivMessage.visibility = View.VISIBLE
                     } else {
+                        // If the loggedIn User is neither the assigner nor assignee
                         itemBinding.ivMessage.visibility = View.GONE
                     }
                 }

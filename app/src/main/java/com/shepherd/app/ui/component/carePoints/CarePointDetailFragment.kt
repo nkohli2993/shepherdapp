@@ -66,6 +66,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     private var allMsgLoaded: Boolean = false
     private var msgGroupList: ArrayList<MessageGroupData> = ArrayList()
     private var chatModel: ChatModel? = null
+    private var isAssignerDetailRequired: Boolean = false
+    private var isChatOff: Boolean = false
 
 
     private var TAG = "CarePointDetailFragment"
@@ -96,14 +98,64 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
 
         Log.d(TAG, "onEventSelected: $eventDetail ")
+
+        when (eventDetail?.user_assignes?.size) {
+            1 -> {
+                // Check if the loggedIn user is the only assignee of the event
+                // then assigner will be some other person and hence chat can be performed
+                // Make the visibility of editTextMessage and sendCommentIV gone
+                if (isListContainMethod(eventDetail?.user_assignes!!)) {
+                    chatOn()
+                    isAssignerDetailRequired = true
+                } else if (loggedInUserId.toString() == eventDetail!!.created_by) {
+                    // Check if the loggedIn user is the assigner
+                    // It means two user are there for the care point(event) ,one is assignee and other is the assigner,
+                    // make the visibility of editTextMessage and sendCommentIV Visible
+                    chatOn()
+                } else {
+                    chatOff()
+                    isChatOff = true
+                }
+            }
+            else -> {
+                // Check the possibility of chat
+                // editTextMessage and sendCommentIV is visible if the loggedIn user is one of the assignee of the event or loggedIn user is the assigner
+                if (eventDetail?.user_assignes?.let { isListContainMethod(it) } == true || (loggedInUser?.id.toString() == eventDetail!!.created_by)) {
+                    chatOn()
+                } else {
+                    chatOff()
+                    isChatOff = true
+                }
+            }
+        }
+
+
         val eventName = eventDetail?.name
-        val eventLocation = eventDetail?.location
-        val eventDate = eventDetail?.date
-        val eventTime = eventDetail?.time
         eventDetail?.user_assignes?.forEach {
             val receiverName = it.user_details.firstname + " " + it.user_details.lastname
             val receiverID = it.user_details.id
             val receiverPicUrl = it.user_details.profilePhoto
+            val documentID = null
+            val chatType = Chat.CHAT_GROUP
+
+            // Create Chat Model
+            val chatModel = ChatModel(
+                documentID,
+                loggedInUserId,
+                loggedInUserName,
+                receiverID,
+                receiverName,
+                receiverPicUrl,
+                null,
+                chatType,
+                eventName
+            )
+            chatModelList?.add(chatModel)
+        }
+        if (isAssignerDetailRequired) {
+            val receiverName = null
+            val receiverID = eventDetail?.created_by?.toInt()
+            val receiverPicUrl = null
             val documentID = null
             val chatType = Chat.CHAT_GROUP
 
@@ -126,11 +178,12 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             val chatUserDetail = it.toChatUserDetail()
             chatUserDetailList?.add(chatUserDetail)
         }
-
-        // Set User Detail
-        carePointsViewModel.setToUserDetail(Chat.CHAT_GROUP, chatUserDetailList, eventName)
-        // Load Chat
-        loadChat()
+        if (!isChatOff) {
+            // Set User Detail
+            carePointsViewModel.setToUserDetail(Chat.CHAT_GROUP, chatUserDetailList, eventName)
+            // Load Chat
+            loadChat()
+        }
 
         setCommentAdapter()
         if (eventDetail != null) {
@@ -145,6 +198,16 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             }
             false
         }
+    }
+
+    fun chatOn() {
+        fragmentCarePointDetailBinding.editTextMessage.visibility = View.VISIBLE
+        fragmentCarePointDetailBinding.sendCommentIV.visibility = View.VISIBLE
+    }
+
+    fun chatOff() {
+        fragmentCarePointDetailBinding.editTextMessage.visibility = View.GONE
+        fragmentCarePointDetailBinding.sendCommentIV.visibility = View.GONE
     }
 
 
@@ -333,9 +396,15 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             } else {
                 it.tvLocation.text = payload.location
             }
+            if (isChatOff) {
+                it.editTextMessage.visibility = View.GONE
+                it.sendCommentIV.visibility = View.GONE
+            } else {
+                it.editTextMessage.visibility = View.VISIBLE
+                it.sendCommentIV.visibility = View.VISIBLE
+            }
 
-            it.editTextMessage.visibility = View.VISIBLE
-            it.sendCommentIV.visibility = View.VISIBLE
+
             /* when (payload.user_assignes.size) {
                  1 -> {
                      it.editTextMessage.visibility = View.GONE
