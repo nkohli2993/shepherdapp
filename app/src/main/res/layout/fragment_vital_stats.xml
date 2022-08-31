@@ -378,27 +378,26 @@
                 android:id="@+id/tvHRMin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_1sdp"
                 android:fontFamily="@font/gotham_medium"
                 android:text="Min 70"
                 android:textColor="@color/_CEB9D5"
                 android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
                 app:layout_constraintEnd_toStartOf="@+id/tvHRMax"
-                app:layout_constraintTop_toBottomOf="@+id/clBloodNOWrapper"
+                app:layout_constraintTop_toTopOf="@+id/typeSpinner"
                 tools:ignore="HardcodedText" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvHRMax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/gotham_medium"
                 android:text="Max 130"
                 android:textColor="@color/_8A569C"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/clBloodNOWrapper"
+                app:layout_constraintTop_toTopOf="@+id/tvHRMin"
                 tools:ignore="HardcodedText" />
 
             <com.github.mikephil.charting.charts.CandleStickChart

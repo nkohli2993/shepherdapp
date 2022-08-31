@@ -15,7 +15,10 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
-import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.data.CandleData
+import com.github.mikephil.charting.data.CandleDataSet
+import com.github.mikephil.charting.data.CandleEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.GraphData
 import com.shepherd.app.data.dto.add_vital_stats.vital_stats_dashboard.TypeData
@@ -27,10 +30,8 @@ import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.vital_stats.adapter.TypeAdapter
 import com.shepherd.app.view_model.VitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat")
@@ -52,6 +53,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         return fragmentVitalStatsBinding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun observeViewModel() {
         vitalStatsViewModel.getVitatStatsLiveData.observeEvent(this) {
             when (it) {
@@ -73,11 +75,12 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         fragmentVitalStatsBinding.tvOxygenValue.text =
                             vitalStats!!.data?.oxygen
                     }
+                    fragmentVitalStatsBinding.tvHRMin.text = "Min ${it.data.payload.minAverage}/"
+                    fragmentVitalStatsBinding.tvHRMax.text = "Max ${it.data.payload.maxAverage}"
                     setData()
                 }
                 is DataResult.Failure -> {
                     hideLoading()
-
                 }
             }
         }
@@ -88,25 +91,29 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         typeList.add(
             TypeData(
                 typeList.size,
-                getString(R.string.heart_rate)
+                getString(R.string.heart_rate),
+                "heart_rate"
             )
         )
         typeList.add(
             TypeData(
                 typeList.size,
-                getString(R.string.body_temp)
+                getString(R.string.body_temp),
+                "body_temp"
             )
         )
         typeList.add(
             TypeData(
                 typeList.size,
-                getString(R.string.blood_pressure)
+                getString(R.string.blood_pressure),
+                "blood_pressure"
             )
         )
         typeList.add(
             TypeData(
                 typeList.size,
-                getString(R.string.oxygen)
+                getString(R.string.oxygen),
+                "oxygen"
             )
         )
 
@@ -122,7 +129,6 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
     override fun initViewBinding() {
         fragmentVitalStatsBinding.listener = this
-
         addType()
         vitalStatsViewModel.getGraphDataVitalStats(
             SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
@@ -155,19 +161,27 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
         val values = ArrayList<CandleEntry>()
 
-        for(i in graphDataList.indices){
+        for (i in graphDataList.indices) {
             values.add(
                 CandleEntry(
                     i.toFloat(),
-                    if(graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
+                    if (graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
                     graphDataList[i].y.toFloat(),
-                    if(graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
+                    if (graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
                     graphDataList[i].y.toFloat(),
                     0
                 )
             )
 
         }
+        val xAxisLabel = ArrayList<String>()
+
+        for(i in graphDataList){
+            xAxisLabel.add(i.day)
+        }
+        fragmentVitalStatsBinding.cancleChat.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+        //        leftAxis.setEnabled(false);
+        xAxis.setLabelCount(graphDataList.size, true)
 /*
         for (i in 0 until 40) {
             val multi: Float = (40 + 1).toFloat()

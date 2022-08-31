@@ -480,4 +480,5 @@
     <string name="please_enter_the_loved_one_address">Please enter the Loved One\'s address</string>
     <string name="this_day_does_not_lie_between_selected_end_date_of_medication">This day does not lie between selected end date of medication.</string>
     <string name="please_add_medication_for_future_time">Please add medication for future time.</string>
+    <string name="care_point">Care Point</string>
 </resources>
