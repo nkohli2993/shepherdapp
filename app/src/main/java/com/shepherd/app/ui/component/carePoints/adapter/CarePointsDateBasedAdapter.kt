@@ -77,13 +77,18 @@ class CarePointsDateBasedAdapter(
             }
             //check assignee and remove chat multiple
             itemBinding.ivMessage.visibility = View.VISIBLE
+
             when (carePoints.user_assignes.size) {
                 1 -> {
                     itemBinding.ivMessage.visibility = View.GONE
                 }
                 else -> {
-                    itemBinding.ivMessage.visibility = View.VISIBLE
-                    if (!isListContainMethod(carePoints.user_assignes)) {
+//                    itemBinding.ivMessage.visibility = View.VISIBLE
+
+                    // Chat icon is visible if the loggedIn user is one of the assignee of the event or loggedIn user is the assigner
+                    if (isListContainMethod(carePoints.user_assignes) || (viewModel.getUserDetail()?.id.toString() == carePoints.created_by)) {
+                        itemBinding.ivMessage.visibility = View.VISIBLE
+                    } else {
                         itemBinding.ivMessage.visibility = View.GONE
                     }
                 }
@@ -94,7 +99,7 @@ class CarePointsDateBasedAdapter(
 
     fun isListContainMethod(arraylist: ArrayList<UserAssigneeModel>): Boolean {
         for (str in arraylist) {
-            if (str.user_details.id == viewModel.getUserDetail()?.userId!!) {
+            if (str.user_details.id == viewModel.getUserDetail()?.id!!) {
                 return true
             }
         }
