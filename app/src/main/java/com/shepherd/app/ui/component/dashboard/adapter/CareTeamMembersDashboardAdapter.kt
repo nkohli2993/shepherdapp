@@ -56,8 +56,10 @@ class CareTeamMembersDashBoardAdapter(
             //val imageUrl = careTeam.user?.userProfiles?.profilePhoto
 
             itemBinding.let {
-                Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(it.ivCare)
+                if(imageUrl!=null && imageUrl!=""){
+                    Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(it.ivCare)
+                }
             }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(

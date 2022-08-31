@@ -87,7 +87,6 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:cursorVisible="false"
-                        android:digits="0123456789"
                         android:ellipsize="end"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -95,7 +94,6 @@
                         android:hint="@string/dd_mm_year"
                         android:imeOptions="actionNext"
                         android:inputType="numberDecimal"
-                        android:maxLength="5"
                         android:onClick="@{listener::onClick}"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:paddingVertical="@dimen/_10sdp"
@@ -105,8 +103,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivCalender"
-                        app:layout_constraintTop_toTopOf="parent"
-                        bind:getValidHeartRate="@{@string/heart_rate}" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -146,7 +143,6 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:cursorVisible="false"
-                        android:digits="0123456789"
                         android:ellipsize="end"
                         android:focusable="false"
                         android:focusableInTouchMode="false"
@@ -154,7 +150,7 @@
                         android:hint="@string/choose_time"
                         android:imeOptions="actionNext"
                         android:inputType="numberDecimal"
-                        android:maxLength="5"
+                        android:onClick="@{listener::onClick}"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:paddingVertical="@dimen/_10sdp"
                         android:singleLine="true"
@@ -163,13 +159,13 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/llAmPm"
                         app:layout_constraintStart_toEndOf="@+id/ivClock"
-                        app:layout_constraintTop_toTopOf="parent"
-                        bind:getValidHeartRate="@{@string/heart_rate}" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <LinearLayout
                         android:id="@+id/llAmPm"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:onClick="@{listener::onClick}"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

@@ -184,8 +184,10 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
         binding.ivName.text = fullName
 
-        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.ic_defalut_profile_pic)
-            .into(binding.ivLoggedInUserProfile)
+        if(profilePicLoggedInUser!=null && profilePicLoggedInUser!=""){
+            Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.ic_defalut_profile_pic)
+                .into(binding.ivLoggedInUserProfile)
+        }
 
         // Set User's Role
         val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")

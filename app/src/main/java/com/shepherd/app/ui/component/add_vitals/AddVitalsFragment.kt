@@ -81,7 +81,7 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
-            R.id.clTimeWrapper -> {
+            R.id.clTimeWrapper, R.id.llAmPm, R.id.tvTime -> {
                 timePicker()
             }
             R.id.tvDate -> {
