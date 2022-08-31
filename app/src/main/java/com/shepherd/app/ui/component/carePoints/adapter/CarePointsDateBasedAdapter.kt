@@ -77,13 +77,27 @@ class CarePointsDateBasedAdapter(
             }
             //check assignee and remove chat multiple
             itemBinding.ivMessage.visibility = View.VISIBLE
+
             when (carePoints.user_assignes.size) {
                 1 -> {
-                    itemBinding.ivMessage.visibility = View.GONE
+                    // Check if the loggedIn user is the only assignee of the event
+                    // Make the visibility of chat icon gone
+                    if (isListContainMethod(carePoints.user_assignes)) {
+                        itemBinding.ivMessage.visibility = View.GONE
+                    } else if (viewModel.getUserDetail()?.id.toString() == carePoints.created_by) {
+                        // Check if the loggedIn user is the assigner
+                        // It means two user are there for the care point(event) ,one is assignee and other is the assigner,
+                        // make the visibility of chat icon Visible
+                        itemBinding.ivMessage.visibility = View.VISIBLE
+                    }
                 }
                 else -> {
-                    itemBinding.ivMessage.visibility = View.VISIBLE
-                    if (!isListContainMethod(carePoints.user_assignes)) {
+//                    itemBinding.ivMessage.visibility = View.VISIBLE
+
+                    // Chat icon is visible if the loggedIn user is one of the assignee of the event or loggedIn user is the assigner
+                    if (isListContainMethod(carePoints.user_assignes) || (viewModel.getUserDetail()?.id.toString() == carePoints.created_by)) {
+                        itemBinding.ivMessage.visibility = View.VISIBLE
+                    } else {
                         itemBinding.ivMessage.visibility = View.GONE
                     }
                 }
@@ -94,7 +108,7 @@ class CarePointsDateBasedAdapter(
 
     fun isListContainMethod(arraylist: ArrayList<UserAssigneeModel>): Boolean {
         for (str in arraylist) {
-            if (str.user_details.id == viewModel.getUserDetail()?.userId!!) {
+            if (str.user_details.id == viewModel.getUserDetail()?.id!!) {
                 return true
             }
         }
