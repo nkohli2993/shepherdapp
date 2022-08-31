@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="messageData"
+            type="com.shepherd.app.data.dto.chat.MessageData" />
+
+
+        <variable
+            name="userId"
+            type="String" />
+
+        <import type="android.view.View" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvReceivedTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:fontFamily="@font/gotham_medium"
+            android:textSize="@dimen/_8ssp"
+            android:textColor="@color/_399282"
+            android:visibility="@{messageData.senderID.equals(userId)?View.GONE:View.VISIBLE}"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvReceiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvReceivedTime"
+            app:cardCornerRadius="@dimen/_18sdp"
+            app:cardUseCompatPadding="true"
+            android:visibility="@{messageData.senderID.equals(userId)?View.GONE:View.VISIBLE}"
+            app:cardBackgroundColor="@color/_F2F2F2">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/llImageWrapperReceiver"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_margin="@dimen/_3sdp"
+                    android:background="@drawable/bg_image_place_holder_round_new"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtReceiverName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/txtReceiverName">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imageViewUserReceiver"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:padding="1dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_defalut_profile_pic"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtReceiverName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="@{messageData.senderName}"
+                    android:visibility="@{!messageData.content.empty &amp;&amp; !messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/llImageWrapperReceiver"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/TextViewGothamBook"
+                    android:id="@+id/txtReceiverMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{messageData.content}"
+                    android:visibility="@{!messageData.content.empty &amp;&amp; !messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
+                    android:padding="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llImageWrapperReceiver" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSendTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:textSize="@dimen/_8ssp"
+            android:visibility="@{messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
+            android:fontFamily="@font/gotham_medium"
+            android:textColor="@color/_399282"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/cvSender" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvSender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvSendTime"
+            app:cardCornerRadius="@dimen/_18sdp"
+            app:cardUseCompatPadding="true"
+            android:visibility="@{messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
+            app:cardBackgroundColor="#EAF1EF">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/llImageWrapperSender"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:layout_margin="@dimen/_3sdp"
+                    android:background="@drawable/bg_image_place_holder_round_new"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/txtSenderName"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/txtSenderName">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imageViewUserSender"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:padding="1dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_defalut_profile_pic"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtSenderName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:text="@{messageData.senderName}"
+                    android:visibility="@{!messageData.content.empty &amp;&amp; messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/llImageWrapperSender"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    style="@style/TextViewGothamBook"
+                    android:id="@+id/txtSenderMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{messageData.content}"
+                    android:visibility="@{!messageData.content.empty &amp;&amp; messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
+                    android:padding="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/llImageWrapperSender" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+
+        <!--<androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatTextViewDateHeader">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/appCompatTextViewMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/rounded_box_8"
+                android:backgroundTint="@color/_F2F2F2"
+                android:fontFamily="@font/gotham_book"
+                android:padding="@dimen/_12sdp"
+                android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or- less normal distribution of letters, as opposed to using 'Content here,"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_11ssp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>-->
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.chat.MessageData
+import com.shepherd.app.databinding.AdapterCarePointChatBinding
 import com.shepherd.app.databinding.AdapterChatBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.utils.Const
@@ -20,7 +21,7 @@ class CarePointChatAdapter(
     private val viewModel: CreatedCarePointsViewModel,
     var requestList: MutableList<MessageData> = ArrayList()
 ) : RecyclerView.Adapter<CarePointChatAdapter.ChatViewHolder>() {
-    lateinit var binding: AdapterChatBinding
+    lateinit var binding: AdapterCarePointChatBinding
     lateinit var context: Context
 
 
@@ -36,7 +37,7 @@ class CarePointChatAdapter(
     ): ChatViewHolder {
         context = parent.context
         binding =
-            AdapterChatBinding.inflate(
+            AdapterCarePointChatBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -53,7 +54,7 @@ class CarePointChatAdapter(
     }
 
 
-    class ChatViewHolder(private val itemBinding: AdapterChatBinding) :
+    class ChatViewHolder(private val itemBinding: AdapterCarePointChatBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(messageData: MessageData, recyclerItemListener: RecyclerItemListener) {
