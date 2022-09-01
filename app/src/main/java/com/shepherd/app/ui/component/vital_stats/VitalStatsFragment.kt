@@ -4,12 +4,13 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
+import android.widget.AdapterView
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -28,6 +29,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.vital_stats.adapter.TypeAdapter
+import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.VitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -62,8 +64,12 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    vitalStats = null
+                    graphDataList.clear()
                     vitalStats = it.data.payload.latestOne
                     graphDataList = it.data.payload.graphData
+
+
                     vitalStats.let { stats ->
                         //set data on dash board
                         fragmentVitalStatsBinding.tvHeartRateValue.text =
@@ -88,6 +94,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     }
 
     private fun addType() {
+        typeList.clear()
         typeList.add(
             TypeData(
                 typeList.size,
@@ -130,16 +137,34 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     override fun initViewBinding() {
         fragmentVitalStatsBinding.listener = this
         addType()
-        vitalStatsViewModel.getGraphDataVitalStats(
-            SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
-            vitalStatsViewModel.getLovedOneUUId()!!, "heart_rate"
-        )
+
+
+        fragmentVitalStatsBinding.typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if(typeList[p2].type!! == "blood_pressure"){
+                   showError(requireContext(),"Not Implemented")
+                }
+                else{
+                    vitalStatsViewModel.getGraphDataVitalStats(
+                        SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
+                        vitalStatsViewModel.getLovedOneUUId()!!, type = typeList[p2].type!!
+                    )
+                }
+
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+
+        }
+
     }
 
     private fun setData() {
         fragmentVitalStatsBinding.cancleChat.setBackgroundColor(Color.WHITE)
         fragmentVitalStatsBinding.cancleChat.description.isEnabled = false
-        fragmentVitalStatsBinding.cancleChat.setMaxVisibleValueCount(120)
+        fragmentVitalStatsBinding.cancleChat.setMaxVisibleValueCount(24)
         fragmentVitalStatsBinding.cancleChat.setPinchZoom(false)
         fragmentVitalStatsBinding.cancleChat.setDrawGridBackground(false)
 
@@ -148,7 +173,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         xAxis.setDrawGridLines(false)
 
         val leftAxis: YAxis = fragmentVitalStatsBinding.cancleChat.axisLeft
-        leftAxis.setLabelCount(10, false)
+        leftAxis.setLabelCount(15, false)
         leftAxis.setDrawGridLines(false)
         leftAxis.setDrawAxisLine(true)
 
@@ -160,7 +185,16 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         fragmentVitalStatsBinding.cancleChat.resetTracking()
 
         val values = ArrayList<CandleEntry>()
-
+/*
+        values.add(
+            CandleEntry(
+               -1f,
+               0f,0f,0f,0f,
+                0
+            )
+        )
+*/
+        values.clear()
         for (i in graphDataList.indices) {
             values.add(
                 CandleEntry(
@@ -172,54 +206,41 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     0
                 )
             )
-
         }
-        val xAxisLabel = ArrayList<String>()
 
+        val xAxisLabel = ArrayList<String>()
+        xAxisLabel.clear()
         for(i in graphDataList){
-            xAxisLabel.add(i.day)
+            val time = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
+            val dateTime = SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(time.plus(" ${i.day}"))
+            if(SimpleDateFormat("HH:mm").format(dateTime!!) != "00:00"){
+                xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime))
+            }
+//            xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime!!))
         }
         fragmentVitalStatsBinding.cancleChat.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
-        //        leftAxis.setEnabled(false);
-        xAxis.setLabelCount(graphDataList.size, true)
-/*
-        for (i in 0 until 40) {
-            val multi: Float = (40 + 1).toFloat()
-            val `val` = (Math.random() * 40).toFloat() + multi
-            val high = (Math.random() * 9).toFloat() + 8f
-            val low = (Math.random() * 9).toFloat() + 8f
-            val open = (Math.random() * 6).toFloat() + 1f
-            val close = (Math.random() * 6).toFloat() + 1f
-            val even = i % 2 == 0
-            values.add(
-                CandleEntry(
-                    i.toFloat(),
-                    `val` + high,
-                    `val` - low,
-                    if (even) `val` + open else `val` - open,
-                    if (even) `val` - close else `val` + close,
-                    0
-                )
-            )
-        }
-*/
-
-        Log.e("catch_exception", "value: ${values}")
+        xAxis.setLabelCount(graphDataList.size, false)
         val set1 = CandleDataSet(values, "Data Set")
-
         set1.setDrawIcons(false)
         set1.axisDependency = AxisDependency.LEFT
         set1.shadowColor = Color.WHITE
-        set1.shadowWidth = 0.2f
+        set1.shadowWidth = 1f
         set1.decreasingColor = Color.rgb(159, 123, 179)
         set1.decreasingPaintStyle = Paint.Style.FILL
-        set1.increasingColor = Color.rgb(162, 110, 202)
+        set1.increasingColor = Color.rgb(159, 123, 179)
         set1.increasingPaintStyle = Paint.Style.FILL
         set1.neutralColor = Color.BLUE
-        set1.highlightLineWidth = 1f
-        set1.valueTextColor = Color.rgb(255, 255, 255)
-        val data = CandleData(set1)
+        set1.highlightLineWidth = 0f
+        set1.barSpace = 3f
+        set1.valueTextColor = ContextCompat.getColor(requireContext(),R.color.transparent)
+        fragmentVitalStatsBinding.cancleChat.setVisibleXRangeMaximum(24f)
+        fragmentVitalStatsBinding.cancleChat.setScaleEnabled(false)
+//        fragmentVitalStatsBinding.cancleChat.scaleX = 2f
 
+        fragmentVitalStatsBinding.cancleChat.zoom(2f,0f,2f,0f)
+        fragmentVitalStatsBinding.cancleChat.axisLeft.setAxisMinValue(10f)
+        fragmentVitalStatsBinding.cancleChat.axisRight.setAxisMinValue(10f)
+        val data = CandleData(set1)
         fragmentVitalStatsBinding.cancleChat.data = data
         fragmentVitalStatsBinding.cancleChat.invalidate()
     }
@@ -228,7 +249,6 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         return R.layout.fragment_vital_stats
 
     }
-
 
     override fun onClick(p0: View?) {
         when (p0?.id) {

@@ -131,13 +131,6 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             return false
         }
 
-/*
-    private fun emailIfFilled(){
-        if()
-    }
-*/
-
-
     private var navLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == 10101) onPlaceSelected(result.data)

@@ -22,6 +22,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_30sdp"
             android:layout_marginHorizontal="@dimen/_10sdp">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -380,7 +381,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/_1sdp"
                 android:fontFamily="@font/gotham_medium"
-                android:text="Min 70"
+                android:text="Min - /"
                 android:textColor="@color/_CEB9D5"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
@@ -393,7 +394,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham_medium"
-                android:text="Max 130"
+                android:text="Max -"
                 android:textColor="@color/_8A569C"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintEnd_toEndOf="parent"
