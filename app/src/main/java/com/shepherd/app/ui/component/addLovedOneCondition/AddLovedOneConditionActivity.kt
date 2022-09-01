@@ -257,26 +257,41 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             // api to add medical condition
                             addMedicalConditons(loveOneId)
                         } else {
-                            // api to update medical condition
-                            val deleteId: ArrayList<Int> = arrayListOf()
-                            val newAdded: ArrayList<MedicalConditionsLovedOneRequestModel> =
-                                arrayListOf()
+                            //check if not medical condition is selected
+
+                            selectedConditions.clear()
                             for (i in conditions!!) {
-                                if (i.isSelected && i.isAlreadySelected == 0) {
-                                    newAdded.add(
-                                        MedicalConditionsLovedOneRequestModel(
-                                            i.id,
-                                            loveOneId
-                                        )
-                                    )
-                                }
-                                if (i.isAlreadySelected == 2 && !i.isSelected) {
-                                    deleteId.add(i.addConditionId!!)
+                                if (i.isSelected) {
+                                    selectedConditions.add(i)
                                 }
                             }
-                            addLovedOneConditionViewModel.updateMedicalConditions(
-                                UpdateMedicalConditionRequestModel(newAdded, deleteId)
-                            )
+                            when {
+                                selectedConditions.size<=0 -> {
+                                    showError(this,"Please select at least one medical condition.")
+                                }
+                                else -> {
+                                    // api to update medical condition
+                                    val deleteId: ArrayList<Int> = arrayListOf()
+                                    val newAdded: ArrayList<MedicalConditionsLovedOneRequestModel> =
+                                        arrayListOf()
+                                    for (i in conditions!!) {
+                                        if (i.isSelected && i.isAlreadySelected == 0) {
+                                            newAdded.add(
+                                                MedicalConditionsLovedOneRequestModel(
+                                                    i.id,
+                                                    loveOneId
+                                                )
+                                            )
+                                        }
+                                        if (i.isAlreadySelected == 2 && !i.isSelected) {
+                                            deleteId.add(i.addConditionId!!)
+                                        }
+                                    }
+                                    addLovedOneConditionViewModel.updateMedicalConditions(
+                                        UpdateMedicalConditionRequestModel(newAdded, deleteId)
+                                    )
+                                }
+                            }
                         }
                     }
                     else -> {
@@ -290,6 +305,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private fun addMedicalConditons(
         lovedOneUUID: String?
     ) {
+        selectedConditions.clear()
         for (i in conditions!!) {
             if (i.isSelected && i.isAlreadySelected == 0) {
                 selectedConditions.add(i)

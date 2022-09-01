@@ -46,9 +46,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_20sdp"
-            android:fontFamily="@font/gotham_book"
+            android:fontFamily="@font/gotham_bold"
             android:textColor="@color/_192032"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_14ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivBack"
             app:layout_constraintTop_toBottomOf="@+id/tvMedList" />

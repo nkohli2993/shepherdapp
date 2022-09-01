@@ -252,11 +252,19 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     requireActivity(), R.style.datepicker,
                     { _, year, monthOfYear, dayOfMonth ->
                         fragmentAddNewEventBinding.tvDate.text =
-                            "$dayOfMonth-" + if (monthOfYear + 1 < 10) {
-                                "0${(monthOfYear + 1)}"
-                            } else {
-                                (monthOfYear + 1)
-                            } + "-" + year
+                            "${
+                                if (monthOfYear + 1 < 10) {
+                                    "0${(monthOfYear + 1)}"
+                                } else {
+                                    (monthOfYear + 1)
+                                }
+                            }-${
+                                if (dayOfMonth + 1 < 10) {
+                                    "0$dayOfMonth"
+                                } else {
+                                    dayOfMonth
+                                }
+                            }-$year"
                     }, mYear, mMonth, mDay
                 )
                 datePickerDialog.datePicker.minDate = c.timeInMillis
@@ -313,7 +321,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     private fun createEvent() {
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
-        var dateFormat = SimpleDateFormat("dd-MM-yyyy")
+        var dateFormat = SimpleDateFormat("MM-dd-yyyy")
         val formatedDate: Date = dateFormat.parse(selectedDate)!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         selectedDate = dateFormat.format(formatedDate)
@@ -342,7 +350,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         for (i in careteams) {
             if (i.isSelected) {
                 assignee.add(
-                    i.user_id_details.firstname!!.plus(" ").plus(i.user_id_details.lastname?.ifEmpty { null })
+                    i.user_id_details.firstname!!.plus(" ")
+                        .plus(i.user_id_details.lastname?.ifEmpty { null })
                 )
             }
         }
@@ -376,9 +385,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ")
                             .plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
                     val currentDateTime =
-                        SimpleDateFormat("dd-MM-yyyy HH:mm").format(Calendar.getInstance().time)
+                        SimpleDateFormat("MM-dd-yyyy HH:mm").format(Calendar.getInstance().time)
 
-                    val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
+                    val dateFormat = SimpleDateFormat("MM-dd-yyyy HH:mm")
                     if (dateFormat.parse(selectedDateTime)!!
                             .after(dateFormat.parse(currentDateTime))
                     ) {
@@ -395,7 +404,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     }
 
                 }, hour,
-                minute, true
+                minute, false
             )
             mTimePicker.show()
         }
