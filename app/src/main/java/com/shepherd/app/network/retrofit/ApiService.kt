@@ -41,6 +41,7 @@ import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionReques
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.dto.relation.RelationResponseModel
+import com.shepherd.app.data.dto.resource.ResponseRelationModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
 import com.shepherd.app.data.dto.security_code.SecurityCodeResponseModel
 import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
@@ -390,4 +391,16 @@ interface ApiService {
     ): Response<SecurityCodeResponseModel>
 
 
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
+    suspend fun getAllResourceApi(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("id") id:String
+    ):Response<ResponseRelationModel>
+
+    @GET(ApiConstants.Resource.GET_TRENDING_RESOURCE)
+    suspend fun getTrendingResourceApi(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ):Response<ResponseRelationModel>
 }

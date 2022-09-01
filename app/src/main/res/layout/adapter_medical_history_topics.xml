@@ -26,7 +26,7 @@
                 android:layout_width="@dimen/_80sdp"
                 android:layout_height="@dimen/_80sdp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/test_image_square"
+                android:src="@drawable/default_ic"
                 android:theme="@style/ShapeAppearanceOverlay.App.circleImageView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +41,6 @@
                 android:maxLines="5"
                 android:paddingStart="@dimen/_1sdp"
                 android:paddingEnd="@dimen/_3sdp"
-                android:text="@string/test_topic_title"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintBottom_toTopOf="@+id/textViewBy"

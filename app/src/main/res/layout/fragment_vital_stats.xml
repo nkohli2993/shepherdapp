@@ -402,7 +402,7 @@
                 tools:ignore="HardcodedText" />
 
             <com.github.mikephil.charting.charts.CandleStickChart
-                android:id="@+id/cancleChat"
+                android:id="@+id/typeChart"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_350sdp"
                 android:layout_marginTop="@dimen/_10sdp"

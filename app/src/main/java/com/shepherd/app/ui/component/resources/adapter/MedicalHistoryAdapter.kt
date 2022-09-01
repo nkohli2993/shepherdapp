@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.data.dto.dashboard.DashboardModel
 import com.shepherd.app.databinding.AdapterMedicalHistoryBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.ui.component.resources.ResourcesViewModel
+import com.shepherd.app.view_model.ResourceViewModel
 
 
 class MedicalHistoryAdapter(
-    private val viewModel: ResourcesViewModel,
+    private val viewModel: ResourceViewModel,
     var requestList: MutableList<String> = ArrayList()
 ) :
     RecyclerView.Adapter<MedicalHistoryAdapter.MedicalHistoryViewHolder>() {

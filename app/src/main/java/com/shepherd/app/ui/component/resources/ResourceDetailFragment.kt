@@ -15,12 +15,13 @@ import com.shepherd.app.databinding.FragmentResourceDetailBinding
 import com.shepherd.app.databinding.FragmentResourcesBinding
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.utils.extensions.showInfo
+import com.shepherd.app.view_model.ResourceViewModel
 import java.util.*
 
 
 class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), View.OnClickListener {
 
-    private val resourcesViewModel: ResourcesViewModel by viewModels()
+    private val resourcesViewModel: ResourceViewModel by viewModels()
 
     private lateinit var fragmentResourcesDetailBinding: FragmentResourceDetailBinding
 

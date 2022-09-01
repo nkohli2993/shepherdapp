@@ -106,22 +106,30 @@ object ApiConstants {
         const val UPDATE_SCHEDULED_MEDICATION = "$BASE_URL${API_VERSION}user_medications/{id}"
         const val ADD_USER_MEDICATION_RECORD = "$BASE_URL${API_VERSION}user_medication_records"
         const val GET_MEDICATION_DETAIL = "$BASE_URL${API_VERSION}user_medications/{id}"
+
         // get medication records
-        const val GET_MEDICATION_RECORD = "$BASE_URL${API_VERSION}user_medication_records/loved_one/{id}"
+        const val GET_MEDICATION_RECORD =
+            "$BASE_URL${API_VERSION}user_medication_records/loved_one/{id}"
     }
 
     object UpdateProfile {
-        const val UPDATE_LOGIN_USER_PROFILE ="$BASE_URL_USER${API_VERSION}user_profiles/{id}"
+        const val UPDATE_LOGIN_USER_PROFILE = "$BASE_URL_USER${API_VERSION}user_profiles/{id}"
     }
 
-    object VitalStats{
+    object VitalStats {
         const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital"
         const val GET_GRAPH_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital/graph-data"
     }
-    object SecurityCode{
+
+    object SecurityCode {
         const val ADD_SECURITY_CODE = "$BASE_URL_USER${API_VERSION}user_profiles/sendotp-pin"
         const val VERIFTY_SECURITY_CODE = "$BASE_URL_USER${API_VERSION}user_profiles/verifyotp-pin"
         const val CHANGE_SECURITY_CODE = "$BASE_URL_USER${API_VERSION}user_profiles/change-pin"
+    }
+
+    object Resource {
+        const val GET_ALL_RESOURCE = "$BASE_URL${API_VERSION}posts"
+        const val GET_TRENDING_RESOURCE = "$BASE_URL${API_VERSION}posts/features"
     }
 }
 
