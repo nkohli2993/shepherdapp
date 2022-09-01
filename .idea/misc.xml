@@ -210,6 +210,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_vital_stats.xml" value="0.22" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/layout_add_medicine_list.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/layout_add_time.xml" value="0.2598958333333333" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/popup_report.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/rv_love_ones.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.67" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.21419410004275333" />
@@ -286,7 +287,6 @@
         <entry key="app/src/main/res/layout/adapter_add_medicine_list.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_add_member_role.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_assign_to_event.xml" value="0.25948406676783003" />
-        <entry key="app/src/main/res/layout/adapter_care_point_chat.xml" value="0.25495495495495496" />
         <entry key="app/src/main/res/layout/adapter_care_points.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_points_day.xml" value="0.335" />
         <entry key="app/src/main/res/layout/adapter_care_points_day_date_based.xml" value="0.34479166666666666" />
