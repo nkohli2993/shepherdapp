@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.AddBloodPressureData
 import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.AddVitalData
 import com.shepherd.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherd.app.databinding.FragmentAddVitalsBinding
@@ -115,8 +116,10 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                     selectedDate = dateFormat.format(formattedDate)
                     val data = AddVitalData(
                         fragmentAddVitalsBinding.etHeartRate.text.toString().trim(),
-                        fragmentAddVitalsBinding.etSbp.text.toString().trim(),
-                        fragmentAddVitalsBinding.etDbp.text.toString().trim(),
+                        AddBloodPressureData(
+                            fragmentAddVitalsBinding.etSbp.text.toString().trim(),
+                            fragmentAddVitalsBinding.etDbp.text.toString().trim()
+                        ),
                         fragmentAddVitalsBinding.etTemp.text.toString().trim(),
                         fragmentAddVitalsBinding.etSpo.text.toString().trim()
                     )

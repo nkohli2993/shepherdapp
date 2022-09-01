@@ -281,12 +281,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         getString(R.string.please_enter_event_name)
                     fragmentAddNewEventBinding.etEventName.requestFocus()
                 }
-/*
-                fragmentAddNewEventBinding.edtAddress.text.toString().trim().isEmpty() -> {
-                    fragmentAddNewEventBinding.edtAddress.error = getString(R.string.enter_address)
-                    fragmentAddNewEventBinding.edtAddress.requestFocus()
-                }
-*/
                 assignTo.size <= 0 -> {
                     showInfo(
                         requireContext(),
@@ -391,13 +385,16 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     if (dateFormat.parse(selectedDateTime)!!
                             .after(dateFormat.parse(currentDateTime))
                     ) {
-                        fragmentAddNewEventBinding.tvTime.text =
-                            String.format("%02d:%02d", hourOfDay, selectedMinute)
-
                         if (hourOfDay < 12) {
                             setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                            fragmentAddNewEventBinding.tvTime.setText(
+                                String.format("%02d:%02d", hourOfDay, selectedMinute)
+                            )
                         } else {
                             setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                            fragmentAddNewEventBinding.tvTime.setText(
+                                String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                            )
                         }
                     } else {
                         showError(requireContext(), getString(R.string.please_select_future_time))
