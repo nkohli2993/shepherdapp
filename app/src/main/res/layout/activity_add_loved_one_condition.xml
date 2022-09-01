@@ -141,13 +141,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     android:overScrollMode="never"
                     android:visibility="visible"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.461"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:listitem="@layout/adapter_add_loved_one_condition" />
@@ -155,19 +155,29 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonFinish"
-            style="@style/ButtonPrimary"
-            android:layout_width="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:backgroundTint="#399282"
-            android:onClick="@{listener::onClick}"
-            android:text="@string/finish"
-            android:textAllCaps="false"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:gravity="center"
+            android:background="#99FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/buttonFinish"
+                style="@style/ButtonPrimary"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#399282"
+                android:onClick="@{listener::onClick}"
+                android:text="@string/finish"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

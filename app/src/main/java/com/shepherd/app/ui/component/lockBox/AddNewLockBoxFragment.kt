@@ -1,7 +1,6 @@
 package com.shepherd.app.ui.component.lockBox
 
 import CommonFunctions
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -49,7 +48,7 @@ import java.io.File
  */
 @AndroidEntryPoint
 class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
-    View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener{
+    View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener {
 //     EasyPermissions.PermissionCallbacks
 
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
@@ -61,18 +60,15 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var dialog: Dialog? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
-    var lockBox: ArrayList<LockBox>? = arrayListOf()
-    var uploadedFilesAdapter: UploadedLockBoxFilesAdapter? = null
+    private var uploadedFilesAdapter: UploadedLockBoxFilesAdapter? = null
     private var lbtId: Int? = null
     private var selectedFileList: ArrayList<File>? = arrayListOf()
-    var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
+    private var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
     private var mDriveServiceHelper: DriveServiceHelper? = null
 
     companion object {
-        private const val TAG = "UploadDrive"
         private const val REQUEST_CODE_SIGN_IN = 1
         private const val REQUEST_CODE_OPEN_DOCUMENT = 2
-        private const val RC_STORAGE_PERM = 333
     }
 
 
@@ -148,11 +144,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
                     fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
                     fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
-                    uploadedDocumentsUrl?.let {
+                    uploadedDocumentsUrl?.let { list ->
                         addNewLockBoxViewModel.addNewLockBox(
                             fileName,
                             fileNote,
-                            it,
+                            list,
                             lbtId
                         )
                     }
@@ -161,11 +157,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         }
 
         // Observe the response of add new lock box api
-        addNewLockBoxViewModel.addNewLockBoxResponseLiveData.observeEvent(this) {
-            when (it) {
+        addNewLockBoxViewModel.addNewLockBoxResponseLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    result.message?.let { showError(requireContext(), it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -180,18 +176,18 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         }
 
         // Observe the response of delete uploaded lock box document
-        addNewLockBoxViewModel.deleteUploadedLockBoxDocResponseLiveData.observeEvent(this) {
-            when (it) {
+        addNewLockBoxViewModel.deleteUploadedLockBoxDocResponseLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    result.message?.let { showError(requireContext(), it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    showSuccess(requireContext(), it.data.message.toString())
+                    showSuccess(requireContext(), result.data.message.toString())
 
                     // Reload the uploaded documents
                     addNewLockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(
@@ -208,14 +204,10 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         val uploadSelectedFiles = selectedFiles
         selectedFileList!!.addAll(uploadSelectedFiles!!)
         if (!selectedFiles.isNullOrEmpty()) {
-            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.VISIBLE
-            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                View.GONE
+            setFileViewVisible()
             uploadedFilesAdapter?.addData(uploadSelectedFiles)
         } else {
-            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                View.VISIBLE
+            setFileViewUnvisible()
         }
     }
 
@@ -315,6 +307,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 selectedFileList!!.remove(file)
                 uploadedFilesAdapter?.removeData(file)
                 selectedFileList?.remove(file)
+                selectedFileShow()
             }
             setNegativeButton("No") { _, _ ->
             }
@@ -322,6 +315,14 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         dialog.show()
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+    }
+
+    private fun selectedFileShow() {
+        if ((selectedFileList?.size ?: 0) <= 0) {
+            setFileViewUnvisible()
+        } else {
+            setFileViewVisible()
+        }
     }
 
     /*************Code for google drive **************/
@@ -342,24 +343,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         )
     }
 
-   /* @AfterPermissionGranted(REQUEST_CODE_OPEN_DOCUMENT)
-    private fun methodRequiresTwoPermission() {
-        val perms = arrayOf(
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        if (EasyPermissions.hasPermissions(requireContext(), *perms)) {
-            openMultipleDocPicker()
-
-        } else {
-            EasyPermissions.requestPermissions(
-                requireActivity(), getString(R.string.rationale_external_storage),
-                REQUEST_CODE_OPEN_DOCUMENT, *perms
-            )
-        }
-    }*/
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, resultData: Intent?) {
         when (requestCode) {
             REQUEST_CODE_SIGN_IN -> {
@@ -375,8 +358,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             REQUEST_CODE_OPEN_DOCUMENT -> if (resultCode == AppCompatActivity.RESULT_OK && resultData != null) {
                 val uri = resultData.data
                 uri?.let {
-                    var file: File? = null
-                    file = if (uri.toString().startsWith("content")) {
+                    val file: File = if (uri.toString().startsWith("content")) {
                         CommonFunctions.fileFromContentUri(
                             requireContext().applicationContext,
                             uri.toString().toUri()
@@ -384,7 +366,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     } else {
                         File(uri.toString())
                     }
-                    if (file != null && file.exists()) {
+                    if (file.exists()) {
                         addNewLockBoxViewModel.imageFile = file
                         if (selectedFileList!!.size > 5) {
                             showInfo(
@@ -395,16 +377,12 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             selectedFileList!!.add(file)
                             if (selectedFileList!!.size > 0) {
                                 Log.d(TAG, "handleSelectedFiles: $selectedFiles")
-                                fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
-                                    View.VISIBLE
-                                fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                                    View.GONE
+                                setFileViewVisible()
                                 uploadedFilesAdapter?.addData(selectedFileList!!)
                             } else {
-                                fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-                                fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                                    View.VISIBLE
+                                setFileViewUnvisible()
                             }
+                            selectedFileShow()
                         }
                     }
                 }
@@ -459,8 +437,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     for (i in 0 until count) {
                         val uri: Uri? = data.clipData?.getItemAt(i)?.uri
                         uri?.let {
-                            var file: File? = null
-                            file = if (uri.toString().startsWith("content")) {
+                            val file = if (uri.toString().startsWith("content")) {
                                 CommonFunctions.fileFromContentUri(
                                     requireContext().applicationContext,
                                     uri.toString().toUri()
@@ -473,17 +450,14 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         }
                     }
                     if (driveSelectedFileList.size > 0) {
-                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
-                            View.VISIBLE
-                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                            View.GONE
+                        setFileViewVisible()
                         selectedFileList!!.addAll(driveSelectedFileList)
                         uploadedFilesAdapter?.addData(driveSelectedFileList)
+                        selectedFileShow()
                     } else {
-                        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-                        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                            View.VISIBLE
+                        setFileViewUnvisible()
                     }
+                    selectedFileShow()
                     hideLoading()
 
                 }
@@ -492,8 +466,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     val uri: Uri? = data.data
 
                     uri?.let {
-                        var file: File? = null
-                        file = if (uri.toString().startsWith("content")) {
+                        val file = if (uri.toString().startsWith("content")) {
                             CommonFunctions.fileFromContentUri(
                                 requireContext().applicationContext,
                                 uri.toString().toUri()
@@ -502,41 +475,35 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             File(uri.toString())
                         }
                         val fileSelectedUpload: ArrayList<File> = arrayListOf()
-                        fileSelectedUpload.add(file!!)
+                        fileSelectedUpload.add(file)
                         selectedFileList!!.addAll(fileSelectedUpload)
                         if (selectedFileList!!.size > 0) {
-                            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
-                                View.VISIBLE
-                            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                                View.GONE
+                            setFileViewVisible()
                             uploadedFilesAdapter?.addData(fileSelectedUpload)
                         } else {
-                            fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-                            fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
-                                View.VISIBLE
+                            setFileViewUnvisible()
                         }
+                        selectedFileShow()
                         hideLoading()
                     }
                 }
             }
         }
 
-   /* override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-
+    private fun setFileViewUnvisible() {
+        fragmentAddNewLockBoxBinding.txtUploadedFiles.visibility = View.GONE
+        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility = View.GONE
+        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+            View.GONE
     }
 
-    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        openMultipleDocPicker()
+    private fun setFileViewVisible() {
+        fragmentAddNewLockBoxBinding.txtUploadedFiles.visibility = View.VISIBLE
+        fragmentAddNewLockBoxBinding.rvUploadedFiles.visibility =
+            View.VISIBLE
+        fragmentAddNewLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+            View.GONE
     }
 
-    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        showError(requireContext(), "Permission denied for local storage access.")
-    }*/
 }
 

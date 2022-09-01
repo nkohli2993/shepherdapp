@@ -216,7 +216,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
                 R.id.nav_my_medlist -> {
                     binding.appBarDashboard.apply {
-                        tvTitle.text = getString(R.string.medlist_reminder)
+                        tvTitle.text = getString(R.string.medlist_header)
                         clTopWrapper.isVisible = true
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false

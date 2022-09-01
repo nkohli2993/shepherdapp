@@ -70,7 +70,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var selectedMedList: Medlist? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
     private var addedTimeList: MutableList<TimeSelectedlist> = arrayListOf()
-    private var selectedDateFormat = SimpleDateFormat("dd-MM-yyyy")
+    private var selectedDateFormat = SimpleDateFormat("MM-DD-yyyy")
     private var selectedDateTimeFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
     private var serverDateFormat = SimpleDateFormat("yyyy-MM-dd")
     private var medicationId: Int? = null
@@ -491,16 +491,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     { _, year, monthOfYear, dayOfMonth ->
                         fragmentScheduleMedicineBinding.endDate.text =
                             "${
+                                if (monthOfYear + 1 < 10) {
+                                    "0${(monthOfYear + 1)}"
+                                } else {
+                                    (monthOfYear + 1)
+                                }
+                            }-${
                                 if (dayOfMonth + 1 < 10) {
-                                    "0${(dayOfMonth + 1)}"
+                                    "0$dayOfMonth"
                                 } else {
                                     dayOfMonth
                                 }
-                            }" + "-" + if (monthOfYear + 1 < 10) {
-                                "0${(monthOfYear + 1)}"
-                            } else {
-                                (monthOfYear + 1)
-                            } + "-" + year
+                            }-$year"
                         addDays()
                         setDayAdapter()
                     }, mYear, mMonth, mDay

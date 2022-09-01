@@ -59,7 +59,7 @@
         android:drawableStart="@drawable/ic_recommended"
         android:textColor="@color/colorWhite"
         android:includeFontPadding="false"
-        android:textSize="@dimen/_12ssp"
+        android:textSize="@dimen/_14ssp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

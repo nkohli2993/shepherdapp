@@ -315,7 +315,7 @@
     <string name="log_out">Log out</string>
     <string name="_2022_the_shepherd_company_llc_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>
     <string name="reminders">Reminders</string>
-    <string name="schedule_medication_reminders_set_refill_alerts_research">Schedule medication reminders, set refill alerts, research.</string>
+    <string name="schedule_medication_reminders_set_refill_alerts_research">Schedule medication, set refill alerts, research.</string>
     <string name="medications">Medications</string>
     <string name="create_and_join_conversations_among_careteam_members">Create and join conversations among CareTeam members.</string>
     <string name="create_care_team">Create a supportive care team of family, friends and professionals.</string>
@@ -366,10 +366,10 @@
     <string name="dd_mm_yy">DD/MM/YY</string>
     <string name="select">Select</string>
     <string name="add_new_care_point">Add New CarePoint</string>
-    <string name="add_new_lock_box">Add New LockBox</string>
+    <string name="add_new_lock_box">Add New Item</string>
     <string name="assign_to_">Assign To</string>
     <string name="wed_18_jul">wed, 18 jul</string>
-    <string name="no_care_points_found">No Care points found</string>
+    <string name="no_care_points_found">No CarePoints found</string>
     <string name="menu_care_point_detail">Care point detail</string>
     <string name="dd_mm_year">DD/MM/YEAR</string>
     <string name="_12_00">12:00</string>
@@ -392,7 +392,7 @@
     <string name="enter_file_name">Please enter file name…</string>
     <string name="enter_note">Please enter note…</string>
     <string name="google_drive_upload">Google driver</string>
-    <string name="no_uploaded_lock_box_files_found">No Uploaded Lock Box Files Found</string>
+    <string name="no_uploaded_lock_box_files_found">No Uploaded LockBox Files Found</string>
     <string name="me">Me</string>
     <string name="add_medication">Add Medication</string>
     <string name="update_medication">Update Medication</string>
@@ -426,7 +426,7 @@
     <string name="end_date">End Date</string>
     <string name="once_a_day">Once a day</string>
     <string name="twice_a_day">Twice a day</string>
-    <string name="three_times_a_day">Thrice times a day</string>
+    <string name="three_times_a_day">Three times a day</string>
     <string name="four_times_a_day">Four times a day</string>
     <string name="no_medication_reminder_found">No Medication Reminder Found…</string>
     <string name="no_medication_found">No Medication Found…</string>
@@ -483,4 +483,5 @@
     <string name="care_point">Care Point</string>
     <string name="notification">Notifications</string>
     <string name="clear_all">Clear All</string>
+    <string name="medlist_header">MedList</string>
 </resources>
