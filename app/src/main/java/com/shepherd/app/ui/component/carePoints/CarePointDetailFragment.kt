@@ -105,8 +105,16 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 // then assigner will be some other person and hence chat can be performed
                 // Make the visibility of editTextMessage and sendCommentIV gone
                 if (isListContainMethod(eventDetail?.user_assignes!!)) {
-                    chatOn()
-                    isAssignerDetailRequired = true
+                    if (loggedInUserId.toString() == eventDetail?.created_by) {
+                        // If loggedIn user is the only assignee as well as assigner
+                        chatOff()
+                        isChatOff = true
+                    } else {
+                        chatOn()
+                        isAssignerDetailRequired = true
+                    }
+//                    chatOn()
+//                    isAssignerDetailRequired = true
                 } else if (loggedInUserId.toString() == eventDetail!!.created_by) {
                     // Check if the loggedIn user is the assigner
                     // It means two user are there for the care point(event) ,one is assignee and other is the assigner,
