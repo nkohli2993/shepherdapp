@@ -94,7 +94,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             UserProfile::class.java
         )
 
-        val loggedInUserId = loggedInUser?.id
+        val loggedInUserId = loggedInUser?.userId
         val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
 
         Log.d(TAG, "onEventSelected: $eventDetail ")
@@ -128,7 +128,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             else -> {
                 // Check the possibility of chat
                 // editTextMessage and sendCommentIV is visible if the loggedIn user is one of the assignee of the event or loggedIn user is the assigner
-                if (eventDetail?.user_assignes?.let { isListContainMethod(it) } == true || (loggedInUser?.id.toString() == eventDetail!!.created_by)) {
+                if (eventDetail?.user_assignes?.let { isListContainMethod(it) } == true || (loggedInUserId.toString() == eventDetail!!.created_by)) {
                     chatOn()
                 } else {
                     chatOff()

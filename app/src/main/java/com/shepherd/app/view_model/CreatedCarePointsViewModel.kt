@@ -391,7 +391,7 @@ class CreatedCarePointsViewModel @Inject constructor(
 
     fun UserProfile.toChatUser(): ChatUserDetail {
         return ChatUserDetail().apply {
-            id = this@toChatUser.id.toString()
+            id = this@toChatUser.userId.toString()
             name = this@toChatUser.firstname + " " + this@toChatUser.lastname
             imageUrl = this@toChatUser.profilePhoto ?: ""
         }
@@ -421,10 +421,10 @@ class CreatedCarePointsViewModel @Inject constructor(
         val data = MessageData().apply {
             content = message
             isRead = false
-            senderID = userRepository.getCurrentUser()?.id.toString()
+            senderID = userRepository.getCurrentUser()?.userId.toString()
             messageType = msgType
             readIds = ArrayList<String>().apply {
-                add(userRepository.getCurrentUser()?.id.toString() ?: "")
+                add(userRepository.getCurrentUser()?.userId.toString() ?: "")
             }
             senderName =
                 userRepository.getCurrentUser()?.firstname + " " + userRepository.getCurrentUser()?.lastname
