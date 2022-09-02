@@ -47,7 +47,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
     private var conditionIDs: List<Int?>? = null
     private var isLoading = false
-    private var deletedIds: ArrayList<Int> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
@@ -125,6 +124,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     }
                     callAllMedicalCondition()
                     if (addedConditionPayload.size <= 0) {
+                        binding.buttonFinish.text = getString(R.string.add)
                         // show popup for no medical conditions
                         val builder = AlertDialog.Builder(this)
                         val dialog = builder.apply {
@@ -140,6 +140,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
                         return@observeEvent
+                    } else {
+                        binding.buttonFinish.text = getString(R.string.update)
                     }
                 }
             }
@@ -262,8 +264,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                                 }
                             }
                             when {
-                                selectedConditions.size<=0 -> {
-                                    showError(this,"Please select at least one medical condition.")
+                                selectedConditions.size <= 0 -> {
+                                    showError(this, "Please select at least one medical condition.")
                                 }
                                 else -> {
                                     // api to update medical condition

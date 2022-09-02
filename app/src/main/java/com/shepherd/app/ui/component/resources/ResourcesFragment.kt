@@ -2,34 +2,36 @@ package com.shepherd.app.ui.component.resources
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import com.google.android.material.snackbar.Snackbar
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
-import com.shepherd.app.data.Resource
-import com.shepherd.app.data.dto.login.LoginResponseModel
+import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload
+import com.shepherd.app.data.dto.resource.AllResourceData
 import com.shepherd.app.databinding.FragmentResourcesBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.resources.adapter.MedicalHistoryTopicsAdapter
 import com.shepherd.app.ui.component.resources.adapter.TopicsAdapter
 import com.shepherd.app.utils.*
-import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.resource.AllResourceData
-import com.shepherd.app.network.retrofit.DataResult
-import com.shepherd.app.network.retrofit.observeEvent
+import com.shepherd.app.utils.extensions.hideKeyboard
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.ResourceViewModel
-import kotlin.collections.ArrayList
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
+
 
 /**
  * Created by Nikita 31/08/2022
@@ -37,8 +39,10 @@ import kotlin.collections.ArrayList
 @AndroidEntryPoint
 class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
+    private var isSearch: Boolean = false
     private lateinit var fragmentResourcesBinding: FragmentResourcesBinding
     private val resourcesViewModel: ResourceViewModel by viewModels()
+    private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
     private val TAG: String = "ResourceList"
     private var pageNumber = 1
     private val limit = 10
@@ -49,6 +53,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private var medicalHistoryTopicsAdapter: MedicalHistoryTopicsAdapter? = null
     private var resourceList: ArrayList<AllResourceData> = arrayListOf()
     private var trendingResourceList: ArrayList<AllResourceData> = arrayListOf()
+    private var conditionIDs: ArrayList<Int> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,16 +66,58 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     }
 
     override fun initViewBinding() {
-        resourcesViewModel.getAllResourceApi(
-            pageNumber,
-            limit,
-            resourcesViewModel.getLovedOneUUId()!!
-        )
+        resourcesViewModel.getLovedOneUUId()
+            ?.let { resourcesViewModel.getLovedOneMedicalConditions(it) }
         resourcesViewModel.getTrendingResourceApi(pageNumber, limit)
         setTopicsAdapter()
         setMedicalHistoryTopicsAdapter()
-        setMedicalHistoryAdapter()
 
+        fragmentResourcesBinding.imgCancel.setOnClickListener {
+            fragmentResourcesBinding.editTextSearch.setText("")
+            showTrendingPost(View.VISIBLE)
+            pageNumber = 1
+            isSearch = false
+            hideKeyboard()
+            callAllResourceBasedOmMedicalHistory()
+        }
+
+
+        fragmentResourcesBinding.editTextSearch.doOnTextChanged { s, start, lengthBefore, lengthAfter ->
+            if (s.toString().isEmpty() && (lengthBefore == 0 && lengthAfter == 0)) {
+                fragmentResourcesBinding.imgCancel.visibility = View.GONE
+                showTrendingPost(View.VISIBLE)
+                hideKeyboard()
+            } else if (s.toString().isEmpty() && (lengthBefore > 0 && lengthAfter >= 0)) {
+                fragmentResourcesBinding.imgCancel.visibility = View.GONE
+                showTrendingPost(View.VISIBLE)
+                pageNumber = 1
+                isSearch = false
+                hideKeyboard()
+                callAllResourceBasedOmMedicalHistory()
+            } else {
+                fragmentResourcesBinding.imgCancel.visibility = View.VISIBLE
+                showTrendingPost(View.GONE)
+                //Hit search api
+                isSearch = true
+                resourceList.clear()
+                resourcesViewModel.getSearchResourceResultApi(
+                    pageNumber,
+                    limit,
+                    resourcesViewModel.getLovedOneUUId()!!,
+                    conditionIDs.toString()
+                        .replace(" ", ""),//conditionIDs.toString().replace(" ","")
+                    fragmentResourcesBinding.editTextSearch.text.toString()
+                )
+
+            }
+        }
+    }
+
+    private fun showTrendingPost(value: Int) {
+        fragmentResourcesBinding.textViewTrendingTopics.visibility = value
+        fragmentResourcesBinding.recyclerViewTopics.visibility = value
+        fragmentResourcesBinding.textViewBasedOnMedicalHistory.visibility = value
+        fragmentResourcesBinding.medicalHistory.visibility = value
     }
 
     private fun handleResourcesPagination() {
@@ -92,20 +139,53 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                         isScrolling = false
                         currentPage++
                         pageNumber++
-                        resourcesViewModel.getAllResourceApi(
-                            pageNumber,
-                            limit,
-                            resourcesViewModel.getLovedOneUUId()!!
-                        )
+                        callAllResourceBasedOmMedicalHistory()
                     }
                 }
             }
         })
     }
 
+    private fun callAllResourceBasedOmMedicalHistory() {
+        Log.e("catch_exception", "condition: ${conditionIDs.toString()}")
+        resourcesViewModel.getAllResourceApi(
+            pageNumber,
+            limit,
+            resourcesViewModel.getLovedOneUUId()!!,
+            conditionIDs.toString().replace(" ", ""),//conditionIDs.toString().replace(" ","")
+        )
+    }
+
     override fun observeViewModel() {
 
         observeEvent(resourcesViewModel.selectedResourceDetail, ::navigateToResourceItems)
+        //Observe the response of get loved one's medical conditions api
+        resourcesViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    // hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                    callAllResourceBasedOmMedicalHistory()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    //   hideLoading()
+                    addedConditionPayload.clear()
+                    fragmentResourcesBinding.medicalHistory.removeAllViews()
+                    for (i in it.data.payload) {
+                        if (i.conditionId != null) {
+                            addedConditionPayload.add(i)
+                            conditionIDs.add(i.conditionId!!)
+                        }
+                    }
+                    // set tags
+                    setMedicalTags()
+                    callAllResourceBasedOmMedicalHistory()
+                }
+            }
+        }
         resourcesViewModel.resourceResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -113,10 +193,15 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     showError(requireContext(), it.message.toString())
                 }
                 is DataResult.Loading -> {
-                    showLoading("")
+                    //  showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    resourceList.clear()
+                    if (pageNumber == 1) {
+                        medicalHistoryTopicsAdapter = null
+                        setMedicalHistoryTopicsAdapter()
+                    }
                     resourceList = it.data.payload!!.data
                     it.data.payload.let { payload ->
                         resourceList = payload!!.data
@@ -136,7 +221,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                             View.VISIBLE
                         resourceList.let { it1 ->
                             medicalHistoryTopicsAdapter?.addData(
-                                it1
+                                it1, isSearch
                             )
                         }
                     }
@@ -176,28 +261,17 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
     }
 
-    private fun navigateToResourceItems(navigateEvent: SingleEvent<Int>) {
+    private fun navigateToResourceItems(navigateEvent: SingleEvent<AllResourceData>) {
         navigateEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "openResopurceDetail: id :$it")
             findNavController().navigate(
                 ResourcesFragmentDirections.actionNavResourceToResourceToResourceDetail(
-                    it.toString()
+                    source = it.id.toString(),
+                    detail = it
                 )
             )
         }
 
-    }
-
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-        when (status) {
-            is Resource.Loading -> {}
-            is Resource.Success -> status.data?.let {
-
-            }
-            is Resource.DataError -> {
-                status.errorCode?.let { resourcesViewModel.showToastMessage(it) }
-            }
-        }
     }
 
     private fun setTopicsAdapter() {
@@ -205,39 +279,70 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         fragmentResourcesBinding.recyclerViewTopics.adapter = topicsAdapter
     }
 
-    private fun createTextView(text: String): View {
-        val textView = TextView(requireContext())
-        textView.text = text
-        textView.typeface = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
-        textView.setTextColor(ContextCompat.getColor(requireContext(), R.color._192032))
-        textView.setPadding(20, 10, 10, 10)
-        textView.setOnClickListener {
-            //candle click
+    private fun createTagView(text: Payload, position: Int): View {
+        val parent = LinearLayout(context)
+
+        parent.layoutParams =
+            LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        parent.orientation = LinearLayout.HORIZONTAL
+        val closeIV = ImageView(context)
+        closeIV.setImageResource(R.drawable.ic_round_cancel)
+        val layout2 = LinearLayout(context)
+        layout2.layoutParams =
+            LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        layout2.orientation = LinearLayout.HORIZONTAL
+        parent.addView(layout2)
+        val textConditionName = TextView(context)
+        layout2.addView(textConditionName)
+        layout2.addView(closeIV)
+        textConditionName.text = text.conditions!!.name
+        textConditionName.typeface = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
+        textConditionName.setTextColor(ContextCompat.getColor(requireContext(), R.color._192032))
+        textConditionName.setPadding(20, 10, 10, 10)
+        parent.setPadding(5, 5, 10, 5)
+        closeIV.setPadding(0, 5, 0, 0)
+        parent.setBackgroundResource(R.drawable.shape_black_border)
+        layout2.gravity = Gravity.CENTER_HORIZONTAL
+
+        closeIV.setOnClickListener {
+            addedConditionPayload.removeAt(position)
+            setMedicalTags()
+            for (i in addedConditionPayload) {
+                if (i.conditionId != null) {
+                    conditionIDs.add(i.conditionId!!)
+                }
+            }
+
+            //call api for resource post
+            callAllResourceBasedOmMedicalHistory()
         }
-        textView.compoundDrawablePadding = 10
-        textView.setCompoundDrawablesRelativeWithIntrinsicBounds(
-            0,
-            0,
-            R.drawable.ic_round_cancel,
-            0
-        )
-        textView.setBackgroundResource(R.drawable.shape_black_border)
-        return textView
+
+        return parent
     }
 
-    private fun setMedicalHistoryAdapter() {
+    override fun onResume() {
+        super.onResume()
+        fragmentResourcesBinding.medicalHistory.removeAllViews()
+    }
+
+    private fun setMedicalTags() {
         //set medical history names
-/*
-        for (locale in Locale.getAvailableLocales()) {
-            val countryName: String = locale.displayCountry
-            if (countryName.isNotEmpty()) {
-                fragmentResourcesBinding.medicalHistory.addView(
-                    createTextView(countryName),
-                    LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
+        fragmentResourcesBinding.medicalHistory.removeAllViews()
+        for (medicalCondition in addedConditionPayload.indices) {
+            fragmentResourcesBinding.medicalHistory.addView(
+                createTagView(addedConditionPayload[medicalCondition], medicalCondition),
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-            }
+            )
         }
-*/
     }
 
     private fun setMedicalHistoryTopicsAdapter() {

@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.login.UserProfile
+import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
+import com.shepherd.app.data.dto.resource.AllResourceData
+import com.shepherd.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherd.app.data.dto.resource.ResponseRelationModel
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.resource.ResourceRepository
@@ -33,6 +36,12 @@ class ResourceViewModel @Inject constructor(
     var resourceResponseLiveData: LiveData<Event<DataResult<ResponseRelationModel>>> =
         _resourceResponseLiveData
 
+    // Resource list Response particular id based Live Data
+    private var _resourceIdBasedResponseLiveData =
+        MutableLiveData<Event<DataResult<ParticularResourceResponseModel>>>()
+    var resourceIdBasedResponseLiveData: LiveData<Event<DataResult<ParticularResourceResponseModel>>> =
+        _resourceIdBasedResponseLiveData
+
     // Resource list Response Live Data
     private var _trendingResourceResponseLiveData =
         MutableLiveData<Event<DataResult<ResponseRelationModel>>>()
@@ -40,11 +49,16 @@ class ResourceViewModel @Inject constructor(
         _trendingResourceResponseLiveData
 
     // selected resource
-    private val _selectedResourceDetail = MutableLiveData<SingleEvent<Int>>()
-    val selectedResourceDetail: LiveData<SingleEvent<Int>> get() = _selectedResourceDetail
-    fun openSelectedResource(position: Int) {
+    private val _selectedResourceDetail = MutableLiveData<SingleEvent<AllResourceData>>()
+    val selectedResourceDetail: LiveData<SingleEvent<AllResourceData>> get() = _selectedResourceDetail
+    fun openSelectedResource(position: AllResourceData) {
         _selectedResourceDetail.value = SingleEvent(position)
     }
+
+    private var _lovedOneMedicalConditionResponseLiveData =
+        MutableLiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>>()
+    var lovedOneMedicalConditionResponseLiveData: LiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>> =
+        _lovedOneMedicalConditionResponseLiveData
 
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -72,10 +86,11 @@ class ResourceViewModel @Inject constructor(
 
     fun getAllResourceApi(
         pageNumber: Int,
-        limit: Int,lovedOneId:String
+        limit: Int,lovedOneId:String,
+        conditions:String,
     ): LiveData<Event<DataResult<ResponseRelationModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.getAllResourceApi(pageNumber, limit,lovedOneId)
+            val response = dataRepository.getAllResourceApi(pageNumber, limit,lovedOneId,conditions)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _resourceResponseLiveData.postValue(Event(it))
@@ -83,6 +98,35 @@ class ResourceViewModel @Inject constructor(
             }
         }
         return resourceResponseLiveData
+    }
+    fun getSearchResourceResultApi(
+        pageNumber: Int,
+        limit: Int,lovedOneId:String,
+        conditions:String,
+        search:String
+    ): LiveData<Event<DataResult<ResponseRelationModel>>> {
+        viewModelScope.launch {
+            val response = dataRepository.getSearchResourceResultApi(pageNumber, limit,lovedOneId,conditions,search)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _resourceResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return resourceResponseLiveData
+    }
+    fun getResourceDetail(
+        id:Int
+    ): LiveData<Event<DataResult<ParticularResourceResponseModel>>> {
+        viewModelScope.launch {
+            val response = dataRepository.getResourceDetail(id)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _resourceIdBasedResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return resourceIdBasedResponseLiveData
     }
 
     fun getTrendingResourceApi(
@@ -98,6 +142,19 @@ class ResourceViewModel @Inject constructor(
             }
         }
         return trendingResourceResponseLiveData
+    }
+
+    // Get Loved One's Medical Conditions
+    fun getLovedOneMedicalConditions(lovedOneUUID: String): LiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>> {
+        viewModelScope.launch {
+            val response = dataRepository.getLovedOneMedicalConditions(lovedOneUUID)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _lovedOneMedicalConditionResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return lovedOneMedicalConditionResponseLiveData
     }
 
 }

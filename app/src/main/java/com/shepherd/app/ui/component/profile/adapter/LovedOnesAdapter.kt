@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.profile.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
@@ -75,7 +76,7 @@ class LovedOnesAdapter(
 
                 // Set Role
                 itemBinding.textLovedOneRole.text = it.careRoles.name
-
+                itemBinding.textLovedOneRole.visibility  = View.GONE
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")

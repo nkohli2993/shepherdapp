@@ -315,6 +315,13 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 FrequencyType.FOUR.value.toInt()
             )
         )
+        frequencyList.add(
+            FrequencyData(
+                frequencyList.size,
+                getString(R.string.as_needed),
+                FrequencyType.FIVE.value.toInt()
+            )
+        )
     }
 
     // to get gap between two dates
@@ -731,15 +738,17 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
     override fun onSelected(position: Int) {
         frequencyId = frequencyList[position].time!!
-        val list: ArrayList<TimeSelectedlist> = arrayListOf()
-        val timeCount = frequencyList[position].time!!
-        for (i in 0 until timeCount) {
-            list.add(TimeSelectedlist())
+        if (frequencyList[position].time!! != 5) {
+            val list: ArrayList<TimeSelectedlist> = arrayListOf()
+            val timeCount = frequencyList[position].time!!
+            for (i in 0 until timeCount) {
+                list.add(TimeSelectedlist())
+            }
+            timeList.clear()
+            timeList.addAll(list)
+            timeAdapter = null
+            setTimeAdapter()
         }
-        timeList.clear()
-        timeList.addAll(list)
-        timeAdapter = null
-        setTimeAdapter()
         showFrequencyView()
         fragmentScheduleMedicineBinding.frequencyET.text = frequencyList[position].name
     }
@@ -808,10 +817,13 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 "Sat" -> 6
                 else -> 7
             }
-            dates.add(DayList(id, SimpleDateFormat("EEEE").format(cal1.time),
-                isSelected = false,
-                isClickabled = true
-            ))
+            dates.add(
+                DayList(
+                    id, SimpleDateFormat("EEEE").format(cal1.time),
+                    isSelected = false,
+                    isClickabled = true
+                )
+            )
             cal1.add(Calendar.DATE, 1)
         }
         return dates

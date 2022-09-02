@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.loved_one
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -63,7 +64,7 @@ class LovedOneAdapter(
             careTeam.let {
                 // Set full name
                 val fullName =
-                    it.love_user_id_details.firstname + " " + if(it.love_user_id_details.lastname == null) "" else it.love_user_id_details.lastname
+                    it.love_user_id_details.firstname + " " + if (it.love_user_id_details.lastname == null) "" else it.love_user_id_details.lastname
                 itemBinding.textViewCareTeamName.text = fullName
 
                 //Set Image
@@ -73,7 +74,7 @@ class LovedOneAdapter(
 
                 // Set Role
                 itemBinding.txtRole.text = "As " + it.careRoles.name
-
+                itemBinding.txtRole.visibility = View.GONE
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
@@ -132,7 +133,7 @@ class LovedOneAdapter(
     }
 
     fun addData(careTeams: ArrayList<CareTeamModel>?) {
-       // this.careTeams.clear()
+        // this.careTeams.clear()
         careTeams?.let { this.careTeams.addAll(it) }
         notifyDataSetChanged()
     }
