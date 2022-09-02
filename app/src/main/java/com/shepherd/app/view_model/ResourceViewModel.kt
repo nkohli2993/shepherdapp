@@ -8,6 +8,7 @@ import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.dto.resource.AllResourceData
+import com.shepherd.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherd.app.data.dto.resource.ResponseRelationModel
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.resource.ResourceRepository
@@ -34,6 +35,12 @@ class ResourceViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<ResponseRelationModel>>>()
     var resourceResponseLiveData: LiveData<Event<DataResult<ResponseRelationModel>>> =
         _resourceResponseLiveData
+
+    // Resource list Response particular id based Live Data
+    private var _resourceIdBasedResponseLiveData =
+        MutableLiveData<Event<DataResult<ParticularResourceResponseModel>>>()
+    var resourceIdBasedResponseLiveData: LiveData<Event<DataResult<ParticularResourceResponseModel>>> =
+        _resourceIdBasedResponseLiveData
 
     // Resource list Response Live Data
     private var _trendingResourceResponseLiveData =
@@ -107,6 +114,19 @@ class ResourceViewModel @Inject constructor(
             }
         }
         return resourceResponseLiveData
+    }
+    fun getResourceDetail(
+        id:Int
+    ): LiveData<Event<DataResult<ParticularResourceResponseModel>>> {
+        viewModelScope.launch {
+            val response = dataRepository.getResourceDetail(id)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _resourceIdBasedResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return resourceIdBasedResponseLiveData
     }
 
     fun getTrendingResourceApi(

@@ -10,7 +10,10 @@ import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.resource.AllResourceData
 import com.shepherd.app.databinding.FragmentResourceDetailBinding
+import com.shepherd.app.network.retrofit.DataResult
+import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.toTextFormat
 import com.shepherd.app.view_model.ResourceViewModel
 import com.squareup.picasso.Picasso
@@ -34,6 +37,22 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
     }
 
     override fun observeViewModel() {
+        resourcesViewModel.resourceIdBasedResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    //  showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    resourceDetail = it.data.payload
+                    setDataResource()
+                }
+            }
+        }
 
     }
 
@@ -42,11 +61,13 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
         if (args.source != null) {
             resourceId = args.source!!.toInt()
         }
+/*
         if (args.detail != null) {
             resourceDetail = args.detail!!
             setDataResource()
         }
-
+*/
+        resourcesViewModel.getResourceDetail(resourceId ?: 0)
     }
 
     @SuppressLint("SetTextI18n")

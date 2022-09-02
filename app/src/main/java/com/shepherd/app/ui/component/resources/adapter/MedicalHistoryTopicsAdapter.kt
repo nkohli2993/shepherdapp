@@ -77,8 +77,15 @@ class MedicalHistoryTopicsAdapter(
         return position
     }
 
-    fun addData(resourceList: MutableList<AllResourceData>) {
-        this.resourceList.addAll(resourceList)
+    fun addData(resourceList: MutableList<AllResourceData>, isSearch: Boolean) {
+        if(isSearch){
+            this.resourceList.clear()
+            this.resourceList.addAll(resourceList)
+        }
+        else{
+            this.resourceList.addAll(resourceList)
+        }
+
         notifyDataSetChanged()
     }
 

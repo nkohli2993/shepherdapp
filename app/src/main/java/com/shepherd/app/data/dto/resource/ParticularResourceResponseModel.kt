@@ -4,9 +4,9 @@ import com.shepherd.app.ui.base.BaseResponseModel
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by Nikita kohli on 01/09/22
+ * Created by Nikita kohli on 02/09/22
  */
 
-data class ResponseRelationModel(
-    @SerializedName("payload") var payload: Payload? = Payload()
+data class ParticularResourceResponseModel(
+    @SerializedName("payload") var payload: AllResourceData? = AllResourceData()
 ):BaseResponseModel()

@@ -26,6 +26,7 @@ import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.resources.adapter.MedicalHistoryTopicsAdapter
 import com.shepherd.app.ui.component.resources.adapter.TopicsAdapter
 import com.shepherd.app.utils.*
+import com.shepherd.app.utils.extensions.hideKeyboard
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.ResourceViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,6 +39,7 @@ import java.util.*
 @AndroidEntryPoint
 class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
+    private var isSearch: Boolean = false
     private lateinit var fragmentResourcesBinding: FragmentResourcesBinding
     private val resourcesViewModel: ResourceViewModel by viewModels()
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
@@ -70,27 +72,40 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         setTopicsAdapter()
         setMedicalHistoryTopicsAdapter()
 
+        fragmentResourcesBinding.imgCancel.setOnClickListener {
+            fragmentResourcesBinding.editTextSearch.setText("")
+            showTrendingPost(View.VISIBLE)
+            pageNumber = 1
+            isSearch = false
+            hideKeyboard()
+            callAllResourceBasedOmMedicalHistory()
+        }
+
+
         fragmentResourcesBinding.editTextSearch.doOnTextChanged { s, start, lengthBefore, lengthAfter ->
             if (s.toString().isEmpty() && (lengthBefore == 0 && lengthAfter == 0)) {
                 fragmentResourcesBinding.imgCancel.visibility = View.GONE
                 showTrendingPost(View.VISIBLE)
+                hideKeyboard()
             } else if (s.toString().isEmpty() && (lengthBefore > 0 && lengthAfter >= 0)) {
                 fragmentResourcesBinding.imgCancel.visibility = View.GONE
                 showTrendingPost(View.VISIBLE)
                 pageNumber = 1
-//                isSearch = false
-
+                isSearch = false
+                hideKeyboard()
                 callAllResourceBasedOmMedicalHistory()
             } else {
                 fragmentResourcesBinding.imgCancel.visibility = View.VISIBLE
                 showTrendingPost(View.GONE)
                 //Hit search api
+                isSearch = true
                 resourceList.clear()
                 resourcesViewModel.getSearchResourceResultApi(
                     pageNumber,
                     limit,
                     resourcesViewModel.getLovedOneUUId()!!,
-                    conditionIDs.toString().replace(" ",""),//conditionIDs.toString().replace(" ","")
+                    conditionIDs.toString()
+                        .replace(" ", ""),//conditionIDs.toString().replace(" ","")
                     fragmentResourcesBinding.editTextSearch.text.toString()
                 )
 
@@ -132,12 +147,12 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     }
 
     private fun callAllResourceBasedOmMedicalHistory() {
-        Log.e("catch_exception","condition: ${conditionIDs.toString()}")
+        Log.e("catch_exception", "condition: ${conditionIDs.toString()}")
         resourcesViewModel.getAllResourceApi(
             pageNumber,
             limit,
             resourcesViewModel.getLovedOneUUId()!!,
-            conditionIDs.toString().replace(" ",""),//conditionIDs.toString().replace(" ","")
+            conditionIDs.toString().replace(" ", ""),//conditionIDs.toString().replace(" ","")
         )
     }
 
@@ -182,6 +197,11 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    resourceList.clear()
+                    if (pageNumber == 1) {
+                        medicalHistoryTopicsAdapter = null
+                        setMedicalHistoryTopicsAdapter()
+                    }
                     resourceList = it.data.payload!!.data
                     it.data.payload.let { payload ->
                         resourceList = payload!!.data
@@ -201,7 +221,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                             View.VISIBLE
                         resourceList.let { it1 ->
                             medicalHistoryTopicsAdapter?.addData(
-                                it1
+                                it1, isSearch
                             )
                         }
                     }
