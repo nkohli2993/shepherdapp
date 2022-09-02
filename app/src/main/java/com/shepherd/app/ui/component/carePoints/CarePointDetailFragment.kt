@@ -10,15 +10,13 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.added_events.AddedEventModel
@@ -84,6 +82,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     override fun initViewBinding() {
         fragmentCarePointDetailBinding.listener = this
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         // Get event Detail from Care Point Fragment
         eventDetail = args.eventDetail
@@ -192,6 +191,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             carePointsViewModel.setToUserDetail(Chat.CHAT_GROUP, chatUserDetailList, eventName)
             // Load Chat
             loadChat()
+            //  initScrollListener()
         }
 
         setCommentAdapter()
@@ -219,6 +219,24 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         fragmentCarePointDetailBinding.sendCommentIV.visibility = View.GONE
     }
 
+
+    private fun initScrollListener() {
+
+        fragmentCarePointDetailBinding.recyclerViewChat.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(-1) && !allMsgLoaded) {
+                    loadPreviousChat()
+                }
+            }
+        })
+
+    }
+
+    private fun loadPreviousChat() {
+        carePointsViewModel.getPreviousMessages()
+    }
 
     private fun loadChat() {
         carePointsViewModel.getChatMessages()
@@ -262,6 +280,14 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             }, 200)
         }
+
+        /* fragmentCarePointDetailBinding.recyclerViewChat.postDelayed({
+             fragmentCarePointDetailBinding.recyclerViewChat.adapter?.itemCount?.minus(1)?.let {
+                 fragmentCarePointDetailBinding.recyclerViewChat.scrollToPosition(
+                     it
+                 )
+             }
+         }, 1000)*/
     }
 
     private fun ChatModel.toChatUserDetail(): ChatUserDetail {
