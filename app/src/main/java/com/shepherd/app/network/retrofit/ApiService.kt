@@ -395,9 +395,19 @@ interface ApiService {
     suspend fun getAllResourceApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("id") id:String
+        @Query("id") id:String,
+        @Query("conditions") conditions:String
     ):Response<ResponseRelationModel>
 
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
+    suspend fun getSearchResourceResultApi(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("id") id:String,
+
+        @Query("search") search:String
+    ):Response<ResponseRelationModel>
+// @Query("conditions") conditions:String,
     @GET(ApiConstants.Resource.GET_TRENDING_RESOURCE)
     suspend fun getTrendingResourceApi(
         @Query("page") page: Int,

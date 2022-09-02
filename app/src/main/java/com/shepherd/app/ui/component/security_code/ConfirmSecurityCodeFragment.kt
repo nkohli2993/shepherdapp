@@ -105,10 +105,13 @@ class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBind
                 Const.SET_SECURITY_CODE -> {
                     fragmentConfirmSecurityCodeBinding.tvTitle.text =
                         getString(R.string.set_security_code)
+                    fragmentConfirmSecurityCodeBinding.btnSaveChange.text = getString(R.string.set)
                 }
                 Const.RESET_SECURITY_CODE -> {
                     fragmentConfirmSecurityCodeBinding.tvTitle.text =
                         getString(R.string.reset_security_code)
+                    fragmentConfirmSecurityCodeBinding.btnSaveChange.text =
+                        getString(R.string.reset)
                 }
             }
         }
@@ -139,7 +142,10 @@ class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBind
                     securityCodeViewModel.resetSecurityCode(SendSecurityCodeRequestModel(otp))
                 } else {
                     if (otp!!.length < 4) {
-                        showError(requireContext(), getString(R.string.please_enter_confirm_code))
+                        showError(
+                            requireContext(),
+                            getString(R.string.please_enter_confirm_security_code)
+                        )
                     } else if (otp != code) {
                         showError(
                             requireContext(),

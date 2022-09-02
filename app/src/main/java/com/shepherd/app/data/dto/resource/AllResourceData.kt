@@ -1,26 +1,29 @@
 package com.shepherd.app.data.dto.resource
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class AllResourceData(
     @SerializedName("content")
-    var content: String = "",
+    var content: String? = null,
     @SerializedName("count")
-    var count: Int = 0,
+    var count: Int? = null,
     @SerializedName("created_at")
-    var createdAt: String = "",
+    var createdAt: String? = null,
     @SerializedName("deleted_at")
-    var deletedAt: String = "",
+    var deletedAt: String? = null,
     @SerializedName("id")
-    var id: Int = 0,
+    var id: Int? = null,
 //    @SerializedName("post_tag")
 //    var postTag: List<Any> = listOf(),
     @SerializedName("thumbnail_url")
-    var thumbnailUrl: String = "",
+    var thumbnailUrl: String? = null,
     @SerializedName("title")
-    var title: String = "",
+    var title: String? = null,
     @SerializedName("updated_at")
-    var updatedAt: String = "",
+    var updatedAt: String? = null,
     @SerializedName("user_id")
-    var userId: String = "",
-)
+    var userId: String? = null
+) : Parcelable

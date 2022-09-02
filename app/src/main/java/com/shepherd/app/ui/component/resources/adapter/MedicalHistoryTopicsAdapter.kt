@@ -23,7 +23,7 @@ class MedicalHistoryTopicsAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openSelectedResource(itemData[0] as Int)
+            viewModel.openSelectedResource(itemData[0] as AllResourceData)
         }
     }
 
@@ -57,12 +57,12 @@ class MedicalHistoryTopicsAdapter(
             itemBinding.textViewTitle.text = resourceData.title
             if(resourceData.thumbnailUrl!=null && resourceData.thumbnailUrl!=""){
                 Picasso.get().load(resourceData.thumbnailUrl)
-                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .placeholder(R.drawable.image)
                     .into(itemBinding.imageViewTopic)
             }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    absoluteAdapterPosition
+                    resourceData
                 )
             }
         }

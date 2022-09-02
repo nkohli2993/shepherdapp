@@ -242,7 +242,7 @@
                         android:fontFamily="@font/gotham_medium"
                         android:onClick="@{listener::onClick}"
                         android:paddingHorizontal="80dp"
-                        android:text="@string/str_continue"
+                        android:text="@string/set"
                         android:textAllCaps="false"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_15ssp"

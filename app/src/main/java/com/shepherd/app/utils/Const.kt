@@ -92,5 +92,6 @@ enum class FrequencyType(val value :String){
     ONCE("1"),
     TWICE("2"),
     THRICE("3"),
-    FOUR("4")
+    FOUR("4"),
+    FIVE("5")
 }

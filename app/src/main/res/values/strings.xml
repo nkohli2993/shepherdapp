@@ -371,7 +371,7 @@
     <string name="wed_18_jul">wed, 18 jul</string>
     <string name="no_care_points_found">No CarePoints found</string>
     <string name="menu_care_point_detail">Care point detail</string>
-    <string name="dd_mm_year">DD/MM/YEAR</string>
+    <string name="dd_mm_year">MM/DD/YYYY</string>
     <string name="_12_00">12:00</string>
     <string name="lock_box_desc">Store and retrieve important documents and information securely.</string>
     <string name="choose_file">Choose File</string>
@@ -428,6 +428,7 @@
     <string name="twice_a_day">Twice a day</string>
     <string name="three_times_a_day">Three times a day</string>
     <string name="four_times_a_day">Four times a day</string>
+    <string name="as_needed">As Needed</string>
     <string name="no_medication_reminder_found">No Medication Reminder Found…</string>
     <string name="no_medication_found">No Medication Found…</string>
     <string name="view_medical_conditions">View Medical Conditions</string>
@@ -469,7 +470,8 @@
     <string name="security_code_added_successfully">Security Code added successfully…</string>
     <string name="security_code_reset_successfully">Security Code reset successfully…</string>
     <string name="confirm_code">Confirm Code</string>
-    <string name="please_enter_confirm_code">Please enter the confirm otp</string>
+    <string name="please_enter_confirm_code">Please enter the security code</string>
+    <string name="please_enter_confirm_security_code">Please enter the confirm security code</string>
     <string name="entered_confrim_code_doesnot_matched_with_entered_code">Entered confirm code does not matched with security code.</string>
     <string name="medical_condition_added_successfully">Medical Conditions added successfully…</string>
     <string name="no_medical_condition_added_for_loved_one">No medical condition added, Please add medical condition for loved one.</string>
@@ -484,4 +486,19 @@
     <string name="notification">Notifications</string>
     <string name="clear_all">Clear All</string>
     <string name="medlist_header">MedList</string>
+    <string name="update">Update</string>
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.shepherd.app.data.remote.resource
 
+import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherd.app.data.dto.resource.ResponseRelationModel
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.DataResult
@@ -18,12 +19,40 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
     suspend fun getAllResourceApi(
         page: Int,
         limit: Int,
-        lovedOneId:String
+        lovedOneId: String,
+        conditions: String
     ): Flow<DataResult<ResponseRelationModel>> {
         return object :
             NetworkOnlineDataRepo<ResponseRelationModel, ResponseRelationModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<ResponseRelationModel> {
-                return apiService.getAllResourceApi(page = page, limit = limit, id = lovedOneId)
+                return apiService.getAllResourceApi(
+                    page = page,
+                    limit = limit,
+                    id = lovedOneId,
+                    conditions = conditions
+                )
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //get result of search result
+    suspend fun getSearchResourceResultApi(
+        page: Int,
+        limit: Int,
+        lovedOneId: String,
+        conditions: String,
+        search: String
+    ): Flow<DataResult<ResponseRelationModel>> {
+        return object :
+            NetworkOnlineDataRepo<ResponseRelationModel, ResponseRelationModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<ResponseRelationModel> {
+                return apiService.getSearchResourceResultApi(
+                    page = page,
+                    limit = limit,
+                    id = lovedOneId,
+//                    conditions = conditions,
+                    search = search
+                )
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
@@ -40,5 +69,17 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
+
+    // Get Loved One's Medical Conditions
+    suspend fun getLovedOneMedicalConditions(lovedOneUUID: String): Flow<DataResult<GetLovedOneMedicalConditionsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<GetLovedOneMedicalConditionsResponseModel, GetLovedOneMedicalConditionsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetLovedOneMedicalConditionsResponseModel> {
+                return apiService.getLovedOneMedicalConditions(lovedOneUUID)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 
 }

@@ -367,7 +367,11 @@
         <argument
             android:name="source"
             app:argType="string"
-            app:nullable="true" />
+           />
+        <argument
+            android:name="detail"
+            app:argType="com.shepherd.app.data.dto.resource.AllResourceData"
+           />
     </fragment>
 
     <activity

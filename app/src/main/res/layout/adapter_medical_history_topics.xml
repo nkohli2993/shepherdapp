@@ -23,10 +23,10 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageViewTopic"
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_70sdp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/default_ic"
+                android:src="@drawable/image"
                 android:theme="@style/ShapeAppearanceOverlay.App.circleImageView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -56,6 +56,7 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/gotham_book"
                 android:text="- HolaDoctor.com"
+                android:visibility="gone"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
