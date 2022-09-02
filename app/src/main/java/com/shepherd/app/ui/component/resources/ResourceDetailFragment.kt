@@ -72,7 +72,6 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
     @SuppressLint("SetTextI18n")
     private fun setDataResource() {
         fragmentResourcesDetailBinding.textViewTitle.text = resourceDetail!!.title
-        fragmentResourcesDetailBinding.llImageWrapper.visibility = View.VISIBLE
         if (resourceDetail!!.thumbnailUrl != null && resourceDetail!!.thumbnailUrl != "") {
             Picasso.get().load(resourceDetail!!.thumbnailUrl)
                 .placeholder(R.drawable.image)
