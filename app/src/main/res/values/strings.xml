@@ -322,7 +322,7 @@
     <string name="home">Home</string>
     <string name="medlist_reminder">MedList\n\nReminder</string>
     <string name="my_profile">My Profile</string>
-    <string name="no_care_team_found">No Care Team Found</string>
+    <string name="no_care_team_found">No CareTeam member Found</string>
     <string name="discover_health_and_well_being_resources_for_caregivers_and_loved_ones">Discover health and well-being resources for caregivers and loved ones.</string>
     <string name="plus_new">+ New</string>
     <string name="discussion_s">Discussion(s)</string>
