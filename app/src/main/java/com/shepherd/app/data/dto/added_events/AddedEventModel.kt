@@ -22,4 +22,5 @@ data class AddedEventModel(
     @SerializedName("event_comments") var event_comments: ArrayList<EventCommentsModel> = arrayListOf(),
     @SerializedName("user_assignes") var user_assignes: ArrayList<UserAssigneeModel> = arrayListOf(),
     @SerializedName("loved_one_user_id_details") var loved_one_user_id_details: LoveUser = LoveUser(),
-):Parcelable
+    @SerializedName("created_by_details") var createdByDetails: CreatedByDetails? = CreatedByDetails(),
+) : Parcelable

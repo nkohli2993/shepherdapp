@@ -10,15 +10,13 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.added_events.AddedEventModel
@@ -38,6 +36,7 @@ import com.shepherd.app.ui.component.carePoints.adapter.CarePointsEventAdapter
 import com.shepherd.app.utils.Chat
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
+import com.shepherd.app.utils.extensions.hideKeyboard
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.CreatedCarePointsViewModel
@@ -84,6 +83,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     override fun initViewBinding() {
         fragmentCarePointDetailBinding.listener = this
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         // Get event Detail from Care Point Fragment
         eventDetail = args.eventDetail
@@ -94,7 +94,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             UserProfile::class.java
         )
 
-        val loggedInUserId = loggedInUser?.id
+        val loggedInUserId = loggedInUser?.userId
         val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
 
         Log.d(TAG, "onEventSelected: $eventDetail ")
@@ -105,9 +105,17 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 // then assigner will be some other person and hence chat can be performed
                 // Make the visibility of editTextMessage and sendCommentIV gone
                 if (isListContainMethod(eventDetail?.user_assignes!!)) {
-                    chatOn()
-                    isAssignerDetailRequired = true
-                } else if (loggedInUserId.toString() == eventDetail!!.created_by) {
+                    if (loggedInUserId == eventDetail?.createdByDetails?.id) {
+                        // If loggedIn user is the only assignee as well as assigner
+                        chatOff()
+                        isChatOff = true
+                    } else {
+                        chatOn()
+                        isAssignerDetailRequired = true
+                    }
+//                    chatOn()
+//                    isAssignerDetailRequired = true
+                } else if (loggedInUserId == eventDetail?.createdByDetails?.id) {
                     // Check if the loggedIn user is the assigner
                     // It means two user are there for the care point(event) ,one is assignee and other is the assigner,
                     // make the visibility of editTextMessage and sendCommentIV Visible
@@ -120,7 +128,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             else -> {
                 // Check the possibility of chat
                 // editTextMessage and sendCommentIV is visible if the loggedIn user is one of the assignee of the event or loggedIn user is the assigner
-                if (eventDetail?.user_assignes?.let { isListContainMethod(it) } == true || (loggedInUser?.id.toString() == eventDetail!!.created_by)) {
+                if (eventDetail?.user_assignes?.let { isListContainMethod(it) } == true || (loggedInUserId == eventDetail?.createdByDetails?.id)) {
                     chatOn()
                 } else {
                     chatOff()
@@ -153,9 +161,10 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             chatModelList?.add(chatModel)
         }
         if (isAssignerDetailRequired) {
-            val receiverName = null
-            val receiverID = eventDetail?.created_by?.toInt()
-            val receiverPicUrl = null
+            val receiverName =
+                eventDetail?.createdByDetails?.firstname + " " + eventDetail?.createdByDetails?.lastname
+            val receiverID = eventDetail?.createdByDetails?.id
+            val receiverPicUrl = eventDetail?.createdByDetails?.profilePhoto
             val documentID = null
             val chatType = Chat.CHAT_GROUP
 
@@ -183,6 +192,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             carePointsViewModel.setToUserDetail(Chat.CHAT_GROUP, chatUserDetailList, eventName)
             // Load Chat
             loadChat()
+            //  initScrollListener()
         }
 
         setCommentAdapter()
@@ -210,6 +220,24 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         fragmentCarePointDetailBinding.sendCommentIV.visibility = View.GONE
     }
 
+
+    private fun initScrollListener() {
+
+        fragmentCarePointDetailBinding.recyclerViewChat.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(-1) && !allMsgLoaded) {
+                    loadPreviousChat()
+                }
+            }
+        })
+
+    }
+
+    private fun loadPreviousChat() {
+        carePointsViewModel.getPreviousMessages()
+    }
 
     private fun loadChat() {
         carePointsViewModel.getChatMessages()
@@ -253,6 +281,14 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             }, 200)
         }
+
+        /* fragmentCarePointDetailBinding.recyclerViewChat.postDelayed({
+             fragmentCarePointDetailBinding.recyclerViewChat.adapter?.itemCount?.minus(1)?.let {
+                 fragmentCarePointDetailBinding.recyclerViewChat.scrollToPosition(
+                     it
+                 )
+             }
+         }, 1000)*/
     }
 
     private fun ChatModel.toChatUserDetail(): ChatUserDetail {
@@ -363,17 +399,20 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             }
 
 
-            //set comment added count  adapter
+            //set comment added count adapter
             val carePointsEventAdapter = CarePointsEventAdapter(payload.user_assignes)
             fragmentCarePointDetailBinding.recyclerViewEventAssigne.adapter = carePointsEventAdapter
 
             //set user detail
-            Picasso.get().load(payload.loved_one_user_id_details.profilePhoto)
-                .placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(fragmentCarePointDetailBinding.imageViewUser)
+            if (!payload.createdByDetails?.profilePhoto.isNullOrEmpty()) {
+                Picasso.get().load(payload.createdByDetails?.profilePhoto)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(fragmentCarePointDetailBinding.imageViewUser)
+            }
+
             fragmentCarePointDetailBinding.tvUsername.text =
-                payload.loved_one_user_id_details.firstname.plus(" ")
-                    .plus(if (payload.loved_one_user_id_details.lastname == null) "" else payload.loved_one_user_id_details.lastname)
+                payload.createdByDetails?.firstname.plus(" ")
+                    .plus(if (payload.createdByDetails?.lastname == null) "" else payload.createdByDetails?.lastname)
             // show created on time
             val dateTime = (payload.created_at ?: "").replace(".000Z", "").replace("T", " ")
             val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
@@ -467,6 +506,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 //                    chatModel?.let { chatViewModel.sendMessage(it) }
                     carePointsViewModel.getAndSaveMessageData(Chat.MESSAGE_TEXT, message = message)
                     fragmentCarePointDetailBinding.editTextMessage.text?.clear()
+                    hideKeyboard()
                 }
             }
         }

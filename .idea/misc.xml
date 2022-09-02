@@ -290,6 +290,7 @@
         <entry key="app/src/main/res/layout/adapter_add_medicine_list.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_add_member_role.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_assign_to_event.xml" value="0.25948406676783003" />
+        <entry key="app/src/main/res/layout/adapter_care_point_chat.xml" value="0.24313551815766166" />
         <entry key="app/src/main/res/layout/adapter_care_points.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_care_points_day.xml" value="0.335" />
         <entry key="app/src/main/res/layout/adapter_care_points_day_date_based.xml" value="0.34479166666666666" />
@@ -342,7 +343,7 @@
         <entry key="app/src/main/res/layout/fragment_add_new_lock_box.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_add_new_medication.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_add_vitals.xml" value="0.3703125" />
-        <entry key="app/src/main/res/layout/fragment_care_point_detail.xml" value="0.3473557692307692" />
+        <entry key="app/src/main/res/layout/fragment_care_point_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_care_points.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.212890625" />

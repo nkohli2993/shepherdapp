@@ -9,6 +9,7 @@ import com.google.firebase.firestore.*
 import com.google.gson.Gson
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.ShepherdApp
+import com.shepherd.app.ShepherdApp.Companion.db
 import com.shepherd.app.data.dto.added_events.*
 import com.shepherd.app.data.dto.chat.*
 import com.shepherd.app.data.dto.dashboard.LoveUser
@@ -391,7 +392,7 @@ class CreatedCarePointsViewModel @Inject constructor(
 
     fun UserProfile.toChatUser(): ChatUserDetail {
         return ChatUserDetail().apply {
-            id = this@toChatUser.id.toString()
+            id = this@toChatUser.userId.toString()
             name = this@toChatUser.firstname + " " + this@toChatUser.lastname
             imageUrl = this@toChatUser.profilePhoto ?: ""
         }
@@ -421,10 +422,10 @@ class CreatedCarePointsViewModel @Inject constructor(
         val data = MessageData().apply {
             content = message
             isRead = false
-            senderID = userRepository.getCurrentUser()?.id.toString()
+            senderID = userRepository.getCurrentUser()?.userId.toString()
             messageType = msgType
             readIds = ArrayList<String>().apply {
-                add(userRepository.getCurrentUser()?.id.toString() ?: "")
+                add(userRepository.getCurrentUser()?.userId.toString() ?: "")
             }
             senderName =
                 userRepository.getCurrentUser()?.firstname + " " + userRepository.getCurrentUser()?.lastname
@@ -533,5 +534,48 @@ class CreatedCarePointsViewModel @Inject constructor(
                 showException(e)
             }
         }
+    }
+
+
+    fun getPreviousMessages() { //get message list
+        val chatDocReference = db.collection(TableName.CHATS).document(chatListData?.id ?: "")
+        var query = chatDocReference.collection(TableName.MESSAGES)
+            .orderBy("created", Query.Direction.DESCENDING)
+
+        if (lastDocument != null)
+            query = query.startAfter(lastDocument!!)
+
+        query = query.limit(30)
+
+        query.get().addOnSuccessListener { querySnapshot ->
+
+            if (!querySnapshot?.documents.isNullOrEmpty()) {
+                lastDocument = querySnapshot.documents[querySnapshot.documents.size - 1]
+            }
+            for (document in querySnapshot.documentChanges) {
+                try {
+                    val messageModel = document.document.getMessageModelFromDoc()
+                    showLog("MSG_TIME", "previous message $messageModel")
+                    if (allMsgList.singleOrNull { it.id.equals(messageModel.id) } == null) {
+                        allMsgList.add(messageModel)
+                    } else {
+                        val index =
+                            allMsgList.indexOfFirst { it.id.equals(messageModel.id) }
+                        if (index >= 0) {
+                            allMsgList[index] = messageModel
+                        }
+                    }
+                } catch (e: JSONException) {
+                    showException(e)
+                }
+
+            }
+            val groupList = allMsgList.sortMessages()
+            val groupResponse = MessageGroupResponse(false, groupList)
+            chatResponseData.postValue(Event(DataResult.Success(groupResponse)))
+        }
+            .addOnFailureListener {
+                chatResponseData.postValue(Event(DataResult.Failure(exception = it)))
+            }
     }
 }

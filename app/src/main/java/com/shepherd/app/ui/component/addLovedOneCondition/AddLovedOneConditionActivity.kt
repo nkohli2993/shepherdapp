@@ -1,12 +1,8 @@
 package com.shepherd.app.ui.component.addLovedOneCondition
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.doAfterTextChanged
@@ -16,19 +12,19 @@ import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.medical_conditions.Conditions
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
+import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload
 import com.shepherd.app.databinding.ActivityAddLovedOneConditionBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseActivity
 import com.shepherd.app.ui.component.addLovedOneCondition.adapter.AddLovedOneConditionAdapter
 import com.shepherd.app.ui.component.home.HomeActivity
-import com.shepherd.app.ui.welcome.WelcomeActivity
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.extensions.showError
+import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload
 
 /**
  * Created by Sumit Kumar on 26-04-22

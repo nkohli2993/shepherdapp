@@ -11,6 +11,7 @@
 
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
@@ -112,6 +113,7 @@
                 android:layout_width="@dimen/_23sdp"
                 android:layout_height="@dimen/_23sdp"
                 android:layout_margin="@dimen/_1sdp"
+                android:src="@drawable/ic_defalut_profile_pic"
                 android:padding="0.5dp"
                 android:scaleType="fitXY"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
@@ -168,7 +170,6 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
-            android:overScrollMode="never"
             android:padding="@dimen/_5sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
@@ -176,7 +177,8 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_notes"
-            tools:itemCount="3"
+            app:reverseLayout="true"
+            app:stackFromEnd="true"
             tools:listitem="@layout/adapter_comment" />
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -209,4 +211,6 @@
             app:layout_constraintTop_toTopOf="@id/editTextMessage" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

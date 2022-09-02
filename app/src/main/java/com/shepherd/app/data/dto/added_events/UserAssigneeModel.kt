@@ -13,5 +13,4 @@ data class UserAssigneeModel(
     @SerializedName("updated_at") var updated_at: String? = null,
     @SerializedName("deleted_at") var deleted_at: String? = null,
     @SerializedName("user_id_details") var user_details: UserAssigneDetail = UserAssigneDetail(),
-
-    ):Parcelable
+) : Parcelable
