@@ -39,6 +39,7 @@ import java.util.*
 @SuppressLint("SimpleDateFormat")
 class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     View.OnClickListener {
+    private var xAxisLabel: ArrayList<String> = arrayListOf()
     private val typeList: ArrayList<TypeData> = arrayListOf()
     private val vitalStatsViewModel: VitalStatsViewModel by viewModels()
     private lateinit var fragmentVitalStatsBinding: FragmentVitalStatsBinding
@@ -66,6 +67,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     hideLoading()
                     vitalStats = null
                     graphDataList.clear()
+                    fragmentVitalStatsBinding.typeChart.invalidate()
+                    fragmentVitalStatsBinding.typeChart.clear()
                     vitalStats = it.data.payload.latestOne
                     graphDataList = it.data.payload.graphData
 
@@ -83,6 +86,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     }
                     fragmentVitalStatsBinding.tvHRMin.text = "Min ${it.data.payload.minAverage}/"
                     fragmentVitalStatsBinding.tvHRMax.text = "Max ${it.data.payload.maxAverage}"
+                    fragmentVitalStatsBinding.typeChart.invalidate()
+                    fragmentVitalStatsBinding.typeChart.clear()
                     setData()
                 }
                 is DataResult.Failure -> {
@@ -162,38 +167,29 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     }
 
     private fun setData() {
-        fragmentVitalStatsBinding.cancleChat.setBackgroundColor(Color.WHITE)
-        fragmentVitalStatsBinding.cancleChat.description.isEnabled = false
-        fragmentVitalStatsBinding.cancleChat.setMaxVisibleValueCount(24)
-        fragmentVitalStatsBinding.cancleChat.setPinchZoom(false)
-        fragmentVitalStatsBinding.cancleChat.setDrawGridBackground(false)
+        fragmentVitalStatsBinding.typeChart.setBackgroundColor(Color.WHITE)
+        fragmentVitalStatsBinding.typeChart.description.isEnabled = false
+        fragmentVitalStatsBinding.typeChart.setMaxVisibleValueCount(24)
+        fragmentVitalStatsBinding.typeChart.setPinchZoom(false)
+        fragmentVitalStatsBinding.typeChart.setDrawGridBackground(false)
 
-        val xAxis: XAxis = fragmentVitalStatsBinding.cancleChat.xAxis
+        val xAxis: XAxis = fragmentVitalStatsBinding.typeChart.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
 
-        val leftAxis: YAxis = fragmentVitalStatsBinding.cancleChat.axisLeft
+        val leftAxis: YAxis = fragmentVitalStatsBinding.typeChart.axisLeft
         leftAxis.setLabelCount(15, false)
         leftAxis.setDrawGridLines(false)
         leftAxis.setDrawAxisLine(true)
 
-        val rightAxis: YAxis = fragmentVitalStatsBinding.cancleChat.axisRight
+        val rightAxis: YAxis = fragmentVitalStatsBinding.typeChart.axisRight
         rightAxis.isEnabled = false
 
-        fragmentVitalStatsBinding.cancleChat.legend.isEnabled = false
+        fragmentVitalStatsBinding.typeChart.legend.isEnabled = false
 
-        fragmentVitalStatsBinding.cancleChat.resetTracking()
+        fragmentVitalStatsBinding.typeChart.resetTracking()
 
         val values = ArrayList<CandleEntry>()
-/*
-        values.add(
-            CandleEntry(
-               -1f,
-               0f,0f,0f,0f,
-                0
-            )
-        )
-*/
         values.clear()
         for (i in graphDataList.indices) {
             values.add(
@@ -208,7 +204,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             )
         }
 
-        val xAxisLabel = ArrayList<String>()
+        xAxisLabel = ArrayList<String>()
         xAxisLabel.clear()
         for(i in graphDataList){
             val time = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
@@ -218,9 +214,9 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             }
 //            xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime!!))
         }
-        fragmentVitalStatsBinding.cancleChat.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
-        xAxis.setLabelCount(graphDataList.size, false)
-        val set1 = CandleDataSet(values, "Data Set")
+        fragmentVitalStatsBinding.typeChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+        xAxis.setLabelCount(8, false)
+        val set1 = CandleDataSet(values, "")
         set1.setDrawIcons(false)
         set1.axisDependency = AxisDependency.LEFT
         set1.shadowColor = Color.WHITE
@@ -233,16 +229,14 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         set1.highlightLineWidth = 0f
         set1.barSpace = 3f
         set1.valueTextColor = ContextCompat.getColor(requireContext(),R.color.transparent)
-        fragmentVitalStatsBinding.cancleChat.setVisibleXRangeMaximum(24f)
-        fragmentVitalStatsBinding.cancleChat.setScaleEnabled(false)
-//        fragmentVitalStatsBinding.cancleChat.scaleX = 2f
-
-        fragmentVitalStatsBinding.cancleChat.zoom(2f,0f,2f,0f)
-        fragmentVitalStatsBinding.cancleChat.axisLeft.setAxisMinValue(10f)
-        fragmentVitalStatsBinding.cancleChat.axisRight.setAxisMinValue(10f)
+//        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(24f)
+        fragmentVitalStatsBinding.typeChart.setScaleEnabled(false)
+        fragmentVitalStatsBinding.typeChart.zoom(3f,0f,3f,0f)
+        fragmentVitalStatsBinding.typeChart.axisLeft.setAxisMinValue(10f)
+        fragmentVitalStatsBinding.typeChart.axisRight.setAxisMinValue(10f)
         val data = CandleData(set1)
-        fragmentVitalStatsBinding.cancleChat.data = data
-        fragmentVitalStatsBinding.cancleChat.invalidate()
+        fragmentVitalStatsBinding.typeChart.data = data
+        fragmentVitalStatsBinding.typeChart.invalidate()
     }
 
     override fun getLayoutRes(): Int {

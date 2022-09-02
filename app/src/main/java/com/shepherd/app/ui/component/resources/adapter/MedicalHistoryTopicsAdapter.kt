@@ -4,15 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherd.app.data.dto.dashboard.DashboardModel
+import com.shepherd.app.R
+import com.shepherd.app.data.dto.resource.AllResourceData
 import com.shepherd.app.databinding.AdapterMedicalHistoryTopicsBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
-import com.shepherd.app.ui.component.resources.ResourcesViewModel
+import com.shepherd.app.view_model.ResourceViewModel
+import com.squareup.picasso.Picasso
 
 
 class MedicalHistoryTopicsAdapter(
-    private val viewModel: ResourcesViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    private val viewModel: ResourceViewModel,
+    var resourceList: MutableList<AllResourceData> = ArrayList()
 ) :
     RecyclerView.Adapter<MedicalHistoryTopicsAdapter.MedicalHistoryTopicsViewHolder>() {
     lateinit var binding: AdapterMedicalHistoryTopicsBinding
@@ -21,7 +23,7 @@ class MedicalHistoryTopicsAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openResourceItems(itemData[0] as Int)
+            viewModel.openSelectedResource(itemData[0] as Int)
         }
     }
 
@@ -40,20 +42,24 @@ class MedicalHistoryTopicsAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return 3
+          return resourceList.size
     }
 
     override fun onBindViewHolder(holder: MedicalHistoryTopicsViewHolder, position: Int) {
-        holder.bind("", onItemClickListener)
+        holder.bind(resourceList[position], onItemClickListener)
     }
 
 
     class MedicalHistoryTopicsViewHolder(private val itemBinding: AdapterMedicalHistoryTopicsBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: String, recyclerItemListener: RecyclerItemListener) {
-            // itemBinding.data = dashboard
+        fun bind(resourceData: AllResourceData, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.textViewTitle.text = resourceData.title
+            if(resourceData.thumbnailUrl!=null && resourceData.thumbnailUrl!=""){
+                Picasso.get().load(resourceData.thumbnailUrl)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(itemBinding.imageViewTopic)
+            }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     absoluteAdapterPosition
@@ -71,9 +77,8 @@ class MedicalHistoryTopicsAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
+    fun addData(resourceList: MutableList<AllResourceData>) {
+        this.resourceList.addAll(resourceList)
         notifyDataSetChanged()
     }
 
