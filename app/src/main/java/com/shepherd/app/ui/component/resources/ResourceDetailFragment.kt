@@ -17,8 +17,9 @@ import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.toTextFormat
 import com.shepherd.app.view_model.ResourceViewModel
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), View.OnClickListener {
 
     private val resourcesViewModel: ResourceViewModel by viewModels()
@@ -44,7 +45,7 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
                     showError(requireContext(), it.message.toString())
                 }
                 is DataResult.Loading -> {
-                    //  showLoading("")
+                    showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
@@ -58,9 +59,7 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
 
     override fun initViewBinding() {
         fragmentResourcesDetailBinding.listener = this
-        if (args.source != null) {
-            resourceId = args.source!!.toInt()
-        }
+        resourceId = args.source.toInt()
 /*
         if (args.detail != null) {
             resourceDetail = args.detail!!

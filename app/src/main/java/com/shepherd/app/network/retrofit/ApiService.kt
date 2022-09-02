@@ -409,9 +409,9 @@ interface ApiService {
     ):Response<ResponseRelationModel>
 // @Query("conditions") conditions:String,
 
-    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
+    @GET(ApiConstants.Resource.GET_RESOURCE_DETAIL)
     suspend fun getResourceDetail(
-        @Query("id") id:Int,
+        @Path("id") id:Int,
     ):Response<ParticularResourceResponseModel>
 
 
