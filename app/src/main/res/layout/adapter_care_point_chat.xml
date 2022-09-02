@@ -36,14 +36,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvReceiver"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvReceivedTime"
-            app:cardCornerRadius="@dimen/_18sdp"
             app:cardUseCompatPadding="true"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardViewReceiver"
             android:visibility="@{messageData.senderID.equals(userId)?View.GONE:View.VISIBLE}"
             app:cardBackgroundColor="@color/_F2F2F2">
 
@@ -102,7 +102,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSendTime"
@@ -118,14 +118,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/cvSender" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:id="@+id/cvSender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSendTime"
-            app:cardCornerRadius="@dimen/_18sdp"
             app:cardUseCompatPadding="true"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardViewSender"
             android:visibility="@{messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
             app:cardBackgroundColor="#EAF1EF">
 
@@ -183,7 +183,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
 
         <!--<androidx.appcompat.widget.LinearLayoutCompat

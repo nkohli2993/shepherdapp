@@ -257,4 +257,23 @@
     <style name="SpinnerTheme" parent="android:Widget.Spinner">
         <item name="android:dropDownSelector">@drawable/ic_arrow_spinner</item>
     </style>
+
+    <style name="ShapeAppearanceOverlay.CardViewSender" parent="">
+        <item name="cornerFamilyBottomLeft">rounded</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeBottomLeft">25%</item>
+        <item name="cornerSizeTopLeft">25%</item>
+        <item name="cornerSizeTopRight">25%</item>
+
+    </style>
+
+    <style name="ShapeAppearanceOverlay.CardViewReceiver" parent="">
+        <item name="cornerFamilyBottomRight">rounded</item>
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeBottomRight">25%</item>
+        <item name="cornerSizeTopLeft">25%</item>
+        <item name="cornerSizeTopRight">25%</item>
+    </style>
 </resources>
