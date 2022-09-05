@@ -57,7 +57,7 @@ class UploadedLockBoxFilesAdapter(
 
         fun bind(file: File) {
             val sdf = SimpleDateFormat("MMM dd, yyyy")
-            val currentDate = sdf.format(Date())
+            val currentDate = sdf.format(Calendar.getInstance().time)
             itemBinding.let {
                 it.txtFolderName.text = file.name
                 it.txtUploadDate.text = "Uploaded $currentDate"

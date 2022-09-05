@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.schedule_medicine.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
@@ -13,6 +14,7 @@ import com.shepherd.app.data.dto.med_list.schedule_medlist.TimeSelectedlist
 import com.shepherd.app.databinding.LayoutAddTimeBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
 import com.shepherd.app.view_model.AddMedicationViewModel
+import java.lang.Exception
 
 
 @SuppressLint("NotifyDataSetChanged")
@@ -154,13 +156,21 @@ class TimeAdapter(
     }
 
     fun addData(timeListAdded: MutableList<TimeSelectedlist>) {
-        this.timeList = timeListAdded
+        this.timeList.addAll(timeListAdded)
         notifyDataSetChanged()
     }
 
-    fun removeData(timeListAdded: MutableList<TimeSelectedlist>) {
-        timeList.clear()
-        timeList.addAll(timeListAdded)
+    fun removeData(size: Int) {
+        try {
+            timeList.reverse()
+            for (i in 0 until size) {
+                timeList.removeAt(i)
+            }
+            timeList.reverse()
+        }catch (e:Exception){
+            Log.e("catch_exception","error: ${e.toString()}")
+        }
+
         notifyDataSetChanged()
     }
 

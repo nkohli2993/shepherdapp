@@ -128,15 +128,18 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/button_primary_green.xml" value="0.202" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_background.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selector.xml" value="0.1765" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selector_loved_one.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selectot_grey.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_checkbox_checked.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_checkbox_unchecked.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_checkbox_unchecked_grey.xml" value="0.1765" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_checked.xml" value="0.1565" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_defalut_profile_pic.xml" value="0.168" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_menu_camera.xml" value="0.1565" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_pdf.xml" value="0.177" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_recommended.xml" value="0.1565" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_round_cancel.xml" value="0.126" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_unchecked.xml" value="0.1565" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/pin_background.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/rounded_box_green.xml" value="0.159" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/rounded_box_grey.xml" value="0.159" />
@@ -151,6 +154,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_create_new_account.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_forgot_password.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_home.xml" value="0.2518518518518518" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_login_new.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_reset_password.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_search_places.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/activity_splash.xml" value="0.2609375" />
@@ -162,12 +166,14 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_assignee_menrbers.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_care_points_day.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_care_team_members.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_care_team_members_dashboard.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_chat.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_comment.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_document_pager.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_events_members.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_frequency.xml" value="0.2598958333333333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_loved_ones.xml" value="0.21419410004275333" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_medical_conditions.xml" value="0.20222317229585293" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_medical_history.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_medical_history_topics.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/adapter_notifications.xml" value="0.33" />
@@ -183,13 +189,14 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/content_dashboard.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/dialog_choose_lockbox_file.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/dialog_progress_bar.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/dialog_show_file.xml" value="0.21333903377511756" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_medication_details.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_member.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_new_event.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_new_lock_box.xml" value="0.20036264732547598" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_new_medication.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_add_vitals.xml" value="0.2609375" />
-        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_point_detail.xml" value="0.2" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_point_detail.xml" value="0.25" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_points.xml" value="0.2518518518518518" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_care_team_members.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_change_password.xml" value="0.21419410004275333" />
@@ -198,6 +205,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_edit_profile.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_information.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_lockbox.xml" value="0.4603448275862069" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_loved_one_profile.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_loved_ones.xml" value="0.18" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_member_details.xml" value="0.1" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/fragment_messages.xml" value="0.2609375" />
@@ -215,7 +223,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/layout_add_medicine_list.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/layout_add_time.xml" value="0.2598958333333333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/popup_report.xml" value="0.21419410004275333" />
-        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/rv_love_ones.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/rv_love_ones.xml" value="0.22" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.67" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.21419410004275333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/menu/details_menu.xml" value="0.2609375" />

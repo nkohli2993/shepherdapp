@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/gotham_book"
-                    android:text="@string/dose"
+                    android:text="@string/dosage"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -81,17 +81,72 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clDoseWrapper"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                     android:gravity="center"
                     android:onClick="@{listener::onClick}"
                     android:orientation="horizontal"
+                    app:layout_constraintEnd_toStartOf="@+id/clDoseTypeWrapper"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvDose">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/doseTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/transparent"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/gotham_medium"
+                        android:hint="@string/select_dose_qty"
+                        android:inputType="textMultiLine"
+                        android:onClick="@{listener::onClick}"
+                        android:paddingHorizontal="@dimen/_8sdp"
+                        android:paddingVertical="@dimen/_15sdp"
+                        android:textColor="@color/_192032"
+                        android:textColorHint="@color/_192032"
+                        android:textSize="@dimen/_13ssp"
+                        app:fontFamily="@font/gotham_bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlSymmetry" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/doseIM"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/_6sdp"
+                        android:contentDescription="@string/app_name"
+                        android:padding="@dimen/_4sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/ic_arrow_spinner"
+                        app:tint="@color/colorGreyDark" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clDoseTypeWrapper"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:gravity="center"
+                    android:onClick="@{listener::onClick}"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/clDoseWrapper"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDose">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/doseTTV"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/transparent"
@@ -113,7 +168,7 @@
                         tools:ignore="RtlSymmetry" />
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/doseIM"
+                        android:id="@+id/doseTIM"
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
@@ -412,9 +467,8 @@
                         android:background="@null"
                         android:fontFamily="@font/gotham_medium"
                         android:gravity="top|start"
-                        android:hint="@string/write"
-                        android:maxLength="200"
                         android:lines="4"
+                        android:maxLength="200"
                         android:padding="@dimen/_10sdp"
                         android:textColorHint="@color/_192032"
                         app:layout_constraintStart_toStartOf="parent"

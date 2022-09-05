@@ -27,7 +27,6 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.databinding.FragmentAddNewLockBoxBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -49,7 +48,6 @@ import java.io.File
 @AndroidEntryPoint
 class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener {
-//     EasyPermissions.PermissionCallbacks
 
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     private lateinit var fragmentAddNewLockBoxBinding: FragmentAddNewLockBoxBinding
@@ -70,7 +68,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         private const val REQUEST_CODE_SIGN_IN = 1
         private const val REQUEST_CODE_OPEN_DOCUMENT = 2
     }
-
 
     private val isValid: Boolean
         get() {
@@ -244,10 +241,10 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     if (!isFileFormatValid) {
                         showError(
                             requireContext(),
-                            "Only jpg, jpeg, png, gif, pdf, word and txt file can be uploaded..."
+                            getString(R.string.only_jpg_png_word_text_file_can_be_uploaded)
                         )
                     } else if (selectedFileList!!.size > 5) {
-                        showError(requireContext(), "You can upload at max 5 files...")
+                        showError(requireContext(), getString(R.string.you_can_upload_at_max_five_file))
                     } else {
                         selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
                     }
@@ -280,8 +277,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             } else {
                 openMultipleDocPicker()
             }
-
-//            methodRequiresTwoPermission()
         }
 
         // Click Cancel

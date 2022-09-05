@@ -198,6 +198,7 @@
                 android:onClick="@{listener::onClick}"
                 android:paddingHorizontal="@dimen/_30sdp"
                 android:paddingVertical="@dimen/_15sdp"
+                android:visibility="gone"
                 android:text="@string/resend_verification_email"
                 android:textAllCaps="false"
                 android:textColor="@color/colorWhite"
@@ -209,6 +210,20 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/emailResendTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gotham_book"
+            android:text="Didn't received email yet? Resend"
+            android:textColor="@color/_192032"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toTopOf="@+id/companyInfoTV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/companyInfoTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"

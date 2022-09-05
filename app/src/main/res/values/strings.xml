@@ -371,7 +371,7 @@
     <string name="wed_18_jul">wed, 18 jul</string>
     <string name="no_care_points_found">No CarePoints found</string>
     <string name="menu_care_point_detail">Care point detail</string>
-    <string name="dd_mm_year">MM/DD/YYYY</string>
+    <string name="dd_mm_year">MM-DD-YYYY</string>
     <string name="_12_00">12:00</string>
     <string name="lock_box_desc">Store and retrieve important documents and information securely.</string>
     <string name="choose_file">Choose File</string>
@@ -397,7 +397,8 @@
     <string name="add_medication">Add Medication</string>
     <string name="update_medication">Update Medication</string>
     <string name="schedule_medication">Schedule Medication</string>
-    <string name="select_dose">Select Dose</string>
+    <string name="select_dose">Dose Type</string>
+    <string name="select_dose_qty">Dose Qty</string>
     <string name="selected_files">Selected Files</string>
     <string name="uploaded_documents">Uploaded Documents</string>
     <string name="upload_five_documents">You can upload only five documents at a time</string>
@@ -498,7 +499,12 @@
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="toggle_between_loved_one">Toggle between Loved One\'s</string>
+    <string name="close">Close</string>
+    <string name="only_jpg_png_word_text_file_can_be_uploaded">Only jpg, jpeg, png, gif, pdf, word and txt file can be uploaded…</string>
+    <string name="you_can_upload_at_max_five_file">You can upload at max 5 files…</string>
+    <string name="error_while_show">Error occurs while showing document.</string>
+    <string name="dosage">Dosage</string>
 </resources>

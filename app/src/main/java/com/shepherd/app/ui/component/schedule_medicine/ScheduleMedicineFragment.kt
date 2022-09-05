@@ -70,7 +70,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var selectedMedList: Medlist? = null
     private var timeList: MutableList<TimeSelectedlist> = arrayListOf()
     private var addedTimeList: MutableList<TimeSelectedlist> = arrayListOf()
-    private var selectedDateFormat = SimpleDateFormat("MM-DD-yyyy")
+    private var selectedDateFormat = SimpleDateFormat("MM-dd-yyyy")
     private var selectedDateTimeFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
     private var serverDateFormat = SimpleDateFormat("yyyy-MM-dd")
     private var medicationId: Int? = null
@@ -648,7 +648,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 for (i in timeList) {
                     if (i.time == String.format(
                             "%02d:%02d",
-                            hourOfDay,
+                            if (hourOfDay < 12) hourOfDay else (hourOfDay - 12),
                             selectedMinute
                         ) && i.isAmPM == amPm
                     ) {
@@ -711,11 +711,13 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         getString(R.string.please_select_days_for_medication)
                     )
                 }
+/*
                 fragmentScheduleMedicineBinding.etNote.text.toString().trim().isEmpty() -> {
                     fragmentScheduleMedicineBinding.etNote.error =
                         getString(R.string.please_enter_med_list_notes)
                     fragmentScheduleMedicineBinding.etNote.requestFocus()
                 }
+*/
 
                 else -> {
                     return true
@@ -736,21 +738,45 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         return allFiled
     }
 
+/*    //check time added or removed from list
     override fun onSelected(position: Int) {
         frequencyId = frequencyList[position].time!!
-        if (frequencyList[position].time!! != 5) {
+        val list: ArrayList<TimeSelectedlist> = arrayListOf()
+        val timeCount = frequencyList[position].time!!
+        for (i in 0 until timeCount) {
+            list.add(TimeSelectedlist())
+        }
+        timeList.clear()
+        timeList.addAll(list)
+        timeAdapter = null
+        setTimeAdapter()
+        showFrequencyView()
+        fragmentScheduleMedicineBinding.frequencyET.text = frequencyList[position].name
+    }*/
+
+    //check time added or removed from list
+    override fun onSelected(position: Int) {
+        frequencyId = frequencyList[position].time!!
+        if (timeList.size > frequencyList[position].time!!.toInt()) {
             val list: ArrayList<TimeSelectedlist> = arrayListOf()
             val timeCount = frequencyList[position].time!!
             for (i in 0 until timeCount) {
                 list.add(TimeSelectedlist())
             }
-            timeList.clear()
-            timeList.addAll(list)
-            timeAdapter = null
-            setTimeAdapter()
+            timeAdapter?.removeData(timeList.size - frequencyList[position].time!!.toInt())
+            showFrequencyView()
+            fragmentScheduleMedicineBinding.frequencyET.text = frequencyList[position].name
+        } else {
+            val list: ArrayList<TimeSelectedlist> = arrayListOf()
+            val timeCount = frequencyList[position].time!! - timeList.size
+            for (i in 0 until timeCount) {
+                list.add(TimeSelectedlist())
+            }
+            timeAdapter?.addData(list)
+            showFrequencyView()
+            fragmentScheduleMedicineBinding.frequencyET.text = frequencyList[position].name
         }
-        showFrequencyView()
-        fragmentScheduleMedicineBinding.frequencyET.text = frequencyList[position].name
+
     }
 
     private fun showFrequencyView() {

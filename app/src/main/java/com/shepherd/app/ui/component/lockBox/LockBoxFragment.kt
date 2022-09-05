@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.lockBox
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.app.Dialog
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -10,8 +11,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -394,6 +397,5 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         super.onResume()
 
     }
-
 }
 

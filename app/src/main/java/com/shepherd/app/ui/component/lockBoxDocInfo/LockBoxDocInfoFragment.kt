@@ -1,11 +1,13 @@
 package com.shepherd.app.ui.component.lockBoxDocInfo
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.webkit.WebSettings
+import android.webkit.WebView
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
@@ -20,6 +22,7 @@ import com.shepherd.app.ui.component.lockBoxDocInfo.adapter.UploadedDocumentImag
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
+import com.shepherd.app.utils.loadImageCentreCrop
 import com.shepherd.app.view_model.LockBoxDocInfoViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -77,7 +80,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         }
 
         documentImagesAdapter =
-            UploadedDocumentImagesAdapter(requireContext().applicationContext, lockBox?.documents)
+            UploadedDocumentImagesAdapter(requireContext().applicationContext, lockBox?.documents,this@LockBoxDocInfoFragment)
         viewPager.adapter = documentImagesAdapter
         fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
         fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object :
@@ -90,7 +93,18 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
             }
 
             override fun onPageSelected(position: Int) {
-                //TODO: Handle click for document based on functionality
+/*
+                if (lockBox?.documents?.get(position)?.url!!.lowercase()
+                        .endsWith(".png") || lockBox?.documents?.get(position)?.url!!.lowercase()
+                        .endsWith(".jpg") || lockBox?.documents?.get(position)?.url!!.lowercase()
+                        .endsWith("jpeg")
+                ) {
+                    showChooseFileDialog(lockBox?.documents?.get(position)?.url!!, "image")
+                } else {
+                    showChooseFileDialog(lockBox?.documents?.get(position)?.url!!, "web")
+                }
+*/
+
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
@@ -120,8 +134,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.tvShare ->{
-                showInfo(requireContext(),getString(R.string.not_implmented))
+            R.id.tvShare -> {
+                showInfo(requireContext(), getString(R.string.not_implmented))
             }
             R.id.ivBack -> {
                 backPress()
@@ -151,6 +165,43 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_uploaded_lock_box_doc_detail
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun showChooseFileDialog(path: String, type: String) {
+        val dialog =
+            Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_show_file)
+        val tvClose = dialog.findViewById(R.id.tvClose) as AppCompatTextView
+        val image = dialog.findViewById(R.id.imageShowIV) as AppCompatImageView
+        val webview = dialog.findViewById(R.id.webview) as WebView
+        image.visibility = View.GONE
+        webview.visibility = View.GONE
+        when (type) {
+            "image" -> {
+                image.visibility = View.VISIBLE
+                image.loadImageCentreCrop(
+                    R.drawable.image,
+                    path
+                )
+
+            }
+            else -> {
+                webview.visibility = View.VISIBLE
+                val webSettings: WebSettings = webview.settings
+                webSettings.javaScriptEnabled = true
+                val webViewClient = WebViewClientImpl(activity)
+                webview.webViewClient = webViewClient
+                webview.loadUrl(path)
+            }
+        }
+        tvClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
 

@@ -52,7 +52,7 @@
             android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/gotham_bold"
             android:paddingBottom="@dimen/_10sdp"
-            android:text="@string/toggle_switch_to_join_care_team"
+            android:text="@string/toggle_between_loved_one"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_16ssp"
             app:layout_constraintEnd_toEndOf="parent"

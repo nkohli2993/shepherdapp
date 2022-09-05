@@ -6,8 +6,15 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.user_detail.Payload
@@ -50,6 +57,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         binding = ActivityWelcomeUserBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        setResendText(binding.emailResendTV.text.toString())
     }
 
     override fun observeViewModel() {
@@ -189,6 +197,31 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
 
     }
+
+    private fun setResendText(text: String) {
+        val ss = SpannableString(text)
+        val clickableSpan: ClickableSpan = object : ClickableSpan() {
+
+            override fun onClick(p0: View) {
+                // send resend verification email
+                welcomeViewModel.sendUserVerificationEmail()
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+                ds.isFakeBoldText = true
+                ds.color = ContextCompat.getColor(applicationContext, R.color._A26DCB)
+                ds.linkColor = ContextCompat.getColor(applicationContext, R.color._A26DCB)
+            }
+        }
+        ss.setSpan(clickableSpan, 26, 33, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        binding.emailResendTV.text = ss
+        binding.emailResendTV.movementMethod = LinkMovementMethod.getInstance()
+       // binding.emailResendTV.highlightColor = Color.GREEN
+    }
+
 
 }
 

@@ -1,17 +1,26 @@
 package com.shepherd.app.ui.component.lockBoxDocInfo.adapter
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.webkit.*
+import android.widget.ProgressBar
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
 import com.google.android.material.imageview.ShapeableImageView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.DocumentUrl
+import com.shepherd.app.ui.component.lockBoxDocInfo.LockBoxDocInfoFragment
+import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.loadImageCentreCrop
 import java.io.File
 import java.util.*
@@ -23,7 +32,8 @@ import java.util.*
 
 class UploadedDocumentImagesAdapter(
     var context: Context,
-    var list: ArrayList<DocumentUrl>?
+    var list: ArrayList<DocumentUrl>?,
+    var fragment:  LockBoxDocInfoFragment
 ) : PagerAdapter() {
     private var mLayoutInflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -62,6 +72,26 @@ class UploadedDocumentImagesAdapter(
                 list!![position].url!!
             )
         }
+
+        imageView.setOnClickListener {
+            if (list!![position].url!!.lowercase()
+                    .endsWith(".png") || list!![position].url!!.lowercase()
+                    .endsWith(".jpg") || list!![position].url!!.lowercase()
+                    .endsWith("jpeg")|| list!![position].url!!.lowercase()
+                    .endsWith("gif")|| list!![position].url!!.lowercase()
+                    .endsWith("heic")|| list!![position].url!!.lowercase()
+                    .endsWith("heif")
+            ) {
+                itemView.post {
+                    showChooseFileDialog(list!![position].url!!, "image")
+                }
+
+            } else {
+                itemView.post {
+                    showChooseFileDialog(list!![position].url!!, "web")
+                }
+            }
+        }
         Objects.requireNonNull(container).addView(itemView)
         return itemView
     }
@@ -90,4 +120,63 @@ class UploadedDocumentImagesAdapter(
         Log.e("catch_exception","bitmap: $thumbnail")
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    private fun showChooseFileDialog(path: String, type: String) {
+        val dialog =
+            Dialog(fragment.requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_show_file)
+        val tvClose = dialog.findViewById(R.id.tvClose) as AppCompatTextView
+        val image = dialog.findViewById(R.id.imageShowIV) as AppCompatImageView
+        val webview = dialog.findViewById(R.id.webview) as WebView
+        val progress = dialog.findViewById(R.id.progess) as ProgressBar
+        image.visibility = View.GONE
+        webview.visibility = View.GONE
+        progress.visibility = View.VISIBLE
+        when (type) {
+            "image" -> {
+                image.visibility = View.VISIBLE
+                progress.visibility = View.GONE
+                image.loadImageCentreCrop(
+                    R.drawable.image,
+                    path
+                )
+
+            }
+            else -> {
+
+                webview.settings.javaScriptEnabled = true
+                webview.webChromeClient = WebChromeClient()
+                webview.settings.allowFileAccessFromFileURLs = true
+                webview.settings.allowUniversalAccessFromFileURLs = true
+                webview.webViewClient = object : WebViewClient() {
+                    override fun onReceivedError(
+                        view: WebView?,
+                        request: WebResourceRequest?,
+                        error: WebResourceError?
+                    ) {
+                        super.onReceivedError(view, request, error)
+                        progress.visibility = View.GONE
+                        webview.visibility = View.VISIBLE
+                        showError(context,context.getString(R.string.error_while_show))
+                    }
+                    override fun onPageFinished(view: WebView, url: String) {
+
+                    }
+                    override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                        super.onPageStarted(view, url, favicon)
+                        progress.visibility = View.GONE
+                        webview.visibility = View.VISIBLE
+                    }
+                }
+                webview.loadUrl("https://docs.google.com/gview?embedded=true&url=$path")
+            }
+        }
+        tvClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.setCancelable(false)
+        dialog.show()
+    }
 }

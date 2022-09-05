@@ -22,7 +22,7 @@
             android:id="@+id/ivCare"
             android:layout_width="@dimen/_30ssp"
             android:layout_height="@dimen/_30ssp"
-            android:src="@drawable/test_image"
+            android:src="@drawable/image_placeholder"
             app:civ_border_color="@color/colorWhite"
             app:civ_border_width="@dimen/_1sdp"
             app:layout_constraintStart_toStartOf="parent"
