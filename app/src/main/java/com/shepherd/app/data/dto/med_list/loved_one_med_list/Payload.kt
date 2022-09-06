@@ -32,5 +32,5 @@ data class Payload(
     @SerializedName("delete_position") var deletePosition: Int? = null,
 
     @SerializedName("user_medication_all") var userMedicationAll: ArrayList<UserMedicationData> = arrayListOf(),
-//    @SerializedName("user_medication_repeat") var userMedicationRepeat: ArrayList<UserMedicationRemiderData> = arrayListOf(),
+    @SerializedName("user_medication_repeat") var userMedicationRepeat: ArrayList<UserMedicationRemiderData> = arrayListOf(),
 ) : Parcelable

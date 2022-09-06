@@ -509,4 +509,5 @@
     <string name="error_while_show">Error occurs while showing document.</string>
     <string name="dosage">Dosage</string>
     <string name="please_select_relationship">Please select relationship</string>
+    <string name="medication_record_added_successfully">Medication Record Added Successfully…</string>
 </resources>

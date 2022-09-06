@@ -95,6 +95,159 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         observe(medicationViewModel.timeSelectedlist, ::selectedTime)
         observe(medicationViewModel.doseListData, ::selectedDoseData)
         observe(medicationViewModel.dayListSelectedData, ::selectedDay)
+        getDostQtyListObserver()
+        getDoseTypeListObserver()
+        scheduledMedicationObserver()
+        getScheduledMedicationRecord()
+    }
+
+    private fun getScheduledMedicationRecord() {
+        medicationViewModel.getMedicationDetailResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    // showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    payLoad = it.data.payload
+                    if (payLoad != null) {
+                        selectedDoseId = payLoad!!.dosage_id.toString()
+                        doseID = payLoad!!.dosage_id.toString()
+                        doseTypeID = payLoad!!.dosage_type_id.toString()
+                        selectedDoseId = payLoad!!.dosage_id.toString()
+                        selectedDoseTypeId = payLoad!!.dosage_type_id.toString()
+                        setFrequency(payLoad!!.frequency.toString())
+                        if (payLoad!!.end_date != null) {
+                            setEndDate(payLoad!!.end_date!!)
+                        }
+                        timeList.clear()
+                        addedTimeList.clear()
+                        if (payLoad?.time != null) {
+                            for (i in payLoad?.time!!) {
+                                timeList.add(
+                                    TimeSelectedlist(
+                                        timeList.size,
+                                        i.time,
+                                        i.hour.lowercase()
+                                    )
+                                )
+                                // added data to addedTimeList to maintain added time for medication
+                                addedTimeList.add(
+                                    TimeSelectedlist(
+                                        timeList.size,
+                                        i.time,
+                                        i.hour.lowercase()
+                                    )
+                                )
+                            }
+                        }
+
+                        if (timeList.size < payLoad!!.frequency.toInt()) {
+                            val timeCount = payLoad!!.frequency - timeList.size
+                            for (i in 0 until timeCount) {
+                                timeList.add(TimeSelectedlist())
+                            }
+                        }
+                        setTimeAdapter()
+                        addDays(isEdit = true, payLoad!!.days)
+                        setDayAdapter()
+                        fragmentScheduleMedicineBinding.etNote.setText(payLoad!!.note)
+
+                        // set dose QTY
+                        var position = -1
+                        for (i in doseList.indices) {
+                            if (doseList[i].id == doseID?.toInt()) {
+                                position = i
+                            }
+                        }
+                        fragmentScheduleMedicineBinding.qtySpinner.setSelection(position)
+                        // set dose Type
+                        var typePosition = -1
+                        for (i in doseTypeList.indices) {
+                            if (doseTypeList[i].id == doseTypeID?.toInt()) {
+                                typePosition = i
+                            }
+                        }
+                        fragmentScheduleMedicineBinding.typeSpinner.setSelection(typePosition)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun scheduledMedicationObserver() {
+        medicationViewModel.addScheduledMedicationResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(
+                        requireContext(),
+                        getString(R.string.scheduled_medication_created_successfully)
+                    )
+                    findNavController().navigate(R.id.action_nav_schedule_medication_to_nav_my_medlist)
+                }
+            }
+        }
+    }
+
+    private fun getDoseTypeListObserver() {
+        medicationViewModel.getDoseTypeListResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    if (medicationId != null) {
+                        medicationId?.let { medicationViewModel.getMedicationDetail(it) }
+                    } else {
+                        hideLoading()
+                        showError(requireContext(), it.message.toString())
+                    }
+
+                }
+                is DataResult.Loading -> {
+                    //                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    if (medicationId != null) {
+                        medicationId?.let { medicationViewModel.getMedicationDetail(it) }
+                    } else {
+                        hideLoading()
+                    }
+                    it.data.payload.let { payload ->
+                        doseTypeList = payload?.dosagesTypes!!
+                        total = payload.total
+                        currentPage = payload.currentPage
+                        totalPage = payload.totalPages
+                    }
+
+                    if (doseTypeList.isEmpty()) return@observeEvent
+                    doseAdapter?.addData(doseTypeList)
+                    doseTypeList.add(0, DoseList(id = -1, name = "Dose Type"))
+                    dosageAdapter =
+                        DosageQtyTypeAdapter(
+                            requireContext(),
+                            R.layout.vehicle_spinner_drop_view_item,
+                            doseTypeList
+                        )
+
+                    fragmentScheduleMedicineBinding.typeSpinner.adapter = dosageAdapter
+                    val doseQty = dosageAdapter?.getItem(0)
+                    if (doseQty != null) selectedDoseTypeId = doseQty.id.toString()
+                }
+            }
+        }
+    }
+
+    private fun getDostQtyListObserver() {
         medicationViewModel.getDoseListResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -129,109 +282,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     val doseQty = dosageAdapter?.getItem(0)
                     if (doseQty != null) selectedDoseId = doseQty.id.toString()
                     medicationViewModel.getAllDoseTypeList(1, 10)
-                }
-            }
-        }
-        medicationViewModel.getDoseTypeListResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    showError(requireContext(), it.message.toString())
-                }
-                is DataResult.Loading -> {
-//                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    it.data.payload.let { payload ->
-                        doseTypeList = payload?.dosagesTypes!!
-                        total = payload.total
-                        currentPage = payload.currentPage
-                        totalPage = payload.totalPages
-                    }
-
-                    if (doseTypeList.isEmpty()) return@observeEvent
-                    doseAdapter?.addData(doseTypeList)
-                    doseTypeList.add(0, DoseList(id = -1, name = "Dose Type"))
-                    dosageAdapter =
-                        DosageQtyTypeAdapter(
-                            requireContext(),
-                            R.layout.vehicle_spinner_drop_view_item,
-                            doseTypeList
-                        )
-
-                    fragmentScheduleMedicineBinding.typeSpinner.adapter = dosageAdapter
-                    val doseQty = dosageAdapter?.getItem(0)
-                    if (doseQty != null) selectedDoseTypeId = doseQty.id.toString()
-                }
-            }
-        }
-        medicationViewModel.addScheduledMedicationResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    showError(requireContext(), it.message.toString())
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    showSuccess(
-                        requireContext(),
-                        getString(R.string.scheduled_medication_created_successfully)
-                    )
-                    findNavController().navigate(R.id.action_nav_schedule_medication_to_nav_my_medlist)
-                }
-            }
-        }
-
-        //observer to show added medication detail
-        medicationViewModel.getMedicationDetailResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    showError(requireContext(), it.message.toString())
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    payLoad = it.data.payload
-                    if (payLoad != null) {
-                        selectedDoseId = payLoad!!.dosage_id.toString()
-                        doseID = payLoad!!.dosage_id.toString()
-                        doseTypeID = payLoad!!.dosage_type_id.toString()
-                        // fragmentScheduleMedicineBinding.doseTV.text = payLoad!!.dosage.name
-                        setFrequency(payLoad!!.frequency.toString())
-                        if (payLoad!!.end_date != null) {
-                            setEndDate(payLoad!!.end_date!!)
-                        }
-                        timeList.clear()
-                        addedTimeList.clear()
-                        for (i in payLoad?.time!!) {
-                            timeList.add(
-                                TimeSelectedlist(
-                                    timeList.size,
-                                    i.time,
-                                    i.hour.lowercase()
-                                )
-                            )
-                            // added data to addedTimeList to maintain added time for medication
-                            addedTimeList.add(
-                                TimeSelectedlist(
-                                    timeList.size,
-                                    i.time,
-                                    i.hour.lowercase()
-                                )
-                            )
-                        }
-                        setTimeAdapter()
-                        addDays(isEdit = true, payLoad!!.days)
-                        setDayAdapter()
-                        fragmentScheduleMedicineBinding.etNote.setText(payLoad!!.note)
-                    }
                 }
             }
         }
@@ -276,9 +326,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             return@setOnTouchListener false
         }
         //set data according to value added
-        if (medicationId != null) {
-            medicationId?.let { medicationViewModel.getMedicationDetail(it) }
-        } else {
+        if (medicationId == null) {
             timeList.add(TimeSelectedlist())
             addDays()
             setDayAdapter()

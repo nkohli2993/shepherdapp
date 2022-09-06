@@ -52,7 +52,6 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    //showSuccess(requireContext(), it.data.message.toString())
                     Log.d(TAG, "Medication Detail :${it.data.payload} ")
                     fragmentMyMedDetailBinding.tvMedTitle.text = it.data.payload.medlist.name
                     fragmentMyMedDetailBinding.brandNameTV.text =it.data.payload.medlist.name
@@ -62,9 +61,12 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                         fragmentMyMedDetailBinding.tvUsername.text = "${assignedByDetail.firstname} ${assignedByDetail.lastname}"
 
                     }
-                    Picasso.get().load(it.data.payload.assigned_by_details.profile_photo)
-                        .placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(fragmentMyMedDetailBinding.imageViewUser)
+                    if(it.data.payload.assigned_by_details.profile_photo!=null && it.data.payload.assigned_by_details.profile_photo!=""){
+                        Picasso.get().load(it.data.payload.assigned_by_details.profile_photo)
+                            .placeholder(R.drawable.image_placeholder)
+                            .into(fragmentMyMedDetailBinding.imageViewUser)
+
+                    }
 
                 }
             }
