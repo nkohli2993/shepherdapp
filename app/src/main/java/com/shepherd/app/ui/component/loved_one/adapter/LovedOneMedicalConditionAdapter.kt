@@ -3,6 +3,7 @@ package com.shepherd.app.ui.component.loved_one.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.data.dto.care_team.CareTeamModel
@@ -54,7 +55,10 @@ class LovedOneMedicalConditionAdapter(
              }*/
 
             if (!payload.conditions?.name.isNullOrEmpty()) {
+                itemBinding.txtDot.visibility = View.VISIBLE
                 itemBinding.txtMedicalCondition.text = payload.conditions?.name
+            } else {
+                itemBinding.txtDot.visibility = View.GONE
             }
         }
 

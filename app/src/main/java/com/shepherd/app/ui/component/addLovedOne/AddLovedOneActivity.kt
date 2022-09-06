@@ -8,12 +8,17 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.maps.model.LatLng
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.relation.Relation
 import com.shepherd.app.databinding.ActivityAddLovedOneBinding
 import com.shepherd.app.network.retrofit.DataResult
@@ -28,13 +33,12 @@ import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.utils.loadImageCentreCrop
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddLovedOneViewModel
-import com.google.android.gms.maps.model.LatLng
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_add_loved_one.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -142,7 +146,26 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         val view = binding.root
         setContentView(view)
 
+        if (intent.hasExtra("source")) {
+            val data = intent.getStringExtra("source")
+            if (data.equals("Loved One Profile")) {
+                val careteam = intent.getParcelableExtra<CareTeamModel>("care_model")
+                Log.d(TAG, "initViewBinding: $careteam")
 
+                binding.txtLovedOne.text = "Edit Loved One Details"
+                binding.txtLittleBit.visibility = View.GONE
+                if (!careteam?.love_user_id_details?.profilePhoto.isNullOrEmpty()) {
+                    Picasso.get().load(careteam?.love_user_id_details?.profilePhoto)
+                        .placeholder(R.drawable.ic_defalut_profile_pic).into(binding.imgLoveOne)
+                }
+                binding.edtFirstName.setText(careteam?.love_user_id_details?.firstname)
+                binding.edtLastName.setText(careteam?.love_user_id_details?.lastname)
+                binding.editTextEmail.setText(careteam?.love_user_id_details?.email)
+                binding.edtAddress.text = careteam?.love_user_id_details?.address
+                binding.edtCustomAddress.setText(careteam?.love_user_id_details?.address)
+                binding.btnContinue.text = "Save Changes"
+            }
+        }
         binding.ccp.setOnCountryChangeListener { this.phoneCode = it.phoneCode }
 
         binding.listener = this

@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.loved_one
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,10 @@ import com.shepherd.app.databinding.FragmentLovedOneProfileBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.ui.component.addLovedOne.AddLovedOneActivity
+import com.shepherd.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.shepherd.app.ui.component.loved_one.adapter.LovedOneMedicalConditionAdapter
+import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.LovedOneMedicalConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -89,14 +93,34 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
+            R.id.editMedicalConditionIV -> {
+                val intent = Intent(requireContext(), AddLovedOneConditionActivity::class.java)
+                intent.putExtra("source", Const.MEDICAL_CONDITION)
+                intent.putExtra("love_one_id", careTeamModel?.love_user_id)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+            }
+            R.id.ivEdit -> {
+                val intent = Intent(requireContext(), AddLovedOneActivity::class.java)
+                intent.putExtra("source", "Loved One Profile")
+                intent.putExtra("care_model", careTeamModel)
+                startActivity(intent)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+            }
         }
     }
+
 
     private fun setLovedOneMedicalConditionsAdapter() {
         lovedOneMedicalConditionAdapter =
             LovedOneMedicalConditionAdapter(lovedOneMedicalConditionViewModel)
         fragmentLovedOneProfileBinding.rvLovedOneMedicalConditions.adapter =
             lovedOneMedicalConditionAdapter
-
     }
 }

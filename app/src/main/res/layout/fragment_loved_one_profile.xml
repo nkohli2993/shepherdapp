@@ -244,7 +244,7 @@
                     android:layout_marginTop="@dimen/_15sdp"
                     android:background="@color/_FCFCFC"
                     android:fontFamily="@font/gotham_bold"
-                    android:paddingVertical="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_8sdp"
                     android:text="Medical Conditions"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
