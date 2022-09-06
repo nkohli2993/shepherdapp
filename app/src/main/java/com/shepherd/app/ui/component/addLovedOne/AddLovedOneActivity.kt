@@ -73,7 +73,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var lovedOneID: String? = null
     private var customAddress: String? = null
     private var lastName: String? = null
-    val alMonths = arrayOf(
+    private val alMonths = arrayOf(
         "Month",
         "Jan",
         "Feb",
@@ -88,11 +88,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         "Nov",
         "Dec"
     )
-    val alDays = arrayOf(
+    private val alDays = arrayOf(
         "Day",
-    )
-    val alYears = arrayOf(
-        "Year",
     )
 
     // Handle Validation
@@ -103,10 +100,6 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     binding.edtFirstName.error = getString(R.string.please_enter_first_name)
                     binding.edtFirstName.requestFocus()
                 }
-//                binding.editTextEmail.text.toString().isEmpty() -> {
-//                    binding.editTextEmail.error = getString(R.string.please_enter_email_id)
-//                    binding.editTextEmail.requestFocus()
-//                }
                 binding.editTextEmail.text.toString()
                     .isNotEmpty() && !binding.editTextEmail.text.toString().isValidEmail() -> {
                     binding.editTextEmail.error = getString(R.string.please_enter_valid_email_id)
@@ -118,11 +111,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 monthSelected == "Month" || dateSelected == "Date" || yearSelected == "Year" -> {
                     showInfo(this, "Please enter date of birth")
                 }
-                /*  dob.isNullOrEmpty() -> {
-                      showInfo(this, "Please enter date of birth")
-                  }*/
                 selectedRelationship?.id == -1 -> {
-                    showInfo(this, "Please select relationship")
+                    showInfo(this, getString(R.string.please_select_relationship))
                 }
                 else -> {
                     return true
@@ -291,14 +281,14 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         observe(selectedFile, ::handleSelectedImage)
 
         //observe relation live data
-        addLovedOneViewModel.relationResponseLiveData.observeEvent(this) {
-            when (it) {
+        addLovedOneViewModel.relationResponseLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val payload = it.data.payload
+                    val payload = result.data.payload
                     payload?.relations?.let { it1 -> relations?.addAll(it1) }
 
                     relations?.add(0, Relation(-1, "Select Relationship"))
@@ -319,25 +309,24 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
-
+                    result.message?.let { showError(this, it) }
                 }
             }
         }
 
         // Observe the response of upload image api
-        addLovedOneViewModel.uploadImageLiveData.observeEvent(this) {
-            when (it) {
+        addLovedOneViewModel.uploadImageLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
+                    result.message?.let { showError(this, it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    it.data.let { it1 ->
+                    result.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
                         lovedOnePicUrl = it1.payload?.profilePhoto
                     }
@@ -350,7 +339,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
+                    it.message?.let { showError(this, it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -398,8 +387,6 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 } else {
                     openImagePicker()
                 }
-
-//                openImagePicker()
             }
             R.id.edtDay -> {
                 initDatePicker()
