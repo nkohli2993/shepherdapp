@@ -1,8 +1,6 @@
 package com.shepherd.app.ui.component.addNewEvent.adapter
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -41,13 +39,17 @@ class AssigneAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int) {
-            itemBinding.textViewCareTeamName.text = memberList[position].user_id_details.firstname.plus(" ")
-                .plus(if(memberList[position].user_id_details.lastname == null) "" else memberList[position].user_id_details.lastname)
-            itemBinding.textViewCareTeamRole.text = memberList[position].careRoles.name
-            Picasso.get().load(memberList[position].user_id_details.profilePhoto)
-                .placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(itemBinding.imageViewCareTeam)
 
+            itemBinding.textViewCareTeamName.text =
+                memberList[position].user_id_details.firstname.plus(" ")
+                    .plus(if (memberList[position].user_id_details.lastname == null) "" else memberList[position].user_id_details.lastname)
+            itemBinding.textViewCareTeamRole.text = memberList[position].careRoles.name
+
+            if (!memberList[position].user_id_details.profilePhoto.isNullOrEmpty()) {
+                Picasso.get().load(memberList[position].user_id_details.profilePhoto)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(itemBinding.imageViewCareTeam)
+            }
             itemBinding.checkbox.isChecked = false
             if (memberList[position].isSelected) {
                 itemBinding.checkbox.isChecked = true
@@ -71,7 +73,7 @@ class AssigneAdapter(
         fun onSelected(position: Int)
     }
 
-    fun setData(careTeam : ArrayList<CareTeamModel>){
+    fun setData(careTeam: ArrayList<CareTeamModel>) {
         this.memberList = careTeam
         notifyDataSetChanged()
     }
