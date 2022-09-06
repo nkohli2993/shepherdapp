@@ -335,7 +335,6 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/transparent"
                         android:ellipsize="end"
-                        android:fontFamily="@font/gotham_medium"
                         android:hint="@string/select_frequency"
                         android:inputType="textMultiLine"
                         android:onClick="@{listener::onClick}"

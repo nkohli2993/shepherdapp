@@ -4,6 +4,7 @@ package com.shepherd.app.ui.component.carePoints
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
@@ -34,6 +36,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Nikita kohli on 26-07-22
@@ -46,7 +49,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private lateinit var fragmentCarePointsBinding: FragmentCarePointsBinding
     private var typeFaceGothamBold: Typeface? = null
     private var typeFaceGothamBook: Typeface? = null
-    private var carePoints: ArrayList<ResultEventModel>? = ArrayList()
+    private var carePoints: ArrayList<ResultEventModel> = ArrayList()
     private var carePointsAdapter: CarePointsDayAdapter? = null
     private val carePointsViewModel: CreatedCarePointsViewModel by viewModels()
     private var pageNumber: Int = 1
@@ -153,7 +156,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 calendar.time = selectedDate
                 startDate = sdf!!.format(calendar.time)
                 val startDay = SimpleDateFormat("MMM dd").format(calendar.time)
-                calendar.add(Calendar.DATE, 7)
+                calendar.add(Calendar.DATE, 6)
                 endDate = sdf!!.format(calendar.time)
                 val endDay = SimpleDateFormat("MMM dd").format(calendar.time)
                 fragmentCarePointsBinding.textViewSelectGroup.text =
@@ -203,7 +206,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                     hideLoading()
                     fragmentCarePointsBinding.noCareFoundTV.visibility = View.GONE
                     carePoints = it.data.payload.results
-                    Collections.sort(carePoints!!, object : Comparator<ResultEventModel?> {
+                    Collections.sort(carePoints, object : Comparator<ResultEventModel?> {
                         var df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
                         override fun compare(o1: ResultEventModel?, o2: ResultEventModel?): Int {
                             return try {
@@ -214,14 +217,42 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                         }
                     })
 
-                    if (carePoints.isNullOrEmpty()) return@observeEvent
-                    carePointsAdapter?.updateCarePoints(carePoints!!)
+                    if (carePoints.isEmpty()) return@observeEvent
+                    carePointsAdapter?.updateCarePoints(carePoints)
+
+                        when (clickType) {
+                            CalendarState.Month.value , CalendarState.Week.value-> {
+                                val dates: ArrayList<CalendarDay> = arrayListOf()
+                                for(i in carePoints){
+                                    val calendar = Calendar.getInstance()
+                                    calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(i.date!!)!!
+                                    val year = SimpleDateFormat("yyyy").format(calendar.time)
+                                    val month = SimpleDateFormat("MM").format(calendar.time)
+                                    val day = SimpleDateFormat("dd").format(calendar.time)
+                                    val eventDate = CalendarDay.from(year.toInt(), month.toInt()-1, day.toInt()) // year, month, date
+                                    dates.add(eventDate)
+                                }
+                                fragmentCarePointsBinding.calendarPView.addDecorators(
+                                    EventDecorator(
+                                        ContextCompat.getColor(
+                                            requireContext(),
+                                            R.color._A26DCB
+                                        ), dates
+                                    )
+                                )
+
+                            }
+                            else -> {
+
+                            }
+                        }
+
                     setCarePointsAdapter()
                 }
                 is DataResult.Failure -> {
                     hideLoading()
-                    carePoints?.clear()
-                    carePoints?.let { it1 -> carePointsAdapter?.updateCarePoints(it1) }
+                    carePoints.clear()
+                    carePoints.let { it1 -> carePointsAdapter?.updateCarePoints(it1) }
                     fragmentCarePointsBinding.noCareFoundTV.visibility = View.VISIBLE
                 }
             }
@@ -230,7 +261,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     }
 
     private fun setCarePointsAdapter() {
-        carePointsAdapter = CarePointsDayAdapter(carePointsViewModel, carePoints!!, this)
+        carePointsAdapter = CarePointsDayAdapter(carePointsViewModel, carePoints, this)
         fragmentCarePointsBinding.recyclerViewEventDays.adapter = carePointsAdapter
     }
 
@@ -276,7 +307,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 val calendar = Calendar.getInstance()
                 startDate = sdf!!.format(calendar.time)
                 val startDay = SimpleDateFormat("MMM dd").format(calendar.time)
-                calendar.add(Calendar.DATE, 7)
+                calendar.add(Calendar.DATE, 6)
                 endDate = sdf!!.format(calendar.time)
                 val endDay = SimpleDateFormat("MMM dd").format(calendar.time)
                 fragmentCarePointsBinding.textViewSelectGroup.text =
@@ -314,12 +345,6 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 calendar.add(Calendar.DATE, getDayCount(month, year))
                 endDate = sdf!!.format(calendar.time)
                 getCarePointList(startDate, endDate)
-
-                /*   for (i in 0 until getDayCount(month, year)) {
-                       val cal = calendar
-                       cal.add(Calendar.DATE, i)
-                       fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
-                   }*/
             }
         }
     }
@@ -393,6 +418,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     }
 
     private fun getCarePointList(startDate: String, endDate: String) {
+        fragmentCarePointsBinding.calendarPView.removeDecorators()
         carePointsViewModel.getCarePointsByLovedOneId(
             pageNumber,
             limit,
@@ -420,7 +446,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         detail.user_assignes.forEach {
             val receiverName = it.user_details.firstname + " " + it.user_details.lastname
             val receiverID = it.user_details.id
-            val receiverPicUrl = it?.user_details.profilePhoto
+            val receiverPicUrl = it.user_details.profilePhoto
             val documentID = null
             val chatType = Chat.CHAT_GROUP
 
@@ -439,20 +465,20 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             chatModelList?.add(chatModel)
         }
 
-          //open event detail page
-          findNavController().navigate(
-              CarePointsFragmentDirections.actionCarePointsToDetailFragment(
-                  detail
-              )
-          )
+        //open event detail page
+        findNavController().navigate(
+            CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                detail
+            )
+        )
 
         // Navigate to chat screen
-       /* findNavController().navigate(
-            CarePointsFragmentDirections.actionNavCarePointsToNavChat(
-                "CarePoint",
-                chatModelList?.toTypedArray()
-            )
-        )*/
+        /* findNavController().navigate(
+             CarePointsFragmentDirections.actionNavCarePointsToNavChat(
+                 "CarePoint",
+                 chatModelList?.toTypedArray()
+             )
+         )*/
     }
 }
 

@@ -27,7 +27,7 @@ class DosageQtyTypeAdapter(
 
     private fun getDropDownItemView(position: Int, parent: ViewGroup): View {
         val view: View = LayoutInflater.from(mContext)
-            .inflate(R.layout.vehicle_spinner_drop_view_item, parent, false)
+            .inflate(R.layout.spinner_drop_down_list, parent, false)
 
         val txtTitle = view.findViewById<TextView>(R.id.txtTitle)
         val relation = relations[position]
