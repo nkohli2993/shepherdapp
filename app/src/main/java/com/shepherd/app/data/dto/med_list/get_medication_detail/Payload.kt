@@ -14,6 +14,7 @@ data class Payload (
 	@SerializedName("assigned_to") val assigned_to : String,
 	@SerializedName("love_user_id") val love_user_id : String,
 	@SerializedName("dosage_id") val dosage_id : Int,
+	@SerializedName("dosage_type_id") val dosage_type_id : Int,
 	@SerializedName("medlist_id") val medlist_id : Int,
 	@SerializedName("frequency") val frequency : Int,
 	@SerializedName("days") val days : String,

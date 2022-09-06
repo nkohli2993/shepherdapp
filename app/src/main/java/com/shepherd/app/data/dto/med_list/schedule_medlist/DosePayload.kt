@@ -7,6 +7,8 @@ data class DosePayload(
     var currentPage: Int = 0,
     @SerializedName("dosages")
     var dosages: ArrayList<DoseList> = arrayListOf(),
+    @SerializedName("lock_box_types")
+    var dosagesTypes: ArrayList<DoseList> = arrayListOf(),
     @SerializedName("per_page")
     var perPage: Int = 0,
     @SerializedName("total")

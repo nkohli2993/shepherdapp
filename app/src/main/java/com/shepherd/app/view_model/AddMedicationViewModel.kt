@@ -65,6 +65,12 @@ class AddMedicationViewModel @Inject constructor(
     var getDoseListResponseLiveData: LiveData<Event<DataResult<GetAllDoseListResponseModel>>> =
         _getDoseListResponseLiveData
 
+    // get all dose list
+    private var _getDoseTypeListResponseLiveData =
+        MutableLiveData<Event<DataResult<GetAllDoseListResponseModel>>>()
+    var getDoseTypeListResponseLiveData: LiveData<Event<DataResult<GetAllDoseListResponseModel>>> =
+        _getDoseTypeListResponseLiveData
+
 
     // add medication for loved ones
     private var _addScheduledMedicationResponseLiveData =
@@ -113,7 +119,7 @@ class AddMedicationViewModel @Inject constructor(
 
     }
 
-    // Get All MedLists
+    // Get All  dose list
     fun getAllDoseList(
         pageNumber: Int,
         limit: Int
@@ -127,6 +133,22 @@ class AddMedicationViewModel @Inject constructor(
             }
         }
         return getDoseListResponseLiveData
+
+    }
+    // Get All dose type list
+    fun getAllDoseTypeList(
+        pageNumber: Int,
+        limit: Int
+    ): LiveData<Event<DataResult<GetAllDoseListResponseModel>>> {
+        viewModelScope.launch {
+            val response = medListRepository.getAllDoseTypeList(pageNumber, limit)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _getDoseTypeListResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return getDoseTypeListResponseLiveData
 
     }
 

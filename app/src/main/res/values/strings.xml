@@ -416,7 +416,8 @@
     <string name="not_implmented">Not Implemented</string>
     <string name="select_frequency">Select Frequency</string>
     <string name="select_days">Select Days</string>
-    <string name="please_select_dose_for_medication">Please select dose for medication</string>
+    <string name="please_select_dose_for_medication">Please select dosage for medication</string>
+    <string name="please_select_dose_type_for_medication">Please select dosage type for medication</string>
     <string name="please_select_frequcny_for_dose">Please select frequency for dose</string>
     <string name="please_select_timing_all_medication">Please select timing of all medication dose</string>
     <string name="please_select_timing_medication">Please select timing of medication dose</string>
@@ -507,4 +508,5 @@
     <string name="you_can_upload_at_max_five_file">You can upload at max 5 files…</string>
     <string name="error_while_show">Error occurs while showing document.</string>
     <string name="dosage">Dosage</string>
+    <string name="please_select_relationship">Please select relationship</string>
 </resources>

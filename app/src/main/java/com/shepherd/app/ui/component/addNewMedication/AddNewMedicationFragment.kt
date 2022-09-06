@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.med_list.Medlist
 import com.shepherd.app.databinding.FragmentAddNewMedicationBinding
@@ -40,7 +42,6 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private var totalPage: Int = 0
     private var total: Int = 0
     var medLists: ArrayList<Medlist> = arrayListOf()
-    private val medListViewModel: MyMedListViewModel by viewModels()
     private var selectedMedication: Medlist? = null
     private val TAG: String = "Add medlist"
     private var searchFlag = false
@@ -59,7 +60,6 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         super.onResume()
         medLists.clear()
         searchFlag = false
-        /* medListViewModel.getAllMedLists(pageNumber, limit)*/
     }
 
     override fun initViewBinding() {
@@ -86,12 +86,12 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
             override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 if (s.toString().isEmpty()) {
-                     fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
-                     pageNumber = 1
-                     isSearch = false
-                     searchFlag = false
-                     medLists.clear()
-                     addMedicationViewModel.getAllMedLists(pageNumber, limit)
+                    fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
+                    pageNumber = 1
+                    isSearch = false
+                    searchFlag = false
+                    medLists.clear()
+                    addMedicationViewModel.getAllMedLists(pageNumber, limit)
                 } else {
                     searchFlag = true
                     fragmentAddNewMedicationBinding.imgCancel.visibility = View.VISIBLE
@@ -147,7 +147,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         medLists.let { it1 ->
                             addMedicineListAdapter?.addData(
                                 it1,
-                                true
+                                false
                             )
                         }
                     }
@@ -216,6 +216,34 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private fun setMedicineListAdapter() {
         addMedicineListAdapter = AddMedicineListAdapter(addMedicationViewModel)
         fragmentAddNewMedicationBinding.recyclerViewMedicine.adapter = addMedicineListAdapter
+        handleMedicationPagination()
+    }
+
+    private fun handleMedicationPagination() {
+        var isScrolling = true
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisiblesItems: Int
+        fragmentAddNewMedicationBinding.recyclerViewMedicine.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    isScrolling = true
+                    visibleItemCount = recyclerView.layoutManager!!.childCount
+                    totalItemCount = recyclerView.layoutManager!!.itemCount
+                    pastVisiblesItems =
+                        (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
+                        isScrolling = false
+                        currentPage++
+                        pageNumber++
+                        addMedicationViewModel.getAllMedLists(pageNumber, limit)
+                    }
+                }
+            }
+        })
     }
 
 
