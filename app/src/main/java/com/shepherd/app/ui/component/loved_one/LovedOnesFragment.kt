@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.annotations.SerializedName
 import com.shepherd.app.R
 import com.shepherd.app.ShepherdApp
 import com.shepherd.app.data.dto.care_team.CareTeamModel
@@ -19,6 +18,7 @@ import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
+import com.shepherd.app.ui.component.loved_one.adapter.LovedOneAdapter
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.Status
@@ -183,8 +183,19 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                     R.anim.slide_out_left
                 )
             }
-            else -> {
+            "Detail" -> {
+//                findNavController().navigate(R.id.action_nav_loved_one_to_lovedOneProfileFragment)
+                findNavController().navigate(
+                    LovedOnesFragmentDirections.actionNavLovedOneToLovedOneProfileFragment(
+                        careTeam
+                    )
+                )
+            }
+            "Selected" -> {
                 selectedCare = careTeam
+            }
+            else -> {
+//                selectedCare = careTeam
             }
         }
     }

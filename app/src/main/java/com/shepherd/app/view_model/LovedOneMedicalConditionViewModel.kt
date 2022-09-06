@@ -23,7 +23,7 @@ import javax.inject.Inject
  * Created by Deepak Rattan on 07/06/22
  */
 @HiltViewModel
-class AddLovedOneConditionViewModel @Inject constructor(
+class LovedOneMedicalConditionViewModel @Inject constructor(
     private val medicalConditionRepository: MedicalConditionRepository
 ) : BaseViewModel() {
 
