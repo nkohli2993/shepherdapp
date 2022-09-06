@@ -26,7 +26,7 @@ data class Payload(
     @SerializedName("end_date") var endDate: String? = null,
     @SerializedName("medlist") var medlist:  com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
     @SerializedName("dosage") var dosage:  com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
-
+    @SerializedName("selectedDate") var selectedDate: String? = null,
     //for function
     @SerializedName("action_type") var actionType: Int? = null,
     @SerializedName("delete_position") var deletePosition: Int? = null,

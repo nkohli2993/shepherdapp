@@ -188,7 +188,14 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     myMedlistBinding.txtMedication.visibility = View.GONE
                     // check day for payload data
                     val currentDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
-                    payload = it.data.payload!!.userMedicationAll
+//                    payload = it.data.payload!!.userMedicationAll
+
+                    for (i in it.data.payload!!.userMedicationAll) {
+                        val medicationDetailData = i
+                        i.selectedDate = selectedDate
+                        payload.add(medicationDetailData)
+                    }
+
                     if (payload.size <= 0) {
                         myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
                         myMedlistBinding.txtMedication.visibility = View.VISIBLE
@@ -279,7 +286,10 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    showSuccess(requireContext(), getString(R.string.medication_record_added_successfully))
+                    showSuccess(
+                        requireContext(),
+                        getString(R.string.medication_record_added_successfully)
+                    )
                 }
             }
         }
@@ -464,7 +474,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     //open edit view
                     findNavController().navigate(
                         AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                            medicationId = it.id.toString()
+                            medicationId = it.id.toString(),
+                            medicationUpdateDate = it.selectedDate
                         )
                     )
                 }

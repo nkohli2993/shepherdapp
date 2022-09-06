@@ -97,9 +97,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         fragmentProfileBinding.tvName.text = fullName
 
         // Get loggedIn User's Profile Pic
-        val profilePicLoggedInUser = payload?.userProfiles?.profilePhoto
-        Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.ic_defalut_profile_pic)
-            .into(fragmentProfileBinding.imageViewUser)
+        if(payload?.userProfiles?.profilePhoto!=null && payload?.userProfiles?.profilePhoto!=""){
+            val profilePicLoggedInUser = payload?.userProfiles?.profilePhoto
+            Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.image_placeholder)
+                .into(fragmentProfileBinding.imageViewUser)
+        }
+
 
         //Set Email
         fragmentProfileBinding.txtEmail.text = payload?.email

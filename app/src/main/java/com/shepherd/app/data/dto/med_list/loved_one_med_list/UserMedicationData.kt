@@ -28,4 +28,5 @@ data class UserMedicationData(
     @SerializedName("dosage") var dosage: com.shepherd.app.data.dto.med_list.Medlist? = com.shepherd.app.data.dto.med_list.Medlist(),
     @SerializedName("action_type") var actionType: Int? = null,
     @SerializedName("delete_position") var deletePosition: Int? = null,
+    @SerializedName("selectedDate") var selectedDate: String? = null,
 ) : Parcelable

@@ -79,6 +79,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var isDoseChanged: Boolean? = null
     private var dosageAdapter: DosageQtyTypeAdapter? = null
     private var payLoad: Payload? = null
+    private var updateDate:String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -293,6 +294,9 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         if (args.medlist != null) {
             selectedMedList = args.medlist
             fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
+        }
+        if(args.medicationUpdateDate!=null){
+            updateDate = args.medicationUpdateDate
         }
         frequencyId = FrequencyType.ONCE.value.toInt()
         fragmentScheduleMedicineBinding.btnSubmit.text = getString(R.string.add_medication)
@@ -615,34 +619,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.endDate -> {
-                val c = Calendar.getInstance()
-                val mYear = c[Calendar.YEAR]
-                val mMonth = c[Calendar.MONTH]
-                val mDay = c[Calendar.DAY_OF_MONTH]
-                c.add(Calendar.DATE, 1)
-                val datePickerDialog = DatePickerDialog(
-                    requireActivity(), R.style.datepicker,
-                    { _, year, monthOfYear, dayOfMonth ->
-                        fragmentScheduleMedicineBinding.endDate.text =
-                            "${
-                                if (monthOfYear + 1 < 10) {
-                                    "0${(monthOfYear + 1)}"
-                                } else {
-                                    (monthOfYear + 1)
-                                }
-                            }-${
-                                if (dayOfMonth + 1 < 10) {
-                                    "0$dayOfMonth"
-                                } else {
-                                    dayOfMonth
-                                }
-                            }-$year"
-                        addDays()
-                        setDayAdapter()
-                    }, mYear, mMonth, mDay
-                )
-                datePickerDialog.datePicker.minDate = c.timeInMillis
-                datePickerDialog.show()
+                datePicker()
             }
             R.id.ivBack -> {
                 findNavController().popBackStack()
@@ -733,7 +710,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                             notes,
                             endDate,
                             isTimeChanged,
-                            isDoseChanged
+                            isDoseChanged,
+                            updateDate
                         )
                         medicationViewModel.updateScheduledMedication(
                             scheduledMedication,
@@ -772,6 +750,37 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 showDayView()
             }
         }
+    }
+
+    private fun datePicker() {
+        val c = Calendar.getInstance()
+        val mYear = c[Calendar.YEAR]
+        val mMonth = c[Calendar.MONTH]
+        val mDay = c[Calendar.DAY_OF_MONTH]
+        c.add(Calendar.DATE, 1)
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.datepicker,
+            { _, year, monthOfYear, dayOfMonth ->
+                fragmentScheduleMedicineBinding.endDate.text =
+                    "${
+                        if (monthOfYear + 1 < 10) {
+                            "0${(monthOfYear + 1)}"
+                        } else {
+                            (monthOfYear + 1)
+                        }
+                    }-${
+                        if (dayOfMonth + 1 < 10) {
+                            "0$dayOfMonth"
+                        } else {
+                            dayOfMonth
+                        }
+                    }-$year"
+                addDays()
+                setDayAdapter()
+            }, mYear, mMonth, mDay
+        )
+        datePickerDialog.datePicker.minDate = c.timeInMillis
+        datePickerDialog.show()
     }
 
 
