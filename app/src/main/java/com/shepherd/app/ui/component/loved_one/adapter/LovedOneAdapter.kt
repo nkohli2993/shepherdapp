@@ -1,4 +1,4 @@
-package com.shepherd.app.ui.component.loved_one
+package com.shepherd.app.ui.component.loved_one.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -95,13 +95,17 @@ class LovedOneAdapter(
                 onItemClickListener?.onItemClick(careTeam, "Medical")
             }
 
+            itemBinding.root.setOnClickListener {
+                onItemClickListener?.onItemClick(careTeam, "Detail")
+            }
+
             itemBinding.checkbox.setOnClickListener {
                 deselectCareTeams()
                 careTeam.isSelected = true
                 dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
                 lastSelectedPosition = bindingAdapterPosition
                 itemBinding.checkbox.isChecked = true
-                onItemClickListener?.onItemClick(careTeam, "Detail")
+                onItemClickListener?.onItemClick(careTeam, "Selected")
             }
 
         }

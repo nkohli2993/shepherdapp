@@ -395,6 +395,9 @@
         <action
             android:id="@+id/action_nav_loved_one_to_nav_add_loved_one"
             app:destination="@id/nav_add_loved_one" />
+        <action
+            android:id="@+id/action_nav_loved_one_to_lovedOneProfileFragment"
+            app:destination="@id/lovedOneProfileFragment" />
     </fragment>
     <fragment
         android:id="@+id/addNewLockBoxFragment"
@@ -406,5 +409,14 @@
             android:defaultValue="@null"
             app:argType="com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/lovedOneProfileFragment"
+        android:name="com.shepherd.app.ui.component.loved_one.LovedOneProfileFragment"
+        android:label="LovedOneProfileFragment"
+        tools:layout="@layout/fragment_loved_one_profile">
+        <argument
+            android:name="careTeamModel"
+            app:argType="com.shepherd.app.data.dto.care_team.CareTeamModel" />
     </fragment>
 </navigation>
