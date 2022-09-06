@@ -18,5 +18,6 @@ data class CareTeamModel(
     @SerializedName("care_roles") var careRoles: CareTeamRoles = CareTeamRoles(),
     @SerializedName("user_id_details") var user_id_details: LoveUser = LoveUser(),
     @SerializedName("love_user_id_details") var love_user_id_details: LoveUser = LoveUser(),
+    @SerializedName("relationship") var relationship: Relationship? = Relationship(),
     @SerializedName("is_selected") var isSelected: Boolean = false,
-):Parcelable
+) : Parcelable

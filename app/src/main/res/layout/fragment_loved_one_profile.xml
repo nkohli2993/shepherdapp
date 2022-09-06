@@ -108,6 +108,7 @@
                     android:fontFamily="@font/gotham_book"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
+                    android:text="@{data.relationship.relation.name}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                     app:layout_constraintTop_toBottomOf="@+id/tvName" />
@@ -195,6 +196,7 @@
                     android:fontFamily="@font/gotham_book"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
+                    android:text="@{data.love_user_id_details.dob}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivDOB"
                     app:layout_constraintTop_toTopOf="parent" />
