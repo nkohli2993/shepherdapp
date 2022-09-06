@@ -311,6 +311,12 @@ interface ApiService {
         @Query("limit") limit: Int
     ): Response<GetAllDoseListResponseModel>
 
+    @GET(ApiConstants.MedList.GET_ALL_DOSE_TYPE_LIST)
+    suspend fun getAllDoseType(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int
+    ): Response<GetAllDoseListResponseModel>
+
     @GET(ApiConstants.MedList.GET_LOVED_ONE_MED_LIST)
     suspend fun getLovedOneMedList(
         @Path("id") id: String         //,@Query("date") date:String

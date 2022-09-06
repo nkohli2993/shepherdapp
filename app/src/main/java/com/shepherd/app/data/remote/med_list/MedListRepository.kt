@@ -63,9 +63,22 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    // Get All DoseList
+    suspend fun getAllDoseTypeList(
+        pageNumber: Int,
+        limit: Int
+    ): Flow<DataResult<GetAllDoseListResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<GetAllDoseListResponseModel, GetAllDoseListResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetAllDoseListResponseModel> {
+                return apiService.getAllDoseType(pageNumber, limit)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
     // Get MedLists of LovedOne
     suspend fun getLovedOneMedLists(
-        lovedOneUUID: String,date:String=""
+        lovedOneUUID: String, date: String = ""
     ): Flow<DataResult<GetLovedOneMedList>> {
         return object :
             NetworkOnlineDataRepo<GetLovedOneMedList, GetLovedOneMedList>() {
@@ -133,12 +146,18 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
- // Get Medication Records
-    suspend fun getMedicationRecords(id: String,page:Int,limit:Int,date:String): Flow<DataResult<GetMedicationRecordResponse>> {
+
+    // Get Medication Records
+    suspend fun getMedicationRecords(
+        id: String,
+        page: Int,
+        limit: Int,
+        date: String
+    ): Flow<DataResult<GetMedicationRecordResponse>> {
         return object :
             NetworkOnlineDataRepo<GetMedicationRecordResponse, GetMedicationRecordResponse>() {
             override suspend fun fetchDataFromRemoteSource(): Response<GetMedicationRecordResponse> {
-                return apiService.getMedicationRecords(id,page,limit,date)
+                return apiService.getMedicationRecords(id, page, limit, date)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

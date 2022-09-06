@@ -52,6 +52,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var selectedDose: DoseList? = null
     private var doseAdapter: DoseAdapter? = null
     private var doseList: ArrayList<DoseList> = arrayListOf()
+    private var doseTypeList: ArrayList<DoseList> = arrayListOf()
     private var currentPage: Int = 0
     private var totalPage: Int = 0
     private var total: Int = 0
@@ -61,6 +62,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var limit = 10
     private var frequencyId: Int? = null
     private var doseID: String? = null
+    private var doseTypeID: String? = null
     private var selectedDoseId: String? = null
     private var selectedDoseTypeId: String? = null
     private var daysIds: String? = null
@@ -96,14 +98,15 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         medicationViewModel.getDoseListResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
-                    hideLoading()
+                    // hideLoading()
                     showError(requireContext(), it.message.toString())
+                    medicationViewModel.getAllDoseTypeList(1, 10)
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    hideLoading()
+                    //hideLoading()
                     it.data.payload.let { payload ->
                         doseList = payload?.dosages!!
                         total = payload.total
@@ -122,10 +125,43 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         )
 
                     fragmentScheduleMedicineBinding.qtySpinner.adapter = dosageAdapter
-                    fragmentScheduleMedicineBinding.typeSpinner.adapter = dosageAdapter
+
                     val doseQty = dosageAdapter?.getItem(0)
                     if (doseQty != null) selectedDoseId = doseQty.id.toString()
+                    medicationViewModel.getAllDoseTypeList(1, 10)
+                }
+            }
+        }
+        medicationViewModel.getDoseTypeListResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+//                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.payload.let { payload ->
+                        doseTypeList = payload?.dosagesTypes!!
+                        total = payload.total
+                        currentPage = payload.currentPage
+                        totalPage = payload.totalPages
+                    }
 
+                    if (doseTypeList.isEmpty()) return@observeEvent
+                    doseAdapter?.addData(doseTypeList)
+                    doseTypeList.add(0, DoseList(id = -1, name = "Dose Type"))
+                    dosageAdapter =
+                        DosageQtyTypeAdapter(
+                            requireContext(),
+                            R.layout.vehicle_spinner_drop_view_item,
+                            doseTypeList
+                        )
+
+                    fragmentScheduleMedicineBinding.typeSpinner.adapter = dosageAdapter
+                    val doseQty = dosageAdapter?.getItem(0)
                     if (doseQty != null) selectedDoseTypeId = doseQty.id.toString()
                 }
             }
@@ -166,6 +202,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     if (payLoad != null) {
                         selectedDoseId = payLoad!!.dosage_id.toString()
                         doseID = payLoad!!.dosage_id.toString()
+                        doseTypeID = payLoad!!.dosage_type_id.toString()
                         // fragmentScheduleMedicineBinding.doseTV.text = payLoad!!.dosage.name
                         setFrequency(payLoad!!.frequency.toString())
                         if (payLoad!!.end_date != null) {
@@ -265,7 +302,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     //add days to day list
-                    selectedDoseTypeId = doseList[p2].id.toString()
+                    selectedDoseTypeId = doseTypeList[p2].id.toString()
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -567,7 +604,9 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     // call create medication api for scheduling
                     val timeAddedList: ArrayList<Time> = arrayListOf()
                     for (i in timeList) {
-                        timeAddedList.add(Time(i.time, i.isAmPM))
+                        if (!i.time.isNullOrEmpty() || !i.isAmPM.isNullOrEmpty()) {
+                            timeAddedList.add(Time(i.time, i.isAmPM))
+                        }
                     }
                     var endDate: String? = null
                     if (fragmentScheduleMedicineBinding.endDate.text.toString().trim()
@@ -628,13 +667,22 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                             (doseID ?: "0").toInt() != (selectedDoseId ?: "0").toInt() -> {
                                 isDoseChanged = true
                             }
+                            (doseTypeID ?: "0").toInt() != (selectedDoseTypeId ?: "0").toInt() -> {
+                                isDoseChanged = true
+                            }
                         }
+                        val notes =
+                            fragmentScheduleMedicineBinding.etNote.text.toString().trim().ifEmpty {
+                                null
+                            }
+
                         val scheduledMedication = UpdateScheduledMedList(
-                            doseID!!,
+                            selectedDoseId!!,
+                            selectedDoseTypeId,
                             frequencyId!!.toString(),
                             daysIds!!,
                             timeAddedList,
-                            fragmentScheduleMedicineBinding.etNote.text.toString().trim(),
+                            notes,
                             endDate,
                             isTimeChanged,
                             isDoseChanged
@@ -644,15 +692,19 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                             medicationId!!
                         )
                     } else {
+                        val notes =
+                            fragmentScheduleMedicineBinding.etNote.text.toString().trim().ifEmpty {
+                                null
+                            }
                         val scheduledMedication =
                             ScheduledMedicationRequestModel(
                                 medicationViewModel.getLovedOneUUId(),
-                                selectedDoseId!!,
+                                selectedDoseId!!, selectedDoseTypeId!!,
                                 frequencyId!!.toString(),
                                 selectedMedList?.id.toString(),
                                 daysIds!!,
                                 timeAddedList,
-                                fragmentScheduleMedicineBinding.etNote.text.toString().trim(),
+                                notes,
                                 endDate
                             )
                         medicationViewModel.addScheduledMedication(scheduledMedication)
