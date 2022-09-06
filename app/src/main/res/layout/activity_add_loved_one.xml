@@ -67,6 +67,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtLovedOne"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/gotham_bold"
@@ -75,6 +76,7 @@
                         android:textSize="@dimen/_16ssp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtLittleBit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
