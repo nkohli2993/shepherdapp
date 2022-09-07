@@ -12,6 +12,7 @@ data class UpdateScheduledMedList(
     @SerializedName("note") var note: String? = null,
     @SerializedName("end_date") var end_date: String? = null,
     @SerializedName("isTimeChanged") var isTimeChanged: Boolean? = null,
-    @SerializedName("isDoseChanged") var isDoseChanged: Boolean? = null
+    @SerializedName("isDoseChanged") var isDoseChanged: Boolean? = null,
+    @SerializedName("date") var date: String? = null
 
 )
