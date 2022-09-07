@@ -12,6 +12,7 @@ import com.shepherd.app.ui.base.BaseActivity
 import com.shepherd.app.ui.component.addLovedOne.adapter.SearchPlacesAdapter
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
+import com.shepherd.app.utils.hideKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -102,7 +103,13 @@ class SearchPlacesActivity : BaseActivity(), SearchPlacesAdapter.ClickListener,
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.img_clear_text -> {
-                binding.editTextSearch.text.clear()
+                if (binding.editTextSearch.text.toString().isEmpty()) {
+                    hideKeyboard()
+                    onBackPressed()
+                } else {
+                    binding.editTextSearch.text.clear()
+                }
+
             }
 
         }

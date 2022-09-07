@@ -53,7 +53,6 @@ import java.io.File
 class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener {
 
-
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     private lateinit var fragmentAddNewLockBoxBinding: FragmentAddNewLockBoxBinding
     private var uploadedLockBoxDocUrl: String? = null
@@ -64,7 +63,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var pageNumber: Int = 1
     private var limit: Int = 20
     private var uploadedFilesAdapter: UploadedLockBoxFilesAdapter? = null
-    private var lbtId: Int? = null
     private var selectedFileList: ArrayList<File>? = arrayListOf()
     private var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
     private var mDriveServiceHelper: DriveServiceHelper? = null

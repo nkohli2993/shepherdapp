@@ -810,6 +810,9 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                             dayOfMonth
                         }
                     }-$year"
+
+                //add check for date selected
+                daysIds = null
                 addDays()
                 setDayAdapter()
             }, mYear, mMonth, mDay

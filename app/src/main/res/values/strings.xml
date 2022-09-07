@@ -514,4 +514,5 @@
     <string name="please_upload_file">Please upload file…</string>
     <string name="please_select_document_type">Please select document type…</string>
     <string name="uploaded_file">Uploaded Files</string>
+    <string name="searched_lockbox_file_not_found">Searched LockBox File Not Found…</string>
 </resources>

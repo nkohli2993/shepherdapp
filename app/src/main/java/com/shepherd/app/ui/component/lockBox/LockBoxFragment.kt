@@ -282,7 +282,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
                         View.VISIBLE
                     fragmentLockboxBinding.txtNoUploadedLockBoxFile.text =
-                        "Searched Lock Box File Not Found..."
+                        getString(R.string.searched_lockbox_file_not_found)
                 }
                 is DataResult.Loading -> {
                     //  showLoading("")
