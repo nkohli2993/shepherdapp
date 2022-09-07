@@ -281,6 +281,8 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     fragmentLockboxBinding.rvOtherDocuments.visibility = View.GONE
                     fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility =
                         View.VISIBLE
+                    fragmentLockboxBinding.recommendedTxt.visibility =
+                        View.GONE
                     fragmentLockboxBinding.txtNoUploadedLockBoxFile.text =
                         getString(R.string.searched_lockbox_file_not_found)
                 }
@@ -303,6 +305,8 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     } else {
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
+                        fragmentLockboxBinding.recommendedTxt.visibility =
+                            View.VISIBLE
                         lockBoxList?.let { it1 ->
                             otherDocumentsAdapter?.addData(
                                 it1,
