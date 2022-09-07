@@ -1,5 +1,6 @@
 package com.shepherd.app.ui.component.loved_one
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -19,6 +20,7 @@ import com.shepherd.app.ui.component.addLovedOne.AddLovedOneActivity
 import com.shepherd.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.shepherd.app.ui.component.loved_one.adapter.LovedOneMedicalConditionAdapter
 import com.shepherd.app.utils.Const
+import com.shepherd.app.utils.extensions.convertISOTimeToDate
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.view_model.LovedOneMedicalConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,8 +51,9 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         return fragmentLovedOneProfileBinding.root
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun observeViewModel() {
-
+        // Observe Loved One's Medical Condition live data
         lovedOneMedicalConditionViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -69,7 +72,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         }
 
         // Observer user details api live data
-        lovedOneMedicalConditionViewModel.userDetailsLiveData.observeEvent(this) {
+        lovedOneMedicalConditionViewModel.lovedOneDetailsLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -81,12 +84,17 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = it.data.payload
-                    Log.d(TAG, "Loved One User Detail: $payload")
+                    fragmentLovedOneProfileBinding.data = payload
+
+                    fragmentLovedOneProfileBinding.txtDOB.text =
+                        payload?.userProfiles?.dob.convertISOTimeToDate()
+                    Log.d(TAG, "LovedOneDetailWithRelation: $payload")
                 }
             }
 
         }
     }
+
 
     override fun initViewBinding() {
         careTeamModel = args.careTeamModel
@@ -94,10 +102,11 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         Log.d(TAG, "careTeamModel: $careTeamModel ")
 
         fragmentLovedOneProfileBinding.listener = this
-        fragmentLovedOneProfileBinding.data = careTeamModel
+//        fragmentLovedOneProfileBinding.data = careTeamModel
 
         setLovedOneMedicalConditionsAdapter()
 
+        // Get LovedOne's medical conditions
         careTeamModel?.love_user_id?.let {
             lovedOneMedicalConditionViewModel.getLovedOneMedicalConditions(
                 it
@@ -105,7 +114,14 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         }
 
         // Get user profile
-        lovedOneMedicalConditionViewModel.getUserDetails(careTeamModel?.love_user_id_details?.userProfileId)
+//        lovedOneMedicalConditionViewModel.getUserDetails(careTeamModel?.love_user_id_details?.userProfileId)
+
+        // Get Loved One's detail with relation
+        careTeamModel?.love_user_id_details?.uid?.let {
+            lovedOneMedicalConditionViewModel.getLovedOneDetailsWithRelation(
+                it
+            )
+        }
 
     }
 
@@ -152,7 +168,14 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
     override fun onResume() {
         super.onResume()
         // Get user profile
-        lovedOneMedicalConditionViewModel.getUserDetails(careTeamModel?.love_user_id_details?.userProfileId)
+//        lovedOneMedicalConditionViewModel.getUserDetails(careTeamModel?.love_user_id_details?.userProfileId)
+
+        // Get Loved One's detail with relation
+        careTeamModel?.love_user_id_details?.uid?.let {
+            lovedOneMedicalConditionViewModel.getLovedOneDetailsWithRelation(
+                it
+            )
+        }
 
         // Get Loved One's Medical conditions
         careTeamModel?.love_user_id?.let {

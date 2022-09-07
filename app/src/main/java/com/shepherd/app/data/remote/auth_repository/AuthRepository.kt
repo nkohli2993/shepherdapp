@@ -108,6 +108,17 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    // Get Loved One's Details
+    suspend fun getLovedOneDetailsWithRelations(id: String): Flow<DataResult<UserDetailsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<UserDetailsResponseModel, UserDetailsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UserDetailsResponseModel> {
+                return apiService.getLovedOneDetailWithRelation(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+
     // Get User Details By UUID
     suspend fun getUserDetailsByUUID(id: String): Flow<DataResult<UserDetailByUUIDResponseModel>> {
         return object :
@@ -138,6 +149,7 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
     suspend fun sendUserVerificationEmail(): Flow<DataResult<BaseResponseModel>> {
         return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {

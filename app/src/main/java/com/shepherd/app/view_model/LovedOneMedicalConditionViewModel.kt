@@ -57,6 +57,11 @@ class LovedOneMedicalConditionViewModel @Inject constructor(
     var userDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
         _userDetailsLiveData
 
+    private var _lovedOneDetailsLiveData =
+        MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
+    var lovedOneDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
+        _lovedOneDetailsLiveData
+
 
     // Get Medical Conditions
     fun getMedicalConditions(
@@ -98,6 +103,19 @@ class LovedOneMedicalConditionViewModel @Inject constructor(
             }
         }
         return userDetailsLiveData
+    }
+
+    // Get User Details
+    fun getLovedOneDetailsWithRelation(id: String): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
+        viewModelScope.launch {
+            val response = id.let { authRepository.getLovedOneDetailsWithRelations(it) }
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _lovedOneDetailsLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return lovedOneDetailsLiveData
     }
 
 

@@ -2,7 +2,6 @@ package com.shepherd.app.constants
 
 import com.shepherd.app.BuildConfig.BASE_URL
 import com.shepherd.app.BuildConfig.BASE_URL_USER
-import com.shepherd.app.utils.convert
 
 
 /**
@@ -33,7 +32,9 @@ object ApiConstants {
 
     object LovedOne {
         const val CREATE_LOVED_ONE = "$BASE_URL_USER${API_VERSION}users/create-loved-one"
-        const val EDIT_LOVED_ONE="$BASE_URL_USER${API_VERSION}user_profiles/{id}"
+        const val EDIT_LOVED_ONE = "$BASE_URL_USER${API_VERSION}user_profiles/{id}"
+        const val GET_LOVED_ONE_DETAIL_WITH_RELATION =
+            "$BASE_URL${API_VERSION}care_teams/love_detail/{id}"
     }
 
     object MedicalConditions {

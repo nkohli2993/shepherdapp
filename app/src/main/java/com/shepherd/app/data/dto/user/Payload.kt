@@ -1,7 +1,8 @@
 package com.shepherd.app.data.dto.user
 
-import com.shepherd.app.data.dto.login.UserLovedOne
 import com.google.gson.annotations.SerializedName
+import com.shepherd.app.data.dto.care_team.Relationship
+import com.shepherd.app.data.dto.login.UserLovedOne
 
 /**
  * Created by Deepak Rattan on 09/06/22
@@ -28,5 +29,6 @@ data class Payload(
     @SerializedName("is_block") var isBlock: Boolean? = null,
     @SerializedName("user_profiles") var userProfiles: UserProfiles? = UserProfiles(),
     @SerializedName("user_loved_one") var userLovedOne: ArrayList<UserLovedOne> = arrayListOf(),
-    @SerializedName("user_roles") var userRoles: ArrayList<UserRole> = arrayListOf()
+    @SerializedName("user_roles") var userRoles: ArrayList<UserRole> = arrayListOf(),
+    @SerializedName("relationship") var relationship: Relationship? = Relationship()
 )

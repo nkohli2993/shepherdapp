@@ -234,3 +234,18 @@ fun String?.getChatDate(
         )
     }
 }
+
+// Convert String timestamp into string of date
+fun String?.convertISOTimeToDate(): String? {
+    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    var convertedDate: Date? = null
+    var formattedDate: String? = null
+    try {
+        convertedDate = sdf.parse(this)
+        formattedDate = SimpleDateFormat("dd-MM-yyyy").format(convertedDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return formattedDate
+}
