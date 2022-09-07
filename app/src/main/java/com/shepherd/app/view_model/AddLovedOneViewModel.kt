@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.dto.add_loved_one.CreateLovedOneModel
 import com.shepherd.app.data.dto.add_loved_one.CreateLovedOneResponseModel
 import com.shepherd.app.data.dto.add_loved_one.UploadPicResponseModel
+import com.shepherd.app.data.dto.edit_loved_one.EditLovedOneResponseModel
 import com.shepherd.app.data.dto.relation.RelationResponseModel
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.auth_repository.AuthRepository
@@ -45,6 +46,11 @@ class AddLovedOneViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<CreateLovedOneResponseModel>>>()
     var createLovedOneLiveData: LiveData<Event<DataResult<CreateLovedOneResponseModel>>> =
         _createLovedOneLiveData
+
+    private var _editLovedOneLiveData =
+        MutableLiveData<Event<DataResult<EditLovedOneResponseModel>>>()
+    var editLovedOneLiveData: LiveData<Event<DataResult<EditLovedOneResponseModel>>> =
+        _editLovedOneLiveData
 
 
     var createLovedOneData = MutableLiveData<CreateLovedOneModel>().apply {
@@ -119,6 +125,52 @@ class AddLovedOneViewModel @Inject constructor(
             }
         }
         return createLovedOneLiveData
+    }
+
+    // Edit Loved One
+    fun editLovedOne(
+        email: String?,
+        firstname: String,
+        lastname: String?,
+        relation_id: Int?,
+        phone_code: String?,
+        dob: String?,
+        place_id: String?,
+        customAddress: String?,
+        phone_no: String?,
+        profile_photo: String?,
+        userProfileID: Int?
+    ): LiveData<Event<DataResult<EditLovedOneResponseModel>>> {
+        createLovedOneData.value.let {
+            it?.email = email
+            it?.firstname = firstname
+            it?.lastname = lastname
+            it?.relationId = relation_id
+            it?.phoneCode = phone_code
+            it?.dob = dob
+            it?.placeId = place_id
+            it?.customAddress = customAddress
+            it?.phoneNo = phone_no
+            it?.profilePhoto = profile_photo
+        }
+
+
+        viewModelScope.launch {
+            val response =
+                createLovedOneData.value?.let {
+                    userProfileID?.let { it1 ->
+                        relationRepository.editLovedOne(
+                            it1, it
+                        )
+                    }
+                }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _editLovedOneLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return editLovedOneLiveData
     }
 
     fun saveLovedOneId(lovedOneID: String?) {

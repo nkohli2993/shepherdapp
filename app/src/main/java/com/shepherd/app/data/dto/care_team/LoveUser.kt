@@ -17,5 +17,6 @@ data class LoveUser(
     @SerializedName("email") var email: String? = null,
     @SerializedName("address") var address: String? = null,
     @SerializedName("phone") var phone: String? = null,
-    @SerializedName("dob") var dob: String? = null
+    @SerializedName("dob") var dob: String? = null,
+    @SerializedName("user_profile_id") var userProfileId: Int? = null
 ) : Parcelable

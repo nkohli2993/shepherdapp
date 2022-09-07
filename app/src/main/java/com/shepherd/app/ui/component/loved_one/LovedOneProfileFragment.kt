@@ -2,6 +2,7 @@ package com.shepherd.app.ui.component.loved_one
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
     private var lovedOneMedicalConditionAdapter: LovedOneMedicalConditionAdapter? = null
 
     private var careTeamModel: CareTeamModel? = null
+    private var TAG = "LovedOneProfileFragment"
 
 
     override fun onCreateView(
@@ -65,6 +67,25 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                 }
             }
         }
+
+        // Observer user details api live data
+        lovedOneMedicalConditionViewModel.userDetailsLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val payload = it.data.payload
+                    Log.d(TAG, "Loved One User Detail: $payload")
+                }
+            }
+
+        }
     }
 
     override fun initViewBinding() {
@@ -81,6 +102,8 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
             )
         }
 
+        // Get user profile
+        lovedOneMedicalConditionViewModel.getUserDetails(careTeamModel?.love_user_id_details?.userProfileId)
 
     }
 

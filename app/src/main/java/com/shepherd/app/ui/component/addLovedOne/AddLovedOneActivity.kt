@@ -6,6 +6,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
@@ -66,7 +68,9 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var year: String? = null
     private var relationName: String? = null
     private var relationSelected: Relation? = null
-
+    private var lovedOneId: Int? = null
+    private var lovedOneUUID: String? = null
+    private var userProfileId: Int? = null
 
 
     private var mDay: Int = 0
@@ -183,8 +187,14 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 }
 
                 //Get Relationship
-                 relationSelected = careteam?.relationship?.relation
+                relationSelected = careteam?.relationship?.relation
                 relationName = careteam?.relationship?.relation?.name
+
+                //Get LovedOne id
+                lovedOneId = careteam?.love_user_id_details?.id
+                lovedOneUUID = careteam?.love_user_id_details?.uid
+
+                userProfileId = careteam?.love_user_id_details?.userProfileId
 
             }
         }
@@ -383,9 +393,10 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     val relation = relationshipsAdapter?.getItem(0)
                     if (relation != null) selectedRelationship = relation
 
-                    if(isEditLovedOne){
+                    if (isEditLovedOne) {
                         val relationPos = relationshipsAdapter?.getPosition(relationSelected)
                         relationPos?.let { binding.relationshipSpinner.setSelection(it) }
+                        selectedRelationship = relationSelected
                     }
                 }
 
@@ -443,6 +454,27 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                         }
                         navigateToAddLovedOneConditionScreen()
                     }
+                }
+            }
+        }
+        // Observe Edit Loved One api response
+        addLovedOneViewModel.editLovedOneLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val payload = it.data.payload
+                    Log.d(TAG, "observeViewModel: $payload")
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        // Your Code
+                        finishActivity()
+                    }, 1000)
                 }
             }
         }
@@ -513,19 +545,37 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     }
                     dob =
                         yearSelected + "-" + (if (monthIdSelected!! < 10) "0$monthIdSelected" else monthIdSelected!!.toString()) + "-" + (if (dateSelected.toInt() < 10) "0$dateSelected" else dateSelected)
-                    addLovedOneViewModel.createLovedOne(
-                        email,
-                        firstName,
-                        lastName,
-                        relationId,
-                        phoneCode,
-                        dob,
-                        placeId,
-                        customAddress,
-                        phoneNumber,
-                        completeURLProfilePic
-                    )
 
+                    if (isEditLovedOne) {
+                        userProfileId?.let {
+                            addLovedOneViewModel.editLovedOne(
+                                null,
+                                firstName,
+                                lastName,
+                                relationId,
+                                phoneCode,
+                                dob,
+                                placeId,
+                                customAddress,
+                                phoneNumber,
+                                completeURLProfilePic,
+                                it
+                            )
+                        }
+                    } else {
+                        addLovedOneViewModel.createLovedOne(
+                            email,
+                            firstName,
+                            lastName,
+                            relationId,
+                            phoneCode,
+                            dob,
+                            placeId,
+                            customAddress,
+                            phoneNumber,
+                            completeURLProfilePic
+                        )
+                    }
                 }
 
             }

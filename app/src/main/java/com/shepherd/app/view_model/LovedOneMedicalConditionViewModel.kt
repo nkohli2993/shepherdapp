@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherd.app.data.dto.medical_conditions.MedicalConditionResponseModel
-import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
-import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
+import com.shepherd.app.data.dto.user.UserDetailsResponseModel
+import com.shepherd.app.data.remote.auth_repository.AuthRepository
 import com.shepherd.app.data.remote.medical_conditions.MedicalConditionRepository
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.Event
@@ -24,7 +24,8 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class LovedOneMedicalConditionViewModel @Inject constructor(
-    private val medicalConditionRepository: MedicalConditionRepository
+    private val medicalConditionRepository: MedicalConditionRepository,
+    private val authRepository: AuthRepository
 ) : BaseViewModel() {
 
 
@@ -50,6 +51,11 @@ class LovedOneMedicalConditionViewModel @Inject constructor(
 
     private var _userIDLiveData = MutableLiveData<Event<DataResult<Int>>>()
     var userIDLiveData: LiveData<Event<DataResult<Int>>> = _userIDLiveData
+
+    private var _userDetailsLiveData =
+        MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
+    var userDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
+        _userDetailsLiveData
 
 
     // Get Medical Conditions
@@ -80,26 +86,18 @@ class LovedOneMedicalConditionViewModel @Inject constructor(
     }
 
 
-    // Create Bulk One Medical Conditions
-    fun createMedicalConditions(conditions: ArrayList<MedicalConditionsLovedOneRequestModel>): LiveData<Event<DataResult<UserConditionsResponseModel>>> {
+    // Get User Details
+    fun getUserDetails(id: Int?): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
+//        val uuid = getUUID()
         viewModelScope.launch {
-            val response = medicalConditionRepository.createMedicalConditions(conditions)
+            val response = id?.let { authRepository.getUserDetails(it) }
             withContext(Dispatchers.Main) {
-                response.collect { _userConditionsResponseLiveData.postValue(Event(it)) }
+                response?.collect {
+                    _userDetailsLiveData.postValue(Event(it))
+                }
             }
         }
-        return userConditionsResponseLiveData
-    }
-
-    // update Medical Conditions
-    fun updateMedicalConditions(conditions: UpdateMedicalConditionRequestModel): LiveData<Event<DataResult<BaseResponseModel>>> {
-        viewModelScope.launch {
-            val response = medicalConditionRepository.updateMedicalConditions(conditions)
-            withContext(Dispatchers.Main) {
-                response.collect { _updateConditionsResponseLiveData.postValue(Event(it)) }
-            }
-        }
-        return updateConditionsResponseLiveData
+        return userDetailsLiveData
     }
 
 

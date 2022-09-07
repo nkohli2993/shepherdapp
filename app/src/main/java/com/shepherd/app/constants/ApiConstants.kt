@@ -33,6 +33,7 @@ object ApiConstants {
 
     object LovedOne {
         const val CREATE_LOVED_ONE = "$BASE_URL_USER${API_VERSION}users/create-loved-one"
+        const val EDIT_LOVED_ONE="$BASE_URL_USER${API_VERSION}user_profiles/{id}"
     }
 
     object MedicalConditions {

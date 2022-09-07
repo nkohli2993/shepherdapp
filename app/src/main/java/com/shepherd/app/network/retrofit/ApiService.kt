@@ -16,6 +16,7 @@ import com.shepherd.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherd.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherd.app.data.dto.change_password.ChangePasswordModel
 import com.shepherd.app.data.dto.dashboard.HomeResponseModel
+import com.shepherd.app.data.dto.edit_loved_one.EditLovedOneResponseModel
 import com.shepherd.app.data.dto.edit_profile.UserUpdateData
 import com.shepherd.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherd.app.data.dto.invitation.InvitationsResponseModel
@@ -93,7 +94,15 @@ interface ApiService {
     ): Response<RelationResponseModel>
 
     @POST(ApiConstants.LovedOne.CREATE_LOVED_ONE)
-    suspend fun createLovedOne(@Body value: CreateLovedOneModel): Response<CreateLovedOneResponseModel>
+    suspend fun createLovedOne(
+        @Body value: CreateLovedOneModel
+    ): Response<CreateLovedOneResponseModel>
+
+    @PUT(ApiConstants.LovedOne.EDIT_LOVED_ONE)
+    suspend fun editLovedOne(
+        @Path("id") id: Int?,
+        @Body value: CreateLovedOneModel
+    ): Response<EditLovedOneResponseModel>
 
     @GET(ApiConstants.MedicalConditions.GET_MEDICAL_CONDITIONS)
     suspend fun getMedicalConditions(
@@ -319,7 +328,7 @@ interface ApiService {
 
     @GET(ApiConstants.MedList.GET_LOVED_ONE_MED_LIST)
     suspend fun getLovedOneMedList(
-        @Path("id") id: String ,@Query("date") date:String
+        @Path("id") id: String, @Query("date") date: String
     ): Response<GetLovedOneMedList>
 
     // scheduled medication
@@ -402,28 +411,28 @@ interface ApiService {
     suspend fun getAllResourceApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("id") id:String,
-        @Query("conditions") conditions:String
-    ):Response<ResponseRelationModel>
+        @Query("id") id: String,
+        @Query("conditions") conditions: String
+    ): Response<ResponseRelationModel>
 
     @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
     suspend fun getSearchResourceResultApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("id") id:String,
-        @Query("search") search:String
-    ):Response<ResponseRelationModel>
+        @Query("id") id: String,
+        @Query("search") search: String
+    ): Response<ResponseRelationModel>
 // @Query("conditions") conditions:String,
 
     @GET(ApiConstants.Resource.GET_RESOURCE_DETAIL)
     suspend fun getResourceDetail(
-        @Path("id") id:Int,
-    ):Response<ParticularResourceResponseModel>
+        @Path("id") id: Int,
+    ): Response<ParticularResourceResponseModel>
 
 
     @GET(ApiConstants.Resource.GET_TRENDING_RESOURCE)
     suspend fun getTrendingResourceApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-    ):Response<ResponseRelationModel>
+    ): Response<ResponseRelationModel>
 }
