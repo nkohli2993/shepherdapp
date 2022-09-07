@@ -393,6 +393,7 @@
     <string name="enter_note">Please enter note…</string>
     <string name="google_drive_upload">Google driver</string>
     <string name="no_uploaded_lock_box_files_found">No Uploaded LockBox Files Found</string>
+    <string name="no_medlist_found">No MedList Found</string>
     <string name="me">Me</string>
     <string name="add_medication">Add Medication</string>
     <string name="update_medication">Update Medication</string>

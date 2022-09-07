@@ -118,6 +118,9 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
+                    fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility = View.GONE
+                    fragmentAddNewMedicationBinding.txtNoMedFound.visibility =
+                        View.VISIBLE
                     showError(requireContext(), it.message.toString())
                 }
                 is DataResult.Loading -> {

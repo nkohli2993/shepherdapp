@@ -128,12 +128,12 @@
             android:nestedScrollingEnabled="false"
             android:orientation="vertical"
             android:overScrollMode="never"
-            tools:itemCount="20"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/btnNext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardViewSearch"
+            tools:itemCount="20"
             tools:listitem="@layout/adapter_add_medicine_list" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -142,9 +142,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:minHeight="@dimen/_150sdp"
+            android:minHeight="@dimen/_200sdp"
             android:paddingVertical="@dimen/_8sdp"
-            android:text="@string/no_uploaded_lock_box_files_found"
+            android:text="@string/no_medlist_found"
             android:textSize="@dimen/_14ssp"
             android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
