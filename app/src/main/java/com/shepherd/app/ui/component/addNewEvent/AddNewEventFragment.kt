@@ -387,16 +387,25 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     private fun createEvent() {
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
-        var dateFormat = SimpleDateFormat("MM-dd-yyyy")
-        val formatedDate: Date = dateFormat.parse(selectedDate)!!
+        var dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
+        val formatedDate: Date = dateFormat.parse(
+            selectedDate.plus(
+                " ${
+                    fragmentAddNewEventBinding.tvTime.text.toString().trim()
+                } $isAmPm"
+            )
+        )!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         selectedDate = dateFormat.format(formatedDate)
+        dateFormat = SimpleDateFormat("HH:mm")
+        val selectedTime = dateFormat.format(formatedDate)
+
         addNewEventViewModel.createEvent(
             addNewEventViewModel.getLovedOneUUId(),
             fragmentAddNewEventBinding.etEventName.text.toString().trim(),
             fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
             selectedDate,
-            fragmentAddNewEventBinding.tvTime.text.toString().trim(),
+            selectedTime,
             fragmentAddNewEventBinding.etNote.text.toString().trim(),
             assignTo
         )

@@ -8,6 +8,7 @@ import com.shepherd.app.data.DataRepository
 import com.shepherd.app.data.dto.med_list.*
 import com.shepherd.app.data.dto.med_list.get_medication_detail.GetMedicationDetailResponse
 import com.shepherd.app.data.dto.med_list.schedule_medlist.DoseList
+import com.shepherd.app.data.dto.med_list.schedule_medlist.TimePickerData
 import com.shepherd.app.data.local.UserRepository
 import com.shepherd.app.data.remote.med_list.MedListRepository
 import com.shepherd.app.network.retrofit.DataResult
@@ -37,8 +38,8 @@ class AddMedicationViewModel @Inject constructor(
     val selectedMedicationDetail: LiveData<SingleEvent<Int>> get() = _selectedMedicationDetail
 
     // selected time list position
-    private val _timeSelectedlist = MutableLiveData<SingleEvent<Int>>()
-    val timeSelectedlist: LiveData<SingleEvent<Int>> get() = _timeSelectedlist
+    private val _timeSelectedlist = MutableLiveData<SingleEvent<TimePickerData>>()
+    val timeSelectedlist: LiveData<SingleEvent<TimePickerData>> get() = _timeSelectedlist
 
     // selected dost data
     private val _doseListData = MutableLiveData<SingleEvent<DoseList>>()
@@ -156,7 +157,7 @@ class AddMedicationViewModel @Inject constructor(
         _selectedMedicationDetail.value = SingleEvent(medlistPosition)
     }
 
-    fun setSelectedTime(timeSelectedlist: Int) {
+    fun setSelectedTime(timeSelectedlist: TimePickerData) {
         _timeSelectedlist.value = SingleEvent(timeSelectedlist)
     }
 

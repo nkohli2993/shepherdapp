@@ -25,8 +25,8 @@
         android:gravity="center_vertical"
         android:hint="@string/choose_time"
         android:textColor="@color/_192032"
-        android:textSize="@dimen/_14ssp"
         android:textColorHint="@color/_192032"
+        android:textSize="@dimen/_14ssp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/amPmLL"
         app:layout_constraintStart_toEndOf="@+id/ivClock"
@@ -46,6 +46,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_medium"
+            android:paddingHorizontal="@dimen/_3sdp"
+            android:paddingVertical="@dimen/_10sdp"
             android:text="@string/am"
             android:textColor="@color/colorBlackTrans50"
             android:textSize="@dimen/_14ssp" />
@@ -62,6 +64,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_10sdp"
             android:fontFamily="@font/gotham_medium"
+            android:paddingHorizontal="@dimen/_3sdp"
+            android:paddingVertical="@dimen/_10sdp"
             android:text="@string/pm"
             android:textColor="@color/colorBlackTrans50"
             android:textSize="@dimen/_14ssp" />

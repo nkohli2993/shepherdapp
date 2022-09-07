@@ -108,9 +108,9 @@
                     android:id="@+id/ivNotification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:src="@drawable/ic_home_notification"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/ivLovedOneProfile"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -120,10 +120,19 @@
                     android:layout_height="@dimen/_32sdp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_defalut_profile_pic"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/ivNotification"
                     app:shapeAppearanceOverlay="@style/roundedCornersImageView12" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtLovedUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    app:fontFamily="@font/gotham_medium"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ivLovedOneProfile"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
