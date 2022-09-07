@@ -4,7 +4,6 @@ package com.shepherd.app.ui.component.carePoints
 import android.annotation.SuppressLint
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.format.DateUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +38,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * Created by Nikita kohli on 26-07-22
+ * Created by Nikita Kohli on 26-07-22
  */
 
 @SuppressLint("SimpleDateFormat")
@@ -108,7 +107,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 date.date
             )
         }
-        fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { widget, date ->
+        fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
             when (clickType) {
                 CalendarState.Month.value -> {
                     fragmentCarePointsBinding.calendarPView.selectionMode =

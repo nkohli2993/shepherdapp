@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.maps.model.LatLng
 import com.shepherd.app.R
 import com.shepherd.app.data.Resource
 import com.shepherd.app.data.dto.login.LoginResponseModel
@@ -48,7 +47,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     View.OnClickListener, AssignToEventAdapter.selectedTeamMember,
     DatePickerDialog.OnDateSetListener {
     private lateinit var fragmentAddNewEventBinding: FragmentAddNewEventBinding
-    private var assigneAdapter: AssigneAdapter? = null
+    private var assigneeAdapter: AssigneAdapter? = null
     private val addNewEventViewModel: AddNewEventViewModel by viewModels()
     private var pageNumber: Int = 1
     private var limit: Int = 10
@@ -83,7 +82,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
             false
         }
-        assigneAdapter?.setHasStableIds(true)
+        assigneeAdapter?.setHasStableIds(true)
 
     }
 
@@ -106,8 +105,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
 
     private fun observeEventMembers() {
-        addNewEventViewModel.createEventLiveData.observeEvent(this) {
-            when (it) {
+        addNewEventViewModel.createEventLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
@@ -122,10 +121,10 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    if (it.error.isNotEmpty()) {
-                        showError(requireContext(), it.error)
+                    if (result.error.isNotEmpty()) {
+                        showError(requireContext(), result.error)
                     } else {
-                        it.message?.let { showError(requireContext(), it) }
+                        result.message?.let { showError(requireContext(), it) }
                     }
 
 
@@ -133,35 +132,35 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
 
         }
-        addNewEventViewModel.eventMemberLiveData.observeEvent(this) {
-            when (it) {
+        addNewEventViewModel.eventMemberLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val payload = it.data.payload
+                    val payload = result.data.payload
                     careteams.addAll(payload.data)
-                    assigneAdapter = AssigneAdapter(
+                    assigneeAdapter = AssigneAdapter(
                         this,
                         requireContext(),
                         careteams
                     )
-                    fragmentAddNewEventBinding.assigneRV.adapter = assigneAdapter
+                    fragmentAddNewEventBinding.assigneRV.adapter = assigneeAdapter
 
 
                 }
 
                 is DataResult.Failure -> {
                     careteams.add(CareTeamModel())
-                    assigneAdapter = AssigneAdapter(
+                    assigneeAdapter = AssigneAdapter(
                         this,
                         requireContext(),
                         careteams
                     )
-                    fragmentAddNewEventBinding.assigneRV.adapter = assigneAdapter
+                    fragmentAddNewEventBinding.assigneRV.adapter = assigneeAdapter
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it) }
+                    result.message?.let { showError(requireContext(), it) }
 
                 }
             }
@@ -170,8 +169,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
     private fun observeCreateEvent() {
-        addNewEventViewModel.createEventLiveData.observeEvent(this) {
-            when (it) {
+        addNewEventViewModel.createEventLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
@@ -181,7 +180,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it) }
+                    result.message?.let { showError(requireContext(), it) }
 
                 }
             }
@@ -388,7 +387,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private fun createEvent() {
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
         var dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
-        val formatedDate: Date = dateFormat.parse(
+        val formattedDate: Date = dateFormat.parse(
             selectedDate.plus(
                 " ${
                     fragmentAddNewEventBinding.tvTime.text.toString().trim()
@@ -396,9 +395,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             )
         )!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        selectedDate = dateFormat.format(formatedDate)
+        selectedDate = dateFormat.format(formattedDate)
         dateFormat = SimpleDateFormat("HH:mm")
-        val selectedTime = dateFormat.format(formatedDate)
+        val selectedTime = dateFormat.format(formattedDate)
 
         addNewEventViewModel.createEvent(
             addNewEventViewModel.getLovedOneUUId(),
@@ -418,7 +417,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     override fun onSelected(position: Int) {
         careteams[position].isSelected = !careteams[position].isSelected
         fragmentAddNewEventBinding.assigneRV.postDelayed({
-            assigneAdapter!!.notifyDataSetChanged()
+            assigneeAdapter!!.notifyDataSetChanged()
         }, 100)
         val assignee: ArrayList<String> = arrayListOf()
         assignee.clear()
