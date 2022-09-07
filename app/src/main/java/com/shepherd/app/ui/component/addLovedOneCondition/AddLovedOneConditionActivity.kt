@@ -47,6 +47,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
     private var conditionIDs: List<Int?>? = null
     private var isLoading = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
