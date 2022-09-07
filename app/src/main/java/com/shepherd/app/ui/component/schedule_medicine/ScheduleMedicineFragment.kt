@@ -119,6 +119,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     if (payLoad != null) {
                         selectedDoseId = payLoad!!.dosage_id.toString()
                         doseID = payLoad!!.dosage_id.toString()
+                        fragmentScheduleMedicineBinding.tvMedTitle.text = payLoad?.medlist?.name?:""
                         doseTypeID = payLoad!!.dosage_type_id.toString()
                         selectedDoseId = payLoad!!.dosage_id.toString()
                         selectedDoseTypeId = payLoad!!.dosage_type_id.toString()
