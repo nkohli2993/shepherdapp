@@ -10,9 +10,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.med_list.schedule_medlist.TimePickerData
 import com.shepherd.app.data.dto.med_list.schedule_medlist.TimeSelectedlist
 import com.shepherd.app.databinding.LayoutAddTimeBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
+import com.shepherd.app.utils.TimePickerType
 import com.shepherd.app.view_model.AddMedicationViewModel
 import java.lang.Exception
 
@@ -29,7 +31,7 @@ class TimeAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.setSelectedTime(itemData[0] as Int)
+            viewModel.setSelectedTime(itemData[0] as TimePickerData)
         }
     }
 
@@ -47,7 +49,15 @@ class TimeAdapter(
     }
 
     override fun getItemCount(): Int {
-        return timeList.size
+        return when {
+            timeList.size<5 -> {
+                timeList.size
+            }
+            else -> {
+                4
+            }
+        }
+
     }
 
     override fun onBindViewHolder(holder: AddTimeViewHolder, position: Int) {
@@ -81,6 +91,17 @@ class TimeAdapter(
                     }
                 }
 
+            }
+
+            itemBinding.tvam.setOnClickListener {
+                recyclerItemListener.onItemSelected(
+                    TimePickerData(absoluteAdapterPosition,TimePickerType.EDIT.value,"am")
+                )
+            }
+            itemBinding.tvpm.setOnClickListener {
+                recyclerItemListener.onItemSelected(
+                    TimePickerData(absoluteAdapterPosition,TimePickerType.EDIT.value,"pm")
+                )
             }
             itemBinding.selectedTimeTV.doOnTextChanged { text, start, before, count ->
                 when {
@@ -120,7 +141,7 @@ class TimeAdapter(
             }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    absoluteAdapterPosition
+                    TimePickerData(absoluteAdapterPosition,TimePickerType.ADD.value)
                 )
             }
         }

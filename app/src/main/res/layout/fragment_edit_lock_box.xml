@@ -39,7 +39,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham_bold"
-                android:text="@string/add_new_lock_box"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_20ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/ivBack"
@@ -220,11 +219,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/selected_files"
+                android:text="@string/uploaded_file"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
-                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="@id/cardView"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/edtNote" />
@@ -237,12 +235,11 @@
                 android:layout_marginTop="@dimen/_8sdp"
                 android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
-                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="@id/cardView"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
-                tools:itemCount="20"
+                tools:itemCount="5"
                 tools:listitem="@layout/adapter_uploaded_files" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -259,24 +256,50 @@
                 app:layout_constraintStart_toStartOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/rvUploadedFiles" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnDone"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/clBottomWrapper"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginHorizontal="@dimen/_60sdp"
-                android:layout_marginVertical="@dimen/_40sdp"
-                android:background="@drawable/button_primary"
-                android:backgroundTint="@color/_399282"
-                android:fontFamily="@font/gotham_medium"
-                android:onClick="@{listener::onClick}"
-                android:text="@string/done"
-                android:textAllCaps="false"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_13ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtNoUploadedLockBoxFile" />
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="@+id/edtNote"
+                app:layout_constraintStart_toStartOf="@+id/edtNote"
+                app:layout_constraintTop_toBottomOf="@+id/txtNoUploadedLockBoxFile">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnCancel"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_black_border"
+                    android:fontFamily="@font/gotham_medium"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13ssp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSaveChanges"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_primary"
+                    android:backgroundTint="@color/_399282"
+                    android:fontFamily="@font/gotham_medium"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingHorizontal="10dp"
+                    android:text="@string/save_changes"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_13ssp" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

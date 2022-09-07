@@ -11,6 +11,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.AdapterView
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -27,11 +28,14 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.shepherd.app.databinding.FragmentAddNewLockBoxBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.ui.component.lockBox.adapter.DocumentAdapter
 import com.shepherd.app.ui.component.lockBox.adapter.UploadedLockBoxFilesAdapter
+import com.shepherd.app.ui.component.schedule_medicine.adapter.DosageQtyTypeAdapter
 import com.shepherd.app.utils.FileValidator
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
@@ -49,6 +53,7 @@ import java.io.File
 class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     View.OnClickListener, UploadedLockBoxFilesAdapter.OnItemClickListener {
 
+
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
     private lateinit var fragmentAddNewLockBoxBinding: FragmentAddNewLockBoxBinding
     private var uploadedLockBoxDocUrl: String? = null
@@ -57,12 +62,15 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private val TAG = "AddNewLockBoxFragment"
     private var dialog: Dialog? = null
     private var pageNumber: Int = 1
-    private var limit: Int = 10
+    private var limit: Int = 20
     private var uploadedFilesAdapter: UploadedLockBoxFilesAdapter? = null
     private var lbtId: Int? = null
     private var selectedFileList: ArrayList<File>? = arrayListOf()
     private var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
     private var mDriveServiceHelper: DriveServiceHelper? = null
+    private var lockBoxTypes: ArrayList<LockBoxTypes> = arrayListOf()
+    private var documentAdapter: DocumentAdapter? = null
+    private var selectedDocumentId: String? = null
 
     companion object {
         private const val REQUEST_CODE_SIGN_IN = 1
@@ -77,12 +85,15 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         getString(R.string.enter_file_name)
                     fragmentAddNewLockBoxBinding.edtFileName.requestFocus()
                 }
+                selectedDocumentId == null || selectedDocumentId == "-1" -> {
+                    showInfo(requireContext(), getString(R.string.please_select_document_type))
+                }
                 fragmentAddNewLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
                     fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
                 }
 
                 selectedFileList.isNullOrEmpty() -> {
-                    showInfo(requireContext(), "Please upload file..")
+                    showInfo(requireContext(), getString(R.string.please_upload_file))
                 }
                 else -> {
                     return true
@@ -107,6 +118,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentAddNewLockBoxBinding.listener = this
+        addNewLockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
         setUploadedFilesAdapter()
         fragmentAddNewLockBoxBinding.edtNote.setOnTouchListener { view, event ->
             view.parent.requestDisallowInterceptTouchEvent(true)
@@ -115,6 +127,16 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
             false
         }
+        fragmentAddNewLockBoxBinding.documentSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    selectedDocumentId = lockBoxTypes[p2].id.toString()
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+
+            }
 
     }
 
@@ -146,7 +168,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             fileName,
                             fileNote,
                             list,
-                            lbtId
+                            selectedDocumentId?.toInt()
                         )
                     }
                 }
@@ -194,6 +216,47 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 }
             }
         }
+
+        //Observe the response of list of document type
+        addNewLockBoxViewModel.lockBoxTypeResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+
+                    if (it.data.payload?.lockBoxTypes != null) {
+                        lockBoxTypes.clear()
+                        if (it.data.payload?.lockBoxTypes != null || it.data.payload?.lockBoxTypes!!.size > 0) {
+                            for (i in it.data.payload?.lockBoxTypes!!) {
+                                if ((i.lockbox == null || i.lockbox.size <= 0)) {
+                                    lockBoxTypes.add(i)
+                                }
+                                if(i.name?.lowercase()=="other" && i.lockbox.size > 0){
+                                    lockBoxTypes.add(i)
+                                }
+                            }
+                        }
+                    }
+                    lockBoxTypes.add(0, LockBoxTypes(id = -1, name = "Select Document Type"))
+                    if (lockBoxTypes.isEmpty()) return@observeEvent
+                    // show types in dropdown
+                    documentAdapter =
+                        DocumentAdapter(
+                            requireContext(),
+                            R.layout.vehicle_spinner_drop_view_item,
+                            lockBoxTypes
+                        )
+                    fragmentAddNewLockBoxBinding.documentSpinner.adapter = documentAdapter
+                }
+            }
+        }
+
     }
 
     private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
@@ -244,7 +307,10 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             getString(R.string.only_jpg_png_word_text_file_can_be_uploaded)
                         )
                     } else if (selectedFileList!!.size > 5) {
-                        showError(requireContext(), getString(R.string.you_can_upload_at_max_five_file))
+                        showError(
+                            requireContext(),
+                            getString(R.string.you_can_upload_at_max_five_file)
+                        )
                     } else {
                         selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
                     }

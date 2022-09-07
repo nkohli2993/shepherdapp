@@ -29,6 +29,7 @@ import com.shepherd.app.ui.base.BaseFragment
 import com.shepherd.app.ui.component.schedule_medicine.adapter.*
 import com.shepherd.app.utils.FrequencyType
 import com.shepherd.app.utils.SingleEvent
+import com.shepherd.app.utils.TimePickerType
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.utils.observe
@@ -79,7 +80,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private var isDoseChanged: Boolean? = null
     private var dosageAdapter: DosageQtyTypeAdapter? = null
     private var payLoad: Payload? = null
-    private var updateDate:String? = null
+    private var updateDate: String? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -127,33 +128,19 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         }
                         timeList.clear()
                         addedTimeList.clear()
-                        if (payLoad?.time != null) {
-                            for (i in payLoad?.time!!) {
-                                timeList.add(
-                                    TimeSelectedlist(
-                                        timeList.size,
-                                        i.time,
-                                        i.hour.lowercase()
-                                    )
-                                )
-                                // added data to addedTimeList to maintain added time for medication
-                                addedTimeList.add(
-                                    TimeSelectedlist(
-                                        timeList.size,
-                                        i.time,
-                                        i.hour.lowercase()
-                                    )
-                                )
+                        if (payLoad?.frequency != null) {
+                            if (payLoad?.frequency!! < 5) {
+                                showAddedTime()
+                            } else {
+                                fragmentScheduleMedicineBinding.recycleviewTime.visibility =
+                                    View.GONE
+                                fragmentScheduleMedicineBinding.tvTime.visibility = View.GONE
+                                setTimeAdapter()
                             }
+                        } else {
+                            showAddedTime()
                         }
 
-                        if (timeList.size < payLoad!!.frequency.toInt()) {
-                            val timeCount = payLoad!!.frequency - timeList.size
-                            for (i in 0 until timeCount) {
-                                timeList.add(TimeSelectedlist())
-                            }
-                        }
-                        setTimeAdapter()
                         addDays(isEdit = true, payLoad!!.days)
                         setDayAdapter()
                         fragmentScheduleMedicineBinding.etNote.setText(payLoad!!.note)
@@ -178,6 +165,37 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 }
             }
         }
+    }
+
+    private fun showAddedTime() {
+        fragmentScheduleMedicineBinding.recycleviewTime.visibility = View.VISIBLE
+        fragmentScheduleMedicineBinding.tvTime.visibility = View.VISIBLE
+        if (payLoad?.time != null) {
+            for (i in payLoad?.time!!) {
+                timeList.add(
+                    TimeSelectedlist(
+                        timeList.size,
+                        i.time,
+                        i.hour.lowercase()
+                    )
+                )
+                // added data to addedTimeList to maintain added time for medication
+                addedTimeList.add(
+                    TimeSelectedlist(
+                        timeList.size,
+                        i.time,
+                        i.hour.lowercase()
+                    )
+                )
+            }
+        }
+        if (timeList.size < payLoad!!.frequency.toInt()) {
+            val timeCount = payLoad!!.frequency - timeList.size
+            for (i in 0 until timeCount) {
+                timeList.add(TimeSelectedlist())
+            }
+        }
+        setTimeAdapter()
     }
 
     private fun scheduledMedicationObserver() {
@@ -295,7 +313,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             selectedMedList = args.medlist
             fragmentScheduleMedicineBinding.tvMedTitle.text = selectedMedList?.name
         }
-        if(args.medicationUpdateDate!=null){
+        if (args.medicationUpdateDate != null) {
             updateDate = args.medicationUpdateDate
         }
         frequencyId = FrequencyType.ONCE.value.toInt()
@@ -341,7 +359,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         fragmentScheduleMedicineBinding.qtySpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    //add days to day list
                     selectedDoseId = doseList[p2].id.toString()
                 }
 
@@ -389,6 +406,10 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             FrequencyType.FOUR.value -> {
                 frequencyId = FrequencyType.FOUR.value.toInt()
                 getString(R.string.four_times_a_day)
+            }
+            FrequencyType.FIVE.value -> {
+                frequencyId = FrequencyType.FIVE.value.toInt()
+                getString(R.string.as_needed)
             }
             else -> {
                 frequencyId = FrequencyType.ONCE.value.toInt()
@@ -552,9 +573,23 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         .filter { it.isNotEmpty() } // or: .filter { it.isNotBlank() }
         .toList()
 
-    private fun selectedTime(navigateEvent: SingleEvent<Int>) {
+    private fun selectedTime(navigateEvent: SingleEvent<TimePickerData>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            timePicker(it)
+            when (it.type) {
+                TimePickerType.ADD.value -> {
+                    timePicker(it.position!!)
+                }
+                else -> {
+                    if (timeList[it.position!!].time.isNullOrEmpty()) {
+                        timePicker(it.position!!)
+                    } else {
+                        timeList[it.position!!].isAmPM = it.value
+                        timeAdapter?.notifyDataSetChanged()
+                    }
+
+                }
+            }
+
         }
     }
 

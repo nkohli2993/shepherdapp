@@ -128,6 +128,7 @@
             android:nestedScrollingEnabled="false"
             android:orientation="vertical"
             android:overScrollMode="never"
+            tools:itemCount="20"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/btnNext"
             app:layout_constraintEnd_toEndOf="parent"

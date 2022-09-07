@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherd.app.R
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.shepherd.app.databinding.AdapterRecommendedDocumentsBinding
 import com.shepherd.app.ui.base.listeners.RecyclerItemListener
@@ -53,6 +54,10 @@ class RecommendedDocumentsAdapter(
 
         fun bind(lockBoxTypes: LockBoxTypes, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = lockBoxTypes
+            itemBinding.ivStatus.setImageResource(R.drawable.ic_dot)
+            if(lockBoxTypes.isAdded){
+                itemBinding.ivStatus.setImageResource(R.drawable.ic_check)
+            }
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     lockBoxTypes

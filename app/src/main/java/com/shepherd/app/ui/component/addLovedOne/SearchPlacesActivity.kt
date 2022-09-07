@@ -23,6 +23,7 @@ class SearchPlacesActivity : BaseActivity(), SearchPlacesAdapter.ClickListener,
     View.OnClickListener {
     private var searchPlacesAdapter: SearchPlacesAdapter? = null
     private lateinit var binding: ActivitySearchPlacesBinding
+    private var searchType: String? = null
 
     companion object {
         const val TAG: String = "SearchPlacesFragment"
@@ -31,6 +32,15 @@ class SearchPlacesActivity : BaseActivity(), SearchPlacesAdapter.ClickListener,
     override fun initViewBinding() {
         binding = ActivitySearchPlacesBinding.inflate(layoutInflater)
         val view = binding.root
+        searchType = intent.getStringExtra("search_type")
+        when (searchType) {
+            "event" -> {
+                binding.editTextSearch.setHint(getString(R.string.please_enter_the_event_address))
+            }
+            else -> {
+                binding.editTextSearch.setHint(getString(R.string.please_enter_the_loved_one_address))
+            }
+        }
         setContentView(view)
         initPlacesAutoComplete()
         initRecyclerView()

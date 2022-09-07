@@ -580,10 +580,14 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
             }
             R.id.layoutAddress -> {
-                navLauncher.launch(Intent(this, SearchPlacesActivity::class.java))
+                val intent = Intent(this, SearchPlacesActivity::class.java)
+                intent.putExtra("search_type","loved_one_address")
+                navLauncher.launch(intent)
             }
             R.id.edtAddress -> {
-                navLauncher.launch(Intent(this, SearchPlacesActivity::class.java))
+                val intent = Intent(this, SearchPlacesActivity::class.java)
+                intent.putExtra("search_type","loved_one_address")
+                navLauncher.launch(intent)
             }
             R.id.relationshipSpinnerLayout -> {
                 binding.relationshipSpinner.performClick()

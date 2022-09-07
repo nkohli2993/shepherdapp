@@ -95,3 +95,7 @@ enum class FrequencyType(val value :String){
     FOUR("4"),
     FIVE("5")
 }
+enum class TimePickerType(val value :Int){
+    ADD(1),
+    EDIT(2)
+}

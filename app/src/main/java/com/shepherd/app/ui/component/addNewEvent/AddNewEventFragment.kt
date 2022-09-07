@@ -3,12 +3,14 @@ package com.shepherd.app.ui.component.addNewEvent
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
@@ -28,6 +30,7 @@ import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.view_model.AddNewEventViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.shepherd.app.data.dto.care_team.CareTeamModel
+import com.shepherd.app.ui.component.addLovedOne.SearchPlacesActivity
 import com.shepherd.app.ui.component.addNewEvent.adapter.AssigneAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
@@ -36,21 +39,24 @@ import kotlin.collections.ArrayList
 
 
 /**
- * Created by Sumit Kumar on 26-04-22
+ * Created by Nikita Kohli on 26-04-22
  */
 @AndroidEntryPoint
-@SuppressLint("SimpleDateFormat")
+@SuppressLint("SimpleDateFormat", "SetTextI18n", "NotifyDataSetChanged")
 class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     View.OnClickListener, AssignToEventAdapter.selectedTeamMember,
     DatePickerDialog.OnDateSetListener {
     private lateinit var fragmentAddNewEventBinding: FragmentAddNewEventBinding
-    private var assigneAdapter: AssigneAdapter? = null
+    private var assigneeAdapter: AssigneAdapter? = null
     private val addNewEventViewModel: AddNewEventViewModel by viewModels()
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var status: Int = 1
     private var assignTo = ArrayList<String>()
     private var careteams = ArrayList<CareTeamModel>()
+    private var isAmPm: String? = null
+    private var placeAddress: String? = null
+    private var placeId: String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,7 +82,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
             false
         }
-        assigneAdapter?.setHasStableIds(true)
+        assigneeAdapter?.setHasStableIds(true)
 
     }
 
@@ -99,8 +105,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
 
     private fun observeEventMembers() {
-        addNewEventViewModel.createEventLiveData.observeEvent(this) {
-            when (it) {
+        addNewEventViewModel.createEventLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
@@ -115,10 +121,10 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    if (it.error.isNotEmpty()) {
-                        showError(requireContext(), it.error)
+                    if (result.error.isNotEmpty()) {
+                        showError(requireContext(), result.error)
                     } else {
-                        it.message?.let { showError(requireContext(), it) }
+                        result.message?.let { showError(requireContext(), it) }
                     }
 
 
@@ -126,35 +132,35 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
 
         }
-        addNewEventViewModel.eventMemberLiveData.observeEvent(this) {
-            when (it) {
+        addNewEventViewModel.eventMemberLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val payload = it.data.payload
+                    val payload = result.data.payload
                     careteams.addAll(payload.data)
-                    assigneAdapter = AssigneAdapter(
+                    assigneeAdapter = AssigneAdapter(
                         this,
                         requireContext(),
                         careteams
                     )
-                    fragmentAddNewEventBinding.assigneRV.adapter = assigneAdapter
+                    fragmentAddNewEventBinding.assigneRV.adapter = assigneeAdapter
 
 
                 }
 
                 is DataResult.Failure -> {
                     careteams.add(CareTeamModel())
-                    assigneAdapter = AssigneAdapter(
+                    assigneeAdapter = AssigneAdapter(
                         this,
                         requireContext(),
                         careteams
                     )
-                    fragmentAddNewEventBinding.assigneRV.adapter = assigneAdapter
+                    fragmentAddNewEventBinding.assigneRV.adapter = assigneeAdapter
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it) }
+                    result.message?.let { showError(requireContext(), it) }
 
                 }
             }
@@ -163,8 +169,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
     private fun observeCreateEvent() {
-        addNewEventViewModel.createEventLiveData.observeEvent(this) {
-            when (it) {
+        addNewEventViewModel.createEventLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
@@ -174,7 +180,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it) }
+                    result.message?.let { showError(requireContext(), it) }
 
                 }
             }
@@ -212,9 +218,24 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         fragmentAddNewEventBinding.spinnerDownArrowImage.startAnimation(rotateAnim)
     }
 
-    @SuppressLint("SetTextI18n")
+    private var navLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == 10101) onPlaceSelected(result.data)
+        }
+
+    private fun onPlaceSelected(data: Intent?) {
+        placeAddress = data?.getStringExtra("placeName")
+        placeId = data?.getStringExtra("placeId")
+        fragmentAddNewEventBinding.edtAddress.setText(placeAddress)
+    }
+
     override fun onClick(p0: View?) {
         when (p0?.id) {
+            R.id.edtAddress -> {
+                val intent = Intent(requireContext(), SearchPlacesActivity::class.java)
+                intent.putExtra("search_type", "event")
+                navLauncher.launch(intent)
+            }
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
@@ -239,38 +260,88 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     createEvent()
                 }
             }
-            R.id.clTimeWrapper -> {
+            R.id.clTimeWrapper, R.id.tvTime -> {
                 timePicker()
             }
+            R.id.tvam -> {
+                changeTimeAmPm("am")
+            }
+            R.id.tvpm -> {
+                changeTimeAmPm("pm")
+            }
             R.id.tvDate -> {
-                val c = Calendar.getInstance()
-                val mYear = c[Calendar.YEAR]
-                val mMonth = c[Calendar.MONTH]
-                val mDay = c[Calendar.DAY_OF_MONTH]
-
-                val datePickerDialog = DatePickerDialog(
-                    requireActivity(), R.style.datepicker,
-                    { _, year, monthOfYear, dayOfMonth ->
-                        fragmentAddNewEventBinding.tvDate.text =
-                            "${
-                                if (monthOfYear + 1 < 10) {
-                                    "0${(monthOfYear + 1)}"
-                                } else {
-                                    (monthOfYear + 1)
-                                }
-                            }-${
-                                if (dayOfMonth + 1 < 10) {
-                                    "0$dayOfMonth"
-                                } else {
-                                    dayOfMonth
-                                }
-                            }-$year"
-                    }, mYear, mMonth, mDay
-                )
-                datePickerDialog.datePicker.minDate = c.timeInMillis
-                datePickerDialog.show()
+                datePicker()
             }
         }
+    }
+
+    private fun changeTimeAmPm(amPm: String) {
+        if (fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty()) {
+            showError(
+                requireContext(),
+                getString(R.string.please_select_new_care_point_date_firts)
+            )
+            fragmentAddNewEventBinding.tvDate.requestFocus()
+        } else if (fragmentAddNewEventBinding.tvTime.text.toString().trim().isEmpty()) {
+            timePicker()
+        } else {
+            val selectedDateTime =
+                fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ").plus(
+                    fragmentAddNewEventBinding.tvTime.text.toString().trim().plus(" $amPm")
+                )
+            val currentDateTime =
+                SimpleDateFormat("MM-dd-yyyy hh:mm a").format(Calendar.getInstance().time)
+
+            val dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
+            if (dateFormat.parse(selectedDateTime)!!
+                    .after(dateFormat.parse(currentDateTime))
+            ) {
+                if (amPm == "am") {
+                    isAmPm = "am"
+                    setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                } else {
+                    isAmPm = "pm"
+                    setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                }
+
+            } else {
+                showError(requireContext(), getString(R.string.please_select_future_time))
+            }
+        }
+    }
+
+
+    private fun datePicker() {
+        val c = Calendar.getInstance()
+        val mYear = c[Calendar.YEAR]
+        val mMonth = c[Calendar.MONTH]
+        val mDay = c[Calendar.DAY_OF_MONTH]
+
+        val datePickerDialog = DatePickerDialog(
+            requireActivity(), R.style.datepicker,
+            { _, year, monthOfYear, dayOfMonth ->
+                fragmentAddNewEventBinding.tvDate.text =
+                    "${
+                        if (monthOfYear + 1 < 10) {
+                            "0${(monthOfYear + 1)}"
+                        } else {
+                            (monthOfYear + 1)
+                        }
+                    }-${
+                        if (dayOfMonth + 1 < 10) {
+                            "0$dayOfMonth"
+                        } else {
+                            dayOfMonth
+                        }
+                    }-$year"
+
+                fragmentAddNewEventBinding.tvTime.text = ""
+                isAmPm = null
+                setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50)
+            }, mYear, mMonth, mDay
+        )
+        datePickerDialog.datePicker.minDate = c.timeInMillis
+        datePickerDialog.show()
     }
 
     private val isValid: Boolean
@@ -315,16 +386,25 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     private fun createEvent() {
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
-        var dateFormat = SimpleDateFormat("MM-dd-yyyy")
-        val formatedDate: Date = dateFormat.parse(selectedDate)!!
+        var dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
+        val formattedDate: Date = dateFormat.parse(
+            selectedDate.plus(
+                " ${
+                    fragmentAddNewEventBinding.tvTime.text.toString().trim()
+                } $isAmPm"
+            )
+        )!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        selectedDate = dateFormat.format(formatedDate)
+        selectedDate = dateFormat.format(formattedDate)
+        dateFormat = SimpleDateFormat("HH:mm")
+        val selectedTime = dateFormat.format(formattedDate)
+
         addNewEventViewModel.createEvent(
             addNewEventViewModel.getLovedOneUUId(),
             fragmentAddNewEventBinding.etEventName.text.toString().trim(),
             fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
             selectedDate,
-            fragmentAddNewEventBinding.tvTime.text.toString().trim(),
+            selectedTime,
             fragmentAddNewEventBinding.etNote.text.toString().trim(),
             assignTo
         )
@@ -337,7 +417,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     override fun onSelected(position: Int) {
         careteams[position].isSelected = !careteams[position].isSelected
         fragmentAddNewEventBinding.assigneRV.postDelayed({
-            assigneAdapter!!.notifyDataSetChanged()
+            assigneeAdapter!!.notifyDataSetChanged()
         }, 100)
         val assignee: ArrayList<String> = arrayListOf()
         assignee.clear()
@@ -365,8 +445,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             val mCurrentTime = Calendar.getInstance()
             if (fragmentAddNewEventBinding.tvTime.text.isNotEmpty()) {
                 val dateTime = fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ")
-                    .plus(fragmentAddNewEventBinding.tvTime.text.toString())
-                mCurrentTime.time = SimpleDateFormat("dd-MM-yyyy HH:mm").parse(dateTime)!!
+                    .plus(fragmentAddNewEventBinding.tvTime.text.toString().plus(" $isAmPm"))
+                mCurrentTime.time = SimpleDateFormat("dd-MM-yyyy hh:mm a").parse(dateTime)!!
             }
             val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
             val minute = mCurrentTime.get(Calendar.MINUTE)
@@ -386,15 +466,15 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                             .after(dateFormat.parse(currentDateTime))
                     ) {
                         if (hourOfDay < 12) {
+                            isAmPm = "am"
                             setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
-                            fragmentAddNewEventBinding.tvTime.setText(
+                            fragmentAddNewEventBinding.tvTime.text =
                                 String.format("%02d:%02d", hourOfDay, selectedMinute)
-                            )
                         } else {
+                            isAmPm = "pm"
                             setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
-                            fragmentAddNewEventBinding.tvTime.setText(
+                            fragmentAddNewEventBinding.tvTime.text =
                                 String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
-                            )
                         }
                     } else {
                         showError(requireContext(), getString(R.string.please_select_future_time))

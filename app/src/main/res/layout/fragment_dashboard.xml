@@ -20,16 +20,21 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/_7sdp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvCarePoints"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_7sdp"
                 android:onClick="@{listener::onClick}"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
-                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -94,7 +99,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:fontFamily="@font/gotham_bold"
-                            android:text="-"
+                            android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvTask"
@@ -120,12 +125,14 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvDiscussion"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:onClick="@{listener::onClick}"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
-                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@+id/cvCarePoints"
+                app:layout_constraintStart_toStartOf="@+id/cvCarePoints"
                 app:layout_constraintTop_toBottomOf="@+id/cvCarePoints">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -203,7 +210,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:fontFamily="@font/gotham_bold"
-                                    android:text="-"
+                                    android:text="@string/hyphen"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/_20ssp" />
 
@@ -234,7 +241,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:fontFamily="@font/gotham_bold"
-                                    android:text="-"
+                                    android:text="@string/hyphen"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/_20ssp" />
 
@@ -257,12 +264,14 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvMedList"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:onClick="@{listener::onClick}"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
-                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@+id/cvCarePoints"
+                app:layout_constraintStart_toStartOf="@+id/cvCarePoints"
                 app:layout_constraintTop_toBottomOf="@+id/cvDiscussion">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -353,12 +362,14 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvResources"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:onClick="@{listener::onClick}"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
-                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@+id/cvCarePoints"
+                app:layout_constraintStart_toStartOf="@+id/cvCarePoints"
                 app:layout_constraintTop_toBottomOf="@+id/cvMedList">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -421,7 +432,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_bold"
-                            android:text="-"
+                            android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvResourceListMessage"
@@ -448,12 +459,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvLockBox"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:onClick="@{listener::onClick}"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
-                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@+id/cvCarePoints"
+                app:layout_constraintStart_toStartOf="@+id/cvCarePoints"
+
                 app:layout_constraintTop_toBottomOf="@+id/cvResources">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -516,7 +530,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_bold"
-                            android:text="-"
+                            android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvLockBoxMessage"
@@ -543,12 +557,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvVitalStats"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
                 android:onClick="@{listener::onClick}"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
-                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="@+id/cvCarePoints"
+                app:layout_constraintStart_toStartOf="@+id/cvCarePoints"
+
                 app:layout_constraintTop_toBottomOf="@+id/cvLockBox">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -648,12 +665,17 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvCareTeam"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:onClick="@{listener::onClick}"
                 android:visibility="gone"
                 app:cardCornerRadius="@dimen/_18ssp"
-                app:cardUseCompatPadding="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cvCarePoints"
+                app:layout_constraintStart_toStartOf="@+id/cvCarePoints"
+
                 app:layout_constraintTop_toBottomOf="@+id/cvVitalStats">
 
                 <androidx.constraintlayout.widget.ConstraintLayout

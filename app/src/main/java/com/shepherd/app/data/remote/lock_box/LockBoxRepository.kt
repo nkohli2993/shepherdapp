@@ -30,14 +30,16 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
     // Get All Lock Box Types
     suspend fun getALlLockBoxTypes(
         pageNumber: Int,
-        limit: Int
+        limit: Int,
+        lovedOneUUID: String,
+        isQuery:Boolean
     ): Flow<DataResult<LockBoxTypeResponseModel>> {
         return object :
             NetworkOnlineDataRepo<LockBoxTypeResponseModel, LockBoxTypeResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LockBoxTypeResponseModel> {
                 return apiService.getAllLockBoxTypes(
                     pageNumber,
-                    limit,
+                    limit,lovedOneUUID
                 )
             }
         }.asFlow().flowOn(Dispatchers.IO)

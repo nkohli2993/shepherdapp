@@ -149,10 +149,14 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
-                    Picasso.get().load(lovedOneProfilePic)
-                        .placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(ivLovedOneProfile)
+                    if (it.data.payload?.lovedOneUserProfile != null || it.data.payload?.lovedOneUserProfile != "") {
+                        val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
+                        Picasso.get().load(lovedOneProfilePic)
+                            .placeholder(R.drawable.ic_defalut_profile_pic)
+                            .into(ivLovedOneProfile)
+                    }
+                    //set name of user name
+                    txtLovedUserName.text = it.data.payload?.firstname
                     //save data
                     viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
                 }
