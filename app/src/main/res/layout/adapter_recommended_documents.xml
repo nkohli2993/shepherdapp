@@ -56,7 +56,7 @@
         android:layout_marginHorizontal="@dimen/_3sdp"
         android:paddingVertical="@dimen/_3sdp"
         android:drawablePadding="@dimen/_5sdp"
-        android:drawableStart="@drawable/ic_recommended"
+        android:drawableStart="@drawable/ic_dot"
         android:textColor="@color/colorWhite"
         android:includeFontPadding="false"
         android:textSize="@dimen/_14ssp"

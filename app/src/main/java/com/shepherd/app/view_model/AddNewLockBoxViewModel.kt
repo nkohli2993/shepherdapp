@@ -10,6 +10,7 @@ import com.shepherd.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseM
 import com.shepherd.app.data.dto.lock_box.create_lock_box.Documents
 import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
+import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
 import com.shepherd.app.data.local.UserRepository
@@ -60,6 +61,13 @@ class AddNewLockBoxViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>>()
     var deleteUploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>> =
         _deleteUploadedLockBoxDocResponseLiveData
+
+    // Lock Box Type Response Live Data
+    private var _lockBoxTypeResponseLiveData =
+        MutableLiveData<Event<DataResult<LockBoxTypeResponseModel>>>()
+    var lockBoxTypeResponseLiveData: LiveData<Event<DataResult<LockBoxTypeResponseModel>>> =
+        _lockBoxTypeResponseLiveData
+
 
     // Upload lock box document
     fun uploadLockBoxDoc(file: File?): LiveData<Event<DataResult<UploadLockBoxDocResponseModel>>> {
@@ -154,5 +162,23 @@ class AddNewLockBoxViewModel @Inject constructor(
         }
         return deleteUploadedLockBoxDocResponseLiveData
     }
+
+    fun getAllLockBoxTypes(
+        pageNumber: Int,
+        limit: Int,
+        isQuery:Boolean
+    ): LiveData<Event<DataResult<LockBoxTypeResponseModel>>> {
+        val lovedOneUUId = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = lockBoxRepository.getALlLockBoxTypes(pageNumber, limit,lovedOneUUId!!,isQuery)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _lockBoxTypeResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return lockBoxTypeResponseLiveData
+    }
+
 
 }

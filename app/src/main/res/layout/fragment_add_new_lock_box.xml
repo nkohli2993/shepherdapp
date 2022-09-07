@@ -125,6 +125,61 @@
                 app:layout_constraintTop_toBottomOf="@id/txtFileName" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtDocumentType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:fontFamily="@font/gotham_light"
+                android:text="Document Type"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/cardView"
+                app:layout_constraintTop_toBottomOf="@+id/edtFileName" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clDocumentTypeWrapper"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                android:minHeight="@dimen/_50sdp"
+                app:layout_constraintEnd_toEndOf="@+id/edtFileName"
+                app:layout_constraintStart_toStartOf="@+id/edtFileName"
+                app:layout_constraintTop_toBottomOf="@+id/txtDocumentType">
+
+                <Spinner
+                    android:id="@+id/documentSpinner"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:dropDownWidth="@dimen/_280sdp"
+                    android:dropDownVerticalOffset="@dimen/_40sdp"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/doseIM"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:contentDescription="@string/app_name"
+                    android:padding="@dimen/_4sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_arrow_spinner"
+                    app:tint="@color/colorGreyDark" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,7 +190,7 @@
                 android:textSize="@dimen/_12ssp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
-                app:layout_constraintTop_toBottomOf="@+id/edtFileName" />
+                app:layout_constraintTop_toBottomOf="@+id/clDocumentTypeWrapper" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edtNote"

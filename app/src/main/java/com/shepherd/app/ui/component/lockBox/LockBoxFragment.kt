@@ -51,12 +51,10 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     private lateinit var fragmentLockboxBinding: FragmentLockboxBinding
     private var recommendedDocumentsAdapter: RecommendedDocumentsAdapter? = null
     private var otherDocumentsAdapter: OtherDocumentsAdapter? = null
-
     private var pageNumber = 1
-    private val limit = 10
+    private val limit = 20
     private var isSearch = false
-
-    var lockBoxTypes: ArrayList<LockBoxTypes>? = arrayListOf()
+    var lockBoxTypes: ArrayList<LockBoxTypes> = arrayListOf()
     var lockBoxList: ArrayList<LockBox>? = arrayListOf()
     var search: String? = null
     var currentPage: Int = 0
@@ -76,7 +74,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     override fun initViewBinding() {
         fragmentLockboxBinding.listener = this
-        lockBoxViewModel.getAllLockBoxTypes(pageNumber, limit)
+        lockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
         resetPageNumber()
         lockBoxList?.clear()
         lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
@@ -96,7 +94,6 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             fragmentLockboxBinding.editTextSearch.setText("")
             fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
             resetPageNumber()
-//            isSearch = true
             isSearch = false
             lockBoxList!!.clear()
 
@@ -107,12 +104,16 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
+            override fun onTextChanged(
+                s: CharSequence?,
+                start: Int,
+                lengthBefore: Int,
+                lengthAfter: Int
+            ) {
                 if (s.toString().isEmpty() && (lengthBefore == 0 && lengthAfter == 0)) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
                     fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
-                }
-                else if (s.toString().isEmpty() && (lengthBefore > 0 && lengthAfter >= 0)) {
+                } else if (s.toString().isEmpty() && (lengthBefore > 0 && lengthAfter >= 0)) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
                     fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
                     resetPageNumber()
@@ -142,7 +143,13 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 hideKeyboard()
                 resetPageNumber()
                 val searchData = fragmentLockboxBinding.editTextSearch.text.toString().trim()
-                if (searchData.isNullOrEmpty()) {
+                if (searchData.isEmpty()) {
+                    fragmentLockboxBinding.imgCancel.visibility = View.GONE
+                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                    resetPageNumber()
+                    isSearch = false
+                    lockBoxList!!.clear()
+                    lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
                 } else {
                     //Hit search api
                     lockBoxViewModel.searchAllLockBoxUploadedDocumentsByLovedOneUUID(
@@ -152,7 +159,6 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     )
                 }
                 return@OnEditorActionListener true
-            } else {
             }
             false
         })
@@ -180,9 +186,16 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    lockBoxTypes = it.data.payload?.lockBoxTypes
-                    if (lockBoxTypes.isNullOrEmpty()) return@observeEvent
-                    recommendedDocumentsAdapter?.addData(lockBoxTypes!!)
+//                    lockBoxTypes = it.data.payload?.lockBoxTypes
+                    lockBoxTypes.clear()
+                    if(it.data.payload?.lockBoxTypes!=null || it.data.payload?.lockBoxTypes!!.size>0){
+                        for(i in it.data.payload?.lockBoxTypes!!){
+//                            if()
+                            lockBoxTypes.add(i)
+                        }
+                    }
+                    if (lockBoxTypes.isEmpty()) return@observeEvent
+                    recommendedDocumentsAdapter?.addData(lockBoxTypes)
                 }
             }
         }
@@ -232,8 +245,8 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     lockBoxList?.clear()
-                    if(pageNumber == 1){
-                        otherDocumentsAdapter= null
+                    if (pageNumber == 1) {
+                        otherDocumentsAdapter = null
                         setOtherDocumentsAdapter()
                     }
                     it.data.payload.let {

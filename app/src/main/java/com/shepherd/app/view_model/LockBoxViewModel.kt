@@ -65,10 +65,12 @@ class LockBoxViewModel @Inject constructor(
 
     fun getAllLockBoxTypes(
         pageNumber: Int,
-        limit: Int
+        limit: Int,
+        isQuery:Boolean
     ): LiveData<Event<DataResult<LockBoxTypeResponseModel>>> {
+        val lovedOneUUId = userRepository.getLovedOneUUId()
         viewModelScope.launch {
-            val response = lockBoxRepository.getALlLockBoxTypes(pageNumber, limit)
+            val response = lockBoxRepository.getALlLockBoxTypes(pageNumber, limit,lovedOneUUId!!,isQuery)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _lockBoxTypeResponseLiveData.postValue(Event(it))

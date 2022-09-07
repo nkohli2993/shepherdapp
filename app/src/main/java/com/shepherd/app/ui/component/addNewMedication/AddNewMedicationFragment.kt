@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ import com.shepherd.app.utils.SingleEvent
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddMedicationViewModel
-import com.shepherd.app.view_model.MyMedListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -36,14 +34,13 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private var isSearch: Boolean = false
     private val addMedicationViewModel: AddMedicationViewModel by viewModels()
     private var pageNumber = 1
-    private val limit = 10
+    private val limit = 15
     private var addMedicineListAdapter: AddMedicineListAdapter? = null
     private var currentPage: Int = 0
     private var totalPage: Int = 0
     private var total: Int = 0
     var medLists: ArrayList<Medlist> = arrayListOf()
     private var selectedMedication: Medlist? = null
-    private val TAG: String = "Add medlist"
     private var searchFlag = false
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,13 +49,14 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     ): View {
         fragmentAddNewMedicationBinding =
             FragmentAddNewMedicationBinding.inflate(inflater, container, false)
-
         return fragmentAddNewMedicationBinding.root
     }
 
     override fun onResume() {
         super.onResume()
         medLists.clear()
+        pageNumber = 1
+        isSearch = false
         searchFlag = false
     }
 
@@ -127,6 +125,11 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    medLists.clear()
+                    if (pageNumber == 1) {
+                        addMedicineListAdapter = null
+                        setMedicineListAdapter()
+                    }
                     it.data.payload.let { payload ->
                         medLists = payload?.medlists!!
                         total = payload.total!!
@@ -220,7 +223,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     }
 
     private fun handleMedicationPagination() {
-        var isScrolling = true
+        var isScrolling: Boolean
         var visibleItemCount: Int
         var totalItemCount: Int
         var pastVisiblesItems: Int

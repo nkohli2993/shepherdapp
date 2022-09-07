@@ -243,6 +243,8 @@ interface ApiService {
     suspend fun getAllLockBoxTypes(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
+        @Query("loveone_user_id") loveone_user_id: String
+        //,@Query("is_query") type: Boolean
     ): Response<LockBoxTypeResponseModel>
 
     @Multipart
