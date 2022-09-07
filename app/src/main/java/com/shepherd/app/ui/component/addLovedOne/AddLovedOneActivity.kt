@@ -60,6 +60,15 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var mMonth: Int = 0
     private var relationshipsAdapter: RelationshipsAdapter? = null
 
+    private var isEditLovedOne = false
+    private var date: String? = null
+    private var month: String? = null
+    private var year: String? = null
+    private var relationName: String? = null
+    private var relationSelected: Relation? = null
+
+
+
     private var mDay: Int = 0
     private var pageNumber: Int = 1
     private var limit: Int = 10
@@ -77,7 +86,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var lovedOneID: String? = null
     private var customAddress: String? = null
     private var lastName: String? = null
-    private val alMonths = arrayOf(
+    private var alMonths = arrayListOf(
         "Month",
         "Jan",
         "Feb",
@@ -92,7 +101,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         "Nov",
         "Dec"
     )
-    private val alDays = arrayOf(
+    private val alDays = arrayListOf(
         "Day",
     )
 
@@ -141,6 +150,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             if (data.equals("Loved One Profile")) {
                 val careteam = intent.getParcelableExtra<CareTeamModel>("care_model")
                 Log.d(TAG, "initViewBinding: $careteam")
+                isEditLovedOne = true
 
                 binding.txtLovedOne.text = "Edit Loved One Details"
                 binding.txtLittleBit.visibility = View.GONE
@@ -154,6 +164,28 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 binding.edtAddress.text = careteam?.love_user_id_details?.address
                 binding.edtCustomAddress.setText(careteam?.love_user_id_details?.address)
                 binding.btnContinue.text = "Save Changes"
+
+                // Get phone number
+                val phone = careteam?.love_user_id_details?.phone?.split("-")
+                val countryCode = phone?.get(0)?.toInt()
+                val phoneNumber = phone?.get(1)
+
+                binding.edtPhoneNumber.setText(phoneNumber)
+                countryCode?.let { binding.ccp.setCountryForPhoneCode(it) }
+
+                // Get Date of Birth
+                val dob = careteam?.love_user_id_details?.dob
+                if (!dob.isNullOrEmpty()) {
+                    val birthDate = dob.split("-")
+                    date = birthDate[0]
+                    month = birthDate[1]
+                    year = birthDate[2]
+                }
+
+                //Get Relationship
+                 relationSelected = careteam?.relationship?.relation
+                relationName = careteam?.relationship?.relation?.name
+
             }
         }
         binding.ccp.setOnCountryChangeListener { this.phoneCode = it.phoneCode }
@@ -171,6 +203,11 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             )
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.monthSpinner.adapter = monthAdapter
+        if (isEditLovedOne) {
+            val monthPos =
+                monthAdapter.getPosition(month?.toInt()?.let { monthAdapter.getItem(it) })
+            binding.monthSpinner.setSelection(monthPos)
+        }
 
         val dayAdapter: ArrayAdapter<String> =
             ArrayAdapter<String>(
@@ -180,6 +217,12 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             )
         dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.daySpinner.adapter = dayAdapter
+
+        /* if (isEditLovedOne) {
+
+             val datePos = dayAdapter.getPosition(date)
+             binding.daySpinner.setSelection(datePos)
+         }*/
 
         var yearAr: ArrayList<String> = arrayListOf()
 
@@ -256,7 +299,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         if (dateSelected == "" || dateSelected == "Date" || dateSelected.toInt() > dayCount) {
             binding.daySpinner.setSelection(0)
         } else {
-            binding.daySpinner.setSelection(dateSelected.toInt() + 1)
+            binding.daySpinner.setSelection(dateSelected.toInt())
         }
     }
 
@@ -269,6 +312,11 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             )
         dayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.daySpinner.adapter = dayAdapter
+        if (isEditLovedOne) {
+            dateSelected = date.toString()
+            val datePos = dayAdapter.getPosition(date?.toInt()?.let { dayAdapter.getItem(it) })
+            binding.daySpinner.setSelection(datePos)
+        }
     }
 
     private fun setYearAdapter(yearAr: ArrayList<String>) {
@@ -280,6 +328,11 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.yearSpinner.adapter = adapter
+
+        if (isEditLovedOne) {
+            val yearPos = adapter.getPosition(year)
+            binding.yearSpinner.setSelection(yearPos)
+        }
     }
 
     private fun getDayCount(month: String, year: String): Int {
@@ -326,8 +379,14 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
                     binding.relationshipSpinner.adapter = relationshipsAdapter
 
+
                     val relation = relationshipsAdapter?.getItem(0)
                     if (relation != null) selectedRelationship = relation
+
+                    if(isEditLovedOne){
+                        val relationPos = relationshipsAdapter?.getPosition(relationSelected)
+                        relationPos?.let { binding.relationshipSpinner.setSelection(it) }
+                    }
                 }
 
                 is DataResult.Failure -> {

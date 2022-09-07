@@ -1,11 +1,14 @@
 package com.shepherd.app.data.dto.relation
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 06/06/22
  */
 
+@Parcelize
 data class Relation (
     @SerializedName("id"          ) var id          : Int?     = null,
     @SerializedName("name"        ) var name        : String?  = null,
@@ -16,4 +19,4 @@ data class Relation (
     @SerializedName("updated_at"  ) var updatedAt   : String?  = null,
     @SerializedName("deleted_at"  ) var deletedAt   : String?  = null
 
-)
+): Parcelable

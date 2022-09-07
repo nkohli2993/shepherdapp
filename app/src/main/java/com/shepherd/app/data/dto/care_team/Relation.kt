@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 /**
  * Created by Deepak Rattan on 06/09/22
  */
-@Parcelize
+/*@Parcelize
 data class Relation(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("name") var name: String? = null,
@@ -17,4 +17,4 @@ data class Relation(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
-) : Parcelable
+) : Parcelable*/

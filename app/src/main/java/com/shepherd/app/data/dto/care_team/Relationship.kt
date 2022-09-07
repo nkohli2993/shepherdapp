@@ -2,6 +2,7 @@ package com.shepherd.app.data.dto.care_team
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.shepherd.app.data.dto.relation.Relation
 import kotlinx.android.parcel.Parcelize
 
 /**
