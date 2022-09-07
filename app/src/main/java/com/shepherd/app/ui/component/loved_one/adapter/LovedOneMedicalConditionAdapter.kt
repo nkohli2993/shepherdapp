@@ -74,7 +74,7 @@ class LovedOneMedicalConditionAdapter(
     }
 
     fun addData(payloads: ArrayList<Payload>?) {
-        // this.careTeams.clear()
+        this.payloads.clear()
         payloads?.let { this.payloads.addAll(it) }
         notifyDataSetChanged()
     }
