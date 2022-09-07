@@ -91,6 +91,8 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
     override fun initViewBinding() {
         careTeamModel = args.careTeamModel
 
+        Log.d(TAG, "careTeamModel: $careTeamModel ")
+
         fragmentLovedOneProfileBinding.listener = this
         fragmentLovedOneProfileBinding.data = careTeamModel
 
@@ -146,4 +148,18 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         fragmentLovedOneProfileBinding.rvLovedOneMedicalConditions.adapter =
             lovedOneMedicalConditionAdapter
     }
+
+    override fun onResume() {
+        super.onResume()
+        // Get user profile
+        lovedOneMedicalConditionViewModel.getUserDetails(careTeamModel?.love_user_id_details?.userProfileId)
+
+        // Get Loved One's Medical conditions
+        careTeamModel?.love_user_id?.let {
+            lovedOneMedicalConditionViewModel.getLovedOneMedicalConditions(
+                it
+            )
+        }
+    }
+
 }
