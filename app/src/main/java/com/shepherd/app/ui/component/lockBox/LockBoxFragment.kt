@@ -80,16 +80,16 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         setRecommendedDocumentsAdapter()
         setOtherDocumentsAdapter()
-        fragmentLockboxBinding.cvRecommendedDocuments.setOnClickListener {
-            val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
-            findNavController().navigate(action)
-        }
+        /* fragmentLockboxBinding.cvRecommendedDocuments.setOnClickListener {
+             val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
+             findNavController().navigate(action)
+         }
 
-        fragmentLockboxBinding.layoutRecommendedDoc.setOnClickListener {
-            val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
-            findNavController().navigate(action)
-        }
-
+         fragmentLockboxBinding.layoutRecommendedDoc.setOnClickListener {
+             val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
+             findNavController().navigate(action)
+         }
+ */
         fragmentLockboxBinding.imgCancel.setOnClickListener {
             fragmentLockboxBinding.editTextSearch.setText("")
             fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
@@ -188,10 +188,10 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     hideLoading()
 //                    lockBoxTypes = it.data.payload?.lockBoxTypes
                     lockBoxTypes.clear()
-                    if(it.data.payload?.lockBoxTypes!=null || it.data.payload?.lockBoxTypes!!.size>0){
-                        for(i in it.data.payload?.lockBoxTypes!!){
+                    if (it.data.payload?.lockBoxTypes != null || it.data.payload?.lockBoxTypes!!.size > 0) {
+                        for (i in it.data.payload?.lockBoxTypes!!) {
                             i.isAdded = false
-                            if(i.lockbox!=null && i.lockbox.size>0){
+                            if (i.lockbox != null && i.lockbox.size > 0 && i.name?.lowercase() != "other") {
                                 i.isAdded = true
                             }
                             lockBoxTypes.add(i)

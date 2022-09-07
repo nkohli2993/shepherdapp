@@ -118,7 +118,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentAddNewLockBoxBinding.listener = this
-        addNewLockBoxViewModel.getAllLockBoxTypes(pageNumber, limit,true)
+        addNewLockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
         setUploadedFilesAdapter()
         fragmentAddNewLockBoxBinding.edtNote.setOnTouchListener { view, event ->
             view.parent.requestDisallowInterceptTouchEvent(true)
@@ -231,13 +231,21 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     hideLoading()
 
                     if (it.data.payload?.lockBoxTypes != null) {
-                        lockBoxTypes = it.data.payload?.lockBoxTypes!!
+                        lockBoxTypes.clear()
+                        if (it.data.payload?.lockBoxTypes != null || it.data.payload?.lockBoxTypes!!.size > 0) {
+                            for (i in it.data.payload?.lockBoxTypes!!) {
+                                if ((i.lockbox == null || i.lockbox.size <= 0)) {
+                                    lockBoxTypes.add(i)
+                                }
+                                if(i.name?.lowercase()=="other" && i.lockbox.size > 0){
+                                    lockBoxTypes.add(i)
+                                }
+                            }
+                        }
                     }
                     lockBoxTypes.add(0, LockBoxTypes(id = -1, name = "Select Document Type"))
                     if (lockBoxTypes.isEmpty()) return@observeEvent
                     // show types in dropdown
-
-                    Log.e("catch_exception", "lockbox: ${lockBoxTypes}")
                     documentAdapter =
                         DocumentAdapter(
                             requireContext(),

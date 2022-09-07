@@ -513,4 +513,5 @@
     <string name="medication_record_added_successfully">Medication Record Added Successfully…</string>
     <string name="please_upload_file">Please upload file…</string>
     <string name="please_select_document_type">Please select document type…</string>
+    <string name="uploaded_file">Uploaded Files</string>
 </resources>
