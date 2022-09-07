@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:fontFamily="@font/gotham_bold"
-                            android:text="-"
+                            android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvTask"
@@ -203,7 +203,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:fontFamily="@font/gotham_bold"
-                                    android:text="-"
+                                    android:text="@string/hyphen"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/_20ssp" />
 
@@ -234,7 +234,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/_10sdp"
                                     android:fontFamily="@font/gotham_bold"
-                                    android:text="-"
+                                    android:text="@string/hyphen"
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/_20ssp" />
 
@@ -421,7 +421,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_bold"
-                            android:text="-"
+                            android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvResourceListMessage"
@@ -516,7 +516,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_bold"
-                            android:text="-"
+                            android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvLockBoxMessage"

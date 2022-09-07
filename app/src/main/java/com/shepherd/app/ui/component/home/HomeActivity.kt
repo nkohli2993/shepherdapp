@@ -156,7 +156,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                             .into(ivLovedOneProfile)
                     }
                     //set name of user name
-                    txtLovedUserName.text = ""
+                    txtLovedUserName.text = it.data.payload?.firstname
                     //save data
                     viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
                 }

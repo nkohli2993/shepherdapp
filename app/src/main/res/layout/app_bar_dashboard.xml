@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clTopWrapper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/_5sdp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivMenu"
@@ -123,16 +124,19 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/ivNotification"
                     app:shapeAppearanceOverlay="@style/roundedCornersImageView12" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtLovedUserName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5sdp"
-                    app:fontFamily="@font/gotham_medium"
+                    android:gravity="center"
+                    android:minWidth="@dimen/_35sdp"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_10ssp"
+                    app:fontFamily="@font/gotham_medium"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ivLovedOneProfile"/>
+                    app:layout_constraintTop_toBottomOf="@+id/ivLovedOneProfile" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

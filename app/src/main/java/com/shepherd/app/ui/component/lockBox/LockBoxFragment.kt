@@ -190,7 +190,10 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     lockBoxTypes.clear()
                     if(it.data.payload?.lockBoxTypes!=null || it.data.payload?.lockBoxTypes!!.size>0){
                         for(i in it.data.payload?.lockBoxTypes!!){
-//                            if()
+                            i.isAdded = false
+                            if(i.lockbox!=null && i.lockbox.size>0){
+                                i.isAdded = true
+                            }
                             lockBoxTypes.add(i)
                         }
                     }
