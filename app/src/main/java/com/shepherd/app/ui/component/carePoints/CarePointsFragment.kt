@@ -35,7 +35,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Created by Nikita Kohli on 26-07-22
@@ -219,32 +218,36 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                     if (carePoints.isEmpty()) return@observeEvent
                     carePointsAdapter?.updateCarePoints(carePoints)
 
-                        when (clickType) {
-                            CalendarState.Month.value , CalendarState.Week.value-> {
-                                val dates: ArrayList<CalendarDay> = arrayListOf()
-                                for(i in carePoints){
-                                    val calendar = Calendar.getInstance()
-                                    calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(i.date!!)!!
-                                    val year = SimpleDateFormat("yyyy").format(calendar.time)
-                                    val month = SimpleDateFormat("MM").format(calendar.time)
-                                    val day = SimpleDateFormat("dd").format(calendar.time)
-                                    val eventDate = CalendarDay.from(year.toInt(), month.toInt()-1, day.toInt()) // year, month, date
-                                    dates.add(eventDate)
-                                }
-                                fragmentCarePointsBinding.calendarPView.addDecorators(
-                                    EventDecorator(
-                                        ContextCompat.getColor(
-                                            requireContext(),
-                                            R.color._A26DCB
-                                        ), dates
-                                    )
+                    when (clickType) {
+                        CalendarState.Month.value, CalendarState.Week.value -> {
+                            val dates: ArrayList<CalendarDay> = arrayListOf()
+                            for (i in carePoints) {
+                                val calendar = Calendar.getInstance()
+                                calendar.time = SimpleDateFormat("yyyy-MM-dd").parse(i.date!!)!!
+                                val year = SimpleDateFormat("yyyy").format(calendar.time)
+                                val month = SimpleDateFormat("MM").format(calendar.time)
+                                val day = SimpleDateFormat("dd").format(calendar.time)
+                                val eventDate = CalendarDay.from(
+                                    year.toInt(),
+                                    month.toInt() - 1,
+                                    day.toInt()
+                                ) // year, month, date
+                                dates.add(eventDate)
+                            }
+                            fragmentCarePointsBinding.calendarPView.addDecorators(
+                                EventDecorator(
+                                    ContextCompat.getColor(
+                                        requireContext(),
+                                        R.color._A26DCB
+                                    ), dates
                                 )
+                            )
 
-                            }
-                            else -> {
-
-                            }
                         }
+                        else -> {
+
+                        }
+                    }
 
                     setCarePointsAdapter()
                 }
@@ -438,6 +441,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
 
         Log.d(TAG, "onEventSelected: $detail ")
+        val eventId = detail.id
         val eventName = detail.name
         val eventLocation = detail.location
         val eventDate = detail.date
@@ -459,7 +463,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 receiverPicUrl,
                 null,
                 chatType,
-                eventName
+                eventName,
+                eventId
             )
             chatModelList?.add(chatModel)
         }

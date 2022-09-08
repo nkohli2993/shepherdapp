@@ -32,6 +32,8 @@ data class ChatListData(
     var unreadCount: Int? = null,
     @SerializedName("last_message_type")
     var lastMessageType: Int? = null,
+    @SerializedName("event_id")
+    var eventID: Int? = null,
     @SerializedName("group_name")
     var groupName: String? = null,
     @SerializedName("group_image")

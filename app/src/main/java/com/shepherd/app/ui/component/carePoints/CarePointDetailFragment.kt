@@ -139,6 +139,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
 
         val eventName = eventDetail?.name
+        val eventId = eventDetail?.id
         eventDetail?.user_assignes?.forEach {
             val receiverName = it.user_details.firstname + " " + it.user_details.lastname
             val receiverID = it.user_details.id
@@ -156,7 +157,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 receiverPicUrl,
                 null,
                 chatType,
-                eventName
+                eventName,
+                eventId
             )
             chatModelList?.add(chatModel)
         }
@@ -178,7 +180,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 receiverPicUrl,
                 null,
                 chatType,
-                eventName
+                eventName,
+                eventId
             )
             chatModelList?.add(chatModel)
         }
@@ -189,7 +192,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
         if (!isChatOff) {
             // Set User Detail
-            carePointsViewModel.setToUserDetail(Chat.CHAT_GROUP, chatUserDetailList, eventName)
+            carePointsViewModel.setToUserDetail(Chat.CHAT_GROUP, chatUserDetailList, eventName,eventId)
             // Load Chat
             loadChat()
             //  initScrollListener()
