@@ -84,6 +84,7 @@ object ApiConstants {
         const val UPLOAD_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/upload/"
         const val UPLOAD_MULTIPLE_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/upload/multiple"
         const val CREATE_LOCK_BOX = "$BASE_URL${API_VERSION}lockboxs"
+        const val EDIT_LOCK_BOX = "$BASE_URL${API_VERSION}lockboxs/{id}"
 
         const val GET_ALL_UPLOADED_DOCUMENTS_BY_LOVED_ONE_UUID =
             "$BASE_URL${API_VERSION}lockboxs/loved_one"

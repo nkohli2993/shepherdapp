@@ -10,6 +10,7 @@ import com.shepherd.app.data.dto.add_loved_one.UploadPicResponseModel
 import com.shepherd.app.data.dto.added_events.*
 import com.shepherd.app.data.dto.dashboard.LoveUser
 import com.shepherd.app.data.dto.edit_profile.UserUpdateData
+import com.shepherd.app.data.dto.login.EditResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.login.UserProfile
 import com.shepherd.app.data.dto.roles.RolesResponseModel
@@ -48,8 +49,8 @@ class EditProfileViewModel @Inject constructor(
         showToastPrivate.value = SingleEvent(error.description)
     }
 
-    private var _updateProfileLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
-    var updateProfileLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
+    private var _updateProfileLiveData = MutableLiveData<Event<DataResult<EditResponseModel>>>()
+    var updateProfileLiveData: LiveData<Event<DataResult<EditResponseModel>>> =
         _updateProfileLiveData
 
     //get userinfo from Shared Pref
@@ -108,7 +109,7 @@ class EditProfileViewModel @Inject constructor(
         lastName: String?,
         phoneNumber: String?,
         id:Int
-    ): LiveData<Event<DataResult<LoginResponseModel>>> {
+    ): LiveData<Event<DataResult<EditResponseModel>>> {
         //Update the phone code
         updateData.value.let {
             it?.firstname = firstName
@@ -130,4 +131,8 @@ class EditProfileViewModel @Inject constructor(
         return updateProfileLiveData
     }
 
+    // Save User to SharePrefs
+    fun saveUser(user: UserProfile?) {
+        userRepository.saveUser(user)
+    }
 }

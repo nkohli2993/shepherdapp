@@ -52,6 +52,11 @@ class AddNewLockBoxViewModel @Inject constructor(
     var addNewLockBoxResponseLiveData: LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> =
         _addNewLockBoxResponseLiveData
 
+  private var _getDetailLockBoxResponseLiveData =
+        MutableLiveData<Event<DataResult<AddNewLockBoxResponseModel>>>()
+    var getDetailLockBoxResponseLiveData: LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> =
+        _getDetailLockBoxResponseLiveData
+
     private var _getUploadedLockBoxDocResponseLiveData =
         MutableLiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>>()
     var getUploadedLockBoxDocResponseLiveData: LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> =
@@ -125,6 +130,50 @@ class AddNewLockBoxViewModel @Inject constructor(
             }
         }
         return addNewLockBoxResponseLiveData
+    }
+
+    // edit Lock Box
+    fun editNewLockBox(
+        fileName: String?,
+        fileNote: String?,
+        documentsUrl: ArrayList<String>,
+        lbtId: Int?,id:Int
+    ): LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> {
+        //get lovedOne UUID from shared Pref
+        val lovedOneUUId = userRepository.getLovedOneUUId()
+        val documents: ArrayList<Documents> = arrayListOf()
+
+        for (i in documentsUrl.indices) {
+            val doc = documentsUrl[i]
+            documents.add(Documents(doc))
+        }
+
+        val addNewLockBoxRequestModel =
+            AddNewLockBoxRequestModel(fileName, fileNote, lbtId, lovedOneUUId, documents)
+
+        viewModelScope.launch {
+            val response = lockBoxRepository.editNewLockBox(addNewLockBoxRequestModel,id)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _addNewLockBoxResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return addNewLockBoxResponseLiveData
+    }
+    //get Detail of lockbox by ID
+    fun getDetailLockBox(
+        id:Int
+    ): LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> {
+        viewModelScope.launch {
+            val response = lockBoxRepository.getDetailLockBox(id)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _getDetailLockBoxResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return getDetailLockBoxResponseLiveData
     }
 
     // Get All Uploaded Lock Box Documents by Loved One UUID

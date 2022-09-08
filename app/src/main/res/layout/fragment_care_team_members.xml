@@ -107,18 +107,22 @@
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="7"
+            android:visibility="gone"
             tools:listitem="@layout/adapter_care_team_members" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtNoCareTeamFound"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="@dimen/_350sdp"
+            android:paddingVertical="@dimen/_10sdp"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/_16sdp"
             android:fontFamily="@font/gotham_book"
             android:text="@string/no_care_team_found"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_16ssp"
+            android:gravity="center"
             android:visibility="gone"
             app:fontFamily="@font/gotham_bold" />
     </LinearLayout>

@@ -4,6 +4,7 @@ import android.webkit.MimeTypeMap
 import com.shepherd.app.data.dto.add_loved_one.UploadPicResponseModel
 import com.shepherd.app.data.dto.edit_profile.UserUpdateData
 import com.shepherd.app.data.dto.forgot_password.ForgotPasswordModel
+import com.shepherd.app.data.dto.login.EditResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
 import com.shepherd.app.data.dto.signup.BioMetricData
@@ -57,9 +58,9 @@ class UpdateProfileRepository @Inject constructor(private val apiService: ApiSer
 
 
     //Update Profile fragment
-    suspend fun updateProfile(value: UserUpdateData,id:Int): Flow<DataResult<LoginResponseModel>> {
-        return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
+    suspend fun updateProfile(value: UserUpdateData,id:Int): Flow<DataResult<EditResponseModel>> {
+        return object : NetworkOnlineDataRepo<EditResponseModel, EditResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<EditResponseModel> {
                 return apiService.updateProfile(value,id)
             }
         }.asFlow().flowOn(Dispatchers.IO)

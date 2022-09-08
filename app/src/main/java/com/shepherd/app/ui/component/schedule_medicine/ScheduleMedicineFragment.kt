@@ -129,18 +129,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         }
                         timeList.clear()
                         addedTimeList.clear()
-                        if (payLoad?.frequency != null) {
-                            if (payLoad?.frequency!! < 5) {
+//                        if (payLoad?.frequency != null) {
+//                            if (payLoad?.frequency!! < 5) {
                                 showAddedTime()
-                            } else {
-                                fragmentScheduleMedicineBinding.recycleviewTime.visibility =
-                                    View.GONE
-                                fragmentScheduleMedicineBinding.tvTime.visibility = View.GONE
-                                setTimeAdapter()
-                            }
-                        } else {
-                            showAddedTime()
-                        }
+//                            } else {
+//                                fragmentScheduleMedicineBinding.recycleviewTime.visibility =
+//                                    View.GONE
+//                                fragmentScheduleMedicineBinding.tvTime.visibility = View.GONE
+//                                setTimeAdapter()
+//                            }
+//                        } else {
+//                            showAddedTime()
+//                        }
 
                         addDays(isEdit = true, payLoad!!.days)
                         setDayAdapter()

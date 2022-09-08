@@ -204,7 +204,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     //showSuccess(requireContext(), it.data.message.toString())
-                    showSuccess(requireContext(), "Care Team Member updated successfully...")
+                    showSuccess(requireContext(), "CareTeam Member updated successfully...")
                     backPress()
                 }
             }
@@ -232,8 +232,8 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             R.id.btnDelete -> {
                 val builder = AlertDialog.Builder(requireContext())
                 val dialog = builder.apply {
-                    setTitle("Remove Care Team Member")
-                    setMessage("Are you sure you want to remove the care team member?")
+                    setTitle("Remove CareTeam Member")
+                    setMessage("Are you sure you want to remove the careTeam member?")
                     setPositiveButton("Yes") { _, _ ->
                         // Do not remove the Care Team Lead
                         // Check the member id should not match with the uuid of loggedIn user and slug value should not match with care_team_lead
@@ -241,7 +241,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                             Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
                         if (loggedInUserUUID == careTeam?.love_user_id_details!!.uid /*&& CareRole.CareTeamLead.slug == careTeam?.careRoles?.slug*/) {
-                            showError(requireContext(), "You can not remove the Care Team Lead...")
+                            showError(requireContext(), "You can not remove the CareTeam Lead...")
                         } else {
                             careTeam?.id?.let { memberDetailsViewModel.deleteCareTeamMember(it) }
                         }

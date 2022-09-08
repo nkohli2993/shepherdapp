@@ -60,17 +60,12 @@ class AddLovedOneConditionAdapter(
 
         fun bind(conditions: Conditions) {
             itemBinding.data = conditions
-            binding.checkbox.isChecked = false
+            itemBinding.checkbox.isChecked = false
             if (conditions.isSelected) {
-                binding.checkbox.isChecked = true
+                itemBinding.checkbox.isChecked = true
             }
-            binding.checkbox.setOnCheckedChangeListener { compoundButton, isChecked ->
-                if (compoundButton.isPressed) {
-                    onItemClickListener?.itemSelected(absoluteAdapterPosition)
 
-                }
-            }
-            itemBinding.cardView.setOnClickListener { itemBinding.checkbox.performClick() }
+            itemBinding.cardView.setOnClickListener {  onItemClickListener?.itemSelected(absoluteAdapterPosition) }
 //            itemBinding.textViewCondition.setOnClickListener { itemBinding.checkbox.performClick() }
         }
     }

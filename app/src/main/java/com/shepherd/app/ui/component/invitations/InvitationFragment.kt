@@ -54,7 +54,7 @@ class InvitationFragment : BaseFragment<FragmentInvitationBinding>(), View.OnCli
 
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
-                        setTitle("Join Care team Invitations")
+                        setTitle("Join CareTeam Invitations")
                         setMessage("No Invitations Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()

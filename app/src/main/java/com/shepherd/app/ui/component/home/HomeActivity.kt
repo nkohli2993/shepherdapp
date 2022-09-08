@@ -175,32 +175,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         navController = findNavController(R.id.nav_host_fragment_content_dashboard)
 
         // Get Logged In User's profile info
-        val loggedInUser = Prefs.with(ShepherdApp.appContext)?.getObject(
-            Const.USER_DETAILS,
-            UserProfiles::class.java
-        )
-
-        val firstName = loggedInUser?.firstname
-        val lastName = loggedInUser?.lastname
-        val fullName = "$firstName $lastName"
-
-        val profilePicLoggedInUser = loggedInUser?.profilePhoto
-
-        binding.ivName.text = fullName
-
-        if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {
-            Picasso.get().load(profilePicLoggedInUser)
-                .placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(binding.ivLoggedInUserProfile)
-        }
-
-        // Set User's Role
-        val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
-        if (role.isNullOrEmpty()) {
-            binding.tvRole.text = getString(R.string.care_team_leader)
-        } else {
-            binding.tvRole.text = role
-        }
+        setDrawerInfo()
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
 
@@ -342,6 +317,35 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                 }
             }
+        }
+    }
+
+    fun setDrawerInfo() {
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)?.getObject(
+            Const.USER_DETAILS,
+            UserProfiles::class.java
+        )
+
+        val firstName = loggedInUser?.firstname
+        val lastName = loggedInUser?.lastname
+        val fullName = "$firstName $lastName"
+
+        val profilePicLoggedInUser = loggedInUser?.profilePhoto
+
+        binding.ivName.text = fullName
+
+        if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {
+            Picasso.get().load(profilePicLoggedInUser)
+                .placeholder(R.drawable.ic_defalut_profile_pic)
+                .into(binding.ivLoggedInUserProfile)
+        }
+
+        // Set User's Role
+        val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
+        if (role.isNullOrEmpty()) {
+            binding.tvRole.text = getString(R.string.care_team_leader)
+        } else {
+            binding.tvRole.text = role
         }
     }
 

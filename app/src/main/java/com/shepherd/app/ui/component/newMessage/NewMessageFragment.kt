@@ -131,8 +131,8 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                     careTeams?.clear()
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
-                        setTitle("Care Teams")
-                        setMessage("No Care Team Found")
+                        setTitle("CareTeams")
+                        setMessage("No CareTeam Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()
                         }

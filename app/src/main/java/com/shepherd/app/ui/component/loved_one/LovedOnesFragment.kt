@@ -39,9 +39,9 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     private var status = Status.One.status
     private var careTeams: ArrayList<CareTeamModel> = arrayListOf()
     private var selectedCare: CareTeamModel? = null
-    var currentPage: Int = 0
-    var totalPage: Int = 0
-    var total: Int = 0
+    private var currentPage: Int = 0
+    private var totalPage: Int = 0
+    private var total: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -185,11 +185,11 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
             }
             "Detail" -> {
 //                findNavController().navigate(R.id.action_nav_loved_one_to_lovedOneProfileFragment)
-               /* findNavController().navigate(
+                findNavController().navigate(
                     LovedOnesFragmentDirections.actionNavLovedOneToLovedOneProfileFragment(
                         careTeam
                     )
-                )*/
+                )
             }
             "Selected" -> {
                 selectedCare = careTeam

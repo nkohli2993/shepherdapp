@@ -1,11 +1,10 @@
 package com.shepherd.app.ui.component.edit_profile
 
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.BuildConfig
@@ -14,18 +13,15 @@ import com.shepherd.app.databinding.FragmentEditProfileBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
-import com.shepherd.app.utils.BiometricUtils
-import com.shepherd.app.utils.UserSlug
+import com.shepherd.app.ui.component.home.HomeActivity
 import com.shepherd.app.utils.extensions.isValidEmail
 import com.shepherd.app.utils.extensions.showError
-import com.shepherd.app.utils.extensions.showInfo
 import com.shepherd.app.utils.extensions.showSuccess
 import com.shepherd.app.utils.loadImageCentreCrop
 import com.shepherd.app.utils.observe
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_create_new_account.*
-import kotlinx.android.synthetic.main.app_bar_dashboard.*
 import java.io.File
 
 @AndroidEntryPoint
@@ -35,7 +31,13 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
     private val editProfileViewModel: EditProfileViewModel by viewModels()
     private lateinit var fragmentEditProfileBinding: FragmentEditProfileBinding
     private var profilePicUrl: String? = null
-    private var TAG = "Edit_profile_screen"
+    private lateinit var homeActivity: HomeActivity
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -89,6 +91,8 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
                     hideLoading()
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(requireContext(), it2) }
+                        editProfileViewModel.saveUser(it.data.payload)
+                        homeActivity.setDrawerInfo()
                         backPress()
                     }
 
@@ -103,9 +107,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
         fragmentEditProfileBinding.userDetail = editProfileViewModel.getUserDetail()
         fragmentEditProfileBinding.etEmailId.setText(editProfileViewModel.getUserEmail())
         profilePicCompleteUrl = editProfileViewModel.getUserDetail()?.profilePhoto
-        Picasso.get().load(editProfileViewModel.getUserDetail()?.profilePhoto)
-            .placeholder(R.drawable.ic_defalut_profile_pic)
-            .into(fragmentEditProfileBinding.imageViewUser)
+        if(editProfileViewModel.getUserDetail()?.profilePhoto!=null && editProfileViewModel.getUserDetail()?.profilePhoto !="") {
+            Picasso.get().load(editProfileViewModel.getUserDetail()?.profilePhoto)
+                .placeholder(R.drawable.ic_defalut_profile_pic)
+                .into(fragmentEditProfileBinding.imageViewUser)
+        }
         if (editProfileViewModel.getUserDetail()?.phoneCode != null) {
             fragmentEditProfileBinding.ccp.setCountryForPhoneCode(editProfileViewModel.getUserDetail()?.phoneCode!!.toInt())
         }

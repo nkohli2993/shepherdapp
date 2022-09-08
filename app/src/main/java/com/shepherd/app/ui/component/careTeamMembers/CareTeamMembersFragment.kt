@@ -164,11 +164,15 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     //binding.txtNoCareTeamFound.visibility = View.VISIBLE
                     careTeams?.clear()
                     careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+                    fragmentCareTeamMembersBinding.let {
+                        it.recyclerViewCareTeam.visibility = View.GONE
+                        it.txtNoCareTeamFound.visibility = View.VISIBLE
+                    }
 
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
-                        setTitle("Care Teams")
-                        setMessage("No Care Team Found")
+                        setTitle("CareTeams")
+                        setMessage("No CareTeam Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()
                         }

@@ -205,13 +205,13 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     if (payload.isEmpty()) return@observeEvent
 
                     for (i in it.data.payload!!.userMedicationRepeat) {
-                        if (i.days!!.contains(dayId)) {
-                            if((i.frequency?:"0").toInt()<5){
+                       // if (i.days!!.contains(dayId)) {
+                          //  if((i.frequency?:"0").toInt()<5){
                                 val medListReminder = i
                                 i.selectedDate = selectedDate
                                 medListReminderList.add(medListReminder)
-                            }
-                        }
+                          //  }
+                       // }
                     }
                     if (medListReminderList.size <= 0) {
                         myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE

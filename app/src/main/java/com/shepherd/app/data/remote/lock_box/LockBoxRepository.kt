@@ -104,6 +104,24 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+    // get lockbox detail info by ID
+    suspend fun getDetailLockBox(id:Int): Flow<DataResult<AddNewLockBoxResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AddNewLockBoxResponseModel, AddNewLockBoxResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AddNewLockBoxResponseModel> {
+                return apiService.getDetailLockBox(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+    // edit New LockBox
+    suspend fun editNewLockBox(addNewLockBoxRequestModel: AddNewLockBoxRequestModel,id:Int): Flow<DataResult<AddNewLockBoxResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AddNewLockBoxResponseModel, AddNewLockBoxResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AddNewLockBoxResponseModel> {
+                return apiService.editNewLockBox(addNewLockBoxRequestModel,id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 
     //Get ALl Uploaded Documents by LovedOne UUID
     suspend fun getAllUploadedDocumentsByLovedOneUUID(

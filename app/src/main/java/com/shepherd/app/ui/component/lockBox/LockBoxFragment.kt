@@ -80,16 +80,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         setRecommendedDocumentsAdapter()
         setOtherDocumentsAdapter()
-        /* fragmentLockboxBinding.cvRecommendedDocuments.setOnClickListener {
-             val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
-             findNavController().navigate(action)
-         }
 
-         fragmentLockboxBinding.layoutRecommendedDoc.setOnClickListener {
-             val action = LockBoxFragmentDirections.actionNavLockBoxToAddNewLockBoxFragment(null)
-             findNavController().navigate(action)
-         }
- */
         fragmentLockboxBinding.imgCancel.setOnClickListener {
             fragmentLockboxBinding.editTextSearch.setText("")
             fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE

@@ -30,6 +30,7 @@ import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestMo
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
+import com.shepherd.app.data.dto.login.EditResponseModel
 import com.shepherd.app.data.dto.login.LoginResponseModel
 import com.shepherd.app.data.dto.med_list.*
 import com.shepherd.app.data.dto.med_list.get_medication_detail.GetMedicationDetailResponse
@@ -273,6 +274,17 @@ interface ApiService {
         @Body addNewLockBoxRequestModel: AddNewLockBoxRequestModel
     ): Response<AddNewLockBoxResponseModel>
 
+    @GET(ApiConstants.LockBox.EDIT_LOCK_BOX)
+    suspend fun getDetailLockBox(
+        @Path("id") id: Int
+    ): Response<AddNewLockBoxResponseModel>
+
+    @POST(ApiConstants.LockBox.EDIT_LOCK_BOX)
+    suspend fun editNewLockBox(
+        @Body addNewLockBoxRequestModel: AddNewLockBoxRequestModel,
+        @Path("id") id: Int
+    ): Response<AddNewLockBoxResponseModel>
+
     @GET(ApiConstants.LockBox.GET_ALL_UPLOADED_DOCUMENTS_BY_LOVED_ONE_UUID)
     suspend fun getAllUploadedDocumentsByLovedOneUUID(
         @Query("page") page: Int,
@@ -372,7 +384,7 @@ interface ApiService {
     suspend fun updateProfile(
         @Body value: UserUpdateData,
         @Path("id") id: Int
-    ): Response<LoginResponseModel>
+    ): Response<EditResponseModel>
 
     // add vital stats for loginLoved one
     @POST(ApiConstants.VitalStats.ADD_VITAL_STATS)

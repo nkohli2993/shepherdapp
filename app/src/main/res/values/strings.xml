@@ -25,7 +25,7 @@
     <string name="title_activity_welcome">Welcome</string>
     <string name="title_activity_add_loved_one">Add Loved One</string>
     <string name="title_activity_add_loved_one_condition">Add Loved One Condition</string>
-    <string name="title_activity_join_care_team">Join Care Team</string>
+    <string name="title_activity_join_care_team">Join CareTeam</string>
     <string name="title_activity_dashboard">Dashboard</string>
 
     <string name="prompt_email">Email</string>
@@ -251,7 +251,7 @@
     <string name="new_on_app">New on app?</string>
     <string name="create_a_new_account">Create a New Account</string>
     <string name="add_your_loved_one">Add Your Loved One</string>
-    <string name="toggle_switch_to_join_care_team">Toggle the switch to join a Care Team.</string>
+    <string name="toggle_switch_to_join_care_team">Toggle the switch to join a CareTeam.</string>
     <string name="tell_us_about_loved_one">Tell us a little bit about your loved one.</string>
     <string name="try_shepherd_for_30_days">Try Shepherd free for 30 days.</string>
     <string name="create_account_description">Are you new to the platform? Please fill the below details to create your account.</string>
@@ -318,7 +318,7 @@
     <string name="schedule_medication_reminders_set_refill_alerts_research">Schedule medication, set refill alerts, research.</string>
     <string name="medications">Medications</string>
     <string name="create_and_join_conversations_among_careteam_members">Create and join conversations among CareTeam members.</string>
-    <string name="create_care_team">Create a supportive care team of family, friends and professionals.</string>
+    <string name="create_care_team">Create a supportive careTeam of family, friends and professionals.</string>
     <string name="home">Home</string>
     <string name="medlist_reminder">MedList\n\nReminder</string>
     <string name="my_profile">My Profile</string>

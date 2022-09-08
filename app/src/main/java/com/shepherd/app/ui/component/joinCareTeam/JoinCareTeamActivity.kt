@@ -114,7 +114,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
 
                     val builder = AlertDialog.Builder(this)
                     val dialog = builder.apply {
-                        setTitle("Join Care Team Invitations")
+                        setTitle("Join CareTeam Invitations")
                         setMessage("No Invitations Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()

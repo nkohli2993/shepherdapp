@@ -9,6 +9,7 @@ import android.webkit.WebView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.shepherd.app.R
@@ -18,6 +19,7 @@ import com.shepherd.app.databinding.FragmentUploadedLockBoxDocDetailBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseFragment
+import com.shepherd.app.ui.component.lockBox.LockBoxFragmentDirections
 import com.shepherd.app.ui.component.lockBoxDocInfo.adapter.UploadedDocumentImagesAdapter
 import com.shepherd.app.utils.extensions.showError
 import com.shepherd.app.utils.extensions.showInfo
@@ -66,8 +68,10 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 .into(imgDoc)
             // Click edit lock box icon
             it.imgEditLockBox.setOnClickListener {
-                layoutDocDetail.visibility = View.GONE
-                layoutEditLockBoxDocDetail.visibility = View.VISIBLE
+//                layoutDocDetail.visibility = View.GONE
+//                layoutEditLockBoxDocDetail.visibility = View.VISIBLE
+                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
+                findNavController().navigate(action)
 
             }
         }
@@ -93,17 +97,6 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
             }
 
             override fun onPageSelected(position: Int) {
-/*
-                if (lockBox?.documents?.get(position)?.url!!.lowercase()
-                        .endsWith(".png") || lockBox?.documents?.get(position)?.url!!.lowercase()
-                        .endsWith(".jpg") || lockBox?.documents?.get(position)?.url!!.lowercase()
-                        .endsWith("jpeg")
-                ) {
-                    showChooseFileDialog(lockBox?.documents?.get(position)?.url!!, "image")
-                } else {
-                    showChooseFileDialog(lockBox?.documents?.get(position)?.url!!, "web")
-                }
-*/
 
             }
 
@@ -141,9 +134,11 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 backPress()
             }
             R.id.imgEditLockBox -> {
-                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
-                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
-                    View.VISIBLE
+//                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
+//                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
+//                    View.VISIBLE
+                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
+                findNavController().navigate(action)
             }
             R.id.btnCancel -> {
                 fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.VISIBLE

@@ -36,10 +36,10 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private lateinit var binding: ActivityAddLovedOneConditionBinding
     private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
     private var pageNumber: Int = 1
-    private var limit: Int = 10
-    private var conditions: ArrayList<Conditions>? = ArrayList()
+    private var limit: Int = 50
+    private var conditions: ArrayList<Conditions> = ArrayList()
     private var selectedConditions: ArrayList<Conditions> = ArrayList()
-    private var searchedConditions: ArrayList<Conditions>? = ArrayList()
+    private var searchedConditions: ArrayList<Conditions> = ArrayList()
     private var addLovedOneConditionAdapter: AddLovedOneConditionAdapter? = null
     private var medicalConditionsLovedOneArray: ArrayList<MedicalConditionsLovedOneRequestModel> =
         ArrayList()
@@ -47,7 +47,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
     private var conditionIDs: List<Int?>? = null
     private var isLoading = false
-
+    private var isSearched = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
@@ -66,6 +66,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
         binding.imgCancel.setOnClickListener {
             binding.editTextSearch.setText("")
+            isSearched = false
             binding.txtNoResultFound.visibility = View.GONE
             binding.recyclerViewCondition.visibility = View.VISIBLE
         }
@@ -73,6 +74,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         binding.editTextSearch.doAfterTextChanged { search ->
             if (search != null) {
                 if (search.isEmpty()) {
+                    isSearched = false
                     conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
                     binding.imgCancel.visibility = View.GONE
                     binding.txtNoResultFound.visibility = View.GONE
@@ -82,6 +84,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 if (search.isNotEmpty()) {
                     binding.imgCancel.visibility = View.VISIBLE
                     searchedConditions?.clear()
+                    isSearched = true
                     conditions?.forEach {
                         if (it.name?.contains(search.toString(), true) == true) {
                             searchedConditions?.add(it)
@@ -157,21 +160,23 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    conditions = it.data.payload?.conditions
+                    if(it.data.payload?.conditions!=null){
+                        conditions = it.data.payload?.conditions!!
+                    }
 
-                    for (i in conditions?.indices!!) {
+                    for (i in conditions.indices) {
                         for (j in addedConditionPayload.indices) {
-                            if (conditions!![i].id == addedConditionPayload[j].conditionId) {
-                                conditions!![i].isSelected = true
-                                conditions!![i].isAlreadySelected = 1
-//                                conditions!![i].isAlreadySelected = true
-                                conditions!![i].addConditionId = addedConditionPayload[j].id
+                            if (conditions[i].id == addedConditionPayload[j].conditionId) {
+                                conditions[i].isSelected = true
+                                conditions[i].isAlreadySelected = 1
+//                                conditions[i].isAlreadySelected = true
+                                conditions[i].addConditionId = addedConditionPayload[j].id
                             }
                         }
                     }
-                    conditions?.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
+                    conditions.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
 
-                    addLovedOneConditionAdapter = conditions?.let { it1 ->
+                    addLovedOneConditionAdapter = conditions.let { it1 ->
                         AddLovedOneConditionAdapter(
                             addLovedOneConditionViewModel,
                             it1
@@ -259,7 +264,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             //check if not medical condition is selected
 
                             selectedConditions.clear()
-                            for (i in conditions!!) {
+                            for (i in conditions) {
                                 if (i.isSelected) {
                                     selectedConditions.add(i)
                                 }
@@ -273,7 +278,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                                     val deleteId: ArrayList<Int> = arrayListOf()
                                     val newAdded: ArrayList<MedicalConditionsLovedOneRequestModel> =
                                         arrayListOf()
-                                    for (i in conditions!!) {
+                                    for (i in conditions) {
                                         if (i.isSelected && i.isAlreadySelected == 0) {
                                             newAdded.add(
                                                 MedicalConditionsLovedOneRequestModel(
@@ -305,7 +310,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         lovedOneUUID: String?
     ) {
         selectedConditions.clear()
-        for (i in conditions!!) {
+        for (i in conditions) {
             if (i.isSelected && i.isAlreadySelected == 0) {
                 selectedConditions.add(i)
             }
@@ -343,14 +348,50 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun itemSelected(position: Int) {
-        if (conditions!![position].isAlreadySelected == 1 && conditions!![position].isSelected) {
-            conditions!![position].isAlreadySelected = 2
+
+        if(isSearched){
+            if (searchedConditions[position].isAlreadySelected == 1 && searchedConditions[position].isSelected) {
+                searchedConditions[position].isAlreadySelected = 2
+            }
+            if (searchedConditions[position].isAlreadySelected == 2 && !searchedConditions[position].isSelected) {
+                searchedConditions[position].isAlreadySelected = 1
+            }
+            searchedConditions[position].isSelected = !searchedConditions[position].isSelected
+            searchedConditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
         }
-        if (conditions!![position].isAlreadySelected == 2 && !conditions!![position].isSelected) {
-            conditions!![position].isAlreadySelected = 1
+        else{
+            if (conditions[position].isAlreadySelected == 1 && conditions[position].isSelected) {
+                conditions[position].isAlreadySelected = 2
+            }
+            if (conditions[position].isAlreadySelected == 2 && !conditions[position].isSelected) {
+                conditions[position].isAlreadySelected = 1
+            }
+            conditions[position].isSelected = !conditions[position].isSelected
+            conditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
         }
-        conditions!![position].isSelected = !conditions!![position].isSelected
-        conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
+        if(isSearched){
+            for(i in conditions){
+                var found = false
+                for( j in searchedConditions){
+                    if(i.id == j.id){
+                        if(j.isSelected){
+                            found = true
+                            break
+                        }
+                    }
+                }
+                i.isSelected = false
+                if(found){
+                    if (i.isAlreadySelected == 1 && i.isSelected) {
+                        i.isAlreadySelected = 2
+                    }
+                    if (i.isAlreadySelected == 2 && !i.isSelected) {
+                        i.isAlreadySelected = 1
+                    }
+                    i.isSelected = true
+                }
+            }
+        }
     }
 }
 

@@ -121,7 +121,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
                         setTitle("Care Teams")
-                        setMessage("No Care Team Found")
+                        setMessage("No CareTeam Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()
                         }
@@ -146,7 +146,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     //it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
                     showSuccess(
                         requireContext(),
-                        "Request sent to the member for joining care team successfully..."
+                        "Request sent to the member for joining careTeam successfully..."
                     )
                     backPress()
                 }
