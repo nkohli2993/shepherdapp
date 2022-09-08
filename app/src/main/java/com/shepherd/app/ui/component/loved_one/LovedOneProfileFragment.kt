@@ -69,7 +69,24 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = it.data.payload
-                    lovedOneMedicalConditionAdapter?.addData(payload)
+                    val filteredPayload = payload.filter { payload ->
+                        payload.conditions != null
+                    }
+                    if (filteredPayload.isEmpty()) {
+                        // No medical conditions found
+                        fragmentLovedOneProfileBinding.txtNoMedicalConditions.visibility =
+                            View.VISIBLE
+                        fragmentLovedOneProfileBinding.rvLovedOneMedicalConditions.visibility =
+                            View.GONE
+                    } else {
+                        fragmentLovedOneProfileBinding.txtNoMedicalConditions.visibility =
+                            View.GONE
+                        fragmentLovedOneProfileBinding.rvLovedOneMedicalConditions.visibility =
+                            View.VISIBLE
+
+                        lovedOneMedicalConditionAdapter?.addData(payload)
+
+                    }
                 }
             }
         }
