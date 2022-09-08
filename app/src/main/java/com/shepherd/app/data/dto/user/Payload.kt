@@ -1,12 +1,15 @@
 package com.shepherd.app.data.dto.user
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.shepherd.app.data.dto.care_team.Relationship
 import com.shepherd.app.data.dto.login.UserLovedOne
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 09/06/22
  */
+@Parcelize
 data class Payload(
 
     @SerializedName("id") var id: Int? = null,
@@ -31,4 +34,4 @@ data class Payload(
     @SerializedName("user_loved_one") var userLovedOne: ArrayList<UserLovedOne> = arrayListOf(),
     @SerializedName("user_roles") var userRoles: ArrayList<UserRole> = arrayListOf(),
     @SerializedName("relationship") var relationship: Relationship? = Relationship()
-)
+) : Parcelable

@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shepherd.app.R
 import com.shepherd.app.data.dto.care_team.CareTeamModel
+import com.shepherd.app.data.dto.user.Payload
 import com.shepherd.app.databinding.FragmentLovedOneProfileBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -35,6 +36,8 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
     private var lovedOneMedicalConditionAdapter: LovedOneMedicalConditionAdapter? = null
 
     private var careTeamModel: CareTeamModel? = null
+
+    private var payload: Payload? = null
     private var TAG = "LovedOneProfileFragment"
 
 
@@ -83,7 +86,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val payload = it.data.payload
+                    payload = it.data.payload
                     fragmentLovedOneProfileBinding.data = payload
 
                     fragmentLovedOneProfileBinding.txtDOB.text =
@@ -147,7 +150,8 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
             R.id.ivEdit -> {
                 val intent = Intent(requireContext(), AddLovedOneActivity::class.java)
                 intent.putExtra("source", "Loved One Profile")
-                intent.putExtra("care_model", careTeamModel)
+//                intent.putExtra("care_model", careTeamModel)
+                intent.putExtra("payload", payload)
                 startActivity(intent)
                 requireActivity().overridePendingTransition(
                     R.anim.slide_in_right,

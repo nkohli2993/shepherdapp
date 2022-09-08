@@ -1,12 +1,14 @@
 package com.shepherd.app.data.dto.user
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 09/06/22
  */
+@Parcelize
 data class UserProfiles(
-
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("firstname") var firstname: String? = null,
@@ -31,6 +33,4 @@ data class UserProfiles(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
-
-
-)
+) : Parcelable

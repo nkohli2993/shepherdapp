@@ -20,18 +20,15 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.maps.model.LatLng
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
-import com.shepherd.app.data.dto.care_team.CareTeamModel
 import com.shepherd.app.data.dto.relation.Relation
+import com.shepherd.app.data.dto.user.Payload
 import com.shepherd.app.databinding.ActivityAddLovedOneBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
 import com.shepherd.app.ui.base.BaseActivity
 import com.shepherd.app.ui.component.addLovedOne.adapter.RelationshipsAdapter
 import com.shepherd.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
-import com.shepherd.app.utils.extensions.isValidEmail
-import com.shepherd.app.utils.extensions.showError
-import com.shepherd.app.utils.extensions.showInfo
-import com.shepherd.app.utils.extensions.showSuccess
+import com.shepherd.app.utils.extensions.*
 import com.shepherd.app.utils.loadImageCentreCrop
 import com.shepherd.app.utils.observe
 import com.shepherd.app.view_model.AddLovedOneViewModel
@@ -152,33 +149,34 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         if (intent.hasExtra("source")) {
             val data = intent.getStringExtra("source")
             if (data.equals("Loved One Profile")) {
-                val careteam = intent.getParcelableExtra<CareTeamModel>("care_model")
-                Log.d(TAG, "initViewBinding: $careteam")
+                val payload = intent.getParcelableExtra<Payload>("payload")
+                Log.d(TAG, "initViewBinding: $payload")
                 isEditLovedOne = true
 
                 binding.txtLovedOne.text = "Edit Loved One Details"
                 binding.txtLittleBit.visibility = View.GONE
-                if (!careteam?.love_user_id_details?.profilePhoto.isNullOrEmpty()) {
-                    Picasso.get().load(careteam?.love_user_id_details?.profilePhoto)
+                if (!payload?.userProfiles?.profilePhoto.isNullOrEmpty()) {
+                    Picasso.get().load(payload?.userProfiles?.profilePhoto)
                         .placeholder(R.drawable.ic_defalut_profile_pic).into(binding.imgLoveOne)
                 }
-                binding.edtFirstName.setText(careteam?.love_user_id_details?.firstname)
-                binding.edtLastName.setText(careteam?.love_user_id_details?.lastname)
-                binding.editTextEmail.setText(careteam?.love_user_id_details?.email)
-                binding.edtAddress.text = careteam?.love_user_id_details?.address
-                binding.edtCustomAddress.setText(careteam?.love_user_id_details?.address)
+                binding.edtFirstName.setText(payload?.userProfiles?.firstname)
+                binding.edtLastName.setText(payload?.userProfiles?.lastname)
+                binding.editTextEmail.setText(payload?.email)
+                binding.edtAddress.text = payload?.userProfiles?.address
+                binding.edtCustomAddress.setText(payload?.userProfiles?.address)
                 binding.btnContinue.text = "Save Changes"
 
                 // Get phone number
-                val phone = careteam?.love_user_id_details?.phone?.split("-")
-                val countryCode = phone?.get(0)?.toInt()
-                val phoneNumber = phone?.get(1)
+                /* val phone = careteam?.love_user_id_details?.phone?.split("-")
+                 val countryCode = phone?.get(0)?.toInt()
+                 val phoneNumber = phone?.get(1)*/
 
-                binding.edtPhoneNumber.setText(phoneNumber)
-                countryCode?.let { binding.ccp.setCountryForPhoneCode(it) }
+                binding.edtPhoneNumber.setText(payload?.userProfiles?.phoneNumber)
+                payload?.userProfiles?.phoneCode?.toInt()
+                    ?.let { binding.ccp.setCountryForPhoneCode(it) }
 
                 // Get Date of Birth
-                val dob = careteam?.love_user_id_details?.dob
+                val dob = payload?.userProfiles?.dob.convertISOTimeToDate()
                 if (!dob.isNullOrEmpty()) {
                     val birthDate = dob.split("-")
                     date = birthDate[0]
@@ -187,14 +185,14 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 }
 
                 //Get Relationship
-                relationSelected = careteam?.relationship?.relation
-                relationName = careteam?.relationship?.relation?.name
+                relationSelected = payload?.relationship?.relation
+                relationName = payload?.relationship?.relation?.name
 
                 //Get LovedOne id
-                lovedOneId = careteam?.love_user_id_details?.id
-                lovedOneUUID = careteam?.love_user_id_details?.uid
+                lovedOneId = payload?.userProfiles?.id
+                lovedOneUUID = payload?.uniqueUUID
 
-                userProfileId = careteam?.love_user_id_details?.userProfileId
+                userProfileId = payload?.userProfiles?.id
 
             }
         }
@@ -581,12 +579,12 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.layoutAddress -> {
                 val intent = Intent(this, SearchPlacesActivity::class.java)
-                intent.putExtra("search_type","loved_one_address")
+                intent.putExtra("search_type", "loved_one_address")
                 navLauncher.launch(intent)
             }
             R.id.edtAddress -> {
                 val intent = Intent(this, SearchPlacesActivity::class.java)
-                intent.putExtra("search_type","loved_one_address")
+                intent.putExtra("search_type", "loved_one_address")
                 navLauncher.launch(intent)
             }
             R.id.relationshipSpinnerLayout -> {
