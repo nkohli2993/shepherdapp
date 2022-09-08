@@ -45,6 +45,7 @@ class CreatedCarePointsViewModel @Inject constructor(
     var messageListener: ListenerRegistration? = null
     var chatListener: ListenerRegistration? = null
     var groupName: String? = null
+    var eventId: Int? = null
 
     private var chatResponseData = MutableLiveData<Event<DataResult<MessageGroupResponse>>>()
     fun getChatMessages(): LiveData<Event<DataResult<MessageGroupResponse>>> = chatResponseData
@@ -181,8 +182,14 @@ class CreatedCarePointsViewModel @Inject constructor(
     }
 
 
-    fun setToUserDetail(chatType: Int?, toUsers: ArrayList<ChatUserDetail>?, groupName: String?) {
+    fun setToUserDetail(
+        chatType: Int?,
+        toUsers: ArrayList<ChatUserDetail>?,
+        groupName: String?,
+        eventId: Int?
+    ) {
         this.groupName = groupName
+        this.eventId = eventId
         val loggedInUser = userRepository.getCurrentUser()
         val memberList = ArrayList<ChatUserDetail?>()
         toUsers?.let { memberList.addAll(it) }
@@ -194,7 +201,7 @@ class CreatedCarePointsViewModel @Inject constructor(
         if (!membersId.contains(loggedInChatUser?.id.toString())) {
             memberList.add(loggedInChatUser)
         }
-        chatListData = createChatListData(chatType, memberList, groupName)
+        chatListData = createChatListData(chatType, memberList, groupName, eventId)
         Log.d(TAG, "setToUserDetail: ChatListData : $chatListData")
 
         findChatId()
@@ -213,13 +220,15 @@ class CreatedCarePointsViewModel @Inject constructor(
 
         ShepherdApp.db.collection(TableName.CHATS)
 //            .whereEqualTo("userIDs", userIDs)
-            .whereEqualTo("group_name", groupName)
+//            .whereEqualTo("group_name", groupName)
+            .whereEqualTo("event_id", eventId)
             .get()
             .addOnSuccessListener {
                 if (!it.documents.isNullOrEmpty()) {
 
                     // Get the document id of the messages
                     chatListData?.id = it.documents[0].id
+                    Log.d(TAG, "findChatId:DocumentID is ${chatListData?.id} ")
 
                     if (it.documents[0] != null) {
                         chatListData = Gson().fromJson(
@@ -258,6 +267,7 @@ class CreatedCarePointsViewModel @Inject constructor(
     private fun initChatListener() {
         isListenerInitialized = true
         chatResponseData.postValue(Event(DataResult.Loading()))
+        Log.d(TAG, "initChatListener: ${chatListData?.id}")
         val chatDocReference =
             ShepherdApp.db.collection(TableName.CHATS).document(chatListData?.id ?: "")
 
@@ -401,7 +411,8 @@ class CreatedCarePointsViewModel @Inject constructor(
     private fun createChatListData(
         chatType: Int?,
         userList: ArrayList<ChatUserDetail?>?,
-        groupName: String?
+        groupName: String?,
+        eventId: Int?
     ): ChatListData {
         return ChatListData().apply {
             userIDs = ArrayList<String>()
@@ -414,6 +425,7 @@ class CreatedCarePointsViewModel @Inject constructor(
             userIDs?.sort()
             this.chatType = chatType
             this.groupName = groupName
+            this.eventID = eventId
         }
     }
 

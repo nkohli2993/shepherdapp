@@ -116,6 +116,11 @@ interface ApiService {
         @Path("id") id: String
     ): Response<GetLovedOneMedicalConditionsResponseModel>
 
+    @GET(ApiConstants.LovedOne.GET_LOVED_ONE_DETAIL_WITH_RELATION)
+    suspend fun getLovedOneDetailWithRelation(
+        @Path("id") id: String
+    ): Response<UserDetailsResponseModel>
+
     @GET(ApiConstants.CareTeams.GET_CARE_TEAM_ROLES)
     suspend fun getCareTeamRoles(
         @Query("page") page: Int,

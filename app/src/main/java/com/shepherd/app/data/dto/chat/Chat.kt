@@ -24,6 +24,8 @@ data class ChatModel(
     //Chat Type
     var chatType: Int? = null,
     var groupName: String? = null,
+    var eventId: Int? = null,
+
     @ServerTimestamp()
     var created: Timestamp? = null,
 ) : Parcelable
