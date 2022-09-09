@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.maps.model.LatLng
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
+import com.shepherd.app.constants.ApiConstants
 import com.shepherd.app.data.dto.relation.Relation
 import com.shepherd.app.data.dto.user.Payload
 import com.shepherd.app.databinding.ActivityAddLovedOneBinding
@@ -533,6 +534,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                         completeURLProfilePic = null
                     } else {
                         completeURLProfilePic = BuildConfig.BASE_URL_USER + lovedOnePicUrl
+//                        completeURLProfilePic = ApiConstants.BASE_URL_USER + lovedOnePicUrl
                     }
 
                     customAddress = binding.edtCustomAddress.text.toString()

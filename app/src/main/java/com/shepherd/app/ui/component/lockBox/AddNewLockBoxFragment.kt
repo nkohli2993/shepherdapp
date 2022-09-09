@@ -360,15 +360,15 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     override fun onItemClick(file: File) {
         val builder = AlertDialog.Builder(requireContext())
         val dialog = builder.apply {
-            setTitle("Delete Uploaded Lock Box Document")
-            setMessage("Are you sure you want to remove the uploaded lock box doc?")
-            setPositiveButton("Yes") { _, _ ->
+            setTitle(getString(R.string.delete_upload_document))
+            setMessage(getString(R.string.are_you_sure_u_want_to_delete_uploaded_document))
+            setPositiveButton(getString(R.string.yes)) { _, _ ->
                 selectedFileList!!.remove(file)
                 uploadedFilesAdapter?.removeData(file)
                 selectedFileList?.remove(file)
                 selectedFileShow()
             }
-            setNegativeButton("No") { _, _ ->
+            setNegativeButton(getString(R.string.no)) { _, _ ->
             }
         }.create()
         dialog.show()

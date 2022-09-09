@@ -119,7 +119,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     if (payLoad != null) {
                         selectedDoseId = payLoad!!.dosage_id.toString()
                         doseID = payLoad!!.dosage_id.toString()
-                        fragmentScheduleMedicineBinding.tvMedTitle.text = payLoad?.medlist?.name?:""
+                        fragmentScheduleMedicineBinding.tvMedTitle.text =
+                            payLoad?.medlist?.name ?: ""
                         doseTypeID = payLoad!!.dosage_type_id.toString()
                         selectedDoseId = payLoad!!.dosage_id.toString()
                         selectedDoseTypeId = payLoad!!.dosage_type_id.toString()
@@ -129,18 +130,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         }
                         timeList.clear()
                         addedTimeList.clear()
-//                        if (payLoad?.frequency != null) {
-//                            if (payLoad?.frequency!! < 5) {
+                        if (payLoad?.frequency != null) {
+                            if (payLoad?.frequency!! < 5) {
                                 showAddedTime()
-//                            } else {
-//                                fragmentScheduleMedicineBinding.recycleviewTime.visibility =
-//                                    View.GONE
-//                                fragmentScheduleMedicineBinding.tvTime.visibility = View.GONE
-//                                setTimeAdapter()
-//                            }
-//                        } else {
-//                            showAddedTime()
-//                        }
+                            } else {
+                                fragmentScheduleMedicineBinding.recycleviewTime.visibility =
+                                    View.GONE
+                                fragmentScheduleMedicineBinding.tvTime.visibility = View.GONE
+                                setTimeAdapter()
+                            }
+                        } else {
+                            showAddedTime()
+                        }
 
                         addDays(isEdit = true, payLoad!!.days)
                         setDayAdapter()

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
+import com.shepherd.app.constants.ApiConstants
 import com.shepherd.app.databinding.FragmentEditProfileBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -142,6 +143,11 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
                              !profilePicUrl!!.startsWith(BuildConfig.BASE_URL_USER) -> {
                                  BuildConfig.BASE_URL_USER + profilePicUrl
                              }
+/*
+                             !profilePicUrl!!.startsWith(ApiConstants.BASE_URL_USER) -> {
+                                 ApiConstants.BASE_URL_USER + profilePicUrl
+                             }
+*/
                              else -> {
                                  profilePicUrl
                              }

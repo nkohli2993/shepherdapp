@@ -1,10 +1,13 @@
 package com.shepherd.app.data.dto.medical_conditions
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 07/06/22
  */
+@Parcelize
 data class Conditions(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("name") var name: String? = null,
@@ -19,4 +22,4 @@ data class Conditions(
 //    @SerializedName("is_already_selected") var isAlreadySelected: Boolean? = null,
     @SerializedName("is_already_selected") var isAlreadySelected: Int = 0,
     @SerializedName("add_condition_id") var addConditionId: Int? = null
-)
+):Parcelable

@@ -3,6 +3,7 @@ package com.shepherd.app.di
 import android.content.Context
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.ShepherdApp
+import com.shepherd.app.constants.ApiConstants
 import com.shepherd.app.data.local.LocalData
 import com.shepherd.app.network.retrofit.ApiService
 import com.shepherd.app.network.retrofit.MyAppInterceptor
@@ -58,6 +59,7 @@ class AppModule {
     fun provideApiProvider(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
+//            .baseUrl(ApiConstants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

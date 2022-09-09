@@ -1,6 +1,8 @@
 package com.shepherd.app.data.dto.add_loved_one
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 06/06/22
@@ -9,7 +11,7 @@ import com.google.gson.annotations.SerializedName
     @SerializedName("profile_photo") var profilePhoto: String? = null
 
 )*/
-
+@Parcelize
 data class Payload(
     @SerializedName("id") var id: String? = null,
     @SerializedName("email") var email: String? = null,
@@ -24,4 +26,4 @@ data class Payload(
     // Url of uploaded pic
     @SerializedName("profile_photo") var profilePhoto: String? = null
 
-)
+):Parcelable

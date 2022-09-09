@@ -4,8 +4,11 @@ package com.shepherd.app.data.dto.add_loved_one
  * Created by Deepak Rattan on 06/06/22
  */
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CreateLovedOneModel(
     @SerializedName("email") var email: String? = null,
     @SerializedName("firstname") var firstname: String? = null,
@@ -17,4 +20,4 @@ data class CreateLovedOneModel(
     @SerializedName("address") var customAddress: String? = null,
     @SerializedName("phone_no") var phoneNo: String? = null,
     @SerializedName("profile_photo") var profilePhoto: String? = null
-)
+):Parcelable

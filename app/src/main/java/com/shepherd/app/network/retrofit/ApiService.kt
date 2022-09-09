@@ -42,12 +42,14 @@ import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneReq
 import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
+import com.shepherd.app.data.dto.notification.NotificationResponseModel
 import com.shepherd.app.data.dto.relation.RelationResponseModel
 import com.shepherd.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherd.app.data.dto.resource.ResponseRelationModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
 import com.shepherd.app.data.dto.security_code.SecurityCodeResponseModel
 import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
+import com.shepherd.app.data.dto.settings_pages.StaticPageResponseModel
 import com.shepherd.app.data.dto.signup.BioMetricData
 import com.shepherd.app.data.dto.signup.UserSignupData
 import com.shepherd.app.data.dto.user.UserDetailsResponseModel
@@ -454,4 +456,17 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): Response<ResponseRelationModel>
+
+    @GET(ApiConstants.Settings.GET_STATIC_PAGE)
+    suspend fun getStaticPagesApi(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<StaticPageResponseModel>
+
+    @GET(ApiConstants.Notification.GET_NOTIFICATION_LIST)
+    suspend fun getNotificationListBasedOnLovedOne(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("loveone_user_id") loveone_user_id: String
+    ): Response<NotificationResponseModel>
 }

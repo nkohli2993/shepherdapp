@@ -1,11 +1,13 @@
 package com.shepherd.app.data.dto.add_new_member_care_team
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 27/06/22
  */
-
+@Parcelize
 data class AddNewMemberCareTeamRequestModel(
 
     @SerializedName("user_id") var userId: String? = null,
@@ -15,3 +17,4 @@ data class AddNewMemberCareTeamRequestModel(
     @SerializedName("careteam_role_id") var careteamRoleId: Int? = null,
     @SerializedName("permission") var permission: String? = null
 )
+    :Parcelable

@@ -17,6 +17,7 @@ import com.shepherd.app.utils.observe
 import com.shepherd.app.utils.setupSnackbar
 import com.shepherd.app.utils.showToast
 import com.google.android.material.snackbar.Snackbar
+import com.shepherd.app.view_model.NotificationsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -47,8 +48,8 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     }
 
     override fun observeViewModel() {
-        observe(notificationsViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(notificationsViewModel.showSnackBar)
+//        observe(notificationsViewModel.loginLiveData, ::handleLoginResult)
+//        observeSnackBarMessages(notificationsViewModel.showSnackBar)
         observeToast(notificationsViewModel.showToast)
     }
 

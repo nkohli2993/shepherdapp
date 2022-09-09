@@ -1,12 +1,14 @@
 package com.shepherd.app.data.dto.med_list.get_medication_detail
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 09/08/22
  */
 
-
+@Parcelize
 data class Medlist (
 
 	@SerializedName("id") val id : Int,
@@ -17,4 +19,4 @@ data class Medlist (
 	@SerializedName("created_at") val created_at : String,
 	@SerializedName("updated_at") val updated_at : String,
 	@SerializedName("deleted_at") val deleted_at : String
-)
+):Parcelable

@@ -29,6 +29,7 @@ fun provideHttpClient(logging: HttpLoggingInterceptor): OkHttpClient {
 fun provideApiProvider(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .baseUrl(BuildConfig.BASE_URL)
+//        .baseUrl(ApiConstants.BASE_URL)
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

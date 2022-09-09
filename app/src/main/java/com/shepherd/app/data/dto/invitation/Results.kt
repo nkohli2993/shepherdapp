@@ -1,10 +1,13 @@
 package com.shepherd.app.data.dto.invitation
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 05/07/22
  */
+@Parcelize
 data class Results(
 
     /* @SerializedName("id"               ) var id             : Int?       = null,
@@ -29,4 +32,4 @@ data class Results(
     @SerializedName("care_roles") var careRoles: CareRoles? = CareRoles(),
     var isSelected: Boolean = false
 
-)
+):Parcelable

@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
+import com.shepherd.app.constants.ApiConstants
 import com.shepherd.app.databinding.ActivityCreateNewAccountBinding
 import com.shepherd.app.network.retrofit.DataResult
 import com.shepherd.app.network.retrofit.observeEvent
@@ -320,6 +321,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         null
                     } else {
                         BuildConfig.BASE_URL_USER + profilePicUrl
+//                        ApiConstants.BASE_URL_USER + profilePicUrl
                     }
 
                     createNewAccountViewModel.createAccount(

@@ -1,8 +1,10 @@
 package com.shepherd.app.data.dto.med_list.schedule_medlist
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class DoseList(
     @SerializedName("created_at")
     var createdAt: String = "",
@@ -22,4 +24,4 @@ data class DoseList(
     var updatedAt: String = "",
     @SerializedName("is_selected")
     var isSelected: Boolean = false,
-)
+):Parcelable

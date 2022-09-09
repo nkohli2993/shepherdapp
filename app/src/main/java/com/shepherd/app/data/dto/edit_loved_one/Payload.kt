@@ -1,12 +1,14 @@
 package com.shepherd.app.data.dto.edit_loved_one
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 07/09/22
  */
 
-
+@Parcelize
 data class Payload(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: Int? = null,
@@ -26,4 +28,4 @@ data class Payload(
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
 
-)
+):Parcelable

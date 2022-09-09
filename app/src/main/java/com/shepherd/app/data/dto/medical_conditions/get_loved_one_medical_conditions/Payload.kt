@@ -1,10 +1,13 @@
 package com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 12/08/22
  */
+@Parcelize
 data class Payload(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: String? = null,
@@ -13,4 +16,4 @@ data class Payload(
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
     @SerializedName("conditions") var conditions: Conditions? = Conditions()
-)
+):Parcelable
