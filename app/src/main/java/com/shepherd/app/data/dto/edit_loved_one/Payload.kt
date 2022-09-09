@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName
 
 
 data class Payload(
-
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("firstname") var firstname: String? = null,

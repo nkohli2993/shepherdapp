@@ -41,13 +41,13 @@ class RelationRepository @Inject constructor(private val apiService: ApiService)
 
     // Create Loved One
     suspend fun editLovedOne(
-        id: Int,
+        uuid: String,
         createLovedOneModel: CreateLovedOneModel
     ): Flow<DataResult<EditLovedOneResponseModel>> {
         return object :
             NetworkOnlineDataRepo<EditLovedOneResponseModel, EditLovedOneResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<EditLovedOneResponseModel> {
-                return apiService.editLovedOne(id, createLovedOneModel)
+                return apiService.editLovedOne(uuid, createLovedOneModel)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

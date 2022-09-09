@@ -162,7 +162,9 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 binding.edtFirstName.setText(payload?.userProfiles?.firstname)
                 binding.edtLastName.setText(payload?.userProfiles?.lastname)
                 binding.editTextEmail.setText(payload?.email)
-                binding.edtAddress.text = payload?.userProfiles?.address
+
+                binding.edtAddress.text = payload?.userLocation?.formattedAddress
+
                 binding.edtCustomAddress.setText(payload?.userProfiles?.address)
                 binding.btnContinue.text = "Save Changes"
 
@@ -545,7 +547,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                         yearSelected + "-" + (if (monthIdSelected!! < 10) "0$monthIdSelected" else monthIdSelected!!.toString()) + "-" + (if (dateSelected.toInt() < 10) "0$dateSelected" else dateSelected)
 
                     if (isEditLovedOne) {
-                        userProfileId?.let {
+                        lovedOneUUID?.let {
                             addLovedOneViewModel.editLovedOne(
                                 email,
                                 firstName,

@@ -222,7 +222,6 @@
                     android:fontFamily="@font/gotham_book"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
-                    android:text="@{data.userProfiles.address ?? `No Address Available`}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivAddress"
                     app:layout_constraintTop_toTopOf="parent" />

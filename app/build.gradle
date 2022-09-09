@@ -19,9 +19,19 @@ android {
 
     configurations {
         implementation.exclude module: 'protobuf-lite'
+        implementation.exclude module: 'httpclient'
     }
 
     compileSdkVersion rootProject.compileSdkVersion
+
+   /* signingConfigs {
+        release {
+            storePassword 'shepherd'
+            keyAlias = 'shepherd'
+            keyPassword 'shepherd'
+            storeFile file('key.jks')
+        }
+    }*/
 
     defaultConfig {
         applicationId "com.shepherd.app"
@@ -61,10 +71,18 @@ android {
 //            buildConfigField("String", "BASE_URL", base_url_local)
 //            buildConfigField("String", "BASE_URL", base_url_staging)
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            //dev urls
+            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
+            buildConfigField("String", "BASE_URL", base_url_dev)
+
+            // client urls
+//            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
+//            buildConfigField("String", "BASE_URL", base_url_client)
         }
     }
     flavorDimensions "default"
-    productFlavors {
+    /*productFlavors {
         dev {
             dimension = 'default'
             applicationIdSuffix = ".dev"
@@ -72,7 +90,7 @@ android {
         prod {
             dimension = 'default'
         }
-    }
+    }*/
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -234,6 +252,8 @@ dependencies {
     implementation 'com.google.http-client:google-http-client-gson:1.26.0'
     implementation('com.google.api-client:google-api-client-android:1.26.0') {
         exclude group: 'org.apache.httpcomponents'
+        //Exclude conflicting modules
+        exclude module: 'httpclient'
     }
     implementation('com.google.apis:google-api-services-drive:v3-rev136-1.25.0') {
         exclude group: 'org.apache.httpcomponents'

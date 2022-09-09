@@ -136,9 +136,20 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                     }
 
                     fragmentLovedOneProfileBinding.tvName.text = name
+
+                    // Get Place
+                    val place = payload?.userLocation?.formattedAddress
+                    // Get address
+                    val address = payload?.userProfiles?.address
+                    if (!address.isNullOrEmpty()) {
+                        fragmentLovedOneProfileBinding.txtAddress.text = address
+                    } else if (!place.isNullOrEmpty()) {
+                        fragmentLovedOneProfileBinding.txtAddress.text = place
+                    } else {
+                        fragmentLovedOneProfileBinding.txtAddress.text = "No Address Available"
+                    }
                 }
             }
-
         }
     }
 

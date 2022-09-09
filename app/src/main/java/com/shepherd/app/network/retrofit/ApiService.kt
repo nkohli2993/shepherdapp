@@ -101,7 +101,7 @@ interface ApiService {
 
     @PUT(ApiConstants.LovedOne.EDIT_LOVED_ONE)
     suspend fun editLovedOne(
-        @Path("id") id: Int?,
+        @Path("uuid") uuid: String?,
         @Body value: CreateLovedOneModel
     ): Response<EditLovedOneResponseModel>
 

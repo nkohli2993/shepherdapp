@@ -33,5 +33,6 @@ data class Payload(
     @SerializedName("user_profiles") var userProfiles: UserProfiles? = UserProfiles(),
     @SerializedName("user_loved_one") var userLovedOne: ArrayList<UserLovedOne> = arrayListOf(),
     @SerializedName("user_roles") var userRoles: ArrayList<UserRole> = arrayListOf(),
-    @SerializedName("relationship") var relationship: Relationship? = Relationship()
+    @SerializedName("relationship") var relationship: Relationship? = Relationship(),
+    @SerializedName("user_location" ) var userLocation : UserLocation? = UserLocation()
 ) : Parcelable

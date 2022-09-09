@@ -139,7 +139,7 @@ class AddLovedOneViewModel @Inject constructor(
         customAddress: String?,
         phone_no: String?,
         profile_photo: String?,
-        userProfileID: Int?
+        uuid: String?
     ): LiveData<Event<DataResult<EditLovedOneResponseModel>>> {
         createLovedOneData.value.let {
             it?.email = email
@@ -158,7 +158,7 @@ class AddLovedOneViewModel @Inject constructor(
         viewModelScope.launch {
             val response =
                 createLovedOneData.value?.let {
-                    userProfileID?.let { it1 ->
+                    uuid?.let { it1 ->
                         relationRepository.editLovedOne(
                             it1, it
                         )
