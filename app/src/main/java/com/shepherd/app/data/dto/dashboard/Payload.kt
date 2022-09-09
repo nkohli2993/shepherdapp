@@ -1,10 +1,13 @@
 package com.shepherd.app.data.dto.dashboard
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 29/06/22
  */
+@Parcelize
 data class Payload(
     @SerializedName("carePoints") var carePoints: Int? = null,
     @SerializedName("medLists") var medLists: Int? = null,
@@ -13,4 +16,4 @@ data class Payload(
     @SerializedName("lovedOneUserProfile") var lovedOneUserProfile: String? = null,
     @SerializedName("firstname") var firstname: String? = null,
     @SerializedName("careTeamProfiles") var careTeamProfiles: ArrayList<CareTeamProfiles> = arrayListOf()
-)
+):Parcelable

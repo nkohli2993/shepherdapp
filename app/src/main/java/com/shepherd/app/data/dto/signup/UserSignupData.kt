@@ -1,11 +1,13 @@
 package com.shepherd.app.data.dto.signup
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 27/05/22
  */
-
+@Parcelize
 data class UserSignupData(
 
     @SerializedName("email") var email: String? = null,
@@ -18,4 +20,4 @@ data class UserSignupData(
     @SerializedName("profile_photo") var profilePhoto: String? = null,
     @SerializedName("device") var device: String? = null,
 
-    )
+    ):Parcelable

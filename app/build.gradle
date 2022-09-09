@@ -63,15 +63,16 @@ android {
 //            buildConfigField("String", "BASE_URL", base_url_staging)
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //dev urls
-            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
-            buildConfigField("String", "BASE_URL", base_url_dev)
+//            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
+//            buildConfigField("String", "BASE_URL", base_url_dev)
 
             // client urls
-//            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
-//            buildConfigField("String", "BASE_URL", base_url_client)
+            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
+            buildConfigField("String", "BASE_URL", base_url_client)
         }
     }
     flavorDimensions "default"
+/*
     productFlavors {
         dev {
             dimension = 'default'
@@ -81,6 +82,7 @@ android {
             dimension = 'default'
         }
     }
+*/
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'

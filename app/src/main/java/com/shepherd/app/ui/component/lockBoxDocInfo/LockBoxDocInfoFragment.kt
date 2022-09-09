@@ -68,10 +68,10 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 .into(imgDoc)
             // Click edit lock box icon
             it.imgEditLockBox.setOnClickListener {
-//                layoutDocDetail.visibility = View.GONE
-//                layoutEditLockBoxDocDetail.visibility = View.VISIBLE
-                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
-                findNavController().navigate(action)
+                layoutDocDetail.visibility = View.GONE
+                layoutEditLockBoxDocDetail.visibility = View.VISIBLE
+//                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
+//                findNavController().navigate(action)
 
             }
         }
@@ -134,11 +134,11 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 backPress()
             }
             R.id.imgEditLockBox -> {
-//                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
-//                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
-//                    View.VISIBLE
-                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
-                findNavController().navigate(action)
+                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
+                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
+                    View.VISIBLE
+//                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
+//                findNavController().navigate(action)
             }
             R.id.btnCancel -> {
                 fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.VISIBLE

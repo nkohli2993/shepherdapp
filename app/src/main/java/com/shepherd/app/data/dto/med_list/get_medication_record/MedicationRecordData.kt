@@ -1,12 +1,15 @@
 package com.shepherd.app.data.dto.med_list.get_medication_record
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.shepherd.app.data.dto.med_list.get_medication_detail.Payload
+import kotlinx.android.parcel.Parcelize
 
 
 /**
  * Created by Nikita Kohli  19/08/22
  */
+@Parcelize
 data class MedicationRecordData(
     @SerializedName("created_at")
     var createdAt: String? = null,
@@ -26,4 +29,4 @@ data class MedicationRecordData(
     var userMedicationId: Int? = null,
     @SerializedName("user_medications")
     var userMedications: Payload? = null
-)
+):Parcelable

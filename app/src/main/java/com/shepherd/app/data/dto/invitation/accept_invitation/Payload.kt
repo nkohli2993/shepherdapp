@@ -1,10 +1,13 @@
 package com.shepherd.app.data.dto.invitation.accept_invitation
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 11/07/22
  */
+@Parcelize
 data class Payload(
     @SerializedName("id") var id: Int? = null,
     @SerializedName("email") var email: String? = null,
@@ -19,4 +22,4 @@ data class Payload(
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null
 
-)
+):Parcelable

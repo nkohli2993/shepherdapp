@@ -1,7 +1,10 @@
 package com.shepherd.app.data.dto.added_events
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class ResultEventModel(
 
 
@@ -10,4 +13,4 @@ data class ResultEventModel(
 
 
 //    @SerializedName("data") var events: ArrayList<CarePointEventDataModel> = arrayListOf()
-)
+):Parcelable

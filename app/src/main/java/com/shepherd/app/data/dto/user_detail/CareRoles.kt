@@ -1,10 +1,13 @@
 package com.shepherd.app.data.dto.user_detail
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Deepak Rattan on 12/07/22
  */
+@Parcelize
 data class CareRoles (
 
     @SerializedName("id"          ) var id          : Int?     = null,
@@ -16,4 +19,4 @@ data class CareRoles (
     @SerializedName("updated_at"  ) var updatedAt   : String?  = null,
     @SerializedName("deleted_at"  ) var deletedAt   : String?  = null
 
-)
+):Parcelable

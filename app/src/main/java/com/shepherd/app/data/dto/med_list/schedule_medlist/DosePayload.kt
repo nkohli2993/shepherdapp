@@ -1,7 +1,9 @@
 package com.shepherd.app.data.dto.med_list.schedule_medlist
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class DosePayload(
     @SerializedName("current_page")
     var currentPage: Int = 0,
@@ -15,4 +17,4 @@ data class DosePayload(
     var total: Int = 0,
     @SerializedName("total_pages")
     var totalPages: Int = 0
-)
+):Parcelable

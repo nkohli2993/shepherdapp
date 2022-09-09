@@ -1,6 +1,10 @@
 package com.shepherd.app.data.dto.login
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * Created by Sumit Kumar
  */
-data class LoginRequestModel(val email: String, val password: String)
+@Parcelize
+data class LoginRequestModel(val email: String, val password: String):Parcelable

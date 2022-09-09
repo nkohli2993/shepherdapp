@@ -1,7 +1,9 @@
 package com.shepherd.app.data.dto.med_list.schedule_medlist
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
-
+@Parcelize
 data class ScheduledPayload(
     @SerializedName("assigned_by")
     var assignedBy: String = "",
@@ -27,4 +29,4 @@ data class ScheduledPayload(
     var time: List<Time> = listOf(),
     @SerializedName("updated_at")
     var updatedAt: String = ""
-)
+):Parcelable
