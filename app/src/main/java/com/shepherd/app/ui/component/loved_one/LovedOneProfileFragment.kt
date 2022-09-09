@@ -54,7 +54,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         return fragmentLovedOneProfileBinding.root
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     override fun observeViewModel() {
         // Observe Loved One's Medical Condition live data
         lovedOneMedicalConditionViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
@@ -105,10 +105,37 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                     hideLoading()
                     payload = it.data.payload
                     fragmentLovedOneProfileBinding.data = payload
-
-                    fragmentLovedOneProfileBinding.txtDOB.text =
-                        payload?.userProfiles?.dob.convertISOTimeToDate()
                     Log.d(TAG, "LovedOneDetailWithRelation: $payload")
+
+                    // Set DOB
+                    if (payload?.userProfiles?.dob.isNullOrEmpty()) {
+                        fragmentLovedOneProfileBinding.txtDOB.text = "No Date Of Birth Available"
+                    } else {
+                        fragmentLovedOneProfileBinding.txtDOB.text =
+                            payload?.userProfiles?.dob.convertISOTimeToDate()
+                    }
+
+                    // Set Phone Number
+                    if (payload?.userProfiles?.phoneCode.isNullOrEmpty() && payload?.userProfiles?.phoneNumber.isNullOrEmpty()) {
+                        fragmentLovedOneProfileBinding.txtPhone.text = "No Phone Number Available"
+                    } else {
+                        fragmentLovedOneProfileBinding.txtPhone.text =
+                            payload?.userProfiles?.phoneCode + " " + payload?.userProfiles?.phoneNumber
+                    }
+
+                    // Set Name
+                    var name: String? = null
+                    name = if (!payload?.userProfiles?.firstname.isNullOrEmpty()) {
+                        if (!payload?.userProfiles?.lastname.isNullOrEmpty()) {
+                            payload?.userProfiles?.firstname + " " + payload?.userProfiles?.lastname
+                        } else {
+                            payload?.userProfiles?.firstname
+                        }
+                    } else {
+                        "LovedOne's Name Not Available"
+                    }
+
+                    fragmentLovedOneProfileBinding.tvName.text = name
                 }
             }
 

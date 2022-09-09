@@ -93,7 +93,6 @@
                     android:fontFamily="@font/gotham_medium"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_20ssp"
-                    android:text="@{data.userProfiles.firstname +' '+data.userProfiles.lastname}"
                     app:layout_constraintBottom_toTopOf="@+id/tvProfessional"
                     app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                     app:layout_constraintTop_toTopOf="parent"
@@ -138,7 +137,7 @@
                     android:fontFamily="@font/gotham_book"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
-                    android:text="@{data.email}"
+                    android:text="@{data.email ?? `No Email Available`}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivEmail"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -167,7 +166,6 @@
                     android:fontFamily="@font/gotham_book"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
-                    android:text="@{data.userProfiles.phoneCode +' '+data.userProfiles.phoneNumber}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivPhone"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -224,7 +222,7 @@
                     android:fontFamily="@font/gotham_book"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
-                    android:text="@{data.userProfiles.address}"
+                    android:text="@{data.userProfiles.address ?? `No Address Available`}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivAddress"
                     app:layout_constraintTop_toTopOf="parent" />

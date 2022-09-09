@@ -547,7 +547,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     if (isEditLovedOne) {
                         userProfileId?.let {
                             addLovedOneViewModel.editLovedOne(
-                                null,
+                                email,
                                 firstName,
                                 lastName,
                                 relationId,
