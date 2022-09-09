@@ -192,7 +192,12 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
         if (!isChatOff) {
             // Set User Detail
-            carePointsViewModel.setToUserDetail(Chat.CHAT_GROUP, chatUserDetailList, eventName,eventId)
+            carePointsViewModel.setToUserDetail(
+                Chat.CHAT_GROUP,
+                chatUserDetailList,
+                eventName,
+                eventId
+            )
             // Load Chat
             loadChat()
             //  initScrollListener()
@@ -413,9 +418,24 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     .into(fragmentCarePointDetailBinding.imageViewUser)
             }
 
-            fragmentCarePointDetailBinding.tvUsername.text =
+            // Set Name
+            var name: String? = null
+            name = if (!payload.createdByDetails?.firstname.isNullOrEmpty()) {
+                if (!payload.createdByDetails?.lastname.isNullOrEmpty()) {
+                    payload.createdByDetails?.firstname + " " + payload.createdByDetails?.lastname
+                } else {
+                    payload.createdByDetails?.firstname
+                }
+            } else {
+                "Name Not Available"
+            }
+
+            fragmentCarePointDetailBinding.tvUsername.text = name
+
+            /*fragmentCarePointDetailBinding.tvUsername.text =
                 payload.createdByDetails?.firstname.plus(" ")
-                    .plus(if (payload.createdByDetails?.lastname == null) "" else payload.createdByDetails?.lastname)
+                    .plus(if (payload.createdByDetails?.lastname == null) "" else payload.createdByDetails?.lastname)*/
+
             // show created on time
             val dateTime = (payload.created_at ?: "").replace(".000Z", "").replace("T", " ")
             val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
