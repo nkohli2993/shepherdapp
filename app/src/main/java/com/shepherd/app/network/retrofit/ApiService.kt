@@ -42,6 +42,7 @@ import com.shepherd.app.data.dto.medical_conditions.MedicalConditionsLovedOneReq
 import com.shepherd.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
 import com.shepherd.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherd.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
+import com.shepherd.app.data.dto.notification.NotificationResponseModel
 import com.shepherd.app.data.dto.relation.RelationResponseModel
 import com.shepherd.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherd.app.data.dto.resource.ResponseRelationModel
@@ -461,4 +462,11 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): Response<StaticPageResponseModel>
+
+    @GET(ApiConstants.Notification.GET_NOTIFICATION_LIST)
+    suspend fun getNotificationListBasedOnLovedOne(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("loveone_user_id") loveone_user_id: String
+    ): Response<NotificationResponseModel>
 }

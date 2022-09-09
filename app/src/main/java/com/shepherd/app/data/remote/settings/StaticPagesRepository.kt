@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import javax.inject.Inject
 
-class StaticPagesRepository  @Inject constructor(private val apiService: ApiService) {
+class StaticPagesRepository @Inject constructor(private val apiService: ApiService) {
 
     //get about terms and privacy data
     suspend fun getStaticPagesApi(page:Int,limit:Int): Flow<DataResult<StaticPageResponseModel>> {

@@ -143,5 +143,9 @@ object ApiConstants {
     object Settings {
         const val GET_STATIC_PAGE = "$BASE_URL${API_VERSION}settings"
     }
+
+    object Notification{
+        const val GET_NOTIFICATION_LIST = "$BASE_URL${API_VERSION}notification"
+    }
 }
 
