@@ -53,7 +53,7 @@ import kotlin.collections.ArrayList
  * Created by Nikita Kohli on 07-09-22
  */
 @AndroidEntryPoint
-@SuppressLint("ClickableViewAccessibility")
+@SuppressLint("ClickableViewAccessibility","SimpleDateFormat")
 class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     View.OnClickListener, UploadedDocumentAdapter.OnItemClickListener {
 
@@ -76,7 +76,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private val args: EditLockBoxFragmentArgs by navArgs()
     private var uploadedFiles: ArrayList<DocumentData> = arrayListOf()
     private var deletedFileIds: ArrayList<Int> = arrayListOf()
-
+    private var dateFormat = SimpleDateFormat("MMM dd, yyyy")
     companion object {
         private const val REQUEST_CODE_SIGN_IN = 1
         private const val REQUEST_CODE_OPEN_DOCUMENT = 2
@@ -200,7 +200,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                         DocumentData(
                                             i,
                                             payload.documents[i].url!!,
-                                            SimpleDateFormat("MMM dd, yyyy").format(Calendar.getInstance().time)
+                                            dateFormat.format(Calendar.getInstance().time)
                                         )
                                     )
                                 }
@@ -217,6 +217,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
 
     }
 
+    // uploaded files from local storage
     private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
         dialog?.dismiss()
         val uploadSelectedFiles: ArrayList<DocumentData> = arrayListOf()
@@ -225,7 +226,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                 DocumentData(
                     -1,
                     i.toString(),
-                    SimpleDateFormat("MMM dd, yyyy").format(Calendar.getInstance().time), true
+                    dateFormat.format(Calendar.getInstance().time), true
                 )
             )
 
@@ -233,7 +234,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
         selectedFileList!!.addAll(
             uploadSelectedFiles
         )
-        uploadedFiles.addAll(selectedFileList!!)
+        uploadedFiles.addAll(uploadSelectedFiles)
         if (!selectedFiles.isNullOrEmpty()) {
             setFileViewVisible()
             uploadedFilesAdapter?.addData(uploadSelectedFiles)
@@ -334,7 +335,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                     fragmentEditLockBoxBinding.edtNote.error = getString(R.string.enter_note)
                 }
 
-                uploadedFiles.isNullOrEmpty() -> {
+                uploadedFiles.isEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_upload_file))
                 }
                 else -> {
@@ -386,7 +387,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                 } else {
                     showError(
                         requireContext().applicationContext,
-                        "Unable to create this request try, again later!"
+                        getString(R.string.unable_to_create_this_request_try_again_later)
                     )
                 }
             }
@@ -413,13 +414,17 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 DocumentData(
                                     -1,
                                     file.toString(),
-                                    SimpleDateFormat("MMM dd, yyyy").format(Calendar.getInstance().time),
+                                    dateFormat.format(Calendar.getInstance().time),
                                     true
                                 )
                             )
-                            uploadedFiles.addAll(selectedFileList!!)
+                            uploadedFiles.add( DocumentData(
+                                -1,
+                                file.toString(),
+                                dateFormat.format(Calendar.getInstance().time),
+                                true
+                            ))
                             if (selectedFileList!!.size > 0) {
-                                Log.d(TAG, "handleSelectedFiles: $selectedFiles")
                                 setFileViewVisible()
                                 uploadedFilesAdapter?.addData(selectedFileList!!)
                             } else {
@@ -440,7 +445,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                 val credential: GoogleAccountCredential = GoogleAccountCredential.usingOAuth2(
                     requireContext().applicationContext, setOf(DriveScopes.DRIVE_FILE)
                 )
-                credential.setSelectedAccount(googleAccount.account)
+                credential.selectedAccount = googleAccount.account
                 val googleDriveService: Drive = Drive.Builder(
                     AndroidHttp.newCompatibleTransport(),
                     GsonFactory(),
@@ -494,8 +499,13 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                     }
                     if (driveSelectedFileList.size > 0) {
                         setFileViewVisible()
-                        // selectedFileList!!.addAll(driveSelectedFileList)
-//                        uploadedFilesAdapter?.addData(driveSelectedFileList)
+                        val uploadFile:ArrayList<DocumentData> = arrayListOf()
+                        for (i in driveSelectedFileList) {
+                            uploadFile.add(DocumentData(-1,driveSelectedFileList.toString(),dateFormat.format(Calendar.getInstance().time)))
+                        }
+                        selectedFileList!!.addAll(uploadFile)
+                        uploadedFiles.addAll(uploadFile)
+                        uploadedFilesAdapter?.addData(uploadFile)
                         selectedFileShow()
                     } else {
                         setFileViewUnvisible()
@@ -519,10 +529,13 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                         }
                         val fileSelectedUpload: ArrayList<File> = arrayListOf()
                         fileSelectedUpload.add(file)
-                        // selectedFileList!!.addAll(fileSelectedUpload)
                         if (selectedFileList!!.size > 0) {
                             setFileViewVisible()
-//                            uploadedFilesAdapter?.addData(fileSelectedUpload)
+                            val uploadFile:ArrayList<DocumentData> = arrayListOf()
+                            uploadFile.add(DocumentData(-1,file.toString(),dateFormat.format(Calendar.getInstance().time)))
+                            selectedFileList?.addAll(uploadFile)
+                            uploadedFiles.addAll(uploadFile)
+                            uploadedFilesAdapter?.addData(uploadFile)
                         } else {
                             setFileViewUnvisible()
                         }
@@ -583,19 +596,18 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     override fun onItemClick(position: Int) {
         val builder = AlertDialog.Builder(requireContext())
         val dialog = builder.apply {
-            setTitle("Delete Uploaded Lock Box Document")
-            setMessage("Are you sure you want to remove the uploaded lock box doc?")
-            setPositiveButton("Yes") { _, _ ->
+            setTitle(getString(R.string.delete_upload_document))
+            setMessage(getString(R.string.are_you_sure_u_want_to_delete_uploaded_document))
+            setPositiveButton(getString(R.string.yes)) { _, _ ->
                 if (!uploadedFiles[position].newAdded) {
                     deletedFileIds.add(uploadedFiles[position].id)
                 }
-
                 uploadedFiles.removeAt(position)
                 uploadedFilesAdapter?.removeData(position)
-                //selectedFileList?.removeAt(position)
+                Log.e("catch_exception", "removed array size: ${uploadedFiles.size}")
                 selectedFileShow()
             }
-            setNegativeButton("No") { _, _ ->
+            setNegativeButton(getString(R.string.no)) { _, _ ->
             }
         }.create()
         dialog.show()

@@ -13,6 +13,9 @@ object ApiConstants {
 
     private const val API_VERSION = "api/v1/"
 
+//    const val BASE_URL = "https://sheperdstagging.itechnolabs.tech:3055/"
+//    // Field from build type: debug
+//    const val BASE_URL_USER = "https://usersherperd.itechnolabs.tech/"
     object Authentication {
         const val LOGIN = "$BASE_URL_USER${API_VERSION}users/login"
         const val LOGIN_WITH_DEVICE = "$BASE_URL_USER${API_VERSION}users/login/device"
@@ -135,6 +138,10 @@ object ApiConstants {
         const val GET_ALL_RESOURCE = "$BASE_URL${API_VERSION}posts"
         const val GET_TRENDING_RESOURCE = "$BASE_URL${API_VERSION}posts/features"
         const val GET_RESOURCE_DETAIL = "$BASE_URL${API_VERSION}posts/{id}"
+    }
+
+    object Settings {
+        const val GET_STATIC_PAGE = "$BASE_URL${API_VERSION}settings"
     }
 }
 

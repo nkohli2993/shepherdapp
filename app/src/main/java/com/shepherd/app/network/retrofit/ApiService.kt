@@ -48,6 +48,7 @@ import com.shepherd.app.data.dto.resource.ResponseRelationModel
 import com.shepherd.app.data.dto.roles.RolesResponseModel
 import com.shepherd.app.data.dto.security_code.SecurityCodeResponseModel
 import com.shepherd.app.data.dto.security_code.SendSecurityCodeRequestModel
+import com.shepherd.app.data.dto.settings_pages.StaticPageResponseModel
 import com.shepherd.app.data.dto.signup.BioMetricData
 import com.shepherd.app.data.dto.signup.UserSignupData
 import com.shepherd.app.data.dto.user.UserDetailsResponseModel
@@ -454,4 +455,10 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
     ): Response<ResponseRelationModel>
+
+    @GET(ApiConstants.Settings.GET_STATIC_PAGE)
+    suspend fun getStaticPagesApi(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<StaticPageResponseModel>
 }
