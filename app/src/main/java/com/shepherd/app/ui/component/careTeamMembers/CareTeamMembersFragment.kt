@@ -153,6 +153,10 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     }catch (e:Exception){
                         Log.d(TAG,"Error: ${e.toString()}")
                     }
+                    fragmentCareTeamMembersBinding.let {
+                        it.recyclerViewCareTeam.visibility = View.VISIBLE
+                        it.txtNoCareTeamFound.visibility = View.GONE
+                    }
                     careTeamAdapter?.updateCareTeams(careTeams!!)
                 }
                 is DataResult.Failure -> {
