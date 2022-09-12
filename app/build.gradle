@@ -24,21 +24,21 @@ android {
 
     compileSdkVersion rootProject.compileSdkVersion
 
-   /* signingConfigs {
+    signingConfigs {
         release {
             storePassword 'shepherd'
             keyAlias = 'shepherd'
             keyPassword 'shepherd'
             storeFile file('key.jks')
         }
-    }*/
+    }
 
     defaultConfig {
         applicationId "com.shepherd.app"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
-        versionName "1.0.3"
+        versionName "1.0.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.debug
@@ -52,22 +52,26 @@ android {
         debug {
             debuggable true
             minifyEnabled false
+//            signingConfig signingConfigs.debug
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
 //            buildConfigField("String", "BASE_URL_USER", base_url_user)
 //            buildConfigField("String", "BASE_URL", base_url)
 //            buildConfigField("String", "BASE_URL_USER_STAGING", base_url_user_staging)
 //            buildConfigField("String", "BASE_URL_STAGING", base_url_staging)
 
             //dev urls
-            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
-            buildConfigField("String", "BASE_URL", base_url_dev)
+//            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
+//            buildConfigField("String", "BASE_URL", base_url_dev)
 
             // client urls
-//            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
-//            buildConfigField("String", "BASE_URL", base_url_client)
+            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
+            buildConfigField("String", "BASE_URL", base_url_client)
         }
         release {
             debuggable false
             minifyEnabled true
+            signingConfig signingConfigs.release
 //            buildConfigField("String", "BASE_URL", base_url_live)
 //            buildConfigField("String", "BASE_URL", base_url_local)
 //            buildConfigField("String", "BASE_URL", base_url_staging)
@@ -81,7 +85,7 @@ android {
             buildConfigField("String", "BASE_URL", base_url_client)
         }
     }
-    flavorDimensions "default"
+//    flavorDimensions "default"
 /*
     productFlavors {
         dev {
