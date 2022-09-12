@@ -15,5 +15,6 @@ data class Payload(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
-    @SerializedName("conditions") var conditions: Conditions? = Conditions()
+    @SerializedName("conditions") var conditions: Conditions? = Conditions(),
+    @SerializedName("is_unselected") var isUnselected:Boolean= false
 ):Parcelable

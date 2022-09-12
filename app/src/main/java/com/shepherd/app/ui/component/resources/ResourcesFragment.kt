@@ -39,7 +39,6 @@ import java.util.*
 @AndroidEntryPoint
 class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
-    private var isSearch: Boolean = false
     private lateinit var fragmentResourcesBinding: FragmentResourcesBinding
     private val resourcesViewModel: ResourceViewModel by viewModels()
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
@@ -54,6 +53,8 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private var resourceList: ArrayList<AllResourceData> = arrayListOf()
     private var trendingResourceList: ArrayList<AllResourceData> = arrayListOf()
     private var conditionIDs: ArrayList<Int> = arrayListOf()
+    private var isSearch: Boolean = false
+    private var isLoading = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -105,7 +106,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     limit,
                     resourcesViewModel.getLovedOneUUId()!!,
                     conditionIDs.toString()
-                        .replace(" ", ""),//conditionIDs.toString().replace(" ","")
+                        .replace(" ", ""),
                     fragmentResourcesBinding.editTextSearch.text.toString()
                 )
 
@@ -147,12 +148,11 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     }
 
     private fun callAllResourceBasedOmMedicalHistory() {
-        Log.e("catch_exception", "condition: ${conditionIDs.toString()}")
         resourcesViewModel.getAllResourceApi(
             pageNumber,
             limit,
             resourcesViewModel.getLovedOneUUId()!!,
-            conditionIDs.toString().replace(" ", ""),//conditionIDs.toString().replace(" ","")
+            conditionIDs.joinToString().replace(" ", "")
         )
     }
 
@@ -190,41 +190,58 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    showError(requireContext(), it.message.toString())
+                    fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.visibility =
+                        View.GONE
+                    fragmentResourcesBinding.noResourceTxt.visibility = View.VISIBLE
+
+//                    showError(requireContext(), it.message.toString())
                 }
                 is DataResult.Loading -> {
-                    //  showLoading("")
+                    if(isLoading){
+                        showLoading("")
+                    }
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    isLoading = false
                     resourceList.clear()
                     if (pageNumber == 1) {
                         medicalHistoryTopicsAdapter = null
                         setMedicalHistoryTopicsAdapter()
                     }
-                    resourceList = it.data.payload!!.data
-                    it.data.payload.let { payload ->
-                        resourceList = payload!!.data
-                        total = payload.total
-                        currentPage = payload.currentPage
-                        totalPage = payload.totalPages
-                    }
+                    if (it.data.message == "Successfully found") {
+                        resourceList = it.data.payload!!.data
+                        it.data.payload.let { payload ->
+                            resourceList = payload!!.data
+                            total = payload.total
+                            currentPage = payload.currentPage
+                            totalPage = payload.totalPages
+                        }
 
-                    if (resourceList.isEmpty()) return@observeEvent
+                        if (resourceList.isEmpty()) return@observeEvent
 
-                    if (resourceList.isEmpty()) {
-                        fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.visibility =
-                            View.GONE
+                        if (resourceList.isEmpty()) {
+                            fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.visibility =
+                                View.GONE
+                            fragmentResourcesBinding.noResourceTxt.visibility = View.VISIBLE
 
+                        } else {
+                            fragmentResourcesBinding.noResourceTxt.visibility = View.GONE
+                            fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.visibility =
+                                View.VISIBLE
+                            resourceList.let { it1 ->
+                                medicalHistoryTopicsAdapter?.addData(
+                                    it1, isSearch
+                                )
+                            }
+                        }
                     } else {
                         fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.visibility =
-                            View.VISIBLE
-                        resourceList.let { it1 ->
-                            medicalHistoryTopicsAdapter?.addData(
-                                it1, isSearch
-                            )
-                        }
+                            View.GONE
+                        fragmentResourcesBinding.noResourceTxt.visibility = View.VISIBLE
+
                     }
+
                 }
             }
         }
@@ -289,7 +306,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
             )
         parent.orientation = LinearLayout.HORIZONTAL
         val closeIV = ImageView(context)
-        closeIV.setImageResource(R.drawable.ic_round_cancel)
+
         val layout2 = LinearLayout(context)
         layout2.layoutParams =
             LinearLayout.LayoutParams(
@@ -307,15 +324,34 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         textConditionName.setPadding(20, 10, 10, 10)
         parent.setPadding(5, 5, 10, 5)
         closeIV.setPadding(0, 5, 0, 0)
-        parent.setBackgroundResource(R.drawable.shape_black_border)
+        textConditionName.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
+        parent.setBackgroundResource(R.drawable.shape_black_border_filled)
+        closeIV.setImageResource(R.drawable.ic_round_cancel)
+        if (addedConditionPayload[position].isUnselected) {
+            textConditionName.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.colorBlack
+                )
+            )
+            closeIV.setImageResource(R.drawable.ic_add)
+            parent.setBackgroundResource(R.drawable.shape_black_border)
+        }
+
         layout2.gravity = Gravity.CENTER_HORIZONTAL
 
         closeIV.setOnClickListener {
-            addedConditionPayload.removeAt(position)
+            addedConditionPayload[position].isUnselected =
+                !addedConditionPayload[position].isUnselected
+//            addedConditionPayload.removeAt(position)
             setMedicalTags()
+            conditionIDs.clear()
+            isLoading = true
             for (i in addedConditionPayload) {
                 if (i.conditionId != null) {
-                    conditionIDs.add(i.conditionId!!)
+                    if (!i.isUnselected) {
+                        conditionIDs.add(i.conditionId!!)
+                    }
                 }
             }
 

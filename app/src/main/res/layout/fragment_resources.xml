@@ -16,7 +16,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorWhite"
+        android:background="@color/colorGreyLight"
         android:orientation="vertical">
 
 
@@ -25,100 +25,113 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDescription"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/trendingCl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_10sdp"
-                android:fontFamily="@font/gotham_book"
-                android:text="@string/discover_health_and_well_being_resources_for_caregivers_and_loved_ones"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_12ssp"
+                android:background="@color/colorWhite"
+                android:paddingTop="@dimen/_2sdp"
+                android:paddingBottom="@dimen/_5sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                app:cardBackgroundColor="@color/_F3F3F4"
-                app:cardCornerRadius="@dimen/_18sdp"
-                app:cardUseCompatPadding="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvDescription">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="@string/discover_health_and_well_being_resources_for_caregivers_and_loved_ones"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_5sdp">
+                    app:cardBackgroundColor="@color/_F3F3F4"
+                    app:cardCornerRadius="@dimen/_18sdp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tvDescription">
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/editTextSearch"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:drawableStart="@drawable/ic_med_search"
-                        android:drawablePadding="@dimen/_10sdp"
-                        android:fontFamily="@font/gotham_book"
-                        android:gravity="center_vertical"
-                        android:hint="@string/search"
-                        android:imeOptions="actionDone"
-                        android:inputType="textCapSentences"
-                        android:maxLines="1"
-                        android:paddingHorizontal="@dimen/_5sdp"
-                        android:textColor="@android:color/black"
-                        android:textColorHint="@color/_192032"
-                        android:textSize="@dimen/_14ssp" />
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingVertical="@dimen/_5sdp">
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/img_cancel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="false"
-                        android:focusable="false"
-                        android:padding="@dimen/_10sdp"
-                        android:src="@drawable/ic_cancel" />
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/editTextSearch"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:drawableStart="@drawable/ic_med_search"
+                            android:drawablePadding="@dimen/_10sdp"
+                            android:fontFamily="@font/gotham_book"
+                            android:gravity="center_vertical"
+                            android:hint="@string/search"
+                            android:imeOptions="actionDone"
+                            android:inputType="textCapSentences"
+                            android:maxLines="1"
+                            android:paddingHorizontal="@dimen/_5sdp"
+                            android:textColor="@android:color/black"
+                            android:textColorHint="@color/_192032"
+                            android:textSize="@dimen/_14ssp" />
 
-                </LinearLayout>
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_cancel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:padding="@dimen/_10sdp"
+                            android:src="@drawable/ic_cancel" />
 
-            </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewTrendingTopics"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_12sdp"
-                android:fontFamily="@font/gotham_bold"
-                android:text="@string/trending_topics"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_15ssp"
-                app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
-                app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewTrendingTopics"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/gotham_bold"
+                    android:text="@string/trending_topics"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_15ssp"
+                    app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
+                    app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
 
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewTopics"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:nestedScrollingEnabled="false"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textViewTrendingTopics"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTrendingTopics"
-                tools:listitem="@layout/adapter_topics" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTopics"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:nestedScrollingEnabled="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/textViewTrendingTopics"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewTrendingTopics"
+                    tools:listitem="@layout/adapter_topics" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewBasedOnMedicalHistory"
@@ -136,7 +149,7 @@
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerViewTopics" />
+                app:layout_constraintTop_toBottomOf="@+id/trendingCl" />
 
             <com.shepherd.app.ui.component.resources.FlowLayout
                 android:id="@+id/medicalHistory"
@@ -163,6 +176,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/medicalHistory"
                 tools:itemCount="2"
                 tools:listitem="@layout/adapter_medical_history_topics" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/noResourceTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="@dimen/_150sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:text="@string/no_resource_post_found"
+                android:textSize="@dimen/_14ssp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/medicalHistory" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

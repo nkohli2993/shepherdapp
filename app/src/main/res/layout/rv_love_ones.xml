@@ -27,63 +27,75 @@
             android:paddingVertical="@dimen/_8sdp"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
-                android:id="@+id/llImageWrapper"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
-                android:background="@drawable/bg_image_place_holder"
-                android:orientation="vertical"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rootCL"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/checkbox"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imageViewCareTeam"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:padding="@dimen/_2sdp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_defalut_profile_pic"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/llImageWrapper"
+                    android:layout_width="@dimen/_60sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:background="@drawable/bg_image_place_holder"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewCareTeamName"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_toStartOf="@+id/checkbox"
-                android:fontFamily="@font/gotham_medium"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_14ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/checkbox"
-                app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
-                app:layout_constraintTop_toTopOf="parent" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imageViewCareTeam"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_defalut_profile_pic"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
+                </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtRole"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_centerVertical="true"
-                android:layout_toStartOf="@+id/checkbox"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_12ssp"
-                android:fontFamily="@font/gotham_book"
-                app:layout_constraintEnd_toStartOf="@+id/checkbox"
-                app:layout_constraintStart_toStartOf="@id/textViewCareTeamName"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/textViewCareTeamName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtRole"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:fontFamily="@font/gotham_book"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/textViewCareTeamName"
+                    app:layout_constraintTop_toBottomOf="@+id/textViewCareTeamName" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatCheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/checkbox_selector_loved_one"
                 android:checked="false"
                 android:minWidth="0dp"
                 android:minHeight="0dp"
-                android:button="@drawable/checkbox_selector_loved_one"
+                android:paddingVertical="@dimen/_20sdp"
+                android:paddingStart="@dimen/_1sdp"
+                android:paddingEnd="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -96,12 +108,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:visibility="gone"
             android:layout_marginBottom="@dimen/_10sdp"
             android:fontFamily="@font/gotham_book"
             android:text="@string/view_medical_conditions"
             android:textColor="@color/_399282"
             android:textSize="@dimen/_14ssp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/views"
             app:layout_constraintEnd_toEndOf="parent" />
 

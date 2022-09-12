@@ -429,7 +429,7 @@ interface ApiService {
     ): Response<SecurityCodeResponseModel>
 
 
-    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE_BY_LOVED_ONE)
     suspend fun getAllResourceApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
@@ -437,7 +437,7 @@ interface ApiService {
         @Query("conditions") conditions: String
     ): Response<ResponseRelationModel>
 
-    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE_BY_LOVED_ONE)
     suspend fun getSearchResourceResultApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,

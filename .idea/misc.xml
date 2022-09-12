@@ -129,6 +129,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_background.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selector.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/checkbox_selectot_grey.xml" value="0.1765" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_add.xml" value="0.1445" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_check.xml" value="0.1445" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_checkbox_checked.xml" value="0.1765" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/ic_checkbox_unchecked.xml" value="0.1765" />
@@ -146,6 +147,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/rounded_box_grey.xml" value="0.159" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/rounded_box_new.xml" value="0.182" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/shape_black_border.xml" value="0.126" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/shape_black_border_filled.xml" value="0.1625" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/shape_rectangle_circular_corner_border.xml" value="0.1685" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/drawable/shape_rectangle_circular_corner_border_grey.xml" value="0.1685" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/act_welcome.xml" value="0.2609375" />
@@ -222,7 +224,7 @@
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/layout_add_medicine_list.xml" value="0.2609375" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/layout_add_time.xml" value="0.2598958333333333" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/popup_report.xml" value="0.21419410004275333" />
-        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/rv_love_ones.xml" value="0.2609375" />
+        <entry key="..\:/androidshepherdcare/app/src/main/res/layout/rv_love_ones.xml" value="0.2" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/selected_calendar_item.xml" value="0.67" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/spinner_drop_down_list.xml" value="0.21333903377511756" />
         <entry key="..\:/androidshepherdcare/app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.21419410004275333" />

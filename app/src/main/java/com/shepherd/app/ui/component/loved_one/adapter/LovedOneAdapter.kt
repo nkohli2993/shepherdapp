@@ -95,7 +95,7 @@ class LovedOneAdapter(
                 onItemClickListener?.onItemClick(careTeam, "Medical")
             }
 
-            itemBinding.root.setOnClickListener {
+            itemBinding.rootCL.setOnClickListener {
                 onItemClickListener?.onItemClick(careTeam, "Detail")
             }
 

@@ -137,6 +137,7 @@ object ApiConstants {
 
     object Resource {
         const val GET_ALL_RESOURCE = "$BASE_URL${API_VERSION}posts"
+        const val GET_ALL_RESOURCE_BY_LOVED_ONE  = "$BASE_URL${API_VERSION}posts/lovedone"
         const val GET_TRENDING_RESOURCE = "$BASE_URL${API_VERSION}posts/features"
         const val GET_RESOURCE_DETAIL = "$BASE_URL${API_VERSION}posts/{id}"
     }

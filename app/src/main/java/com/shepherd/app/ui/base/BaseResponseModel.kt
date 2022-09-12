@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 
 open class BaseResponseModel(
     @SerializedName("msg")
-    var message: String? = null,
+    open var message: String? = null,
     @SerializedName("error")
     var error: String? = null,
 
