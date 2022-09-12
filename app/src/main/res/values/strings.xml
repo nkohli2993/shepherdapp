@@ -520,4 +520,5 @@
     <string name="are_you_sure_u_want_to_delete_uploaded_document">Are you sure you want to remove the uploaded LockBox doc?</string>
     <string name="delete_upload_document">Delete Uploaded LockBox Document</string>
     <string name="unable_to_create_this_request_try_again_later">Unable to create this request try again later!</string>
+    <string name="lockbox_updated_successlly">LockBox updated Successfully…</string>
 </resources>

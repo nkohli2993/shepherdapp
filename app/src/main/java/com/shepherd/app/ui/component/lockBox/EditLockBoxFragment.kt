@@ -27,7 +27,9 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
+import com.shepherd.app.BuildConfig
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.lock_box.create_lock_box.Documents
 import com.shepherd.app.data.dto.lock_box.edit_lock_box.DocumentData
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.shepherd.app.databinding.FragmentEditLockBoxBinding
@@ -53,7 +55,7 @@ import kotlin.collections.ArrayList
  * Created by Nikita Kohli on 07-09-22
  */
 @AndroidEntryPoint
-@SuppressLint("ClickableViewAccessibility","SimpleDateFormat")
+@SuppressLint("ClickableViewAccessibility", "SimpleDateFormat")
 class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     View.OnClickListener, UploadedDocumentAdapter.OnItemClickListener {
 
@@ -68,6 +70,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private var uploadedFilesAdapter: UploadedDocumentAdapter? = null
     private var selectedFileList: ArrayList<DocumentData>? = arrayListOf()
     private var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
+    private var alreadyAdded: ArrayList<String> = arrayListOf()
     private var mDriveServiceHelper: DriveServiceHelper? = null
     private var lockBoxTypes: ArrayList<LockBoxTypes> = arrayListOf()
     private var documentAdapter: DocumentAdapter? = null
@@ -75,8 +78,10 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private var lockBoxId: Int? = null
     private val args: EditLockBoxFragmentArgs by navArgs()
     private var uploadedFiles: ArrayList<DocumentData> = arrayListOf()
-    private var deletedFileIds: ArrayList<Int> = arrayListOf()
+    private var deletedSelectedDocs: ArrayList<Documents> = arrayListOf()
     private var dateFormat = SimpleDateFormat("MMM dd, yyyy")
+    private var isLoading = false
+
     companion object {
         private const val REQUEST_CODE_SIGN_IN = 1
         private const val REQUEST_CODE_OPEN_DOCUMENT = 2
@@ -107,23 +112,46 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    hideLoading()
+                    //hideLoading()
                     dialog?.dismiss()
                     showSuccess(requireContext(), "Files uploaded successfully...")
                     uploadedDocumentsUrl = it.data.payload?.document
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
                     fileName = fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
                     fileNote = fragmentEditLockBoxBinding.edtNote.text.toString().trim()
-
-
-                    uploadedDocumentsUrl?.let { list ->
+                    uploadedDocumentsUrl?.addAll(alreadyAdded)
+                    val addNewDocument: ArrayList<Documents> = arrayListOf()
+                    for (i in uploadedDocumentsUrl!!) {
+                        addNewDocument.add(Documents(i))
+                    }
+                    addNewDocument.let { list ->
                         addNewLockBoxViewModel.editNewLockBox(
                             fileName,
                             fileNote,
-                            list,
-                            selectedDocumentId?.toInt(), lockBoxId!!
+                            selectedDocumentId?.toInt(), lockBoxId!!,
+                            list, deletedSelectedDocs
                         )
                     }
+                }
+            }
+        }
+
+        // Observe the response of edit lock box api
+        addNewLockBoxViewModel.addNewLockBoxResponseLiveData.observeEvent(this) { result ->
+            when (result) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    result.message?.let { showError(requireContext(), it) }
+                }
+                is DataResult.Loading -> {
+                    if (isLoading) {
+                        showLoading("")
+                    }
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), getString(R.string.lockbox_updated_successlly))
+                    backPress()
                 }
             }
         }
@@ -146,12 +174,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                         lockBoxTypes.clear()
                         if (it.data.payload?.lockBoxTypes != null || it.data.payload?.lockBoxTypes!!.size > 0) {
                             for (i in it.data.payload?.lockBoxTypes!!) {
-                                if ((i.lockbox == null || i.lockbox.size <= 0)) {
-                                    lockBoxTypes.add(i)
-                                }
-                                if (i.name?.lowercase() == "other" && i.lockbox.size > 0) {
-                                    lockBoxTypes.add(i)
-                                }
+                                lockBoxTypes.add(i)
                             }
                         }
                     }
@@ -301,8 +324,41 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                             getString(R.string.you_can_upload_at_max_five_file)
                         )
                     } else {
-                        Log.e(TAG, "deletedFiles ${deletedFileIds} added : $selectedFileList")
-                        //selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
+                        Log.e(TAG, "deletedFiles ${deletedSelectedDocs} added : $selectedFileList")
+                        val addedFiles: ArrayList<File> = arrayListOf()
+                        alreadyAdded = arrayListOf()
+                        for (i in uploadedFiles) {
+                            if (i.filePath.startsWith(BuildConfig.BASE_URL)) {
+                                alreadyAdded.add(i.filePath)
+                            } else {
+                                addedFiles.add(File(i.filePath))
+                            }
+
+                        }
+                        if (addedFiles.size > 0) {
+                            isLoading = false
+                            addedFiles.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
+                        } else {
+                            isLoading = true
+                            //call update api direct
+                            fileName = fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
+                            fileNote = fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                            uploadedDocumentsUrl?.clear()
+                            uploadedDocumentsUrl?.addAll(alreadyAdded)
+                            val addNewDocument: ArrayList<Documents> = arrayListOf()
+                            for (i in uploadedDocumentsUrl!!) {
+                                addNewDocument.add(Documents(i))
+                            }
+                            uploadedDocumentsUrl?.let { list ->
+                                addNewLockBoxViewModel.editNewLockBox(
+                                    fileName,
+                                    fileNote,
+                                    selectedDocumentId?.toInt(), lockBoxId!!,
+                                    addNewDocument, deletedSelectedDocs
+                                )
+                            }
+                        }
+
                     }
                 }
             }
@@ -418,12 +474,14 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                     true
                                 )
                             )
-                            uploadedFiles.add( DocumentData(
-                                -1,
-                                file.toString(),
-                                dateFormat.format(Calendar.getInstance().time),
-                                true
-                            ))
+                            uploadedFiles.add(
+                                DocumentData(
+                                    -1,
+                                    file.toString(),
+                                    dateFormat.format(Calendar.getInstance().time),
+                                    true
+                                )
+                            )
                             if (selectedFileList!!.size > 0) {
                                 setFileViewVisible()
                                 uploadedFilesAdapter?.addData(selectedFileList!!)
@@ -499,9 +557,15 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                     }
                     if (driveSelectedFileList.size > 0) {
                         setFileViewVisible()
-                        val uploadFile:ArrayList<DocumentData> = arrayListOf()
+                        val uploadFile: ArrayList<DocumentData> = arrayListOf()
                         for (i in driveSelectedFileList) {
-                            uploadFile.add(DocumentData(-1,driveSelectedFileList.toString(),dateFormat.format(Calendar.getInstance().time)))
+                            uploadFile.add(
+                                DocumentData(
+                                    -1,
+                                    driveSelectedFileList.toString(),
+                                    dateFormat.format(Calendar.getInstance().time)
+                                )
+                            )
                         }
                         selectedFileList!!.addAll(uploadFile)
                         uploadedFiles.addAll(uploadFile)
@@ -531,8 +595,14 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                         fileSelectedUpload.add(file)
                         if (selectedFileList!!.size > 0) {
                             setFileViewVisible()
-                            val uploadFile:ArrayList<DocumentData> = arrayListOf()
-                            uploadFile.add(DocumentData(-1,file.toString(),dateFormat.format(Calendar.getInstance().time)))
+                            val uploadFile: ArrayList<DocumentData> = arrayListOf()
+                            uploadFile.add(
+                                DocumentData(
+                                    -1,
+                                    file.toString(),
+                                    dateFormat.format(Calendar.getInstance().time)
+                                )
+                            )
                             selectedFileList?.addAll(uploadFile)
                             uploadedFiles.addAll(uploadFile)
                             uploadedFilesAdapter?.addData(uploadFile)
@@ -600,11 +670,10 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             setMessage(getString(R.string.are_you_sure_u_want_to_delete_uploaded_document))
             setPositiveButton(getString(R.string.yes)) { _, _ ->
                 if (!uploadedFiles[position].newAdded) {
-                    deletedFileIds.add(uploadedFiles[position].id)
+                    deletedSelectedDocs.add(Documents(uploadedFiles[position].filePath))
                 }
                 uploadedFiles.removeAt(position)
                 uploadedFilesAdapter?.removeData(position)
-                Log.e("catch_exception", "removed array size: ${uploadedFiles.size}")
                 selectedFileShow()
             }
             setNegativeButton(getString(R.string.no)) { _, _ ->

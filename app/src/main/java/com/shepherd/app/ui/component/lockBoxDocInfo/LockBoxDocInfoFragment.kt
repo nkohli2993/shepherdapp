@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.lock_box.edit_lock_box.DocumentData
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherd.app.databinding.FragmentUploadedLockBoxDocDetailBinding
@@ -29,6 +30,7 @@ import com.shepherd.app.view_model.LockBoxDocInfoViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_uploaded_lock_box_doc_detail.*
+import java.util.*
 
 
 /**
@@ -59,22 +61,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     override fun initViewBinding() {
         fragmentUploadedLockBoxDocDetailBinding.listener = this
         lockBox = args.lockBox
-        fragmentUploadedLockBoxDocDetailBinding.let {
-            it.txtLockBoxName.text = lockBox?.name
-            it.txtLockBoxNote.text = lockBox?.note
-            it.edtFileName.setText(lockBox?.name)
-            it.edtNote.setText(lockBox?.note)
-            Picasso.get().load(lockBox?.documentUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(imgDoc)
-            // Click edit lock box icon
-            it.imgEditLockBox.setOnClickListener {
-                layoutDocDetail.visibility = View.GONE
-                layoutEditLockBoxDocDetail.visibility = View.VISIBLE
-//                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
-//                findNavController().navigate(action)
-
-            }
-        }
+        lockBoxDocInfoViewModel.getDetailLockBox(lockBox?.id!!)
         fragmentUploadedLockBoxDocDetailBinding.edtNote.setOnTouchListener { view, event ->
             view.parent.requestDisallowInterceptTouchEvent(true)
             when (event.action and MotionEvent.ACTION_MASK) {
@@ -83,25 +70,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
             false
         }
 
-        documentImagesAdapter =
-            UploadedDocumentImagesAdapter(requireContext().applicationContext, lockBox?.documents,this@LockBoxDocInfoFragment)
-        viewPager.adapter = documentImagesAdapter
-        fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
-        fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object :
-            ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
 
-            override fun onPageSelected(position: Int) {
 
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {}
-        })
     }
 
     override fun observeViewModel() {
@@ -121,6 +91,49 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 }
             }
         }
+        lockBoxDocInfoViewModel.getDetailLockBoxResponseLiveData.observeEvent(this) { result ->
+            when (result) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    result.message?.let { showError(requireContext(), it) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val lockBox = result.data.payload
+                    fragmentUploadedLockBoxDocDetailBinding.let {
+                        it.txtLockBoxName.text = lockBox?.name
+                        it.txtLockBoxNote.text = lockBox?.note
+                        it.edtFileName.setText(lockBox?.name)
+                        it.edtNote.setText(lockBox?.note)
+//                        Picasso.get().load(lockBox?.documentUrl).placeholder(R.drawable.ic_defalut_profile_pic)
+//                            .into(imgDoc)
+                    }
+
+                    documentImagesAdapter =
+                        UploadedDocumentImagesAdapter(requireContext().applicationContext, lockBox?.documents,this@LockBoxDocInfoFragment)
+                    viewPager.adapter = documentImagesAdapter
+                    fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
+                    fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object :
+                        ViewPager.OnPageChangeListener {
+                        override fun onPageScrolled(
+                            position: Int,
+                            positionOffset: Float,
+                            positionOffsetPixels: Int
+                        ) {
+                        }
+
+                        override fun onPageSelected(position: Int) {
+
+                        }
+
+                        override fun onPageScrollStateChanged(state: Int) {}
+                    })
+                }
+            }
+        }
 
     }
 
@@ -134,11 +147,11 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 backPress()
             }
             R.id.imgEditLockBox -> {
-                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
-                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
-                    View.VISIBLE
-//                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
-//                findNavController().navigate(action)
+//                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
+//                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
+//                    View.VISIBLE
+                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
+                findNavController().navigate(action)
             }
             R.id.btnCancel -> {
                 fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.VISIBLE

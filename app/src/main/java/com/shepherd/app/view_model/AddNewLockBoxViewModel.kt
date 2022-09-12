@@ -9,6 +9,7 @@ import com.shepherd.app.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestMo
 import com.shepherd.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
 import com.shepherd.app.data.dto.lock_box.create_lock_box.Documents
 import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
+import com.shepherd.app.data.dto.lock_box.edit_lock_box.EditLockBoxRequestModel
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherd.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
@@ -51,6 +52,10 @@ class AddNewLockBoxViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<AddNewLockBoxResponseModel>>>()
     var addNewLockBoxResponseLiveData: LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> =
         _addNewLockBoxResponseLiveData
+  private var _editNewLockBoxResponseLiveData =
+        MutableLiveData<Event<DataResult<AddNewLockBoxResponseModel>>>()
+    var editNewLockBoxResponseLiveData: LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> =
+        _editNewLockBoxResponseLiveData
 
   private var _getDetailLockBoxResponseLiveData =
         MutableLiveData<Event<DataResult<AddNewLockBoxResponseModel>>>()
@@ -136,20 +141,14 @@ class AddNewLockBoxViewModel @Inject constructor(
     fun editNewLockBox(
         fileName: String?,
         fileNote: String?,
-        documentsUrl: ArrayList<String>,
-        lbtId: Int?,id:Int
+        lbtId: Int?,id:Int,
+        documentsUrl: ArrayList<Documents>,
+        documentsDeletedUrl: ArrayList<Documents>,
     ): LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> {
         //get lovedOne UUID from shared Pref
         val lovedOneUUId = userRepository.getLovedOneUUId()
-        val documents: ArrayList<Documents> = arrayListOf()
-
-        for (i in documentsUrl.indices) {
-            val doc = documentsUrl[i]
-            documents.add(Documents(doc))
-        }
-
         val addNewLockBoxRequestModel =
-            AddNewLockBoxRequestModel(fileName, fileNote, lbtId, lovedOneUUId, documents)
+            EditLockBoxRequestModel(fileName, fileNote, lbtId,  documentsUrl,documentsDeletedUrl)
 
         viewModelScope.launch {
             val response = lockBoxRepository.editNewLockBox(addNewLockBoxRequestModel,id)

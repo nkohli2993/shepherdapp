@@ -24,6 +24,7 @@ import com.shepherd.app.data.dto.invitation.accept_invitation.AcceptInvitationRe
 import com.shepherd.app.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.shepherd.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
 import com.shepherd.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
+import com.shepherd.app.data.dto.lock_box.edit_lock_box.EditLockBoxRequestModel
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherd.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
@@ -286,9 +287,9 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<AddNewLockBoxResponseModel>
 
-    @POST(ApiConstants.LockBox.EDIT_LOCK_BOX)
+    @PUT(ApiConstants.LockBox.EDIT_LOCK_BOX)
     suspend fun editNewLockBox(
-        @Body addNewLockBoxRequestModel: AddNewLockBoxRequestModel,
+        @Body addNewLockBoxRequestModel: EditLockBoxRequestModel,
         @Path("id") id: Int
     ): Response<AddNewLockBoxResponseModel>
 

@@ -185,11 +185,11 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
             }
             "Detail" -> {
 //                findNavController().navigate(R.id.action_nav_loved_one_to_lovedOneProfileFragment)
-              /*  findNavController().navigate(
+                findNavController().navigate(
                     LovedOnesFragmentDirections.actionNavLovedOneToLovedOneProfileFragment(
                         careTeam
                     )
-                )*/
+                )
             }
             "Selected" -> {
                 selectedCare = careTeam

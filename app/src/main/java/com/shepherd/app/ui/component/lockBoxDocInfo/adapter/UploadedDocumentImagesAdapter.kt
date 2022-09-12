@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
 import com.google.android.material.imageview.ShapeableImageView
 import com.shepherd.app.R
+import com.shepherd.app.data.dto.lock_box.create_lock_box.Documents
 import com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.DocumentUrl
 import com.shepherd.app.ui.component.lockBoxDocInfo.LockBoxDocInfoFragment
 import com.shepherd.app.utils.extensions.showError
@@ -32,7 +33,7 @@ import java.util.*
 
 class UploadedDocumentImagesAdapter(
     var context: Context,
-    var list: ArrayList<DocumentUrl>?,
+    var list: ArrayList<Documents>?,
     var fragment:  LockBoxDocInfoFragment
 ) : PagerAdapter() {
     private var mLayoutInflater: LayoutInflater =

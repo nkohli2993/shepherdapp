@@ -61,7 +61,7 @@ class MyMedicationsAdapter(
 
         fun bind(medList: UserMedicationData, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList.medlist
-            itemBinding.root.setOnClickListener {
+            itemBinding.medViewCL.setOnClickListener {
                 medList.let { it1 ->
                     medList.actionType = MedListAction.View.value
                     medList.deletePosition = absoluteAdapterPosition

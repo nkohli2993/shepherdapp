@@ -14,11 +14,14 @@ import com.shepherd.app.ui.base.BaseViewModel
 import com.shepherd.app.utils.Const
 import com.shepherd.app.utils.Prefs
 import com.shepherd.app.utils.SingleEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@HiltViewModel
 class StaticPagesViewModel @Inject constructor(
     private val dataRepository: StaticPagesRepository,
     private val userRepository: UserRepository
