@@ -41,7 +41,7 @@ android {
         versionName "1.0.0"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        signingConfig signingConfigs.debug
+//        signingConfig signingConfigs.debug
     }
 
     buildFeatures {
@@ -140,7 +140,16 @@ android {
 
             def formattedDate = date.format('dd_MM_yyyy')
 
-            def buildTag = versionName //"1.0.1.7"
+            if (variant.buildType.name == "release") {
+                def newApkName = project + separator + "v" + versionName + separator + versionCode + separator + buildType + separator + formattedDate + ".apk"
+                output.outputFileName = newApkName
+            }
+            if (variant.buildType.name == "debug") {
+                def newApkName = project + separator + "v" + versionName + separator + versionCode + separator + buildType + ".apk"
+                output.outputFileName = newApkName
+            }
+
+          /*  def buildTag = versionName //"1.0.1.7"
 
 
             def newApkName = "v" + buildTag + "(" + project + ")" + separator + formattedDate + ".apk"
@@ -149,17 +158,17 @@ android {
 //            project + separator + "v" + versionName + separator + versionCode + separator + buildType + separator + formattedDate + ".apk"
 
 
-            output.outputFileName = newApkName
+            output.outputFileName = newApkName*/
         }
     }
 
-    buildTypes {
+   /* buildTypes {
         release {
-            debuggable true
+            debuggable false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
-    }
+    }*/
 
 }
 
