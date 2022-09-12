@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.shepherd.app.ui.component.login.LoginActivity">
+        tools:context="com.shepherdapp.app.ui.component.login.LoginActivity">
 
 
         <androidx.constraintlayout.widget.Guideline

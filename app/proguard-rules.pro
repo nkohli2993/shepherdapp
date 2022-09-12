@@ -19,12 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class com.shepherd.app.data.dto.** { *; }
--keep class com.shepherd.app.data.remote.** { *; }
--keep class com.shepherd.app.network.retrofit.** { *; }
--keep class com.shepherd.app.ui.component.addNewEvent.** { *; }
--keep class com.shepherd.app.view_model.** { *; }
--keep class com.shepherd.app.ui.base.** { *; }
+-keep class com.shepherdapp.app.data.dto.** { *; }
+-keep class com.shepherdapp.app.data.remote.** { *; }
+-keep class com.shepherdapp.app.network.retrofit.** { *; }
+-keep class com.shepherdapp.app.ui.component.addNewEvent.** { *; }
+-keep class com.shepherdapp.app.view_model.** { *; }
+-keep class com.shepherdapp.app.ui.base.** { *; }
 
 -dontwarn retrofit.**
 -keep class retrofit.** { *; }

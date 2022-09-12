@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_dashboard"
-        android:name="com.shepherd.app.ui.component.dashboard.DashboardFragment"
+        android:name="com.shepherdapp.app.ui.component.dashboard.DashboardFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_dashboard">
 
@@ -40,13 +40,13 @@
     </fragment>
     <fragment
         android:id="@+id/nav_vital_stats"
-        android:name="com.shepherd.app.ui.component.vital_stats.VitalStatsFragment"
+        android:name="com.shepherdapp.app.ui.component.vital_stats.VitalStatsFragment"
         android:label="@string/vital_stats"
         tools:layout="@layout/fragment_vital_stats" />
 
     <fragment
         android:id="@+id/nav_care_team"
-        android:name="com.shepherd.app.ui.component.careTeamMembers.CareTeamMembersFragment"
+        android:name="com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragment"
         android:label="@string/menu_care_team_members"
         tools:layout="@layout/fragment_care_team_members">
 
@@ -61,22 +61,22 @@
 
     <fragment
         android:id="@+id/nav_add_care_team_member"
-        android:name="com.shepherd.app.ui.component.addMember.AddMemberFragment"
+        android:name="com.shepherdapp.app.ui.component.addMember.AddMemberFragment"
         android:label="@string/menu_add_new_care_team_member"
         tools:layout="@layout/fragment_add_member" />
     <fragment
         android:id="@+id/nav_team_member_details"
-        android:name="com.shepherd.app.ui.component.memberDetails.MemberDetailsFragment"
+        android:name="com.shepherdapp.app.ui.component.memberDetails.MemberDetailsFragment"
         android:label="@string/menu_member_details"
         tools:layout="@layout/fragment_member_details">
         <argument
             android:name="care_team"
-            app:argType="com.shepherd.app.data.dto.care_team.CareTeamModel" />
+            app:argType="com.shepherdapp.app.data.dto.care_team.CareTeamModel" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_add_new_event"
-        android:name="com.shepherd.app.ui.component.addNewEvent.AddNewEventFragment"
+        android:name="com.shepherdapp.app.ui.component.addNewEvent.AddNewEventFragment"
         android:label="@string/menu_add_new_event"
         tools:layout="@layout/fragment_add_new_event">
 
@@ -87,13 +87,13 @@
     </fragment>
     <fragment
         android:id="@+id/nav_event_details"
-        android:name="com.shepherd.app.ui.component.eventDetails.EventDetailsFragment"
+        android:name="com.shepherdapp.app.ui.component.eventDetails.EventDetailsFragment"
         android:label="@string/menu_event_details"
         tools:layout="@layout/fragment_event_details" />
 
     <fragment
         android:id="@+id/nav_add_new_medication"
-        android:name="com.shepherd.app.ui.component.addNewMedication.AddNewMedicationFragment"
+        android:name="com.shepherdapp.app.ui.component.addNewMedication.AddNewMedicationFragment"
         android:label="@string/menu_add_new_medication"
         tools:layout="@layout/fragment_add_new_medication">
 
@@ -107,28 +107,28 @@
     </fragment>
     <fragment
         android:id="@+id/nav_add_vitals"
-        android:name="com.shepherd.app.ui.component.add_vitals.AddVitalsFragment"
+        android:name="com.shepherdapp.app.ui.component.add_vitals.AddVitalsFragment"
         android:label="@string/add_vitals"
         tools:layout="@layout/fragment_add_vitals" />
     <fragment
         android:id="@+id/nav_schedule_medication"
-        android:name="com.shepherd.app.ui.component.schedule_medicine.ScheduleMedicineFragment"
+        android:name="com.shepherdapp.app.ui.component.schedule_medicine.ScheduleMedicineFragment"
         android:label="@string/schedule_medicine"
         tools:layout="@layout/fragment_schedulwe_medicine">
         <argument
             android:name="medlist"
             android:defaultValue="@null"
-            app:argType="com.shepherd.app.data.dto.med_list.Medlist"
+            app:argType="com.shepherdapp.app.data.dto.med_list.Medlist"
             app:nullable="true" />
         <argument
             android:name="medication_scheduled"
             android:defaultValue="@null"
-            app:argType="com.shepherd.app.data.dto.med_list.loved_one_med_list.MedListReminder"
+            app:argType="com.shepherdapp.app.data.dto.med_list.loved_one_med_list.MedListReminder"
             app:nullable="true" />
         <argument
             android:name="medication_scheduled_payload"
             android:defaultValue="@null"
-            app:argType="com.shepherd.app.data.dto.med_list.loved_one_med_list.Payload"
+            app:argType="com.shepherdapp.app.data.dto.med_list.loved_one_med_list.Payload"
             app:nullable="true" />
         <argument
             android:name="medication_id"
@@ -147,18 +147,18 @@
 
     <fragment
         android:id="@+id/nav_medication_details"
-        android:name="com.shepherd.app.ui.component.addMedicationDetails.AddMedicationDetailsFragment"
+        android:name="com.shepherdapp.app.ui.component.addMedicationDetails.AddMedicationDetailsFragment"
         android:label="@string/menu_medication_details"
         tools:layout="@layout/fragment_add_medication_details" />
 
     <fragment
         android:id="@+id/nav_notifications"
-        android:name="com.shepherd.app.ui.component.notifications.NotificationsFragment"
+        android:name="com.shepherdapp.app.ui.component.notifications.NotificationsFragment"
         android:label="@string/menu_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/nav_profile"
-        android:name="com.shepherd.app.ui.component.profile.ProfileFragment"
+        android:name="com.shepherdapp.app.ui.component.profile.ProfileFragment"
         android:label="@string/menu_profile"
         tools:layout="@layout/fragment_profile">
 
@@ -168,7 +168,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_care_points"
-        android:name="com.shepherd.app.ui.component.carePoints.CarePointsFragment"
+        android:name="com.shepherdapp.app.ui.component.carePoints.CarePointsFragment"
         android:label="@string/menu_care_points"
         tools:layout="@layout/fragment_care_points">
 
@@ -185,17 +185,17 @@
     </fragment>
     <fragment
         android:id="@+id/nav_change_password"
-        android:name="com.shepherd.app.ui.component.change_password.ChangePasswordFragment"
+        android:name="com.shepherdapp.app.ui.component.change_password.ChangePasswordFragment"
         android:label="@string/change_password"
         tools:layout="@layout/fragment_change_password" />
     <fragment
         android:id="@+id/nav_edit_profile"
-        android:name="com.shepherd.app.ui.component.edit_profile.EditProfileFragment"
+        android:name="com.shepherdapp.app.ui.component.edit_profile.EditProfileFragment"
         android:label="@string/edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/nav_setting"
-        android:name="com.shepherd.app.ui.component.settings.SettingFragment"
+        android:name="com.shepherdapp.app.ui.component.settings.SettingFragment"
         android:label="@string/setting"
         tools:layout="@layout/fragment_setting">
         <action
@@ -214,7 +214,7 @@
 
     <fragment
         android:id="@+id/nav_information"
-        android:name="com.shepherd.app.ui.component.information.InformationFragment"
+        android:name="com.shepherdapp.app.ui.component.information.InformationFragment"
         android:label="@string/information"
         tools:layout="@layout/fragment_information">
         <argument
@@ -223,12 +223,12 @@
     </fragment>
     <fragment
         android:id="@+id/nav_invitation"
-        android:name="com.shepherd.app.ui.component.invitations.InvitationFragment"
+        android:name="com.shepherdapp.app.ui.component.invitations.InvitationFragment"
         android:label="@string/invitation"
         tools:layout="@layout/fragment_invitation" />
     <fragment
         android:id="@+id/nav_secure_code"
-        android:name="com.shepherd.app.ui.component.security_code.SecurityCodeFragment"
+        android:name="com.shepherdapp.app.ui.component.security_code.SecurityCodeFragment"
         android:label="@string/secure_code"
         tools:layout="@layout/fragment_security_code">
         <argument
@@ -240,7 +240,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_confirm_secure_code"
-        android:name="com.shepherd.app.ui.component.security_code.ConfirmSecurityCodeFragment"
+        android:name="com.shepherdapp.app.ui.component.security_code.ConfirmSecurityCodeFragment"
         android:label="@string/confirm_secure_code"
         tools:layout="@layout/fragment_confirm_security_code">
         <argument
@@ -253,7 +253,7 @@
 
     <fragment
         android:id="@+id/nav_lock_box"
-        android:name="com.shepherd.app.ui.component.lockBox.LockBoxFragment"
+        android:name="com.shepherdapp.app.ui.component.lockBox.LockBoxFragment"
         android:label="@string/menu_lock_box"
         tools:layout="@layout/fragment_lockbox">
 
@@ -268,12 +268,12 @@
 
     <fragment
         android:id="@+id/nav_lock_box_doc_info"
-        android:name="com.shepherd.app.ui.component.lockBoxDocInfo.LockBoxDocInfoFragment"
+        android:name="com.shepherdapp.app.ui.component.lockBoxDocInfo.LockBoxDocInfoFragment"
         android:label="@string/menu_lock_box_info"
         tools:layout="@layout/fragment_uploaded_lock_box_doc_detail">
         <argument
             android:name="lock_box"
-            app:argType="com.shepherd.app.data.dto.lock_box.get_all_uploaded_documents.LockBox" />
+            app:argType="com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox" />
         <action
             android:id="@+id/action_nav_edit_lockbox"
             app:destination="@id/nav_edit_lockbox" />
@@ -281,7 +281,7 @@
 
     <fragment
         android:id="@+id/nav_my_medlist"
-        android:name="com.shepherd.app.ui.component.myMedList.MyMedListFragment"
+        android:name="com.shepherdapp.app.ui.component.myMedList.MyMedListFragment"
         android:label="@string/menu_my_med_list"
         tools:layout="@layout/fragment_my_medlist">
 
@@ -298,13 +298,13 @@
     </fragment>
     <fragment
         android:id="@+id/nav_med_detail"
-        android:name="com.shepherd.app.ui.component.my_med_detail.MyMedDetailFragment"
+        android:name="com.shepherdapp.app.ui.component.my_med_detail.MyMedDetailFragment"
         android:label="@string/medicine_detail"
         tools:layout="@layout/fragment_my_med_detial" />
 
     <fragment
         android:id="@+id/nav_messages"
-        android:name="com.shepherd.app.ui.component.messages.MessagesFragment"
+        android:name="com.shepherdapp.app.ui.component.messages.MessagesFragment"
         android:label="@string/menu_messages"
         tools:layout="@layout/fragment_messages">
 
@@ -323,7 +323,7 @@
 
     <fragment
         android:id="@+id/nav_new_message"
-        android:name="com.shepherd.app.ui.component.newMessage.NewMessageFragment"
+        android:name="com.shepherdapp.app.ui.component.newMessage.NewMessageFragment"
         android:label="@string/menu_new_message"
         tools:layout="@layout/fragment_new_message">
 
@@ -335,16 +335,16 @@
 
     <fragment
         android:id="@+id/nav_care_points_detail"
-        android:name="com.shepherd.app.ui.component.carePoints.CarePointDetailFragment"
+        android:name="com.shepherdapp.app.ui.component.carePoints.CarePointDetailFragment"
         android:label="@string/menu_care_point_detail"
         tools:layout="@layout/fragment_care_point_detail">
         <argument
             android:name="event_detail"
-            app:argType="com.shepherd.app.data.dto.added_events.AddedEventModel" />
+            app:argType="com.shepherdapp.app.data.dto.added_events.AddedEventModel" />
     </fragment>
     <fragment
         android:id="@+id/nav_chat"
-        android:name="com.shepherd.app.ui.component.chat.ChatFragment"
+        android:name="com.shepherdapp.app.ui.component.chat.ChatFragment"
         android:label="@string/menu_chat"
         tools:layout="@layout/fragment_chat">
         <argument
@@ -352,14 +352,14 @@
             app:argType="string" />
         <argument
             android:name="chatModel"
-            app:argType="com.shepherd.app.data.dto.chat.ChatModel[]"
+            app:argType="com.shepherdapp.app.data.dto.chat.ChatModel[]"
             app:nullable="true" />
     </fragment>
 
 
     <fragment
         android:id="@+id/nav_resources"
-        android:name="com.shepherd.app.ui.component.resources.ResourcesFragment"
+        android:name="com.shepherdapp.app.ui.component.resources.ResourcesFragment"
         android:label="@string/menu_resources"
         tools:layout="@layout/fragment_resources">
         <action
@@ -369,7 +369,7 @@
 
     <fragment
         android:id="@+id/nav_resource_detail"
-        android:name="com.shepherd.app.ui.component.resources.ResourceDetailFragment"
+        android:name="com.shepherdapp.app.ui.component.resources.ResourceDetailFragment"
         android:label="ResourceDetailFragment"
         tools:layout="@layout/fragment_resource_detail">
         <argument
@@ -377,12 +377,12 @@
             app:argType="string" />
         <argument
             android:name="detail"
-            app:argType="com.shepherd.app.data.dto.resource.AllResourceData" />
+            app:argType="com.shepherdapp.app.data.dto.resource.AllResourceData" />
     </fragment>
 
     <activity
         android:id="@+id/nav_add_loved_one"
-        android:name="com.shepherd.app.ui.component.addLovedOne.AddLovedOneActivity"
+        android:name="com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity"
         android:label="@string/add_loved_one"
         tools:layout="@layout/activity_add_loved_one">
 
@@ -394,7 +394,7 @@
     </activity>
     <fragment
         android:id="@+id/nav_loved_one"
-        android:name="com.shepherd.app.ui.component.loved_one.LovedOnesFragment"
+        android:name="com.shepherdapp.app.ui.component.loved_one.LovedOnesFragment"
         android:label="@string/loved_one"
         tools:layout="@layout/fragment_loved_ones">
 
@@ -407,27 +407,27 @@
     </fragment>
     <fragment
         android:id="@+id/addNewLockBoxFragment"
-        android:name="com.shepherd.app.ui.component.lockBox.AddNewLockBoxFragment"
+        android:name="com.shepherdapp.app.ui.component.lockBox.AddNewLockBoxFragment"
         android:label="AddNewLockBoxFragment"
         tools:layout="@layout/fragment_add_new_lock_box">
         <argument
             android:name="lock_box_type"
             android:defaultValue="@null"
-            app:argType="com.shepherd.app.data.dto.lock_box.lock_box_type.LockBoxTypes"
+            app:argType="com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes"
             app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/lovedOneProfileFragment"
-        android:name="com.shepherd.app.ui.component.loved_one.LovedOneProfileFragment"
+        android:name="com.shepherdapp.app.ui.component.loved_one.LovedOneProfileFragment"
         android:label="LovedOneProfileFragment"
         tools:layout="@layout/fragment_loved_one_profile">
         <argument
             android:name="careTeamModel"
-            app:argType="com.shepherd.app.data.dto.care_team.CareTeamModel" />
+            app:argType="com.shepherdapp.app.data.dto.care_team.CareTeamModel" />
     </fragment>
     <fragment
         android:id="@+id/nav_edit_lockbox"
-        android:name="com.shepherd.app.ui.component.lockBox.EditLockBoxFragment"
+        android:name="com.shepherdapp.app.ui.component.lockBox.EditLockBoxFragment"
         android:label="EditLockBoxFragment"
         tools:layout="@layout/fragment_edit_lock_box">
         <argument

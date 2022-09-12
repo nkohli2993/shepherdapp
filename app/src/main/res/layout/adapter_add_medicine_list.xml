@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.shepherd.app.data.dto.med_list.Medlist" />
+            type="com.shepherdapp.app.data.dto.med_list.Medlist" />
 
     </data>
 

@@ -18,7 +18,7 @@
         android:background="@color/_FCFCFC"
         android:orientation="vertical"
         android:paddingHorizontal="@dimen/_10sdp"
-        tools:context="com.shepherd.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity">
+        tools:context="com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity">
 
 
         <androidx.appcompat.widget.AppCompatImageView

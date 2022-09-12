@@ -1,0 +1,197 @@
+package com.shepherdapp.app.ui.component.schedule_medicine.adapter
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.core.widget.doOnTextChanged
+import androidx.recyclerview.widget.RecyclerView
+import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.med_list.schedule_medlist.TimePickerData
+import com.shepherdapp.app.data.dto.med_list.schedule_medlist.TimeSelectedlist
+import com.shepherdapp.app.databinding.LayoutAddTimeBinding
+import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.TimePickerType
+import com.shepherdapp.app.view_model.AddMedicationViewModel
+import java.lang.Exception
+
+
+@SuppressLint("NotifyDataSetChanged")
+class TimeAdapter(
+    private val viewModel: AddMedicationViewModel,
+    val context: Context,
+    var timeList: MutableList<TimeSelectedlist> = ArrayList()
+) :
+    RecyclerView.Adapter<TimeAdapter.AddTimeViewHolder>() {
+    lateinit var binding: LayoutAddTimeBinding
+
+
+    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
+        override fun onItemSelected(vararg itemData: Any) {
+            viewModel.setSelectedTime(itemData[0] as TimePickerData)
+        }
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): AddTimeViewHolder {
+        binding =
+            LayoutAddTimeBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        return AddTimeViewHolder(binding)
+    }
+
+    override fun getItemCount(): Int {
+        return when {
+            timeList.size<5 -> {
+                timeList.size
+            }
+            else -> {
+                4
+            }
+        }
+
+    }
+
+    override fun onBindViewHolder(holder: AddTimeViewHolder, position: Int) {
+        holder.bind(timeList[position], onItemClickListener)
+    }
+
+
+    inner class AddTimeViewHolder(private val itemBinding: LayoutAddTimeBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+
+        fun bind(timelist: TimeSelectedlist, recyclerItemListener: RecyclerItemListener) {
+            itemBinding.selectedTimeTV.text = ""
+            if ((timelist.time ?: "").isNotEmpty()) {
+                itemBinding.selectedTimeTV.text = timelist.time
+            }
+
+            if ((timelist.isAmPM ?: "").isNotEmpty()) {
+                when (timelist.isAmPM) {
+                    "am" -> {
+                        setColorTimePicked(R.color._192032, R.color.colorBlackTrans50, itemBinding)
+                    }
+                    "pm" -> {
+                        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032, itemBinding)
+                    }
+                    else -> {
+                        setColorTimePicked(
+                            R.color.colorBlackTrans50,
+                            R.color.colorBlackTrans50,
+                            itemBinding
+                        )
+                    }
+                }
+
+            }
+
+            itemBinding.tvam.setOnClickListener {
+                recyclerItemListener.onItemSelected(
+                    TimePickerData(absoluteAdapterPosition,TimePickerType.EDIT.value,"am")
+                )
+            }
+            itemBinding.tvpm.setOnClickListener {
+                recyclerItemListener.onItemSelected(
+                    TimePickerData(absoluteAdapterPosition,TimePickerType.EDIT.value,"pm")
+                )
+            }
+            itemBinding.selectedTimeTV.doOnTextChanged { text, start, before, count ->
+                when {
+                    itemBinding.selectedTimeTV.text.toString().isNotEmpty() -> {
+                        when (timelist.isAmPM) {
+                            "am" -> {
+                                setColorTimePicked(
+                                    R.color._192032,
+                                    R.color.colorBlackTrans50,
+                                    itemBinding
+                                )
+                            }
+                            "pm" -> {
+                                setColorTimePicked(
+                                    R.color.colorBlackTrans50,
+                                    R.color._192032,
+                                    itemBinding
+                                )
+                            }
+                            else -> {
+                                setColorTimePicked(
+                                    R.color.colorBlackTrans50,
+                                    R.color.colorBlackTrans50,
+                                    itemBinding
+                                )
+                            }
+                        }
+                    }
+                    else -> {
+                        setColorTimePicked(
+                            R.color.colorBlackTrans50,
+                            R.color.colorBlackTrans50,
+                            itemBinding
+                        )
+                    }
+                }
+            }
+            itemBinding.root.setOnClickListener {
+                recyclerItemListener.onItemSelected(
+                    TimePickerData(absoluteAdapterPosition,TimePickerType.ADD.value)
+                )
+            }
+        }
+
+        private fun setColorTimePicked(
+            selected: Int,
+            unselected: Int,
+            binding: LayoutAddTimeBinding
+        ) {
+            binding.tvam.setTextColor(
+                ContextCompat.getColor(
+                    context.applicationContext,
+                    selected
+                )
+            )
+            binding.tvpm.setTextColor(
+                ContextCompat.getColor(
+                    context.applicationContext,
+                    unselected
+                )
+            )
+        }
+
+    }
+
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+    fun addData(timeListAdded: MutableList<TimeSelectedlist>) {
+        this.timeList.addAll(timeListAdded)
+        notifyDataSetChanged()
+    }
+
+    fun removeData(size: Int) {
+        try {
+            timeList.reverse()
+            for (i in 0 until size) {
+                timeList.removeAt(i)
+            }
+            timeList.reverse()
+        }catch (e:Exception){
+            Log.e("catch_exception","error: ${e.toString()}")
+        }
+
+        notifyDataSetChanged()
+    }
+
+}

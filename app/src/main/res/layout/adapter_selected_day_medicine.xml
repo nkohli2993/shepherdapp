@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.shepherd.app.data.dto.med_list.loved_one_med_list.UserMedicationRemiderData" />
+            type="com.shepherdapp.app.data.dto.med_list.loved_one_med_list.UserMedicationRemiderData" />
     </data>
 
     <androidx.cardview.widget.CardView

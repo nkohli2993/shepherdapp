@@ -34,7 +34,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.shepherd.app"
+        applicationId "com.shepherdapp.app"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
@@ -61,12 +61,12 @@ android {
 //            buildConfigField("String", "BASE_URL_STAGING", base_url_staging)
 
             //dev urls
-//            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
-//            buildConfigField("String", "BASE_URL", base_url_dev)
+            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
+            buildConfigField("String", "BASE_URL", base_url_dev)
 
             // client urls
-            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
-            buildConfigField("String", "BASE_URL", base_url_client)
+//            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
+//            buildConfigField("String", "BASE_URL", base_url_client)
         }
         release {
             debuggable false
@@ -149,26 +149,26 @@ android {
                 output.outputFileName = newApkName
             }
 
-          /*  def buildTag = versionName //"1.0.1.7"
+            /*  def buildTag = versionName //"1.0.1.7"
 
 
-            def newApkName = "v" + buildTag + "(" + project + ")" + separator + formattedDate + ".apk"
+              def newApkName = "v" + buildTag + "(" + project + ")" + separator + formattedDate + ".apk"
 
 
-//            project + separator + "v" + versionName + separator + versionCode + separator + buildType + separator + formattedDate + ".apk"
+  //            project + separator + "v" + versionName + separator + versionCode + separator + buildType + separator + formattedDate + ".apk"
 
 
-            output.outputFileName = newApkName*/
+              output.outputFileName = newApkName*/
         }
     }
 
-   /* buildTypes {
-        release {
-            debuggable false
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-    }*/
+    /* buildTypes {
+         release {
+             debuggable false
+             minifyEnabled true
+             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+         }
+     }*/
 
 }
 

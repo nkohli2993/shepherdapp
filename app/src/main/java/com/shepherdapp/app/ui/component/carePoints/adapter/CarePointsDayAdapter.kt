@@ -1,0 +1,88 @@
+package com.shepherdapp.app.ui.component.carePoints.adapter
+
+import android.annotation.SuppressLint
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.shepherdapp.app.data.dto.added_events.AddedEventModel
+import com.shepherdapp.app.data.dto.added_events.ResultEventModel
+import com.shepherdapp.app.databinding.AdapterCarePointsDayDateBasedBinding
+import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
+import java.text.SimpleDateFormat
+
+
+class CarePointsDayAdapter(
+    val viewModel: CreatedCarePointsViewModel,
+    var carePointList: MutableList<ResultEventModel> = java.util.ArrayList(),
+    val listener: EventSelected,
+) :
+    RecyclerView.Adapter<CarePointsDayAdapter.CarePointsDayViewHolder>(),
+    CarePointsDateBasedAdapter.OnCarePointSelected {
+    lateinit var binding: AdapterCarePointsDayDateBasedBinding
+    lateinit var context: Context
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsDayViewHolder {
+        context = parent.context
+        binding =
+            AdapterCarePointsDayDateBasedBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        return CarePointsDayViewHolder(binding)
+    }
+
+    override fun getItemCount(): Int {
+        return carePointList.size
+    }
+
+    override fun onBindViewHolder(holder: CarePointsDayViewHolder, position: Int) {
+        holder.bind(position)
+    }
+
+    private fun setCarePointsAdapter(
+        recyclerViewEvents: RecyclerView,
+        events: ArrayList<AddedEventModel>
+    ) {
+        val carePointsEventAdapter =
+            CarePointsDateBasedAdapter(viewModel, events,this)
+        recyclerViewEvents.adapter = carePointsEventAdapter
+    }
+
+    inner class CarePointsDayViewHolder(private val itemBinding: AdapterCarePointsDayDateBasedBinding) :
+        RecyclerView.ViewHolder(itemBinding.root) {
+
+        @SuppressLint("SimpleDateFormat")
+        fun bind(position: Int) {
+            val carePoints = carePointList[position]
+            val dateShow = SimpleDateFormat("yyyy-MM-dd").parse(carePoints.date!!)
+            itemBinding.dateTV.text = SimpleDateFormat("EEE, MMM dd").format(dateShow!!)
+
+            setCarePointsAdapter(binding.recyclerViewEventDays, carePoints.events)
+
+        }
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+
+    fun updateCarePoints(careTeams: ArrayList<ResultEventModel>) {
+        this.carePointList = careTeams
+        notifyDataSetChanged()
+    }
+
+    override fun selectedCarePoint(detail: AddedEventModel) {
+        listener.onEventSelected(detail)
+    }
+
+    interface  EventSelected{
+        fun onEventSelected(detail: AddedEventModel)
+    }
+}

@@ -108,6 +108,50 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:242696077383:android:5732671b3e5facbd8c7162",
+        "android_client_info": {
+          "package_name": "com.shepherdapp.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "242696077383-ieik0rb7shuthri9go69j6qmhj8p8p0n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shepherdapp.app",
+            "certificate_hash": "45a5353032bd22003463c961bb47e2c8bc20fd24"
+          }
+        },
+        {
+          "client_id": "242696077383-7h4dd8vp8c2kcf3e84upvlh3lc6rq5mv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdpYkiZ24dQbVnK8D-D30sYcGlauKZwIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "242696077383-7h4dd8vp8c2kcf3e84upvlh3lc6rq5mv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "242696077383-a31f6gu19ndfdr90fj3rcimgd80ivgt1.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.shepherd.app"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

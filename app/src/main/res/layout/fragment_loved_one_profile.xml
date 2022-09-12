@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.shepherd.app.data.dto.user.Payload" />
+            type="com.shepherdapp.app.data.dto.user.Payload" />
 
         <variable
             name="listener"
