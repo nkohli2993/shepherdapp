@@ -15,8 +15,4 @@ open class BaseResponseModel(
     @SerializedName("api_ver")
     var apiVersion: String? = null,
 
-//    var statusCode: Int = 0,
-
-//    @SerializedName("payLoad")
-//    var payLoad: T? = null
 )

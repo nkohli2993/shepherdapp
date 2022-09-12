@@ -42,11 +42,11 @@ class SecurityCodeFragment : BaseFragment<FragmentSecurityCodeBinding>(), View.O
     }
 
     override fun observeViewModel() {
-        securityCodeViewModel.addSecurityCodeLiveData.observeEvent(this) {
-            when (it) {
+        securityCodeViewModel.addSecurityCodeLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    result.message?.let { showError(requireContext(), it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -78,7 +78,6 @@ class SecurityCodeFragment : BaseFragment<FragmentSecurityCodeBinding>(), View.O
     override fun initViewBinding() {
         type = args.source
         fragmentSecurityCodeBinding.listener = this
-        //editTextViewHandling()
         editTextHandlers()
         if (type != null) {
             when (type) {

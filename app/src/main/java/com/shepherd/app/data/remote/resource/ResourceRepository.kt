@@ -57,6 +57,7 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
   //get result of particular id detail
     suspend fun getResourceDetail(
         id: Int
@@ -83,7 +84,6 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
-
 
     // Get Loved One's Medical Conditions
     suspend fun getLovedOneMedicalConditions(lovedOneUUID: String): Flow<DataResult<GetLovedOneMedicalConditionsResponseModel>> {

@@ -1,7 +1,6 @@
 package com.shepherd.app.ui.component.resources
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +33,7 @@ import java.util.*
 
 
 /**
- * Created by Nikita 31/08/2022
+ * Created by Nikita 31-08-2022
  */
 @AndroidEntryPoint
 class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
@@ -42,7 +41,6 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private lateinit var fragmentResourcesBinding: FragmentResourcesBinding
     private val resourcesViewModel: ResourceViewModel by viewModels()
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
-    private val TAG: String = "ResourceList"
     private var pageNumber = 1
     private val limit = 10
     private var currentPage: Int = 0
@@ -79,11 +77,11 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
             pageNumber = 1
             isSearch = false
             hideKeyboard()
-            callAllResourceBasedOmMedicalHistory()
+            callAllResourceBasedOnMedicalHistory()
         }
 
 
-        fragmentResourcesBinding.editTextSearch.doOnTextChanged { s, start, lengthBefore, lengthAfter ->
+        fragmentResourcesBinding.editTextSearch.doOnTextChanged { s, _, lengthBefore, lengthAfter ->
             if (s.toString().isEmpty() && (lengthBefore == 0 && lengthAfter == 0)) {
                 fragmentResourcesBinding.imgCancel.visibility = View.GONE
                 showTrendingPost(View.VISIBLE)
@@ -94,7 +92,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 pageNumber = 1
                 isSearch = false
                 hideKeyboard()
-                callAllResourceBasedOmMedicalHistory()
+                callAllResourceBasedOnMedicalHistory()
             } else {
                 fragmentResourcesBinding.imgCancel.visibility = View.VISIBLE
                 showTrendingPost(View.GONE)
@@ -122,7 +120,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     }
 
     private fun handleResourcesPagination() {
-        var isScrolling = true
+        var isScrolling: Boolean
         var visibleItemCount: Int
         var totalItemCount: Int
         var pastVisiblesItems: Int
@@ -140,14 +138,14 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                         isScrolling = false
                         currentPage++
                         pageNumber++
-                        callAllResourceBasedOmMedicalHistory()
+                        callAllResourceBasedOnMedicalHistory()
                     }
                 }
             }
         })
     }
 
-    private fun callAllResourceBasedOmMedicalHistory() {
+    private fun callAllResourceBasedOnMedicalHistory() {
         resourcesViewModel.getAllResourceApi(
             pageNumber,
             limit,
@@ -160,12 +158,12 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
         observeEvent(resourcesViewModel.selectedResourceDetail, ::navigateToResourceItems)
         //Observe the response of get loved one's medical conditions api
-        resourcesViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
-            when (it) {
+        resourcesViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     // hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
-                    callAllResourceBasedOmMedicalHistory()
+                    result.message?.let { showError(requireContext(), it) }
+                    callAllResourceBasedOnMedicalHistory()
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -174,7 +172,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     //   hideLoading()
                     addedConditionPayload.clear()
                     fragmentResourcesBinding.medicalHistory.removeAllViews()
-                    for (i in it.data.payload) {
+                    for (i in result.data.payload) {
                         if (i.conditionId != null) {
                             addedConditionPayload.add(i)
                             conditionIDs.add(i.conditionId!!)
@@ -182,10 +180,11 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     }
                     // set tags
                     setMedicalTags()
-                    callAllResourceBasedOmMedicalHistory()
+                    callAllResourceBasedOnMedicalHistory()
                 }
             }
         }
+        // observe resource list based on condition based
         resourcesViewModel.resourceResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -193,7 +192,6 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.visibility =
                         View.GONE
                     fragmentResourcesBinding.noResourceTxt.visibility = View.VISIBLE
-
 //                    showError(requireContext(), it.message.toString())
                 }
                 is DataResult.Loading -> {
@@ -245,6 +243,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 }
             }
         }
+        // observe resource list based on treding list
         resourcesViewModel.trendingResourceResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -280,7 +279,6 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
     private fun navigateToResourceItems(navigateEvent: SingleEvent<AllResourceData>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            Log.d(TAG, "openResopurceDetail: id :$it")
             findNavController().navigate(
                 ResourcesFragmentDirections.actionNavResourceToResourceToResourceDetail(
                     source = it.id.toString(),
@@ -343,7 +341,6 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         closeIV.setOnClickListener {
             addedConditionPayload[position].isUnselected =
                 !addedConditionPayload[position].isUnselected
-//            addedConditionPayload.removeAt(position)
             setMedicalTags()
             conditionIDs.clear()
             isLoading = true
@@ -354,9 +351,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     }
                 }
             }
-
-            //call api for resource post
-            callAllResourceBasedOmMedicalHistory()
+            callAllResourceBasedOnMedicalHistory()
         }
 
         return parent

@@ -176,9 +176,6 @@ interface ApiService {
     @PUT(ApiConstants.MedicalConditions.UPDATE_MEDICAL_CONDITIONS)
     suspend fun updateMedicalConditions(@Body value: UpdateMedicalConditionRequestModel): Response<BaseResponseModel>
 
-    @POST(ApiConstants.MedicalConditions.EDIT_BULK_ONE_CONDITIONS)
-    suspend fun editBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
-
     @GET(ApiConstants.Authentication.LOGOUT)
     suspend fun logout(): Response<BaseResponseModel>
 
@@ -444,7 +441,6 @@ interface ApiService {
         @Query("id") id: String,
         @Query("search") search: String
     ): Response<ResponseRelationModel>
-// @Query("conditions") conditions:String,
 
     @GET(ApiConstants.Resource.GET_RESOURCE_DETAIL)
     suspend fun getResourceDetail(

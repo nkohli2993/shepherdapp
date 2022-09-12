@@ -60,12 +60,6 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
     override fun initViewBinding() {
         fragmentResourcesDetailBinding.listener = this
         resourceId = args.source.toInt()
-/*
-        if (args.detail != null) {
-            resourceDetail = args.detail!!
-            setDataResource()
-        }
-*/
         resourcesViewModel.getResourceDetail(resourceId ?: 0)
     }
 
@@ -88,9 +82,8 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             "hh:mm a"
         )
-        fragmentResourcesDetailBinding.tvDate.text = "Created on $formattedDate"
+        fragmentResourcesDetailBinding.tvDate.text = "${getString(R.string.created_on)} $formattedDate"
         fragmentResourcesDetailBinding.tvTime.text = formattedTime
-        // add created by and image check
 
     }
 

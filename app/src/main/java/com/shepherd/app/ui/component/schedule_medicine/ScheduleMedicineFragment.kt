@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /**
- * Created by Nikita kohli on 08-08-22
+ * Created by Nikita kohli on 08-08-2022
  */
 
 @AndroidEntryPoint
@@ -191,7 +191,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 )
             }
         }
-        if (timeList.size < payLoad!!.frequency.toInt()) {
+        if (timeList.size < payLoad!!.frequency) {
             val timeCount = payLoad!!.frequency - timeList.size
             for (i in 0 until timeCount) {
                 timeList.add(TimeSelectedlist())
@@ -223,14 +223,14 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     }
 
     private fun getDoseTypeListObserver() {
-        medicationViewModel.getDoseTypeListResponseLiveData.observeEvent(this) {
-            when (it) {
+        medicationViewModel.getDoseTypeListResponseLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     if (medicationId != null) {
                         medicationId?.let { medicationViewModel.getMedicationDetail(it) }
                     } else {
                         hideLoading()
-                        showError(requireContext(), it.message.toString())
+                        showError(requireContext(), result.message.toString())
                     }
 
                 }
@@ -243,7 +243,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                     } else {
                         hideLoading()
                     }
-                    it.data.payload.let { payload ->
+                    result.data.payload.let { payload ->
                         doseTypeList = payload?.dosagesTypes!!
                         total = payload.total
                         currentPage = payload.currentPage
@@ -632,7 +632,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             //show selected dose
             doseID = it.id.toString()
             selectedDose = it
-//            fragmentScheduleMedicineBinding.doseTV.text = selectedDose?.name ?: ""
             showDoseView()
         }
     }
@@ -871,6 +870,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         mTimePicker.show()
     }
 
+
     private val isValid: Boolean
         get() {
             when {
@@ -947,22 +947,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         }
         return allFiled
     }
-
-/*    //check time added or removed from list
-    override fun onSelected(position: Int) {
-        frequencyId = frequencyList[position].time!!
-        val list: ArrayList<TimeSelectedlist> = arrayListOf()
-        val timeCount = frequencyList[position].time!!
-        for (i in 0 until timeCount) {
-            list.add(TimeSelectedlist())
-        }
-        timeList.clear()
-        timeList.addAll(list)
-        timeAdapter = null
-        setTimeAdapter()
-        showFrequencyView()
-        fragmentScheduleMedicineBinding.frequencyET.text = frequencyList[position].name
-    }*/
 
     //check time added or removed from list
     override fun onSelected(position: Int) {

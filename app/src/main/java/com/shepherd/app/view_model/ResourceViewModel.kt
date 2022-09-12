@@ -80,10 +80,6 @@ class ResourceViewModel @Inject constructor(
         return userRepository.getCurrentUser()
     }
 
-    fun saveDetail(userDetail: UserProfile) {
-        userRepository.saveUser(userDetail)
-    }
-
     fun getAllResourceApi(
         pageNumber: Int,
         limit: Int,lovedOneId:String,
@@ -99,6 +95,7 @@ class ResourceViewModel @Inject constructor(
         }
         return resourceResponseLiveData
     }
+
     fun getSearchResourceResultApi(
         pageNumber: Int,
         limit: Int,lovedOneId:String,
@@ -115,6 +112,7 @@ class ResourceViewModel @Inject constructor(
         }
         return resourceResponseLiveData
     }
+
     fun getResourceDetail(
         id:Int
     ): LiveData<Event<DataResult<ParticularResourceResponseModel>>> {

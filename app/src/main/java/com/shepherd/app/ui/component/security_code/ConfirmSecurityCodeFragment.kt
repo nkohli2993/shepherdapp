@@ -42,18 +42,18 @@ class ConfirmSecurityCodeFragment : BaseFragment<FragmentConfirmSecurityCodeBind
     }
 
     override fun observeViewModel() {
-        securityCodeViewModel.changeSecurityCodeLiveData.observeEvent(this) {
-            when (it) {
+        securityCodeViewModel.changeSecurityCodeLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    result.message?.let { showError(requireContext(), it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val payload = it.data.payload
+                    val payload = result.data.payload
                     securityCodeViewModel.saveDetail(
                         UserProfile(
                             payload!!.id,

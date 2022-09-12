@@ -61,7 +61,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     }
 
     private fun handleAddedLovedOnePagination() {
-        var isScrolling = true
+        var isScrolling: Boolean
         var visibleItemCount: Int
         var totalItemCount: Int
         var pastVisiblesItems: Int
@@ -87,11 +87,11 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     }
 
     override fun observeViewModel() {
-        lovedOneViewModel.careTeamsResponseLiveData.observeEvent(this) {
-            when (it) {
+        lovedOneViewModel.careTeamsResponseLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    result.message?.let { showError(requireContext(), it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -101,9 +101,9 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                     careTeams.clear()
                     if (page == 1) {
                         lovedOneAdapter = null
-                        setLovedOnesAdapter(careTeams)
+                        setLovedOnesAdapter()
                     }
-                    it.data.payload.let { payload ->
+                    result.data.payload.let { payload ->
                         careTeams = payload.data
                         total = payload.total!!
                         currentPage = payload.currentPage!!
@@ -125,10 +125,10 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
 
     override fun initViewBinding() {
         fragmentLovedOnesBinding.listener = this
-        setLovedOnesAdapter(careTeams)
+        setLovedOnesAdapter()
     }
 
-    private fun setLovedOnesAdapter(careTeams: ArrayList<CareTeamModel>?) {
+    private fun setLovedOnesAdapter() {
         lovedOneAdapter = LovedOneAdapter(lovedOneViewModel)
         recyclerViewMembers.adapter = lovedOneAdapter
         lovedOneAdapter?.setClickListener(this)
