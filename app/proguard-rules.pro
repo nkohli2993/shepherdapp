@@ -14,9 +14,32 @@
 
 # Uncomment this to preserve the line number information for
 # debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keepnames class com.shepherd.app.data.dto.** { *; }
+-keep class com.shepherd.app.data.dto.** { *; }
+-keep class com.shepherd.app.data.remote.** { *; }
+-keep class com.shepherd.app.network.retrofit.** { *; }
+-keep class com.shepherd.app.ui.component.addNewEvent.** { *; }
+-keep class com.shepherd.app.view_model.** { *; }
+-keep class com.shepherd.app.ui.base.** { *; }
+
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+-dontnote okhttp3.**
+
+-keep class com.google.gson.stream.** { *; }
+
+-keepclasseswithmembernames class * {
+     public <methods>;
+}

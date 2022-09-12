@@ -1,4 +1,5 @@
 package com.shepherd.app.network.retrofit
+
 import android.util.Log
 import androidx.annotation.MainThread
 import com.shepherd.app.ui.base.BaseResponseModel
@@ -25,7 +26,9 @@ abstract class NetworkOnlineDataRepo<RESULT, REQUEST> {
                     getErrorResponse(data)?.let {
                         emit(
                             DataResult.Failure(
-                                message = it.message,errorCode = apiResponse.code(), error=  (it.error.let { "" })
+                                message = it.message,
+                                errorCode = apiResponse.code(),
+                                error = (it.error.let { "" })
                                 /*it.apiVersion?.toInt()*/
                             )
                         )
@@ -60,13 +63,12 @@ abstract class NetworkOnlineDataRepo<RESULT, REQUEST> {
 
             Log.e("NetworkCallException", e.message.toString())
         }
-
     }
 
     private fun validateData(data: REQUEST): Boolean {
         if (data is BaseResponseModel) {
 //            if (data.statusCode == 200) {
-                return true
+            return true
 //            }
         }
         return false
