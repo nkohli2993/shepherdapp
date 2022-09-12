@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.shepherd.app.data.dto.chat.ChatModel" />
+            type="com.shepherdapp.app.data.dto.chat.ChatModel" />
 
         <variable
             name="listener"
@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorWhite"
         android:orientation="vertical"
-        tools:context="com.shepherd.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
+        tools:context="com.shepherdapp.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
 
         <androidx.appcompat.widget.AppCompatImageView

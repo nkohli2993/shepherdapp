@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type="com.shepherd.app.data.dto.added_events.AddedEventModel" />
+            type="com.shepherdapp.app.data.dto.added_events.AddedEventModel" />
 
 
         <variable

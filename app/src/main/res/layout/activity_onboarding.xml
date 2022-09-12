@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.shepherd.app.ui.component.login.LoginActivity">
+        tools:context="com.shepherdapp.app.ui.component.login.LoginActivity">
 
 
         <androidx.constraintlayout.widget.Guideline
@@ -38,7 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.shepherd.app.utils.ViewPagerIndicator
+        <com.shepherdapp.app.utils.ViewPagerIndicator
             android:id="@+id/viewPagerIndicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

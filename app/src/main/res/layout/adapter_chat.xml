@@ -6,7 +6,7 @@
 
         <variable
             name="messageData"
-            type="com.shepherd.app.data.dto.chat.MessageData" />
+            type="com.shepherdapp.app.data.dto.chat.MessageData" />
 
 
         <variable

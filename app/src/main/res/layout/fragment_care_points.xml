@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorGreyLight"
         android:orientation="vertical"
-        tools:context="com.shepherd.app.ui.component.carePoints.CarePointsFragment">
+        tools:context="com.shepherdapp.app.ui.component.carePoints.CarePointsFragment">
 
 
         <androidx.core.widget.NestedScrollView

@@ -11,7 +11,7 @@
 
         <variable
             name="userDetail"
-            type="com.shepherd.app.data.dto.login.UserProfile" />
+            type="com.shepherdapp.app.data.dto.login.UserProfile" />
 
     </data>
 

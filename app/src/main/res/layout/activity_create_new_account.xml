@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.shepherd.app.view_model.CreateNewAccountViewModel" />
+            type="com.shepherdapp.app.view_model.CreateNewAccountViewModel" />
 
     </data>
 

@@ -6,7 +6,7 @@
 
         <!--<variable
             name="data"
-            type="com.shepherd.app.data.dto.invitation.Results" />-->
+            type="com.shepherdapp.app.data.dto.invitation.Results" />-->
 
         <variable
             name="listener"

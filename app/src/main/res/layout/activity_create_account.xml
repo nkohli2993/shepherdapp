@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorGreyLight"
         android:orientation="vertical"
-        tools:context="com.shepherd.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
+        tools:context="com.shepherdapp.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
 
         <include

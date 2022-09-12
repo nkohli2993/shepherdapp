@@ -10,7 +10,7 @@
 
         <variable
             name="data"
-            type="com.shepherd.app.data.dto.dashboard.DashboardModel" />
+            type="com.shepherdapp.app.data.dto.dashboard.DashboardModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
