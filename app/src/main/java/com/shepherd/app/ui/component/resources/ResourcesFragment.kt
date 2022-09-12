@@ -195,7 +195,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 //                    showError(requireContext(), it.message.toString())
                 }
                 is DataResult.Loading -> {
-                    if(isLoading){
+                    if (isLoading) {
                         showLoading("")
                     }
                 }
@@ -332,33 +332,43 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     R.color.colorBlack
                 )
             )
-            closeIV.setImageResource(R.drawable.ic_add)
+            closeIV.setImageResource(R.drawable.ic_add_filled)
             parent.setBackgroundResource(R.drawable.shape_black_border)
         }
 
         layout2.gravity = Gravity.CENTER_HORIZONTAL
 
-        closeIV.setOnClickListener {
-            addedConditionPayload[position].isUnselected =
-                !addedConditionPayload[position].isUnselected
-            setMedicalTags()
-            conditionIDs.clear()
-            isLoading = true
-            for (i in addedConditionPayload) {
-                if (i.conditionId != null) {
-                    if (!i.isUnselected) {
-                        conditionIDs.add(i.conditionId!!)
-                    }
-                }
+        textConditionName.setOnClickListener {
+            if (addedConditionPayload[position].isUnselected) {
+                callSelectedConditionResources(position)
             }
-            callAllResourceBasedOnMedicalHistory()
+        }
+        closeIV.setOnClickListener {
+            callSelectedConditionResources(position)
         }
 
         return parent
     }
 
+    private fun callSelectedConditionResources(position: Int) {
+        addedConditionPayload[position].isUnselected =
+            !addedConditionPayload[position].isUnselected
+        setMedicalTags()
+        conditionIDs.clear()
+        isLoading = true
+        for (i in addedConditionPayload) {
+            if (i.conditionId != null) {
+                if (!i.isUnselected) {
+                    conditionIDs.add(i.conditionId!!)
+                }
+            }
+        }
+        callAllResourceBasedOnMedicalHistory()
+    }
+
     override fun onResume() {
         super.onResume()
+        fragmentResourcesBinding.editTextSearch.setText("")
         fragmentResourcesBinding.medicalHistory.removeAllViews()
     }
 
