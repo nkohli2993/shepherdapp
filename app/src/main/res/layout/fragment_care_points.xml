@@ -133,7 +133,7 @@
                     android:layout_height="0dp"
                     android:background="@color/colorWhite"
                     app:layout_constraintTop_toBottomOf="@+id/headerCl"
-                    app:mcv_firstDayOfWeek="monday"
+                    app:mcv_firstDayOfWeek="sunday"
                     app:mcv_selectionColor="@color/_399282"
                     app:mcv_showOtherDates="all" />
 

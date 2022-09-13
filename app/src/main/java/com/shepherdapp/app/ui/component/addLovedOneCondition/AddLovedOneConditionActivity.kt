@@ -1,6 +1,7 @@
 package com.shepherdapp.app.ui.component.addLovedOneCondition
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -159,7 +160,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    if(it.data.payload?.conditions!=null){
+                    if (it.data.payload?.conditions != null) {
                         conditions = it.data.payload?.conditions!!
                     }
 
@@ -244,6 +245,12 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
+            R.id.tvNew -> {
+                val intent = Intent(this, AddMedicalConditionActivity::class.java)
+                startActivity(intent)
+                finish()
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
             R.id.ivBack -> {
                 finishActivity()
             }
@@ -348,7 +355,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
     override fun itemSelected(position: Int) {
 
-        if(isSearched){
+        if (isSearched) {
             if (searchedConditions[position].isAlreadySelected == 1 && searchedConditions[position].isSelected) {
                 searchedConditions[position].isAlreadySelected = 2
             }
@@ -357,8 +364,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             }
             searchedConditions[position].isSelected = !searchedConditions[position].isSelected
             searchedConditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
-        }
-        else{
+        } else {
             if (conditions[position].isAlreadySelected == 1 && conditions[position].isSelected) {
                 conditions[position].isAlreadySelected = 2
             }
@@ -368,19 +374,19 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             conditions[position].isSelected = !conditions[position].isSelected
             conditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
         }
-        if(isSearched){
-            for(i in conditions){
+        if (isSearched) {
+            for (i in conditions) {
                 var found = false
-                for( j in searchedConditions){
-                    if(i.id == j.id){
-                        if(j.isSelected){
+                for (j in searchedConditions) {
+                    if (i.id == j.id) {
+                        if (j.isSelected) {
                             found = true
                             break
                         }
                     }
                 }
                 i.isSelected = false
-                if(found){
+                if (found) {
                     if (i.isAlreadySelected == 1 && i.isSelected) {
                         i.isAlreadySelected = 2
                     }

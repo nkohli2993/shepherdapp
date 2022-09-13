@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.med_list.*
+import com.shepherdapp.app.data.dto.med_list.add_med_list.AddMedListRequestModel
+import com.shepherdapp.app.data.dto.med_list.add_med_list.AddedMedlistResponseModel
 import com.shepherdapp.app.data.dto.med_list.get_medication_detail.GetMedicationDetailResponse
 import com.shepherdapp.app.data.dto.med_list.schedule_medlist.DoseList
 import com.shepherdapp.app.data.dto.med_list.schedule_medlist.TimePickerData
@@ -78,6 +80,12 @@ class AddMedicationViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<AddScheduledMedicationResponseModel>>>()
     var addScheduledMedicationResponseLiveData: LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> =
         _addScheduledMedicationResponseLiveData
+
+    // add medicine
+    private var _addMedicineResponseLiveData =
+        MutableLiveData<Event<DataResult<AddedMedlistResponseModel>>>()
+    var addMedicineResponseLiveData: LiveData<Event<DataResult<AddedMedlistResponseModel>>> =
+        _addMedicineResponseLiveData
 
     private var _getMedicationDetailResponseLiveData =
         MutableLiveData<Event<DataResult<GetMedicationDetailResponse>>>()
@@ -212,6 +220,22 @@ class AddMedicationViewModel @Inject constructor(
             }
         }
         return getMedicationDetailResponseLiveData
+    }
+
+    // add new medicine for medlist
+    fun addNewMedlistMedicine(
+        medicineMedlist: AddMedListRequestModel
+    ): LiveData<Event<DataResult<AddedMedlistResponseModel>>> {
+        viewModelScope.launch {
+            val response =
+                medicineMedlist.let { medListRepository.addNewMedlistMedicine(it) }
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _addMedicineResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return addMedicineResponseLiveData
     }
 
 

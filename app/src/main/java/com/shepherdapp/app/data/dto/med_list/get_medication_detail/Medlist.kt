@@ -9,14 +9,14 @@ import kotlinx.android.parcel.Parcelize
  */
 
 @Parcelize
-data class Medlist (
+data class Medlist(
 
-	@SerializedName("id") val id : Int,
-	@SerializedName("name") val name : String,
-	@SerializedName("slug") val slug : String,
-	@SerializedName("description") val description : String,
-	@SerializedName("is_active") val is_active : Boolean,
-	@SerializedName("created_at") val created_at : String,
-	@SerializedName("updated_at") val updated_at : String,
-	@SerializedName("deleted_at") val deleted_at : String
-):Parcelable
+    @SerializedName("id") val id: Int = 0,
+    @SerializedName("name") val name: String? = "",
+    @SerializedName("slug") val slug: String? = "",
+    @SerializedName("description") val description: String? = "",
+    @SerializedName("is_active") val is_active: Boolean = false,
+    @SerializedName("created_at") val created_at: String? = "",
+    @SerializedName("updated_at") val updated_at: String? = "",
+    @SerializedName("deleted_at") val deleted_at: String? = ""
+) : Parcelable

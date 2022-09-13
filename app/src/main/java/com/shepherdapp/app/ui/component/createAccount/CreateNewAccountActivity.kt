@@ -140,6 +140,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         binding = ActivityCreateNewAccountBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        setClicks(binding.checkboxText.text.toString())
     }
 
     override fun observeViewModel() {
@@ -391,18 +392,11 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         startActivityWithFinish<WelcomeUserActivity>()
     }
 
-    private fun setResendText(text: String) {
+    private fun setClicks(text: String) {
         val ss = SpannableString(text)
         val termsConditionClick: ClickableSpan = object : ClickableSpan() {
 
             override fun onClick(p0: View) {
-                // send resend verification email
-                findNavController().navigate(
-                    SettingFragmentDirections.actionNavSettingToSecureCode(
-                        source = Const.RESET_SECURITY_CODE
-                    )
-                )
-
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -413,10 +407,9 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 ds.linkColor = ContextCompat.getColor(applicationContext, R.color._A26DCB)
             }
         }
-        val privacyPolicayClick: ClickableSpan = object : ClickableSpan() {
+        val privacyPolicyClick: ClickableSpan = object : ClickableSpan() {
 
             override fun onClick(p0: View) {
-                // send resend verification email
 
             }
 
@@ -429,10 +422,10 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             }
         }
         ss.setSpan(termsConditionClick, 26, 33, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(privacyPolicyClick, 26, 33, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         binding.checkboxText.text = ss
         binding.checkboxText.movementMethod = LinkMovementMethod.getInstance()
-        // binding.emailResendTV.highlightColor = Color.GREEN
     }
 
 }

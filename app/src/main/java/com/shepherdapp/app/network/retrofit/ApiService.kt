@@ -34,14 +34,13 @@ import com.shepherdapp.app.data.dto.lock_box.upload_multiple_lock_box_doc.Upload
 import com.shepherdapp.app.data.dto.login.EditResponseModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.med_list.*
+import com.shepherdapp.app.data.dto.med_list.add_med_list.AddMedListRequestModel
+import com.shepherdapp.app.data.dto.med_list.add_med_list.AddedMedlistResponseModel
 import com.shepherdapp.app.data.dto.med_list.get_medication_detail.GetMedicationDetailResponse
 import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
-import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionResponseModel
-import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
-import com.shepherdapp.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
-import com.shepherdapp.app.data.dto.medical_conditions.UserConditionsResponseModel
+import com.shepherdapp.app.data.dto.medical_conditions.*
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.notification.NotificationResponseModel
 import com.shepherdapp.app.data.dto.relation.RelationResponseModel
@@ -175,6 +174,9 @@ interface ApiService {
 
     @PUT(ApiConstants.MedicalConditions.UPDATE_MEDICAL_CONDITIONS)
     suspend fun updateMedicalConditions(@Body value: UpdateMedicalConditionRequestModel): Response<BaseResponseModel>
+
+    @POST(ApiConstants.MedicalConditions.ADD_MEDICAL_CONDITION)
+    suspend fun addMedicalConditions(@Body value: AddMedicalConditionRequestModel): Response<AddedUserMedicalConditionResposneModel>
 
     @GET(ApiConstants.Authentication.LOGOUT)
     suspend fun logout(): Response<BaseResponseModel>
@@ -384,6 +386,9 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("date") date: String
     ): Response<GetMedicationRecordResponse>
+
+    @POST(ApiConstants.MedList.ADD_MED_LIST)
+    suspend fun addNewMedlistMedicine(medlist: AddMedListRequestModel): Response<AddedMedlistResponseModel>
 
     @PUT(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
     suspend fun updateProfile(

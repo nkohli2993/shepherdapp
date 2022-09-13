@@ -68,7 +68,6 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         }
 
 
-
     }
 
     override fun observeViewModel() {
@@ -105,12 +104,17 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                         it.txtLockBoxNote.text = lockBox?.note
                         it.edtFileName.setText(lockBox?.name)
                         it.edtNote.setText(lockBox?.note)
+                        it.txtTypeTV.setText(lockBox?.lbtId.toString())  /// set lockbox type name
 //                        Picasso.get().load(lockBox?.documentUrl).placeholder(R.drawable.ic_defalut_profile_pic)
 //                            .into(imgDoc)
                     }
 
                     documentImagesAdapter =
-                        UploadedDocumentImagesAdapter(requireContext().applicationContext, lockBox?.documents,this@LockBoxDocInfoFragment)
+                        UploadedDocumentImagesAdapter(
+                            requireContext().applicationContext,
+                            lockBox?.documents,
+                            this@LockBoxDocInfoFragment
+                        )
                     viewPager.adapter = documentImagesAdapter
                     fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
                     fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object :
@@ -147,7 +151,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
 //                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
 //                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
 //                    View.VISIBLE
-                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
+                val action =
+                    LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
                 findNavController().navigate(action)
             }
             R.id.btnCancel -> {

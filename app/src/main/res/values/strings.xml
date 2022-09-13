@@ -528,5 +528,6 @@
     <string name="medicine_name">Medicine Name</string>
     <string name="add_medical_condition">Add Medical Condition</string>
     <string name="medical_condition">Medical Condition</string>
+    <string name="please_enter_medical_condition">Please enter medical condition name.</string>
 
 </resources>
