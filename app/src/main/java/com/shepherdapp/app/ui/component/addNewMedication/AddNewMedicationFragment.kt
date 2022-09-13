@@ -18,6 +18,8 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
+import com.shepherdapp.app.ui.component.settings.SettingFragmentDirections
+import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.observe
@@ -259,6 +261,9 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                 findNavController().popBackStack()
             }
             R.id.btnNext -> {
+            }
+            R.id.tvNew ->{
+                findNavController().navigate(R.id.action_nav_add_new_medicine)
             }
         }
     }

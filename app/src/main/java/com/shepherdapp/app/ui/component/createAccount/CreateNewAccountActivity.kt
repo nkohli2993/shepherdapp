@@ -4,14 +4,22 @@ import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.TextPaint
 import android.text.method.HideReturnsTransformationMethod
+import android.text.method.LinkMovementMethod
 import android.text.method.PasswordTransformationMethod
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.databinding.ActivityCreateNewAccountBinding
@@ -20,6 +28,7 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.login.LoginActivity
+import com.shepherdapp.app.ui.component.settings.SettingFragmentDirections
 import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
 import com.shepherdapp.app.ui.welcome.WelcomeActivity
 import com.shepherdapp.app.utils.*
@@ -56,7 +65,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var limit: Int = 10
     private var TAG = "CreateNewAccountActivity"
     private val PERMISSION_REQUEST_CODE = 200
-
+    private lateinit var navController: NavController
     // Handle Validation
     private val isValid: Boolean
         get() {
@@ -382,66 +391,48 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         startActivityWithFinish<WelcomeUserActivity>()
     }
 
-/*    private fun checkPermission(): Boolean {
-        val readStorageresult =
-            ContextCompat.checkSelfPermission(applicationContext, READ_EXTERNAL_STORAGE)
-        val writeStorageresult =
-            ContextCompat.checkSelfPermission(applicationContext, WRITE_EXTERNAL_STORAGE)
-        val cameraResult = ContextCompat.checkSelfPermission(applicationContext, CAMERA)
-        return readStorageresult == PackageManager.PERMISSION_GRANTED && writeStorageresult == PackageManager.PERMISSION_GRANTED && cameraResult == PackageManager.PERMISSION_GRANTED
-    }
+    private fun setResendText(text: String) {
+        val ss = SpannableString(text)
+        val termsConditionClick: ClickableSpan = object : ClickableSpan() {
 
-    private fun requestPermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, CAMERA),
-            PERMISSION_REQUEST_CODE
-        )
-    }
+            override fun onClick(p0: View) {
+                // send resend verification email
+                findNavController().navigate(
+                    SettingFragmentDirections.actionNavSettingToSecureCode(
+                        source = Const.RESET_SECURITY_CODE
+                    )
+                )
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSION_REQUEST_CODE -> if (grantResults.isNotEmpty()) {
-                val readAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                val writeAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
-                val cameraAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED
-                if (readAccepted && writeAccepted  && cameraAccepted)
-                    openImagePicker()
-                 else {
-                    showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale(READ_EXTERNAL_STORAGE)) {
-                            val builder = AlertDialog.Builder(this)
-                            val dialog = builder.apply {
-                                setMessage("You need to allow access to both the permissions")
-                                setPositiveButton("OK") { _, _ ->
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                        requestPermissions(
-                                            arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE, CAMERA),
-                                            PERMISSION_REQUEST_CODE
-                                        )
-                                    }
+            }
 
-                                }
-                                setNegativeButton("Cancel") { _, _ ->
-
-                                }
-                            }.create()
-                            dialog.show()
-                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-                            return
-                        }
-                    }
-                }
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+                ds.isFakeBoldText = true
+                ds.color = ContextCompat.getColor(applicationContext, R.color._A26DCB)
+                ds.linkColor = ContextCompat.getColor(applicationContext, R.color._A26DCB)
             }
         }
+        val privacyPolicayClick: ClickableSpan = object : ClickableSpan() {
 
-    }*/
+            override fun onClick(p0: View) {
+                // send resend verification email
+
+            }
+
+            override fun updateDrawState(ds: TextPaint) {
+                super.updateDrawState(ds)
+                ds.isUnderlineText = false
+                ds.isFakeBoldText = true
+                ds.color = ContextCompat.getColor(applicationContext, R.color._A26DCB)
+                ds.linkColor = ContextCompat.getColor(applicationContext, R.color._A26DCB)
+            }
+        }
+        ss.setSpan(termsConditionClick, 26, 33, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        binding.checkboxText.text = ss
+        binding.checkboxText.movementMethod = LinkMovementMethod.getInstance()
+        // binding.emailResendTV.highlightColor = Color.GREEN
+    }
 
 }

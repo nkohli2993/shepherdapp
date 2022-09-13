@@ -523,4 +523,10 @@
     <string name="lockbox_updated_successlly">LockBox updated Successfully…</string>
     <string name="no_resource_post_found">No Resource Post Found</string>
     <string name="created_on">Created on</string>
+    <string name="add_medicine">Add Medicine</string>
+    <string name="description">Description</string>
+    <string name="medicine_name">Medicine Name</string>
+    <string name="add_medical_condition">Add Medical Condition</string>
+    <string name="medical_condition">Medical Condition</string>
+
 </resources>
