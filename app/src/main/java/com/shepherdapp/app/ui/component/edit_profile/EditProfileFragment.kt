@@ -19,6 +19,7 @@ import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.loadImageCentreCrop
 import com.shepherdapp.app.utils.observe
+import com.shepherdapp.app.view_model.EditProfileViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_create_new_account.*

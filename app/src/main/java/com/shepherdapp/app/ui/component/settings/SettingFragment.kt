@@ -19,6 +19,7 @@ import com.shepherdapp.app.utils.BiometricUtils
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.view_model.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -19,6 +19,7 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.extensions.isValidPassword
 import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.view_model.ChangePasswordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
