@@ -255,7 +255,7 @@
     <string name="tell_us_about_loved_one">Tell us a little bit about your loved one.</string>
     <string name="try_shepherd_for_30_days">Try Shepherd free for 30 days.</string>
     <string name="create_account_description">Are you new to the platform? Please fill the below details to create your account.</string>
-    <string name="agree_to_terms_and_conditions_and_privacy_policy">I agree to the Terms &amp; \nConditions and Privacy Policy</string>
+    <string name="agree_to_terms_and_conditions_and_privacy_policy">I agree to the Terms &amp; Conditions and Privacy Policy</string>
     <string name="I_agree_to_terms_and_conditions_and_privacy_policy">I agree to the <font color="#A26DCB"><b>Terms &amp; \nConditions</b></font> and <font color="#A26DCB"><b>Privacy Policy.</b></font></string>
     <string name="enter_phone_number">Enter phone number</string>
     <string name="enter_address">Please enter address</string>
@@ -370,7 +370,7 @@
     <string name="assign_to_">Assign To</string>
     <string name="wed_18_jul">wed, 18 jul</string>
     <string name="no_care_points_found">No CarePoints found</string>
-    <string name="menu_care_point_detail">Care point detail</string>
+    <string name="menu_care_point_detail">CarePoint detail</string>
     <string name="dd_mm_year">MM-DD-YYYY</string>
     <string name="_12_00">12:00</string>
     <string name="lock_box_desc">Store and retrieve important documents and information securely.</string>
@@ -407,7 +407,7 @@
     <string name="lockbox_deleted_successfully">LockBox Document deleted successfully…</string>
     <string name="rationale_external_storage">This app needs access to your external storage so you can upload documents</string>
     <string name="document_name">Document Name</string>
-    <string name="new_care_point_added_successfully">Care point added successfully…</string>
+    <string name="new_care_point_added_successfully">CarePoint added successfully…</string>
     <string name="vital_stats_added_successfully">VitalStats added successfully…</string>
     <string name="please_select_new_care_point_date_firts">Please select new CarePoint date first.</string>
     <string name="please_select_future_time">Please select future time for new CarePoint.</string>
@@ -487,7 +487,7 @@
     <string name="please_enter_the_event_address">Please enter the event address</string>
     <string name="this_day_does_not_lie_between_selected_end_date_of_medication">This day does not lie between selected end date of medication.</string>
     <string name="please_add_medication_for_future_time">Please add medication for future time.</string>
-    <string name="care_point">Care Point</string>
+    <string name="care_point">CarePoint</string>
     <string name="notification">Notifications</string>
     <string name="clear_all">Clear All</string>
     <string name="medlist_header">MedList</string>
@@ -529,5 +529,7 @@
     <string name="add_medical_condition">Add Medical Condition</string>
     <string name="medical_condition">Medical Condition</string>
     <string name="please_enter_medical_condition">Please enter medical condition name.</string>
+    <string name="document_added_successfully">Document added successfully!</string>
+    <string name="files_uploaded_successfully">Files uploaded successfully…</string>
 
 </resources>

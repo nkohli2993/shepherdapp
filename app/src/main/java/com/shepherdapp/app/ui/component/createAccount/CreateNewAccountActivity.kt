@@ -3,6 +3,7 @@ package com.shepherdapp.app.ui.component.createAccount
 import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -19,7 +20,6 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.databinding.ActivityCreateNewAccountBinding
@@ -28,7 +28,6 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.login.LoginActivity
-import com.shepherdapp.app.ui.component.settings.SettingFragmentDirections
 import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
 import com.shepherdapp.app.ui.welcome.WelcomeActivity
 import com.shepherdapp.app.utils.*
@@ -66,6 +65,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var TAG = "CreateNewAccountActivity"
     private val PERMISSION_REQUEST_CODE = 200
     private lateinit var navController: NavController
+
     // Handle Validation
     private val isValid: Boolean
         get() {
@@ -397,6 +397,11 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         val termsConditionClick: ClickableSpan = object : ClickableSpan() {
 
             override fun onClick(p0: View) {
+                val intent = Intent(this@CreateNewAccountActivity, InformationActivity::class.java)
+                intent.putExtra("source", Const.PRIVACY_POLICY)
+                startActivity(intent)
+                finish()
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -410,7 +415,11 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         val privacyPolicyClick: ClickableSpan = object : ClickableSpan() {
 
             override fun onClick(p0: View) {
-
+                val intent = Intent(this@CreateNewAccountActivity, InformationActivity::class.java)
+                intent.putExtra("source", Const.TERM_OF_USE)
+                startActivity(intent)
+                finish()
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -421,8 +430,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 ds.linkColor = ContextCompat.getColor(applicationContext, R.color._A26DCB)
             }
         }
-        ss.setSpan(termsConditionClick, 26, 33, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        ss.setSpan(privacyPolicyClick, 26, 33, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(termsConditionClick, 15, 29, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(privacyPolicyClick, 33, 45, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         binding.checkboxText.text = ss
         binding.checkboxText.movementMethod = LinkMovementMethod.getInstance()

@@ -14,11 +14,16 @@ import com.shepherdapp.app.data.dto.med_list.add_med_list.AddMedListRequestModel
 import com.shepherdapp.app.data.dto.medical_conditions.AddMedicalConditionRequestModel
 import com.shepherdapp.app.databinding.FragmentAddNewMedicationBinding
 import com.shepherdapp.app.databinding.FragmentAddNewMedicineBinding
+import com.shepherdapp.app.network.retrofit.DataResult
+import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
+import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.AddMedicationViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
     View.OnClickListener {
     private lateinit var fragmentAddNewMedicineBinding: FragmentAddNewMedicineBinding
@@ -40,6 +45,23 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
     }
 
     override fun observeViewModel() {
+        addMedicationViewModel.addMedicineResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                    backPress()
+                }
+            }
+        }
+
 
     }
 
@@ -54,11 +76,11 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
             }
             R.id.btnSubmit -> {
                 if (isValid) {
-                    if (binding.medicineNameET.text.toString().trim().isNotEmpty()) {
-                        medicationName = binding.medicineNameET.text.toString().trim()
+                    if (fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim().isNotEmpty()) {
+                        medicationName = fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim()
                     }
-                    if (binding.etDescription.text.toString().trim().isNotEmpty()) {
-                        description = binding.etDescription.text.toString().trim()
+                    if (fragmentAddNewMedicineBinding.etDescription.text.toString().trim().isNotEmpty()) {
+                        description = fragmentAddNewMedicineBinding.etDescription.text.toString().trim()
                     }
                     addMedicationViewModel.addNewMedlistMedicine(
                         AddMedListRequestModel(medicationName, description, "user")
@@ -71,10 +93,10 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
     private val isValid: Boolean
         get() {
             when {
-                binding.medicineNameET.text.toString().isEmpty() -> {
-                    binding.medicineNameET.error =
+                fragmentAddNewMedicineBinding.medicineNameET.text.toString().isEmpty() -> {
+                    fragmentAddNewMedicineBinding.medicineNameET.error =
                         getString(R.string.please_enter_medical_condition)
-                    binding.medicineNameET.requestFocus()
+                    fragmentAddNewMedicineBinding.medicineNameET.requestFocus()
                 }
                 else -> {
                     return true

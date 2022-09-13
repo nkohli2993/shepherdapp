@@ -336,7 +336,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_book"
                         android:lineSpacingMultiplier="1.4"
-                        android:text="@string/I_agree_to_terms_and_conditions_and_privacy_policy"
+                        android:text="@string/agree_to_terms_and_conditions_and_privacy_policy"
                         android:textColor="@color/colorBlack"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@+id/checkbox_terms_conditions"

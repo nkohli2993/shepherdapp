@@ -24,6 +24,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".InformationActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddMedicalConditionActivity"
             android:exported="false" />
         <!--
@@ -36,7 +39,7 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.shepherdapp.app.ui.component.createAccount.CreateNewAccountActivity"
+            android:name=".CreateNewAccountActivity"
             android:label="@string/create_account"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -66,7 +69,7 @@
             android:name="com.shepherdapp.app.ui.component.walk_through.WalkThroughActivity"
             android:label="@string/title_activity_walk_through" />
         <activity
-            android:name="com.shepherdapp.app.ui.component.createAccount.CreateAccountActivity"
+            android:name=".CreateAccountActivity"
             android:label="@string/title_activity_create_account" />
         <activity
             android:name="com.shepherdapp.app.ui.welcome.WelcomeActivity"

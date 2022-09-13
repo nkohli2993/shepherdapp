@@ -105,8 +105,6 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                         it.edtFileName.setText(lockBox?.name)
                         it.edtNote.setText(lockBox?.note)
                         it.txtTypeTV.setText(lockBox?.lbtId.toString())  /// set lockbox type name
-//                        Picasso.get().load(lockBox?.documentUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-//                            .into(imgDoc)
                     }
 
                     documentImagesAdapter =
@@ -176,44 +174,5 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     override fun getLayoutRes(): Int {
         return R.layout.fragment_uploaded_lock_box_doc_info
     }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun showChooseFileDialog(path: String, type: String) {
-        val dialog =
-            Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_show_file)
-        val tvClose = dialog.findViewById(R.id.tvClose) as AppCompatTextView
-        val image = dialog.findViewById(R.id.imageShowIV) as AppCompatImageView
-        val webview = dialog.findViewById(R.id.webview) as WebView
-        image.visibility = View.GONE
-        webview.visibility = View.GONE
-        when (type) {
-            "image" -> {
-                image.visibility = View.VISIBLE
-                image.loadImageCentreCrop(
-                    R.drawable.image,
-                    path
-                )
-
-            }
-            else -> {
-                webview.visibility = View.VISIBLE
-                val webSettings: WebSettings = webview.settings
-                webSettings.javaScriptEnabled = true
-                val webViewClient = WebViewClientImpl(activity)
-                webview.webViewClient = webViewClient
-                webview.loadUrl(path)
-            }
-        }
-        tvClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.setCancelable(false)
-        dialog.show()
-    }
-
-
 }
 

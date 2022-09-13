@@ -388,7 +388,7 @@ interface ApiService {
     ): Response<GetMedicationRecordResponse>
 
     @POST(ApiConstants.MedList.ADD_MED_LIST)
-    suspend fun addNewMedlistMedicine(medlist: AddMedListRequestModel): Response<AddedMedlistResponseModel>
+    suspend fun addNewMedlistMedicine( @Body  medlist: AddMedListRequestModel): Response<AddedMedlistResponseModel>
 
     @PUT(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
     suspend fun updateProfile(
