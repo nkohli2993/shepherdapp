@@ -45,7 +45,7 @@ import java.util.*
 @AndroidEntryPoint
 @SuppressLint("NotifyDataSetChanged,SetTextI18n,SimpleDateFormat")
 class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
-    View.OnClickListener, FrequencyAdapter.selectedFrequency, DaysAdapter.SelectedDay {
+    View.OnClickListener, FrequencyAdapter.selectedFrequency{
 
     private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding
     private var dayAdapter: DaysAdapter? = null
@@ -337,8 +337,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
         fragmentScheduleMedicineBinding.etNote.setOnTouchListener { view, event ->
             //check days view open
-            if (fragmentScheduleMedicineBinding.daysRV.visibility == View.VISIBLE) {
-                fragmentScheduleMedicineBinding.daysRV.visibility = View.GONE
+            if (fragmentScheduleMedicineBinding.daysEveryDayCl.visibility == View.VISIBLE) {
+                fragmentScheduleMedicineBinding.daysEveryDayCl.visibility = View.GONE
                 rotate(0f, fragmentScheduleMedicineBinding.dayIM)
             }
 
@@ -382,6 +382,36 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
             }
 
+        fragmentScheduleMedicineBinding.cbEveryDay.setOnCheckedChangeListener { compoundButton, _isChecked ->
+            if (compoundButton.isPressed) {
+                if (_isChecked) {
+                    setEveryDaySelected(true)
+                } else {
+                    setEveryDaySelected(false)
+                }
+                //set days id
+            }
+        }
+
+    }
+
+    private fun setEveryDaySelected(value: Boolean) {
+        val shownDayList: ArrayList<DayList> = arrayListOf()
+        val selected: ArrayList<String> = arrayListOf()
+        for (i in dayList) {
+            i.isSelected = false
+            if (i.isClickabled) {
+                if (value) {
+                    selected.add(i.id.toString())
+                }
+                i.isSelected = value
+            }
+            shownDayList.add(i)
+        }
+        dayList.clear()
+        dayList.addAll(shownDayList)
+        daysIds = selected.joinToString().replace(" ", "")
+        setDayAdapter()
     }
 
 
@@ -436,7 +466,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             if (o1.id == null) 0 else o1.id!!
                 .compareTo(o2.id!!)
         }
-        dayAdapter = DaysAdapter(medicationViewModel, requireContext(), this, dayList)
+        dayAdapter = DaysAdapter(medicationViewModel, requireContext(),  dayList)
         fragmentScheduleMedicineBinding.daysRV.adapter = dayAdapter
     }
 
@@ -549,6 +579,22 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 fragmentScheduleMedicineBinding.daysTV.text =
                     ""
             }
+
+            val daysEligible: ArrayList<String> = arrayListOf()
+            val selected: ArrayList<String> = arrayListOf()
+            for (i in dayList) {
+                if (i.isClickabled) {
+                    daysEligible.add(i.id.toString())
+                }
+                if (i.isSelected) {
+                    selected.add(i.id.toString())
+                }
+            }
+
+            fragmentScheduleMedicineBinding.cbEveryDay.isChecked = false
+            if (daysEligible.size == selected.size) {
+                fragmentScheduleMedicineBinding.cbEveryDay.isChecked = true
+            }
         }
     }
 
@@ -599,15 +645,24 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         navigateEvent.getContentIfNotHandled()?.let {
             if (dayList[it].isClickabled) {
                 dayList[it].isSelected = !dayList[it].isSelected
-
+                val daysEligible: ArrayList<String> = arrayListOf()
                 val selected: ArrayList<String> = arrayListOf()
                 val selectedDays: ArrayList<String> = arrayListOf()
                 for (i in dayList) {
+                    if (i.isClickabled) {
+                        daysEligible.add(i.id.toString())
+                    }
                     if (i.isSelected) {
                         selected.add(i.id.toString())
                         selectedDays.add(i.time.toString())
                     }
                 }
+
+                fragmentScheduleMedicineBinding.cbEveryDay.isChecked = false
+                if (daysEligible.size == selected.size) {
+                    fragmentScheduleMedicineBinding.cbEveryDay.isChecked = true
+                }
+
                 if (selectedDays.size > 0) {
                     daysIds = selected.joinToString().replace(" ", "")
                     fragmentScheduleMedicineBinding.daysTV.text =
@@ -816,6 +871,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 daysIds = null
                 addDays()
                 setDayAdapter()
+                fragmentScheduleMedicineBinding.cbEveryDay.isChecked = false
             }, mYear, mMonth, mDay
         )
         datePickerDialog.datePicker.minDate = c.timeInMillis
@@ -874,14 +930,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private val isValid: Boolean
         get() {
             when {
-/*
-                doseID == null -> {
-                    showError(
-                        requireContext(),
-                        getString(R.string.please_select_dose_for_medication)
-                    )
-                }
-*/
                 selectedDoseId == null || selectedDoseId == "-1" -> {
                     showError(
                         requireContext(),
@@ -900,53 +948,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         getString(R.string.please_select_frequcny_for_dose)
                     )
                 }
-/*
-                timeList.size == 1 && timeListCheck() -> {
-                    showError(
-                        requireContext(),
-                        getString(R.string.please_select_timing_medication)
-                    )
-                }
-
-                timeList.size > 1 && timeListCheck() -> {
-                    showError(
-                        requireContext(),
-                        getString(R.string.please_select_timing_all_medication)
-                    )
-                }
-*/
                 daysIds == null -> {
                     showError(
                         requireContext(),
                         getString(R.string.please_select_days_for_medication)
                     )
                 }
-/*
-                fragmentScheduleMedicineBinding.etNote.text.toString().trim().isEmpty() -> {
-                    fragmentScheduleMedicineBinding.etNote.error =
-                        getString(R.string.please_enter_med_list_notes)
-                    fragmentScheduleMedicineBinding.etNote.requestFocus()
-                }
-*/
-
                 else -> {
                     return true
                 }
             }
             return false
         }
-
-    private fun timeListCheck(): Boolean {
-        var allFiled = false
-
-        for (i in timeList) {
-            if (i.time.isNullOrEmpty()) {
-                allFiled = true
-                break
-            }
-        }
-        return allFiled
-    }
 
     //check time added or removed from list
     override fun onSelected(position: Int) {
@@ -987,11 +1000,11 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     }
 
     private fun showDayView() {
-        if (fragmentScheduleMedicineBinding.daysRV.visibility == View.VISIBLE) {
-            fragmentScheduleMedicineBinding.daysRV.visibility = View.GONE
+        if (fragmentScheduleMedicineBinding.daysEveryDayCl.visibility == View.VISIBLE) {
+            fragmentScheduleMedicineBinding.daysEveryDayCl.visibility = View.GONE
             rotate(0f, fragmentScheduleMedicineBinding.dayIM)
         } else {
-            fragmentScheduleMedicineBinding.daysRV.visibility = View.VISIBLE
+            fragmentScheduleMedicineBinding.daysEveryDayCl.visibility = View.VISIBLE
             rotate(180f, fragmentScheduleMedicineBinding.dayIM)
         }
         hideKeyboard(fragmentScheduleMedicineBinding.scrollView)
@@ -1049,34 +1062,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             cal1.add(Calendar.DATE, 1)
         }
         return dates
-    }
-
-    override fun selected(position: Int) {
-        if (dayList[position].isClickabled) {
-            dayList[position].isSelected = !dayList[position].isSelected
-            dayAdapter!!.notifyDataSetChanged()
-            val selected: ArrayList<String> = arrayListOf()
-            val selectedDays: ArrayList<String> = arrayListOf()
-            for (i in dayList) {
-                if (i.isSelected) {
-                    selected.add(i.id.toString())
-                    selectedDays.add(i.time.toString())
-                }
-            }
-            if (selectedDays.size > 0) {
-                daysIds = selected.joinToString().replace(" ", "")
-                fragmentScheduleMedicineBinding.daysTV.text =
-                    selectedDays.joinToString().replace(" ", "")
-            } else {
-                fragmentScheduleMedicineBinding.daysTV.text = ""
-            }
-        } else {
-            showError(
-                requireContext(),
-                "This day does not lie between selected end date of medication."
-            )
-        }
-
     }
 
 }

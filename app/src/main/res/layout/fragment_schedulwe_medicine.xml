@@ -150,8 +150,8 @@
                         android:layout_width="@dimen/_20sdp"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:contentDescription="@string/app_name"
                         android:layout_marginEnd="@dimen/_10sdp"
+                        android:contentDescription="@string/app_name"
                         android:padding="@dimen/_4sdp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -509,19 +509,46 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/daysRV"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/daysEveryDayCl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_2sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
                     android:background="@color/colorWhite"
                     android:elevation="@dimen/_2sdp"
-                    android:nestedScrollingEnabled="false"
                     android:visibility="gone"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@+id/clDaysWrapper"
-                    tools:itemCount="4"
-                    tools:listitem="@layout/adapter_frequency" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/clDaysWrapper">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/cbEveryDay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:button="@drawable/checkbox_selector"
+                        android:gravity="center_vertical"
+                        android:minWidth="0dp"
+                        android:minHeight="0dp"
+                        android:padding="@dimen/_10sdp"
+                        android:text="@string/everyday"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/daysRV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_2sdp"
+                        android:background="@color/colorWhite"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintTop_toBottomOf="@+id/cbEveryDay"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/layout_add_medicine_list" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvNote"
@@ -533,7 +560,7 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/daysRV" />
+                    app:layout_constraintTop_toBottomOf="@+id/daysEveryDayCl" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clNoteWrapper"

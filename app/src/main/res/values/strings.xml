@@ -535,5 +535,6 @@
     <string name="loved_one_not_available">LovedOne\'s Name Not Available</string>
     <string name="no_address_avaialble">No Address Available</string>
     <string name="edit_medical_conditions">Edit Medical Conditions</string>
-    <string name="no_medical_condition_found">No medical conditions found...</string>
+    <string name="no_medical_condition_found">No medical conditions found…</string>
+    <string name="everyday">Everyday</string>
 </resources>
