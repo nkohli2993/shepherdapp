@@ -51,8 +51,9 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:fontFamily="@font/gotham_book"
+                android:lineSpacingMultiplier="1.4"
                 android:textColor="@color/_192032"
-                android:textSize="@dimen/_16ssp"
+                android:textSize="@dimen/_13ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/ivBack"
                 app:layout_constraintTop_toBottomOf="@id/tvTitle" />

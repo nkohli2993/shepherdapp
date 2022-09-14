@@ -49,6 +49,10 @@ class InformationFragment : BaseFragment<FragmentInformationBinding>(), View.OnC
                 is DataResult.Success -> {
                     hideLoading()
                     when (args.source) {
+                        Const.ABOUT_US -> {
+                            fragmentInformationBinding.tvDescription.text =
+                                HtmlCompat.fromHtml(result.data.payload?.about ?: "", 0)
+                        }
                         Const.PRIVACY_POLICY -> {
                             fragmentInformationBinding.tvDescription.text =
                                 HtmlCompat.fromHtml(result.data.payload?.privacyPolicy ?: "", 0)
@@ -73,6 +77,9 @@ class InformationFragment : BaseFragment<FragmentInformationBinding>(), View.OnC
     private fun setTitle() {
         fragmentInformationBinding.apply {
             when (args.source) {
+                Const.ABOUT_US -> {
+                    tvTitle.text = getString(R.string.about_us)
+                }
                 Const.PRIVACY_POLICY -> {
                     tvTitle.text = getString(R.string.privacy_policy)
                 }

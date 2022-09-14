@@ -131,6 +131,13 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                 findNavController().navigate(R.id.action_nav_setting_to_invitation)
 
             }
+            R.id.clAboutUs -> {
+                findNavController().navigate(
+                    SettingFragmentDirections.actionNavSettingToInformation(
+                        source = Const.ABOUT_US
+                    )
+                )
+            }
             R.id.clPrivacyPolicy -> {
                 findNavController().navigate(
                     SettingFragmentDirections.actionNavSettingToInformation(

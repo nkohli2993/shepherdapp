@@ -531,5 +531,5 @@
     <string name="please_enter_medical_condition">Please enter medical condition name.</string>
     <string name="document_added_successfully">Document added successfully!</string>
     <string name="files_uploaded_successfully">Files uploaded successfully…</string>
-
+    <string name="about_us">About Us</string>
 </resources>
