@@ -1,10 +1,13 @@
 package com.shepherdapp.app.ui.component.loved_one
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +29,7 @@ import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.LovedOneViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_join_care_team.*
+
 
 @AndroidEntryPoint
 class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClickListener,
@@ -65,16 +69,18 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
         var visibleItemCount: Int
         var totalItemCount: Int
         var pastVisiblesItems: Int
-        fragmentLovedOnesBinding.recyclerViewMembers.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            fragmentLovedOnesBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (scrollY > oldScrollY) {
+                    Log.i("TAG", "Scroll DOWN")
                     isScrolling = true
-                    visibleItemCount = recyclerView.layoutManager!!.childCount
-                    totalItemCount = recyclerView.layoutManager!!.itemCount
+                    visibleItemCount =
+                        fragmentLovedOnesBinding.recyclerViewMembers.layoutManager!!.childCount
+                    totalItemCount =
+                        fragmentLovedOnesBinding.recyclerViewMembers.layoutManager!!.itemCount
                     pastVisiblesItems =
-                        (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        (fragmentLovedOnesBinding.recyclerViewMembers.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
                         isScrolling = false
                         currentPage++
@@ -82,8 +88,12 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                         lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
                     }
                 }
-            }
-        })
+                if (scrollY == v.measuredHeight - v.getChildAt(0).measuredHeight) {
+                    Log.i("TAG", "BOTTOM SCROLL")
+                }
+            })
+
+        }
     }
 
     override fun observeViewModel() {

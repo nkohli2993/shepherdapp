@@ -75,7 +75,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             if (search != null) {
                 if (search.isEmpty()) {
                     isSearched = false
-                    conditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
+                    conditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
                     binding.imgCancel.visibility = View.GONE
                     binding.txtNoResultFound.visibility = View.GONE
                     binding.recyclerViewCondition.visibility = View.VISIBLE
@@ -83,18 +83,18 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
                 if (search.isNotEmpty()) {
                     binding.imgCancel.visibility = View.VISIBLE
-                    searchedConditions?.clear()
+                    searchedConditions.clear()
                     isSearched = true
-                    conditions?.forEach {
+                    conditions.forEach {
                         if (it.name?.contains(search.toString(), true) == true) {
-                            searchedConditions?.add(it)
+                            searchedConditions.add(it)
                         }
                     }
-                    if (searchedConditions.isNullOrEmpty()) {
+                    if (searchedConditions.isEmpty()) {
                         binding.txtNoResultFound.visibility = View.VISIBLE
                         binding.recyclerViewCondition.visibility = View.GONE
                     }
-                    searchedConditions?.let { addLovedOneConditionAdapter?.updateConditions(it) }
+                    searchedConditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
                 }
             }
 
@@ -145,6 +145,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
                         return@observeEvent
                     } else {
+                        binding.txtMedicalCondition.text = getString(R.string.edit_medical_conditions)
                         binding.buttonFinish.text = getString(R.string.update)
                     }
                 }

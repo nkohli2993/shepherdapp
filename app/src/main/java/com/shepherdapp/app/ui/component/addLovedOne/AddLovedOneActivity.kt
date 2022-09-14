@@ -163,7 +163,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 binding.edtLastName.setText(payload?.userProfiles?.lastname)
                 binding.editTextEmail.setText(payload?.email)
 
-                binding.edtAddress.text = payload?.userLocation?.formattedAddress
+                binding.edtAddress.setText(payload?.userLocation?.formattedAddress?:"")
 
                 binding.edtCustomAddress.setText(payload?.userProfiles?.address)
                 binding.btnContinue.text = "Save Changes"
@@ -635,7 +635,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         val lat = data?.getDoubleExtra("latitude", 0.0)
         val lng = data?.getDoubleExtra("longitude", 0.0)
         placeLatLng = lat?.let { lng?.let { it1 -> LatLng(it, it1) } }
-        binding.edtAddress.text = placeAddress
+        binding.edtAddress.setText(placeAddress)
     }
 
 

@@ -398,9 +398,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
             override fun onClick(p0: View) {
                 val intent = Intent(this@CreateNewAccountActivity, InformationActivity::class.java)
-                intent.putExtra("source", Const.PRIVACY_POLICY)
+                intent.putExtra("type", Const.PRIVACY_POLICY)
                 startActivity(intent)
-                finish()
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
             }
 
@@ -416,9 +415,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
             override fun onClick(p0: View) {
                 val intent = Intent(this@CreateNewAccountActivity, InformationActivity::class.java)
-                intent.putExtra("source", Const.TERM_OF_USE)
+                intent.putExtra("type", Const.TERM_OF_USE)
                 startActivity(intent)
-                finish()
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
             }
 
@@ -430,8 +428,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 ds.linkColor = ContextCompat.getColor(applicationContext, R.color._A26DCB)
             }
         }
-        ss.setSpan(termsConditionClick, 15, 29, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        ss.setSpan(privacyPolicyClick, 33, 45, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(termsConditionClick, 15, 33, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        ss.setSpan(privacyPolicyClick, 37, 52, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         binding.checkboxText.text = ss
         binding.checkboxText.movementMethod = LinkMovementMethod.getInstance()

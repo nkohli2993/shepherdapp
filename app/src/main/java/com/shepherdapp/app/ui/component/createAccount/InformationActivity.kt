@@ -12,7 +12,9 @@ import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.StaticPagesViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InformationActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityInformationBinding
     private val staticPagesViewModel: StaticPagesViewModel by viewModels()
@@ -52,7 +54,8 @@ class InformationActivity : BaseActivity(), View.OnClickListener {
         val view = binding.root
         setContentView(view)
 
-        type = intent.getStringExtra("type")!!
+        type = intent.getStringExtra("type") ?: ""
+        setTitle()
         staticPagesViewModel.getStaticPagesApi(pageNumber, limit)
     }
 

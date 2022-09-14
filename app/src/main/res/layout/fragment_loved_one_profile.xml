@@ -80,7 +80,6 @@
                         android:layout_margin="@dimen/_1sdp"
                         android:padding="@dimen/_2sdp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/ic_defalut_profile_pic"
                         app:imageUrl="@{data.userProfiles.profilePhoto}"
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
                 </LinearLayout>
@@ -216,17 +215,52 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtAddress"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10ssp"
                     android:fontFamily="@font/gotham_book"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/_40sdp"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/ivAddress"
                     app:layout_constraintTop_toTopOf="parent" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clCustomAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivCustomAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_address_profile"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtCustomAddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10ssp"
+                    android:fontFamily="@font/gotham_book"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/_40sdp"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_14ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/ivCustomAddress"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clmedicalConditon"
@@ -243,7 +277,7 @@
                     android:background="@color/_FCFCFC"
                     android:fontFamily="@font/gotham_bold"
                     android:paddingVertical="@dimen/_8sdp"
-                    android:text="Medical Conditions"
+                    android:text="@string/medical_conditions"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
                     app:layout_constraintEnd_toStartOf="@id/editMedicalConditionIV"
@@ -266,6 +300,7 @@
                     android:id="@+id/rvLovedOneMedicalConditions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:background="@color/_FCFCFC"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never"
@@ -282,7 +317,7 @@
                     android:background="@color/_FCFCFC"
                     android:fontFamily="@font/gotham_medium"
                     android:padding="@dimen/_10sdp"
-                    android:text="No medical conditions found..."
+                    android:text="@string/no_medical_condition_found"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
                     android:visibility="gone"

@@ -11,12 +11,14 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.AddLovedOneConditionViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityAddMedicalConditionBinding
     private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
-    private var medicalConditionName :String?=null
-    private var description:String?=null
+    private var medicalConditionName: String? = null
+    private var description: String? = null
     override fun observeViewModel() {
         addLovedOneConditionViewModel.addedConditionsResponseLiveData.observeEvent(this) {
             when (it) {
@@ -70,14 +72,14 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btnSubmit -> {
                 if (isValid) {
-                    if(binding.medicineNameET.text.toString().trim().isNotEmpty()){
+                    if (binding.medicineNameET.text.toString().trim().isNotEmpty()) {
                         medicalConditionName = binding.medicineNameET.text.toString().trim()
                     }
-                    if(binding.etDescription.text.toString().trim().isNotEmpty()){
+                    if (binding.etDescription.text.toString().trim().isNotEmpty()) {
                         description = binding.etDescription.text.toString().trim()
                     }
                     addLovedOneConditionViewModel.addMedicalConditions(
-                        AddMedicalConditionRequestModel(medicalConditionName,description)
+                        AddMedicalConditionRequestModel(medicalConditionName, description)
                     )
                 }
             }

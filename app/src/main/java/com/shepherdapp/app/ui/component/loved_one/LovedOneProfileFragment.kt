@@ -120,7 +120,10 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                         fragmentLovedOneProfileBinding.txtPhone.text = "No Phone Number Available"
                     } else {
                         fragmentLovedOneProfileBinding.txtPhone.text =
-                            payload?.userProfiles?.phoneCode + " " + payload?.userProfiles?.phoneNumber
+                            if ((payload?.userProfiles?.phoneCode
+                                    ?: "").startsWith("+")
+                            ) payload?.userProfiles?.phoneCode
+                                ?: "" else "+${payload?.userProfiles?.phoneCode}" + " " + payload?.userProfiles?.phoneNumber
                     }
 
                     // Set Name
@@ -132,21 +135,28 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                             payload?.userProfiles?.firstname
                         }
                     } else {
-                        "LovedOne's Name Not Available"
+                        getString(R.string.loved_one_not_available)
                     }
 
                     fragmentLovedOneProfileBinding.tvName.text = name
-
-                    // Get Place
                     val place = payload?.userLocation?.formattedAddress
+                    //show selected address
+                    if (!place.isNullOrEmpty()) {
+                        fragmentLovedOneProfileBinding.txtAddress.text = place
+                    }else{
+                        fragmentLovedOneProfileBinding.txtAddress.text =
+                            getString(R.string.no_address_avaialble)
+                    }
+
                     // Get address
                     val address = payload?.userProfiles?.address
                     if (!address.isNullOrEmpty()) {
-                        fragmentLovedOneProfileBinding.txtAddress.text = address
+                        fragmentLovedOneProfileBinding.txtCustomAddress.text = address
                     } else if (!place.isNullOrEmpty()) {
-                        fragmentLovedOneProfileBinding.txtAddress.text = place
+                        fragmentLovedOneProfileBinding.txtCustomAddress.text = place
                     } else {
-                        fragmentLovedOneProfileBinding.txtAddress.text = "No Address Available"
+                        fragmentLovedOneProfileBinding.txtCustomAddress.text =
+                            getString(R.string.no_address_avaialble)
                     }
                 }
             }
@@ -160,7 +170,6 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         Log.d(TAG, "careTeamModel: $careTeamModel ")
 
         fragmentLovedOneProfileBinding.listener = this
-//        fragmentLovedOneProfileBinding.data = careTeamModel
 
         setLovedOneMedicalConditionsAdapter()
 
@@ -170,10 +179,6 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                 it
             )
         }
-
-        // Get user profile
-//        lovedOneMedicalConditionViewModel.getUserDetails(careTeamModel?.love_user_id_details?.userProfileId)
-
         // Get Loved One's detail with relation
         careTeamModel?.love_user_id_details?.uid?.let {
             lovedOneMedicalConditionViewModel.getLovedOneDetailsWithRelation(
@@ -205,7 +210,6 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
             R.id.ivEdit -> {
                 val intent = Intent(requireContext(), AddLovedOneActivity::class.java)
                 intent.putExtra("source", "Loved One Profile")
-//                intent.putExtra("care_model", careTeamModel)
                 intent.putExtra("payload", payload)
                 startActivity(intent)
                 requireActivity().overridePendingTransition(

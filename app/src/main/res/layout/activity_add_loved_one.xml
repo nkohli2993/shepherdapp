@@ -412,16 +412,20 @@
                             app:srcCompat="@drawable/ic_outline_location_on"
                             app:tint="@color/colorGreyDark" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
+                        <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/edtAddress"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_80sdp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:background="@null"
+                            android:cursorVisible="false"
                             android:drawablePadding="@dimen/_5sdp"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:gravity="top|start"
                             android:hint="@string/please_enter_the_loved_one_address"
                             android:lines="6"
+                            android:onClick="@{listener::onClick}"
                             android:paddingHorizontal="@dimen/_8sdp"
                             android:textSize="@dimen/_12ssp" />
                     </LinearLayout>

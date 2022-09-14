@@ -104,7 +104,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                         it.txtLockBoxNote.text = lockBox?.note
                         it.edtFileName.setText(lockBox?.name)
                         it.edtNote.setText(lockBox?.note)
-                        it.txtTypeTV.setText(lockBox?.lbtId.toString())  /// set lockbox type name
+                        it.txtTypeTV.text = lockBox?.lockbox_types?.name
                     }
 
                     documentImagesAdapter =

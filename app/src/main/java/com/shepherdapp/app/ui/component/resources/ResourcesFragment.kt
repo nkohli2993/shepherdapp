@@ -319,7 +319,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         textConditionName.text = text.conditions!!.name
         textConditionName.typeface = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
         textConditionName.setTextColor(ContextCompat.getColor(requireContext(), R.color._192032))
-        textConditionName.setPadding(20, 10, 10, 10)
+        textConditionName.setPadding(20, 15, 10, 15)
         parent.setPadding(5, 5, 10, 5)
         closeIV.setPadding(0, 5, 0, 0)
         textConditionName.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))

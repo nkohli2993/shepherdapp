@@ -153,8 +153,11 @@ fun setPhoneError(view: EditText, data: String) {
 fun loadImage(view: ImageView, imageUrl: String?) {
     if (!imageUrl.isNullOrEmpty()) {
         Picasso.get().load(imageUrl)
-            .placeholder(R.drawable.ic_defalut_profile_pic)
+            .placeholder(R.drawable.image_placeholder)
             .into(view)
+    }
+    else{
+        view.setImageResource(R.drawable.image_placeholder)
     }
 }
 

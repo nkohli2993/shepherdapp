@@ -23,11 +23,9 @@
         android:requestLegacyExternalStorage="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+
         <activity
-            android:name=".InformationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddMedicalConditionActivity"
+            android:name="com.shepherdapp.app.ui.component.addLovedOneCondition.AddMedicalConditionActivity"
             android:exported="false" />
         <!--
          <activity
@@ -39,7 +37,11 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".CreateNewAccountActivity"
+            android:name="com.shepherdapp.app.ui.component.createAccount.CreateNewAccountActivity"
+            android:label="@string/create_account"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.shepherdapp.app.ui.component.createAccount.InformationActivity"
             android:label="@string/create_account"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -78,7 +80,7 @@
             android:name="com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity"
             android:label="@string/title_activity_add_loved_one" />
         <activity
-            android:name=".AddLovedOneConditionActivity"
+            android:name="com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity"
             android:label="@string/title_activity_add_loved_one_condition" />
         <activity
             android:name="com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity"

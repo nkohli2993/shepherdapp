@@ -2,6 +2,7 @@ package com.shepherdapp.app.data.dto.lock_box.create_lock_box
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -17,5 +18,6 @@ data class Payload(
     @SerializedName("lbt_id") var lbtId: Int? = null,
     @SerializedName("love_user_id") var loveUserId: String? = null,
     @SerializedName("documents") var documents: ArrayList<Documents> = arrayListOf(),
-    @SerializedName("user_id") var userId: String? = null
+    @SerializedName("user_id") var userId: String? = null,
+    @SerializedName("lockbox_types") var lockbox_types: LockBoxTypes = LockBoxTypes()
 ):Parcelable
