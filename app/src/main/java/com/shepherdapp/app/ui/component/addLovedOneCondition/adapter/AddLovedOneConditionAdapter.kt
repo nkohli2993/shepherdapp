@@ -30,6 +30,11 @@ class AddLovedOneConditionAdapter(
         Log.d(TAG, "updateConditions:$conditionList ")
         notifyDataSetChanged()
     }
+    fun addConditions(conditions: ArrayList<Conditions>) {
+        conditionList.addAll(conditions)
+        Log.d(TAG, "updateConditions:$conditionList ")
+        notifyDataSetChanged()
+    }
 
     interface ItemSelectedListener {
         fun itemSelected(position: Int)

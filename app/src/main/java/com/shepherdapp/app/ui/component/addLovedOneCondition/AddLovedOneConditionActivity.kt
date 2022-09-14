@@ -3,13 +3,17 @@ package com.shepherdapp.app.ui.component.addLovedOneCondition
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.medical_conditions.Conditions
 import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherdapp.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
@@ -22,6 +26,7 @@ import com.shepherdapp.app.ui.component.addLovedOneCondition.adapter.AddLovedOne
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.Status
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +41,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private lateinit var binding: ActivityAddLovedOneConditionBinding
     private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
     private var pageNumber: Int = 1
-    private var limit: Int = 50
+    private var limit: Int = 10
     private var conditions: ArrayList<Conditions> = ArrayList()
     private var selectedConditions: ArrayList<Conditions> = ArrayList()
     private var searchedConditions: ArrayList<Conditions> = ArrayList()
@@ -48,6 +53,10 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var conditionIDs: List<Int?>? = null
     private var isLoading = false
     private var isSearched = false
+    private var currentPage: Int = 0
+    private var totalPage: Int = 0
+    private var total: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
@@ -61,7 +70,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             isLoading = true
             callAllMedicalCondition()
         }
-
+        setConditionAdapter()
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
 
         binding.imgCancel.setOnClickListener {
@@ -85,6 +94,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     binding.imgCancel.visibility = View.VISIBLE
                     searchedConditions.clear()
                     isSearched = true
+                    pageNumber = 1
                     conditions.forEach {
                         if (it.name?.contains(search.toString(), true) == true) {
                             searchedConditions.add(it)
@@ -101,6 +111,13 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        conditions.clear()
+        addLovedOneConditionAdapter = null
+        pageNumber = 1
+    }
 
     override fun initViewBinding() {
         binding = ActivityAddLovedOneConditionBinding.inflate(layoutInflater)
@@ -145,7 +162,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
                         return@observeEvent
                     } else {
-                        binding.txtMedicalCondition.text = getString(R.string.edit_medical_conditions)
+                        binding.txtMedicalCondition.text =
+                            getString(R.string.edit_medical_conditions)
                         binding.buttonFinish.text = getString(R.string.update)
                     }
                 }
@@ -161,31 +179,31 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    conditions.clear()
+                    isLoading = false
+                    if (pageNumber == 1) {
+                        addLovedOneConditionAdapter = null
+                        setConditionAdapter()
+                    }
                     if (it.data.payload?.conditions != null) {
                         conditions = it.data.payload?.conditions!!
+                        it.data.payload!!.let { payload ->
+                            conditions = payload.conditions
+                            total = payload.total!!
+                            currentPage = payload.currentPage!!
+                            totalPage = payload.totalPages!!
+                        }
                     }
-
                     for (i in conditions.indices) {
                         for (j in addedConditionPayload.indices) {
                             if (conditions[i].id == addedConditionPayload[j].conditionId) {
                                 conditions[i].isSelected = true
                                 conditions[i].isAlreadySelected = 1
-//                                conditions[i].isAlreadySelected = true
                                 conditions[i].addConditionId = addedConditionPayload[j].id
                             }
                         }
                     }
-                    conditions.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
-
-                    addLovedOneConditionAdapter = conditions.let { it1 ->
-                        AddLovedOneConditionAdapter(
-                            addLovedOneConditionViewModel,
-                            it1
-                        )
-                    }
-                    addLovedOneConditionAdapter?.setClickListener(this)
-                    binding.recyclerViewCondition.adapter = addLovedOneConditionAdapter
-
+                    conditions.let { it1 -> addLovedOneConditionAdapter?.addConditions(it1) }
                 }
 
                 is DataResult.Failure -> {
@@ -240,8 +258,49 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         }
     }
 
+    private fun setConditionAdapter() {
+        addLovedOneConditionAdapter = conditions.let { it1 ->
+            AddLovedOneConditionAdapter(
+                addLovedOneConditionViewModel,
+                it1
+            )
+        }
+        addLovedOneConditionAdapter?.setClickListener(this)
+        binding.recyclerViewCondition.adapter = addLovedOneConditionAdapter
+        handleAddedLovedOneConditionPagination()
+    }
+
     private fun callAllMedicalCondition() {
         addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
+    }
+
+    private fun handleAddedLovedOneConditionPagination() {
+        var isScrolling: Boolean
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisiblesItems: Int
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (scrollY > oldScrollY) {
+                    isScrolling = true
+                    visibleItemCount =
+                        binding.recyclerViewCondition.layoutManager!!.childCount
+                    totalItemCount =
+                        binding.recyclerViewCondition.layoutManager!!.itemCount
+                    pastVisiblesItems =
+                        (binding.recyclerViewCondition.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
+                        isScrolling = false
+                        currentPage++
+                        pageNumber++
+                        isLoading = true
+                        callAllMedicalCondition()
+                    }
+                }
+            })
+
+        }
     }
 
     override fun onClick(p0: View?) {

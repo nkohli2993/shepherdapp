@@ -68,11 +68,16 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val payload = it.data.payload
-                    val filteredPayload = payload.filter { payload ->
-                        payload.conditions != null
+
+                    var payloadList: ArrayList<com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload> =
+                        arrayListOf()
+                    for (i in it.data.payload) {
+                        if (i.conditionId != null) {
+                            payloadList.add(i)
+                        }
                     }
-                    if (filteredPayload.isEmpty()) {
+
+                    if (payloadList.isEmpty()) {
                         // No medical conditions found
                         fragmentLovedOneProfileBinding.txtNoMedicalConditions.visibility =
                             View.VISIBLE
@@ -84,7 +89,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                         fragmentLovedOneProfileBinding.rvLovedOneMedicalConditions.visibility =
                             View.VISIBLE
 
-                        lovedOneMedicalConditionAdapter?.addData(payload)
+                        lovedOneMedicalConditionAdapter?.addData(payloadList)
 
                     }
                 }
@@ -92,18 +97,18 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         }
 
         // Observer user details api live data
-        lovedOneMedicalConditionViewModel.lovedOneDetailsLiveData.observeEvent(this) {
-            when (it) {
+        lovedOneMedicalConditionViewModel.lovedOneDetailsLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+                    result.message?.let { showError(requireContext(), it) }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    payload = it.data.payload
+                    payload = result.data.payload
                     fragmentLovedOneProfileBinding.data = payload
                     Log.d(TAG, "LovedOneDetailWithRelation: $payload")
 
@@ -143,7 +148,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                     //show selected address
                     if (!place.isNullOrEmpty()) {
                         fragmentLovedOneProfileBinding.txtAddress.text = place
-                    }else{
+                    } else {
                         fragmentLovedOneProfileBinding.txtAddress.text =
                             getString(R.string.no_address_avaialble)
                     }
