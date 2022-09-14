@@ -1,4 +1,4 @@
-package com.shepherdapp.app.ui.component.settings
+package com.shepherdapp.app.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

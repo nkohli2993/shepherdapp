@@ -19,6 +19,7 @@ import com.shepherdapp.app.utils.observe
 import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.utils.setupSnackbar
 import com.shepherdapp.app.utils.showToast
+import com.shepherdapp.app.view_model.ResetPasswordViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_reset_password.*
 

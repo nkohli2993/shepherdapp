@@ -1,4 +1,4 @@
-package com.shepherdapp.app.ui.component.edit_profile
+package com.shepherdapp.app.view_model
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData

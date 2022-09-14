@@ -1,6 +1,5 @@
-package com.shepherdapp.app.ui.component.createAccount
+package com.shepherdapp.app.view_model
 
-import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,12 +8,9 @@ import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.Resource
 import com.shepherdapp.app.data.dto.login.LoginRequestModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
-import com.shepherdapp.app.data.error.CHECK_YOUR_FIELDS
 import com.shepherdapp.app.data.error.EMAIL_ERROR
 import com.shepherdapp.app.ui.base.BaseViewModel
 import com.shepherdapp.app.utils.RegexUtils.isValidEmail
-import com.shepherdapp.app.utils.RegexUtils.isValidPassword
-import com.shepherdapp.app.utils.RegexUtils.passwordValidated
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.wrapEspressoIdlingResource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,12 +21,12 @@ import javax.inject.Inject
  * Created by Sumit Kumar
  */
 @HiltViewModel
-class CreateAccountViewModel @Inject constructor(private val dataRepository: DataRepository) :
+class ResetPasswordViewModel @Inject constructor(private val dataRepository: DataRepository) :
     BaseViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    private val loginLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
-    val loginLiveData: LiveData<Resource<LoginResponseModel>> get() = loginLiveDataPrivate
+    private val resetPasswordLiveDataPrivate = MutableLiveData<Resource<LoginResponseModel>>()
+    val resetPasswordLiveData: LiveData<Resource<LoginResponseModel>> get() = resetPasswordLiveDataPrivate
 
     /** Error handling as UI **/
 
@@ -43,20 +39,17 @@ class CreateAccountViewModel @Inject constructor(private val dataRepository: Dat
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
 
-    fun doLogin(context: Context, userName: String, passWord: String) {
-        val isUsernameValid = isValidEmail(userName)
-        val isPassWordValid = isValidPassword(passWord)
-        if (!isUsernameValid && !isPassWordValid) {
-            loginLiveDataPrivate.value = Resource.DataError(CHECK_YOUR_FIELDS)
-        } else if (!isUsernameValid && isPassWordValid) {
-            loginLiveDataPrivate.value = Resource.DataError(EMAIL_ERROR)
-        } else if (passwordValidated(context, passWord)) {
+    fun doResetPassword(email: String) {
+        val isUsernameValid = isValidEmail(email)
+        if (!isUsernameValid) {
+            resetPasswordLiveDataPrivate.value = Resource.DataError(EMAIL_ERROR)
+        } else {
             viewModelScope.launch {
-                loginLiveDataPrivate.value = Resource.Loading()
+                resetPasswordLiveDataPrivate.value = Resource.Loading()
                 wrapEspressoIdlingResource {
-                    dataRepository.doLogin(loginRequest = LoginRequestModel(userName, passWord))
+                    dataRepository.doLogin(loginRequest = LoginRequestModel(email, ""))
                         .collect {
-                            loginLiveDataPrivate.value = it
+                            resetPasswordLiveDataPrivate.value = it
                         }
                 }
             }

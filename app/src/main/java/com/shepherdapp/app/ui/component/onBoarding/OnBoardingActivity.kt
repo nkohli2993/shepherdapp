@@ -6,7 +6,6 @@ import com.shepherdapp.app.R
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.databinding.ActivityOnboardingBinding
-import com.shepherdapp.app.ui.component.createAccount.CreateAccountActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
 
@@ -47,7 +46,7 @@ class OnBoardingActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToCreateAccountScreen() {
-        startActivity<CreateAccountActivity>()
+//        startActivity<CreateAccountActivity>()
     }
 
     private fun navigateToLoginScreen() {
