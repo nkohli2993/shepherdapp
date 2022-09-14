@@ -68,7 +68,6 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         }
 
 
-
     }
 
     override fun observeViewModel() {
@@ -105,12 +104,15 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                         it.txtLockBoxNote.text = lockBox?.note
                         it.edtFileName.setText(lockBox?.name)
                         it.edtNote.setText(lockBox?.note)
-//                        Picasso.get().load(lockBox?.documentUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-//                            .into(imgDoc)
+                        it.txtTypeTV.setText(lockBox?.lbtId.toString())  /// set lockbox type name
                     }
 
                     documentImagesAdapter =
-                        UploadedDocumentImagesAdapter(requireContext().applicationContext, lockBox?.documents,this@LockBoxDocInfoFragment)
+                        UploadedDocumentImagesAdapter(
+                            requireContext().applicationContext,
+                            lockBox?.documents,
+                            this@LockBoxDocInfoFragment
+                        )
                     viewPager.adapter = documentImagesAdapter
                     fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
                     fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object :
@@ -147,7 +149,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
 //                fragmentUploadedLockBoxDocDetailBinding.layoutDocDetail.visibility = View.GONE
 //                fragmentUploadedLockBoxDocDetailBinding.layoutEditLockBoxDocDetail.visibility =
 //                    View.VISIBLE
-                val action = LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
+                val action =
+                    LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString())
                 findNavController().navigate(action)
             }
             R.id.btnCancel -> {
@@ -171,44 +174,5 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     override fun getLayoutRes(): Int {
         return R.layout.fragment_uploaded_lock_box_doc_info
     }
-
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun showChooseFileDialog(path: String, type: String) {
-        val dialog =
-            Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_show_file)
-        val tvClose = dialog.findViewById(R.id.tvClose) as AppCompatTextView
-        val image = dialog.findViewById(R.id.imageShowIV) as AppCompatImageView
-        val webview = dialog.findViewById(R.id.webview) as WebView
-        image.visibility = View.GONE
-        webview.visibility = View.GONE
-        when (type) {
-            "image" -> {
-                image.visibility = View.VISIBLE
-                image.loadImageCentreCrop(
-                    R.drawable.image,
-                    path
-                )
-
-            }
-            else -> {
-                webview.visibility = View.VISIBLE
-                val webSettings: WebSettings = webview.settings
-                webSettings.javaScriptEnabled = true
-                val webViewClient = WebViewClientImpl(activity)
-                webview.webViewClient = webViewClient
-                webview.loadUrl(path)
-            }
-        }
-        tvClose.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialog.setCancelable(false)
-        dialog.show()
-    }
-
-
 }
 

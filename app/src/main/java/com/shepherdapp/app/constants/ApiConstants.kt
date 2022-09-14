@@ -51,6 +51,7 @@ object ApiConstants {
             "$BASE_URL${API_VERSION}user_conditions/getAllByLovedOne/{id}"
         const val UPDATE_MEDICAL_CONDITIONS =
             "$BASE_URL${API_VERSION}user_conditions/updateOne"
+        const val ADD_MEDICAL_CONDITION =   "$BASE_URL${API_VERSION}conditions"
     }
 
     object CareTeams {
@@ -118,6 +119,7 @@ object ApiConstants {
         // get medication records
         const val GET_MEDICATION_RECORD =
             "$BASE_URL${API_VERSION}user_medication_records/loved_one/{id}"
+        const val ADD_MED_LIST = "$BASE_URL${API_VERSION}medlists"
     }
 
     object UpdateProfile {

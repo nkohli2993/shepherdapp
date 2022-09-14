@@ -5,32 +5,41 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" /> <!-- Step 2: This permission is depreciated in Android P -->
     <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+
     <application
         android:name="com.shepherdapp.app.ShepherdApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
         android:largeHeap="true"
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
+        android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-       <!-- <activity
+        <activity
+            android:name=".InformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddMedicalConditionActivity"
+            android:exported="false" />
+        <!--
+         <activity
             android:name=".ui.component.lockBox.UploadLockBoxDocumentActivity"
-            android:exported="false" />-->
+            android:exported="false" />
+        -->
         <activity
             android:name="com.shepherdapp.app.ui.component.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.shepherdapp.app.ui.component.createAccount.CreateNewAccountActivity"
+            android:name=".CreateNewAccountActivity"
             android:label="@string/create_account"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -60,7 +69,7 @@
             android:name="com.shepherdapp.app.ui.component.walk_through.WalkThroughActivity"
             android:label="@string/title_activity_walk_through" />
         <activity
-            android:name="com.shepherdapp.app.ui.component.createAccount.CreateAccountActivity"
+            android:name=".CreateAccountActivity"
             android:label="@string/title_activity_create_account" />
         <activity
             android:name="com.shepherdapp.app.ui.welcome.WelcomeActivity"
@@ -69,7 +78,7 @@
             android:name="com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity"
             android:label="@string/title_activity_add_loved_one" />
         <activity
-            android:name="com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity"
+            android:name=".AddLovedOneConditionActivity"
             android:label="@string/title_activity_add_loved_one_condition" />
         <activity
             android:name="com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity"
@@ -86,7 +95,8 @@
             android:name="com.shepherdapp.app.ui.component.lockBox.UploadLockBoxDocumentActivity"
             android:exported="false"
             android:label="@string/google_drive_upload"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -96,6 +106,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

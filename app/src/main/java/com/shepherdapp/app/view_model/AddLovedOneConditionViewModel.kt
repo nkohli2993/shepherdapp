@@ -3,10 +3,7 @@ package com.shepherdapp.app.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionResponseModel
-import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
-import com.shepherdapp.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
-import com.shepherdapp.app.data.dto.medical_conditions.UserConditionsResponseModel
+import com.shepherdapp.app.data.dto.medical_conditions.*
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.remote.medical_conditions.MedicalConditionRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -47,6 +44,11 @@ class AddLovedOneConditionViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<BaseResponseModel>>>()
     var updateConditionsResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _updateConditionsResponseLiveData
+
+    private var _addedConditionsResponseLiveData =
+        MutableLiveData<Event<DataResult<AddedUserMedicalConditionResposneModel>>>()
+    var addedConditionsResponseLiveData: LiveData<Event<DataResult<AddedUserMedicalConditionResposneModel>>> =
+        _addedConditionsResponseLiveData
 
     private var _userIDLiveData = MutableLiveData<Event<DataResult<Int>>>()
     var userIDLiveData: LiveData<Event<DataResult<Int>>> = _userIDLiveData
@@ -100,6 +102,16 @@ class AddLovedOneConditionViewModel @Inject constructor(
             }
         }
         return updateConditionsResponseLiveData
+    }
+    // add Medical Conditions
+    fun addMedicalConditions(conditions: AddMedicalConditionRequestModel): LiveData<Event<DataResult<AddedUserMedicalConditionResposneModel>>> {
+        viewModelScope.launch {
+            val response = medicalConditionRepository.addMedicalConditions(conditions)
+            withContext(Dispatchers.Main) {
+                response.collect { _addedConditionsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return addedConditionsResponseLiveData
     }
 
 

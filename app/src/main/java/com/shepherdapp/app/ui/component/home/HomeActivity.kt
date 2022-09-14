@@ -390,8 +390,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 navController.navigate(R.id.nav_my_medlist)
             }
             R.id.llResources -> {
-                showError(this, "Not implemented.")
-//                navController.navigate(R.id.nav_resources)
+                navController.navigate(R.id.nav_resources)
             }
             R.id.llLockBox -> {
                 navController.navigate(R.id.nav_lock_box)

@@ -26,6 +26,7 @@ data class UserMedicationData(
     @SerializedName("end_date") var endDate: String? = null,
     @SerializedName("medlist") var medlist: com.shepherdapp.app.data.dto.med_list.Medlist? = com.shepherdapp.app.data.dto.med_list.Medlist(),
     @SerializedName("dosage") var dosage: com.shepherdapp.app.data.dto.med_list.Medlist? = com.shepherdapp.app.data.dto.med_list.Medlist(),
+    @SerializedName("dosage_type") var dosageType: com.shepherdapp.app.data.dto.med_list.Medlist? = com.shepherdapp.app.data.dto.med_list.Medlist(),
     @SerializedName("action_type") var actionType: Int? = null,
     @SerializedName("delete_position") var deletePosition: Int? = null,
     @SerializedName("selectedDate") var selectedDate: String? = null,

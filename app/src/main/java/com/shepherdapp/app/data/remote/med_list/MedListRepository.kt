@@ -1,6 +1,8 @@
 package com.shepherdapp.app.data.remote.med_list
 
 import com.shepherdapp.app.data.dto.med_list.*
+import com.shepherdapp.app.data.dto.med_list.add_med_list.AddMedListRequestModel
+import com.shepherdapp.app.data.dto.med_list.add_med_list.AddedMedlistResponseModel
 import com.shepherdapp.app.data.dto.med_list.get_medication_detail.GetMedicationDetailResponse
 import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedList
 import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
@@ -110,6 +112,17 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
             NetworkOnlineDataRepo<AddScheduledMedicationResponseModel, AddScheduledMedicationResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AddScheduledMedicationResponseModel> {
                 return apiService.updateScheduledMedication(id, scheduledMedication)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+    // add custom medicine
+    suspend fun  addNewMedlistMedicine(
+        addMedication: AddMedListRequestModel
+    ): Flow<DataResult<AddedMedlistResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<AddedMedlistResponseModel, AddedMedlistResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AddedMedlistResponseModel> {
+                return apiService.addNewMedlistMedicine(addMedication)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

@@ -1,9 +1,6 @@
 package com.shepherdapp.app.data.remote.medical_conditions
 
-import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionResponseModel
-import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
-import com.shepherdapp.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
-import com.shepherdapp.app.data.dto.medical_conditions.UserConditionsResponseModel
+import com.shepherdapp.app.data.dto.medical_conditions.*
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -66,5 +63,14 @@ class MedicalConditionRepository @Inject constructor(private val apiService: Api
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    //add medical conditions
+    suspend fun addMedicalConditions(conditions: AddMedicalConditionRequestModel): Flow<DataResult<AddedUserMedicalConditionResposneModel>> {
+        return object :
+            NetworkOnlineDataRepo<AddedUserMedicalConditionResposneModel, AddedUserMedicalConditionResposneModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<AddedUserMedicalConditionResposneModel> {
+                return apiService.addMedicalConditions(conditions)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 
 }

@@ -122,14 +122,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     else -> "7"
                 }
                 if (isSelected) {
-/*
-                    medListViewModel.getMedicationRecords(
-                        medListViewModel.getLovedOneUUId() ?: "",
-                        1,
-                        1000,
-                        selectedDate
-                    )
-*/
                     medListViewModel.getLovedOneMedLists(selectedDate)
                 }
             }
@@ -186,13 +178,9 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
                     myMedlistBinding.txtMedication.visibility = View.GONE
                     // check day for payload data
-                    val currentDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
-//                    payload = it.data.payload!!.userMedicationAll
-
                     for (i in it.data.payload!!.userMedicationAll) {
-                        val medicationDetailData = i
                         i.selectedDate = selectedDate
-                        payload.add(medicationDetailData)
+                        payload.add(i)
                     }
 
                     if (payload.size <= 0) {
@@ -206,9 +194,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     for (i in it.data.payload!!.userMedicationRepeat) {
                         if (i.days!!.contains(dayId)) {
                             if((i.frequency?:"0").toInt()<5){
-                                val medListReminder = i
                                 i.selectedDate = selectedDate
-                                medListReminderList.add(medListReminder)
+                                medListReminderList.add(i)
                             }
                         }
                     }

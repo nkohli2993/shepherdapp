@@ -14,6 +14,7 @@ import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.UserMedicationData
 import com.shepherdapp.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.FrequencyType
 import com.shepherdapp.app.utils.MedListAction
 import com.shepherdapp.app.view_model.MyMedListViewModel
 
@@ -77,6 +78,29 @@ class MyMedicationsAdapter(
                     recyclerItemListener, medList
                 )
             }
+
+            when (medList.frequency) {
+                FrequencyType.ONCE.value -> {
+                    itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
+                }
+                FrequencyType.TWICE.value -> {
+                    itemBinding.tvFrequency.text = context.getString(R.string.twice_a_day)
+                }
+                FrequencyType.THRICE.value -> {
+                    itemBinding.tvFrequency.text = context.getString(R.string.three_times_a_day)
+                }
+                FrequencyType.FOUR.value -> {
+                    itemBinding.tvFrequency.text = context.getString(R.string.four_times_a_day)
+                }
+                FrequencyType.FIVE.value -> {
+                    itemBinding.tvFrequency.text = context.getString(R.string.as_needed)
+                }
+                else -> {
+                    itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
+                }
+            }
+
+            itemBinding.tvDosage.text = medList.dosage?.name?:"".plus(" ${medList.dosageType?.name?:""}")
         }
 
     }

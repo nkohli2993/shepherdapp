@@ -155,7 +155,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     dialog?.dismiss()
-                    showSuccess(requireContext(), "Files uploaded successfully...")
+                    showSuccess(requireContext(), getString(R.string.files_uploaded_successfully))
                     uploadedDocumentsUrl = it.data.payload?.document
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
                     fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
@@ -184,7 +184,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    showSuccess(requireContext(), "New LockBox created Successfully...")
+                    showSuccess(requireContext(), getString(R.string.document_added_successfully))
                     Log.d(TAG, "uploadedLockBoxDocUrl: $uploadedLockBoxDocUrl")
                     backPress()
                 }
