@@ -20,8 +20,8 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
     private var medicalConditionName: String? = null
     private var description: String? = null
     override fun observeViewModel() {
-        addLovedOneConditionViewModel.addedConditionsResponseLiveData.observeEvent(this) {
-            when (it) {
+        addLovedOneConditionViewModel.addedConditionsResponseLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
@@ -31,7 +31,7 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
                 }
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
+                    result.message?.let { showError(this, it) }
                 }
             }
         }
@@ -79,7 +79,7 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
                         description = binding.etDescription.text.toString().trim()
                     }
                     addLovedOneConditionViewModel.addMedicalConditions(
-                        AddMedicalConditionRequestModel(medicalConditionName, description)
+                        AddMedicalConditionRequestModel(medicalConditionName, description, "user")
                     )
                 }
             }

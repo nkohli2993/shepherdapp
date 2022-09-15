@@ -398,7 +398,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
             override fun onClick(p0: View) {
                 val intent = Intent(this@CreateNewAccountActivity, InformationActivity::class.java)
-                intent.putExtra("type", Const.PRIVACY_POLICY)
+                intent.putExtra("type", Const.TERM_OF_USE)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
             }
@@ -415,7 +415,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
 
             override fun onClick(p0: View) {
                 val intent = Intent(this@CreateNewAccountActivity, InformationActivity::class.java)
-                intent.putExtra("type", Const.TERM_OF_USE)
+                intent.putExtra("type", Const.PRIVACY_POLICY)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
             }

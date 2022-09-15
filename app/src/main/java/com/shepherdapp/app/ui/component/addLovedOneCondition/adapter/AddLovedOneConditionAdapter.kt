@@ -26,13 +26,11 @@ class AddLovedOneConditionAdapter(
     }
 
     fun updateConditions(conditions: ArrayList<Conditions>) {
-        conditionList = conditions
-        Log.d(TAG, "updateConditions:$conditionList ")
+        this.conditionList = conditions
         notifyDataSetChanged()
     }
     fun addConditions(conditions: ArrayList<Conditions>) {
-        conditionList.addAll(conditions)
-        Log.d(TAG, "updateConditions:$conditionList ")
+        this.conditionList.addAll(conditions)
         notifyDataSetChanged()
     }
 

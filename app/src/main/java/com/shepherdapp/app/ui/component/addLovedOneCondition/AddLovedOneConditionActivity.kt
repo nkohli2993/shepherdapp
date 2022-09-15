@@ -57,19 +57,10 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var totalPage: Int = 0
     private var total: Int = 0
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-
-        //check if intent has loved used uuid
-        if (intent.hasExtra("love_one_id")) {
-            loveOneId = intent.getStringExtra("love_one_id")
-            isLoading = false
-            loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
-        } else {
-            isLoading = true
-            callAllMedicalCondition()
-        }
         setConditionAdapter()
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
 
@@ -78,6 +69,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             isSearched = false
             binding.txtNoResultFound.visibility = View.GONE
             binding.recyclerViewCondition.visibility = View.VISIBLE
+            hideLoading()
         }
 
         binding.editTextSearch.doAfterTextChanged { search ->
@@ -88,7 +80,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     binding.imgCancel.visibility = View.GONE
                     binding.txtNoResultFound.visibility = View.GONE
                     binding.recyclerViewCondition.visibility = View.VISIBLE
-
+                    hideLoading()
                 }
                 if (search.isNotEmpty()) {
                     binding.imgCancel.visibility = View.VISIBLE
@@ -100,6 +92,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             searchedConditions.add(it)
                         }
                     }
+                    binding.txtNoResultFound.visibility = View.GONE
+                    binding.recyclerViewCondition.visibility = View.VISIBLE
                     if (searchedConditions.isEmpty()) {
                         binding.txtNoResultFound.visibility = View.VISIBLE
                         binding.recyclerViewCondition.visibility = View.GONE
@@ -107,7 +101,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     searchedConditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
                 }
             }
-
         }
     }
 
@@ -117,6 +110,16 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         conditions.clear()
         addLovedOneConditionAdapter = null
         pageNumber = 1
+        binding.editTextSearch.setText("")
+        //check if intent has loved used uuid
+        if (intent.hasExtra("love_one_id")) {
+            loveOneId = intent.getStringExtra("love_one_id")
+            isLoading = false
+            loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
+        } else {
+            isLoading = true
+            callAllMedicalCondition()
+        }
     }
 
     override fun initViewBinding() {
@@ -179,16 +182,18 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    conditions.clear()
                     isLoading = false
+                    var medicalConditions: ArrayList<Conditions> = ArrayList()
                     if (pageNumber == 1) {
+                        conditions.clear()
                         addLovedOneConditionAdapter = null
                         setConditionAdapter()
                     }
+                    medicalConditions.clear()
                     if (it.data.payload?.conditions != null) {
-                        conditions = it.data.payload?.conditions!!
                         it.data.payload!!.let { payload ->
-                            conditions = payload.conditions
+                            conditions.addAll(payload.conditions)
+                            medicalConditions = payload.conditions
                             total = payload.total!!
                             currentPage = payload.currentPage!!
                             totalPage = payload.totalPages!!
@@ -203,7 +208,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             }
                         }
                     }
-                    conditions.let { it1 -> addLovedOneConditionAdapter?.addConditions(it1) }
+                    conditions.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
                 }
 
                 is DataResult.Failure -> {
@@ -308,7 +313,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             R.id.tvNew -> {
                 val intent = Intent(this, AddMedicalConditionActivity::class.java)
                 startActivity(intent)
-                finish()
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
             R.id.ivBack -> {

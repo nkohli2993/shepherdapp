@@ -34,5 +34,6 @@ data class Payload(
     @SerializedName("user_loved_one") var userLovedOne: ArrayList<UserLovedOne> = arrayListOf(),
     @SerializedName("user_roles") var userRoles: ArrayList<UserRole> = arrayListOf(),
     @SerializedName("relationship") var relationship: Relationship? = Relationship(),
-    @SerializedName("user_location" ) var userLocation : UserLocation? = UserLocation()
+    @SerializedName("user_location" ) var userLocation : UserLocation? = UserLocation(),
+    @SerializedName("user_conditions" ) var userConditions :ArrayList<com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload> = arrayListOf()
 ) : Parcelable
