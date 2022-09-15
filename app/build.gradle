@@ -194,7 +194,7 @@ dependencies {
 //        exclude group: "com.google.protobuf", module: "protobuf-java"
     }
 
-//    implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
     // Import the BoM for the Firebase platform
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'com.google.firebase:firebase-auth'

@@ -25,7 +25,10 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name="com.shepherdapp.app.ui.component.addLovedOneCondition.AddMedicalConditionActivity"
+            android:name=".ui.component.createAccount.InformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.component.addLovedOneCondition.AddMedicalConditionActivity"
             android:exported="false" />
         <!--
          <activity
@@ -37,11 +40,7 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.shepherdapp.app.ui.component.createAccount.CreateNewAccountActivity"
-            android:label="@string/create_account"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
-            android:name="com.shepherdapp.app.ui.component.createAccount.InformationActivity"
+            android:name=".ui.component.createAccount.CreateNewAccountActivity"
             android:label="@string/create_account"
             android:windowSoftInputMode="adjustResize" />
         <activity
@@ -70,9 +69,7 @@
         <activity
             android:name="com.shepherdapp.app.ui.component.walk_through.WalkThroughActivity"
             android:label="@string/title_activity_walk_through" />
-        <activity
-            android:name=".CreateAccountActivity"
-            android:label="@string/title_activity_create_account" />
+
         <activity
             android:name="com.shepherdapp.app.ui.welcome.WelcomeActivity"
             android:label="@string/title_activity_welcome" />
@@ -118,6 +115,27 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_launcher" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="fcm_default_channel" />
+
+
+        <service
+            android:name=".service.FCMService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

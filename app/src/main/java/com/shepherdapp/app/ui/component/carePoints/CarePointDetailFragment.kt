@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -67,6 +68,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     private var chatModel: ChatModel? = null
     private var isAssignerDetailRequired: Boolean = false
     private var isChatOff: Boolean = false
+    private var eventName: String? = null
+    private var eventId: Int? = null
 
 
     private var TAG = "CarePointDetailFragment"
@@ -134,8 +137,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
 
 
-        val eventName = eventDetail?.name
-        val eventId = eventDetail?.id
+        eventName = eventDetail?.name
+        eventId = eventDetail?.id
         eventDetail?.user_assignes?.forEach {
             val receiverName = it.user_details.firstname + " " + it.user_details.lastname
             val receiverID = it.user_details.id
@@ -385,6 +388,28 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
              }
          }*/
 
+        /*carePointsViewModel.isMessageSendLiveData.observeEvent(this) {
+            if (it) {
+                carePointsViewModel.findChatId()
+            }
+        }*/
+
+        // To fix : If two users (A and B) entered the chat screen simultaneously for the first time.
+        // If user A sends message, then the chat screen of A is updated but of B is not updated .
+        carePointsViewModel.noChatDataFoundLiveData.observeEvent(this) {
+            if (it) {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    // Set User Detail
+                    carePointsViewModel.setToUserDetail(
+                        Chat.CHAT_GROUP,
+                        chatUserDetailList,
+                        eventName,
+                        eventId
+                    )
+                }, 2000)
+            }
+        }
+
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -572,4 +597,5 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         textView.movementMethod = LinkMovementMethod.getInstance()
         textView.highlightColor = Color.GREEN
     }
+
 }
