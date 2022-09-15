@@ -78,7 +78,6 @@
             android:label="@string/title_activity_add_loved_one" />
         <activity
             android:name="com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity"
-            android:name=".ui.component.addLovedOneCondition.AddLovedOneConditionActivity"
             android:label="@string/title_activity_add_loved_one_condition" />
         <activity
             android:name="com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity"
