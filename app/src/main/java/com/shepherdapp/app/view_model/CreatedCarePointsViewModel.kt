@@ -207,7 +207,7 @@ class CreatedCarePointsViewModel @Inject constructor(
         findChatId()
     }
 
-    private fun findChatId(
+   private fun findChatId(
         isFirstTime: Boolean = true,
         onFound: (isFounded: Boolean) -> Unit = {}
     ) {
@@ -246,14 +246,26 @@ class CreatedCarePointsViewModel @Inject constructor(
                     initChatListener()
 
                 } else {
-                    if (isFirstTime) {
-                        findChatId(isFirstTime = false) { isFounded ->
-                            onFound(isFounded)
+                    /* if (isFirstTime) {
+                         findChatId(isFirstTime = false) { isFounded ->
+                             onFound(isFounded)
+                         }
+                     } else {
+                         onFound(false)
+ //                        _noChatDataFoundLiveData.postValue(Event(true))
+                     }*/
+
+                    // Enter the event id and data
+                    db.collection(TableName.CHATS).add(chatListData.serializeToMap())
+                        .addOnSuccessListener {
+
+                            ShepherdApp.db.collection(TableName.CHATS).document(it.id)
+                                .update("id", it.id)
+                            chatListData?.id = it.id
+
+                            initChatListener()
                         }
-                    } else {
-                        onFound(false)
-                        _noChatDataFoundLiveData.postValue(Event(true))
-                    }
+
                 }
             }.addOnFailureListener {
                 if (BuildConfig.DEBUG) {
@@ -262,7 +274,6 @@ class CreatedCarePointsViewModel @Inject constructor(
                 }
                 onFound(false)
             }
-
     }
 
     private fun initChatListener() {
@@ -270,17 +281,17 @@ class CreatedCarePointsViewModel @Inject constructor(
         chatResponseData.postValue(Event(DataResult.Loading()))
         Log.d(TAG, "initChatListener: ${chatListData?.id}")
         val chatDocReference =
-            ShepherdApp.db.collection(TableName.CHATS).document(chatListData?.id ?: "")
+            chatListData?.id?.let { ShepherdApp.db.collection(TableName.CHATS).document(it) }
 
-        var query = chatDocReference.collection(TableName.MESSAGES)
-            .orderBy("created", Query.Direction.DESCENDING)
-        query = query.limit(30)
+        var query = chatDocReference?.collection(TableName.MESSAGES)
+            ?.orderBy("created", Query.Direction.DESCENDING)
+        query = query?.limit(30)
 
         messageListener?.remove()
         messageListener = null
         listenUnreadUpdates()
 
-        messageListener = query.addSnapshotListener { snapshot, e ->
+        messageListener = query?.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 showLog(TAG, message = "get message list failure error >> ${e.message}")
 
@@ -331,10 +342,11 @@ class CreatedCarePointsViewModel @Inject constructor(
     }
 
     private fun listenUnreadUpdates() {
-        val chatRef = ShepherdApp.db.collection(TableName.CHATS).document(chatListData?.id ?: "")
+        val chatRef =
+            chatListData?.id?.let { ShepherdApp.db.collection(TableName.CHATS).document(it) }
         chatListener?.remove()
         chatListener = null
-        chatListener = chatRef.addSnapshotListener { value, error ->
+        chatListener = chatRef?.addSnapshotListener { value, error ->
             if (value?.metadata?.hasPendingWrites() == false) {
                 if (value.data != null) {
                     val chatData = Gson().fromJson(
@@ -472,16 +484,16 @@ class CreatedCarePointsViewModel @Inject constructor(
 
                     initChatListener()
                     onChatCreated(true)
-
-
                 }
         } else {
-            ShepherdApp.db.collection(TableName.CHATS).document(chatListData?.id ?: "")
-                .set(chatListData.serializeToMap())
-                .addOnSuccessListener {
-                    initChatListener()
-                    onChatCreated(true)
-                }
+            chatListData?.id?.let {
+                ShepherdApp.db.collection(TableName.CHATS).document(it)
+                    .set(chatListData.serializeToMap())
+                    .addOnSuccessListener {
+                        initChatListener()
+                        onChatCreated(true)
+                    }
+            }
         }
 
     }

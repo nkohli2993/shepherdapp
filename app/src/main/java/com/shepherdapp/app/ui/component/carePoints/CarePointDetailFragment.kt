@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -396,19 +395,20 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
         // To fix : If two users (A and B) entered the chat screen simultaneously for the first time.
         // If user A sends message, then the chat screen of A is updated but of B is not updated .
-        carePointsViewModel.noChatDataFoundLiveData.observeEvent(this) {
-            if (it) {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    // Set User Detail
-                    carePointsViewModel.setToUserDetail(
-                        Chat.CHAT_GROUP,
-                        chatUserDetailList,
-                        eventName,
-                        eventId
-                    )
-                }, 2000)
+        /* carePointsViewModel.noChatDataFoundLiveData.observeEvent(this) {
+             if (it) {
+                 Handler(Looper.getMainLooper()).postDelayed({
+                     *//* // Set User Detail
+                     carePointsViewModel.setToUserDetail(
+                         Chat.CHAT_GROUP,
+                         chatUserDetailList,
+                         eventName,
+                         eventId
+                     )*//*
+                    carePointsViewModel.findChatId()
+                }, 10000)
             }
-        }
+        }*/
 
     }
 
@@ -553,6 +553,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     hideKeyboard()
                 }
             }
+
         }
     }
 
