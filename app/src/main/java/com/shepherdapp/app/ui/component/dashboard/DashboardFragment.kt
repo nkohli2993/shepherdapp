@@ -195,8 +195,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 findNavController().navigate(R.id.action_dashboard_to_lock_box)
             }
             R.id.cvVitalStats -> {
-                showError(requireContext(),"Not implemented")
-                //findNavController().navigate(R.id.action_dashboard_to_vital_stats)
+//                showError(requireContext(),"Not implemented")
+                findNavController().navigate(R.id.action_dashboard_to_vital_stats)
             }
             R.id.cvCareTeam -> {
                 findNavController().navigate(R.id.action_dashboard_to_care_team_members)

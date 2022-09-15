@@ -130,21 +130,22 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    medLists.clear()
                     if (pageNumber == 1) {
+                        medLists.clear()
                         addMedicineListAdapter = null
                         setMedicineListAdapter()
                     }
+                    var medListsAdded: ArrayList<Medlist> = arrayListOf()
                     it.data.payload.let { payload ->
-                        medLists = payload?.medlists!!
+                        medListsAdded = payload?.medlists!!
                         total = payload.total!!
                         currentPage = payload.currentPage!!
                         totalPage = payload.totalPages!!
                     }
+                    medLists.addAll(medListsAdded)
+                    if (medListsAdded.isEmpty()) return@observeEvent
 
-                    if (medLists.isEmpty()) return@observeEvent
-
-                    if (medLists.isEmpty()) {
+                    if (medListsAdded.isEmpty()) {
                         fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility = View.GONE
                         fragmentAddNewMedicationBinding.txtNoMedFound.visibility =
                             View.VISIBLE
@@ -152,7 +153,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         fragmentAddNewMedicationBinding.recyclerViewMedicine.visibility =
                             View.VISIBLE
                         fragmentAddNewMedicationBinding.txtNoMedFound.visibility = View.GONE
-                        medLists.let { it1 ->
+                        medListsAdded.let { it1 ->
                             addMedicineListAdapter?.addData(
                                 it1,
                                 false
@@ -262,7 +263,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             }
             R.id.btnNext -> {
             }
-            R.id.tvNew ->{
+            R.id.tvNew -> {
                 findNavController().navigate(R.id.action_nav_add_new_medicine)
             }
         }
