@@ -57,6 +57,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     override fun observeViewModel() {
         // Observe Loved One's Medical Condition live data
+/*
         lovedOneMedicalConditionViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -95,6 +96,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                 }
             }
         }
+*/
 
         // Observer user details api live data
         lovedOneMedicalConditionViewModel.lovedOneDetailsLiveData.observeEvent(this) { result ->
@@ -163,6 +165,31 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                         fragmentLovedOneProfileBinding.txtCustomAddress.text =
                             getString(R.string.no_address_avaialble)
                     }
+
+                    // to get user conditions
+                    val payloadList: ArrayList<com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload> =
+                        arrayListOf()
+                    for (i in payload!!.userConditions) {
+                        if (i.conditionId != null) {
+                            payloadList.add(i)
+                        }
+                    }
+                    if (payloadList.isEmpty()) {
+                        // No medical conditions found
+                        fragmentLovedOneProfileBinding.txtNoMedicalConditions.visibility =
+                            View.VISIBLE
+                        fragmentLovedOneProfileBinding.rvLovedOneMedicalConditions.visibility =
+                            View.GONE
+                    } else {
+                        fragmentLovedOneProfileBinding.txtNoMedicalConditions.visibility =
+                            View.GONE
+                        fragmentLovedOneProfileBinding.rvLovedOneMedicalConditions.visibility =
+                            View.VISIBLE
+
+                        lovedOneMedicalConditionAdapter?.addData(payloadList)
+
+                    }
+
                 }
             }
         }
@@ -179,11 +206,13 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
         setLovedOneMedicalConditionsAdapter()
 
         // Get LovedOne's medical conditions
+/*
         careTeamModel?.love_user_id?.let {
             lovedOneMedicalConditionViewModel.getLovedOneMedicalConditions(
                 it
             )
         }
+*/
         // Get Loved One's detail with relation
         careTeamModel?.love_user_id_details?.uid?.let {
             lovedOneMedicalConditionViewModel.getLovedOneDetailsWithRelation(
@@ -245,12 +274,12 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
             )
         }
 
-        // Get Loved One's Medical conditions
-        careTeamModel?.love_user_id?.let {
-            lovedOneMedicalConditionViewModel.getLovedOneMedicalConditions(
-                it
-            )
-        }
+        /* // Get Loved One's Medical conditions
+         careTeamModel?.love_user_id?.let {
+             lovedOneMedicalConditionViewModel.getLovedOneMedicalConditions(
+                 it
+             )
+         }*/
     }
 
 }

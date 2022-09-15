@@ -79,7 +79,7 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
                         description = binding.etDescription.text.toString().trim()
                     }
                     addLovedOneConditionViewModel.addMedicalConditions(
-                        AddMedicalConditionRequestModel(medicalConditionName, description)
+                        AddMedicalConditionRequestModel(medicalConditionName, description, "user")
                     )
                 }
             }
