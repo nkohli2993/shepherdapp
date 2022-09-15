@@ -61,6 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:background="@color/_FCFCFC"
+                    android:minHeight="@dimen/_100sdp"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/_60sdp"
                     app:layout_constraintStart_toStartOf="parent"

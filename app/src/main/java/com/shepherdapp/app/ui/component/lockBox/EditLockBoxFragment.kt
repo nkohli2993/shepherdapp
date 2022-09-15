@@ -563,7 +563,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                             uploadFile.add(
                                 DocumentData(
                                     -1,
-                                    driveSelectedFileList.toString(),
+                                    i.toString(),
                                     dateFormat.format(Calendar.getInstance().time)
                                 )
                             )
