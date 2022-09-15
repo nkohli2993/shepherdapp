@@ -100,7 +100,7 @@ class MyMedicationsAdapter(
                 }
             }
 
-            itemBinding.tvDosage.text = medList.dosage?.name?:"".plus(" ${medList.dosageType?.name?:""}")
+            itemBinding.tvDosage.text = medList.dosage?.name.plus(" ${medList.dosageType?.name}")
         }
 
     }

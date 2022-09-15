@@ -45,7 +45,7 @@ import java.util.*
 @AndroidEntryPoint
 @SuppressLint("NotifyDataSetChanged,SetTextI18n,SimpleDateFormat")
 class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(),
-    View.OnClickListener, FrequencyAdapter.selectedFrequency{
+    View.OnClickListener, FrequencyAdapter.selectedFrequency {
 
     private lateinit var fragmentScheduleMedicineBinding: FragmentSchedulweMedicineBinding
     private var dayAdapter: DaysAdapter? = null
@@ -398,19 +398,29 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     private fun setEveryDaySelected(value: Boolean) {
         val shownDayList: ArrayList<DayList> = arrayListOf()
         val selected: ArrayList<String> = arrayListOf()
+        val nameDaySelected: ArrayList<String> = arrayListOf()
         for (i in dayList) {
             i.isSelected = false
             if (i.isClickabled) {
                 if (value) {
                     selected.add(i.id.toString())
+                    nameDaySelected.add(i.time!!)
                 }
                 i.isSelected = value
             }
             shownDayList.add(i)
         }
+
         dayList.clear()
         dayList.addAll(shownDayList)
         daysIds = selected.joinToString().replace(" ", "")
+
+        if (selected.size <= 0) {
+            fragmentScheduleMedicineBinding.daysTV.text = ""
+        } else {
+            fragmentScheduleMedicineBinding.daysTV.text =
+                nameDaySelected.joinToString().replace(" ", "")
+        }
         setDayAdapter()
     }
 
@@ -466,7 +476,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             if (o1.id == null) 0 else o1.id!!
                 .compareTo(o2.id!!)
         }
-        dayAdapter = DaysAdapter(medicationViewModel, requireContext(),  dayList)
+        dayAdapter = DaysAdapter(medicationViewModel, requireContext(), dayList)
         fragmentScheduleMedicineBinding.daysRV.adapter = dayAdapter
     }
 

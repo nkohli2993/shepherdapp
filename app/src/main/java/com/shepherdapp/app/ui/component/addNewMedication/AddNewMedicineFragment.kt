@@ -11,13 +11,10 @@ import androidx.fragment.app.viewModels
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.med_list.Medlist
 import com.shepherdapp.app.data.dto.med_list.add_med_list.AddMedListRequestModel
-import com.shepherdapp.app.data.dto.medical_conditions.AddMedicalConditionRequestModel
-import com.shepherdapp.app.databinding.FragmentAddNewMedicationBinding
 import com.shepherdapp.app.databinding.FragmentAddNewMedicineBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
-import com.shepherdapp.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.AddMedicationViewModel
@@ -68,6 +65,7 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
     override fun getLayoutRes(): Int {
         return R.layout.fragment_add_new_medicine
     }
+
 
     override fun onClick(p0: View?) {
         when (p0?.id) {

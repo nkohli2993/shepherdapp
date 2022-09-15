@@ -594,7 +594,6 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                         }
                         val fileSelectedUpload: ArrayList<File> = arrayListOf()
                         fileSelectedUpload.add(file)
-                        if (selectedFileList!!.size > 0) {
                             setFileViewVisible()
                             val uploadFile: ArrayList<DocumentData> = arrayListOf()
                             uploadFile.add(
@@ -607,9 +606,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                             selectedFileList?.addAll(uploadFile)
                             uploadedFiles.addAll(uploadFile)
                             uploadedFilesAdapter?.addData(uploadFile)
-                        } else {
-                            setFileViewUnvisible()
-                        }
+
                         selectedFileShow()
                         hideLoading()
                     }

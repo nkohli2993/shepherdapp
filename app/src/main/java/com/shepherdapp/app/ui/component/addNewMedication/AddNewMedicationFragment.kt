@@ -56,6 +56,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun onResume() {
         super.onResume()
+        fragmentAddNewMedicationBinding.editTextSearch.setText("")
         medLists.clear()
         pageNumber = 1
         isSearch = false
