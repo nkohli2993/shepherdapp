@@ -321,7 +321,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         textConditionName.setTextColor(ContextCompat.getColor(requireContext(), R.color._192032))
         textConditionName.setPadding(20, 15, 10, 15)
         parent.setPadding(5, 5, 10, 5)
-        closeIV.setPadding(0, 5, 0, 0)
+        closeIV.setPadding(0, 10, 0, 0)
         textConditionName.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
         parent.setBackgroundResource(R.drawable.shape_black_border_filled)
         closeIV.setImageResource(R.drawable.ic_round_cancel)

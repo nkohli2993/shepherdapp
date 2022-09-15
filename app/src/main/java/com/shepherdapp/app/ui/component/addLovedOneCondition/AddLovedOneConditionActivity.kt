@@ -1,5 +1,6 @@
 package com.shepherdapp.app.ui.component.addLovedOneCondition
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -41,7 +42,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private lateinit var binding: ActivityAddLovedOneConditionBinding
     private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
     private var pageNumber: Int = 1
-    private var limit: Int = 10
+    private var limit: Int = 20
     private var conditions: ArrayList<Conditions> = ArrayList()
     private var selectedConditions: ArrayList<Conditions> = ArrayList()
     private var searchedConditions: ArrayList<Conditions> = ArrayList()
@@ -128,6 +129,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         setContentView(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun observeViewModel() {
         //Observe the response of get loved one's medical conditions api
         addLovedOneConditionViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) {
@@ -167,7 +169,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     } else {
                         binding.txtMedicalCondition.text =
                             getString(R.string.edit_medical_conditions)
-                        binding.buttonFinish.text = getString(R.string.update)
+                        binding.buttonFinish.text = getString(R.string.save_changes)
                     }
                 }
             }

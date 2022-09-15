@@ -14,6 +14,7 @@
     <color name="colorViewPagerInactiveLight">#80A7AFAF</color>
     <color name="colorLightWhite">#99FFFFFF</color>
     <color name="colorGreyLight">#F5F4F8</color>
+    <color name="colorGreyVeryLight">#CCF5F4F8</color>
     <color name="colorPeach">#e9475f</color>
     <color name="colorGreen">#00a59c</color>
     <color name="colorPurple">#9f7bb3</color>

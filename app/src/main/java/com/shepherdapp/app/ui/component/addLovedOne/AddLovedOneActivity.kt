@@ -153,7 +153,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 Log.d(TAG, "initViewBinding: $payload")
                 isEditLovedOne = true
 
-                binding.txtLovedOne.text = "Edit Loved One Details"
+
+                binding.txtLovedOne.text = getString(R.string.edit_loved_one_profile)
                 binding.txtLittleBit.visibility = View.GONE
                 if (!payload?.userProfiles?.profilePhoto.isNullOrEmpty()) {
                     Picasso.get().load(payload?.userProfiles?.profilePhoto)
@@ -163,10 +164,10 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 binding.edtLastName.setText(payload?.userProfiles?.lastname)
                 binding.editTextEmail.setText(payload?.email)
 
-                binding.edtAddress.setText(payload?.userLocation?.formattedAddress?:"")
+                binding.edtAddress.setText(payload?.userLocation?.formattedAddress ?: "")
 
                 binding.edtCustomAddress.setText(payload?.userProfiles?.address)
-                binding.btnContinue.text = "Save Changes"
+                binding.btnContinue.text = getString(R.string.save_changes)
 
                 // Get phone number
                 /* val phone = careteam?.love_user_id_details?.phone?.split("-")

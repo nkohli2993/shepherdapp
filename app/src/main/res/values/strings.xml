@@ -537,4 +537,5 @@
     <string name="edit_medical_conditions">Edit Medical Conditions</string>
     <string name="no_medical_condition_found">No medical conditions found…</string>
     <string name="everyday">Everyday</string>
+    <string name="edit_loved_one_profile">Edit Loved One Details</string>
 </resources>
