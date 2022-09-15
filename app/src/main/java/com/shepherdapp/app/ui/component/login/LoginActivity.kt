@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -40,6 +41,7 @@ import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.LoginViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executor
 
@@ -203,7 +205,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
                                 }
                             }
-
+                            generateFirebaseToken()
                             // Save UUID
                             payload?.uuid.let { uuid ->
                                 uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
@@ -430,6 +432,20 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
+
+    fun generateFirebaseToken(){
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (!it.isSuccessful){
+                Log.w(TAG, "Fetching FCM registration token failed", it.exception)
+                return@addOnCompleteListener
+            }
+
+            // Get new FCM registration token
+            Prefs.with(this)!!.save(Const.FIREBASE_TOKEN, it.result)
+            // Log and toast
+            Log.d(TAG, "Firebase token generated: ${it.result}")
+        }
     }
 
 }

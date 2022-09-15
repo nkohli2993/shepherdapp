@@ -241,7 +241,6 @@ class CreatedCarePointsViewModel @Inject constructor(
                                 _groupNameLiveData.postValue(Event(groupName))
                             }
                         }
-
                     }
                     onFound(true)
                     initChatListener()
@@ -259,9 +258,11 @@ class CreatedCarePointsViewModel @Inject constructor(
             }.addOnFailureListener {
                 if (BuildConfig.DEBUG) {
                     it.printStackTrace()
+                    Log.d(TAG, "findChatId: Document id not found")
                 }
                 onFound(false)
             }
+
     }
 
     private fun initChatListener() {
@@ -469,10 +470,6 @@ class CreatedCarePointsViewModel @Inject constructor(
                     ShepherdApp.db.collection(TableName.CHATS).document(it.id).update("id", it.id)
                     chatListData?.id = it.id
 
-                    /* Prefs.with(CheckmateForeverApp.appContext)!!.save(
-                         Const.CHAT_ID,
-                         chatListData?.id
-                     )*/
                     initChatListener()
                     onChatCreated(true)
 
@@ -502,6 +499,8 @@ class CreatedCarePointsViewModel @Inject constructor(
                 updateUnreadCount(chatReference, messageData, false)
 //                sendNotification(messageData)
             }
+
+//        _isMessageSendLiveData.postValue(Event(true))
     }
 
     private fun updateUnreadCount(
