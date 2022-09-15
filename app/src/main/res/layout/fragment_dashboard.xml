@@ -449,6 +449,7 @@
                             android:text="@string/new_article_and_topics"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
+                            android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
 

@@ -132,7 +132,6 @@
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*():';|\/?~+-"
                         android:fontFamily="@font/gotham_medium"
                         android:gravity="top|start"
-                        android:hint="@string/write"
                         android:inputType="textMultiLine|textCapSentences"
                         android:lines="10"
                         android:maxLength="300"
