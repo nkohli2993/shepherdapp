@@ -22,8 +22,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/_30sdp"
-            android:layout_marginHorizontal="@dimen/_10sdp">
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:paddingBottom="@dimen/_30sdp">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvRemoteMonitor"
@@ -364,6 +364,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/clBloodNOWrapper" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dateSelectedTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_calendar_care_event"
+                android:drawablePadding="@dimen/_10sdp"
+                android:fontFamily="@font/gotham_book"
+                android:gravity="center"
+                android:onClick="@{listener::onClick}"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_12sdp"
+                app:layout_constraintStart_toStartOf="@id/typeSpinner"
+                app:layout_constraintTop_toBottomOf="@id/typeSpinner" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/typeRV"
                 android:layout_width="match_parent"
@@ -373,7 +387,7 @@
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/typeSpinnerLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvHRMin"
@@ -406,7 +420,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_350sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/typeSpinner" />
+                app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

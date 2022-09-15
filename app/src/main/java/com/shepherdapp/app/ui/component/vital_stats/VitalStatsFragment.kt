@@ -1,6 +1,7 @@
 package com.shepherdapp.app.ui.component.vital_stats
 
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Bundle
@@ -34,11 +35,13 @@ import com.shepherdapp.app.view_model.VitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat")
 class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     View.OnClickListener {
+    private var type: String? = null
     private var xAxisLabel: ArrayList<String> = arrayListOf()
     private val typeList: ArrayList<TypeData> = arrayListOf()
     private val vitalStatsViewModel: VitalStatsViewModel by viewModels()
@@ -84,7 +87,13 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         fragmentVitalStatsBinding.tvOxygenValue.text =
                             vitalStats!!.data?.oxygen
                     }
-                    fragmentVitalStatsBinding.tvHRMin.text = "Min ${it.data.payload.minAverage}/"
+                    // to get min value from list
+                    val dataAdded: ArrayList<Double> = arrayListOf()
+                    for (i in graphDataList) {
+                        dataAdded.add(i.x.toDouble())
+                    }
+                    fragmentVitalStatsBinding.tvHRMin.text = "Min ${Collections.min(dataAdded)}/"
+//                    fragmentVitalStatsBinding.tvHRMin.text = "Min ${it.data.payload.minAverage}/"
                     fragmentVitalStatsBinding.tvHRMax.text = "Max ${it.data.payload.maxAverage}"
                     fragmentVitalStatsBinding.typeChart.invalidate()
                     fragmentVitalStatsBinding.typeChart.clear()
@@ -141,29 +150,37 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
     override fun initViewBinding() {
         fragmentVitalStatsBinding.listener = this
+        fragmentVitalStatsBinding.dateSelectedTV.text =
+            SimpleDateFormat("EEE, MMM dd").format(Calendar.getInstance().time)
         addType()
 
 
-        fragmentVitalStatsBinding.typeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                if(typeList[p2].type!! == "blood_pressure"){
-                   showError(requireContext(),"Not Implemented")
+        fragmentVitalStatsBinding.typeSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    if (typeList[p2].type!! == "blood_pressure") {
+                        showError(requireContext(), "Not Implemented")
+                    } else {
+                        type = typeList[p2].type!!
+                        callGraphApi()
+                    }
+
                 }
-                else{
-                    vitalStatsViewModel.getGraphDataVitalStats(
-                        SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time),
-                        vitalStatsViewModel.getLovedOneUUId()!!, type = typeList[p2].type!!
-                    )
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+
                 }
 
             }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+    }
 
-            }
-
-        }
-
+    private fun callGraphApi() {
+        val date = SimpleDateFormat("EEE, MMM dd").parse(fragmentVitalStatsBinding.dateSelectedTV.text.toString())
+        vitalStatsViewModel.getGraphDataVitalStats(
+            SimpleDateFormat("yyyy-MM-dd").format(date!!),
+            vitalStatsViewModel.getLovedOneUUId()!!, type = type!!
+        )
     }
 
     private fun setData() {
@@ -206,15 +223,16 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
         xAxisLabel = ArrayList<String>()
         xAxisLabel.clear()
-        for(i in graphDataList){
+        for (i in graphDataList) {
             val time = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
             val dateTime = SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(time.plus(" ${i.day}"))
-            if(SimpleDateFormat("HH:mm").format(dateTime!!) != "00:00"){
+            if (SimpleDateFormat("HH:mm").format(dateTime!!) != "00:00") {
                 xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime))
             }
 //            xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime!!))
         }
-        fragmentVitalStatsBinding.typeChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
+        fragmentVitalStatsBinding.typeChart.xAxis.valueFormatter =
+            IndexAxisValueFormatter(xAxisLabel)
         xAxis.setLabelCount(8, false)
         val set1 = CandleDataSet(values, "")
         set1.setDrawIcons(false)
@@ -228,10 +246,10 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         set1.neutralColor = Color.BLUE
         set1.highlightLineWidth = 0f
         set1.barSpace = 3f
-        set1.valueTextColor = ContextCompat.getColor(requireContext(),R.color.transparent)
+        set1.valueTextColor = ContextCompat.getColor(requireContext(), R.color.transparent)
 //        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(24f)
         fragmentVitalStatsBinding.typeChart.setScaleEnabled(false)
-        fragmentVitalStatsBinding.typeChart.zoom(3f,0f,3f,0f)
+        fragmentVitalStatsBinding.typeChart.zoom(3f, 0f, 3f, 0f)
         fragmentVitalStatsBinding.typeChart.axisLeft.setAxisMinValue(10f)
         fragmentVitalStatsBinding.typeChart.axisRight.setAxisMinValue(10f)
         val data = CandleData(set1)
@@ -248,6 +266,33 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         when (p0?.id) {
             R.id.typeSpinnerLayout, R.id.graphTypeTV, R.id.spinner_down_arrow_image -> {
                 openCloseTypeSpinner()
+            }
+            R.id.dateSelectedTV -> {
+                val c = Calendar.getInstance()
+                val mYear = c[Calendar.YEAR]
+                val mMonth = c[Calendar.MONTH]
+                val mDay = c[Calendar.DAY_OF_MONTH]
+
+                val datePickerDialog = DatePickerDialog(
+                    requireActivity(), R.style.datepicker,
+                    { _, year, monthOfYear, dayOfMonth ->
+                        val dateSelected = "$dayOfMonth-" + if (monthOfYear + 1 < 10) {
+                            "0${(monthOfYear + 1)}"
+                        } else {
+                            (monthOfYear + 1)
+                        } + "-" + year
+
+                        val date = SimpleDateFormat("MM-dd-yyyy").parse(dateSelected)
+
+                        fragmentVitalStatsBinding.dateSelectedTV.text =
+                            SimpleDateFormat("EEE, MMM dd").format(date!!)
+                        // call api based on type
+                        callGraphApi()
+
+                    }, mYear, mMonth, mDay
+                )
+                datePickerDialog.datePicker.maxDate = c.timeInMillis
+                datePickerDialog.show()
             }
         }
     }
