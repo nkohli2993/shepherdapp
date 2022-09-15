@@ -406,7 +406,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                         eventName,
                         eventId
                     )
-                }, 10000)
+                }, 2000)
             }
         }
 
