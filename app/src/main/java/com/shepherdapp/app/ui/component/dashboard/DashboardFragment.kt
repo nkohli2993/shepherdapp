@@ -114,7 +114,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     private fun permissionCards(value: Int) {
         fragmentDashboardBinding.cvCarePoints.visibility = value
         fragmentDashboardBinding.cvLockBox.visibility = value
-        fragmentDashboardBinding.cvMedList.visibility =  View.VISIBLE    //value
+        fragmentDashboardBinding.cvMedList.visibility = View.VISIBLE    //value
         fragmentDashboardBinding.cvResources.visibility = value
         fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
@@ -141,7 +141,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     override fun initViewBinding() {
         fragmentDashboardBinding.listener = this
-             permissionCards(View.VISIBLE)
+        permissionCards(View.VISIBLE)
         // show accessed cards only to users
 /*
         if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
@@ -195,8 +195,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 findNavController().navigate(R.id.action_dashboard_to_lock_box)
             }
             R.id.cvVitalStats -> {
-//                showError(requireContext(),"Not implemented")
-                findNavController().navigate(R.id.action_dashboard_to_vital_stats)
+                showError(requireContext(), "Not implemented")
+//                findNavController().navigate(R.id.action_dashboard_to_vital_stats)
             }
             R.id.cvCareTeam -> {
                 findNavController().navigate(R.id.action_dashboard_to_care_team_members)
