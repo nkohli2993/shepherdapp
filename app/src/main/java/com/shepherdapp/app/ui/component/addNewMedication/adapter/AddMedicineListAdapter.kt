@@ -51,10 +51,10 @@ class AddMedicineListAdapter(
 
         fun bind(medList: Medlist, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList
-              /* itemBinding.cbReminder.isChecked = false
-               if (medList.isSelected) {
-                   itemBinding.cbReminder.isChecked = true
-               }*/
+            /* itemBinding.cbReminder.isChecked = false
+             if (medList.isSelected) {
+                 itemBinding.cbReminder.isChecked = true
+             }*/
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     absoluteAdapterPosition
@@ -79,6 +79,11 @@ class AddMedicineListAdapter(
         } else {
             this.medLists.addAll(medLists)
         }
+//        this.medLists.addAll(medLists)
+//        sortData()
+        this.medLists = this.medLists.distinctBy {
+            it.id
+        } as ArrayList<Medlist>
         notifyDataSetChanged()
     }
 
@@ -89,6 +94,13 @@ class AddMedicineListAdapter(
 
     fun clearData() {
         this.medLists.clear()
+        notifyDataSetChanged()
+    }
+
+    fun sortData() {
+        medLists.sortBy {
+            it.name
+        }
     }
 
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +19,6 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
-import com.shepherdapp.app.ui.component.settings.SettingFragmentDirections
-import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.observe
@@ -29,6 +28,9 @@ import dagger.hilt.android.AndroidEntryPoint
 /**
  * Created by Nikita kohli on 08-08-22
  */
+
+const val TAG = "AddNewMedication"
+
 @AndroidEntryPoint
 class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>(),
     View.OnClickListener {
@@ -56,8 +58,9 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: ")
         fragmentAddNewMedicationBinding.editTextSearch.setText("")
-        medLists.clear()
+        this.medLists.clear()
         pageNumber = 1
         isSearch = false
         searchFlag = false
@@ -142,6 +145,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         total = payload.total!!
                         currentPage = payload.currentPage!!
                         totalPage = payload.totalPages!!
+                        pageNumber = currentPage + 1
                     }
                     medLists.addAll(medListsAdded)
                     if (medListsAdded.isEmpty()) return@observeEvent
@@ -247,8 +251,8 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
                     if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
                         isScrolling = false
-                        currentPage++
-                        pageNumber++
+//                        currentPage++
+//                        pageNumber++
                         addMedicationViewModel.getAllMedLists(pageNumber, limit)
                     }
                 }
@@ -265,6 +269,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             R.id.btnNext -> {
             }
             R.id.tvNew -> {
+
                 findNavController().navigate(R.id.action_nav_add_new_medicine)
             }
         }
@@ -278,6 +283,8 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     override fun onDestroyView() {
         super.onDestroyView()
         addMedicineListAdapter?.clearData()
+        Log.d(TAG, "onDestroyView: ")
+        pageNumber = 1
     }
 }
 
