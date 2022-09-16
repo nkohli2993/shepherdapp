@@ -1,5 +1,6 @@
 package com.shepherdapp.app.ui.component.lockBox
 
+import CommonFunctions
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -29,7 +30,6 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
-
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.Documents
 import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.DocumentData
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
@@ -49,7 +49,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -220,13 +219,18 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                             //set file added adapter
                             if (payload?.documents != null || payload?.documents!!.size > 0) {
                                 for (i in payload.documents.indices) {
-                                    uploadedFiles.add(
+                                    payload?.createdAt?.let { it1 ->
                                         DocumentData(
                                             i,
                                             payload.documents[i].url!!,
-                                            dateFormat.format(Calendar.getInstance().time)
+                                            //dateFormat.format(Calendar.getInstance().time)
+                                            it1
                                         )
-                                    )
+                                    }?.let { it2 ->
+                                        uploadedFiles.add(
+                                            it2
+                                        )
+                                    }
                                 }
 
                             }
@@ -594,18 +598,18 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                         }
                         val fileSelectedUpload: ArrayList<File> = arrayListOf()
                         fileSelectedUpload.add(file)
-                            setFileViewVisible()
-                            val uploadFile: ArrayList<DocumentData> = arrayListOf()
-                            uploadFile.add(
-                                DocumentData(
-                                    -1,
-                                    file.toString(),
-                                    dateFormat.format(Calendar.getInstance().time)
-                                )
+                        setFileViewVisible()
+                        val uploadFile: ArrayList<DocumentData> = arrayListOf()
+                        uploadFile.add(
+                            DocumentData(
+                                -1,
+                                file.toString(),
+                                dateFormat.format(Calendar.getInstance().time)
                             )
-                            selectedFileList?.addAll(uploadFile)
-                            uploadedFiles.addAll(uploadFile)
-                            uploadedFilesAdapter?.addData(uploadFile)
+                        )
+                        selectedFileList?.addAll(uploadFile)
+                        uploadedFiles.addAll(uploadFile)
+                        uploadedFilesAdapter?.addData(uploadFile)
 
                         selectedFileShow()
                         hideLoading()
