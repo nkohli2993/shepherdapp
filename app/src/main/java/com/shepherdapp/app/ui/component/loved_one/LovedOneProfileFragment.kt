@@ -11,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.added_events.ResultEventModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.user.Payload
 import com.shepherdapp.app.databinding.FragmentLovedOneProfileBinding
@@ -25,6 +26,10 @@ import com.shepherdapp.app.utils.extensions.convertISOTimeToDate
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.LovedOneMedicalConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
@@ -174,6 +179,18 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                             payloadList.add(i)
                         }
                     }
+
+                    Collections.sort(payloadList, object : Comparator<com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?> {
+                        var df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+                        override fun compare(o1: com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?, o2: com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?): Int {
+                            return try {
+                                o1!!.conditions?.name!!.compareTo(o2!!.conditions?.name!!)
+                            } catch (e: Exception) {
+                                throw IllegalArgumentException(e)
+                            }
+                        }
+                    })
+
                     if (payloadList.isEmpty()) {
                         // No medical conditions found
                         fragmentLovedOneProfileBinding.txtNoMedicalConditions.visibility =

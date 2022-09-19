@@ -148,6 +148,9 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                         pageNumber = currentPage + 1
                     }
                     medLists.addAll(medListsAdded)
+                    medLists = medLists.distinctBy {
+                        it.id
+                    } as ArrayList<Medlist>
                     if (medListsAdded.isEmpty()) return@observeEvent
 
                     if (medListsAdded.isEmpty()) {
@@ -217,6 +220,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private fun selectedMedicationDetail(navigateEvent: SingleEvent<Int>) {
         navigateEvent.getContentIfNotHandled()?.let {
             searchFlag = false
+            Log.e("catch_exception","position: $it medication ${medLists[it]}")
             selectedMedication = medLists[it]
             findNavController().navigate(
                 AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
