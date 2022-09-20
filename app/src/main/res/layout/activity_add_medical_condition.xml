@@ -96,7 +96,6 @@
                     android:paddingVertical="@dimen/_15sdp"
                     android:paddingEnd="@dimen/_30sdp"
                     android:textColor="@color/_192032"
-                    android:textColorHint="@color/_192032"
                     android:textSize="@dimen/_13ssp"
                     app:fontFamily="@font/gotham_bold"
                     app:layout_constraintEnd_toEndOf="parent"
