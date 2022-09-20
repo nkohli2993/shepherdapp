@@ -9,14 +9,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.Response
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class NotificationRespostory @Inject constructor(private val apiService: ApiService) {
-
+@Singleton
+class NotificationRepository @Inject constructor(
+    private val apiService: ApiService,
+) {
     //get notification list based on loved one user id
-    suspend fun getNotificationListBasedOnLovedOne(page:Int, limit:Int, loveone_user_id: String): Flow<DataResult<NotificationResponseModel>> {
-        return object : NetworkOnlineDataRepo<NotificationResponseModel, NotificationResponseModel>() {
+    suspend fun getNotificationListBasedOnLovedOne(
+        page: Int,
+        limit: Int,
+        love_user_id: String
+    ): Flow<DataResult<NotificationResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<NotificationResponseModel, NotificationResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<NotificationResponseModel> {
-                return apiService.getNotificationListBasedOnLovedOne(page,limit,loveone_user_id)
+                return apiService.getUserNotifications(page, limit, love_user_id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

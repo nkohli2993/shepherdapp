@@ -1,6 +1,5 @@
 package com.shepherdapp.app.network.retrofit
 
-import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.EditLockBoxRequestModel
 import com.shepherdapp.app.constants.ApiConstants
 import com.shepherdapp.app.data.dto.add_loved_one.CreateLovedOneModel
 import com.shepherdapp.app.data.dto.add_loved_one.CreateLovedOneResponseModel
@@ -25,6 +24,7 @@ import com.shepherdapp.app.data.dto.invitation.accept_invitation.AcceptInvitatio
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
+import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.EditLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
@@ -388,7 +388,7 @@ interface ApiService {
     ): Response<GetMedicationRecordResponse>
 
     @POST(ApiConstants.MedList.ADD_MED_LIST)
-    suspend fun addNewMedlistMedicine( @Body  medlist: AddMedListRequestModel): Response<AddedMedlistResponseModel>
+    suspend fun addNewMedlistMedicine(@Body medlist: AddMedListRequestModel): Response<AddedMedlistResponseModel>
 
     @PUT(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
     suspend fun updateProfile(
@@ -470,5 +470,12 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("loveone_user_id") loveone_user_id: String
+    ): Response<NotificationResponseModel>
+
+    @GET(ApiConstants.Notification.GET_USER_NOTIFICATIONS)
+    suspend fun getUserNotifications(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("loved_one_id") love_user_id: String
     ): Response<NotificationResponseModel>
 }

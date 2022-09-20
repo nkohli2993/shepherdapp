@@ -40,6 +40,7 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+const val TAG = "VitalStatsFragment"
 
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat")

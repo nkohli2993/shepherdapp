@@ -249,3 +249,33 @@ fun String?.convertISOTimeToDate(): String? {
 
     return formattedDate
 }
+
+// Convert String timestamp into string of date
+fun String?.convertTimeStampToDate(): String? {
+    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    var convertedDate: Date? = null
+    var formattedDate: String? = null
+    try {
+        convertedDate = sdf.parse(this)
+        formattedDate = SimpleDateFormat("EEEE, LLL dd").format(convertedDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return formattedDate
+}
+
+// Get time from timestamp
+fun String?.convertTimeStampToTime(): String? {
+    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    var convertedDate: Date? = null
+    var formattedDate: String? = null
+    try {
+        convertedDate = sdf.parse(this)
+        formattedDate = SimpleDateFormat("HH:mm aaa").format(convertedDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return formattedDate
+}
