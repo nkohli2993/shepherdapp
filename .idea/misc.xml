@@ -347,6 +347,7 @@
         <entry key="app/src/main/res/layout/adapter_member_modules.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/adapter_menu_item.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_my_medications_list.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_notifications.xml" value="0.2788288288288288" />
         <entry key="app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_other_documents.xml" value="0.38894907908992415" />
         <entry key="app/src/main/res/layout/adapter_receipe_list.xml" value="0.35625" />
@@ -392,11 +393,13 @@
         <entry key="app/src/main/res/layout/fragment_my_med_detial.xml" value="0.20390625" />
         <entry key="app/src/main/res/layout/fragment_my_medlist.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_new_message.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.2788288288288288" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2487231869254341" />
         <entry key="app/src/main/res/layout/fragment_resources.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_uploaded_lock_box_doc_detail.xml" value="0.21953125" />
+        <entry key="app/src/main/res/layout/fragment_vital_stats.xml" value="0.2860938883968113" />
         <entry key="app/src/main/res/layout/home_activity.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/include_home_toolbar.xml" value="0.178125" />
         <entry key="app/src/main/res/layout/include_toolbar.xml" value="0.638121546961326" />

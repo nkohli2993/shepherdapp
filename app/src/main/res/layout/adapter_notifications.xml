@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.shepherdapp.app.data.dto.notification.Data" />
+    </data>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewDetails"
@@ -39,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 android:includeFontPadding="false"
-                android:text="@string/test_name"
+                android:text="@{data.notification.title}"
                 android:textSize="@dimen/_13sdp"
                 android:textColor="@color/colorBlack"
                 app:layout_constraintStart_toEndOf="@+id/view"
@@ -51,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
-                android:text="@string/test_text_small"
+                android:text="@{data.notification.description}"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="@dimen/_11ssp"

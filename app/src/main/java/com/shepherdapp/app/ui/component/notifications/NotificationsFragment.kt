@@ -1,19 +1,25 @@
 package com.shepherdapp.app.ui.component.notifications
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.Resource
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.databinding.FragmentNotificationsBinding
+import com.shepherdapp.app.network.retrofit.DataResult
+import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.notifications.adapter.NotificationsAdapter
 import com.shepherdapp.app.utils.SingleEvent
-import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.utils.setupSnackbar
 import com.shepherdapp.app.utils.showToast
 import com.shepherdapp.app.view_model.NotificationsViewModel
@@ -23,12 +29,21 @@ import dagger.hilt.android.AndroidEntryPoint
 /**
  * Created by Sumit Kumar on 26-04-22
  */
+
+const val TAG = "NotificationsFragment"
+
 @AndroidEntryPoint
-class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
+class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>(), View.OnClickListener {
 
     private val notificationsViewModel: NotificationsViewModel by viewModels()
 
     private lateinit var fragmentNotificationsBinding: FragmentNotificationsBinding
+    private var pageNumber: Int = 1
+    private var limit: Int = 10
+    private var notificationsAdapter: NotificationsAdapter? = null
+    private var currentPage: Int = 0
+    private var totalPage: Int = 0
+    private var total: Int = 0
 
 
     override fun onCreateView(
@@ -43,6 +58,12 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
     }
 
     override fun initViewBinding() {
+        fragmentNotificationsBinding.listener = this
+        // Get User's Notifications
+        notificationsViewModel.getUserNotifications(pageNumber, limit)
+//        fragmentNotificationsBinding.ivBack.setOnClickListener {
+//            backPress()
+//        }
         setNotificationsAdapter()
     }
 
@@ -50,6 +71,29 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 //        observe(notificationsViewModel.loginLiveData, ::handleLoginResult)
 //        observeSnackBarMessages(notificationsViewModel.showSnackBar)
         observeToast(notificationsViewModel.showToast)
+
+        // Observe notification live data
+        notificationsViewModel.notificationResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val data = it.data.payload?.data
+                    Log.d(TAG, "payload :$data")
+                    data?.let { it1 -> notificationsAdapter?.addData(it1) }
+
+                    total = it.data.payload?.total!!
+                    currentPage = it.data.payload?.currentPage!!
+                    totalPage = it.data.payload?.totalPages!!
+                    pageNumber = currentPage + 1
+                }
+            }
+        }
     }
 
 
@@ -75,14 +119,47 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>() {
 
 
     private fun setNotificationsAdapter() {
-        val notificationsAdapter = NotificationsAdapter(notificationsViewModel)
+        notificationsAdapter = NotificationsAdapter(notificationsViewModel)
         fragmentNotificationsBinding.recyclerViewNotifications.adapter = notificationsAdapter
+        handlePagination()
+    }
 
+    private fun handlePagination() {
+        var isScrolling: Boolean
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisiblesItems: Int
+        fragmentNotificationsBinding.recyclerViewNotifications.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    isScrolling = true
+                    visibleItemCount = recyclerView.layoutManager!!.childCount
+                    totalItemCount = recyclerView.layoutManager!!.itemCount
+                    pastVisiblesItems =
+                        (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+
+                    if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
+                        isScrolling = false
+                        notificationsViewModel.getUserNotifications(pageNumber, limit)
+                    }
+                }
+            }
+        })
     }
 
 
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_my_medlist
+        return R.layout.fragment_notifications
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.ivBack -> {
+                findNavController().popBackStack()
+            }
+        }
     }
 
 

@@ -3,20 +3,36 @@ package com.shepherdapp.app.view_model
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.data.Resource
 import com.shepherdapp.app.data.dto.notification.NotificationResponseModel
-import com.shepherdapp.app.data.remote.notification.NotificationRespostory
+import com.shepherdapp.app.data.local.UserRepository
+import com.shepherdapp.app.data.remote.notification.NotificationRepository
+import com.shepherdapp.app.network.retrofit.DataResult
+import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
 import com.shepherdapp.app.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
  * Created by Nikita kohli 09/09/2022
  */
 @HiltViewModel
-class NotificationsViewModel @Inject constructor(private val dataRepository: NotificationRespostory) :
+class NotificationsViewModel @Inject constructor(
+    private val notificationRepository: NotificationRepository,
+    private val userRepository: UserRepository
+) :
     BaseViewModel() {
+
+    private var _notificationResponseLiveData =
+        MutableLiveData<Event<DataResult<NotificationResponseModel>>>()
+    var notificationResponseLiveData: LiveData<Event<DataResult<NotificationResponseModel>>> =
+        _notificationResponseLiveData
+
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val loginLiveDataPrivate = MutableLiveData<Resource<NotificationResponseModel>>()
@@ -33,9 +49,30 @@ class NotificationsViewModel @Inject constructor(private val dataRepository: Not
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
 
 
-
     fun showToastMessage(errorCode: Int) {
         val error = errorManager.getError(errorCode)
         showToastPrivate.value = SingleEvent(error.description)
+    }
+
+    // Get User Notifications
+    fun getUserNotifications(
+        pageNumber: Int,
+        limit: Int
+    ): LiveData<Event<DataResult<NotificationResponseModel>>> {
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = lovedOneUUID?.let {
+                notificationRepository.getNotificationListBasedOnLovedOne(
+                    pageNumber, limit,
+                    it
+                )
+            }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _notificationResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return notificationResponseLiveData
     }
 }

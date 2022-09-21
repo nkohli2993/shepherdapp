@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,11 +33,14 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.vital_stats.adapter.TypeAdapter
 import com.shepherdapp.app.utils.extensions.showError
+import java.util.concurrent.TimeUnit
 import com.shepherdapp.app.view_model.VitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+const val TAG = "VitalStatsFragment"
 
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat")
@@ -48,6 +53,10 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private lateinit var fragmentVitalStatsBinding: FragmentVitalStatsBinding
     private var vitalStats: VitalStatsData? = null
     private var graphDataList: ArrayList<GraphData> = arrayListOf()
+    //private var heartRate: Int
+    var finalSelectedDate: Date? = null
+    private val dateFormat = DateFormat.getDateInstance()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -78,14 +87,45 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
                     vitalStats.let { stats ->
                         //set data on dash board
-                        fragmentVitalStatsBinding.tvHeartRateValue.text =
-                            vitalStats!!.data?.heartRate
-                        fragmentVitalStatsBinding.tvBodyTempValue.text =
-                            vitalStats!!.data?.bodyTemp
-                        fragmentVitalStatsBinding.tvBloodPressureValue.text =
-                            vitalStats!!.data?.sbp.plus("/${vitalStats!!.data?.dbp}")
-                        fragmentVitalStatsBinding.tvOxygenValue.text =
-                            vitalStats!!.data?.oxygen
+
+                        //Heart Rate
+                        if (vitalStats!!.data?.heartRate.isNullOrEmpty()) {
+                            fragmentVitalStatsBinding.tvHeartRateValue.text = "Not Available"
+                            fragmentVitalStatsBinding.tvHeartRateUnit.visibility = View.GONE
+                        } else {
+                            fragmentVitalStatsBinding.tvHeartRateValue.text =
+                                vitalStats!!.data?.heartRate
+                            fragmentVitalStatsBinding.tvHeartRateUnit.visibility = View.VISIBLE
+                        }
+
+                        // Body temperature
+                        if (vitalStats!!.data?.bodyTemp.isNullOrEmpty()) {
+                            fragmentVitalStatsBinding.tvBodyTempValue.text = "Not Available"
+                            fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.GONE
+                        } else {
+                            fragmentVitalStatsBinding.tvBodyTempValue.text =
+                                vitalStats!!.data?.bodyTemp
+                            fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.VISIBLE
+                        }
+
+                        // Blood Pressure
+                        if (vitalStats!!.data?.sbp.isNullOrEmpty()) {
+                            fragmentVitalStatsBinding.tvBloodPressureValue.text = "Not Available"
+                        } else {
+                            fragmentVitalStatsBinding.tvBloodPressureValue.text =
+                                vitalStats!!.data?.sbp.plus("/${vitalStats!!.data?.dbp}")
+                        }
+
+                        // Oxygen Level
+                        if (vitalStats!!.data?.oxygen.isNullOrEmpty()) {
+                            fragmentVitalStatsBinding.tvOxygenValue.text = "Not Available"
+                            fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.GONE
+
+                        } else {
+                            fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.VISIBLE
+                            fragmentVitalStatsBinding.tvOxygenValue.text =
+                                vitalStats!!.data?.oxygen
+                        }
                     }
                     // to get min value from list
                     val dataAdded: ArrayList<Double> = arrayListOf()
@@ -176,11 +216,23 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     }
 
     private fun callGraphApi() {
+
+        val dateSelected = if(finalSelectedDate == null) Calendar.getInstance().time
+        else finalSelectedDate
+        Log.d(TAG, "Date Selected :$dateSelected ")
+        dateSelected?.let { SimpleDateFormat("yyyy-MM-dd").format(it) }?.let {
+            vitalStatsViewModel.getGraphDataVitalStats(
+                it,
+                vitalStatsViewModel.getLovedOneUUId()!!, type = type!!
+            )
+        }
+       /* val dateSelected = fragmentVitalStatsBinding.dateSelectedTV.text.toString()
+        Log.d(TAG, "Date Selected :$dateSelected ")
         val date = SimpleDateFormat("EEE, MMM dd").parse(fragmentVitalStatsBinding.dateSelectedTV.text.toString())
         vitalStatsViewModel.getGraphDataVitalStats(
             SimpleDateFormat("yyyy-MM-dd").format(date!!),
             vitalStatsViewModel.getLovedOneUUId()!!, type = type!!
-        )
+        )*/
     }
 
     private fun setData() {
@@ -282,10 +334,14 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                             (monthOfYear + 1)
                         } + "-" + year
 
-                        val date = SimpleDateFormat("MM-dd-yyyy").parse(dateSelected)
+                        Log.d(TAG, "onClick: DateSelected : $dateSelected")
+                        val date = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                        date.timeZone = TimeZone.getDefault()
+                        finalSelectedDate = date.parse(dateSelected)
+                        Log.d(TAG, "onClick: Date : $finalSelectedDate")
 
                         fragmentVitalStatsBinding.dateSelectedTV.text =
-                            SimpleDateFormat("EEE, MMM dd").format(date!!)
+                            SimpleDateFormat("EEE, MMM dd").format(finalSelectedDate)
                         // call api based on type
                         callGraphApi()
 

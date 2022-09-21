@@ -150,6 +150,7 @@ object ApiConstants {
 
     object Notification{
         const val GET_NOTIFICATION_LIST = "$BASE_URL${API_VERSION}notification"
+        const val GET_USER_NOTIFICATIONS = "$BASE_URL${API_VERSION}user_notifications"
     }
 }
 
