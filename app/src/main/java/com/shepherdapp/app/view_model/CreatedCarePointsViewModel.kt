@@ -207,7 +207,7 @@ class CreatedCarePointsViewModel @Inject constructor(
         findChatId()
     }
 
-   private fun findChatId(
+    private fun findChatId(
         isFirstTime: Boolean = true,
         onFound: (isFounded: Boolean) -> Unit = {}
     ) {
@@ -285,7 +285,7 @@ class CreatedCarePointsViewModel @Inject constructor(
 
         var query = chatDocReference?.collection(TableName.MESSAGES)
             ?.orderBy("created", Query.Direction.DESCENDING)
-        query = query?.limit(30)
+        query = query?.limit(10)
 
         messageListener?.remove()
         messageListener = null
@@ -560,7 +560,10 @@ class CreatedCarePointsViewModel @Inject constructor(
     }
 
 
-    fun getPreviousMessages() { //get message list
+    fun getPreviousMessages() {
+        chatResponseData.postValue(Event(DataResult.Loading()))
+
+        //get message list
         val chatDocReference = db.collection(TableName.CHATS).document(chatListData?.id ?: "")
         var query = chatDocReference.collection(TableName.MESSAGES)
             .orderBy("created", Query.Direction.DESCENDING)
@@ -568,7 +571,7 @@ class CreatedCarePointsViewModel @Inject constructor(
         if (lastDocument != null)
             query = query.startAfter(lastDocument!!)
 
-        query = query.limit(30)
+        query = query.limit(10)
 
         query.get().addOnSuccessListener { querySnapshot ->
 

@@ -198,7 +198,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             )
             // Load Chat
             loadChat()
-            //  initScrollListener()
+            initScrollListener()
         }
 
         setCommentAdapter()
@@ -231,8 +231,10 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
         fragmentCarePointDetailBinding.recyclerViewChat.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
+
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
+                // !recyclerView.canScrollVertically(-1) returns true if top is reached
                 if (!recyclerView.canScrollVertically(-1) && !allMsgLoaded) {
                     loadPreviousChat()
                 }
