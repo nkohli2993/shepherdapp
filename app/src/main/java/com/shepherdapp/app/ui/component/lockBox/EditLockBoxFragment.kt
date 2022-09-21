@@ -81,6 +81,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private var deletedSelectedDocs: ArrayList<Documents> = arrayListOf()
     private var dateFormat = SimpleDateFormat("MMM dd, yyyy")
     private var isLoading = false
+    private var lockBoxTypeId: Int? = null
 
     companion object {
         private const val REQUEST_CODE_SIGN_IN = 1
@@ -174,11 +175,24 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                         lockBoxTypes.clear()
                         if (it.data.payload?.lockBoxTypes != null || it.data.payload?.lockBoxTypes!!.size > 0) {
                             for (i in it.data.payload?.lockBoxTypes!!) {
-                                lockBoxTypes.add(i)
+                                when {
+                                    i.lockbox == null || i.lockbox.size <= 0 -> {
+                                        lockBoxTypes.add(i)
+                                    }
+                                }
+                                if(i.name?.lowercase()=="other" && i.lockbox.size > 0 &&  i.id != lockBoxTypeId){
+                                    lockBoxTypes.add(i)
+                                }
+                                if (i.lockbox.size > 0 && i.id == lockBoxTypeId) {
+                                    lockBoxTypes.add(i)
+                                }
                             }
                         }
                     }
-                    lockBoxTypes.add(0, LockBoxTypes(id = -1, name = "Select Document Type"))
+                    lockBoxTypes.add(
+                        0,
+                        LockBoxTypes(id = -1, name = getString(R.string.select_document_type))
+                    )
                     if (lockBoxTypes.isEmpty()) return@observeEvent
                     // show types in dropdown
                     documentAdapter =
@@ -223,7 +237,6 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                         DocumentData(
                                             i,
                                             payload.documents[i].url!!,
-                                            //dateFormat.format(Calendar.getInstance().time)
                                             it1
                                         )
                                     }?.let { it2 ->
@@ -276,6 +289,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
         addNewLockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         fragmentEditLockBoxBinding.listener = this
         lockBoxId = args.id!!.toInt()
+        lockBoxTypeId = args.documentId?.toInt()
         addNewLockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
         setUploadedFilesAdapter()
         fragmentEditLockBoxBinding.edtNote.setOnTouchListener { view, event ->

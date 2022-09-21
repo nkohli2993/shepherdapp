@@ -442,5 +442,10 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <argument
+            android:name="document_id"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

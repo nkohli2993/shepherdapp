@@ -240,7 +240,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             }
                         }
                     }
-                    lockBoxTypes.add(0, LockBoxTypes(id = -1, name = "Select Document Type"))
+                    lockBoxTypes.add(0, LockBoxTypes(id = -1, name = getString(R.string.selected_recommended_document_type)))
                     if (lockBoxTypes.isEmpty()) return@observeEvent
                     // show types in dropdown
                     documentAdapter =
