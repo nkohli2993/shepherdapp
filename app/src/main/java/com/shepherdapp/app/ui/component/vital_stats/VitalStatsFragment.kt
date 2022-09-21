@@ -87,14 +87,45 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
                     vitalStats.let { stats ->
                         //set data on dash board
-                        fragmentVitalStatsBinding.tvHeartRateValue.text =
-                            vitalStats!!.data?.heartRate
-                        fragmentVitalStatsBinding.tvBodyTempValue.text =
-                            vitalStats!!.data?.bodyTemp
-                        fragmentVitalStatsBinding.tvBloodPressureValue.text =
-                            vitalStats!!.data?.sbp.plus("/${vitalStats!!.data?.dbp}")
-                        fragmentVitalStatsBinding.tvOxygenValue.text =
-                            vitalStats!!.data?.oxygen
+
+                        //Heart Rate
+                        if (vitalStats!!.data?.heartRate.isNullOrEmpty()) {
+                            fragmentVitalStatsBinding.tvHeartRateValue.text = "Not Available"
+                            fragmentVitalStatsBinding.tvHeartRateUnit.visibility = View.GONE
+                        } else {
+                            fragmentVitalStatsBinding.tvHeartRateValue.text =
+                                vitalStats!!.data?.heartRate
+                            fragmentVitalStatsBinding.tvHeartRateUnit.visibility = View.VISIBLE
+                        }
+
+                        // Body temperature
+                        if (vitalStats!!.data?.bodyTemp.isNullOrEmpty()) {
+                            fragmentVitalStatsBinding.tvBodyTempValue.text = "Not Available"
+                            fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.GONE
+                        } else {
+                            fragmentVitalStatsBinding.tvBodyTempValue.text =
+                                vitalStats!!.data?.bodyTemp
+                            fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.VISIBLE
+                        }
+
+                        // Blood Pressure
+                        if (vitalStats!!.data?.sbp.isNullOrEmpty()) {
+                            fragmentVitalStatsBinding.tvBloodPressureValue.text = "Not Available"
+                        } else {
+                            fragmentVitalStatsBinding.tvBloodPressureValue.text =
+                                vitalStats!!.data?.sbp.plus("/${vitalStats!!.data?.dbp}")
+                        }
+
+                        // Oxygen Level
+                        if (vitalStats!!.data?.oxygen.isNullOrEmpty()) {
+                            fragmentVitalStatsBinding.tvOxygenValue.text = "Not Available"
+                            fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.GONE
+
+                        } else {
+                            fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.VISIBLE
+                            fragmentVitalStatsBinding.tvOxygenValue.text =
+                                vitalStats!!.data?.oxygen
+                        }
                     }
                     // to get min value from list
                     val dataAdded: ArrayList<Double> = arrayListOf()
