@@ -230,13 +230,13 @@ object CommonFunctions {
     fun fileFromContentUri(context: Context, contentUri: Uri): File {
         // Preparing Temp file name
         val fileExtension = getFileExtension(context, contentUri)
-        val fileName =  contentUri.toString().substring(contentUri.toString().lastIndexOf("/") + 1).replace("%3","_") + if (fileExtension != null) ".$fileExtension" else ""
+        val fileName = contentUri.toString().substring(contentUri.toString().lastIndexOf("/") + 1)
+            .replace("%3", "_") + if (fileExtension != null) ".$fileExtension" else ""
 
         // Creating Temp file
-        val name = if(fileName.length>30){
+        val name = if (fileName.length > 30) {
             "temp_file_${Calendar.getInstance().timeInMillis}$fileExtension".plus(".$fileExtension")
-        }
-        else{
+        } else {
             fileName
         }
         val tempFile = File(context.cacheDir, name)

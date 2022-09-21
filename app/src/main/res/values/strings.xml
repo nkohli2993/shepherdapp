@@ -539,4 +539,5 @@
     <string name="everyday">Everyday</string>
     <string name="edit_loved_one_profile">Edit Loved One Details</string>
     <string name="selected_recommended_document_type">Select Recommended Document Type</string>
+    <string name="select_document_type">Select Document Type</string>
 </resources>
