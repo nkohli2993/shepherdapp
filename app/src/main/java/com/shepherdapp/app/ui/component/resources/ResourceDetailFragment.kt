@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.shepherdapp.app.R
@@ -65,13 +66,13 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
 
     @SuppressLint("SetTextI18n")
     private fun setDataResource() {
-        fragmentResourcesDetailBinding.textViewTitle.text = resourceDetail!!.title
+        fragmentResourcesDetailBinding.textViewTitle.text =   HtmlCompat.fromHtml(resourceDetail!!.title ?: "", 0)
         if (resourceDetail!!.thumbnailUrl != null && resourceDetail!!.thumbnailUrl != "") {
             Picasso.get().load(resourceDetail!!.thumbnailUrl)
                 .placeholder(R.drawable.image)
                 .into(fragmentResourcesDetailBinding.imageViewTopic)
         }
-        fragmentResourcesDetailBinding.descriptionTV.text = resourceDetail!!.content
+        fragmentResourcesDetailBinding.descriptionTV.text =    HtmlCompat.fromHtml(resourceDetail!!.content ?: "", 0)
         val formattedDate = resourceDetail!!.createdAt!!.toTextFormat(
             resourceDetail!!.createdAt!!,
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
