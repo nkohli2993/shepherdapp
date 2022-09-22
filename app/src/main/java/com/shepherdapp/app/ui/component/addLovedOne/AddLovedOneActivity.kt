@@ -152,11 +152,13 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 val payload = intent.getParcelableExtra<Payload>("payload")
                 Log.d(TAG, "initViewBinding: $payload")
                 isEditLovedOne = true
-
-
+                if (payload?.userLocation != null) {
+                    placeId = payload?.userLocation?.placeId
+                }
                 binding.txtLovedOne.text = getString(R.string.edit_loved_one_profile)
                 binding.txtLittleBit.visibility = View.GONE
                 if (!payload?.userProfiles?.profilePhoto.isNullOrEmpty()) {
+                    lovedOnePicUrl = payload?.userProfiles?.profilePhoto
                     Picasso.get().load(payload?.userProfiles?.profilePhoto)
                         .placeholder(R.drawable.ic_defalut_profile_pic).into(binding.imgLoveOne)
                 }
@@ -533,7 +535,12 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                         lovedOnePicUrl = null
                         completeURLProfilePic = null
                     } else {
-                        completeURLProfilePic = BuildConfig.BASE_URL_USER + lovedOnePicUrl
+                        if ((lovedOnePicUrl ?: "").startsWith(BuildConfig.BASE_URL_USER)) {
+                            completeURLProfilePic = lovedOnePicUrl
+                        } else {
+                            completeURLProfilePic = BuildConfig.BASE_URL_USER + lovedOnePicUrl
+                        }
+
 //                        completeURLProfilePic = ApiConstants.BASE_URL_USER + lovedOnePicUrl
                     }
 

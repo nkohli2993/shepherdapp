@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.R
@@ -51,9 +52,11 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                 is DataResult.Success -> {
                     hideLoading()
                     Log.d(TAG, "Medication Detail :${it.data.payload} ")
-                    fragmentMyMedDetailBinding.tvMedTitle.text = it.data.payload.medlist.name
-                    fragmentMyMedDetailBinding.brandNameTV.text =it.data.payload.medlist.name
-                    fragmentMyMedDetailBinding.txtDescription1.text = it.data.payload.medlist.description
+                    fragmentMyMedDetailBinding.tvMedTitle.text =  HtmlCompat.fromHtml( it.data.payload.medlist.name?: "", 0)
+                    fragmentMyMedDetailBinding.brandNameTV.text =HtmlCompat.fromHtml( it.data.payload.medlist.name?: "", 0)
+                    fragmentMyMedDetailBinding.txtDescription1.text =
+                        HtmlCompat.fromHtml( it.data.payload.medlist.description?: "", 0)
+                   // fragmentMyMedDetailBinding.txtDescription1.text = it.data.payload.medlist.description
 
                     it.data.payload.assigned_by_details.let { assignedByDetail ->
                         fragmentMyMedDetailBinding.tvUsername.text = "${assignedByDetail.firstname} ${assignedByDetail.lastname}"

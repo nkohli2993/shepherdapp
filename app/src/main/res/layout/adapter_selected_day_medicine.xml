@@ -58,14 +58,13 @@
                     android:textSize="@dimen/_14ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
+<!-- android:text="@{data.medlist.description}"-->
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMedicineSalt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:fontFamily="@font/gotham_book"
-                    android:text="@{data.medlist.description}"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_11ssp"
                     app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
