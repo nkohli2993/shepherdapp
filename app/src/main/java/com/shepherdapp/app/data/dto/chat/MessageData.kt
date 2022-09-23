@@ -66,7 +66,9 @@ data class ChatNotificationModel(
     @SerializedName("notification")
     var notification: ChatNotificationData?,
     @SerializedName("to")
-    var to: String? = null
+    var to: String? = null,
+    @SerializedName("registration_ids")
+    var registrationIDs: ArrayList<String>? = null
 ) : Parcelable
 
 @SuppressLint("ParcelCreator")

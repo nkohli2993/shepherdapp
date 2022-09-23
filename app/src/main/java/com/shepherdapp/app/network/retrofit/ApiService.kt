@@ -15,6 +15,7 @@ import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.change_password.ChangePasswordModel
+import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
 import com.shepherdapp.app.data.dto.dashboard.HomeResponseModel
 import com.shepherdapp.app.data.dto.edit_loved_one.EditLovedOneResponseModel
 import com.shepherdapp.app.data.dto.edit_profile.UserUpdateData
@@ -43,6 +44,7 @@ import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordR
 import com.shepherdapp.app.data.dto.medical_conditions.*
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.notification.NotificationResponseModel
+import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.data.dto.relation.RelationResponseModel
 import com.shepherdapp.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherdapp.app.data.dto.resource.ResponseRelationModel
@@ -478,4 +480,15 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("loved_one_id") love_user_id: String
     ): Response<NotificationResponseModel>
+
+
+    @Headers(
+        "Authorization: key=AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg",
+        "Content-Type:application/json"
+    )
+    @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)
+    suspend fun sendPushNotification(
+//        @Header ("Authorization") "AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg"
+        @Body chatNotificationModel: ChatNotificationModel
+    ):Response<FCMResponseModel>
 }

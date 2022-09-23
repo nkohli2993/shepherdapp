@@ -14,5 +14,4 @@ open class BaseResponseModel(
 
     @SerializedName("api_ver")
     var apiVersion: String? = null,
-
-    )
+)

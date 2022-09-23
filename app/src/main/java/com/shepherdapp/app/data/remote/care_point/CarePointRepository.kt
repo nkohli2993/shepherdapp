@@ -1,6 +1,8 @@
 package com.shepherdapp.app.data.remote.care_point
 
 import com.shepherdapp.app.data.dto.added_events.*
+import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
+import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.NetworkOnlineDataRepo
@@ -72,5 +74,13 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    // Send Push Notifications
+    suspend fun sendPushNotifications(chatNotificationModel: ChatNotificationModel): Flow<DataResult<FCMResponseModel>> {
+        return object : NetworkOnlineDataRepo<FCMResponseModel, FCMResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<FCMResponseModel> {
+                return apiService.sendPushNotification(chatNotificationModel)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 
 }

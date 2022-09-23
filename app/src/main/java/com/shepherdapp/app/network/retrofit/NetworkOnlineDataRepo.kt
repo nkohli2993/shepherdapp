@@ -2,6 +2,7 @@ package com.shepherdapp.app.network.retrofit
 
 import android.util.Log
 import androidx.annotation.MainThread
+import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.ui.base.BaseResponseModel
 import kotlinx.coroutines.flow.flow
 import okhttp3.ResponseBody
@@ -66,12 +67,16 @@ abstract class NetworkOnlineDataRepo<RESULT, REQUEST> {
     }
 
     private fun validateData(data: REQUEST): Boolean {
-        if (data is BaseResponseModel) {
-//            if (data.statusCode == 200) {
-            return true
-//            }
+        return when (data) {
+            is BaseResponseModel -> {
+                true
+            }
+            // Handle Push Notification response
+            is FCMResponseModel -> {
+                true
+            }
+            else -> false
         }
-        return false
     }
 
     private fun getErrorResponse(data: REQUEST): BaseResponseModel? {

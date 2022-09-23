@@ -31,6 +31,18 @@ object Const {
     const val RESET_SECURITY_CODE = "RESET"
     const val SET_SECURITY_CODE = "SET"
     const val FIREBASE_TOKEN = "SET"
+
+
+    object NotificationAction {
+        const val ADD_COMMENT = "post_comment"
+        const val ADD_COMMENT_REPLY = "comment_reply"
+        const val FOLLOW = "follow"
+        const val LIKE_COMMENT = "comment_like"
+        const val LIKE_POST = "post_like"
+        const val MESSAGE = "message"
+        const val AUDIO_CALL = "Audio_call"
+        const val VIDEO_CALL = "Video_call"
+    }
 }
 
 object Drawable {
@@ -101,3 +113,5 @@ enum class TimePickerType(val value :Int){
     ADD(1),
     EDIT(2)
 }
+
+

@@ -368,6 +368,22 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }
             }
         }
+        
+        // Observe Push Notification Response 
+        carePointsViewModel.fcmResponseLiveData.observeEvent(this){
+            when(it){
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    
+                }
+                is DataResult.Success -> {
+                    Log.d(TAG, "observeViewModel: Push Notification sent successfully...")
+                }
+            }
+        }
+        
         /* carePointsViewModel.addedCarePointDetailCommentsLiveData.observeEvent(this) {
              when (it) {
                  is DataResult.Loading -> {
@@ -411,6 +427,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }, 10000)
             }
         }*/
+
+
 
     }
 

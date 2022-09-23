@@ -12,15 +12,18 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.databinding.ActivityLoginNewBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -40,8 +43,6 @@ import com.shepherdapp.app.utils.extensions.isValidEmail
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.LoginViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executor
 
@@ -59,6 +60,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private lateinit var biometricPrompt: BiometricPrompt
     private var token: String? = null
     private var userLovedOneArrayList: ArrayList<UserLovedOne>? = null
+    private var firebaseToken: String? = null
     private var TAG = "LoginActivity"
 
     // Handle Validation
@@ -244,9 +246,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                 )
                             }
                         }
-
-
                         userLovedOneArrayList = it.payload?.userLovedOne
+
+                        // Save User Info in Firestore
+                        val user = it.payload?.let { it1 -> loginResponseToUser(it1) }
+                        user?.let { it1 -> loginViewModel.saveUserInfoInFirestore(it1) }
 
                         // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
                         // Save lovedOneID to sharedPref
@@ -434,17 +438,33 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
-    fun generateFirebaseToken(){
+    private fun generateFirebaseToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener {
-            if (!it.isSuccessful){
+            if (!it.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", it.exception)
                 return@addOnCompleteListener
             }
-
+            firebaseToken = it.result
             // Get new FCM registration token
             Prefs.with(this)!!.save(Const.FIREBASE_TOKEN, it.result)
             // Log and toast
             Log.d(TAG, "Firebase token generated: ${it.result}")
+        }
+    }
+
+
+    private fun loginResponseToUser(payload: Payload): User {
+        val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
+
+        return User().apply {
+            id = payload.userProfiles?.id
+            userId = payload.userProfiles?.userId
+            firstname = payload.userProfiles?.firstname
+            lastname = payload.userProfiles?.lastname
+            profilePhoto = payload.userProfiles?.profilePhoto
+            uuid = payload.uuid
+            email = payload.email
+            firebaseToken = fToken
         }
     }
 

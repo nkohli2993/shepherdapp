@@ -1,8 +1,12 @@
 package com.shepherdapp.app.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.BuildConfig
+import com.shepherdapp.app.ShepherdApp.Companion.db
+import com.shepherdapp.app.data.dto.chat.User
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
@@ -13,6 +17,8 @@ import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.TableName
+import com.shepherdapp.app.utils.serializeToMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,11 +29,15 @@ import javax.inject.Inject
  * Created by Deepak Rattan on 27/05/22
  */
 
+const val TAG = "LoginViewModel"
+
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
+
+    var isUserAlreadyExists: Boolean = false
 
     var loginData = MutableLiveData<UserSignupData>().apply {
         value = UserSignupData()
@@ -130,7 +140,55 @@ class LoginViewModel @Inject constructor(
         userRepository.saveUserRole(role)
     }
 
-    fun saveLovedOneDetail(userLovedOne: UserLovedOne){
+    fun saveLovedOneDetail(userLovedOne: UserLovedOne) {
         userRepository.saveLovedOneUserDetail(userLovedOne)
+    }
+
+    // Save User's Info in Firestore
+    fun saveUserInfoInFirestore(user: User) {
+        checkIfUserAlreadyExists(user)
+        /* if (!isUserExists) {
+             db.collection(TableName.USERS).add(user.serializeToMap())
+                 .addOnSuccessListener {
+                     db.collection(TableName.USERS).document(it.id)
+                         .update("document_id", it.id)
+                 }.addOnFailureListener {
+                     if (BuildConfig.DEBUG) {
+                         it.printStackTrace()
+                         Log.d(TAG, it.toString())
+                     }
+                 }
+         }*/
+    }
+
+    // Check if user's info already saved in Firestore
+    private fun checkIfUserAlreadyExists(user: User) {
+        db.collection(TableName.USERS)
+            .whereEqualTo("uuid", user.uuid)
+            .get()
+            .addOnSuccessListener {
+                if (it.documents.isNullOrEmpty()) {
+//                    isUserAlreadyExists = false
+                    db.collection(TableName.USERS).add(user.serializeToMap())
+                        .addOnSuccessListener {
+                            db.collection(TableName.USERS).document(it.id)
+                                .update("document_id", it.id)
+                            user.documentID = it.id
+                        }.addOnFailureListener {
+                            if (BuildConfig.DEBUG) {
+                                it.printStackTrace()
+                                Log.d(TAG, it.toString())
+                            }
+                        }
+                } else {
+                    // Update the firebase token
+                    val documentID = it.documents[0].id
+                    val fToken = userRepository.getFirebaseToken()
+
+                    db.collection(TableName.USERS).document(documentID)
+                        .update("firebase_token", fToken)
+                }
+            }.addOnFailureListener {
+            }
     }
 }

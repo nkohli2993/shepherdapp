@@ -13,7 +13,7 @@ object ApiConstants {
 
     private const val API_VERSION = "api/v1/"
 
-//    const val BASE_URL = "https://sheperdstagging.itechnolabs.tech:3055/"
+    //    const val BASE_URL = "https://sheperdstagging.itechnolabs.tech:3055/"
 //    // Field from build type: debug
 //    const val BASE_URL_USER = "https://usersherperd.itechnolabs.tech/"
     object Authentication {
@@ -35,7 +35,8 @@ object ApiConstants {
 
     object LovedOne {
         const val CREATE_LOVED_ONE = "$BASE_URL_USER${API_VERSION}users/create-loved-one"
-//        const val EDIT_LOVED_ONE = "$BASE_URL_USER${API_VERSION}user_profiles/{id}"
+
+        //        const val EDIT_LOVED_ONE = "$BASE_URL_USER${API_VERSION}user_profiles/{id}"
         const val EDIT_LOVED_ONE = "$BASE_URL_USER${API_VERSION}user_profiles/lovedone/{uuid}"
         const val GET_LOVED_ONE_DETAIL_WITH_RELATION =
             "$BASE_URL${API_VERSION}care_teams/love_detail/{id}"
@@ -51,7 +52,7 @@ object ApiConstants {
             "$BASE_URL${API_VERSION}user_conditions/getAllByLovedOne/{id}"
         const val UPDATE_MEDICAL_CONDITIONS =
             "$BASE_URL${API_VERSION}user_conditions/updateOne"
-        const val ADD_MEDICAL_CONDITION =   "$BASE_URL${API_VERSION}conditions"
+        const val ADD_MEDICAL_CONDITION = "$BASE_URL${API_VERSION}conditions"
     }
 
     object CareTeams {
@@ -139,7 +140,7 @@ object ApiConstants {
 
     object Resource {
         const val GET_ALL_RESOURCE = "$BASE_URL${API_VERSION}posts"
-        const val GET_ALL_RESOURCE_BY_LOVED_ONE  = "$BASE_URL${API_VERSION}posts/lovedone"
+        const val GET_ALL_RESOURCE_BY_LOVED_ONE = "$BASE_URL${API_VERSION}posts/lovedone"
         const val GET_TRENDING_RESOURCE = "$BASE_URL${API_VERSION}posts/features"
         const val GET_RESOURCE_DETAIL = "$BASE_URL${API_VERSION}posts/{id}"
     }
@@ -148,9 +149,10 @@ object ApiConstants {
         const val GET_STATIC_PAGE = "$BASE_URL${API_VERSION}settings"
     }
 
-    object Notification{
+    object Notification {
         const val GET_NOTIFICATION_LIST = "$BASE_URL${API_VERSION}notification"
         const val GET_USER_NOTIFICATIONS = "$BASE_URL${API_VERSION}user_notifications"
+        const val SEND_PUSH_NOTIFICATIONS = "https://fcm.googleapis.com/fcm/send"
     }
 }
 
