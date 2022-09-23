@@ -445,13 +445,14 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 var found = false
                 for (j in searchedConditions) {
                     if (i.id == j.id) {
-                        if (j.isSelected) {
-                            found = true
-                            break
-                        }
+                        // if (j.isSelected) {
+                        i.isSelected = j.isSelected
+                        found = true
+                        break
+                        // }
                     }
                 }
-                i.isSelected = false
+                // i.isSelected = false
                 if (found) {
                     if (i.isAlreadySelected == 1 && i.isSelected) {
                         i.isAlreadySelected = 2
@@ -459,7 +460,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     if (i.isAlreadySelected == 2 && !i.isSelected) {
                         i.isAlreadySelected = 1
                     }
-                    i.isSelected = true
+                    //  i.isSelected = true
+                    //  i.isSelected = !i.isSelected
                 }
             }
         }

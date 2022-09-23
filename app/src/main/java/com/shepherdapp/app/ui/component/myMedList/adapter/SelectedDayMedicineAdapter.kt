@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.UserMedicationRemiderData
@@ -76,6 +77,9 @@ class SelectedDayMedicineAdapter(
             recyclerItemListener1: RecyclerItemListener
         ) {
             itemBinding.data = medListReminder
+            itemBinding.textViewMedicineSalt.text =
+                HtmlCompat.fromHtml(medListReminder?.medlist?.description ?: "", 0)
+
             itemBinding.medicationCL.setOnClickListener {
                 medListReminder?.let { it1 ->
                     recyclerItemListener.onItemSelected(
@@ -109,7 +113,7 @@ class SelectedDayMedicineAdapter(
                 }
             }
             itemBinding.cbReminder.isChecked = false
-            if(medListReminder?.isRecordAdded == true){
+            if (medListReminder?.isRecordAdded == true) {
                 itemBinding.cbReminder.isChecked = true
             }
 

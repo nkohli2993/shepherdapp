@@ -174,12 +174,12 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-//                    lockBoxTypes = it.data.payload?.lockBoxTypes
                     lockBoxTypes.clear()
                     if (it.data.payload?.lockBoxTypes != null || it.data.payload?.lockBoxTypes!!.size > 0) {
                         for (i in it.data.payload?.lockBoxTypes!!) {
                             i.isAdded = false
-                            if (i.lockbox != null && i.lockbox.size > 0 && i.name?.lowercase() != "other") {
+//                            if (i.lockbox != null && i.lockbox.size > 0 && i.name?.lowercase() != "other") {
+                            if (i.lockbox != null && i.lockbox.size > 0) {
                                 i.isAdded = true
                             }
                             lockBoxTypes.add(i)
