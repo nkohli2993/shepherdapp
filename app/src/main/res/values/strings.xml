@@ -543,4 +543,5 @@
     <string name="are_you_an_enterprise_user">Are you an \n Enterprise User?</string>
     <string name="enter_enterprise_code">Enter Enterprise \n Code</string>
     <string name="enterprise_code">Enterprise Code</string>
+    <string name="are_you_enterprise_user">Are you an Enterprise User?</string>
 </resources>

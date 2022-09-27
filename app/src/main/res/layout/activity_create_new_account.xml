@@ -251,25 +251,51 @@
                             android:textSize="14sp"
                             app:layout_constraintTop_toBottomOf="@id/label_phone_number"
                             bind:setPhoneError="@{@string/mobile_number}" />
-                        <!--<androidx.appcompat.widget.AppCompatSpinner
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>-->
 
 
                     </LinearLayout>
 
-                    <!-- <EditText
-                         android:id="@+id/editTextPhoneNumber"
-                         android:layout_width="match_parent"
-                         app:layout_constraintTop_toBottomOf="@id/label_phone_number"
-                         android:layout_height="@dimen/_34sdp"
-                         android:layout_marginTop="@dimen/_4sdp"
-                         android:drawableStart="@drawable/ic_phone"
-                         android:paddingHorizontal="@dimen/_8sdp"
-                         android:drawablePadding="@dimen/_5sdp"
-                         android:hint="@string/enter_phone_number"
-                         android:text="@={viewModel.signUpData.phoneNo}"
-                         android:background="@drawable/shape_rectangle_circular_corner_border_grey" />-->
+                  <!--  <TextView
+                        android:id="@+id/txtEnterpriseUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/gotham_light"
+                        android:text="@string/are_you_enterprise_user"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layoutPhone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtEnterpriseUser">
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/chkYes"
+                            style="@style/CustomCheckbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:clickable="false"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/yes" />
+
+                        <androidx.appcompat.widget.AppCompatCheckBox
+                            android:id="@+id/chkNo"
+                            style="@style/CustomCheckbox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="@dimen/_20sdp"
+                            android:clickable="false"
+                            android:padding="@dimen/_5sdp"
+                            android:text="@string/no" />
+                    </LinearLayout>-->
 
                     <TextView
                         android:id="@+id/label_password"
