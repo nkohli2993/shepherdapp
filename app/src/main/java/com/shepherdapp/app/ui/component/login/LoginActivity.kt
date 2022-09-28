@@ -337,6 +337,43 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         dialog.show()
     }
 
+    // Show Enterprise user dialog
+    private fun showEnterpriseUserDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_enterprise_user)
+        val yesBtn = dialog.findViewById(R.id.btnYes) as TextView
+        val noBtn = dialog.findViewById(R.id.btnNo) as TextView
+        yesBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        noBtn.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+
+    // Enter Enterprise code dialog
+    private fun showEnterpriseCodeDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_enterprise_code)
+        val edtEnterCode = dialog.findViewById(R.id.edtEnterCode) as EditText
+        val btnSubmit = dialog.findViewById(R.id.btnSubmit) as TextView
+        val btnCancel = dialog.findViewById(R.id.btnCancel) as TextView
+        btnSubmit.setOnClickListener {
+            dialog.dismiss()
+        }
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+
     private fun registerBiometric(isBioMetricEnable: Boolean) {
         loginViewModel.registerBioMetric(
             isBioMetricEnable

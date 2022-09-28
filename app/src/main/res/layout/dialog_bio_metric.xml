@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/_15sdp"
         android:fontFamily="@font/gotham_bold"
-        android:text="Shepherd Cares"
+        android:text="@string/app_name"
         android:textColor="@color/_192032"
         android:textSize="@dimen/_12ssp" />
 
@@ -27,7 +27,7 @@
         android:fontFamily="@font/gotham_book"
         android:gravity="center"
         android:lineSpacingExtra="@dimen/_5sdp"
-        android:text="Do you want to login with your biometric for next time?"
+        android:text="@string/do_you_want_to_login_with_biometric"
         android:textColor="@color/_192032"
         android:textSize="@dimen/_14ssp" />
 
@@ -54,7 +54,7 @@
             android:fontFamily="@font/gotham_bold"
             android:gravity="center"
             android:padding="10dp"
-            android:text="No"
+            android:text="@string/no"
             android:textAllCaps="false"
             android:textColor="@color/_D7293F"
             android:textSize="@dimen/_13ssp" />
@@ -72,7 +72,7 @@
             android:fontFamily="@font/gotham_bold"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Yes"
+            android:text="@string/yes"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/_13ssp" />
 
