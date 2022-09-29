@@ -27,6 +27,7 @@
     <string name="title_activity_add_loved_one_condition">Add Loved One Condition</string>
     <string name="title_activity_join_care_team">Join CareTeam</string>
     <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_subscription">Subscription</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -544,4 +545,7 @@
     <string name="enter_enterprise_code">Enter Enterprise \n Code</string>
     <string name="enterprise_code">Enterprise Code</string>
     <string name="are_you_enterprise_user">Are you an Enterprise User?</string>
+    <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometric for next time?</string>
+    <string name="buy_plan">Buy Plan</string>
+
 </resources>

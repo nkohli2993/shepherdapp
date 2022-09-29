@@ -71,6 +71,10 @@
             android:label="@string/title_activity_walk_through" />
 
         <activity
+            android:name=".ui.component.subscription.SubscriptionActivity"
+            android:label="@string/title_activity_subscription" />
+
+        <activity
             android:name="com.shepherdapp.app.ui.welcome.WelcomeActivity"
             android:label="@string/title_activity_welcome" />
         <activity

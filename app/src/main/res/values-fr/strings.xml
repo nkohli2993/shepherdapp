@@ -539,9 +539,9 @@
     <string name="edit_loved_one_profile">Modifier les détails d\'un être cher</string>
     <string name="selected_recommended_document_type">Sélectionnez le type de document recommandé</string>
     <string name="select_document_type">Sélectionnez le type de document</string>
-    <string name="are_you_an_enterprise_user">Êtes-vous un \n Utilisateur d'entreprise?</string>
+<!--    <string name="are_you_an_enterprise_user">Êtes-vous un \n Utilisateur d'entreprise?</string>-->
     <string name="enter_enterprise_code">Entrer dans l\'entreprise \n Code</string>
-    <string name="enterprise_code">Code d\'entreprise</string>
-    <string name="are_you_enterprise_user">Êtes-vous un utilisateur d\'entreprise?</string>
+<!--    <string name="enterprise_code">Code d\'entreprise</string>-->
+<!--    <string name="are_you_enterprise_user">Êtes-vous un utilisateur d\'entreprise?</string>-->
 
 </resources>

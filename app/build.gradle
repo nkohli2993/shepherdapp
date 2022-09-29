@@ -276,6 +276,9 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:2.1.0'
+
+    //View Pager2
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
 }
 kapt {
     correctErrorTypes true

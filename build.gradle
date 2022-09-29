@@ -61,6 +61,7 @@ ext {
     calednarVersion = '1.0.0'
     numberpadVersion = '1.0.1'
     biometric_version = '1.2.0-alpha04'
+    viewPager2Version = "1.0.0"
 
     //base_url_staging = "\"http://sheperdstagging.itechnolabs.tech/\""
 //    base_url_staging = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
