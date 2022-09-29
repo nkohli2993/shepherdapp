@@ -8,7 +8,6 @@ import com.shepherdapp.app.R
 import com.shepherdapp.app.databinding.ActivityWalkThroughBinding
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.onBoarding.adapter.OnBoardingImagesAdapter
-import com.shepherdapp.app.ui.component.walkThrough.WalkThroughModel
 import com.shepherdapp.app.ui.welcome.WelcomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
