@@ -9,8 +9,9 @@ import kotlinx.android.parcel.Parcelize
  * Created by Deepak Rattan on 27/05/22
  */
 @Parcelize
-data class UserRoles (
+data class UserRoles(
 
-    @SerializedName("role_id" ) var roleId : Int? = null
+    @SerializedName("role_id") var roleId: Int? = null,
+    @SerializedName("role") var role: Role? = Role()
 
-):Parcelable
+) : Parcelable
