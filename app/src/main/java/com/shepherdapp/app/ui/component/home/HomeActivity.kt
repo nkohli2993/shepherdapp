@@ -1,6 +1,9 @@
 package com.shepherdapp.app.ui.component.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -18,6 +21,8 @@ import androidx.navigation.ui.NavigationUI
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.chat.ChatListData
+import com.shepherdapp.app.data.dto.chat.ChatUserDetail
 import com.shepherdapp.app.data.dto.user.UserProfiles
 import com.shepherdapp.app.databinding.ActivityHomeBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -27,6 +32,7 @@ import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.carePoints.CarePointsFragment
 import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragment
 import com.shepherdapp.app.ui.component.dashboard.DashboardFragment
+import com.shepherdapp.app.ui.component.dashboard.DashboardFragmentDirections
 import com.shepherdapp.app.ui.component.lockBox.LockBoxFragment
 import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.ui.component.messages.MessagesFragment
@@ -35,6 +41,7 @@ import com.shepherdapp.app.ui.component.profile.ProfileFragment
 import com.shepherdapp.app.ui.component.resources.ResourcesFragment
 import com.shepherdapp.app.ui.component.settings.SettingFragment
 import com.shepherdapp.app.ui.component.vital_stats.VitalStatsFragment
+import com.shepherdapp.app.utils.Chat
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Modules
 import com.shepherdapp.app.utils.Prefs
@@ -64,6 +71,14 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+       /* // Handle Push Notification Data
+        if (intent != null && intent.hasExtra("isNotification")) {
+            navController = findNavController(R.id.nav_host_fragment_content_dashboard)
+            checkNotificationAction(intent.getBundleExtra("detail"))
+        }*/
+
+
 
         viewModel.getHomeData()
         setupNavigationDrawer()
@@ -98,6 +113,45 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         binding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
 
     }
+
+    private fun checkNotificationAction(bundle: Bundle?) {
+        val action = bundle?.get("type") as String?
+
+        when (action) {
+            // Handle Chat Message Notification
+            Const.NotificationAction.MESSAGE -> {
+                val chatId = (bundle?.get("chat_id") as String)
+                val chatData = ChatListData().apply {
+                    chatType = (bundle.get("chat_type") as String?)?.toIntOrNull()
+                    if (chatType == Chat.CHAT_GROUP) {
+                        toUser = ChatUserDetail(
+                            id = (bundle.get("user_id") as String?) ?: "",
+                            imageUrl = (bundle.get("from_image") as String?) ?: "",
+                            name = (bundle.get("from_name") as String?) ?: ""
+                        )
+                    } else {
+                        groupName = bundle.get("from_name") as String?
+                    }
+
+                    id = chatId
+                }
+
+                //open event detail page
+               /* navController.navigate(
+                    DashboardFragmentDirections.actionNavDashboardToNavCarePointsDetail(
+                        "Dashboard",
+                        null
+                    )
+                )*/
+            }
+        }
+    }
+
+    fun clearNotification() {
+        val nMgr = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
+        nMgr?.cancelAll()
+    }
+
 
     private fun permissionShowHide(value: Int) {
         binding.llCarePoint.visibility = value
@@ -317,6 +371,12 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                 }
             }
+        }
+
+        // Handle Push Notification Data
+        if (intent != null && intent.hasExtra("isNotification")) {
+            navController = findNavController(R.id.nav_host_fragment_content_dashboard)
+            checkNotificationAction(intent.getBundleExtra("detail"))
         }
     }
 

@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_dashboard_to_vital_stats"
             app:destination="@+id/nav_vital_stats" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_care_points_detail"
+            app:destination="@id/nav_care_points_detail" />
     </fragment>
     <fragment
         android:id="@+id/nav_vital_stats"
@@ -346,8 +349,13 @@
         android:label="@string/menu_care_point_detail"
         tools:layout="@layout/fragment_care_point_detail">
         <argument
+            android:name="source"
+            app:argType="string" />
+        <argument
             android:name="event_detail"
-            app:argType="com.shepherdapp.app.data.dto.added_events.AddedEventModel" />
+            app:argType="com.shepherdapp.app.data.dto.added_events.AddedEventModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/nav_chat"

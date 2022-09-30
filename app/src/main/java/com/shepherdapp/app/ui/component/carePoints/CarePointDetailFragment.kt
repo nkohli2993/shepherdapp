@@ -89,6 +89,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
         // Get event Detail from Care Point Fragment
         eventDetail = args.eventDetail
+        val source = args.source
+        Log.d(TAG, "Source :$source ")
 
         // Get Login User's detail
         val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
@@ -216,12 +218,12 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
     }
 
-    fun chatOn() {
+    private fun chatOn() {
         fragmentCarePointDetailBinding.editTextMessage.visibility = View.VISIBLE
         fragmentCarePointDetailBinding.sendCommentIV.visibility = View.VISIBLE
     }
 
-    fun chatOff() {
+    private fun chatOff() {
         fragmentCarePointDetailBinding.editTextMessage.visibility = View.GONE
         fragmentCarePointDetailBinding.sendCommentIV.visibility = View.GONE
     }

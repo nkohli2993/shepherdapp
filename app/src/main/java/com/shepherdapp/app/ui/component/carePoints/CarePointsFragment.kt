@@ -472,6 +472,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         //open event detail page
         findNavController().navigate(
             CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                "Care Point",
                 detail
             )
         )
