@@ -11,6 +11,7 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.EditText
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
@@ -92,7 +93,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
-//        loginViewModel.loginData.value!!.email = "rony@yopmail.com"
+//        loginViewModel.loginData.value!!.email = "mady@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "Admin@123"
         binding.viewModel = loginViewModel
 
