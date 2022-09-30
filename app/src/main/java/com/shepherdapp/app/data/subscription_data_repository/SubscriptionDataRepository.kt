@@ -4,13 +4,8 @@ package com.shepherdapp.app.data.subscription_data_repository
  * Created by Deepak Rattan on 30/09/22
  */
 
-import com.android.billingclient.api.ProductDetails
-import com.android.billingclient.api.Purchase
 import com.shepherdapp.app.billing.BillingClientWrapper
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
-import javax.inject.Singleton
 
 
 /**
@@ -18,7 +13,9 @@ import javax.inject.Singleton
  * the [BillingClientWrapper] into [Flow] data available to the viewModel.
  *
  */
-@Singleton
+class SubscriptionDataRepository {}
+
+/*@Singleton
 class SubscriptionDataRepository(billingClientWrapper: BillingClientWrapper) {
 
     // Set to true when a returned purchase is an auto-renewing basic subscription.
@@ -76,4 +73,4 @@ class SubscriptionDataRepository(billingClientWrapper: BillingClientWrapper) {
         private const val BASIC_SUB = "up_basic_sub"
         private const val PREMIUM_SUB = "up_premium_sub"
     }
-}
+}*/

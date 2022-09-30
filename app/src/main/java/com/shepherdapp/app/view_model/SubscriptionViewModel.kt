@@ -32,7 +32,6 @@ class SubscriptionViewModel @Inject constructor(
     private val dataRepository: DataRepository,
     private val lockBoxRepository: LockBoxRepository,
     private val userRepository: UserRepository,
-    private val subscriptionDataRepository: SubscriptionDataRepository,
     private val application: Application
 ) : BaseViewModel() {
 
@@ -48,8 +47,8 @@ class SubscriptionViewModel @Inject constructor(
 
     var billingClient: BillingClientWrapper = BillingClientWrapper(application)
 
-    private var repo: SubscriptionDataRepository =
-        SubscriptionDataRepository(billingClientWrapper = billingClient)
+   /* private var repo: SubscriptionDataRepository =
+        SubscriptionDataRepository(billingClientWrapper = billingClient)*/
 
     private val _billingConnectionState = MutableLiveData(false)
     val billingConnectionState: LiveData<Boolean> = _billingConnectionState
@@ -63,7 +62,7 @@ class SubscriptionViewModel @Inject constructor(
     }
 
     // The productsForSaleFlows object combines all the Product flows into one for emission.
-    val productsForSaleFlows = combine(
+   /* val productsForSaleFlows = combine(
         repo.basicProductDetails,
         repo.premiumProductDetails
     ) { basicProductDetails,
@@ -73,11 +72,11 @@ class SubscriptionViewModel @Inject constructor(
             basicProductDetails = basicProductDetails,
             premiumProductDetails = premiumProductDetails
         )
-    }
+    }*/
 
     // The userCurrentSubscriptionFlow object combines all the possible subscription flows into one
     // for emission.
-    private val userCurrentSubscriptionFlow = combine(
+   /* private val userCurrentSubscriptionFlow = combine(
         repo.hasRenewableBasic,
         repo.hasPrepaidBasic,
         repo.hasRenewablePremium,
@@ -93,13 +92,13 @@ class SubscriptionViewModel @Inject constructor(
             hasRenewablePremium = hasRenewablePremium,
             hasPrepaidPremium = hasPrepaidPremium
         )
-    }
+    }*/
 
     // Current purchases.
-    val currentPurchasesFlow = repo.purchases
+//    val currentPurchasesFlow = repo.purchases
 
     init {
-        viewModelScope.launch {
+       /* viewModelScope.launch {
             userCurrentSubscriptionFlow.collectLatest { collectedSubscriptions ->
                 when {
                     collectedSubscriptions.hasRenewableBasic == true &&
@@ -126,7 +125,7 @@ class SubscriptionViewModel @Inject constructor(
                 }
             }
 
-        }
+        }*/
     }
 
     /**
