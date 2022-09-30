@@ -79,12 +79,14 @@ ext {
     base_url_staging = "\"https://shepherdapp.itechnolabs.tech/\""
 
     // client urls
-    base_url_user_client = "\"https://shepherduser-uat.itechnolabs.tech:6001/\""
+//    base_url_user_client = "\"https://shepherduser-uat.itechnolabs.tech:6001/\""
+    base_url_user_client = "\"https://shepherdapp.itechnolabs.tech:6001/\""
     base_url_client = "\"https://shepherdapp.itechnolabs.tech/\""
 
     // dev urls
     base_url_user_dev = "\"https://usersherperd.itechnolabs.tech/\""
-    base_url_dev = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
+//    base_url_dev = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
+    base_url_dev = "\"https://sheperdstagging.itechnolabs.tech/\""
 }
 
 //ext.base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""

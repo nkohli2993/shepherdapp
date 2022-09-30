@@ -252,6 +252,8 @@
         <entry key="app/src/main/res/drawable/bg_image_place_holder.xml" value="0.2205" />
         <entry key="app/src/main/res/drawable/bg_image_place_holder_1.xml" value="0.188" />
         <entry key="app/src/main/res/drawable/button_primary.xml" value="0.2515" />
+        <entry key="app/src/main/res/drawable/button_primary_green.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable/button_transparent.xml" value="0.146" />
         <entry key="app/src/main/res/drawable/circle_white.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/drawable_bullet.xml" value="0.173" />
         <entry key="app/src/main/res/drawable/ic_address_care.xml" value="0.2275" />
@@ -291,13 +293,17 @@
         <entry key="app/src/main/res/layout/act_welcome.xml" value="0.22083333333333333" />
         <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_add_medical_condition.xml" value="0.24279279279279278" />
         <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_team_members.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_create_new_account.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.534375" />
+        <entry key="app/src/main/res/layout/activity_enter_enterprise_code.xml" value="0.29234234234234235" />
+        <entry key="app/src/main/res/layout/activity_enterprise_user.xml" value="0.29234234234234235" />
         <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.28763601189855736" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/activity_information.xml" value="0.3202702702702703" />
         <entry key="app/src/main/res/layout/activity_join_care_team.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_join_team.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
@@ -308,6 +314,7 @@
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.8486352357320099" />
         <entry key="app/src/main/res/layout/activity_reset_password.xml" value="0.75" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_subscription.xml" value="0.2734234234234234" />
         <entry key="app/src/main/res/layout/activity_upload_lock_box_document.xml" value="0.21171875" />
         <entry key="app/src/main/res/layout/activity_walk_through.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.25" />
@@ -355,6 +362,7 @@
         <entry key="app/src/main/res/layout/adapter_restriction_modules.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_selected_day_medicine.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_sub_menu_item.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/adapter_subscription.xml" value="0.45" />
         <entry key="app/src/main/res/layout/adapter_uploaded_files.xml" value="0.2765625" />
         <entry key="app/src/main/res/layout/adapter_users.xml" value="0.209375" />
         <entry key="app/src/main/res/layout/adapter_welcome_pager.xml" value="0.25948406676783003" />
@@ -365,8 +373,11 @@
         <entry key="app/src/main/res/layout/dialog_bio_metric.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/dialog_choose_lockbox_file.xml" value="0.375" />
         <entry key="app/src/main/res/layout/dialog_enter_group_name.xml" value="0.222265625" />
+        <entry key="app/src/main/res/layout/dialog_enterprise_code.xml" value="0.24279279279279278" />
+        <entry key="app/src/main/res/layout/dialog_enterprise_user.xml" value="0.24279279279279278" />
         <entry key="app/src/main/res/layout/dialog_loved_one_info_pop_up.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/dialog_progress_bar.xml" value="0.35625" />
+        <entry key="app/src/main/res/layout/dialog_show_file.xml" value="0.24279279279279278" />
         <entry key="app/src/main/res/layout/fragment_add_medication_details.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_add_medicine_details.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_add_member.xml" value="0.22" />
