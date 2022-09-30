@@ -10,13 +10,16 @@ import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * The [BillingClientWrapper] isolates the Google Play Billing's [BillingClient] methods needed
  * to have a simple implementation and emits responses to the data repository for processing.
  *
  */
-class BillingClientWrapper(
+
+class BillingClientWrapper @Inject constructor(
     context: Context
 ) : PurchasesUpdatedListener, ProductDetailsResponseListener {
 
