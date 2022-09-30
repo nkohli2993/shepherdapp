@@ -61,12 +61,12 @@ android {
 //            buildConfigField("String", "BASE_URL_STAGING", base_url_staging)
 
             //dev urls
-//            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
-//            buildConfigField("String", "BASE_URL", base_url_dev)
+            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
+            buildConfigField("String", "BASE_URL", base_url_dev)
 
             // client urls
-            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
-            buildConfigField("String", "BASE_URL", base_url_client)
+//            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
+//            buildConfigField("String", "BASE_URL", base_url_client)
         }
         release {
             debuggable false
@@ -273,6 +273,9 @@ dependencies {
     implementation('com.google.apis:google-api-services-drive:v3-rev136-1.25.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+
+    // Google Play Billing Library dependency
+    implementation("com.android.billingclient:billing-ktx:$billing_version")
 
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:2.1.0'

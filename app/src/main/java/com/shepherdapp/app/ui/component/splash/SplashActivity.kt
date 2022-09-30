@@ -12,6 +12,7 @@ import com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity
 import com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.login.LoginActivity
+import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
 import com.shepherdapp.app.ui.component.walk_through.WalkThroughActivity
 import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
 import com.shepherdapp.app.utils.Const
@@ -44,6 +45,7 @@ class SplashActivity : BaseActivity() {
 
         if (token.isNullOrEmpty()) {
             navigateToOnBoardingScreen()
+//            navigateToSubscriptionScreen()
         } else {
             navigateToLoginScreen()
         }
@@ -81,6 +83,12 @@ class SplashActivity : BaseActivity() {
     private fun navigateToHomeScreen() {
         Handler(Looper.getMainLooper()).postDelayed({
             startActivityWithFinish<HomeActivity>()
+        }, SPLASH_DELAY.toLong())
+    }
+
+    private fun navigateToSubscriptionScreen() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivityWithFinish<SubscriptionActivity>()
         }, SPLASH_DELAY.toLong())
     }
 }

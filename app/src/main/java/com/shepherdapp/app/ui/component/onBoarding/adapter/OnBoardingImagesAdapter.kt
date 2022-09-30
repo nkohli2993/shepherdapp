@@ -9,7 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import com.shepherdapp.app.R
-import com.shepherdapp.app.ui.component.walkThrough.WalkThroughModel
+import com.shepherdapp.app.ui.component.walk_through.WalkThroughModel
 import com.shepherdapp.app.utils.loadImage
 import java.util.*
 
