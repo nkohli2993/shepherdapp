@@ -23,6 +23,16 @@ import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.fitness.Fitness
+import com.google.android.gms.fitness.FitnessOptions
+import com.google.android.gms.fitness.data.*
+import com.google.android.gms.fitness.data.HealthFields.*
+import com.google.android.gms.fitness.request.DataDeleteRequest
+import com.google.android.gms.fitness.request.DataReadRequest
+import com.google.android.gms.fitness.request.DataUpdateRequest
+import com.google.android.gms.fitness.result.DataReadResponse
+import com.google.android.gms.tasks.Task
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.GraphData
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.TypeData
@@ -30,17 +40,32 @@ import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.VitalS
 import com.shepherdapp.app.databinding.FragmentVitalStatsBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
+import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.vital_stats.adapter.TypeAdapter
+import com.shepherdapp.app.utils.extensions.getEndTimeString
+import com.shepherdapp.app.utils.extensions.getStartTimeString
 import com.shepherdapp.app.utils.extensions.showError
-import java.util.concurrent.TimeUnit
 import com.shepherdapp.app.view_model.VitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+import java.util.concurrent.TimeUnit
+
 const val TAG = "VitalStatsFragment"
+
+
+/**
+ * This enum is used to define actions that can be performed after a successful sign in to Fit.
+ * One of these values is passed to the Fit sign-in, and returned in a successful callback, allowing
+ * subsequent execution of the desired action.
+ */
+enum class FitActionRequestCode {
+    INSERT_AND_READ_DATA,
+    UPDATE_AND_READ_DATA,
+    DELETE_DATA
+}
 
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat")
@@ -53,9 +78,33 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private lateinit var fragmentVitalStatsBinding: FragmentVitalStatsBinding
     private var vitalStats: VitalStatsData? = null
     private var graphDataList: ArrayList<GraphData> = arrayListOf()
+
     //private var heartRate: Int
     var finalSelectedDate: Date? = null
     private val dateFormat = DateFormat.getDateInstance()
+
+    private var heartRateAvg: String? = null
+    private var heartRateMin: String? = null
+    private var heartRateMax: String? = null
+
+    private var bloodPressureSysAvg: String? = null
+    private var bloodPressureSysMin: String? = null
+    private var bloodPressureSysMax: String? = null
+
+    private var bloodPressureDiaAvg: String? = null
+    private var bloodPressureDiaMin: String? = null
+    private var bloodPressureDiaMax: String? = null
+
+
+    private var oxygenAvg: String? = null
+    private var oxygenMin: String? = null
+    private var oxygenMax: String? = null
+
+
+    private var bodyTempAvg: String? = null
+    private var bodyTempMin: String? = null
+    private var bodyTempMax: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +115,45 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             FragmentVitalStatsBinding.inflate(inflater, container, false)
 
         return fragmentVitalStatsBinding.root
+    }
+
+    private val fitnessOptions: FitnessOptions by lazy {
+        FitnessOptions.builder()
+//            .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+//            .addDataType(DataType.AGGREGATE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+            .addDataType(
+                HealthDataTypes.TYPE_BLOOD_PRESSURE,
+                FitnessOptions.ACCESS_READ
+            )
+            /*.addDataType(
+                HealthDataTypes.AGGREGATE_BLOOD_PRESSURE_SUMMARY,
+                FitnessOptions.ACCESS_READ
+            )*/
+            .addDataType(
+                DataType.TYPE_HEART_RATE_BPM,
+                FitnessOptions.ACCESS_READ
+            )
+            /* .addDataType(
+                 DataType.AGGREGATE_HEART_RATE_SUMMARY,
+                 FitnessOptions.ACCESS_READ
+             )*/
+            .addDataType(
+                HealthDataTypes.TYPE_OXYGEN_SATURATION,
+                FitnessOptions.ACCESS_READ
+            )
+            /* .addDataType(
+                 HealthDataTypes.AGGREGATE_OXYGEN_SATURATION_SUMMARY,
+                 FitnessOptions.ACCESS_READ
+             )*/
+            .addDataType(
+                HealthDataTypes.TYPE_BODY_TEMPERATURE,
+                FitnessOptions.ACCESS_READ
+            )
+            /* .addDataType(
+                 HealthDataTypes.AGGREGATE_BODY_TEMPERATURE_SUMMARY,
+                 FitnessOptions.ACCESS_READ
+             )*/
+            .build()
     }
 
     @SuppressLint("SetTextI18n")
@@ -213,11 +301,451 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
             }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val isPermissionGranted = (activity as BaseActivity).checkGoogleFitPermission()
+            if (!isPermissionGranted) {
+                (activity as BaseActivity).requestGoogleFitPermission(this)
+            } else {
+                fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+            }
+        } else fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
     }
+
+    /**
+     * Checks that the user is signed in, and if so, executes the specified function. If the user is
+     * not signed in, initiates the sign in flow, specifying the post-sign in function to execute.
+     *
+     * @param requestCode The request code corresponding to the action to perform after sign in.
+     */
+    fun fitSignIn(requestCode: FitActionRequestCode) {
+        if (oAuthPermissionsApproved()) {
+            performActionForRequestCode(requestCode)
+        } else {
+            requestCode.let {
+                GoogleSignIn.requestPermissions(
+                    this,
+                    requestCode.ordinal,
+                    getGoogleAccount(), fitnessOptions
+                )
+            }
+        }
+    }
+
+    /**
+     * Runs the desired method, based on the specified request code. The request code is typically
+     * passed to the Fit sign-in flow, and returned with the success callback. This allows the
+     * caller to specify which method, post-sign-in, should be called.
+     *
+     * @param requestCode The code corresponding to the action to perform.
+     */
+    private fun performActionForRequestCode(requestCode: FitActionRequestCode) =
+        when (requestCode) {
+            FitActionRequestCode.INSERT_AND_READ_DATA -> readHistoryData()
+            FitActionRequestCode.UPDATE_AND_READ_DATA -> readHistoryData()
+            FitActionRequestCode.DELETE_DATA -> deleteData()
+        }
+
+    /**
+     * Inserts and reads data by chaining {@link Task} from {@link #insertData()} and {@link
+     * #readHistoryData()}.
+     */
+    private fun insertAndReadData() = insertData().continueWith { readHistoryData() }
+
+    /**
+     * Updates and reads data by chaining [Task] from [.updateData] and [ ][.readHistoryData].
+     */
+    private fun updateAndReadData() = updateData().continueWithTask { readHistoryData() }
+
+    /**
+     * Creates a [DataSet],then makes a [DataUpdateRequest] to update step data. Then
+     * invokes the History API with the HistoryClient object and update request.
+     */
+    private fun updateData(): Task<Void> {
+        // Create a new dataset and update request.
+        val dataSet = updateFitnessData()
+        val startTime = dataSet.dataPoints[0].getStartTime(TimeUnit.MILLISECONDS)
+        val endTime = dataSet.dataPoints[0].getEndTime(TimeUnit.MILLISECONDS)
+        // [START update_data_request]
+        Log.i(TAG, "Updating the dataset in the History API.")
+
+        val request = DataUpdateRequest.Builder()
+            .setDataSet(dataSet)
+            .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS)
+            .build()
+
+        // Invoke the History API to update data.
+        return Fitness.getHistoryClient(requireContext(), getGoogleAccount())
+            .updateData(request)
+            .addOnSuccessListener { Log.i(TAG, "Data update was successful.") }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "There was a problem updating the dataset.", e)
+            }
+    }
+
+    /**
+     * Deletes a [DataSet] from the History API. In this example, we delete all step count data
+     * for the past 24 hours.
+     */
+    private fun deleteData() {
+        Log.i(TAG, "Deleting today's step count data.")
+
+        // [START delete_dataset]
+        // Set a start and end time for our data, using a start time of 1 day before this moment.
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val now = Date()
+        calendar.time = now
+        val endTime = calendar.timeInMillis
+        calendar.add(Calendar.DAY_OF_YEAR, -1)
+        val startTime = calendar.timeInMillis
+
+        //  Create a delete request object, providing a data type and a time interval
+        val request = DataDeleteRequest.Builder()
+            .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS)
+            .addDataType(DataType.TYPE_STEP_COUNT_DELTA)
+//            .addDataType(DataType.TYPE_HEART_RATE_BPM)
+            .build()
+
+        // Invoke the History API with the HistoryClient object and delete request, and then
+        // specify a callback that will check the result.
+        Fitness.getHistoryClient(requireContext(), getGoogleAccount())
+            .deleteData(request)
+            .addOnSuccessListener {
+                Log.i(TAG, "Successfully deleted today's step count data.")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Failed to delete today's step count data.", e)
+            }
+    }
+
+    /** Creates and returns a {@link DataSet} of step count data to update. */
+    private fun updateFitnessData(): DataSet {
+        Log.i(TAG, "Creating a new data update request.")
+
+        // [START build_update_data_request]
+        // Set a start and end time for the data that fits within the time range
+        // of the original insertion.
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val now = Date()
+        calendar.time = now
+        val endTime = calendar.timeInMillis
+        calendar.add(Calendar.MINUTE, -50)
+        val startTime = calendar.timeInMillis
+
+        // Create a data source
+        val dataSource = DataSource.Builder()
+            .setAppPackageName(requireContext())
+            .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
+//            .setDataType(DataType.TYPE_HEART_RATE_BPM)
+            .setStreamName("$TAG - step count")
+            .setType(DataSource.TYPE_RAW)
+            .build()
+
+        // Create a data set
+        val stepCountDelta = 1000
+        // For each data point, specify a start time, end time, and the data value -- in this case,
+        // the number of new steps.
+        return DataSet.builder(dataSource)
+            .add(
+                DataPoint.builder(dataSource)
+                    .setField(Field.FIELD_STEPS, stepCountDelta)
+                    .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS)
+                    .build()
+            ).build()
+        // [END build_update_data_request]
+    }
+
+
+    /**
+     * Asynchronous task to read the history data. When the task succeeds, it will print out the
+     * data.
+     */
+    private fun readHistoryData(): Task<DataReadResponse> {
+        // Begin by creating the query.
+        val readRequest = queryFitnessData()
+
+        // Invoke the History API to fetch the data with the query
+        return Fitness.getHistoryClient(requireContext(), getGoogleAccount())
+            .readData(readRequest)
+            .addOnSuccessListener { dataReadResponse ->
+                // For the sake of the sample, we'll print the data so we can see what we just
+                // added. In general, logging fitness information should be avoided for privacy
+                // reasons.
+//                printData(dataReadResponse)
+                parseData(dataReadResponse)
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "There was a problem reading the data.", e)
+            }
+    }
+
+    /**
+     * Logs a record of the query result. It's possible to get more constrained data sets by
+     * specifying a data source or data type, but for demonstrative purposes here's how one would
+     * dump all the data. In this sample, logging also prints to the device screen, so we can see
+     * what the query returns, but your app should not log fitness information as a privacy
+     * consideration. A better option would be to dump the data you receive to a local data
+     * directory to avoid exposing it to other applications.
+     */
+    private fun printData(dataReadResult: DataReadResponse) {
+        // [START parse_read_data_result]
+        // If the DataReadRequest object specified aggregated data, dataReadResult will be returned
+        // as buckets containing DataSets, instead of just DataSets.
+
+
+        if (dataReadResult.buckets.isNotEmpty()) {
+            Log.i(TAG, "Number of returned buckets of DataSets is: " + dataReadResult.buckets.size)
+            for (bucket in dataReadResult.buckets) {
+                bucket.dataSets.forEach { dumpDataSet(it) }
+            }
+        } else if (dataReadResult.dataSets.isNotEmpty()) {
+            Log.i(TAG, "Number of returned DataSets is: " + dataReadResult.dataSets.size)
+            dataReadResult.dataSets.forEach { dumpDataSet(it) }
+        }
+        // [END parse_read_data_result]
+    }
+
+
+    private fun parseData(dataReadResult: DataReadResponse) {
+        dataReadResult.buckets.forEach {
+            // Get Heart Rate
+            val heartRateDataSet = it.getDataSet(DataType.AGGREGATE_HEART_RATE_SUMMARY)
+            heartRateDataSet?.dataPoints?.forEach { dataPoint ->
+                heartRateAvg = dataPoint.getValue(Field.FIELD_AVERAGE).toString()
+                heartRateMin = dataPoint.getValue(Field.FIELD_MIN).toString()
+                heartRateMax = dataPoint.getValue(Field.FIELD_MAX).toString()
+
+                Log.d(TAG, "parseData: HeartRate Avg : $heartRateAvg")
+                Log.d(TAG, "parseData: HeartRate Min : $heartRateMin")
+                Log.d(TAG, "parseData: HeartRate Max : $heartRateMax")
+            }
+
+            // Get Blood Pressure
+            val bloodPressureDataSet =
+                it.getDataSet(HealthDataTypes.AGGREGATE_BLOOD_PRESSURE_SUMMARY)
+            bloodPressureDataSet?.dataPoints?.forEach { dataPoint ->
+                bloodPressureSysAvg =
+                    dataPoint.getValue(FIELD_BLOOD_PRESSURE_SYSTOLIC_AVERAGE).toString()
+                bloodPressureSysMin =
+                    dataPoint.getValue(FIELD_BLOOD_PRESSURE_SYSTOLIC_MIN).toString()
+                bloodPressureSysMax =
+                    dataPoint.getValue(FIELD_BLOOD_PRESSURE_SYSTOLIC_MIN).toString()
+
+                bloodPressureDiaAvg =
+                    dataPoint.getValue(FIELD_BLOOD_PRESSURE_DIASTOLIC_AVERAGE).toString()
+                bloodPressureDiaMin =
+                    dataPoint.getValue(FIELD_BLOOD_PRESSURE_DIASTOLIC_MIN).toString()
+                bloodPressureDiaMax =
+                    dataPoint.getValue(FIELD_BLOOD_PRESSURE_DIASTOLIC_MAX).toString()
+
+                Log.d(TAG, "parseData: BloodPressure Sys Avg : $bloodPressureSysAvg")
+                Log.d(TAG, "parseData: BloodPressure Sys Min : $bloodPressureSysMin")
+                Log.d(TAG, "parseData: BloodPressure Sys Max : $bloodPressureSysMax")
+                Log.d(TAG, "parseData: BloodPressure Dia Avg : $bloodPressureDiaAvg")
+                Log.d(TAG, "parseData: BloodPressure Dia Min : $bloodPressureDiaMin")
+                Log.d(TAG, "parseData: BloodPressure Dia Max : $bloodPressureDiaMax")
+            }
+
+            // Get Oxygen Saturation
+            val oxygenSaturationDataSet =
+                it.getDataSet(HealthDataTypes.AGGREGATE_OXYGEN_SATURATION_SUMMARY)
+            oxygenSaturationDataSet?.dataPoints?.forEach { dataPoint ->
+                oxygenAvg =
+                    dataPoint.getValue(HealthFields.FIELD_OXYGEN_SATURATION_AVERAGE).toString()
+                oxygenMin = dataPoint.getValue(FIELD_OXYGEN_SATURATION_MIN).toString()
+                oxygenMax = dataPoint.getValue(FIELD_OXYGEN_SATURATION_MAX).toString()
+
+                Log.d(TAG, "parseData: Oxygen Saturation Avg : $oxygenAvg")
+                Log.d(TAG, "parseData: Oxygen Saturation Min : $oxygenMin")
+                Log.d(TAG, "parseData: Oxygen Saturation Max : $oxygenMax")
+            }
+
+            // Get Body Temperature
+            val bodyTempDataSet = it.getDataSet(HealthDataTypes.AGGREGATE_BODY_TEMPERATURE_SUMMARY)
+            bodyTempDataSet?.dataPoints?.forEach { dataPoint ->
+                bodyTempAvg = dataPoint.getValue(Field.FIELD_AVERAGE).toString()
+                bodyTempMin = dataPoint.getValue(Field.FIELD_MIN).toString()
+                bodyTempMax = dataPoint.getValue(Field.FIELD_MAX).toString()
+
+                Log.d(TAG, "parseData: Body Temp Avg : $bodyTempAvg")
+                Log.d(TAG, "parseData: Body Temp Min : $bodyTempMin")
+                Log.d(TAG, "parseData: Body Temp Max : $bodyTempMax")
+            }
+
+        }
+
+    }
+
+    // [START parse_dataset]
+    private fun dumpDataSet(dataSet: DataSet) {
+        Log.i(TAG, "Data returned for Data type: ${dataSet.dataType.name}")
+
+        for (dp in dataSet.dataPoints) {
+            Log.i(TAG, "Data point:")
+            Log.i(TAG, "\tType: ${dp.dataType.name}")
+            Log.i(TAG, "\tStart: ${dp.getStartTimeString()}")
+            Log.i(TAG, "\tEnd: ${dp.getEndTimeString()}")
+
+
+            dp.dataType.fields.forEach {
+                Log.i(TAG, "\tField: ${it.name} Value: ${dp.getValue(it)}")
+            }
+        }
+    }
+    // [END parse_dataset]
+
+    /** Returns a [DataReadRequest] for all step count changes in the past week.  */
+    private fun queryFitnessData(): DataReadRequest {
+        // [START build_read_data_request]
+        // Setting a start and end date using a range of 1 week before this moment.
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val now = Date()
+        calendar.time = now
+        val endTime = calendar.timeInMillis
+        calendar.add(Calendar.WEEK_OF_YEAR, -1)
+        val startTime = calendar.timeInMillis
+
+        Log.i(TAG, "Range Start: ${dateFormat.format(startTime)}")
+        Log.i(TAG, "Range End: ${dateFormat.format(endTime)}")
+
+        return DataReadRequest.Builder()
+            // The data request can specify multiple data types to return, effectively
+            // combining multiple data queries into one call.
+            // In this example, it's very unlikely that the request is for several hundred
+            // datapoints each consisting of a few steps and a timestamp.  The more likely
+            // scenario is wanting to see how many steps were walked per day, for 7 days.
+//            .aggregate(DataType.TYPE_STEP_COUNT_DELTA, DataType.AGGREGATE_STEP_COUNT_DELTA)
+            .aggregate(
+                DataType.TYPE_HEART_RATE_BPM,
+                DataType.AGGREGATE_HEART_RATE_SUMMARY
+            )
+            .aggregate(
+                HealthDataTypes.TYPE_BLOOD_PRESSURE,
+                HealthDataTypes.AGGREGATE_BLOOD_PRESSURE_SUMMARY
+            )
+            .aggregate(
+                HealthDataTypes.TYPE_BODY_TEMPERATURE,
+                HealthDataTypes.AGGREGATE_BODY_TEMPERATURE_SUMMARY
+            )
+            .aggregate(
+                HealthDataTypes.TYPE_OXYGEN_SATURATION,
+                HealthDataTypes.AGGREGATE_OXYGEN_SATURATION_SUMMARY
+            )
+            // Analogous to a "Group By" in SQL, defines how data should be aggregated.
+            // bucketByTime allows for a time span, whereas bucketBySession would allow
+            // bucketing by "sessions", which would need to be defined in code.
+            .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
+            .bucketByTime(1, TimeUnit.DAYS)
+            .enableServerQueries()
+            .build()
+    }
+
+    /** Creates a {@link DataSet} and inserts it into user's Google Fit history. */
+    private fun insertData(): Task<Void> {
+        // Create a new dataset and insertion request.
+        val dataSet = insertFitnessData()
+
+        // Then, invoke the History API to insert the data.
+        Log.i(TAG, "Inserting the dataset in the History API.")
+        return Fitness.getHistoryClient(requireContext(), getGoogleAccount())
+            .insertData(dataSet)
+            .addOnSuccessListener { Log.i(TAG, "Data insert was successful!") }
+            .addOnFailureListener { exception ->
+                Log.e(TAG, "There was a problem inserting the dataset.", exception)
+            }
+    }
+
+    /**
+     * Creates and returns a {@link DataSet} of step count data for insertion using the History API.
+     */
+    private fun insertFitnessData(): DataSet {
+        Log.i(TAG, "Creating a new data insert request.")
+
+        // [START build_insert_data_request]
+        // Set a start and end time for our data, using a start time of 1 hour before this moment.
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val now = Date()
+        calendar.time = now
+        val endTime = calendar.timeInMillis
+        calendar.add(Calendar.HOUR_OF_DAY, -1)
+        val startTime = calendar.timeInMillis
+
+        // Create a data source
+        val dataSource = DataSource.Builder()
+            .setAppPackageName(requireContext())
+            .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
+            .setStreamName("$TAG - step count")
+            .setType(DataSource.TYPE_RAW)
+            .build()
+
+        // Create a data set
+        val stepCountDelta = 950
+        return DataSet.builder(dataSource)
+            .add(
+                DataPoint.builder(dataSource)
+                    .setField(Field.FIELD_STEPS, stepCountDelta)
+                    .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS)
+                    .build()
+            ).build()
+        // [END build_insert_data_request]
+    }
+
+    /**
+     * Creates and returns a {@link DataSet} of step count data for insertion using the History API.
+     */
+    private fun insertBPData(): DataSet {
+        Log.i(TAG, "Creating a new BP data insert request.")
+
+        // [START build_insert_data_request]
+        // Set a start and end time for our data, using a start time of 1 hour before this moment.
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val now = Date()
+        calendar.time = now
+        val endTime = calendar.timeInMillis
+        calendar.add(Calendar.HOUR_OF_DAY, -1)
+        val startTime = calendar.timeInMillis
+
+        // Create a data source
+        val dataSource = DataSource.Builder()
+            .setAppPackageName(requireContext())
+//            .setDataType(DataType.TYPE_HEART_RATE_BPM)
+            .setDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE)
+            .setStreamName("$TAG - blood pressure")
+            .setType(DataSource.TYPE_RAW)
+            .build()
+
+        // Create a data set
+        return DataSet.builder(dataSource)
+            .add(
+                DataPoint.builder(dataSource)
+                    .setField(FIELD_BLOOD_PRESSURE_SYSTOLIC, 120.0f)
+                    .setField(FIELD_BLOOD_PRESSURE_DIASTOLIC, 80.0f)
+                    .setField(FIELD_BODY_POSITION, BODY_POSITION_SITTING)
+                    .setField(
+                        FIELD_BLOOD_PRESSURE_MEASUREMENT_LOCATION,
+                        BLOOD_PRESSURE_MEASUREMENT_LOCATION_LEFT_UPPER_ARM
+                    )
+                    .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS)
+                    .build()
+            ).build()
+        // [END build_insert_data_request]
+    }
+
+    private fun oAuthPermissionsApproved() =
+        GoogleSignIn.hasPermissions(getGoogleAccount(), fitnessOptions)
+
+    /**
+     * Gets a Google account for use in creating the Fitness client. This is achieved by either
+     * using the last signed-in account, or if necessary, prompting the user to sign in.
+     * `getAccountForExtension` is recommended over `getLastSignedInAccount` as the latter can
+     * return `null` if there has been no sign in before.
+     */
+    private fun getGoogleAccount() =
+        GoogleSignIn.getAccountForExtension(requireContext(), fitnessOptions)
+
 
     private fun callGraphApi() {
 
-        val dateSelected = if(finalSelectedDate == null) Calendar.getInstance().time
+        val dateSelected = if (finalSelectedDate == null) Calendar.getInstance().time
         else finalSelectedDate
         Log.d(TAG, "Date Selected :$dateSelected ")
         dateSelected?.let { SimpleDateFormat("yyyy-MM-dd").format(it) }?.let {
@@ -226,13 +754,13 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 vitalStatsViewModel.getLovedOneUUId()!!, type = type!!
             )
         }
-       /* val dateSelected = fragmentVitalStatsBinding.dateSelectedTV.text.toString()
-        Log.d(TAG, "Date Selected :$dateSelected ")
-        val date = SimpleDateFormat("EEE, MMM dd").parse(fragmentVitalStatsBinding.dateSelectedTV.text.toString())
-        vitalStatsViewModel.getGraphDataVitalStats(
-            SimpleDateFormat("yyyy-MM-dd").format(date!!),
-            vitalStatsViewModel.getLovedOneUUId()!!, type = type!!
-        )*/
+        /* val dateSelected = fragmentVitalStatsBinding.dateSelectedTV.text.toString()
+         Log.d(TAG, "Date Selected :$dateSelected ")
+         val date = SimpleDateFormat("EEE, MMM dd").parse(fragmentVitalStatsBinding.dateSelectedTV.text.toString())
+         vitalStatsViewModel.getGraphDataVitalStats(
+             SimpleDateFormat("yyyy-MM-dd").format(date!!),
+             vitalStatsViewModel.getLovedOneUUId()!!, type = type!!
+         )*/
     }
 
     private fun setData() {

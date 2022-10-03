@@ -17,10 +17,12 @@ import android.provider.Settings
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
@@ -28,6 +30,8 @@ import com.lassi.domain.media.LassiOption
 import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
 import com.shepherdapp.app.R
+import com.shepherdapp.app.ui.component.vital_stats.FitActionRequestCode
+import com.shepherdapp.app.ui.component.vital_stats.VitalStatsFragment
 import com.shepherdapp.app.utils.ProgressBarDialog
 import com.shepherdapp.app.utils.extensions.checkString
 import java.io.File
@@ -44,6 +48,8 @@ abstract class BaseActivity : AppCompatActivity() {
     protected abstract fun initViewBinding()
     var selectedFile: MutableLiveData<File> = MutableLiveData()
     private val PERMISSION_REQUEST_CODE = 200
+    private val PERMISSION_REQUEST_CODE_GOOGLE_FIT = 300
+    private var fragment: Fragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewBinding()
@@ -166,20 +172,32 @@ abstract class BaseActivity : AppCompatActivity() {
 
     fun checkPermission(): Boolean {
         val readStorageresult =
-            ContextCompat.checkSelfPermission(applicationContext,
+            ContextCompat.checkSelfPermission(
+                applicationContext,
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         val writeStorageresult =
-            ContextCompat.checkSelfPermission(applicationContext,
+            ContextCompat.checkSelfPermission(
+                applicationContext,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
-        val cameraResult = ContextCompat.checkSelfPermission(applicationContext,
+        val cameraResult = ContextCompat.checkSelfPermission(
+            applicationContext,
             Manifest.permission.CAMERA
         )
         return readStorageresult == PackageManager.PERMISSION_GRANTED && writeStorageresult == PackageManager.PERMISSION_GRANTED && cameraResult == PackageManager.PERMISSION_GRANTED
     }
 
-     fun requestPermission() {
+    // Check Google Fit Permissions
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun checkGoogleFitPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(applicationContext,
+            Manifest.permission.ACTIVITY_RECOGNITION,) == PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(applicationContext,
+                    Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED
+    }
+
+    fun requestPermission() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
@@ -188,6 +206,19 @@ abstract class BaseActivity : AppCompatActivity() {
                 Manifest.permission.CAMERA
             ),
             PERMISSION_REQUEST_CODE
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun requestGoogleFitPermission(fragment: VitalStatsFragment) {
+        this.fragment = fragment
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.ACTIVITY_RECOGNITION,
+                Manifest.permission.BODY_SENSORS
+            ),
+            PERMISSION_REQUEST_CODE_GOOGLE_FIT
         )
     }
 
@@ -202,10 +233,10 @@ abstract class BaseActivity : AppCompatActivity() {
                 val readAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
                 val writeAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
                 val cameraAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED
-                if (readAccepted && writeAccepted  && cameraAccepted)
+                if (readAccepted && writeAccepted && cameraAccepted)
                     openImagePicker()
                 else {
-                   // showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
+                    // showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         val builder = AlertDialog.Builder(this)
                         val dialog = builder.apply {
@@ -216,7 +247,11 @@ abstract class BaseActivity : AppCompatActivity() {
                                     val intent = Intent()
                                     intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
                                     val uri: Uri =
-                                        Uri.fromParts("package", applicationContext.packageName, null)
+                                        Uri.fromParts(
+                                            "package",
+                                            applicationContext.packageName,
+                                            null
+                                        )
                                     intent.data = uri
                                     context.startActivity(intent)
                                 }
@@ -232,6 +267,50 @@ abstract class BaseActivity : AppCompatActivity() {
                         return
                     }
                 }
+            }
+
+            PERMISSION_REQUEST_CODE_GOOGLE_FIT -> if (grantResults.isNotEmpty()) {
+                val activityRecognitionAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                val bodySensorsAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
+                if (activityRecognitionAccepted && bodySensorsAccepted)
+                    if (fragment is VitalStatsFragment){
+                        (fragment as VitalStatsFragment).fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+                        return
+                    }
+                else {
+                    // showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        val builder = AlertDialog.Builder(this)
+                        val dialog = builder.apply {
+                            setMessage("Permission Denied, You need to allow Physical Activity and Body Sensors Permissions")
+                            setPositiveButton("OK") { _, _ ->
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                    //open app setting to access
+                                    val intent = Intent()
+                                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                                    val uri: Uri =
+                                        Uri.fromParts(
+                                            "package",
+                                            applicationContext.packageName,
+                                            null
+                                        )
+                                    intent.data = uri
+                                    context.startActivity(intent)
+                                }
+
+                            }
+                            setNegativeButton("Cancel") { _, _ ->
+
+                            }
+                        }.create()
+                        dialog.show()
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                        return
+                    }
+                }
+
+
             }
         }
 

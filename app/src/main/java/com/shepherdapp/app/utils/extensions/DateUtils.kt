@@ -1,5 +1,7 @@
 package com.shepherdapp.app.utils.extensions
 
+import com.google.android.gms.fitness.data.DataPoint
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -249,6 +251,13 @@ fun String?.convertISOTimeToDate(): String? {
 
     return formattedDate
 }
+
+
+fun DataPoint.getStartTimeString(): String = DateFormat.getTimeInstance()
+    .format(this.getStartTime(TimeUnit.MILLISECONDS))
+
+fun DataPoint.getEndTimeString(): String = DateFormat.getTimeInstance()
+    .format(this.getEndTime(TimeUnit.MILLISECONDS))
 
 // Convert String timestamp into string of date
 fun String?.convertTimeStampToDate(): String? {

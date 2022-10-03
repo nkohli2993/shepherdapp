@@ -456,8 +456,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 navController.navigate(R.id.nav_lock_box)
             }
             R.id.llVitalStats -> {
-                showError(this, "Not implemented.")
-                //navController.navigate(R.id.nav_vital_stats)
+//                showError(this, "Not implemented.")
+                navController.navigate(R.id.nav_vital_stats)
             }
             R.id.llCareTeam -> {
                 navController.navigate(R.id.nav_care_team)
