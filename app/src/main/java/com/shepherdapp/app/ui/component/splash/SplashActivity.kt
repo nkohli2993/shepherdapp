@@ -4,6 +4,8 @@ import CommonFunctions
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.SPLASH_DELAY
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.databinding.ActivitySplashBinding
@@ -27,6 +29,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class SplashActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySplashBinding
+    private var TAG = "SplashActivity"
+    private var firebaseToken: String? = null
+
 
     override fun initViewBinding() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -39,8 +44,14 @@ class SplashActivity : BaseActivity() {
         //Check if user is already loggedIn
         val token = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")
 
+        // Device Id
         if (Prefs.with(this)?.getString(DEVICE_ID, "").isNullOrEmpty()) {
             Prefs.with(this)?.save(DEVICE_ID, CommonFunctions.getDeviceId(this))
+        }
+
+        // Firebase Token
+        if (Prefs.with(this)?.getString(Const.FIREBASE_TOKEN, "").isNullOrEmpty()) {
+            generateFirebaseToken()
         }
 
         if (token.isNullOrEmpty()) {
@@ -52,6 +63,21 @@ class SplashActivity : BaseActivity() {
     }
 
     override fun observeViewModel() {
+    }
+
+
+    private fun generateFirebaseToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", it.exception)
+                return@addOnCompleteListener
+            }
+            firebaseToken = it.result
+            // Get new FCM registration token
+            Prefs.with(this)!!.save(Const.FIREBASE_TOKEN, it.result)
+            // Log and toast
+            Log.d(TAG, "Firebase token generated: ${it.result}")
+        }
     }
 
     private fun navigateToOnBoardingScreen() {

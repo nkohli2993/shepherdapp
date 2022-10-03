@@ -29,6 +29,10 @@ class MyAppInterceptor @Inject constructor() : Interceptor {
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.DEVICE_ID, "")
                 }" + "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.EMAIL_ID, "")}"
             )
+            .add(
+                "fcm_token",
+                "${Prefs.with(ShepherdApp.appContext)?.getString(Const.FIREBASE_TOKEN)}"
+            )
             .build()
 
         request = request.newBuilder().headers(headers).build()

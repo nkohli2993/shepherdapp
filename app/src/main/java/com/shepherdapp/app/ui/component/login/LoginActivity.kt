@@ -208,7 +208,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
                                 }
                             }
-                            generateFirebaseToken()
+//                            generateFirebaseToken()
                             // Save UUID
                             payload?.uuid.let { uuid ->
                                 uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
