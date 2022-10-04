@@ -1,6 +1,8 @@
 package com.shepherdapp.app.ui.component.loved_one
 
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +13,6 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
@@ -46,6 +47,8 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     private var currentPage: Int = 0
     private var totalPage: Int = 0
     private var total: Int = 0
+
+    private var TAG = "LovedOnesFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -152,11 +155,24 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvNew -> {
-                findNavController().navigate(
-                    LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
-                        source = Const.ADD_LOVE_ONE
+                Log.d(TAG, "onClick:${careTeams.size} ")
+                if (careTeams.size < 3) {
+                    findNavController().navigate(
+                        LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
+                            source = Const.ADD_LOVE_ONE
+                        )
                     )
-                )
+                } else {
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle("Shepherd")
+                        setMessage("You can add up to 3 loved ones!")
+                        setPositiveButton("OK") { _, _ ->
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                }
             }
             R.id.btnDone -> {
                 selectedCare?.let { careTeams ->
