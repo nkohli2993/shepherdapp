@@ -263,7 +263,7 @@
     <string name="please_enter_date_of_birth">Please enter date of birth</string>
     <string name="should_be_minimum_5_digits">Length Should Be of 5 to 15 Digits</string>
     <string name="should_be_minimum_3_characters">should be minimum of 3 characters</string>
-    <string name="or_login_with_biometric">Or login with biometric</string>
+    <string name="or_login_with_biometric">Or login with biometrics</string>
     <string name="welcome_user_desc">Now either add the name of the Loved One for whom you will be caring, or, if you received an invitation from someone else, join an existing CareTeam.</string>
     <string name="add_your">Add Your</string>
     <string name="loved_one">Loved One</string>
@@ -333,7 +333,7 @@
     <string name="no_stats_yet">No stats yet</string>
     <string name="prompt_info_title">Shepherd app Authentication</string>
     <string name="prompt_info_subtitle">Please login to get access</string>
-    <string name="prompt_info_description">Shepherd App is using Android biometric authentication</string>
+    <string name="prompt_info_description">Shepherd App is using Android biometrics authentication</string>
     <string name="prompt_info_use_app_password">Use app password</string>
     <string name="secret_key_name">biometric_sample_encryption_key</string>
     <string name="account_activation_required">Account Activation Required!</string>
@@ -356,7 +356,7 @@
     <string name="security_code">Security Code</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_of_use">Terms &amp; Conditions</string>
-    <string name="login_with_biometric">Login with Biometric</string>
+    <string name="login_with_biometric">Login with Biometrics</string>
     <string name="add_vitals">Add VitalStats</string>
     <string name="date">Date</string>
     <string name="am">Am</string>
@@ -545,7 +545,7 @@
     <string name="enter_enterprise_code">Enter Enterprise \n Code</string>
     <string name="enterprise_code">Enterprise Code</string>
     <string name="are_you_enterprise_user">Are you an Enterprise User?</string>
-    <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometric for next time?</string>
+    <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometrics for next time?</string>
     <string name="buy_plan">Buy Plan</string>
 
 </resources>
