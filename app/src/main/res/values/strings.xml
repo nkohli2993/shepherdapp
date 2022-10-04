@@ -506,7 +506,7 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="toggle_between_loved_one">Toggle between Loved One\'s</string>
+    <string name="toggle_between_loved_one">Toggle between Loved Ones</string>
     <string name="close">Close</string>
     <string name="only_jpg_png_word_text_file_can_be_uploaded">Only jpg, jpeg, png, gif, pdf, word and txt file can be uploaded…</string>
     <string name="you_can_upload_at_max_five_file">You can upload at max 5 files…</string>
@@ -548,5 +548,7 @@
     <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometrics for next time?</string>
     <string name="buy_plan">Buy Plan</string>
     <string name="select_access">Select Access</string>
+    <string name="enter_email">Enter email</string>
+
 
 </resources>
