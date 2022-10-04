@@ -151,7 +151,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
             } else {
                 val builder = AlertDialog.Builder(this)
                 val dialog = builder.apply {
-                    setTitle(getString(R.string.account_activation_required))
+//                    setTitle(getString(R.string.account_activation_required))
                     setMessage(getString(R.string.account_inactive_click_link_on_email))
                     setPositiveButton("OK") { _, _ ->
                         //navigateToLoginScreen()

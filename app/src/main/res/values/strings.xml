@@ -337,7 +337,7 @@
     <string name="prompt_info_use_app_password">Use app password</string>
     <string name="secret_key_name">biometric_sample_encryption_key</string>
     <string name="account_activation_required">Account Activation Required!</string>
-    <string name="account_inactive_click_link_on_email">Your account is inactive. Please verify your account by clicking on the Verify Email link sent to your email…</string>
+    <string name="account_inactive_click_link_on_email">Please verify your account \nby clicking the link  \nwe have sent to your email.</string>
     <string name="time">Time</string>
     <string name="schedule_events_set_reminders_assign_tasks">Schedule events, set reminders, assign tasks.</string>
     <string name="please_enter_event_name">Please enter event name</string>
