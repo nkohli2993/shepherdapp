@@ -345,7 +345,7 @@
     <string name="remove">Remove</string>
     <string name="careteam">CareTeam</string>
     <string name="lockbox">LockBox</string>
-    <string name="mymedlist">MyMedList</string>
+    <string name="mymedlist">MedList</string>
     <string name="role">Role</string>
     <string name="invitation">Invitation</string>
     <string name="information">Information</string>
@@ -547,5 +547,6 @@
     <string name="are_you_enterprise_user">Are you an Enterprise User?</string>
     <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometrics for next time?</string>
     <string name="buy_plan">Buy Plan</string>
+    <string name="select_access">Select Access</string>
 
 </resources>
