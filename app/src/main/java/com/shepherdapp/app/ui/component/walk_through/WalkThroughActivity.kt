@@ -49,7 +49,7 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
             WalkThroughModel(
                 R.drawable.walkthrough_2,
                 "Manage the stress that \ncomes with caregiving.",
-                "Whether you are managing the care of a parent, a husband or wife, or a special- needs child, Shepherd can help you reduce the stress that comes with caregiving."
+                "Whether you are managing the care of a parent, a husband or wife, or a special-needs child, Shepherd can help you reduce the stress that comes with caregiving."
             )
         )
         list.add(
