@@ -93,8 +93,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
-        loginViewModel.loginData.value!!.email = "karan@yopmail.com"
-        loginViewModel.loginData.value!!.password = "Admin@123"
+        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
+        loginViewModel.loginData.value!!.password = "Test123@"
 
 //        loginViewModel.loginData.value!!.email = "pooja@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "Welcome@123"
@@ -250,6 +250,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                     email
                                 )
                             }
+
+                            // Check if the loggedIn user is loved one on the basis of role slug
+                            val userRoleSlug = payload?.userRoles?.first()?.role?.slug
+                            if (userRoleSlug.equals("user-loved-one")) {
+                                loginViewModel.saveLoggedInUserAsLovedOne(true)
+                                Log.d(
+                                    TAG,
+                                    "LoggedIn user is loved one . Status saved to shared pref..."
+                                )
+                            }
+
                         }
                         userLovedOneArrayList = it.payload?.userLovedOne
 

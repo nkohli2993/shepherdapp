@@ -34,6 +34,9 @@ import com.google.android.gms.fitness.request.DataUpdateRequest
 import com.google.android.gms.fitness.result.DataReadResponse
 import com.google.android.gms.tasks.Task
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.AddBloodPressureData
+import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.AddVitalData
+import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.GraphData
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.TypeData
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.VitalStatsData
@@ -86,24 +89,29 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private var heartRateAvg: String? = null
     private var heartRateMin: String? = null
     private var heartRateMax: String? = null
+    private var heartRate: String? = null
 
     private var bloodPressureSysAvg: String? = null
     private var bloodPressureSysMin: String? = null
     private var bloodPressureSysMax: String? = null
+    private var bloodPressureSys: String? = null
 
     private var bloodPressureDiaAvg: String? = null
     private var bloodPressureDiaMin: String? = null
     private var bloodPressureDiaMax: String? = null
+    private var bloodPressureDia: String? = null
 
 
     private var oxygenAvg: String? = null
     private var oxygenMin: String? = null
     private var oxygenMax: String? = null
+    private var oxygenSaturation: String? = null
 
 
     private var bodyTempAvg: String? = null
     private var bodyTempMin: String? = null
     private var bodyTempMax: String? = null
+    private var bodyTemp: String? = null
 
 
     override fun onCreateView(
@@ -197,11 +205,11 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Blood Pressure
-                        if (vitalStats!!.data?.sbp.isNullOrEmpty()) {
+                        if (vitalStats!!.data?.bloodPressure?.sbp.isNullOrEmpty()) {
                             fragmentVitalStatsBinding.tvBloodPressureValue.text = "Not Available"
                         } else {
                             fragmentVitalStatsBinding.tvBloodPressureValue.text =
-                                vitalStats!!.data?.sbp.plus("/${vitalStats!!.data?.dbp}")
+                                vitalStats!!.data?.bloodPressure?.sbp.plus("/${vitalStats!!.data?.bloodPressure?.dbp}")
                         }
 
                         // Oxygen Level
@@ -229,6 +237,34 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 }
                 is DataResult.Failure -> {
                     hideLoading()
+                }
+            }
+        }
+
+
+        vitalStatsViewModel.addVitalStatsLiveData.observeEvent(this) { addedStatsResult ->
+            when (addedStatsResult) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    /* showSuccess(
+                         requireContext(),
+                         getString(R.string.vital_stats_added_successfully)
+                     )*/
+
+                    Log.d(TAG, "Vital Stats added successfully...")
+                    callGraphApi()
+                }
+
+                is DataResult.Failure -> {
+                    hideLoading()
+                    if (addedStatsResult.error.isNotEmpty()) {
+                        showError(requireContext(), addedStatsResult.error)
+                    } else {
+                        addedStatsResult.message?.let { showError(requireContext(), it) }
+                    }
                 }
             }
         }
@@ -286,29 +322,33 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         fragmentVitalStatsBinding.typeSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    if (typeList[p2].type!! == "blood_pressure") {
+                    /*if (typeList[p2].type!! == "blood_pressure") {
                         showError(requireContext(), "Not Implemented")
                     } else {
                         type = typeList[p2].type!!
                         callGraphApi()
-                    }
-
+                    }*/
+                    type = typeList[p2].type!!
+                    callGraphApi()
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
 
                 }
-
             }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val isPermissionGranted = (activity as BaseActivity).checkGoogleFitPermission()
-            if (!isPermissionGranted) {
-                (activity as BaseActivity).requestGoogleFitPermission(this)
-            } else {
-                fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
-            }
-        } else fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+        // Read the data from google fit server only if the loggedIn user is loved one
+        if (vitalStatsViewModel.isLoggedInUserLovedOne() == true) {
+            Log.d(TAG, "Read Data from Google Fit as loggedIn user is lovedOne ")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val isPermissionGranted = (activity as BaseActivity).checkGoogleFitPermission()
+                if (!isPermissionGranted) {
+                    (activity as BaseActivity).requestGoogleFitPermission(this)
+                } else {
+                    fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+                }
+            } else fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+        }
     }
 
     /**
@@ -471,7 +511,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 // added. In general, logging fitness information should be avoided for privacy
                 // reasons.
 //                printData(dataReadResponse)
-                parseData(dataReadResponse)
+//                parseData(dataReadResponse)
+                parseVitalData(dataReadResponse)
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "There was a problem reading the data.", e)
@@ -502,6 +543,72 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             dataReadResult.dataSets.forEach { dumpDataSet(it) }
         }
         // [END parse_read_data_result]
+    }
+
+    private fun parseVitalData(dataReadResult: DataReadResponse) {
+        dataReadResult.dataSets.forEach { dataSet ->
+            dataSet.dataPoints.forEachIndexed { index, dataPoint ->
+
+                // Get Heart Rate data
+                if (dataPoint.dataType.name == DataType.TYPE_HEART_RATE_BPM.name) {
+                    heartRate = dataPoint.getValue(dataPoint.dataType.fields[index]).toString()
+                    Log.d(TAG, "parseData1: heartRate is $heartRate")
+                }
+
+                // Get Blood Pressure
+                if (dataPoint.dataType.name == HealthDataTypes.TYPE_BLOOD_PRESSURE.name) {
+                    bloodPressureSys = dataPoint.getValue(FIELD_BLOOD_PRESSURE_SYSTOLIC).toString()
+                    bloodPressureDia = dataPoint.getValue(FIELD_BLOOD_PRESSURE_DIASTOLIC).toString()
+                    Log.d(TAG, "parseData1: bloodPressure Sys is $bloodPressureSys")
+                    Log.d(TAG, "parseData1: bloodPressure Dia is $bloodPressureDia")
+                }
+
+                // Get Body Temperature
+                if (dataPoint.dataType.name == HealthDataTypes.TYPE_BODY_TEMPERATURE.name) {
+                    bodyTemp = dataPoint.getValue(dataPoint.dataType.fields[index]).toString()
+                    Log.d(TAG, "parseData1: Body Temp is $bodyTemp")
+                }
+
+                // Get Oxygen Saturation
+                if (dataPoint.dataType.name == HealthDataTypes.TYPE_OXYGEN_SATURATION.name) {
+                    oxygenSaturation =
+                        dataPoint.getValue(dataPoint.dataType.fields[index]).toString()
+                    Log.d(TAG, "parseData1: oxygen saturation is $oxygenSaturation")
+                }
+            }
+        }
+        if (!bodyTemp.isNullOrEmpty()) {
+            val bodyTempCelsius = bodyTemp?.toDouble()
+            Log.d(TAG, "parseVitalData: Temp celsius : $bodyTempCelsius")
+            if (bodyTempCelsius != null) {
+                val bodyTemFahrenheit = bodyTempCelsius * 9 / 5 + 32
+                Log.d(TAG, "parseVitalData: Temp fahrenheit : $bodyTemFahrenheit")
+                bodyTemp = bodyTemFahrenheit.toString()
+            }
+        }
+
+        Log.d(TAG, "parseVitalData: body temp :$bodyTemp")
+        val data = AddVitalData(
+            heartRate,
+            AddBloodPressureData(
+                bloodPressureSys,
+                bloodPressureDia
+            ),
+            bodyTemp,
+            oxygenSaturation
+        )
+
+        val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
+        val currentTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
+        println("currentDate: $currentDate")
+        println("currentTime: $currentTime")
+        val stats = VitalStatsRequestModel(
+            vitalStatsViewModel.getLovedOneUUId(),
+            currentDate,
+            currentTime,
+            data
+        )
+        vitalStatsViewModel.addVitalStats(stats)
     }
 
 
@@ -614,27 +721,28 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             // datapoints each consisting of a few steps and a timestamp.  The more likely
             // scenario is wanting to see how many steps were walked per day, for 7 days.
 //            .aggregate(DataType.TYPE_STEP_COUNT_DELTA, DataType.AGGREGATE_STEP_COUNT_DELTA)
-            .aggregate(
+            .read(
                 DataType.TYPE_HEART_RATE_BPM,
-                DataType.AGGREGATE_HEART_RATE_SUMMARY
+//                DataType.AGGREGATE_HEART_RATE_SUMMARY
             )
-            .aggregate(
+            .read(
                 HealthDataTypes.TYPE_BLOOD_PRESSURE,
-                HealthDataTypes.AGGREGATE_BLOOD_PRESSURE_SUMMARY
+//                HealthDataTypes.AGGREGATE_BLOOD_PRESSURE_SUMMARY
             )
-            .aggregate(
+            .read(
                 HealthDataTypes.TYPE_BODY_TEMPERATURE,
-                HealthDataTypes.AGGREGATE_BODY_TEMPERATURE_SUMMARY
+//                HealthDataTypes.AGGREGATE_BODY_TEMPERATURE_SUMMARY
             )
-            .aggregate(
+            .read(
                 HealthDataTypes.TYPE_OXYGEN_SATURATION,
-                HealthDataTypes.AGGREGATE_OXYGEN_SATURATION_SUMMARY
+//                HealthDataTypes.AGGREGATE_OXYGEN_SATURATION_SUMMARY
             )
             // Analogous to a "Group By" in SQL, defines how data should be aggregated.
             // bucketByTime allows for a time span, whereas bucketBySession would allow
             // bucketing by "sessions", which would need to be defined in code.
             .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
-            .bucketByTime(1, TimeUnit.DAYS)
+//            .bucketByTime(1, TimeUnit.DAYS)
+            .setLimit(1)
             .enableServerQueries()
             .build()
     }

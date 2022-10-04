@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.add_vital_stats.AddVitalStatsResponseModel
 import com.shepherdapp.app.data.dto.add_vital_stats.VitalStatsResponseModel
+import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.vital_stats.VitalStatsRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -42,12 +44,17 @@ class VitalStatsViewModel @Inject constructor(
     var getVitatStatsLiveData: LiveData<Event<DataResult<VitalStatsResponseModel>>> =
         _getVitatStatsLiveData
 
+    private var _addVitalStatsLiveData =
+        MutableLiveData<Event<DataResult<AddVitalStatsResponseModel>>>()
+    var addVitalStatsLiveData: LiveData<Event<DataResult<AddVitalStatsResponseModel>>> =
+        _addVitalStatsLiveData
+
     //get vital stats
     fun getVitalStats(
-        date: String,loveone_user_id:String,type:String
+        date: String, loveone_user_id: String, type: String
     ): LiveData<Event<DataResult<VitalStatsResponseModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.getVitalStats(date,loveone_user_id,type)
+            val response = dataRepository.getVitalStats(date, loveone_user_id, type)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _getVitatStatsLiveData.postValue(Event(it))
@@ -59,10 +66,10 @@ class VitalStatsViewModel @Inject constructor(
 
     //get vital stats
     fun getGraphDataVitalStats(
-        date: String,loveone_user_id:String,type:String
+        date: String, loveone_user_id: String, type: String
     ): LiveData<Event<DataResult<VitalStatsResponseModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.getGraphDataVitalStats(date,loveone_user_id,type)
+            val response = dataRepository.getGraphDataVitalStats(date, loveone_user_id, type)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _getVitatStatsLiveData.postValue(Event(it))
@@ -82,6 +89,26 @@ class VitalStatsViewModel @Inject constructor(
 
     fun getLovedOneId(): String? {
         return userRepository.getLovedOneId()
+    }
+
+
+    // add vital stats
+    fun addVitalStats(
+        vitalStats: VitalStatsRequestModel
+    ): LiveData<Event<DataResult<AddVitalStatsResponseModel>>> {
+        viewModelScope.launch {
+            val response = dataRepository.addVitalStatsForLovedOne(vitalStats)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _addVitalStatsLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return addVitalStatsLiveData
+    }
+
+    fun isLoggedInUserLovedOne(): Boolean? {
+        return userRepository.isLoggedInUserLovedOne()
     }
 
 }

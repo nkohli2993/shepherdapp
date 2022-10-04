@@ -45,6 +45,30 @@ class LovedOneViewModel @Inject constructor(
         return careTeamsResponseLiveData
     }
 
+
+    fun getCareTeamsByLovedOneId(
+        pageNumber: Int,
+        limit: Int,
+        status: Int
+    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        //val lovedOneId = userRepository.getLovedOneId()
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response =
+                lovedOneUUID?.let {
+                    careTeamsRepository.getCareTeamsByLovedOneId(
+                        pageNumber, limit, status,
+                        it
+                    )
+                }
+            withContext(Dispatchers.Main) {
+                response?.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return careTeamsResponseLiveData
+    }
+
+
     // Save Loved One UUID
     fun saveLovedOneUUID(lovedOneUUID: String) {
         userRepository.saveLovedOneUUId(lovedOneUUID)
@@ -52,6 +76,10 @@ class LovedOneViewModel @Inject constructor(
 
     fun saveLovedOneUserDetail(userLovedOne: UserLovedOne) {
         userRepository.saveLovedOneUserDetail(userLovedOne)
+    }
+
+    fun isLoggedInUserLovedOne(): Boolean? {
+        return userRepository.isLoggedInUserLovedOne()
     }
 
 }

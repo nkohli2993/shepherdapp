@@ -64,7 +64,12 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
         super.onResume()
         careTeams.clear()
         page = 1
-        lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+        if (lovedOneViewModel.isLoggedInUserLovedOne() == true) {
+            Log.d(TAG, "onResume: LovedOne loggedIn")
+            lovedOneViewModel.getCareTeamsByLovedOneId(page, limit, status)
+        } else {
+            lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+        }
     }
 
     private fun handleAddedLovedOnePagination() {

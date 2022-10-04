@@ -191,10 +191,12 @@ abstract class BaseActivity : AppCompatActivity() {
     // Check Google Fit Permissions
     @RequiresApi(Build.VERSION_CODES.Q)
     fun checkGoogleFitPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(applicationContext,
+        return /*ContextCompat.checkSelfPermission(applicationContext,
             Manifest.permission.ACTIVITY_RECOGNITION,) == PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(applicationContext,
-                    Manifest.permission.BODY_SENSORS) == PackageManager.PERMISSION_GRANTED
+                && */ContextCompat.checkSelfPermission(
+            applicationContext,
+            Manifest.permission.BODY_SENSORS
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     fun requestPermission() {
@@ -215,7 +217,7 @@ abstract class BaseActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
-                Manifest.permission.ACTIVITY_RECOGNITION,
+//                Manifest.permission.ACTIVITY_RECOGNITION,
                 Manifest.permission.BODY_SENSORS
             ),
             PERMISSION_REQUEST_CODE_GOOGLE_FIT
@@ -270,19 +272,18 @@ abstract class BaseActivity : AppCompatActivity() {
             }
 
             PERMISSION_REQUEST_CODE_GOOGLE_FIT -> if (grantResults.isNotEmpty()) {
-                val activityRecognitionAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
-                val bodySensorsAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
-                if (activityRecognitionAccepted && bodySensorsAccepted)
-                    if (fragment is VitalStatsFragment){
-                        (fragment as VitalStatsFragment).fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
-                        return
-                    }
-                else {
+//                val activityRecognitionAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                val bodySensorsAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+                if (/*activityRecognitionAccepted &&*/ bodySensorsAccepted)
+                if (fragment is VitalStatsFragment) {
+                    (fragment as VitalStatsFragment).fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+                    return
+                } else {
                     // showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         val builder = AlertDialog.Builder(this)
                         val dialog = builder.apply {
-                            setMessage("Permission Denied, You need to allow Physical Activity and Body Sensors Permissions")
+                            setMessage("Permission Denied, You need to allow /*Physical Activity and*/ Body Sensors Permissions")
                             setPositiveButton("OK") { _, _ ->
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     //open app setting to access

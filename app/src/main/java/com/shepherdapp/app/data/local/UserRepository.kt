@@ -141,4 +141,13 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
 
     fun getFirebaseToken() = Prefs.with(ShepherdApp.appContext)?.getString(Const.FIREBASE_TOKEN)
 
+    fun saveLoggedInUserAsLovedOne(isLoggedInUserLovedOne: Boolean) {
+        Prefs.with(ShepherdApp.appContext)!!
+            .save(Const.Is_LOGGED_IN_USER_LOVED_ONE, isLoggedInUserLovedOne)
+    }
+
+    fun isLoggedInUserLovedOne() =
+        Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_LOVED_ONE, false)
+
+
 }
