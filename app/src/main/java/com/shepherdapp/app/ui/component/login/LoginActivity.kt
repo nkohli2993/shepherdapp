@@ -191,7 +191,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun observeViewModel() {
         // Observe Login response
-        loginViewModel.loginResponseLiveData.observeEvent(this) {
+        loginViewModel.loginResponseLiveData.observeEvent(this) { it ->
             when (it) {
                 is DataResult.Loading -> {
                     showLoading("")
@@ -220,47 +220,54 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             // Save token
                             payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
 
+                            val lovedOneSlug = payload?.userRoles?.filter {
+                                it.role?.slug?.equals("user-loved-one") == true
+                            }?.size
 
                             // Check if the loggedIn user is loved one on the basis of role slug
                             val userRoleSlug = payload?.userRoles?.first()?.role?.slug
-                            if (userRoleSlug.equals("user-loved-one")) {
-                                loginViewModel.saveLoggedInUserAsLovedOne(true)
-                                Log.d(
-                                    TAG,
-                                    "LoggedIn user is loved one . Status saved to shared pref..."
-                                )
-                                // save id
-                                loginViewModel.saveLovedOneId(payload?.id.toString())
+                            if (lovedOneSlug != null) {
+                                if (/*userRoleSlug.equals("user-loved-one")*/lovedOneSlug >= 1) {
 
-                                // save uuid
-                                loginViewModel.saveLovedOneUUID(payload?.uuid.toString())
 
-                            } else {
-                                payload?.userLovedOne?.let {
-                                    if (it.isNotEmpty()) {
-                                        // Save Loved One UUID
-                                        it[0].let {
-                                            loginViewModel.saveLovedOneDetail(it)
-                                        }
-                                        it[0].loveUserId?.let { it1 ->
-                                            loginViewModel.saveLovedOneUUID(
-                                                it1
-                                            )
-                                        }
-                                        // Save LovedOne ID
-                                        it[0].id?.let { it1 ->
-                                            loginViewModel.saveLovedOneId(
-                                                it1.toString()
-                                            )
-                                        }
+                                    loginViewModel.saveLoggedInUserAsLovedOne(true)
+                                    Log.d(
+                                        TAG,
+                                        "LoggedIn user is loved one . Status saved to shared pref..."
+                                    )
+                                    // save id
+                                    loginViewModel.saveLovedOneId(payload?.id.toString())
 
-                                        // Save Role
-                                        it[0].careRoles?.name.let {
-                                            it?.let { it1 -> loginViewModel.saveUserRole(it1) }
+                                    // save uuid
+                                    loginViewModel.saveLovedOneUUID(payload?.uuid.toString())
+
+                                } else {
+                                    payload?.userLovedOne?.let {
+                                        if (it.isNotEmpty()) {
+                                            // Save Loved One UUID
+                                            it[0].let {
+                                                loginViewModel.saveLovedOneDetail(it)
+                                            }
+                                            it[0].loveUserId?.let { it1 ->
+                                                loginViewModel.saveLovedOneUUID(
+                                                    it1
+                                                )
+                                            }
+                                            // Save LovedOne ID
+                                            it[0].id?.let { it1 ->
+                                                loginViewModel.saveLovedOneId(
+                                                    it1.toString()
+                                                )
+                                            }
+
+                                            // Save Role
+                                            it[0].careRoles?.name.let {
+                                                it?.let { it1 -> loginViewModel.saveUserRole(it1) }
+                                            }
                                         }
                                     }
-                                }
 
+                                }
                             }
 
                             payload?.email?.let { email ->
