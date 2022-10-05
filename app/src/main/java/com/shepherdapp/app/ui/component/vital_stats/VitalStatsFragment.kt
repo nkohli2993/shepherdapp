@@ -255,7 +255,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                      )*/
 
                     Log.d(TAG, "Vital Stats added successfully...")
-                    callGraphApi()
+//                    callGraphApi()
                 }
 
                 is DataResult.Failure -> {
@@ -548,7 +548,13 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private fun parseVitalData(dataReadResult: DataReadResponse) {
         dataReadResult.dataSets.forEach { dataSet ->
             dataSet.dataPoints.forEachIndexed { index, dataPoint ->
+                val startTime = dataPoint.getStartTimeString()
+                Log.d(TAG, "parseVitalData: StartTime is : $startTime")
+                val endTime = dataPoint.getEndTimeString()
+                Log.d(TAG, "parseVitalData: EndTime is : $endTime")
 
+                val timeStamp = dataPoint.getTimestamp(TimeUnit.MILLISECONDS)
+                Log.d(TAG, "parseVitalData: timestamp is $timeStamp")
                 // Get Heart Rate data
                 if (dataPoint.dataType.name == DataType.TYPE_HEART_RATE_BPM.name) {
                     heartRate = dataPoint.getValue(dataPoint.dataType.fields[index]).toString()
