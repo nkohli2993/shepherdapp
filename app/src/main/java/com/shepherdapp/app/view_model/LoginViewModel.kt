@@ -144,10 +144,6 @@ class LoginViewModel @Inject constructor(
         userRepository.saveLovedOneUserDetail(userLovedOne)
     }
 
-    fun saveLoggedInUserAsLovedOne(isLoggedInUserLovedOne: Boolean) {
-        userRepository.saveLoggedInUserAsLovedOne(isLoggedInUserLovedOne)
-    }
-
     // Save User's Info in Firestore
     fun saveUserInfoInFirestore(user: User) {
         checkIfUserAlreadyExists(user)
@@ -194,5 +190,13 @@ class LoginViewModel @Inject constructor(
                 }
             }.addOnFailureListener {
             }
+    }
+
+    fun saveLoggedInUserAsLovedOne(isLoggedInUserLovedOne: Boolean) {
+        userRepository.saveLoggedInUserAsLovedOne(isLoggedInUserLovedOne)
+    }
+
+    fun isLoggedInUserLovedOne(): Boolean? {
+        return userRepository.isLoggedInUserLovedOne()
     }
 }

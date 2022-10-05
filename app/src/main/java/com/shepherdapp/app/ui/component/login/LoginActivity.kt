@@ -93,11 +93,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
-        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
-        loginViewModel.loginData.value!!.password = "Test123@"
+//        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
+//        loginViewModel.loginData.value!!.password = "Test123@"
 
-//        loginViewModel.loginData.value!!.email = "pooja@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "Welcome@123"
+        loginViewModel.loginData.value!!.email = "karan@yopmail.com"
+        loginViewModel.loginData.value!!.password = "Admin@123"
 
         binding.viewModel = loginViewModel
 
@@ -198,7 +198,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-//                    it.data.message?.let { it1 -> showSuccess(this, it1) }
                     it.data.let { it ->
                         it.message?.let { it1 -> showSuccess(this, it1) }
                         it.payload.let { payload ->
@@ -221,35 +220,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             // Save token
                             payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
 
-                            payload?.userLovedOne?.let {
-                                if (it.isNotEmpty()) {
-                                    // Save Loved One UUID
-                                    it[0].let {
-                                        loginViewModel.saveLovedOneDetail(it)
-                                    }
-                                    it[0].loveUserId?.let { it1 ->
-                                        loginViewModel.saveLovedOneUUID(
-                                            it1
-                                        )
-                                    }
-                                    // Save LovedOne ID
-                                    it[0].id?.let { it1 ->
-                                        loginViewModel.saveLovedOneId(
-                                            it1.toString()
-                                        )
-                                    }
-
-                                    // Save Role
-                                    it[0].careRoles?.name.let {
-                                        it?.let { it1 -> loginViewModel.saveUserRole(it1) }
-                                    }
-                                }
-                            }
-                            payload?.email?.let { email ->
-                                loginViewModel.saveEmail(
-                                    email
-                                )
-                            }
 
                             // Check if the loggedIn user is loved one on the basis of role slug
                             val userRoleSlug = payload?.userRoles?.first()?.role?.slug
@@ -259,7 +229,46 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                     TAG,
                                     "LoggedIn user is loved one . Status saved to shared pref..."
                                 )
+                                // save id
+                                loginViewModel.saveLovedOneId(payload?.id.toString())
+
+                                // save uuid
+                                loginViewModel.saveLovedOneUUID(payload?.uuid.toString())
+
+                            } else {
+                                payload?.userLovedOne?.let {
+                                    if (it.isNotEmpty()) {
+                                        // Save Loved One UUID
+                                        it[0].let {
+                                            loginViewModel.saveLovedOneDetail(it)
+                                        }
+                                        it[0].loveUserId?.let { it1 ->
+                                            loginViewModel.saveLovedOneUUID(
+                                                it1
+                                            )
+                                        }
+                                        // Save LovedOne ID
+                                        it[0].id?.let { it1 ->
+                                            loginViewModel.saveLovedOneId(
+                                                it1.toString()
+                                            )
+                                        }
+
+                                        // Save Role
+                                        it[0].careRoles?.name.let {
+                                            it?.let { it1 -> loginViewModel.saveUserRole(it1) }
+                                        }
+                                    }
+                                }
+
                             }
+
+                            payload?.email?.let { email ->
+                                loginViewModel.saveEmail(
+                                    email
+                                )
+                            }
+
 
                         }
                         userLovedOneArrayList = it.payload?.userLovedOne
@@ -326,12 +335,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToScreen() {
-
-        if (userLovedOneArrayList.isNullOrEmpty()) {
-            navigateToWelcomeUserScreen()
+        // If loggedIn user is loved one, then redirect to home screen
+        if (loginViewModel.isLoggedInUserLovedOne() == true) {
+            navigateToHomeScreen()
         } else {
-            //navigateToHomeScreen()
-            navigateToHomeScreenWithLovedOneArray()
+            if (userLovedOneArrayList.isNullOrEmpty()) {
+                navigateToWelcomeUserScreen()
+            } else {
+                navigateToHomeScreen()
+            }
         }
     }
 
@@ -477,7 +489,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     // Navigate to Home Screen with loved one array
-    private fun navigateToHomeScreenWithLovedOneArray() {
+    private fun navigateToHomeScreen() {
         if (!userLovedOneArrayList.isNullOrEmpty()) {
             Log.d(TAG, "LovedOneArrayList Size :${userLovedOneArrayList?.size} ")
         } else {
