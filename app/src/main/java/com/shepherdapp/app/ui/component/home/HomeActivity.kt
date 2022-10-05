@@ -72,8 +72,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-       /* // Handle Push Notification Data
-        if (intent != null && intent.hasExtra("isNotification")) {
+        // Handle Push Notification Data
+       /* if (intent != null && intent.hasExtra("isNotification")) {
             navController = findNavController(R.id.nav_host_fragment_content_dashboard)
             checkNotificationAction(intent.getBundleExtra("detail"))
         }*/

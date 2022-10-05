@@ -31,7 +31,7 @@ object Const {
     const val LOVED_ONE_DETAIL = "LOVED ONE DETAIL"
     const val RESET_SECURITY_CODE = "RESET"
     const val SET_SECURITY_CODE = "SET"
-    const val FIREBASE_TOKEN = "SET"
+    const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
 
 
     object NotificationAction {
@@ -93,24 +93,26 @@ enum class CalendarState(val value: Int) {
     Month(3)
 }
 
-enum class ClickType(val value: Int){
+enum class ClickType(val value: Int) {
     View(1),
     Delete(2)
 }
 
-enum class MedListAction(val value: Int){
+enum class MedListAction(val value: Int) {
     View(1),
     EDIT(2),
     Delete(3)
 }
-enum class FrequencyType(val value :String){
+
+enum class FrequencyType(val value: String) {
     ONCE("1"),
     TWICE("2"),
     THRICE("3"),
     FOUR("4"),
     FIVE("5")
 }
-enum class TimePickerType(val value :Int){
+
+enum class TimePickerType(val value: Int) {
     ADD(1),
     EDIT(2)
 }

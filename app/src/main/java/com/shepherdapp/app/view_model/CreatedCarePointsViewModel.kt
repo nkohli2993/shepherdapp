@@ -529,7 +529,7 @@ class CreatedCarePointsViewModel @Inject constructor(
                 )
                 updateUnreadCount(chatReference, messageData, false)
                 // Send Notification
-//                sendNotification(messageData, userIDs, eventID)
+                sendNotification(messageData, userIDs, eventID)
             }
     }
 
@@ -538,7 +538,7 @@ class CreatedCarePointsViewModel @Inject constructor(
         userIDs: ArrayList<String>?,
         eventID: Int?
     ) {
-        var firebaseTokensList: ArrayList<String> = arrayListOf()
+        val firebaseTokensList: ArrayList<String> = arrayListOf()
 
         // Get the userIDs in the group and find fireStore token from Users collection
         val memberIDs = userIDs?.filter {
@@ -565,7 +565,7 @@ class CreatedCarePointsViewModel @Inject constructor(
             .addOnSuccessListener { querySnapshot ->
                 for (document in querySnapshot.documents) {
                     val data = document.data
-                    val id = data?.get("id") as Double
+                    val id = data?.get("id") as Number
                     memberIDs.forEach {
                         if (id.toInt() == it.toInt()) {
                             val firebaseToken = data["firebase_token"] as String

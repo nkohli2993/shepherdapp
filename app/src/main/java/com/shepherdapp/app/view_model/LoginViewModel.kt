@@ -147,18 +147,6 @@ class LoginViewModel @Inject constructor(
     // Save User's Info in Firestore
     fun saveUserInfoInFirestore(user: User) {
         checkIfUserAlreadyExists(user)
-        /* if (!isUserExists) {
-             db.collection(TableName.USERS).add(user.serializeToMap())
-                 .addOnSuccessListener {
-                     db.collection(TableName.USERS).document(it.id)
-                         .update("document_id", it.id)
-                 }.addOnFailureListener {
-                     if (BuildConfig.DEBUG) {
-                         it.printStackTrace()
-                         Log.d(TAG, it.toString())
-                     }
-                 }
-         }*/
     }
 
     // Check if user's info already saved in Firestore
