@@ -168,8 +168,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             navController.navigate(R.id.nav_loved_one)
         }
         binding.appBarDashboard.ivNotification.setOnClickListener {
-//            showError(this, "Not Implemented")
-            navController.navigate(R.id.nav_notifications)
+            showError(this, "Not Implemented")
+//            navController.navigate(R.id.nav_notifications)
         }
     }
 
