@@ -30,7 +30,7 @@ class MyAppInterceptor @Inject constructor() : Interceptor {
                 }" + "${Prefs.with(ShepherdApp.appContext)!!.getString(Const.EMAIL_ID, "")}"
             )
             .add(
-                "fcm_token",
+                "fcm-token",
                 "${Prefs.with(ShepherdApp.appContext)?.getString(Const.FIREBASE_TOKEN)}"
             )
             .build()
