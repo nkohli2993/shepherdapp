@@ -127,10 +127,14 @@ fun getPassError(view: EditText, data: String) {
         if (view.isBlank()) {
             view.error = view.context.getString(R.string.please_enter_your_password)
             view.requestFocus()
-        } else if (!view.isValidPassword()) {
-            view.error = view.context.getString(R.string.please_enter_valid_password)
+        } else if (view.getLength() < 4) {
+            view.error = view.context.getString(R.string.password_should_be_min_4_character)
             view.requestFocus()
         }
+        /* else if (!view.isValidPassword()) {
+                view.error = view.context.getString(R.string.please_enter_valid_password)
+                view.requestFocus()
+            }*/
     }
 }
 
@@ -155,8 +159,7 @@ fun loadImage(view: ImageView, imageUrl: String?) {
         Picasso.get().load(imageUrl)
             .placeholder(R.drawable.image_placeholder)
             .into(view)
-    }
-    else{
+    } else {
         view.setImageResource(R.drawable.image_placeholder)
     }
 }
