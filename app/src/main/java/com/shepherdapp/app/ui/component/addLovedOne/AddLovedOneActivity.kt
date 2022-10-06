@@ -128,6 +128,15 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 selectedRelationship?.id == -1 -> {
                     showInfo(this, getString(R.string.please_select_relationship))
                 }
+
+                binding.chkLovedOne.isChecked -> {
+                    if (binding.editTextEmail.text.toString().isEmpty()) {
+                        binding.editTextEmail.error = getString(R.string.please_enter_email_id)
+                        binding.editTextEmail.requestFocus()
+                    } else {
+                        return true
+                    }
+                }
                 else -> {
                     return true
                 }

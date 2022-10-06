@@ -551,6 +551,7 @@
     <string name="buy_plan">Buy Plan</string>
     <string name="select_access">Select Access</string>
     <string name="enter_email">Enter email</string>
+    <string name="send_invitation_to_loved_one">Send an Invitation to the \nloved one.</string>
 
 
 </resources>

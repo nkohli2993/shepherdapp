@@ -530,6 +530,30 @@
                         android:entries="@array/relationship_array"
                         android:spinnerMode="dropdown" />-->
 
+                    <CheckBox
+                        android:id="@+id/chkLovedOne"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:button="@drawable/shape_circular_checkbox"
+                        android:buttonTint="@color/colorPurple"
+                        app:layout_constraintEnd_toStartOf="@id/chkSendInvitation"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/relationshipSpinnerLayout" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/chkSendInvitation"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_book"
+                        android:lineSpacingMultiplier="1.4"
+                        android:text="@string/send_invitation_to_loved_one"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/chkLovedOne"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/chkLovedOne"
+                         />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnContinue"
@@ -550,7 +574,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/relationshipSpinnerLayout" />
+                        app:layout_constraintTop_toBottomOf="@id/chkLovedOne" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
