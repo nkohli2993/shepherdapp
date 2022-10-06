@@ -147,7 +147,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         }
     }
 
-    fun clearNotification() {
+    private fun clearNotification() {
         val nMgr = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager?
         nMgr?.cancelAll()
     }

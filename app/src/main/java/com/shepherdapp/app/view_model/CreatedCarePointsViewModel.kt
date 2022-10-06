@@ -529,7 +529,7 @@ class CreatedCarePointsViewModel @Inject constructor(
                 )
                 updateUnreadCount(chatReference, messageData, false)
                 // Send Notification
-                sendNotification(messageData, userIDs, eventID)
+//                sendNotification(messageData, userIDs, eventID)
             }
     }
 
