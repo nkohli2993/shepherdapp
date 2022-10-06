@@ -75,4 +75,22 @@ class NotificationsViewModel @Inject constructor(
         }
         return notificationResponseLiveData
     }
+
+
+    fun getNotifications(
+        pageNumber: Int,
+        limit: Int
+    ): LiveData<Event<DataResult<NotificationResponseModel>>> {
+        viewModelScope.launch {
+            val response = notificationRepository.getNotifications(pageNumber, limit)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _notificationResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return notificationResponseLiveData
+    }
+
+
 }

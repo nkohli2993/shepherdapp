@@ -8,8 +8,8 @@ import com.google.gson.annotations.SerializedName
 
 data class Notification(
     @SerializedName("id") var id: Int? = null,
-    @SerializedName("model_type") var modelType: String? = null,
-    @SerializedName("model_id") var modelId: Int? = null,
+    @SerializedName("event_name") var eventName: String? = null,
+    @SerializedName("event_id") var eventId: Int? = null,
     @SerializedName("title") var title: String? = null,
     @SerializedName("description") var description: String? = null,
     @SerializedName("created_at") var createdAt: String? = null,

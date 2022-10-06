@@ -60,7 +60,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>(), View
     override fun initViewBinding() {
         fragmentNotificationsBinding.listener = this
         // Get User's Notifications
-        notificationsViewModel.getUserNotifications(pageNumber, limit)
+        notificationsViewModel.getNotifications(pageNumber, limit)
 //        fragmentNotificationsBinding.ivBack.setOnClickListener {
 //            backPress()
 //        }
@@ -77,6 +77,8 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>(), View
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
+                    fragmentNotificationsBinding.txtNoResultFound.visibility = View.VISIBLE
+                    fragmentNotificationsBinding.recyclerViewNotifications.visibility = View.GONE
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -142,7 +144,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>(), View
 
                     if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
                         isScrolling = false
-                        notificationsViewModel.getUserNotifications(pageNumber, limit)
+                        notificationsViewModel.getNotifications(pageNumber, limit)
                     }
                 }
             }

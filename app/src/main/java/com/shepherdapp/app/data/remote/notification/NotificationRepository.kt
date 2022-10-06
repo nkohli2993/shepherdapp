@@ -29,4 +29,17 @@ class NotificationRepository @Inject constructor(
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+
+    suspend fun getNotifications(
+        page: Int,
+        limit: Int,
+    ): Flow<DataResult<NotificationResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<NotificationResponseModel, NotificationResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<NotificationResponseModel> {
+                return apiService.getNotifications(page, limit)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 }

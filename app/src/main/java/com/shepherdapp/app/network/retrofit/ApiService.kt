@@ -481,6 +481,12 @@ interface ApiService {
         @Query("loved_one_id") love_user_id: String
     ): Response<NotificationResponseModel>
 
+    @GET(ApiConstants.Notification.GET_NOTIFICATIONS)
+    suspend fun getNotifications(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<NotificationResponseModel>
+
 
     @Headers(
         "Authorization: key=AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg",
@@ -490,5 +496,5 @@ interface ApiService {
     suspend fun sendPushNotification(
 //        @Header ("Authorization") "AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg"
         @Body chatNotificationModel: ChatNotificationModel
-    ):Response<FCMResponseModel>
+    ): Response<FCMResponseModel>
 }

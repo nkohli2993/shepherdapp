@@ -1,7 +1,6 @@
 package com.shepherdapp.app.ui.component.home
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -32,7 +31,6 @@ import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.carePoints.CarePointsFragment
 import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragment
 import com.shepherdapp.app.ui.component.dashboard.DashboardFragment
-import com.shepherdapp.app.ui.component.dashboard.DashboardFragmentDirections
 import com.shepherdapp.app.ui.component.lockBox.LockBoxFragment
 import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.ui.component.messages.MessagesFragment
@@ -73,10 +71,10 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         setContentView(binding.root)
 
         // Handle Push Notification Data
-       /* if (intent != null && intent.hasExtra("isNotification")) {
-            navController = findNavController(R.id.nav_host_fragment_content_dashboard)
-            checkNotificationAction(intent.getBundleExtra("detail"))
-        }*/
+        /* if (intent != null && intent.hasExtra("isNotification")) {
+             navController = findNavController(R.id.nav_host_fragment_content_dashboard)
+             checkNotificationAction(intent.getBundleExtra("detail"))
+         }*/
 
 
 
@@ -137,12 +135,12 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
 
                 //open event detail page
-               /* navController.navigate(
-                    DashboardFragmentDirections.actionNavDashboardToNavCarePointsDetail(
-                        "Dashboard",
-                        null
-                    )
-                )*/
+                /* navController.navigate(
+                     DashboardFragmentDirections.actionNavDashboardToNavCarePointsDetail(
+                         "Dashboard",
+                         null
+                     )
+                 )*/
             }
         }
     }
@@ -168,8 +166,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             navController.navigate(R.id.nav_loved_one)
         }
         binding.appBarDashboard.ivNotification.setOnClickListener {
-            showError(this, "Not Implemented")
-//            navController.navigate(R.id.nav_notifications)
+//            showError(this, "Not Implemented")
+            navController.navigate(R.id.nav_notifications)
         }
     }
 

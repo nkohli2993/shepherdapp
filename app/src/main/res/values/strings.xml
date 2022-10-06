@@ -483,6 +483,7 @@
     <string name="no_medical_condition_added_for_loved_one">No medical condition added, Please add medical condition for loved one.</string>
     <string name="please_select_at_least_one_condition">Please select at least once medical condition…</string>
     <string name="no_result_found">No Result Found…</string>
+    <string name="no_notification_found">No Notification Found…</string>
     <string name="slash">/</string>
     <string name="unable_to_add_future_time_data_vital_stats">Unable to add future date &amp; time data for vital stats.</string>
     <string name="please_enter_the_loved_one_address">Please enter the Loved One\'s address</string>
