@@ -35,6 +35,9 @@ class WelcomeUserViewModel @Inject constructor(
     var userDetailsLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
         _userDetailsLiveData
 
+    private var _logoutResponseLiveData = MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+    var logoutResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+        _logoutResponseLiveData
 
     // Get LoggedIn User Detail from SharedPrefs
     /* fun getUser(): LiveData<Event<UserProfile?>> {
@@ -84,7 +87,9 @@ class WelcomeUserViewModel @Inject constructor(
     fun saveUserRole(role: String) {
         userRepository.saveUserRole(role)
     }
-    private var _verificationResponseLiveData = MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+
+    private var _verificationResponseLiveData =
+        MutableLiveData<Event<DataResult<BaseResponseModel>>>()
     var verificationResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _verificationResponseLiveData
 
@@ -99,5 +104,17 @@ class WelcomeUserViewModel @Inject constructor(
             }
         }
         return verificationResponseLiveData
+    }
+
+    fun logOut(): LiveData<Event<DataResult<BaseResponseModel>>> {
+        viewModelScope.launch {
+            val response = authRepository.logout()
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _logoutResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return logoutResponseLiveData
     }
 }

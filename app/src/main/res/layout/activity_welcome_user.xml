@@ -25,6 +25,23 @@
             tools:context="com.shepherdapp.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
             <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewGothamBook"
+                android:id="@+id/txtLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:text="Log out"
+                android:onClick="@{listener::onClick}"
+                android:drawableStart="@drawable/ic_log_out"
+                android:drawablePadding="@dimen/_10sdp"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:textColor="@color/_D7293F"
+                android:textSize="@dimen/_15ssp" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

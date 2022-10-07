@@ -42,7 +42,6 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     private val welcomeViewModel: WelcomeUserViewModel by viewModels()
     private lateinit var binding: ActivityWelcomeUserBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
@@ -109,6 +108,21 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+        // Observe Logout Response
+        welcomeViewModel.logoutResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    navigateToLoginScreen()
+                }
+            }
+        }
     }
 
 
@@ -125,6 +139,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
             R.id.txtJoin -> navigateToJoinCareTeamScreen()
             R.id.txtCareTeam -> navigateToJoinCareTeamScreen()
             R.id.btnResend -> welcomeViewModel.sendUserVerificationEmail()
+            R.id.txtLogout -> welcomeViewModel.logOut()
         }
     }
 
@@ -218,7 +233,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
         binding.emailResendTV.text = ss
         binding.emailResendTV.movementMethod = LinkMovementMethod.getInstance()
-       // binding.emailResendTV.highlightColor = Color.GREEN
+        // binding.emailResendTV.highlightColor = Color.GREEN
     }
 
 
