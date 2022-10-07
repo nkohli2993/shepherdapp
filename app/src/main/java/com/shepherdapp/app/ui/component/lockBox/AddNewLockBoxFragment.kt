@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -68,6 +69,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var lockBoxTypes: ArrayList<LockBoxTypes> = arrayListOf()
     private var documentAdapter: DocumentAdapter? = null
     private var selectedDocumentId: String? = null
+
+    private val args: AddNewLockBoxFragmentArgs by navArgs()
 
     companion object {
         private const val REQUEST_CODE_SIGN_IN = 1
@@ -124,6 +127,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
             false
         }
+
         fragmentAddNewLockBoxBinding.documentSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -135,6 +139,16 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
             }
 
+        /* val lBType = args.lockBoxType
+         Log.d(TAG, "lockBoxType : $lBType ")
+
+
+         val index = lockBoxTypes.indexOfFirst {
+             it.id == lBType?.id
+         }
+
+         fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
+ */
     }
 
     override fun observeViewModel() {
@@ -234,13 +248,19 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                                 if ((i.lockbox == null || i.lockbox.size <= 0)) {
                                     lockBoxTypes.add(i)
                                 }
-                                if(i.name?.lowercase()=="other" && i.lockbox.size > 0){
+                                if (i.name?.lowercase() == "other" && i.lockbox.size > 0) {
                                     lockBoxTypes.add(i)
                                 }
                             }
                         }
                     }
-                    lockBoxTypes.add(0, LockBoxTypes(id = -1, name = getString(R.string.selected_recommended_document_type)))
+                    lockBoxTypes.add(
+                        0,
+                        LockBoxTypes(
+                            id = -1,
+                            name = getString(R.string.selected_recommended_document_type)
+                        )
+                    )
                     if (lockBoxTypes.isEmpty()) return@observeEvent
                     // show types in dropdown
                     documentAdapter =
@@ -250,6 +270,19 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             lockBoxTypes
                         )
                     fragmentAddNewLockBoxBinding.documentSpinner.adapter = documentAdapter
+
+                    // Get selected
+                    val lBType = args.lockBoxType
+                    Log.d(TAG, "lockBoxType : $lBType ")
+
+
+                    val index = lockBoxTypes.indexOfFirst {
+                        it.id == lBType?.id
+                    }
+
+                    fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
+
+
                 }
             }
         }

@@ -80,7 +80,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
         fragmentLockboxBinding.imgCancel.setOnClickListener {
             fragmentLockboxBinding.editTextSearch.setText("")
-            fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+            fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
             resetPageNumber()
             isSearch = false
             lockBoxList!!.clear()
@@ -100,17 +100,17 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             ) {
                 if (s.toString().isEmpty() && (lengthBefore == 0 && lengthAfter == 0)) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
-                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                    fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
                 } else if (s.toString().isEmpty() && (lengthBefore > 0 && lengthAfter >= 0)) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
-                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                    fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
                     resetPageNumber()
                     isSearch = false
                     lockBoxList!!.clear()
                     lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
                 } else {
                     fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
-                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.GONE
+                    fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.GONE
                     //Hit search api
                     lockBoxViewModel.searchAllLockBoxUploadedDocumentsByLovedOneUUID(
                         pageNumber,
@@ -133,7 +133,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 val searchData = fragmentLockboxBinding.editTextSearch.text.toString().trim()
                 if (searchData.isEmpty()) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
-                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                    fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
                     resetPageNumber()
                     isSearch = false
                     lockBoxList!!.clear()

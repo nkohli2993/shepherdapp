@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.shepherdapp.app.databinding.AdapterRecommendedDocumentsBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
@@ -54,10 +53,17 @@ class RecommendedDocumentsAdapter(
 
         fun bind(lockBoxTypes: LockBoxTypes, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = lockBoxTypes
-            itemBinding.ivStatus.setImageResource(R.drawable.ic_dot)
-            if(lockBoxTypes.isAdded){
-                itemBinding.ivStatus.setImageResource(R.drawable.ic_check)
+//            itemBinding.ivStatus.setImageResource(R.drawable.ic_dot)
+            /* if(lockBoxTypes.isAdded){
+                 itemBinding.ivStatus.setImageResource(R.drawable.ic_check)
+             }*/
+
+            // "lockbox" key represents array. If it is not empty, means document has been uploaded
+            // So select the checkbox accordingly
+            if (lockBoxTypes.lockbox.isNotEmpty()) {
+                itemBinding.checkbox.isChecked = true
             }
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     lockBoxTypes
