@@ -68,6 +68,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var lovedOneId: Int? = null
     private var lovedOneUUID: String? = null
     private var userProfileId: Int? = null
+    private var sendInvitation: Boolean? = null
 
 
     private var mDay: Int = 0
@@ -525,6 +526,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.btnContinue -> {
                 if (isValid) {
+                    sendInvitation = binding.chkLovedOne.isChecked
                     email = binding.editTextEmail.text.toString().trim()
                     if (email.isNullOrEmpty()) {
                         email = null
@@ -591,7 +593,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                             placeId,
                             customAddress,
                             phoneNumber,
-                            completeURLProfilePic
+                            completeURLProfilePic,
+                            sendInvitation
                         )
                     }
                 }
