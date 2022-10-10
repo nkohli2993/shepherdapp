@@ -154,6 +154,7 @@ object ApiConstants {
         const val GET_USER_NOTIFICATIONS = "$BASE_URL${API_VERSION}user_notifications"
         const val SEND_PUSH_NOTIFICATIONS = "https://fcm.googleapis.com/fcm/send"
         const val GET_NOTIFICATIONS = "$BASE_URL${API_VERSION}notifications"
+        const val READ_NOTIFICATIONS = "$BASE_URL${API_VERSION}notifications/read"
     }
 }
 

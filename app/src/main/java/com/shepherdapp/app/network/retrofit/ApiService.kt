@@ -44,6 +44,8 @@ import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordR
 import com.shepherdapp.app.data.dto.medical_conditions.*
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.notification.NotificationResponseModel
+import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotificationRequestModel
+import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotificationsResponseModel
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.data.dto.relation.RelationResponseModel
 import com.shepherdapp.app.data.dto.resource.ParticularResourceResponseModel
@@ -487,6 +489,13 @@ interface ApiService {
         @Query("limit") limit: Int,
     ): Response<NotificationResponseModel>
 
+    @PUT(ApiConstants.Notification.READ_NOTIFICATIONS)
+    suspend fun readNotifications(
+        @Body readNotificationRequestModel: ReadNotificationRequestModel?
+    ): Response<ReadNotificationsResponseModel>
+
+    @PUT(ApiConstants.Notification.READ_NOTIFICATIONS)
+    suspend fun clearNotifications(): Response<ReadNotificationsResponseModel>
 
     @Headers(
         "Authorization: key=AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg",

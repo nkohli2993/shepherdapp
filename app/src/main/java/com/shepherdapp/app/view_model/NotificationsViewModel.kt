@@ -5,7 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.data.Resource
+import com.shepherdapp.app.data.dto.notification.Data
 import com.shepherdapp.app.data.dto.notification.NotificationResponseModel
+import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotificationRequestModel
+import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotificationsResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.notification.NotificationRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -32,6 +35,20 @@ class NotificationsViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<NotificationResponseModel>>>()
     var notificationResponseLiveData: LiveData<Event<DataResult<NotificationResponseModel>>> =
         _notificationResponseLiveData
+
+    private var _readNotificationResponseLiveData =
+        MutableLiveData<Event<DataResult<ReadNotificationsResponseModel>>>()
+    var readNotificationResponseLiveData: LiveData<Event<DataResult<ReadNotificationsResponseModel>>> =
+        _readNotificationResponseLiveData
+
+    private var _clearNotificationResponseLiveData =
+        MutableLiveData<Event<DataResult<ReadNotificationsResponseModel>>>()
+    var clearNotificationResponseLiveData: LiveData<Event<DataResult<ReadNotificationsResponseModel>>> =
+        _clearNotificationResponseLiveData
+
+    private val _selectedNotificationLiveData =
+        MutableLiveData<SingleEvent<Data>>()
+    val selectedNotificationLiveData: LiveData<SingleEvent<Data>> get() = _selectedNotificationLiveData
 
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -92,5 +109,33 @@ class NotificationsViewModel @Inject constructor(
         return notificationResponseLiveData
     }
 
+    fun readNotifications(readNotificationRequestModel: ReadNotificationRequestModel?): LiveData<Event<DataResult<ReadNotificationsResponseModel>>> {
+        viewModelScope.launch {
+            val response = notificationRepository.readNotifications(readNotificationRequestModel)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _readNotificationResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return readNotificationResponseLiveData
+    }
+
+    // Clear Notifications
+    fun clearNotifications(): LiveData<Event<DataResult<ReadNotificationsResponseModel>>> {
+        viewModelScope.launch {
+            val response = notificationRepository.clearNotifications()
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _clearNotificationResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return clearNotificationResponseLiveData
+    }
+
+    fun readNotification(data: Data) {
+        _selectedNotificationLiveData.value = SingleEvent(data)
+    }
 
 }
