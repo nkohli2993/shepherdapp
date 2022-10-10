@@ -26,7 +26,6 @@ import com.shepherdapp.app.ui.component.addMember.adapter.AddMemberRoleAdapter
 import com.shepherdapp.app.ui.component.addMember.adapter.RestrictionsModuleAdapter
 import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.showError
-import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.AddMemberViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -143,11 +142,11 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     //it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
-                   /* showSuccess(
-                        requireContext(),
-                        "Request sent to the member for joining careTeam successfully..."
-                    )
-                    backPress()*/
+                    /* showSuccess(
+                         requireContext(),
+                         "Request sent to the member for joining careTeam successfully..."
+                     )
+                     backPress()*/
 
 
                     val builder = AlertDialog.Builder(requireContext())
@@ -218,7 +217,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     UserProfiles::class.java
                 )
 
-                val loggedInUserID = addMemberViewModel.getLovedOneUUId()
+                val loggedInUserID = addMemberViewModel.getLoggedInUserUUID()
                 Log.d(TAG, "loggedInUserID : $loggedInUserID")
 
                 // Get LovedOneId
