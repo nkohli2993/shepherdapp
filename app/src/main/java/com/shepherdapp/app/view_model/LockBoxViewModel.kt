@@ -63,14 +63,20 @@ class LockBoxViewModel @Inject constructor(
     val createRecommendedLockBoxDocLiveData: LiveData<SingleEvent<LockBoxTypes>> =
         _createRecommendedLockBoxDocLiveData
 
+    //Recommended Lock Box Live Data
+    private val _viewRecommendedLockBoxDocLiveData = MutableLiveData<SingleEvent<LockBoxTypes>>()
+    val viewRecommendedLockBoxDocLiveData: LiveData<SingleEvent<LockBoxTypes>> =
+        _viewRecommendedLockBoxDocLiveData
+
     fun getAllLockBoxTypes(
         pageNumber: Int,
         limit: Int,
-        isQuery:Boolean
+        isQuery: Boolean
     ): LiveData<Event<DataResult<LockBoxTypeResponseModel>>> {
         val lovedOneUUId = userRepository.getLovedOneUUId()
         viewModelScope.launch {
-            val response = lockBoxRepository.getALlLockBoxTypes(pageNumber, limit,lovedOneUUId!!,isQuery)
+            val response =
+                lockBoxRepository.getALlLockBoxTypes(pageNumber, limit, lovedOneUUId!!, isQuery)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _lockBoxTypeResponseLiveData.postValue(Event(it))
@@ -154,5 +160,9 @@ class LockBoxViewModel @Inject constructor(
 
     fun createRecommendedLockBoxDoc(lockBoxTypes: LockBoxTypes) {
         _createRecommendedLockBoxDocLiveData.value = SingleEvent(lockBoxTypes)
+    }
+
+    fun viewRecommendedLockBoxDOc(lockBoxTypes: LockBoxTypes) {
+        _viewRecommendedLockBoxDocLiveData.value = SingleEvent(lockBoxTypes)
     }
 }

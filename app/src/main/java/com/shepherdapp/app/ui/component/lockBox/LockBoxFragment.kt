@@ -161,6 +161,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     override fun observeViewModel() {
         observe(lockBoxViewModel.openUploadedDocDetail, ::openUploadedDocDetail)
         observe(lockBoxViewModel.createRecommendedLockBoxDocLiveData, ::createRecommendedLockBoxDoc)
+        observe(lockBoxViewModel.viewRecommendedLockBoxDocLiveData, ::viewRecommendedLockBoxDoc)
 
 
         lockBoxViewModel.lockBoxTypeResponseLiveData.observeEvent(this) {
@@ -309,6 +310,16 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     }
 
+    private fun viewRecommendedLockBoxDoc(singleEvent: SingleEvent<LockBoxTypes>) {
+        singleEvent.getContentIfNotHandled()?.let {
+            //Get id of uploaded lock box
+            val lockBoxId = it.lockbox.first().id
+            val action =
+                lockBoxId?.let { it1 -> LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(it1) }
+            action?.let { it1 -> findNavController().navigate(it1) }
+        }
+    }
+
     private fun createRecommendedLockBoxDoc(singleEvent: SingleEvent<LockBoxTypes>) {
         singleEvent.getContentIfNotHandled()?.let {
             // Sending LockBoxTypes object through safeArgs
@@ -321,8 +332,15 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         navigateEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "Uploaded Doc detail :$it")
             if (it.clickType == ClickType.View.value) {
-                val action = LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(it)
-                findNavController().navigate(action)
+                val lockBoxId = it.id
+                val action = lockBoxId?.let { it1 ->
+                    LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(
+                        it1
+                    )
+                }
+                if (action != null) {
+                    findNavController().navigate(action)
+                }
             } else {
                 //show delete dialog
                 val builder = AlertDialog.Builder(requireContext())

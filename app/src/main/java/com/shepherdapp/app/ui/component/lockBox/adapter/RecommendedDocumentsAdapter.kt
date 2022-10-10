@@ -21,7 +21,14 @@ class RecommendedDocumentsAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.createRecommendedLockBoxDoc(itemData[0] as LockBoxTypes)
+            val lb = itemData[0] as LockBoxTypes
+            if (lb.lockbox.isNotEmpty()) {
+                // Recommended LockBox doc is already uploaded. So need to view the uploaded recommended doc
+                viewModel.viewRecommendedLockBoxDOc(lb)
+            } else {
+                // Recommended LockBox doc is not uploaded and need to create it
+                viewModel.createRecommendedLockBoxDoc(lb)
+            }
         }
     }
 

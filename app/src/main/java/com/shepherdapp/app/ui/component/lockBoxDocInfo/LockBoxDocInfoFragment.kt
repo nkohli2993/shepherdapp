@@ -1,18 +1,19 @@
 package com.shepherdapp.app.ui.component.lockBoxDocInfo
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.os.Bundle
-import android.view.*
-import android.webkit.WebSettings
-import android.webkit.WebView
-import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
+import android.view.LayoutInflater
+import android.view.MotionEvent
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
+import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
+import com.shepherdapp.app.databinding.FragmentUploadedLockBoxDocDetailBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
@@ -20,14 +21,9 @@ import com.shepherdapp.app.ui.component.lockBoxDocInfo.adapter.UploadedDocumentI
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
-import com.shepherdapp.app.utils.loadImageCentreCrop
 import com.shepherdapp.app.view_model.LockBoxDocInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_uploaded_lock_box_doc_detail.*
-import java.util.*
-import androidx.navigation.fragment.findNavController
-import com.shepherdapp.app.R
-import com.shepherdapp.app.databinding.FragmentUploadedLockBoxDocDetailBinding
 
 
 /**
@@ -42,6 +38,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     private var documentImagesAdapter: UploadedDocumentImagesAdapter? = null
     private val args: LockBoxDocInfoFragmentArgs by navArgs()
     private var lockBox: LockBox? = null
+    private var lockBoxId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,8 +54,9 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentUploadedLockBoxDocDetailBinding.listener = this
-        lockBox = args.lockBox
-        lockBoxDocInfoViewModel.getDetailLockBox(lockBox?.id!!)
+//       lockBox = args.lockBox
+        lockBoxId = args.lockBoxId
+        lockBoxDocInfoViewModel.getDetailLockBox(lockBoxId!!)
         fragmentUploadedLockBoxDocDetailBinding.edtNote.setOnTouchListener { view, event ->
             view.parent.requestDisallowInterceptTouchEvent(true)
             when (event.action and MotionEvent.ACTION_MASK) {
@@ -147,7 +145,10 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
             }
             R.id.imgEditLockBox -> {
                 val action =
-                    LockBoxDocInfoFragmentDirections.actionNavEditLockbox(lockBox?.id.toString(),lockBox?.lbtId)
+                    LockBoxDocInfoFragmentDirections.actionNavEditLockbox(
+                        lockBox?.id.toString(),
+                        lockBox?.lbtId
+                    )
                 findNavController().navigate(action)
             }
             R.id.btnCancel -> {

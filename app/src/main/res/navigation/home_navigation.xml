@@ -282,8 +282,8 @@
         android:label="@string/menu_lock_box_info"
         tools:layout="@layout/fragment_uploaded_lock_box_doc_detail">
         <argument
-            android:name="lock_box"
-            app:argType="com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox" />
+            android:name="lock_box_id"
+            app:argType="integer" />
         <action
             android:id="@+id/action_nav_edit_lockbox"
             app:destination="@id/nav_edit_lockbox" />
