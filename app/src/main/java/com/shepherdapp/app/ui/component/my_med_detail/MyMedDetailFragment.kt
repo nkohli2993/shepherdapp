@@ -52,17 +52,20 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                 is DataResult.Success -> {
                     hideLoading()
                     Log.d(TAG, "Medication Detail :${it.data.payload} ")
-                    fragmentMyMedDetailBinding.tvMedTitle.text =  HtmlCompat.fromHtml( it.data.payload.medlist.name?: "", 0)
-                    fragmentMyMedDetailBinding.brandNameTV.text =HtmlCompat.fromHtml( it.data.payload.medlist.name?: "", 0)
-                    fragmentMyMedDetailBinding.txtDescription1.text =
-                        HtmlCompat.fromHtml( it.data.payload.medlist.description?: "", 0)
-                   // fragmentMyMedDetailBinding.txtDescription1.text = it.data.payload.medlist.description
+                    fragmentMyMedDetailBinding.tvMedTitle.text =
+                        HtmlCompat.fromHtml(it.data.payload.medlist.name ?: "", 0)
+                    fragmentMyMedDetailBinding.brandNameTV.text =
+                        HtmlCompat.fromHtml(it.data.payload.medlist.name ?: "", 0)
+                    /*fragmentMyMedDetailBinding.txtDescription1.text =
+                        HtmlCompat.fromHtml( it.data.payload.medlist.description?: "", 0)*/
+                    fragmentMyMedDetailBinding.txtDescription1.text = it.data.payload.note
 
                     it.data.payload.assigned_by_details.let { assignedByDetail ->
-                        fragmentMyMedDetailBinding.tvUsername.text = "${assignedByDetail.firstname} ${assignedByDetail.lastname}"
+                        fragmentMyMedDetailBinding.tvUsername.text =
+                            "${assignedByDetail.firstname} ${assignedByDetail.lastname}"
 
                     }
-                    if(it.data.payload.assigned_by_details.profile_photo!=null && it.data.payload.assigned_by_details.profile_photo!=""){
+                    if (it.data.payload.assigned_by_details.profile_photo != null && it.data.payload.assigned_by_details.profile_photo != "") {
                         Picasso.get().load(it.data.payload.assigned_by_details.profile_photo)
                             .placeholder(R.drawable.image_placeholder)
                             .into(fragmentMyMedDetailBinding.imageViewUser)

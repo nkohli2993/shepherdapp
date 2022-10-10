@@ -85,7 +85,8 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/_399282"
             app:layout_constraintStart_toEndOf="@+id/txtBrandName"
-            app:layout_constraintTop_toBottomOf="@id/genricNameTV" />
+            app:layout_constraintTop_toBottomOf="@id/genricNameTV"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <LinearLayout
@@ -138,7 +139,7 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="Description : "
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@id/txtBrandName"
             app:layout_constraintTop_toBottomOf="@id/tv_username" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -147,9 +148,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
             android:textColor="@color/_192032"
+            android:lineSpacingExtra="@dimen/_3sdp"
             app:layout_constraintStart_toEndOf="@+id/txtDescription"
-            app:layout_constraintTop_toBottomOf="@id/tv_username" />
+            app:layout_constraintTop_toBottomOf="@id/tv_username"
+            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <androidx.recyclerview.widget.RecyclerView
