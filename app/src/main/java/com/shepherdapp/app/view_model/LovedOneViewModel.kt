@@ -82,4 +82,9 @@ class LovedOneViewModel @Inject constructor(
         return userRepository.isLoggedInUserLovedOne()
     }
 
+    // Save User's Role
+    fun saveUserRole(role: String) {
+        userRepository.saveUserRole(role)
+    }
+
 }

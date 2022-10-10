@@ -191,6 +191,10 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                             careTeams.permission
                         )
                         lovedOneViewModel.saveLovedOneUserDetail(lovedOneDetail)
+
+                        // Get the care role name and saved into shared preferences
+                        val roleName = careTeams.careRoles.name
+                        roleName?.let { it1 -> lovedOneViewModel.saveUserRole(it1) }
                     }
                 }
 

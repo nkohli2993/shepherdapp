@@ -81,6 +81,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     initHomeViews(it.data.payload)
+                    // Update Navigation Drawer Info
+                    homeActivity.setDrawerInfo()
                 }
             }
         }
