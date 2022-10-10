@@ -408,6 +408,7 @@
         <entry key="app/src/main/res/layout/fragment_new_message.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.2788288288288288" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2487231869254341" />
+        <entry key="app/src/main/res/layout/fragment_resource_detail.xml" value="0.24010416666666667" />
         <entry key="app/src/main/res/layout/fragment_resources.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.3703125" />
         <entry key="app/src/main/res/layout/fragment_slideshow.xml" value="0.29243266353142366" />

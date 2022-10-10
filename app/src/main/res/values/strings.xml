@@ -243,7 +243,7 @@
     <string name="please_enter_first_name">Please enter first name</string>
     <string name="please_enter_last_name">Please enter last name</string>
     <string name="please_enter_valid_password">Password must be at least 8 characters long with 1 capital letter, 1 number and 1 special character</string>
-    <string name="password_should_be_min_4_character">Password should be minimum of 4 characters</string>
+    <string name="password_should_be_min_4_character">Password must contain at least 4 characters</string>
     <string name="enter_your_old_password">Enter your old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="enter_confirm_password">Enter confirm password</string>
