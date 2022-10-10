@@ -48,7 +48,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected abstract fun initViewBinding()
     var selectedFile: MutableLiveData<File> = MutableLiveData()
     private val PERMISSION_REQUEST_CODE = 200
-    private val PERMISSION_REQUEST_CODE_GOOGLE_FIT = 300
+    private val PERMISSION_REQUEST_CODE_GOOGLE_FIT = 500
     private var fragment: Fragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -283,7 +283,7 @@ abstract class BaseActivity : AppCompatActivity() {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         val builder = AlertDialog.Builder(this)
                         val dialog = builder.apply {
-                            setMessage("Permission Denied, You need to allow /*Physical Activity and*/ Body Sensors Permissions")
+                            setMessage("Permission Denied, You need to allow Body Sensors Permissions")
                             setPositiveButton("OK") { _, _ ->
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     //open app setting to access
