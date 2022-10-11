@@ -101,12 +101,28 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         fragmentCarePointsBinding.listener = this
 
         fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
+            Log.d(TAG, " date is ${date.date}")
+
             fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
             getDateSelectedOnTypeBased(
                 date.date
             )
         }
         fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
+            // Show care point data as per month change from calendar
+            Log.d(TAG, "initViewBinding: date is ${date.date}")
+            val month = SimpleDateFormat("MM").format(date.date)
+            val year = SimpleDateFormat("yyyy").format(date.date)
+            fragmentCarePointsBinding.textViewSelectGroup.text =
+                SimpleDateFormat("MMM yyyy").format(date.date)
+            fragmentCarePointsBinding.calendarPView.clearSelection()
+            val calendar = Calendar.getInstance()
+            calendar.time = date.date
+            startDate = sdf!!.format(calendar.time)
+            calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
+            endDate = sdf!!.format(calendar.time)
+            getCarePointList(startDate, endDate)
+
             when (clickType) {
                 CalendarState.Month.value -> {
                     fragmentCarePointsBinding.calendarPView.selectionMode =
