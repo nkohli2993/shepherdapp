@@ -99,6 +99,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                 } else {
                     searchFlag = true
                     fragmentAddNewMedicationBinding.imgCancel.visibility = View.VISIBLE
+                    pageNumber = 1
                     //Hit search api
                     addMedicationViewModel.searchMedList(
                         pageNumber,
@@ -220,7 +221,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     private fun selectedMedicationDetail(navigateEvent: SingleEvent<Int>) {
         navigateEvent.getContentIfNotHandled()?.let {
             searchFlag = false
-            Log.e("catch_exception","position: $it medication ${medLists[it]}")
+            Log.e("catch_exception", "position: $it medication ${medLists[it]}")
             selectedMedication = medLists[it]
             findNavController().navigate(
                 AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
