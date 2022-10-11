@@ -56,6 +56,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+
 const val TAG = "VitalStatsFragment"
 
 
@@ -880,9 +881,15 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private fun setData() {
         fragmentVitalStatsBinding.typeChart.setBackgroundColor(Color.WHITE)
         fragmentVitalStatsBinding.typeChart.description.isEnabled = false
-        fragmentVitalStatsBinding.typeChart.setMaxVisibleValueCount(24)
+        fragmentVitalStatsBinding.typeChart.setMaxVisibleValueCount(xAxisLabel.size)
         fragmentVitalStatsBinding.typeChart.setPinchZoom(false)
         fragmentVitalStatsBinding.typeChart.setDrawGridBackground(false)
+
+        // Fixed the increased x-axis label issue when we load the graph on clicking filter type
+        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMinimum(8f)
+        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(8f)
+
+
 
         val xAxis: XAxis = fragmentVitalStatsBinding.typeChart.xAxis
         xAxis.position = XAxisPosition.BOTTOM
@@ -906,14 +913,19 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             values.add(
                 CandleEntry(
                     i.toFloat(),
-                    if (graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
+                    if (graphDataList[i].x == 0)
+                        (graphDataList[i].y - 10).toFloat()
+                    else graphDataList[i].x.toFloat(),
                     graphDataList[i].y.toFloat(),
-                    if (graphDataList[i].x == 0) (graphDataList[i].y - 10).toFloat() else graphDataList[i].x.toFloat(),
+                    if (graphDataList[i].x == 0)
+                        (graphDataList[i].y - 10).toFloat()
+                    else graphDataList[i].x.toFloat(),
                     graphDataList[i].y.toFloat(),
                     0
                 )
             )
         }
+        Log.d(TAG, "setData: candleEntries : $values")
 
         xAxisLabel = ArrayList<String>()
         xAxisLabel.clear()
@@ -925,14 +937,23 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             }
 //            xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime!!))
         }
+
+        Log.d(TAG, "setData: xAxisLabel :$xAxisLabel ")
         fragmentVitalStatsBinding.typeChart.xAxis.valueFormatter =
             IndexAxisValueFormatter(xAxisLabel)
-        xAxis.setLabelCount(8, false)
+
+        xAxis.setLabelCount(10, false)
+        // To fix the issue of getting duplicate values on X axis
+        xAxis.isGranularityEnabled = true
+//        xAxis.granularity = 2f
+//        xAxis.spaceMin = 0.5f
+//        xAxis.spaceMax = 0.5f
+
         val set1 = CandleDataSet(values, "")
         set1.setDrawIcons(false)
         set1.axisDependency = AxisDependency.LEFT
         set1.shadowColor = Color.WHITE
-        set1.shadowWidth = 1f
+        set1.shadowWidth = 2f
         set1.decreasingColor = Color.rgb(159, 123, 179)
         set1.decreasingPaintStyle = Paint.Style.FILL
         set1.increasingColor = Color.rgb(159, 123, 179)
@@ -946,6 +967,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         fragmentVitalStatsBinding.typeChart.zoom(3f, 0f, 3f, 0f)
         fragmentVitalStatsBinding.typeChart.axisLeft.setAxisMinValue(10f)
         fragmentVitalStatsBinding.typeChart.axisRight.setAxisMinValue(10f)
+        Log.d(TAG, "setData: $set1")
         val data = CandleData(set1)
         fragmentVitalStatsBinding.typeChart.data = data
         fragmentVitalStatsBinding.typeChart.invalidate()
