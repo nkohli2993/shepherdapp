@@ -51,6 +51,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/gotham_book"
             android:lineSpacingExtra="5dp"
+            android:autoLink="email"
             android:text="@string/desc_text"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp" />
