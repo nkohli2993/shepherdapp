@@ -143,9 +143,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     override fun initViewBinding() {
         fragmentDashboardBinding.listener = this
-        permissionCards(View.VISIBLE)
+//        permissionCards(View.VISIBLE)
         // show accessed cards only to users
-/*
         if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
                 if (viewModel.getLovedUserDetail() != null) {
@@ -161,7 +160,6 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         } else {
             permissionCards(View.VISIBLE)
         }
-*/
         setCareTeamAdapters()
     }
 
