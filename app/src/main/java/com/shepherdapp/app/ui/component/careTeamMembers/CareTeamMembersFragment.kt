@@ -94,7 +94,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         fragmentCareTeamMembersBinding.imgCancel.visibility = View.VISIBLE
                         searchedCareTeams?.clear()
                         searchedCareTeams = careTeams?.filter {
-                            it.love_user_id_details.firstname?.startsWith(
+                            it.user_id_details.firstname?.contains(
                                 s,
                                 true
                             ) == true
