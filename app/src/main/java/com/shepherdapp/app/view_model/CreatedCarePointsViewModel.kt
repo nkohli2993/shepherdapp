@@ -717,4 +717,6 @@ class CreatedCarePointsViewModel @Inject constructor(
                 chatResponseData.postValue(Event(DataResult.Failure(exception = it)))
             }
     }
+
+
 }

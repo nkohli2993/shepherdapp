@@ -87,8 +87,14 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         fragmentCarePointDetailBinding.listener = this
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
+
         // Get event Detail from Care Point Fragment
         eventDetail = args.eventDetail
+
+        // Get Event Detail according to event ID
+        eventDetail?.id?.let { carePointsViewModel.getCarePointsDetailId(it) }
+
+
         val source = args.source
         Log.d(TAG, "Source :$source ")
 
@@ -324,7 +330,11 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    initCarePointDetailViews(it.data.payload)
+                    Log.d(
+                        TAG,
+                        "observeViewModel: Event Detail according to id : ${it.data.payload}"
+                    )
+                    // initCarePointDetailViews(it.data.payload)
 
                 }
                 is DataResult.Failure -> {
@@ -370,22 +380,23 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }
             }
         }
-        
+
         // Observe Push Notification Response 
-        carePointsViewModel.fcmResponseLiveData.observeEvent(this){
-            when(it){
+        carePointsViewModel.fcmResponseLiveData.observeEvent(this) {
+            when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
                 }
                 is DataResult.Loading -> {
-                    
+
                 }
                 is DataResult.Success -> {
                     Log.d(TAG, "observeViewModel: Push Notification sent successfully...")
                 }
             }
         }
-        
+
+
         /* carePointsViewModel.addedCarePointDetailCommentsLiveData.observeEvent(this) {
              when (it) {
                  is DataResult.Loading -> {
@@ -429,7 +440,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }, 10000)
             }
         }*/
-
 
 
     }
