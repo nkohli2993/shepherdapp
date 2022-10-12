@@ -205,10 +205,13 @@ class HomeViewModel @Inject constructor(
         }
         return homeResponseLiveData
     }
+
     //get userinfo from Shared Pref
     fun getLovedUserDetail(): UserLovedOne? {
         return userRepository.getLovedOneUserDetail()
     }
 
     fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+
+    fun getLovedOneUUID() = userRepository.getLovedOneUUId()
 }

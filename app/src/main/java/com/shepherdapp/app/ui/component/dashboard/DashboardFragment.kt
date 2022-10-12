@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.dashboard
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     private var parentActivityListener: ChildFragmentToActivityListener? = null
 
     private lateinit var homeActivity: HomeActivity
+
+    private val TAG = "DashboardFragment"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -111,17 +114,49 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
             }
         }
+
+        // Get loved one user uuid
+        val lovedOneUUID = viewModel.getLovedOneUUID()
+        Log.d(TAG, "initHomeViews: lovedOneUUID :$lovedOneUUID")
+        // Get LoggedIn User uuid
+        val loggedInUserId = viewModel.getUUID()
+        Log.d(TAG, "initHomeViews: loggedInUserId :$loggedInUserId")
+        // find permission for loved one user
+        val permissions = payload?.careTeamProfiles?.filter {
+            (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+        }?.map {
+            it.permission
+        }?.first()
+
+        Log.d(TAG, "initHomeViews: Permissions : $permissions")
+
+        val perList = permissions?.split(',')
+            ?.map { it.trim() }
+        permissionCards(View.GONE)
+        for (i in perList?.indices!!) {
+            checkPermission(perList[i].toInt())
+        }
     }
 
     private fun permissionCards(value: Int) {
-        fragmentDashboardBinding.cvCarePoints.visibility = value
+        fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE
         fragmentDashboardBinding.cvLockBox.visibility = value
-        fragmentDashboardBinding.cvMedList.visibility = View.VISIBLE    //value
+        fragmentDashboardBinding.cvMedList.visibility = value
         fragmentDashboardBinding.cvResources.visibility = value
-        fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
+        fragmentDashboardBinding.cvCareTeam.visibility = value
         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
         fragmentDashboardBinding.cvDiscussion.visibility = View.GONE
     }
+
+    /* private fun permissionCards(value: Int) {
+         fragmentDashboardBinding.cvCarePoints.visibility = value
+         fragmentDashboardBinding.cvLockBox.visibility = value
+         fragmentDashboardBinding.cvMedList.visibility = View.VISIBLE    //value
+         fragmentDashboardBinding.cvResources.visibility = value
+         fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
+         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
+         fragmentDashboardBinding.cvDiscussion.visibility = View.GONE
+     }*/
 
     private fun checkPermission(permission: Int?) {
         when {
@@ -145,21 +180,21 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         fragmentDashboardBinding.listener = this
 //        permissionCards(View.VISIBLE)
         // show accessed cards only to users
-        if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
-            if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
-                if (viewModel.getLovedUserDetail() != null) {
-                    val perList = viewModel.getLovedUserDetail()?.permission?.split(',')
-                        ?.map { it.trim() }
-                    permissionCards(View.GONE)
-                    for (i in perList?.indices!!) {
-                        checkPermission(perList[i].toInt())
-                    }
-                } else {
-                    permissionCards(View.VISIBLE)
-                }
-        } else {
-            permissionCards(View.VISIBLE)
-        }
+        /* if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
+             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
+                 if (viewModel.getLovedUserDetail() != null) {
+                     val perList = viewModel.getLovedUserDetail()?.permission?.split(',')
+                         ?.map { it.trim() }
+                     permissionCards(View.GONE)
+                     for (i in perList?.indices!!) {
+                         checkPermission(perList[i].toInt())
+                     }
+                 } else {
+                     permissionCards(View.VISIBLE)
+                 }
+         } else {
+             permissionCards(View.VISIBLE)
+         }*/
         setCareTeamAdapters()
     }
 

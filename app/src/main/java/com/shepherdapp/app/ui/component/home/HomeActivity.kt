@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -90,21 +91,21 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
 //        permissionShowHide(View.VISIBLE)
         // show accessed cards only to users
-        if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
-            if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
-                if (viewModel.getLovedUserDetail() != null) {
-                    val perList =
-                        viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
-                    permissionShowHide(View.GONE)
-                    for (i in perList?.indices!!) {
-                        checkPermission(perList[i].toInt())
-                    }
-                } else {
-                    permissionShowHide(View.VISIBLE)
-                }
-        } else {
-            permissionShowHide(View.VISIBLE)
-        }
+        /* if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
+             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
+                 if (viewModel.getLovedUserDetail() != null) {
+                     val perList =
+                         viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
+                     permissionShowHide(View.GONE)
+                     for (i in perList?.indices!!) {
+                         checkPermission(perList[i].toInt())
+                     }
+                 } else {
+                     permissionShowHide(View.VISIBLE)
+                 }
+         } else {
+             permissionShowHide(View.VISIBLE)
+         }*/
 
         binding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
 
@@ -199,6 +200,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    val payload = it.data.payload
                     if (it.data.payload?.lovedOneUserProfile != null || it.data.payload?.lovedOneUserProfile != "") {
                         val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
                         Picasso.get().load(lovedOneProfilePic)
@@ -209,6 +211,31 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     txtLovedUserName.text = it.data.payload?.firstname
                     //save data
                     viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
+
+                    // Check Permissions
+
+                    // Get loved one user uuid
+                    val lovedOneUUID = viewModel.getLovedOneUUID()
+                    Log.d(TAG, "initHomeViews: lovedOneUUID :$lovedOneUUID")
+                    // Get LoggedIn User uuid
+                    val loggedInUserId = viewModel.getUUID()
+                    Log.d(TAG, "initHomeViews: loggedInUserId :$loggedInUserId")
+                    // find permission for loved one user
+                    val permissions = payload?.careTeamProfiles?.filter {
+                        (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+                    }?.map {
+                        it.permission
+                    }?.first()
+
+                    Log.d(TAG, "initHomeViews: Permissions : $permissions")
+
+                    val perList = permissions?.split(',')
+                        ?.map { it.trim() }
+                    permissionCards(View.GONE)
+                    for (i in perList?.indices!!) {
+                        checkPermission(perList[i].toInt())
+                    }
+
                 }
             }
         }
@@ -219,6 +246,16 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     }
 
+    private fun permissionCards(value: Int) {
+        binding.llCarePoint.visibility = View.VISIBLE
+        binding.llLockBox.visibility = value
+        binding.llMedList.visibility = value
+        binding.llResources.visibility = value
+        binding.llCareTeam.visibility = value
+        binding.llVitalStats.visibility = View.VISIBLE
+        binding.llDiscussions.visibility = View.GONE
+
+    }
 
     private fun setupNavigationDrawer() {
         drawerLayout = binding.drawerLayout
