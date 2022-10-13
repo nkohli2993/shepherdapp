@@ -39,6 +39,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     private val args: LockBoxDocInfoFragmentArgs by navArgs()
     private var lockBox: LockBox? = null
     private var lockBoxId: Int? = null
+    private var lbtId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -104,7 +105,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                         it.edtNote.setText(lockBox?.note)
                         it.txtTypeTV.text = lockBox?.lockbox_types?.name
                     }
-
+                    lbtId = lockBox?.lbtId
                     documentImagesAdapter =
                         UploadedDocumentImagesAdapter(
                             requireContext().applicationContext,
@@ -146,8 +147,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
             R.id.imgEditLockBox -> {
                 val action =
                     LockBoxDocInfoFragmentDirections.actionNavEditLockbox(
-                        lockBox?.id.toString(),
-                        lockBox?.lbtId
+                        lockBoxId.toString(),
+                        lbtId.toString()
                     )
                 findNavController().navigate(action)
             }
