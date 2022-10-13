@@ -1,6 +1,5 @@
 package com.shepherdapp.app.ui.component.createAccount
 
-import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
@@ -92,6 +91,11 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 }
                 binding.editTextPassword.text.toString().isEmpty() -> {
                     binding.editTextPassword.error = getString(R.string.please_enter_your_password)
+                    binding.editTextPassword.requestFocus()
+                }
+                binding.editTextPassword.text.toString().length < 4 -> {
+                    binding.editTextPassword.error =
+                        getString(R.string.password_should_be_min_4_character)
                     binding.editTextPassword.requestFocus()
                 }
                 !binding.checkboxTermsConditions.isChecked -> {
