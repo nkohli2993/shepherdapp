@@ -214,4 +214,8 @@ class HomeViewModel @Inject constructor(
     fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
 
     fun getLovedOneUUID() = userRepository.getLovedOneUUId()
+
+    fun isLoggedInUserLovedOne(): Boolean? {
+        return userRepository.isLoggedInUserLovedOne()
+    }
 }

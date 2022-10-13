@@ -62,6 +62,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     val viewModel: HomeViewModel by viewModels()
     private val TAG = "HomeActivity"
     private var profilePicLovedOne: String? = null
+    private var permissions: String? = null
 
 
     @SuppressLint("SetTextI18n")
@@ -221,11 +222,27 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     val loggedInUserId = viewModel.getUUID()
                     Log.d(TAG, "initHomeViews: loggedInUserId :$loggedInUserId")
                     // find permission for loved one user
-                    val permissions = payload?.careTeamProfiles?.filter {
-                        (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
-                    }?.map {
-                        it.permission
-                    }?.first()
+                    /* val permissions = payload?.careTeamProfiles?.filter {
+                         (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+                     }?.map {
+                         it.permission
+                     }?.first()*/
+
+
+                    // find permission for loved one user
+                    permissions = if (viewModel.isLoggedInUserLovedOne() == true) {
+                        payload?.careTeamProfiles?.filter {
+                            it.loveUserId == viewModel.getLovedOneUUID()
+                        }?.map {
+                            it.permission
+                        }?.first()
+                    } else {
+                        payload?.careTeamProfiles?.filter {
+                            (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+                        }?.map {
+                            it.permission
+                        }?.first()
+                    }
 
                     Log.d(TAG, "initHomeViews: Permissions : $permissions")
 

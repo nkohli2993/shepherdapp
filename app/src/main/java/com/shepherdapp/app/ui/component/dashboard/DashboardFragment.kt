@@ -37,6 +37,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     private lateinit var homeActivity: HomeActivity
 
+    private var permissions: String? = null
+
     private val TAG = "DashboardFragment"
 
     override fun onAttach(context: Context) {
@@ -122,11 +124,26 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
         val loggedInUserId = viewModel.getUUID()
         Log.d(TAG, "initHomeViews: loggedInUserId :$loggedInUserId")
         // find permission for loved one user
-        val permissions = payload?.careTeamProfiles?.filter {
-            (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
-        }?.map {
-            it.permission
-        }?.first()
+        permissions = if (viewModel.isLoggedInUserLovedOne() == true) {
+            payload?.careTeamProfiles?.filter {
+                it.loveUserId == viewModel.getLovedOneUUID()
+            }?.map {
+                it.permission
+            }?.first()
+        } else {
+            payload?.careTeamProfiles?.filter {
+                (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+            }?.map {
+                it.permission
+            }?.first()
+        }
+
+
+        /* val permissions = payload?.careTeamProfiles?.filter {
+             (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+         }?.map {
+             it.permission
+         }?.first()*/
 
         Log.d(TAG, "initHomeViews: Permissions : $permissions")
 
