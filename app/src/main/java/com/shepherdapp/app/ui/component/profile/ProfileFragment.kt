@@ -24,7 +24,6 @@ import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.Status
 import com.shepherdapp.app.utils.extensions.getStringWithHyphen
-import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.ProfileViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -153,7 +152,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+//                    it.message?.let { showError(requireContext(), it.toString()) }
+
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -170,7 +170,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(requireContext(), it.toString()) }
+//                    it.message?.let { showError(requireContext(), it.toString()) }
+
+                    fragmentProfileBinding.recyclerLovedOnes.visibility = View.GONE
+                    fragmentProfileBinding.tvYourLovedOnes.visibility = View.GONE
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -234,6 +237,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
             // Set User's Role
             val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
             if (role.isNullOrEmpty()) {
+
                 fragmentProfileBinding.tvProfessional.text = getString(R.string.care_team_leader)
             } else {
                 fragmentProfileBinding.tvProfessional.text = role

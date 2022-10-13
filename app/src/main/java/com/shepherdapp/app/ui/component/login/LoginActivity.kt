@@ -232,7 +232,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             if (lovedOneSlug != null) {
                                 if (/*userRoleSlug.equals("user-loved-one")*/lovedOneSlug >= 1) {
 
-
+                                    // Save Loved One Role
+                                    payload?.userRoles?.first()?.role?.name?.let { it1 ->
+                                        loginViewModel.saveUserRole(
+                                            it1
+                                        )
+                                    }
                                     loginViewModel.saveLoggedInUserAsLovedOne(true)
                                     Log.d(
                                         TAG,
