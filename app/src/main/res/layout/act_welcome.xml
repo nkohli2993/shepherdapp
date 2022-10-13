@@ -52,6 +52,7 @@
             android:fontFamily="@font/gotham_book"
             android:lineSpacingExtra="5dp"
             android:autoLink="email"
+            android:textColorLink="@color/_399282"
             android:text="@string/desc_text"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_13ssp" />
