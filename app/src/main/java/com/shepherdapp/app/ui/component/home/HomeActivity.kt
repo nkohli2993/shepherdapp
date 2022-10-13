@@ -536,6 +536,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     override fun msgFromChildFragmentToActivity() {
         viewModel.getHomeData()
+//        setDrawerInfo()
     }
 
     private var backPressed: Long = 0

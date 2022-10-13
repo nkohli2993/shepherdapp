@@ -1,5 +1,6 @@
 package com.shepherdapp.app.ui.component.profile
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherdapp.app.R
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserLovedOne
@@ -15,7 +17,11 @@ import com.shepherdapp.app.databinding.FragmentProfileBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.profile.adapter.LovedOnesAdapter
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.Status
 import com.shepherdapp.app.utils.extensions.getStringWithHyphen
 import com.shepherdapp.app.utils.extensions.showError
@@ -42,6 +48,19 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     var currentPage: Int = 0
     var totalPage: Int = 0
     var total: Int = 0
+
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,7 +116,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         fragmentProfileBinding.tvName.text = fullName
 
         // Get loggedIn User's Profile Pic
-        if(payload?.userProfiles?.profilePhoto!=null && payload?.userProfiles?.profilePhoto!=""){
+        if (payload?.userProfiles?.profilePhoto != null && payload?.userProfiles?.profilePhoto != "") {
             val profilePicLoggedInUser = payload?.userProfiles?.profilePhoto
             Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.image_placeholder)
                 .into(fragmentProfileBinding.imageViewUser)
@@ -116,7 +135,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         fragmentProfileBinding.txtPhone.text = phone
 
         //Get user's role
-        fragmentProfileBinding.tvProfessional.text = payload?.userLovedOne?.get(0)?.careRoles?.name
+        // fragmentProfileBinding.tvProfessional.text = payload?.userLovedOne?.get(0)?.careRoles?.name
+
+        // Set User's Role
+        val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
+        if (role.isNullOrEmpty()) {
+            fragmentProfileBinding.tvProfessional.text = getString(R.string.care_team_leader)
+        } else {
+            fragmentProfileBinding.tvProfessional.text = role
+        }
 
     }
 
@@ -199,7 +226,25 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                 careTeam.permission
             )
             profileViewModel.saveLovedOneUserDetail(lovedOneDetail)
+
+            // Get the care role name and saved into shared preferences
+            val roleName = careTeam.careRoles.name
+            roleName?.let { it1 -> profileViewModel.saveUserRole(it1) }
+
+            // Set User's Role
+            val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
+            if (role.isNullOrEmpty()) {
+                fragmentProfileBinding.tvProfessional.text = getString(R.string.care_team_leader)
+            } else {
+                fragmentProfileBinding.tvProfessional.text = role
+            }
+
         }
+
+//        parentActivityListener?.msgFromChildFragmentToActivity()
+
+        // Update Navigation Drawer Info
+        homeActivity.setDrawerInfo()
     }
 
 

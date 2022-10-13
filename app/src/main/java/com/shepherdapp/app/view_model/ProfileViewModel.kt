@@ -170,4 +170,9 @@ class ProfileViewModel @Inject constructor(
         userRepository.saveLovedOneUserDetail(userLovedOne)
     }
 
+    // Save User's Role
+    fun saveUserRole(role: String) {
+        userRepository.saveUserRole(role)
+    }
+
 }
