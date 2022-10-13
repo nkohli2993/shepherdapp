@@ -141,7 +141,8 @@ class AddLovedOneViewModel @Inject constructor(
         customAddress: String?,
         phone_no: String?,
         profile_photo: String?,
-        uuid: String?
+        uuid: String?,
+        sendInvitation: Boolean?
     ): LiveData<Event<DataResult<EditLovedOneResponseModel>>> {
         createLovedOneData.value.let {
             it?.email = email
@@ -154,6 +155,7 @@ class AddLovedOneViewModel @Inject constructor(
             it?.customAddress = customAddress
             it?.phoneNo = phone_no
             it?.profilePhoto = profile_photo
+            it?.sendInvitation = sendInvitation
         }
 
 

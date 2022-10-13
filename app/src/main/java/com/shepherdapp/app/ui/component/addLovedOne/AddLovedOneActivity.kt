@@ -579,7 +579,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                                 customAddress,
                                 phoneNumber,
                                 completeURLProfilePic,
-                                it
+                                it,
+                                sendInvitation
                             )
                         }
                     } else {
