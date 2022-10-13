@@ -125,6 +125,13 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         } else {
             fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
             fragmentMemberDetailsBinding.btnUpdate.visibility = View.GONE
+
+            // Make switches non clickable
+            fragmentMemberDetailsBinding.switchCareTeam.isClickable = false
+            fragmentMemberDetailsBinding.switchLockBox.isClickable = false
+            fragmentMemberDetailsBinding.switchMyMedList.isClickable = false
+            fragmentMemberDetailsBinding.switchResources.isClickable = false
+
         }
 
 
