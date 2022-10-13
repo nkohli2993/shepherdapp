@@ -82,14 +82,13 @@
                             android:id="@+id/tvNoEvent"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_2sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/schedule_events_set_reminders_assign_tasks"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivCarePoints"
+                            app:layout_constraintStart_toStartOf="@+id/tvCarePoint"
                             app:layout_constraintTop_toBottomOf="@+id/tvCarePoint" />
 
 
@@ -102,8 +101,8 @@
                             android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
+                            android:layout_marginStart="@dimen/_25sdp"
                             app:layout_constraintBottom_toTopOf="@+id/tvTask"
-                            app:layout_constraintEnd_toEndOf="@+id/tvTask"
                             app:layout_constraintStart_toStartOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -318,14 +317,13 @@
                             android:id="@+id/tvMedListDescription"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/schedule_medication_reminders_set_refill_alerts_research"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivMedList"
+                            app:layout_constraintStart_toStartOf="@+id/tvMedList"
                             app:layout_constraintTop_toBottomOf="@+id/tvMedList" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -337,9 +335,9 @@
                             android:text="-"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
+                            android:layout_marginStart="@dimen/_25sdp"
                             app:layout_constraintBottom_toTopOf="@+id/tvMedListMessage"
-                            app:layout_constraintEnd_toEndOf="@+id/tvMedListMessage"
-                            app:layout_constraintStart_toStartOf="@+id/tvMedListMessage"
+                            app:layout_constraintStart_toStartOf="parent"
                             tools:ignore="HardcodedText" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -416,14 +414,13 @@
                             android:id="@+id/tvResourceListDescription"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/discover_health_and_well_being_resources_for_caregivers_and_loved_ones"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivResource"
+                            app:layout_constraintStart_toStartOf="@+id/tvResource"
                             app:layout_constraintTop_toBottomOf="@+id/tvResource" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -436,9 +433,9 @@
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             android:visibility="gone"
+                            android:layout_marginStart="@dimen/_25sdp"
                             app:layout_constraintBottom_toTopOf="@+id/tvResourceListMessage"
-                            app:layout_constraintEnd_toEndOf="@+id/tvResourceListMessage"
-                            app:layout_constraintStart_toStartOf="@+id/tvResourceListMessage" />
+                            app:layout_constraintStart_toStartOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvResourceListMessage"
@@ -516,14 +513,13 @@
                             android:id="@+id/tvLockBoxDescription"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/lock_box_desc"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivLockBox"
+                            app:layout_constraintStart_toStartOf="@+id/tvLockBox"
                             app:layout_constraintTop_toBottomOf="@+id/tvLockBox" />
 
                         <androidx.appcompat.widget.AppCompatTextView
@@ -535,9 +531,9 @@
                             android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
+                            android:layout_marginStart="@dimen/_25sdp"
                             app:layout_constraintBottom_toTopOf="@+id/tvLockBoxMessage"
-                            app:layout_constraintEnd_toEndOf="@+id/tvLockBoxMessage"
-                            app:layout_constraintStart_toStartOf="@+id/tvLockBoxMessage" />
+                            app:layout_constraintStart_toStartOf="parent" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvLockBoxMessage"
@@ -614,14 +610,13 @@
                             android:id="@+id/tvVitalStatsDescription"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/remotely_monitor_your_loved_one_s_vitals_statistics_via_wearables"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivVital"
+                            app:layout_constraintStart_toStartOf="@+id/tvVitalStats"
                             app:layout_constraintTop_toBottomOf="@+id/tvVitalStats" />
 
                         <LinearLayout
@@ -724,14 +719,13 @@
                             android:id="@+id/tvMember"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_5sdp"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/create_care_team"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/ivCareTeam"
+                            app:layout_constraintStart_toStartOf="@+id/tvCareTeam"
                             app:layout_constraintTop_toBottomOf="@+id/tvCareTeam" />
 
                         <androidx.recyclerview.widget.RecyclerView
