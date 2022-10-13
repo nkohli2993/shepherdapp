@@ -71,10 +71,10 @@ class TopicsAdapter(
                     resourceData,
                     recyclerItemListener
                 )
+            } else {
+                itemBinding.textViewTitle.text = resourceData.title
             }
 
-
-//            itemBinding.textViewTitle.text = resourceData.title
             if (resourceData.thumbnailUrl != null && resourceData.thumbnailUrl != "") {
                 Picasso.get().load(resourceData.thumbnailUrl)
                     .placeholder(R.drawable.image)
