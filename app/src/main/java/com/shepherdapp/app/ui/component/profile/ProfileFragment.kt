@@ -110,7 +110,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     private fun initView() {
         val firstName = payload?.userProfiles?.firstname
         val lastName = payload?.userProfiles?.lastname
-        val fullName = "$firstName $lastName"
+
+        // Check if last name is null
+        val fullName = if (lastName.isNullOrEmpty()) {
+            "$firstName"
+        } else {
+            "$firstName $lastName"
+        }
+
+//        val fullName = "$firstName $lastName"
         //Set LoggedIn  User Name
         fragmentProfileBinding.tvName.text = fullName
 
@@ -126,11 +134,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         fragmentProfileBinding.txtEmail.text = payload?.email
 
         // Set Phone Number
+        // Check if Phone Code and Phone Number are null
+
         val phoneCode = payload?.userProfiles?.phoneCode
         val phoneNumber = payload?.userProfiles?.phoneNo
-        val phoneNo = phoneNumber?.getStringWithHyphen(phoneNumber)
-
-        val phone = "+$phoneCode $phoneNo"
+        val phone = if (phoneCode.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) {
+            "Phone number not available"
+        } else {
+            val phoneNo = phoneNumber?.getStringWithHyphen(phoneNumber)
+            "+$phoneCode $phoneNo"
+        }
         fragmentProfileBinding.txtPhone.text = phone
 
         //Get user's role
