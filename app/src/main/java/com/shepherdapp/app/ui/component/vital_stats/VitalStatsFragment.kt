@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.vital_stats
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Build
@@ -12,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
 import android.widget.AdapterView
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -22,7 +24,10 @@ import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.CandleData
 import com.github.mikephil.charting.data.CandleDataSet
 import com.github.mikephil.charting.data.CandleEntry
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
@@ -890,7 +895,6 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(8f)
 
 
-
         val xAxis: XAxis = fragmentVitalStatsBinding.typeChart.xAxis
         xAxis.position = XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
@@ -904,14 +908,17 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         rightAxis.isEnabled = false
 
         fragmentVitalStatsBinding.typeChart.legend.isEnabled = false
+        fragmentVitalStatsBinding.typeChart.isHighlightPerTapEnabled = true
 
         fragmentVitalStatsBinding.typeChart.resetTracking()
+        fragmentVitalStatsBinding.typeChart.setDrawMarkers(true)
+        fragmentVitalStatsBinding.typeChart.marker = markerView(requireContext())
 
         val values = ArrayList<CandleEntry>()
         values.clear()
         for (i in graphDataList.indices) {
             values.add(
-                CandleEntry(
+                /*CandleEntry(
                     i.toFloat(),
                     if (graphDataList[i].x == 0)
                         (graphDataList[i].y - 10).toFloat()
@@ -920,6 +927,20 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     if (graphDataList[i].x == 0)
                         (graphDataList[i].y - 10).toFloat()
                     else graphDataList[i].x.toFloat(),
+                    graphDataList[i].y.toFloat(),
+                    0
+                )*/
+                // in the response x,x1 -> min & y,y1 ->max
+
+                CandleEntry(
+                    i.toFloat(),
+                    // Shadow high
+                    graphDataList[i].y.toFloat(),
+                    // Shadow low
+                    graphDataList[i].x.toFloat(),
+                    //Open
+                    graphDataList[i].x.toFloat(),
+                    //Close
                     graphDataList[i].y.toFloat(),
                     0
                 )
@@ -932,10 +953,10 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         for (i in graphDataList) {
             val time = SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().time)
             val dateTime = SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(time.plus(" ${i.day}"))
-            if (SimpleDateFormat("HH:mm").format(dateTime!!) != "00:00") {
-                xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime))
-            }
-//            xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime!!))
+            /* if (SimpleDateFormat("HH:mm").format(dateTime!!) != "00:00") {
+                 xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime))
+             }*/
+            xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime!!))
         }
 
         Log.d(TAG, "setData: xAxisLabel :$xAxisLabel ")
@@ -953,7 +974,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         set1.setDrawIcons(false)
         set1.axisDependency = AxisDependency.LEFT
         set1.shadowColor = Color.WHITE
-        set1.shadowWidth = 2f
+        set1.shadowWidth = 20f
         set1.decreasingColor = Color.rgb(159, 123, 179)
         set1.decreasingPaintStyle = Paint.Style.FILL
         set1.increasingColor = Color.rgb(159, 123, 179)
@@ -962,6 +983,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         set1.highlightLineWidth = 0f
         set1.barSpace = 3f
         set1.valueTextColor = ContextCompat.getColor(requireContext(), R.color.transparent)
+        set1.isHighlightEnabled = true
+        set1.highLightColor = Color.RED
 //        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(24f)
         fragmentVitalStatsBinding.typeChart.setScaleEnabled(false)
         fragmentVitalStatsBinding.typeChart.zoom(3f, 0f, 3f, 0f)
@@ -971,6 +994,31 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         val data = CandleData(set1)
         fragmentVitalStatsBinding.typeChart.data = data
         fragmentVitalStatsBinding.typeChart.invalidate()
+
+        fragmentVitalStatsBinding.typeChart.isHighlightPerTapEnabled = true
+
+        // Chart Value Click
+        fragmentVitalStatsBinding.typeChart.setOnChartValueSelectedListener(
+            object : OnChartValueSelectedListener {
+                override fun onValueSelected(e: Entry?, h: Highlight?) {
+                    val x: Float = e!!.x
+                    val y: Float = e.y
+                    fragmentVitalStatsBinding.typeChart.highlightValue(h)
+
+                    val layout =
+                        LayoutInflater.from(context).inflate(R.layout.custom_marker_view, null)
+                    val tv = layout.findViewById<TextView>(R.id.tvContent)
+                    tv.textSize = 16.toFloat()
+                    tv.setTextColor(resources.getColor(R.color.colorGreen))
+
+                    tv.text = "x:$x y:$y"
+                }
+
+                override fun onNothingSelected() {
+                }
+
+            }
+        )
     }
 
     override fun getLayoutRes(): Int {
@@ -1036,5 +1084,12 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         rotateAnim.duration = 0
         rotateAnim.fillAfter = true
         image.startAnimation(rotateAnim)
+    }
+
+
+    private fun markerView(context: Context?): CustomMarkerView? {
+        val mv = CustomMarkerView(context, R.layout.custom_marker_view, 16, Color.RED)
+        mv.setOffset((-mv.width / 2).toFloat(), (-mv.height - 25).toFloat())
+        return mv
     }
 }

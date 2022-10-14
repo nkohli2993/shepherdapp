@@ -372,6 +372,7 @@
         <entry key="app/src/main/res/layout/app_bar_dashboard.xml" value="0.25" />
         <entry key="app/src/main/res/layout/calendar_item.xml" value="0.25390625" />
         <entry key="app/src/main/res/layout/content_dashboard.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/custom_marker_view.xml" value="0.27579162410623087" />
         <entry key="app/src/main/res/layout/details_layout.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/dialog_bio_metric.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/dialog_choose_lockbox_file.xml" value="0.375" />
