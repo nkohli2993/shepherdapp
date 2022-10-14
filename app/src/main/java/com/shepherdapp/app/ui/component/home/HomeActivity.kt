@@ -442,7 +442,12 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
         val firstName = loggedInUser?.firstname
         val lastName = loggedInUser?.lastname
-        val fullName = "$firstName $lastName"
+        // Check if last name is null
+        val fullName = if (lastName.isNullOrEmpty()) {
+            "$firstName"
+        } else {
+            "$firstName $lastName"
+        }
 
         val profilePicLoggedInUser = loggedInUser?.profilePhoto
 
