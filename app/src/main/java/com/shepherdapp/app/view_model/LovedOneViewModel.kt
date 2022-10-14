@@ -53,9 +53,10 @@ class LovedOneViewModel @Inject constructor(
     ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
         //val lovedOneId = userRepository.getLovedOneId()
         val lovedOneUUID = userRepository.getLovedOneUUId()
+        val loggedInUserUUID = userRepository.getUUID()
         viewModelScope.launch {
             val response =
-                lovedOneUUID?.let {
+                loggedInUserUUID?.let {
                     careTeamsRepository.getCareTeamsByLovedOneId(
                         pageNumber, limit, status,
                         it

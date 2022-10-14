@@ -68,8 +68,15 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     ): View {
         fragmentProfileBinding =
             FragmentProfileBinding.inflate(inflater, container, false)
+
         profileViewModel.getUserDetailByUUID()
-        profileViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+
+        if (profileViewModel.isLoggedInUserLovedOne() == true) {
+            profileViewModel.getCareTeamsByLovedOneId(page, limit, status)
+        } else {
+            profileViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+        }
+
         return fragmentProfileBinding.root
     }
 
