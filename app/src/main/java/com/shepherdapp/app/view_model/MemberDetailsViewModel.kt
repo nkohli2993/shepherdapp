@@ -7,6 +7,7 @@ import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
+import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.care_teams.CareTeamsRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class MemberDetailsViewModel @Inject constructor(
     private val dataRepository: DataRepository,
     private val careTeamsRepository: CareTeamsRepository,
+    private val userRepository: UserRepository
 ) :
     BaseViewModel() {
 
@@ -65,5 +67,9 @@ class MemberDetailsViewModel @Inject constructor(
         }
 
         return updateCareTeamMemberLiveData
+    }
+
+    fun getLoggedInUserUUID(): String? {
+        return userRepository.getUUID()
     }
 }
