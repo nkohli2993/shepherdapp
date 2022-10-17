@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.NestedScrollView
@@ -14,7 +13,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
-import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.medical_conditions.Conditions
 import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherdapp.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
@@ -27,7 +25,6 @@ import com.shepherdapp.app.ui.component.addLovedOneCondition.adapter.AddLovedOne
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
-import com.shepherdapp.app.utils.Status
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -404,7 +401,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 medicalConditionsLovedOneArray
             )
         } else {
-            showError(this, getString(R.string.please_select_at_least_one_condition))
+            // showError(this, getString(R.string.please_select_at_least_one_condition))
+            navigateToHomeScreen()
         }
 
     }
