@@ -352,10 +352,8 @@
             android:name="source"
             app:argType="string" />
         <argument
-            android:name="event_detail"
-            app:argType="com.shepherdapp.app.data.dto.added_events.AddedEventModel"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            android:name="event_id"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/nav_chat"

@@ -80,10 +80,10 @@ class CreatedCarePointsViewModel @Inject constructor(
         _addedCarePointLiveData
 
     // for care point event detail
-    private var _addedCarePointDetailLiveData =
+    private var _carePointsDetailResponseLiveData =
         MutableLiveData<Event<DataResult<EventDetailResponseModel>>>()
-    var carePointsResponseDetailLiveData: LiveData<Event<DataResult<EventDetailResponseModel>>> =
-        _addedCarePointDetailLiveData
+    var carePointsDetailResponseLiveData: LiveData<Event<DataResult<EventDetailResponseModel>>> =
+        _carePointsDetailResponseLiveData
 
     // for care point event detail comments
     private var _addedCarePointDetailCommentsLiveData =
@@ -125,15 +125,14 @@ class CreatedCarePointsViewModel @Inject constructor(
     fun getCarePointsDetailId(
         id: Int
     ): LiveData<Event<DataResult<EventDetailResponseModel>>> {
-        //val lovedOneId = userRepository.getLovedOneId()
         viewModelScope.launch {
             val response =
                 carePointRepository.getCarePointsDetailIdBased(id)
             withContext(Dispatchers.Main) {
-                response.collect { _addedCarePointDetailLiveData.postValue(Event(it)) }
+                response.collect { _carePointsDetailResponseLiveData.postValue(Event(it)) }
             }
         }
-        return carePointsResponseDetailLiveData
+        return carePointsDetailResponseLiveData
     }
 
     fun getCarePointsEventCommentsId(
@@ -600,12 +599,14 @@ class CreatedCarePointsViewModel @Inject constructor(
                     put("chat_type", Chat.CHAT_GROUP)
                     put("sound", "default")
                     put("type", Const.NotificationAction.MESSAGE)
+                    put("group_id", chatListData?.eventID)
                 }
 
                 val jsArray = JSONArray()
                 firebaseTokensList.forEach { jsArray.put(it) }
                 val msgObject = JSONObject().apply {
                     put("data", notificationObject)
+                    put("notification", notificationObject)
                     put("chat_type", chatListData?.chatType)
                     put("group_id", chatListData?.eventID)
                     put("user_id", loggedInUser?.userId)

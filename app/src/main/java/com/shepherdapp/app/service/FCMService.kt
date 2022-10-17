@@ -21,7 +21,11 @@ import com.google.firebase.messaging.BuildConfig
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.shepherdapp.app.R
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.ui.component.home.HomeActivity
+import com.shepherdapp.app.ui.component.login.LoginActivity
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -57,9 +61,7 @@ class FCMService : FirebaseMessagingService() {
     @SuppressLint("InvalidWakeLockTag")
     fun generateNotification(context: Context, extra: Bundle) {
         val message = extra.get("body") as String?
-
-        var noti_id = 1
-
+        val notificationId = 1
 
         val largeIcon = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
         val mBuilder = NotificationCompat.Builder(context, primaryChannel)
@@ -71,15 +73,23 @@ class FCMService : FirebaseMessagingService() {
             )
             .setLargeIcon(largeIcon)
 
-        val NotiSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        mBuilder.setSound(NotiSound)
+        val notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        mBuilder.setSound(notificationSound)
         mBuilder.setDefaults(Notification.DEFAULT_ALL);
         val vibrate = longArrayOf(0, 100, 200, 300)
         mBuilder.setVibrate(vibrate)
-        var resultIntent: Intent
-        resultIntent = Intent(context, HomeActivity::class.java)
+        val resultIntent: Intent
+
+        //Check if user is already loggedIn
+        val token = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_TOKEN, "")
+        resultIntent = if (token.isNullOrEmpty()) {
+            Intent(context, LoginActivity::class.java)
+        } else {
+            Intent(context, HomeActivity::class.java)
+        }
+
         try {
-            val r = RingtoneManager.getRingtone(applicationContext, NotiSound)
+            val r = RingtoneManager.getRingtone(applicationContext, notificationSound)
             r.play()
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
@@ -94,7 +104,7 @@ class FCMService : FirebaseMessagingService() {
         val resultPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.getActivity(
                 this,
-                noti_id ?: 1,
+                notificationId ?: 1,
                 resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
@@ -102,7 +112,7 @@ class FCMService : FirebaseMessagingService() {
 
             PendingIntent.getActivity(
                 this,
-                noti_id ?: 1,
+                notificationId ?: 1,
                 resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
             )
@@ -138,13 +148,13 @@ class FCMService : FirebaseMessagingService() {
 //                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
                 .build()
-            chan1.setSound(NotiSound, audioAttributes)
+            chan1.setSound(notificationSound, audioAttributes)
             chan1.setShowBadge(true)
             mNotificationManager.createNotificationChannel(chan1)
         }
 
         if (extra.containsKey("image-url")) {
-            val bitmap: Bitmap? = getBitmapfromUrl(extra.get("image-url") as String?)
+            val bitmap: Bitmap? = getBitmapFromUrl(extra.get("from_image") as String?)
             mBuilder.setStyle(
                 NotificationCompat.BigPictureStyle()
                     .bigPicture(bitmap)
@@ -152,10 +162,10 @@ class FCMService : FirebaseMessagingService() {
             ).setLargeIcon(bitmap)
         }
 
-        mNotificationManager.notify(noti_id ?: 1, mBuilder.build())
+        mNotificationManager.notify(notificationId ?: 1, mBuilder.build())
     }
 
-    fun getBitmapfromUrl(imageUrl: String?): Bitmap? {
+    private fun getBitmapFromUrl(imageUrl: String?): Bitmap? {
         return try {
             val url = URL(imageUrl)
             val connection: HttpURLConnection = url.openConnection() as HttpURLConnection

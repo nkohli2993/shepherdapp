@@ -21,8 +21,6 @@ import androidx.navigation.ui.NavigationUI
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
-import com.shepherdapp.app.data.dto.chat.ChatListData
-import com.shepherdapp.app.data.dto.chat.ChatUserDetail
 import com.shepherdapp.app.data.dto.user.UserProfiles
 import com.shepherdapp.app.databinding.ActivityHomeBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -32,6 +30,7 @@ import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.carePoints.CarePointsFragment
 import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragment
 import com.shepherdapp.app.ui.component.dashboard.DashboardFragment
+import com.shepherdapp.app.ui.component.dashboard.DashboardFragmentDirections
 import com.shepherdapp.app.ui.component.lockBox.LockBoxFragment
 import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.ui.component.messages.MessagesFragment
@@ -40,7 +39,6 @@ import com.shepherdapp.app.ui.component.profile.ProfileFragment
 import com.shepherdapp.app.ui.component.resources.ResourcesFragment
 import com.shepherdapp.app.ui.component.settings.SettingFragment
 import com.shepherdapp.app.ui.component.vital_stats.VitalStatsFragment
-import com.shepherdapp.app.utils.Chat
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Modules
 import com.shepherdapp.app.utils.Prefs
@@ -113,34 +111,37 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     }
 
     private fun checkNotificationAction(bundle: Bundle?) {
-        val action = bundle?.get("type") as String?
+        val type = bundle?.get("type") as String?
 
-        when (action) {
+        when (type) {
             // Handle Chat Message Notification
             Const.NotificationAction.MESSAGE -> {
                 val chatId = (bundle?.get("chat_id") as String)
-                val chatData = ChatListData().apply {
-                    chatType = (bundle.get("chat_type") as String?)?.toIntOrNull()
-                    if (chatType == Chat.CHAT_GROUP) {
-                        toUser = ChatUserDetail(
-                            id = (bundle.get("user_id") as String?) ?: "",
-                            imageUrl = (bundle.get("from_image") as String?) ?: "",
-                            name = (bundle.get("from_name") as String?) ?: ""
-                        )
-                    } else {
-                        groupName = bundle.get("from_name") as String?
-                    }
+                /* val chatData = ChatListData().apply {
+                     chatType = (bundle.get("chat_type") as String?)?.toIntOrNull()
+                     if (chatType == Chat.CHAT_GROUP) {
+                         toUser = ChatUserDetail(
+                             id = (bundle.get("user_id") as String?) ?: "",
+                             imageUrl = (bundle.get("from_image") as String?) ?: "",
+                             name = (bundle.get("from_name") as String?) ?: ""
+                         )
+                     } else {
+                         groupName = bundle.get("from_name") as String?
+                     }
 
-                    id = chatId
+                     id = chatId
+                 }*/
+                val eventId = bundle.getString("group_id")
+                Log.d(TAG, "checkNotificationAction: eventId :$eventId")
+
+                val navDirection = eventId?.toInt()?.let {
+                    DashboardFragmentDirections.actionNavDashboardToNavCarePointsDetail(
+                        "Home Screen",
+                        it
+                    )
                 }
-
-                //open event detail page
-                /* navController.navigate(
-                     DashboardFragmentDirections.actionNavDashboardToNavCarePointsDetail(
-                         "Dashboard",
-                         null
-                     )
-                 )*/
+                navDirection?.let { navController.navigate(it) }
+                clearNotification()
             }
         }
     }

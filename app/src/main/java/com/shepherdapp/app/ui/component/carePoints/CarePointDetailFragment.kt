@@ -89,15 +89,144 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
 
         // Get event Detail from Care Point Fragment
-        eventDetail = args.eventDetail
+        //eventDetail = args.eventDetail
 
-        // Get Event Detail according to event ID
-        eventDetail?.id?.let { carePointsViewModel.getCarePointsDetailId(it) }
-
-
+        eventId = args.eventId
+        Log.d(TAG, "EventId : $eventId")
         val source = args.source
         Log.d(TAG, "Source :$source ")
 
+        // Get Event Detail according to event ID
+        eventId?.let { carePointsViewModel.getCarePointsDetailId(it) }
+
+
+        /*// Get Login User's detail
+        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.USER_DETAILS,
+            UserProfile::class.java
+        )
+
+        val loggedInUserId = loggedInUser?.userId
+        val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+
+        Log.d(TAG, "onEventSelected: $eventDetail ")
+
+        when (eventDetail?.user_assignes?.size) {
+            1 -> {
+                if (isListContainMethod(eventDetail?.user_assignes!!)) {
+                    if (loggedInUserId == eventDetail?.createdByDetails?.id) {
+                        chatOff()
+                        isChatOff = true
+                    } else {
+                        chatOn()
+                        isAssignerDetailRequired = true
+                    }
+//                    chatOn()
+//                    isAssignerDetailRequired = true
+                } else if (loggedInUserId == eventDetail?.createdByDetails?.id) {
+                    // Check if the loggedIn user is the assigner
+                    // It means two user are there for the care point(event) ,one is assignee and other is the assigner,
+                    // make the visibility of editTextMessage and sendCommentIV Visible
+                    chatOn()
+                } else {
+                    chatOff()
+                    isChatOff = true
+                }
+            }
+            else -> {
+                // Check the possibility of chat
+                // editTextMessage and sendCommentIV is visible if the loggedIn user is one of the assignee of the event or loggedIn user is the assigner
+                if (eventDetail?.user_assignes?.let { isListContainMethod(it) } == true || (loggedInUserId == eventDetail?.createdByDetails?.id)) {
+                    chatOn()
+                } else {
+                    chatOff()
+                    isChatOff = true
+                }
+            }
+        }
+
+
+        eventName = eventDetail?.name
+        eventId = eventDetail?.id
+        eventDetail?.user_assignes?.forEach {
+            val receiverName = it.user_details.firstname + " " + it.user_details.lastname
+            val receiverID = it.user_details.id
+            val receiverPicUrl = it.user_details.profilePhoto
+            val documentID = null
+            val chatType = Chat.CHAT_GROUP
+
+            // Create Chat Model
+            val chatModel = ChatModel(
+                documentID,
+                loggedInUserId,
+                loggedInUserName,
+                receiverID,
+                receiverName,
+                receiverPicUrl,
+                null,
+                chatType,
+                eventName,
+                eventId
+            )
+            chatModelList?.add(chatModel)
+        }
+        if (isAssignerDetailRequired) {
+            val receiverName =
+                eventDetail?.createdByDetails?.firstname + " " + eventDetail?.createdByDetails?.lastname
+            val receiverID = eventDetail?.createdByDetails?.id
+            val receiverPicUrl = eventDetail?.createdByDetails?.profilePhoto
+            val documentID = null
+            val chatType = Chat.CHAT_GROUP
+
+            // Create Chat Model
+            val chatModel = ChatModel(
+                documentID,
+                loggedInUserId,
+                loggedInUserName,
+                receiverID,
+                receiverName,
+                receiverPicUrl,
+                null,
+                chatType,
+                eventName,
+                eventId
+            )
+            chatModelList?.add(chatModel)
+        }
+
+        chatModelList?.forEach {
+            val chatUserDetail = it.toChatUserDetail()
+            chatUserDetailList?.add(chatUserDetail)
+        }
+        if (!isChatOff) {
+            // Set User Detail
+            carePointsViewModel.setToUserDetail(
+                Chat.CHAT_GROUP,
+                chatUserDetailList,
+                eventName,
+                eventId
+            )
+            // Load Chat
+            loadChat()
+            initScrollListener()
+        }
+
+        setCommentAdapter()
+        if (eventDetail != null) {
+            initCarePointDetailViews(eventDetail!!)
+        }
+
+//        carePointsViewModel.getCarePointsEventCommentsId(pageNumber, limit, eventDetail?.id ?: 0)
+        fragmentCarePointDetailBinding.tvNotes.setOnTouchListener { view, event ->
+            view.parent.requestDisallowInterceptTouchEvent(true)
+            when (event.action and MotionEvent.ACTION_MASK) {
+                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+            }
+            false
+        }*/
+    }
+
+    private fun initView() {
         // Get Login User's detail
         val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
             Const.USER_DETAILS,
@@ -323,7 +452,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     @SuppressLint("NotifyDataSetChanged")
     override fun observeViewModel() {
-        carePointsViewModel.carePointsResponseDetailLiveData.observeEvent(this) {
+
+        carePointsViewModel.carePointsDetailResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
                     showLoading("")
@@ -334,7 +464,10 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                         TAG,
                         "observeViewModel: Event Detail according to id : ${it.data.payload}"
                     )
+                    eventDetail = it.data.payload
                     // initCarePointDetailViews(it.data.payload)
+                    initView()
+
 
                 }
                 is DataResult.Failure -> {

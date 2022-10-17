@@ -486,12 +486,22 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         }
 
         //open event detail page
-        findNavController().navigate(
+        /* findNavController().navigate(
+             detail?.id?.let {
+                 CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                     "Care Point",
+                     it
+                 )
+             }
+         )*/
+
+        val action = detail.id?.let {
             CarePointsFragmentDirections.actionCarePointsToDetailFragment(
                 "Care Point",
-                detail
+                it
             )
-        )
+        }
+        action?.let { findNavController().navigate(it) }
 
         // Navigate to chat screen
         /* findNavController().navigate(

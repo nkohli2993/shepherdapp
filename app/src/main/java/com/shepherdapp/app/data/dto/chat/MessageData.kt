@@ -98,5 +98,7 @@ data class ChatNotificationData(
     @SerializedName("from_name", alternate = ["sender_name"])
     var senderName: String? = null,
     @SerializedName("title")
-    var title: String? = null
+    var title: String? = null,
+    @SerializedName("group_id")
+    var groupId: String? = null
 ) : Parcelable
