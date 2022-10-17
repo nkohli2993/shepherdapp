@@ -26,7 +26,7 @@ fun getNameError(view: EditText, data: String) {
 fun getEmailError(view: EditText, data: String) {
     view.onTextChanged {
         if (view.isBlank()) {
-            view.error = view.context.getString(R.string.please_enter_email_id)
+            view.error = view.context.getString(R.string.enter_email)
             view.requestFocus()
         } else if (!view.checkString().isValidEmail()) {
             view.error = view.context.getString(R.string.please_enter_valid_email_id)

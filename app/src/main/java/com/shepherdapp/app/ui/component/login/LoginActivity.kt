@@ -69,7 +69,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         get() {
             when {
                 loginViewModel.loginData.value?.email.isNullOrEmpty() -> {
-                    binding.edtEmail.error = getString(R.string.please_enter_email_id)
+                    binding.edtEmail.error = getString(R.string.enter_email)
                     binding.edtEmail.requestFocus()
                 }
                 loginViewModel.loginData.value?.email?.isValidEmail() == false -> {

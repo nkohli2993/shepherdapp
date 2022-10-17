@@ -56,7 +56,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
             when {
                 fragmentAddMemberBinding.edtEmail.text.toString().isEmpty() -> {
                     fragmentAddMemberBinding.edtEmail.error =
-                        getString(R.string.please_enter_email_id)
+                        getString(R.string.enter_email)
                     fragmentAddMemberBinding.edtEmail.requestFocus()
                 }
                 selectedCareRole?.id == null -> {

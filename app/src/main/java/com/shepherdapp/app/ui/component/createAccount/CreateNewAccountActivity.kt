@@ -78,7 +78,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     binding.edtLastName.requestFocus()
                 }
                 binding.editTextEmail.text.toString().isEmpty() -> {
-                    binding.editTextEmail.error = getString(R.string.please_enter_email_id)
+                    binding.editTextEmail.error = getString(R.string.enter_email)
                     binding.editTextEmail.requestFocus()
                 }
                 !binding.editTextEmail.text.toString().isValidEmail() -> {

@@ -132,7 +132,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
                 binding.chkLovedOne.isChecked -> {
                     if (binding.editTextEmail.text.toString().isEmpty()) {
-                        binding.editTextEmail.error = getString(R.string.please_enter_email_id)
+                        binding.editTextEmail.error = getString(R.string.enter_email)
                         binding.editTextEmail.requestFocus()
                     } else {
                         return true
