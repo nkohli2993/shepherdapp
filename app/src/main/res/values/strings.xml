@@ -554,6 +554,7 @@
     <string name="send_invitation_to_loved_one">Send an Invitation to the \nloved one.</string>
     <string name="current_medications">Current Medications</string>
     <string name="todays_medications">Today\'s Medications</string>
+    <string name="did_not_received_mail_yet">Didn\'t received email yet? <font color="#A26DCB">Resend</font></string>
 
 
 </resources>

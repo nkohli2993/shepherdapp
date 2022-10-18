@@ -55,7 +55,13 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         binding = ActivityWelcomeUserBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        setResendText(binding.emailResendTV.text.toString())
+//        setResendText(binding.emailResendTV.text.toString())
+
+        // resend email
+        binding.emailResendTV.setOnClickListener {
+            // send resend verification email
+            welcomeViewModel.sendUserVerificationEmail()
+        }
     }
 
     override fun observeViewModel() {
@@ -209,6 +215,10 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
+
+    }
+
+    private fun resendVerificationEmail() {
 
     }
 

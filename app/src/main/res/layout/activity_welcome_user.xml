@@ -231,7 +231,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_book"
-            android:text="Didn't received email yet? Resend"
+            android:text="@string/did_not_received_mail_yet"
             android:textColor="@color/_192032"
             android:layout_marginBottom="@dimen/_15sdp"
             android:textSize="@dimen/_12ssp"
