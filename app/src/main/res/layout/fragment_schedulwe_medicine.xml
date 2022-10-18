@@ -81,14 +81,13 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clDoseWrapper"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                     android:minHeight="@dimen/_42sdp"
-                    app:layout_constraintEnd_toStartOf="@+id/clDoseTypeWrapper"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvDose">
 
@@ -120,45 +119,45 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clDoseTypeWrapper"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_5sdp"
-                    android:layout_weight="1"
-                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                    android:minHeight="@dimen/_42sdp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/clDoseWrapper"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDose">
+                <!-- <androidx.constraintlayout.widget.ConstraintLayout
+                     android:id="@+id/clDoseTypeWrapper"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_marginTop="@dimen/_10sdp"
+                     android:layout_marginEnd="@dimen/_5sdp"
+                     android:layout_weight="1"
+                     android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                     android:minHeight="@dimen/_42sdp"
+                     app:layout_constraintEnd_toEndOf="parent"
+                     app:layout_constraintStart_toEndOf="@+id/clDoseWrapper"
+                     app:layout_constraintTop_toBottomOf="@+id/tvDose">
 
-                    <Spinner
-                        android:id="@+id/typeSpinner"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:dropDownWidth="@dimen/_150sdp"
-                        android:dropDownVerticalOffset="@dimen/_40sdp"
-                        android:spinnerMode="dropdown"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                     <Spinner
+                         android:id="@+id/typeSpinner"
+                         android:layout_width="0dp"
+                         android:layout_height="0dp"
+                         android:dropDownWidth="@dimen/_150sdp"
+                         android:dropDownVerticalOffset="@dimen/_40sdp"
+                         android:spinnerMode="dropdown"
+                         app:layout_constraintBottom_toBottomOf="parent"
+                         app:layout_constraintEnd_toEndOf="parent"
+                         app:layout_constraintStart_toStartOf="parent"
+                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/doseTIM"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/_10sdp"
-                        android:contentDescription="@string/app_name"
-                        android:padding="@dimen/_4sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_arrow_spinner"
-                        app:tint="@color/colorGreyDark" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                     <androidx.appcompat.widget.AppCompatImageView
+                         android:id="@+id/doseTIM"
+                         android:layout_width="@dimen/_20sdp"
+                         android:layout_height="match_parent"
+                         android:layout_gravity="center"
+                         android:layout_marginEnd="@dimen/_10sdp"
+                         android:contentDescription="@string/app_name"
+                         android:padding="@dimen/_4sdp"
+                         app:layout_constraintBottom_toBottomOf="parent"
+                         app:layout_constraintEnd_toEndOf="parent"
+                         app:layout_constraintTop_toTopOf="parent"
+                         app:srcCompat="@drawable/ic_arrow_spinner"
+                         app:tint="@color/colorGreyDark" />
+                 </androidx.constraintlayout.widget.ConstraintLayout>-->
                 <!--
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                    android:id="@+id/clDoseWrapper"

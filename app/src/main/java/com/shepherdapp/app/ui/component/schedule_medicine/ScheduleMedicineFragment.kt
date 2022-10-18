@@ -98,7 +98,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         observe(medicationViewModel.doseListData, ::selectedDoseData)
         observe(medicationViewModel.dayListSelectedData, ::selectedDay)
         getDostQtyListObserver()
-        getDoseTypeListObserver()
+//        getDoseTypeListObserver()
         scheduledMedicationObserver()
         getScheduledMedicationRecord()
     }
@@ -162,7 +162,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                                 typePosition = i
                             }
                         }
-                        fragmentScheduleMedicineBinding.typeSpinner.setSelection(typePosition)
+//                        fragmentScheduleMedicineBinding.typeSpinner.setSelection(typePosition)
                     }
                 }
             }
@@ -260,7 +260,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                             doseTypeList
                         )
 
-                    fragmentScheduleMedicineBinding.typeSpinner.adapter = dosageAdapter
+//                    fragmentScheduleMedicineBinding.typeSpinner.adapter = dosageAdapter
                     val doseQty = dosageAdapter?.getItem(0)
                     if (doseQty != null) selectedDoseTypeId = doseQty.id.toString()
                 }
@@ -272,15 +272,15 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
         medicationViewModel.getDoseListResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
-                    // hideLoading()
+                    hideLoading()
                     showError(requireContext(), it.message.toString())
-                    medicationViewModel.getAllDoseTypeList(1, 10)
+//                    medicationViewModel.getAllDoseTypeList(1, 10)
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    //hideLoading()
+                    hideLoading()
                     it.data.payload.let { payload ->
                         doseList = payload?.dosages!!
                         total = payload.total
@@ -302,7 +302,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
                     val doseQty = dosageAdapter?.getItem(0)
                     if (doseQty != null) selectedDoseId = doseQty.id.toString()
-                    medicationViewModel.getAllDoseTypeList(1, 10)
+//                    medicationViewModel.getAllDoseTypeList(1, 10)
                 }
             }
         }
@@ -369,18 +369,18 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                 }
 
             }
-        fragmentScheduleMedicineBinding.typeSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    //add days to day list
-                    selectedDoseTypeId = doseTypeList[p2].id.toString()
-                }
+        /* fragmentScheduleMedicineBinding.typeSpinner.onItemSelectedListener =
+             object : AdapterView.OnItemSelectedListener {
+                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                     //add days to day list
+                     selectedDoseTypeId = doseTypeList[p2].id.toString()
+                 }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
+                 override fun onNothingSelected(p0: AdapterView<*>?) {
 
-                }
+                 }
 
-            }
+             }*/
 
         fragmentScheduleMedicineBinding.cbEveryDay.setOnCheckedChangeListener { compoundButton, _isChecked ->
             if (compoundButton.isPressed) {
@@ -804,7 +804,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
                         val scheduledMedication = UpdateScheduledMedList(
                             selectedDoseId!!,
-                            selectedDoseTypeId,
+                            null,
                             frequencyId!!.toString(),
                             daysIds!!,
                             timeAddedList,
@@ -826,7 +826,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         val scheduledMedication =
                             ScheduledMedicationRequestModel(
                                 medicationViewModel.getLovedOneUUId(),
-                                selectedDoseId!!, selectedDoseTypeId!!,
+                                selectedDoseId!!,
+                                null,
                                 frequencyId!!.toString(),
                                 selectedMedList?.id.toString(),
                                 daysIds!!,
@@ -946,12 +947,12 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         getString(R.string.please_select_dose_for_medication)
                     )
                 }
-                selectedDoseTypeId == null || selectedDoseTypeId == "-1" -> {
-                    showError(
-                        requireContext(),
-                        getString(R.string.please_select_dose_type_for_medication)
-                    )
-                }
+                /* selectedDoseTypeId == null || selectedDoseTypeId == "-1" -> {
+                     showError(
+                         requireContext(),
+                         getString(R.string.please_select_dose_type_for_medication)
+                     )
+                 }*/
                 frequencyId == null -> {
                     showError(
                         requireContext(),

@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.UserMedicationData
@@ -101,7 +100,9 @@ class MyMedicationsAdapter(
                 }
             }
 
-            itemBinding.tvDosage.text = medList.dosage?.name.plus(" ${medList.dosageType?.name}")
+//            itemBinding.tvDosage.text = medList.dosage?.name.plus(" ${medList.dosageType?.name}")
+            itemBinding.tvDosage.text = medList.dosage?.name
+
         }
 
     }
