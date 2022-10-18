@@ -325,6 +325,9 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
             medicationId = args.medicationId!!.toInt()
             fragmentScheduleMedicineBinding.tvMedList.text = getString(R.string.update_medication)
             fragmentScheduleMedicineBinding.btnSubmit.text = getString(R.string.update_medication)
+            if (medicationId != null) {
+                medicationId?.let { medicationViewModel.getMedicationDetail(it) }
+            }
         }
         addFrequencyType()
         fragmentScheduleMedicineBinding.frequencyRV.adapter = FrequencyAdapter(
