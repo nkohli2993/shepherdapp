@@ -281,8 +281,10 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     }
 
                     fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
-                    fragmentAddNewLockBoxBinding.edtFileName.setText(lBType?.name)
-
+                    // Set Document name if lockBox slug is not other
+                    /*if (!lBType?.slug.equals("other"))
+                        fragmentAddNewLockBoxBinding.edtFileName.setText(lBType?.name)
+*/
                 }
             }
         }
