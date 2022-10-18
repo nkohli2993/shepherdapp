@@ -281,7 +281,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     }
 
                     fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
-
+                    fragmentAddNewLockBoxBinding.edtFileName.setText(lBType?.name)
 
                 }
             }
