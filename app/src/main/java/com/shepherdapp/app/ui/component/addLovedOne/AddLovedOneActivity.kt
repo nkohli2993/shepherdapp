@@ -729,5 +729,30 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
         val stateData = relationshipsAdapter?.getItem(position)
         if (stateData != null) selectedRelationship = stateData
     }
+
+    override fun onBackPressed() {
+        if (isEditLovedOne) {
+            val builder = android.app.AlertDialog.Builder(this)
+            val dialog = builder.apply {
+                setTitle("Edit LovedOne")
+                setMessage("Do you want to save your changes?")
+                setPositiveButton("Yes") { _, _ ->
+                }
+                setNegativeButton("No") { _, _ ->
+                    super.onBackPressed()
+                }
+            }.create()
+            dialog.show()
+            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(Color.BLACK)
+            dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(Color.BLACK)
+        } else {
+            super.onBackPressed()
+        }
+
+        // super.onBackPressed()
+
+    }
 }
 
