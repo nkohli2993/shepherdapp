@@ -92,9 +92,9 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
                 }
 
-                selectedFileList.isNullOrEmpty() -> {
+                /*selectedFileList.isNullOrEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_upload_file))
-                }
+                }*/
                 else -> {
                     return true
                 }
@@ -326,25 +326,41 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
             R.id.btnDone -> {
                 if (isValid) {
-                    var isFileFormatValid = false
-                    for (i in selectedFileList?.indices!!) {
-                        isFileFormatValid =
-                            FileValidator().validate(selectedFileList!![i].toString())
+                    fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
+                    fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    if (selectedFileList.isNullOrEmpty()) {
+                        addNewLockBoxViewModel.addNewLockBox(
+                            fileName,
+                            fileNote,
+                            null,
+                            selectedDocumentId?.toInt()
+                        )
 
-                        if (!isFileFormatValid) break
-                    }
-                    if (!isFileFormatValid) {
-                        showError(
-                            requireContext(),
-                            getString(R.string.only_jpg_png_word_text_file_can_be_uploaded)
-                        )
-                    } else if (selectedFileList!!.size > 5) {
-                        showError(
-                            requireContext(),
-                            getString(R.string.you_can_upload_at_max_five_file)
-                        )
                     } else {
-                        selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
+                        var isFileFormatValid = false
+                        for (i in selectedFileList?.indices!!) {
+                            isFileFormatValid =
+                                FileValidator().validate(selectedFileList!![i].toString())
+
+                            if (!isFileFormatValid) break
+                        }
+                        if (!isFileFormatValid) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.only_jpg_png_word_text_file_can_be_uploaded)
+                            )
+                        } else if (selectedFileList!!.size > 5) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.you_can_upload_at_max_five_file)
+                            )
+                        } else {
+                            selectedFileList?.let {
+                                addNewLockBoxViewModel.uploadMultipleLockBoxDoc(
+                                    it
+                                )
+                            }
+                        }
                     }
                 }
             }

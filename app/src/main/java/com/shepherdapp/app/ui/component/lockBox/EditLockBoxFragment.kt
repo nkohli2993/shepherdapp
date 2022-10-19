@@ -78,7 +78,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private var lockBoxId: Int? = null
     private val args: EditLockBoxFragmentArgs by navArgs()
     private var uploadedFiles: ArrayList<DocumentData> = arrayListOf()
-    private var deletedSelectedDocs: ArrayList<Documents> = arrayListOf()
+    private var deletedSelectedDocs: ArrayList<Documents>? = arrayListOf()
     private var dateFormat = SimpleDateFormat("MMM dd, yyyy")
     private var isLoading = false
     private var lockBoxTypeId: Int? = null
@@ -126,12 +126,14 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                         addNewDocument.add(Documents(i))
                     }
                     addNewDocument.let { list ->
-                        addNewLockBoxViewModel.editNewLockBox(
-                            fileName,
-                            fileNote,
-                            selectedDocumentId?.toInt(), lockBoxId!!,
-                            list, deletedSelectedDocs
-                        )
+                        deletedSelectedDocs?.let { it1 ->
+                            addNewLockBoxViewModel.editNewLockBox(
+                                fileName,
+                                fileNote,
+                                selectedDocumentId?.toInt(), lockBoxId!!,
+                                list, it1
+                            )
+                        }
                     }
                 }
             }
@@ -180,7 +182,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                         lockBoxTypes.add(i)
                                     }
                                 }
-                                if(i.name?.lowercase()=="other" && i.lockbox.size > 0 &&  i.id != lockBoxTypeId){
+                                if (i.name?.lowercase() == "other" && i.lockbox.size > 0 && i.id != lockBoxTypeId) {
                                     lockBoxTypes.add(i)
                                 }
                                 if (i.lockbox.size > 0 && i.id == lockBoxTypeId) {
@@ -231,23 +233,27 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                             }
                             it.documentSpinner.setSelection(position)
                             //set file added adapter
-                            if (payload?.documents != null || payload?.documents!!.size > 0) {
-                                for (i in payload.documents.indices) {
-                                    payload?.createdAt?.let { it1 ->
-                                        DocumentData(
-                                            i,
-                                            payload.documents[i].url!!,
-                                            it1
-                                        )
-                                    }?.let { it2 ->
-                                        uploadedFiles.add(
-                                            it2
-                                        )
-                                    }
-                                }
 
+                            if (payload?.documents != null) {
+                                if (payload.documents?.size!! > 0) {
+                                    for (i in payload.documents!!.indices) {
+                                        payload?.createdAt?.let { it1 ->
+                                            DocumentData(
+                                                i,
+                                                payload.documents!![i].url!!,
+                                                it1
+                                            )
+                                        }?.let { it2 ->
+                                            uploadedFiles.add(
+                                                it2
+                                            )
+                                        }
+                                    }
+                                    uploadedFilesAdapter?.addData(uploadedFiles)
+                                }
+                            } else {
+                                setFileViewInvisible()
                             }
-                            uploadedFilesAdapter?.addData(uploadedFiles)
                         }
 
                     }
@@ -280,7 +286,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             setFileViewVisible()
             uploadedFilesAdapter?.addData(uploadSelectedFiles)
         } else {
-            setFileViewUnvisible()
+            setFileViewInvisible()
         }
     }
 
@@ -325,60 +331,85 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             }
             R.id.btnSaveChanges -> {
                 if (isValid) {
-                    var isFileFormatValid = false
-                    for (i in uploadedFiles.indices) {
-                        isFileFormatValid =
-                            FileValidator().validate(uploadedFiles[i].filePath)
+                    fileName = fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
+                    fileNote = fragmentEditLockBoxBinding.edtNote.text.toString().trim()
 
-                        if (!isFileFormatValid) break
-                    }
-                    if (!isFileFormatValid) {
-                        showError(
-                            requireContext(),
-                            getString(R.string.only_jpg_png_word_text_file_can_be_uploaded)
-                        )
-                    } else if (uploadedFiles.size > 5) {
-                        showError(
-                            requireContext(),
-                            getString(R.string.you_can_upload_at_max_five_file)
-                        )
-                    } else {
-                        Log.e(TAG, "deletedFiles ${deletedSelectedDocs} added : $selectedFileList")
-                        val addedFiles: ArrayList<File> = arrayListOf()
-                        alreadyAdded = arrayListOf()
-                        for (i in uploadedFiles) {
-                            if (i.filePath.startsWith(BuildConfig.BASE_URL)) {
-                                alreadyAdded.add(i.filePath)
-                            } else {
-                                addedFiles.add(File(i.filePath))
-                            }
-
-                        }
-                        if (addedFiles.size > 0) {
-                            isLoading = false
-                            addedFiles.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
+                    if (uploadedFiles.isNullOrEmpty()) {
+                        if (deletedSelectedDocs.isNullOrEmpty()) {
+                            addNewLockBoxViewModel.editNewLockBox(
+                                fileName, fileNote, selectedDocumentId?.toInt(),
+                                lockBoxId!!, null, null
+                            )
                         } else {
-                            isLoading = true
-                            //call update api direct
-                            fileName = fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
-                            fileNote = fragmentEditLockBoxBinding.edtNote.text.toString().trim()
-                            uploadedDocumentsUrl?.clear()
-                            uploadedDocumentsUrl?.addAll(alreadyAdded)
-                            val addNewDocument: ArrayList<Documents> = arrayListOf()
-                            for (i in uploadedDocumentsUrl!!) {
-                                addNewDocument.add(Documents(i))
-                            }
-                            uploadedDocumentsUrl?.let { list ->
-                                addNewLockBoxViewModel.editNewLockBox(
-                                    fileName,
-                                    fileNote,
-                                    selectedDocumentId?.toInt(), lockBoxId!!,
-                                    addNewDocument, deletedSelectedDocs
-                                )
-                            }
+                            addNewLockBoxViewModel.editNewLockBox(
+                                fileName, fileNote, selectedDocumentId?.toInt(),
+                                lockBoxId!!, null, deletedSelectedDocs
+                            )
                         }
 
+                    } else {
+                        var isFileFormatValid = false
+                        for (i in uploadedFiles.indices) {
+                            isFileFormatValid =
+                                FileValidator().validate(uploadedFiles[i].filePath)
+
+                            if (!isFileFormatValid) break
+                        }
+                        if (!isFileFormatValid) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.only_jpg_png_word_text_file_can_be_uploaded)
+                            )
+                        } else if (uploadedFiles.size > 5) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.you_can_upload_at_max_five_file)
+                            )
+                        } else {
+                            Log.e(
+                                TAG,
+                                "deletedFiles ${deletedSelectedDocs} added : $selectedFileList"
+                            )
+                            val addedFiles: ArrayList<File> = arrayListOf()
+                            alreadyAdded = arrayListOf()
+                            for (i in uploadedFiles) {
+                                if (i.filePath.startsWith(BuildConfig.BASE_URL)) {
+                                    alreadyAdded.add(i.filePath)
+                                } else {
+                                    addedFiles.add(File(i.filePath))
+                                }
+
+                            }
+                            if (addedFiles.size > 0) {
+                                isLoading = false
+                                addedFiles.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
+                            } else {
+                                isLoading = true
+                                //call update api direct
+                                fileName =
+                                    fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
+                                fileNote = fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                                uploadedDocumentsUrl?.clear()
+                                uploadedDocumentsUrl?.addAll(alreadyAdded)
+                                val addNewDocument: ArrayList<Documents> = arrayListOf()
+                                for (i in uploadedDocumentsUrl!!) {
+                                    addNewDocument.add(Documents(i))
+                                }
+                                uploadedDocumentsUrl?.let { list ->
+                                    deletedSelectedDocs?.let {
+                                        addNewLockBoxViewModel.editNewLockBox(
+                                            fileName,
+                                            fileNote,
+                                            selectedDocumentId?.toInt(), lockBoxId!!,
+                                            addNewDocument, it
+                                        )
+                                    }
+                                }
+                            }
+
+                        }
                     }
+
                 }
             }
             R.id.ivBack -> {
@@ -389,7 +420,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
 
     private fun selectedFileShow() {
         if ((uploadedFiles.size ?: 0) <= 0) {
-            setFileViewUnvisible()
+            setFileViewInvisible()
         } else {
             setFileViewVisible()
         }
@@ -410,9 +441,9 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                     fragmentEditLockBoxBinding.edtNote.error = getString(R.string.enter_note)
                 }
 
-                uploadedFiles.isEmpty() -> {
+                /*uploadedFiles.isEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_upload_file))
-                }
+                }*/
                 else -> {
                     return true
                 }
@@ -505,7 +536,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 setFileViewVisible()
                                 uploadedFilesAdapter?.addData(selectedFileList!!)
                             } else {
-                                setFileViewUnvisible()
+                                setFileViewInvisible()
                             }
                             selectedFileShow()
                         }
@@ -591,7 +622,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                         uploadedFilesAdapter?.addData(uploadFile)
                         selectedFileShow()
                     } else {
-                        setFileViewUnvisible()
+                        setFileViewInvisible()
                     }
                     selectedFileShow()
                     hideLoading()
@@ -632,7 +663,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             }
         }
 
-    private fun setFileViewUnvisible() {
+    private fun setFileViewInvisible() {
         fragmentEditLockBoxBinding.txtUploadedFiles.visibility = View.GONE
         fragmentEditLockBoxBinding.rvUploadedFiles.visibility = View.GONE
         fragmentEditLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
@@ -686,7 +717,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             setMessage(getString(R.string.are_you_sure_u_want_to_delete_uploaded_document))
             setPositiveButton(getString(R.string.yes)) { _, _ ->
                 if (!uploadedFiles[position].newAdded) {
-                    deletedSelectedDocs.add(Documents(uploadedFiles[position].filePath))
+                    deletedSelectedDocs?.add(Documents(uploadedFiles[position].filePath))
                 }
                 uploadedFiles.removeAt(position)
                 uploadedFilesAdapter?.removeData(position)

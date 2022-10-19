@@ -106,29 +106,35 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                         it.txtTypeTV.text = lockBox?.lockbox_types?.name
                     }
                     lbtId = lockBox?.lbtId
-                    documentImagesAdapter =
-                        UploadedDocumentImagesAdapter(
-                            requireContext().applicationContext,
-                            lockBox?.documents,
-                            this@LockBoxDocInfoFragment
-                        )
-                    viewPager.adapter = documentImagesAdapter
-                    fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
-                    fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(object :
-                        ViewPager.OnPageChangeListener {
-                        override fun onPageScrolled(
-                            position: Int,
-                            positionOffset: Float,
-                            positionOffsetPixels: Int
-                        ) {
-                        }
+                    if (lockBox?.documents.isNullOrEmpty()) {
+                        fragmentUploadedLockBoxDocDetailBinding.viewPager.visibility = View.GONE
+                        fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.visibility = View.GONE
+                    } else {
+                        documentImagesAdapter =
+                            UploadedDocumentImagesAdapter(
+                                requireContext().applicationContext,
+                                lockBox?.documents,
+                                this@LockBoxDocInfoFragment
+                            )
+                        viewPager.adapter = documentImagesAdapter
+                        fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.setViewPager(viewPager)
+                        fragmentUploadedLockBoxDocDetailBinding.viewPager.addOnPageChangeListener(
+                            object :
+                                ViewPager.OnPageChangeListener {
+                                override fun onPageScrolled(
+                                    position: Int,
+                                    positionOffset: Float,
+                                    positionOffsetPixels: Int
+                                ) {
+                                }
 
-                        override fun onPageSelected(position: Int) {
+                                override fun onPageSelected(position: Int) {
 
-                        }
+                                }
 
-                        override fun onPageScrollStateChanged(state: Int) {}
-                    })
+                                override fun onPageScrollStateChanged(state: Int) {}
+                            })
+                    }
                 }
             }
         }

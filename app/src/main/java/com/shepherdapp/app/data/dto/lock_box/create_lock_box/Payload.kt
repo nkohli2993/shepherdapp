@@ -17,7 +17,7 @@ data class Payload(
     @SerializedName("note") var note: String? = null,
     @SerializedName("lbt_id") var lbtId: Int? = null,
     @SerializedName("love_user_id") var loveUserId: String? = null,
-    @SerializedName("documents") var documents: ArrayList<Documents> = arrayListOf(),
+    @SerializedName("documents") var documents: ArrayList<Documents>? = arrayListOf(),
     @SerializedName("user_id") var userId: String? = null,
     @SerializedName("lockbox_types") var lockbox_types: LockBoxTypes = LockBoxTypes()
 ):Parcelable
