@@ -292,6 +292,8 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
 
 
     override fun initViewBinding() {
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
         addNewLockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
         fragmentEditLockBoxBinding.listener = this
         lockBoxId = args.id!!.toInt()
