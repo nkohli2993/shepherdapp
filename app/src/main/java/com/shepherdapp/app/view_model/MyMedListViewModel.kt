@@ -107,7 +107,7 @@ class MyMedListViewModel @Inject constructor(
     fun getLovedOneMedLists(date:String=""): LiveData<Event<DataResult<GetLovedOneMedList>>> {
         val lovedOneUUID = userRepository.getLovedOneUUId()
         viewModelScope.launch {
-            val response = lovedOneUUID?.let { medListRepository.getLovedOneMedLists(it,date) }
+            val response = lovedOneUUID?.let { medListRepository.getLovedOneMedLists(it/*,date*/) }
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _getLovedOneMedListsResponseLiveData.postValue(Event(it))

@@ -80,12 +80,12 @@ class MedListRepository @Inject constructor(private val apiService: ApiService) 
 
     // Get MedLists of LovedOne
     suspend fun getLovedOneMedLists(
-        lovedOneUUID: String, date: String = ""
+        lovedOneUUID: String/*, date: String = ""*/
     ): Flow<DataResult<GetLovedOneMedList>> {
         return object :
             NetworkOnlineDataRepo<GetLovedOneMedList, GetLovedOneMedList>() {
             override suspend fun fetchDataFromRemoteSource(): Response<GetLovedOneMedList> {
-                return apiService.getLovedOneMedList(lovedOneUUID,date)
+                return apiService.getLovedOneMedList(lovedOneUUID/*,date*/)
 //                return apiService.getLovedOneMedList(lovedOneUUID)
             }
         }.asFlow().flowOn(Dispatchers.IO)

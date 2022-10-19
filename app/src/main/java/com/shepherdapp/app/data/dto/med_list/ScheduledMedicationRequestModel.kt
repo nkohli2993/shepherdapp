@@ -14,7 +14,7 @@ data class ScheduledMedicationRequestModel(
     @SerializedName("frequency") var frequency: String? = null,
     @SerializedName("medlist_id") var medlist_id: String? = null,
     @SerializedName("days") var days: String? = null,
-    @SerializedName("time") var time: ArrayList<Time> = arrayListOf(),
+    @SerializedName("time") var time: ArrayList<Time>? = arrayListOf(),
     @SerializedName("note") var note: String? = null,
     @SerializedName("end_date") var end_date: String? = null,
 

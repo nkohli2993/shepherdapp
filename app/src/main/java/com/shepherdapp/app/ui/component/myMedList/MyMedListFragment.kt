@@ -71,10 +71,12 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     override fun initViewBinding() {
 
         setMyMedicationsAdapter()
-        setSelectedDayMedicineAdapter()
+//        setSelectedDayMedicineAdapter()
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
-        setCalender()
+//        setCalender()
+        medListViewModel.getLovedOneMedLists(selectedDate)
+
     }
 
     private fun setCalender() {
@@ -137,18 +139,18 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
             }
         }
-        val singleRowCalendar = myMedlistBinding.srCalender.apply {
-            calendarViewManager = myCalendarViewManager
-            calendarChangesObserver = myCalendarChangesObserver
-            calendarSelectionManager = mySelectionManager
-            futureDaysCount = 30
-            pastDaysCount = 30
-            init()
-            includeCurrentDate = true
-            initialPositionIndex = 30
-            scrollToPosition(30)
-            select(30)
-        }
+        /* val singleRowCalendar = myMedlistBinding.srCalender.apply {
+             calendarViewManager = myCalendarViewManager
+             calendarChangesObserver = myCalendarChangesObserver
+             calendarSelectionManager = mySelectionManager
+             futureDaysCount = 30
+             pastDaysCount = 30
+             init()
+             includeCurrentDate = true
+             initialPositionIndex = 30
+             scrollToPosition(30)
+             select(30)
+         }*/
     }
 
     @SuppressLint("NotifyDataSetChanged", "SimpleDateFormat")
@@ -161,9 +163,9 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+//                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
                     myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
-                    myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
+//                    myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
                     myMedlistBinding.txtMedication.visibility = View.VISIBLE
                 }
                 is DataResult.Loading -> {
@@ -172,10 +174,15 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 is DataResult.Success -> {
                     hideLoading()
                     payload.clear()
+
+                    val payload1 = it.data.payload
+
+
+
                     medListReminderList.clear()
-                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
+//                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
                     myMedlistBinding.recyclerViewMyMedications.visibility = View.VISIBLE
-                    myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
+//                    myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
                     myMedlistBinding.txtMedication.visibility = View.GONE
                     // check day for payload data
                     for (i in it.data.payload!!.userMedicationAll) {
@@ -186,26 +193,26 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     if (payload.size <= 0) {
                         myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
                         myMedlistBinding.txtMedication.visibility = View.VISIBLE
-                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
-                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
+//                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+//                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
                     }
                     if (payload.isEmpty()) return@observeEvent
 
                     for (i in it.data.payload!!.userMedicationRepeat) {
                         if (i.days!!.contains(dayId)) {
-                            if((i.frequency?:"0").toInt()<5){
+                            if ((i.frequency ?: "0").toInt() < 5) {
                                 i.selectedDate = selectedDate
                                 medListReminderList.add(i)
                             }
                         }
                     }
                     if (medListReminderList.size <= 0) {
-                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
-                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
+//                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+//                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
                     } else {
 
-                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
-                        myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
+//                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
+//                        myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
                         selectedDayMedicineAdapter?.addData(medListReminderList)
                     }
                     if (payload.size <= 0) {
@@ -502,7 +509,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     private fun setSelectedDayMedicineAdapter() {
         selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
-        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
+//        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
 
     }
 

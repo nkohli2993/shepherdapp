@@ -281,7 +281,7 @@
                     tools:itemCount="4"
                     tools:listitem="@layout/adapter_frequency" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+               <!-- <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvFrequency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -291,9 +291,9 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/doseRV" />
+                    app:layout_constraintTop_toBottomOf="@+id/doseRV" />-->
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+               <!-- <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clFrequencyWrapper"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -314,10 +314,10 @@
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+               <!-- <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/frequencyCL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -363,9 +363,9 @@
                         app:srcCompat="@drawable/ic_arrow_spinner"
                         app:tint="@color/colorGreyDark" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-                <androidx.recyclerview.widget.RecyclerView
+               <!-- <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/frequencyRV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -378,8 +378,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/frequencyCL"
                     tools:itemCount="4"
                     tools:listitem="@layout/adapter_frequency" />
-
-                <androidx.appcompat.widget.AppCompatTextView
+-->
+                <!--<androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -390,8 +390,8 @@
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/frequencyRV" />
-
-                <androidx.recyclerview.widget.RecyclerView
+-->
+              <!--  <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycleviewTime"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -401,9 +401,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tvTime"
                     tools:itemCount="2"
-                    tools:listitem="@layout/layout_add_time" />
+                    tools:listitem="@layout/layout_add_time" />-->
 
-                <androidx.appcompat.widget.AppCompatTextView
+               <!-- <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/endTimeTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -414,139 +414,139 @@
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recycleviewTime" />
+-->
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/clEndDateWrapper"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="@dimen/_5sdp"-->
+<!--                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/endTimeTV">-->
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clEndDateWrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                    app:layout_constraintTop_toBottomOf="@+id/endTimeTV">
+<!--                    <androidx.appcompat.widget.AppCompatTextView-->
+<!--                        android:id="@+id/endDate"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:backgroundTint="@color/transparent"-->
+<!--                        android:ellipsize="end"-->
+<!--                        android:fontFamily="@font/gotham_medium"-->
+<!--                        android:hint="@string/dd_mm_year"-->
+<!--                        android:inputType="textMultiLine"-->
+<!--                        android:onClick="@{listener::onClick}"-->
+<!--                        android:paddingHorizontal="@dimen/_8sdp"-->
+<!--                        android:paddingVertical="@dimen/_15sdp"-->
+<!--                        android:paddingEnd="@dimen/_30sdp"-->
+<!--                        android:textColor="@color/_192032"-->
+<!--                        android:textColorHint="@color/_192032"-->
+<!--                        android:textSize="@dimen/_13ssp"-->
+<!--                        app:fontFamily="@font/gotham_bold"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        tools:ignore="RtlSymmetry" />-->
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/endDate"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/transparent"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/gotham_medium"
-                        android:hint="@string/dd_mm_year"
-                        android:inputType="textMultiLine"
-                        android:onClick="@{listener::onClick}"
-                        android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_15sdp"
-                        android:paddingEnd="@dimen/_30sdp"
-                        android:textColor="@color/_192032"
-                        android:textColorHint="@color/_192032"
-                        android:textSize="@dimen/_13ssp"
-                        app:fontFamily="@font/gotham_bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="RtlSymmetry" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvDays"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15sdp"
-                    android:fontFamily="@font/gotham_book"
-                    android:text="@string/days"
-                    android:textColor="@color/_192032"
-                    android:textSize="@dimen/_12ssp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clEndDateWrapper" />
+<!--                <androidx.appcompat.widget.AppCompatTextView-->
+<!--                    android:id="@+id/tvDays"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="@dimen/_15sdp"-->
+<!--                    android:fontFamily="@font/gotham_book"-->
+<!--                    android:text="@string/days"-->
+<!--                    android:textColor="@color/_192032"-->
+<!--                    android:textSize="@dimen/_12ssp"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/clEndDateWrapper" />-->
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clDaysWrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                    app:layout_constraintTop_toBottomOf="@+id/tvDays">
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/clDaysWrapper"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="@dimen/_5sdp"-->
+<!--                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/tvDays">-->
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/daysTV"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/transparent"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/gotham_medium"
-                        android:hint="@string/select_days"
-                        android:inputType="textMultiLine"
-                        android:onClick="@{listener::onClick}"
-                        android:paddingHorizontal="@dimen/_8sdp"
-                        android:paddingVertical="@dimen/_15sdp"
-                        android:paddingEnd="@dimen/_30sdp"
-                        android:textColor="@color/_192032"
-                        android:textColorHint="@color/_192032"
-                        android:textSize="@dimen/_13ssp"
-                        app:fontFamily="@font/gotham_bold"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="RtlSymmetry" />
+<!--                    <androidx.appcompat.widget.AppCompatTextView-->
+<!--                        android:id="@+id/daysTV"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:backgroundTint="@color/transparent"-->
+<!--                        android:ellipsize="end"-->
+<!--                        android:fontFamily="@font/gotham_medium"-->
+<!--                        android:hint="@string/select_days"-->
+<!--                        android:inputType="textMultiLine"-->
+<!--                        android:onClick="@{listener::onClick}"-->
+<!--                        android:paddingHorizontal="@dimen/_8sdp"-->
+<!--                        android:paddingVertical="@dimen/_15sdp"-->
+<!--                        android:paddingEnd="@dimen/_30sdp"-->
+<!--                        android:textColor="@color/_192032"-->
+<!--                        android:textColorHint="@color/_192032"-->
+<!--                        android:textSize="@dimen/_13ssp"-->
+<!--                        app:fontFamily="@font/gotham_bold"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        tools:ignore="RtlSymmetry" />-->
 
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/dayIM"
-                        android:layout_width="@dimen/_20sdp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_margin="@dimen/_6sdp"
-                        android:contentDescription="@string/app_name"
-                        android:padding="@dimen/_4sdp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/ic_arrow_spinner"
-                        app:tint="@color/colorGreyDark" />
+<!--                    <androidx.appcompat.widget.AppCompatImageView-->
+<!--                        android:id="@+id/dayIM"-->
+<!--                        android:layout_width="@dimen/_20sdp"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_margin="@dimen/_6sdp"-->
+<!--                        android:contentDescription="@string/app_name"-->
+<!--                        android:padding="@dimen/_4sdp"-->
+<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                        app:layout_constraintEnd_toEndOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent"-->
+<!--                        app:srcCompat="@drawable/ic_arrow_spinner"-->
+<!--                        app:tint="@color/colorGreyDark" />-->
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/daysEveryDayCl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:background="@color/colorWhite"
-                    android:elevation="@dimen/_2sdp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/clDaysWrapper">
+<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                    android:id="@+id/daysEveryDayCl"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginHorizontal="@dimen/_1sdp"-->
+<!--                    android:background="@color/colorWhite"-->
+<!--                    android:elevation="@dimen/_2sdp"-->
+<!--                    android:visibility="gone"-->
+<!--                    app:layout_constraintEnd_toEndOf="parent"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/clDaysWrapper">-->
 
-                    <androidx.appcompat.widget.AppCompatCheckBox
-                        android:id="@+id/cbEveryDay"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:button="@drawable/checkbox_selector"
-                        android:gravity="center_vertical"
-                        android:minWidth="0dp"
-                        android:minHeight="0dp"
-                        android:padding="@dimen/_10sdp"
-                        android:text="@string/everyday"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+<!--                    <androidx.appcompat.widget.AppCompatCheckBox-->
+<!--                        android:id="@+id/cbEveryDay"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="@dimen/_8sdp"-->
+<!--                        android:layout_marginTop="@dimen/_3sdp"-->
+<!--                        android:button="@drawable/checkbox_selector"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:minWidth="0dp"-->
+<!--                        android:minHeight="0dp"-->
+<!--                        android:padding="@dimen/_10sdp"-->
+<!--                        android:text="@string/everyday"-->
+<!--                        app:layout_constraintStart_toStartOf="parent"-->
+<!--                        app:layout_constraintTop_toTopOf="parent" />-->
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/daysRV"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_2sdp"
-                        android:background="@color/colorWhite"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintTop_toBottomOf="@+id/cbEveryDay"
-                        tools:itemCount="4"
-                        tools:listitem="@layout/layout_add_medicine_list" />
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:id="@+id/daysRV"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginHorizontal="@dimen/_2sdp"-->
+<!--                        android:background="@color/colorWhite"-->
+<!--                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--                        app:layout_constraintTop_toBottomOf="@+id/cbEveryDay"-->
+<!--                        tools:itemCount="4"-->
+<!--                        tools:listitem="@layout/layout_add_medicine_list" />-->
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -559,7 +559,7 @@
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/daysEveryDayCl" />
+                    app:layout_constraintTop_toBottomOf="@+id/clDoseWrapper" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/clNoteWrapper"
