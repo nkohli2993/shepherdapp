@@ -43,6 +43,12 @@ object Const {
         const val MESSAGE = "message"
         const val AUDIO_CALL = "Audio_call"
         const val VIDEO_CALL = "Video_call"
+        const val CARE_POINT_CREATED = "carepoint_created"
+        const val MEDICATION_CREATED = "user_medication_created"
+        const val MEDICATION_UPDATED = "user_medication_updated"
+        const val LOCK_BOX_CREATED = "lockbox_created"
+        const val LOCK_BOX_UPDATED = "lockbox_updated"
+        const val CARE_TEAM_INVITE = "care_team_invite"
     }
 }
 

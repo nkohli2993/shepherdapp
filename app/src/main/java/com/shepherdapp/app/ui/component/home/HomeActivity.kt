@@ -143,7 +143,44 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 navDirection?.let { navController.navigate(it) }
                 clearNotification()
             }
+            // Handle Care Point Push Notification
+            Const.NotificationAction.CARE_POINT_CREATED -> {
+                val eventID = bundle?.getString("event_id")
+                Log.d(TAG, "CarePoint Push Notification :EventId $eventID ")
+                clearNotification()
+            }
+            // Handle MedList Created Push notifications
+            Const.NotificationAction.MEDICATION_CREATED -> {
+                val eventID = bundle?.getString("event_id")
+                Log.d(TAG, "MedList Created Push Notification :EventId $eventID ")
+                clearNotification()
+            }
+            // Handle MedList Updated Push notifications
+            Const.NotificationAction.MEDICATION_UPDATED -> {
+                val eventID = bundle?.getString("event_id")
+                Log.d(TAG, "MedList Updated Push Notification :EventId $eventID ")
+                clearNotification()
+            }
+            // Handle LockBox Created Push notifications
+            Const.NotificationAction.LOCK_BOX_CREATED -> {
+                val eventID = bundle?.getString("event_id")
+                Log.d(TAG, "LockBox Created Push Notification :EventId $eventID ")
+                clearNotification()
+            }
+            // Handle LockBox Updated Push notifications
+            Const.NotificationAction.LOCK_BOX_UPDATED -> {
+                val eventID = bundle?.getString("event_id")
+                Log.d(TAG, "LockBox Created Push Notification :EventId $eventID ")
+                clearNotification()
+            }
+            // Handle CareTeam Invite Push notifications
+            Const.NotificationAction.CARE_TEAM_INVITE -> {
+                val eventID = bundle?.getString("event_id")
+                Log.d(TAG, "LockBox Created Push Notification :EventId $eventID ")
+                clearNotification()
+            }
         }
+
     }
 
     private fun clearNotification() {

@@ -50,6 +50,9 @@ class FCMService : FirebaseMessagingService() {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Message Data : " + message.data.toString())
 
+        Log.d(TAG, "Message Data : " + message.data.toString())
+
+
         val bundle = Bundle()
         for ((key, value) in message.data) {
             bundle.putString(key, value)
