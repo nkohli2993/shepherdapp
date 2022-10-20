@@ -555,6 +555,9 @@
     <string name="current_medications">Current Medications</string>
     <string name="todays_medications">Today\'s Medications</string>
     <string name="did_not_received_mail_yet">Didn\'t received email yet? <font color="#A26DCB">Resend</font></string>
+    <string name="recent_content">Recent Content</string>
+    <string name="join_our_family">Join Our Family Caregivers Community</string>
+    <string name="join_commmunity_conversation">Join the Community Conversation</string>
 
 
 </resources>

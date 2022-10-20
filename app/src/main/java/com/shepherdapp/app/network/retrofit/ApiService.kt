@@ -440,7 +440,7 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("id") id: String,
-        @Query("conditions") conditions: String
+        @Query("conditions") conditions: String?
     ): Response<ResponseRelationModel>
 
     @GET(ApiConstants.Resource.GET_ALL_RESOURCE_BY_LOVED_ONE)

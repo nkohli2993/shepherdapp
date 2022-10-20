@@ -21,7 +21,7 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
         page: Int,
         limit: Int,
         lovedOneId: String,
-        conditions: String
+        conditions: String?
     ): Flow<DataResult<ResponseRelationModel>> {
         return object :
             NetworkOnlineDataRepo<ResponseRelationModel, ResponseRelationModel>() {

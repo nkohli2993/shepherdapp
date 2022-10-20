@@ -34,17 +34,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imageViewTopic"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_160sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:scaleType="centerCrop"
-                android:theme="@style/ShapeAppearanceOverlay.App.circleImageView"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ivBack" />
+            <!-- <com.google.android.material.imageview.ShapeableImageView
+                 android:id="@+id/imageViewTopic"
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/_160sdp"
+                 android:layout_marginTop="@dimen/_10sdp"
+                 android:scaleType="centerCrop"
+                 android:theme="@style/ShapeAppearanceOverlay.App.circleImageView"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintHorizontal_bias="1.0"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@+id/ivBack" />-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTitle"
@@ -58,92 +58,92 @@
                 android:textSize="@dimen/_19sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewTopic" />
+                app:layout_constraintTop_toBottomOf="@+id/ivBack" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewBy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:fontFamily="@font/gotham_book"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_11ssp"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@+id/textViewTitle"
-                app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+            <!--  <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/textViewBy"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:layout_marginTop="@dimen/_5sdp"
+                  android:fontFamily="@font/gotham_book"
+                  android:textColor="@color/_192032"
+                  android:textSize="@dimen/_11ssp"
+                  android:visibility="gone"
+                  app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+                  app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />-->
 
-            <LinearLayout
-                android:id="@+id/llImageWrapper"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/bg_image_place_holder_round_new"
-                android:orientation="vertical"
-                android:visibility="gone"
-                app:layout_constraintStart_toStartOf="@id/textViewBy"
-                app:layout_constraintTop_toBottomOf="@+id/textViewBy">
+            <!--  <LinearLayout
+                  android:id="@+id/llImageWrapper"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/_10sdp"
+                  android:background="@drawable/bg_image_place_holder_round_new"
+                  android:orientation="vertical"
+                  android:visibility="gone"
+                  app:layout_constraintStart_toStartOf="@id/textViewBy"
+                  app:layout_constraintTop_toBottomOf="@+id/textViewBy">
 
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imageViewUser"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:padding="0.5dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/default_ic"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
-            </LinearLayout>
+                  <com.google.android.material.imageview.ShapeableImageView
+                      android:id="@+id/imageViewUser"
+                      android:layout_width="@dimen/_30sdp"
+                      android:layout_height="@dimen/_30sdp"
+                      android:layout_margin="@dimen/_1sdp"
+                      android:padding="0.5dp"
+                      android:scaleType="fitXY"
+                      android:src="@drawable/default_ic"
+                      app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize35Percent." />
+              </LinearLayout>-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_username"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:fontFamily="@font/gotham_medium"
-                android:textColor="@color/_192032"
-                android:textSize="@dimen/_12ssp"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
-                app:layout_constraintTop_toTopOf="@id/llImageWrapper" />
+            <!-- <androidx.appcompat.widget.AppCompatTextView
+                 android:id="@+id/tv_username"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="@dimen/_5sdp"
+                 android:fontFamily="@font/gotham_medium"
+                 android:textColor="@color/_192032"
+                 android:textSize="@dimen/_12ssp"
+                 android:visibility="gone"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
+                 app:layout_constraintTop_toTopOf="@id/llImageWrapper" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:fontFamily="@font/gotham_book"
-                android:textColor="@color/_399282"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toStartOf="@id/view"
-                app:layout_constraintStart_toStartOf="@+id/textViewTitle"
-                app:layout_constraintTop_toBottomOf="@id/tv_username" />
+            <!--  <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/tv_date"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="@dimen/_2sdp"
+                  android:fontFamily="@font/gotham_book"
+                  android:textColor="@color/_399282"
+                  android:textSize="@dimen/_12ssp"
+                  app:layout_constraintEnd_toStartOf="@id/view"
+                  app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+                  app:layout_constraintTop_toBottomOf="@id/tv_username" />-->
 
-            <View
-                android:id="@+id/view"
-                android:layout_width="0.5dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:background="@color/_A3A5AD"
-                app:layout_constraintBottom_toBottomOf="@id/tv_date"
-                app:layout_constraintStart_toEndOf="@id/tv_date"
-                app:layout_constraintTop_toTopOf="@id/tv_date" />
+            <!-- <View
+                 android:id="@+id/view"
+                 android:layout_width="0.5dp"
+                 android:layout_height="0dp"
+                 android:layout_marginStart="@dimen/_5sdp"
+                 android:background="@color/_A3A5AD"
+                 app:layout_constraintBottom_toBottomOf="@id/tv_date"
+                 app:layout_constraintStart_toEndOf="@id/tv_date"
+                 app:layout_constraintTop_toTopOf="@id/tv_date" />
+ -->
+            <!--  <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/tv_time"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_marginStart="@dimen/_5sdp"
+                  android:layout_marginTop="@dimen/_2sdp"
+                  android:fontFamily="@font/gotham_book"
+                  android:textColor="@color/_399282"
+                  android:textSize="@dimen/_12ssp"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toEndOf="@+id/view"
+                  app:layout_constraintTop_toBottomOf="@id/tv_username" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:fontFamily="@font/gotham_book"
-                android:textColor="@color/_399282"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/view"
-                app:layout_constraintTop_toBottomOf="@id/tv_username" />
-
-            <com.shepherdapp.app.ui.component.resources.FlowLayout
+            <!--<com.shepherdapp.app.ui.component.resources.FlowLayout
                 android:id="@+id/medicalHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/llImageWrapper" />
+                app:layout_constraintTop_toBottomOf="@+id/llImageWrapper" />-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/descriptionTV"
@@ -165,7 +165,21 @@
                 app:fontFamily="@font/gotham_book"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicalHistory" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtJoinCommunityConversation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_2sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:textColor="@color/_399282"
+                android:textSize="@dimen/_13ssp"
+                app:fontFamily="@font/gotham_medium"
+                android:text="@string/join_commmunity_conversation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -51,6 +51,8 @@ class ResourceViewModel @Inject constructor(
     // selected resource
     private val _selectedResourceDetail = MutableLiveData<SingleEvent<AllResourceData>>()
     val selectedResourceDetail: LiveData<SingleEvent<AllResourceData>> get() = _selectedResourceDetail
+
+
     fun openSelectedResource(position: AllResourceData) {
         _selectedResourceDetail.value = SingleEvent(position)
     }
@@ -82,11 +84,12 @@ class ResourceViewModel @Inject constructor(
 
     fun getAllResourceApi(
         pageNumber: Int,
-        limit: Int,lovedOneId:String,
-        conditions:String,
+        limit: Int, lovedOneId: String,
+        conditions: String?,
     ): LiveData<Event<DataResult<ResponseRelationModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.getAllResourceApi(pageNumber, limit,lovedOneId,conditions)
+            val response =
+                dataRepository.getAllResourceApi(pageNumber, limit, lovedOneId, conditions)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _resourceResponseLiveData.postValue(Event(it))
@@ -98,12 +101,18 @@ class ResourceViewModel @Inject constructor(
 
     fun getSearchResourceResultApi(
         pageNumber: Int,
-        limit: Int,lovedOneId:String,
-        conditions:String,
-        search:String
+        limit: Int, lovedOneId: String,
+        conditions: String,
+        search: String
     ): LiveData<Event<DataResult<ResponseRelationModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.getSearchResourceResultApi(pageNumber, limit,lovedOneId,conditions,search)
+            val response = dataRepository.getSearchResourceResultApi(
+                pageNumber,
+                limit,
+                lovedOneId,
+                conditions,
+                search
+            )
             withContext(Dispatchers.Main) {
                 response.collect {
                     _resourceResponseLiveData.postValue(Event(it))
@@ -114,7 +123,7 @@ class ResourceViewModel @Inject constructor(
     }
 
     fun getResourceDetail(
-        id:Int
+        id: Int
     ): LiveData<Event<DataResult<ParticularResourceResponseModel>>> {
         viewModelScope.launch {
             val response = dataRepository.getResourceDetail(id)

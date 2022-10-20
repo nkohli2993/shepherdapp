@@ -24,12 +24,12 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.resources.adapter.MedicalHistoryTopicsAdapter
 import com.shepherdapp.app.ui.component.resources.adapter.TopicsAdapter
-import com.shepherdapp.app.utils.*
+import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.hideKeyboard
 import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.observeEvent
 import com.shepherdapp.app.view_model.ResourceViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 
 /**
@@ -42,7 +42,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private val resourcesViewModel: ResourceViewModel by viewModels()
     private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
     private var pageNumber = 1
-    private val limit = 10
+    private val limit = 20
     private var currentPage: Int = 0
     private var totalPage: Int = 0
     private var total: Int = 0
@@ -53,6 +53,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private var conditionIDs: ArrayList<Int> = arrayListOf()
     private var isSearch: Boolean = false
     private var isLoading = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,7 +68,8 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     override fun initViewBinding() {
         resourcesViewModel.getLovedOneUUId()
             ?.let { resourcesViewModel.getLovedOneMedicalConditions(it) }
-        resourcesViewModel.getTrendingResourceApi(pageNumber, limit)
+
+//        resourcesViewModel.getTrendingResourceApi(pageNumber, limit)
         setTopicsAdapter()
         setMedicalHistoryTopicsAdapter()
 
@@ -113,10 +115,10 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     }
 
     private fun showTrendingPost(value: Int) {
-        fragmentResourcesBinding.textViewTrendingTopics.visibility = value
-        fragmentResourcesBinding.recyclerViewTopics.visibility = value
-        fragmentResourcesBinding.textViewBasedOnMedicalHistory.visibility = value
-        fragmentResourcesBinding.medicalHistory.visibility = value
+//        fragmentResourcesBinding.textViewTrendingTopics.visibility = value
+//        fragmentResourcesBinding.recyclerViewTopics.visibility = value
+//        fragmentResourcesBinding.textViewBasedOnMedicalHistory.visibility = value
+//        fragmentResourcesBinding.medicalHistory.visibility = value
     }
 
     private fun handleResourcesPagination() {
@@ -124,7 +126,8 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         var visibleItemCount: Int
         var totalItemCount: Int
         var pastVisiblesItems: Int
-        fragmentResourcesBinding.recyclerViewTopics.addOnScrollListener(object :
+
+       /* fragmentResourcesBinding.recyclerViewTopics.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -142,7 +145,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     }
                 }
             }
-        })
+        })*/
     }
 
     private fun callAllResourceBasedOnMedicalHistory() {
@@ -150,13 +153,15 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
             pageNumber,
             limit,
             resourcesViewModel.getLovedOneUUId()!!,
-            conditionIDs.joinToString().replace(" ", "")
+            null
+            //conditionIDs.joinToString().replace(" ", "")
         )
     }
 
     override fun observeViewModel() {
 
         observeEvent(resourcesViewModel.selectedResourceDetail, ::navigateToResourceItems)
+
         //Observe the response of get loved one's medical conditions api
         resourcesViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) { result ->
             when (result) {
@@ -171,7 +176,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 is DataResult.Success -> {
                     //   hideLoading()
                     addedConditionPayload.clear()
-                    fragmentResourcesBinding.medicalHistory.removeAllViews()
+//                    fragmentResourcesBinding.medicalHistory.removeAllViews()
                     for (i in result.data.payload) {
                         if (i.conditionId != null) {
                             addedConditionPayload.add(i)
@@ -184,6 +189,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 }
             }
         }
+
         // observe resource list based on condition based
         resourcesViewModel.resourceResponseLiveData.observeEvent(this) {
             when (it) {
@@ -260,11 +266,11 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     if (trendingResourceList.isEmpty()) return@observeEvent
 
                     if (trendingResourceList.isEmpty()) {
-                        fragmentResourcesBinding.recyclerViewTopics.visibility = View.GONE
+//                        fragmentResourcesBinding.recyclerViewTopics.visibility = View.GONE
 
                     } else {
-                        fragmentResourcesBinding.recyclerViewTopics.visibility =
-                            View.VISIBLE
+                        /*fragmentResourcesBinding.recyclerViewTopics.visibility =
+                            View.VISIBLE*/
                         trendingResourceList.let { it1 ->
                             topicsAdapter?.addData(
                                 it1
@@ -291,7 +297,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
     private fun setTopicsAdapter() {
         topicsAdapter = TopicsAdapter(resourcesViewModel)
-        fragmentResourcesBinding.recyclerViewTopics.adapter = topicsAdapter
+//        fragmentResourcesBinding.recyclerViewTopics.adapter = topicsAdapter
     }
 
     private fun createTagView(text: Payload, position: Int): View {
@@ -369,20 +375,20 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     override fun onResume() {
         super.onResume()
         fragmentResourcesBinding.editTextSearch.setText("")
-        fragmentResourcesBinding.medicalHistory.removeAllViews()
+//        fragmentResourcesBinding.medicalHistory.removeAllViews()
     }
 
     private fun setMedicalTags() {
         //set medical history names
-        fragmentResourcesBinding.medicalHistory.removeAllViews()
+//        fragmentResourcesBinding.medicalHistory.removeAllViews()
         for (medicalCondition in addedConditionPayload.indices) {
-            fragmentResourcesBinding.medicalHistory.addView(
+           /* fragmentResourcesBinding.medicalHistory.addView(
                 createTagView(addedConditionPayload[medicalCondition], medicalCondition),
                 ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-            )
+            )*/
         }
     }
 

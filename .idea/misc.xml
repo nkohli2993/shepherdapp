@@ -353,6 +353,7 @@
         <entry key="app/src/main/res/layout/adapter_loved_one_condition.xml" value="0.33" />
         <entry key="app/src/main/res/layout/adapter_loved_ones.xml" value="0.18703703703703703" />
         <entry key="app/src/main/res/layout/adapter_medical_conditions.xml" value="0.22837837837837838" />
+        <entry key="app/src/main/res/layout/adapter_medical_history_topics.xml" value="0.30572916666666666" />
         <entry key="app/src/main/res/layout/adapter_member_modules.xml" value="0.25948406676783003" />
         <entry key="app/src/main/res/layout/adapter_menu_item.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_my_medications_list.xml" value="0.29243266353142366" />

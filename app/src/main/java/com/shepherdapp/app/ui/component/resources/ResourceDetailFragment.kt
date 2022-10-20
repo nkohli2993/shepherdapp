@@ -68,9 +68,9 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
     private fun setDataResource() {
         fragmentResourcesDetailBinding.textViewTitle.text =   HtmlCompat.fromHtml(resourceDetail!!.title ?: "", 0)
         if (resourceDetail!!.thumbnailUrl != null && resourceDetail!!.thumbnailUrl != "") {
-            Picasso.get().load(resourceDetail!!.thumbnailUrl)
+           /* Picasso.get().load(resourceDetail!!.thumbnailUrl)
                 .placeholder(R.drawable.image)
-                .into(fragmentResourcesDetailBinding.imageViewTopic)
+                .into(fragmentResourcesDetailBinding.imageViewTopic)*/
         }
         fragmentResourcesDetailBinding.descriptionTV.text =    HtmlCompat.fromHtml(resourceDetail!!.content ?: "", 0)
         val formattedDate = resourceDetail!!.createdAt!!.toTextFormat(
@@ -83,8 +83,8 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             "hh:mm a"
         )
-        fragmentResourcesDetailBinding.tvDate.text = "${getString(R.string.created_on)} $formattedDate"
-        fragmentResourcesDetailBinding.tvTime.text = formattedTime
+//        fragmentResourcesDetailBinding.tvDate.text = "${getString(R.string.created_on)} $formattedDate"
+//        fragmentResourcesDetailBinding.tvTime.text = formattedTime
 
     }
 

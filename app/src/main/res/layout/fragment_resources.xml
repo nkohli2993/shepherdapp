@@ -104,21 +104,21 @@
 
                 </androidx.cardview.widget.CardView>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/textViewTrendingTopics"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:fontFamily="@font/gotham_bold"
-                    android:text="@string/trending_topics"
-                    android:textColor="@color/_192032"
-                    android:textSize="@dimen/_15ssp"
-                    app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
-                    app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
+                <!-- <androidx.appcompat.widget.AppCompatTextView
+                     android:id="@+id/textViewTrendingTopics"
+                     android:layout_width="0dp"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center"
+                     android:layout_marginTop="@dimen/_12sdp"
+                     android:fontFamily="@font/gotham_bold"
+                     android:text="@string/trending_topics"
+                     android:textColor="@color/_192032"
+                     android:textSize="@dimen/_15ssp"
+                     app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
+                     app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />-->
 
 
-                <androidx.recyclerview.widget.RecyclerView
+                <!--<androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewTopics"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -130,38 +130,53 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textViewTrendingTopics"
                     app:layout_constraintTop_toBottomOf="@+id/textViewTrendingTopics"
-                    tools:listitem="@layout/adapter_topics" />
+                    tools:listitem="@layout/adapter_topics" />-->
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+            <!-- <androidx.appcompat.widget.AppCompatTextView
+                 android:id="@+id/textViewBasedOnMedicalHistory"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentBottom="true"
+                 android:layout_centerHorizontal="true"
+                 android:layout_gravity="center"
+                 android:background="@color/colorGreyLight"
+                 android:fontFamily="@font/gotham_bold"
+                 android:paddingHorizontal="@dimen/_10sdp"
+                 android:paddingTop="@dimen/_12sdp"
+                 android:text="@string/based_on_medical_history"
+                 android:textColor="@color/_192032"
+                 android:textSize="@dimen/_15ssp"
+                 android:lineSpacingExtra="@dimen/_5sdp"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@+id/trendingCl" />-->
+
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/textViewBasedOnMedicalHistory"
+                android:id="@+id/txtRecentContent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
-                android:background="@color/colorGreyLight"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginTop="@dimen/_12sdp"
                 android:fontFamily="@font/gotham_bold"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:paddingTop="@dimen/_12sdp"
-                android:text="@string/based_on_medical_history"
+                android:text="@string/recent_content"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_15ssp"
-                android:lineSpacingExtra="@dimen/_5sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/trendingCl"
                 app:layout_constraintTop_toBottomOf="@+id/trendingCl" />
 
-            <com.shepherdapp.app.ui.component.resources.FlowLayout
-                android:id="@+id/medicalHistory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorGreyLight"
-                android:padding="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewBasedOnMedicalHistory" />
+
+            <!-- <com.shepherdapp.app.ui.component.resources.FlowLayout
+                 android:id="@+id/medicalHistory"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:background="@color/colorGreyLight"
+                 android:padding="@dimen/_10sdp"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@+id/txtRecentContent" />-->
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -172,12 +187,32 @@
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
                 android:overScrollMode="never"
+                android:layout_marginTop="@dimen/_10sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicalHistory"
-                tools:itemCount="2"
+                app:layout_constraintTop_toBottomOf="@+id/txtRecentContent"
+                tools:itemCount="10"
                 tools:listitem="@layout/adapter_medical_history_topics" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnJoin"
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/shape_black_border"
+                android:fontFamily="@font/gotham_medium"
+                android:onClick="@{listener::onClick}"
+                android:paddingHorizontal="20dp"
+                android:text="@string/join_our_family"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewMedicalHistoryTopics" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/noResourceTxt"
@@ -191,7 +226,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/medicalHistory" />
+                app:layout_constraintTop_toBottomOf="@+id/trendingCl" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
