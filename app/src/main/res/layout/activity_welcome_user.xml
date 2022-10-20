@@ -20,7 +20,6 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorGreyLight"
             android:orientation="vertical"
             tools:context="com.shepherdapp.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
 
@@ -61,6 +60,7 @@
                 android:text="@string/welcome_user_desc"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
+                android:lineSpacingExtra="@dimen/_5sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtLogin" />
 
