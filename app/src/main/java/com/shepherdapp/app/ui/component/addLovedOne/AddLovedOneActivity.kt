@@ -308,6 +308,18 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
             }
 
         }
+
+        binding.chkLovedOne.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                if (binding.editTextEmail.text.toString().isEmpty()) {
+                    binding.editTextEmail.error = getString(R.string.enter_email)
+                    binding.editTextEmail.requestFocus()
+                }
+            } else {
+                binding.editTextEmail.error = null
+            }
+
+        }
     }
 
     private fun calculateDays(month: Int, year: String) {
@@ -756,7 +768,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
     }
 
-    fun saveChanges() {
+    private fun saveChanges() {
         if (isValid) {
             sendInvitation = binding.chkLovedOne.isChecked
             email = binding.editTextEmail.text.toString().trim()
