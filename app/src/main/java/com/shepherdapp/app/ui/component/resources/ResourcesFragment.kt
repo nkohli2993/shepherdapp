@@ -127,7 +127,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         var totalItemCount: Int
         var pastVisiblesItems: Int
 
-       /* fragmentResourcesBinding.recyclerViewTopics.addOnScrollListener(object :
+        fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -145,7 +145,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     }
                 }
             }
-        })*/
+        })
     }
 
     private fun callAllResourceBasedOnMedicalHistory() {
@@ -382,13 +382,13 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         //set medical history names
 //        fragmentResourcesBinding.medicalHistory.removeAllViews()
         for (medicalCondition in addedConditionPayload.indices) {
-           /* fragmentResourcesBinding.medicalHistory.addView(
-                createTagView(addedConditionPayload[medicalCondition], medicalCondition),
-                ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-                )
-            )*/
+            /* fragmentResourcesBinding.medicalHistory.addView(
+                 createTagView(addedConditionPayload[medicalCondition], medicalCondition),
+                 ViewGroup.LayoutParams(
+                     ViewGroup.LayoutParams.WRAP_CONTENT,
+                     ViewGroup.LayoutParams.WRAP_CONTENT
+                 )
+             )*/
         }
     }
 
