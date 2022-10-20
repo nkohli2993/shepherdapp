@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_22sdp"
-                android:text="Log out"
+                android:text="@string/log_out"
                 android:onClick="@{listener::onClick}"
                 android:drawableStart="@drawable/ic_log_out"
                 android:drawablePadding="@dimen/_10sdp"
@@ -73,7 +73,7 @@
                 android:layout_marginTop="@dimen/_24sdp"
                 android:onClick="@{listener::onClick}"
                 app:cardBackgroundColor="#EBF4F2"
-                app:cardCornerRadius="@dimen/_12sdp"
+                app:cardCornerRadius="@dimen/_22sdp"
                 app:cardElevation="0dp"
                 app:cardPreventCornerOverlap="false"
                 tools:layout_editor_absoluteX="16dp">
@@ -145,7 +145,7 @@
                 android:layout_marginTop="@dimen/_24sdp"
                 android:onClick="@{listener::onClick}"
                 app:cardBackgroundColor="#EBF5FB"
-                app:cardCornerRadius="@dimen/_12sdp"
+                app:cardCornerRadius="@dimen/_22sdp"
                 app:cardElevation="0dp"
                 app:cardPreventCornerOverlap="false"
                 tools:layout_editor_absoluteX="16dp">

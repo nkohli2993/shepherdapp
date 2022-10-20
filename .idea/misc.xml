@@ -320,7 +320,7 @@
         <entry key="app/src/main/res/layout/activity_upload_lock_box_document.xml" value="0.21171875" />
         <entry key="app/src/main/res/layout/activity_walk_through.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_welcome.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_welcome_user.xml" value="0.19246164109406272" />
+        <entry key="app/src/main/res/layout/activity_welcome_user.xml" value="0.375" />
         <entry key="app/src/main/res/layout/adapter_add_loved_one_condition.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_add_medication_days.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_add_medication_dose.xml" value="0.29243266353142366" />
