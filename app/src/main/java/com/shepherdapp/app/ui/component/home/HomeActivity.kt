@@ -147,36 +147,43 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             Const.NotificationAction.CARE_POINT_CREATED -> {
                 val eventID = bundle?.getString("event_id")
                 Log.d(TAG, "CarePoint Push Notification :EventId $eventID ")
+                // Redirect to CarePoints Screen
+                navController.navigate(R.id.nav_care_points)
                 clearNotification()
             }
             // Handle MedList Created Push notifications
             Const.NotificationAction.MEDICATION_CREATED -> {
                 val eventID = bundle?.getString("event_id")
                 Log.d(TAG, "MedList Created Push Notification :EventId $eventID ")
+                navController.navigate(R.id.nav_my_medlist)
                 clearNotification()
             }
             // Handle MedList Updated Push notifications
             Const.NotificationAction.MEDICATION_UPDATED -> {
                 val eventID = bundle?.getString("event_id")
                 Log.d(TAG, "MedList Updated Push Notification :EventId $eventID ")
+                navController.navigate(R.id.nav_my_medlist)
                 clearNotification()
             }
             // Handle LockBox Created Push notifications
             Const.NotificationAction.LOCK_BOX_CREATED -> {
                 val eventID = bundle?.getString("event_id")
                 Log.d(TAG, "LockBox Created Push Notification :EventId $eventID ")
+                navController.navigate(R.id.nav_lock_box)
                 clearNotification()
             }
             // Handle LockBox Updated Push notifications
             Const.NotificationAction.LOCK_BOX_UPDATED -> {
                 val eventID = bundle?.getString("event_id")
                 Log.d(TAG, "LockBox Created Push Notification :EventId $eventID ")
+                navController.navigate(R.id.nav_lock_box)
                 clearNotification()
             }
             // Handle CareTeam Invite Push notifications
             Const.NotificationAction.CARE_TEAM_INVITE -> {
                 val eventID = bundle?.getString("event_id")
                 Log.d(TAG, "LockBox Created Push Notification :EventId $eventID ")
+                navController.navigate(R.id.nav_invitation)
                 clearNotification()
             }
         }

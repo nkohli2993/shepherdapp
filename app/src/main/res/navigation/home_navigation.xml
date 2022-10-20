@@ -40,6 +40,9 @@
         <action
             android:id="@+id/action_nav_dashboard_to_nav_care_points_detail"
             app:destination="@id/nav_care_points_detail" />
+        <action
+            android:id="@+id/action_nav_dashboard_to_nav_invitation"
+            app:destination="@id/nav_invitation" />
     </fragment>
     <fragment
         android:id="@+id/nav_vital_stats"
