@@ -1,7 +1,5 @@
 package com.shepherdapp.app.ui.component.joinCareTeam
 
-import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -112,24 +110,26 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     results?.clear()
                     results?.let { it1 -> joinCareTeamAdapter?.updateCareTeams(it1) }
 
-                    val builder = AlertDialog.Builder(this)
-                    val dialog = builder.apply {
-                        setTitle("Join CareTeam Invitations")
-                        setMessage("No Invitations Found")
-                        setPositiveButton("OK") { _, _ ->
-                            // navigateToDashboardScreen()
-                            // Check if SharedPref contains lovedOne UUID
-                            val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
-                                .getString(Const.LOVED_ONE_UUID, "")
-                            if (lovedOneUUID.isNullOrEmpty()) {
-                                onBackPressed()
-                            } else {
-                                navigateToDashboardScreen()
-                            }
-                        }
-                    }.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                    noInvitationFound()
+
+                    /* val builder = AlertDialog.Builder(this)
+                     val dialog = builder.apply {
+                         setTitle("Join CareTeam Invitations")
+                         setMessage("No Invitations Found")
+                         setPositiveButton("OK") { _, _ ->
+                             // navigateToDashboardScreen()
+                             // Check if SharedPref contains lovedOne UUID
+                             val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
+                                 .getString(Const.LOVED_ONE_UUID, "")
+                             if (lovedOneUUID.isNullOrEmpty()) {
+                                 onBackPressed()
+                             } else {
+                                 navigateToDashboardScreen()
+                             }
+                         }
+                     }.create()
+                     dialog.show()
+                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)*/
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -218,6 +218,11 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
         else if (careTeam.isSelected == false && selectedCareTeams?.contains(careTeam) == true)
             selectedCareTeams?.remove(careTeam)
     }*/
+
+    fun noInvitationFound() {
+        binding.txtNoCareTeamFound.visibility = View.VISIBLE
+        binding.buttonJoin.visibility = View.GONE
+    }
 }
 
 

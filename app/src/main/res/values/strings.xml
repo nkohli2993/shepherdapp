@@ -558,6 +558,7 @@
     <string name="recent_content">Recent Content</string>
     <string name="join_our_family">Join Our Family Caregivers Community</string>
     <string name="join_commmunity_conversation">Join the Community Conversation</string>
+    <string name="no_invitation_found">No invitation found</string>
 
 
 </resources>
