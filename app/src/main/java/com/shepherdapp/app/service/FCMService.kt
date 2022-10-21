@@ -42,6 +42,11 @@ class FCMService : FirebaseMessagingService() {
         super.onNewToken(token)
         Log.d(TAG, "onNewToken:$token ")
 
+        // Get new FCM registration token
+        Prefs.with(this)!!.save(Const.FIREBASE_TOKEN, token)
+
+        Log.d(TAG, "New Firebase token generated: ${token}")
+
     }
 
     override fun onMessageReceived(message: RemoteMessage) {

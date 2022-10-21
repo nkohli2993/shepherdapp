@@ -122,6 +122,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
         fingerPrintExecute()
 
+        // Check if FirebaseToken is empty then regenerate it
+        if (Prefs.with(this)?.getString(Const.FIREBASE_TOKEN, "").isNullOrEmpty()) {
+            generateFirebaseToken()
+        }
+
+
     }
 
     private fun fingerPrintExecute() {
