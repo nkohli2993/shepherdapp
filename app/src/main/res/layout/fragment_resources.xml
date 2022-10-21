@@ -158,7 +158,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:fontFamily="@font/gotham_bold"
                 android:text="@string/recent_content"
