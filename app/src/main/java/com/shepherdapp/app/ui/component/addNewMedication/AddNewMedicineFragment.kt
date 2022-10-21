@@ -1,15 +1,11 @@
 package com.shepherdapp.app.ui.component.addNewMedication
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.shepherdapp.app.R
-import com.shepherdapp.app.data.dto.med_list.Medlist
 import com.shepherdapp.app.data.dto.med_list.add_med_list.AddMedListRequestModel
 import com.shepherdapp.app.databinding.FragmentAddNewMedicineBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -74,11 +70,17 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
             }
             R.id.btnSubmit -> {
                 if (isValid) {
-                    if (fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim().isNotEmpty()) {
-                        medicationName = fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim()
+                    if (fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim()
+                            .isNotEmpty()
+                    ) {
+                        medicationName =
+                            fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim()
                     }
-                    if (fragmentAddNewMedicineBinding.etDescription.text.toString().trim().isNotEmpty()) {
-                        description = fragmentAddNewMedicineBinding.etDescription.text.toString().trim()
+                    if (fragmentAddNewMedicineBinding.etDescription.text.toString().trim()
+                            .isNotEmpty()
+                    ) {
+                        description =
+                            fragmentAddNewMedicineBinding.etDescription.text.toString().trim()
                     }
                     addMedicationViewModel.addNewMedlistMedicine(
                         AddMedListRequestModel(medicationName, description, "user")
@@ -93,7 +95,7 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
             when {
                 fragmentAddNewMedicineBinding.medicineNameET.text.toString().isEmpty() -> {
                     fragmentAddNewMedicineBinding.medicineNameET.error =
-                        getString(R.string.please_enter_medical_condition)
+                        getString(R.string.please_enter_medicine_name)
                     fragmentAddNewMedicineBinding.medicineNameET.requestFocus()
                 }
                 else -> {
