@@ -1,8 +1,10 @@
 package com.shepherdapp.app.ui.component.joinCareTeam
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
@@ -110,9 +112,9 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     results?.clear()
                     results?.let { it1 -> joinCareTeamAdapter?.updateCareTeams(it1) }
 
-                    noInvitationFound()
+//                    noInvitationFound()
 
-                    /* val builder = AlertDialog.Builder(this)
+                     val builder = AlertDialog.Builder(this)
                      val dialog = builder.apply {
                          setTitle("Join CareTeam Invitations")
                          setMessage("No Invitations Found")
@@ -129,7 +131,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                          }
                      }.create()
                      dialog.show()
-                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)*/
+                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
                 is DataResult.Loading -> {
                     showLoading("")
