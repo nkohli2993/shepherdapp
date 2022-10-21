@@ -79,7 +79,7 @@ class MyMedicationsAdapter(
                 )
             }
 
-            when (medList.frequency) {
+           /* when (medList.frequency) {
                 FrequencyType.ONCE.value -> {
                     itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
                 }
@@ -98,7 +98,7 @@ class MyMedicationsAdapter(
                 else -> {
                     itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
                 }
-            }
+            }*/
 
 //            itemBinding.tvDosage.text = medList.dosage?.name.plus(" ${medList.dosageType?.name}")
             itemBinding.tvDosage.text = medList.dosage?.name

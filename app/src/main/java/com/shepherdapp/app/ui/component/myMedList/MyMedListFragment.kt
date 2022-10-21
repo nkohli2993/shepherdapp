@@ -58,6 +58,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private var selectedDate = ""
     private var TAG = "MyMedListFragment"
     private var medicationRecordPayload: ArrayList<MedicationRecordData> = arrayListOf()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

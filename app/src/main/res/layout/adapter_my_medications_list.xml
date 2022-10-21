@@ -58,48 +58,45 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:fontFamily="@font/gotham_book"
-                    android:text="@{data.description}"
                     android:textColor="@color/_192032"
+                    android:text="@string/dosage_med"
                     android:textSize="@dimen/_11ssp"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
                     app:layout_constraintTop_toBottomOf="@+id/textViewMedicineName" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_frequency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/gotham_book"
-                    android:textColor="@color/_192032"
-                    android:textSize="@dimen/_12ssp"
-                    app:layout_constraintEnd_toStartOf="@id/view"
-                    app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewMedicineName" />
+                <!--  <androidx.appcompat.widget.AppCompatTextView
+                      android:id="@+id/tv_frequency"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="@dimen/_5sdp"
+                      android:fontFamily="@font/gotham_book"
+                      android:textColor="@color/_192032"
+                      android:textSize="@dimen/_12ssp"
+                      app:layout_constraintEnd_toStartOf="@id/textViewMedicineSalt"
+                      app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
+                      app:layout_constraintTop_toBottomOf="@+id/textViewMedicineName" />-->
 
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="0.5dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:background="@color/_A3A5AD"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_frequency"
-                    app:layout_constraintStart_toEndOf="@id/tv_frequency"
-                    app:layout_constraintTop_toTopOf="@id/tv_frequency" />
+                <!--  <View
+                      android:id="@+id/view"
+                      android:layout_width="0.5dp"
+                      android:layout_height="0dp"
+                      android:layout_marginStart="@dimen/_5sdp"
+                      android:background="@color/_A3A5AD"
+                      app:layout_constraintBottom_toBottomOf="@id/tv_frequency"
+                      app:layout_constraintStart_toEndOf="@id/tv_frequency"
+                      app:layout_constraintTop_toTopOf="@id/tv_frequency" />-->
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_dosage"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
                     android:fontFamily="@font/gotham_book"
                     android:textColor="@color/_399282"
-                    android:textSize="@dimen/_12ssp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/view"
-                    app:layout_constraintTop_toBottomOf="@id/textViewMedicineName" />
+                    android:textSize="@dimen/_11ssp"
+                    android:layout_marginStart="@dimen/_3sdp"
+                    app:layout_constraintBottom_toBottomOf="@id/textViewMedicineSalt"
+                    app:layout_constraintStart_toEndOf="@+id/textViewMedicineSalt"
+                    app:layout_constraintTop_toTopOf="@+id/textViewMedicineSalt" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
