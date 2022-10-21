@@ -16,7 +16,7 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreyLight"
+        android:background="@color/colorWhite"
         android:orientation="vertical">
 
 
@@ -158,7 +158,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:fontFamily="@font/gotham_bold"
                 android:text="@string/recent_content"
@@ -183,14 +183,14 @@
                 android:id="@+id/recyclerViewMedicalHistoryTopics"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/colorGreyLight"
+                android:background="@color/colorWhite"
                 android:nestedScrollingEnabled="false"
                 android:orientation="vertical"
                 android:overScrollMode="never"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txtRecentContent"
                 app:layout_constraintTop_toBottomOf="@+id/txtRecentContent"
                 tools:itemCount="10"
                 tools:listitem="@layout/adapter_medical_history_topics" />
