@@ -119,7 +119,12 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                     uploadedDocumentsUrl = it.data.payload?.document
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
                     fileName = fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
-                    fileNote = fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                    fileNote =
+                        if (fragmentEditLockBoxBinding.edtNote.text.toString().isNullOrEmpty()) {
+                            null
+                        } else {
+                            fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                        }
                     uploadedDocumentsUrl?.addAll(alreadyAdded)
                     val addNewDocument: ArrayList<Documents> = arrayListOf()
                     for (i in uploadedDocumentsUrl!!) {
@@ -334,18 +339,32 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             R.id.btnSaveChanges -> {
                 if (isValid) {
                     fileName = fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
-                    fileNote = fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+
+                    fileNote =
+                        if (fragmentEditLockBoxBinding.edtNote.text.toString().isNullOrEmpty()) {
+                            null
+                        } else {
+                            fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                        }
 
                     if (uploadedFiles.isNullOrEmpty()) {
                         if (deletedSelectedDocs.isNullOrEmpty()) {
                             addNewLockBoxViewModel.editNewLockBox(
-                                fileName, fileNote, selectedDocumentId?.toInt(),
-                                lockBoxId!!, null, null
+                                fileName,
+                                fileNote,
+                                selectedDocumentId?.toInt(),
+                                lockBoxId!!,
+                                null,
+                                null
                             )
                         } else {
                             addNewLockBoxViewModel.editNewLockBox(
-                                fileName, fileNote, selectedDocumentId?.toInt(),
-                                lockBoxId!!, null, deletedSelectedDocs
+                                fileName,
+                                fileNote,
+                                selectedDocumentId?.toInt(),
+                                lockBoxId!!,
+                                null,
+                                deletedSelectedDocs
                             )
                         }
 
@@ -390,7 +409,15 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 //call update api direct
                                 fileName =
                                     fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
-                                fileNote = fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                                fileNote =
+                                    if (fragmentEditLockBoxBinding.edtNote.text.toString()
+                                            .isNullOrEmpty()
+                                    ) {
+                                        null
+                                    } else {
+                                        fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                                    }
+
                                 uploadedDocumentsUrl?.clear()
                                 uploadedDocumentsUrl?.addAll(alreadyAdded)
                                 val addNewDocument: ArrayList<Documents> = arrayListOf()
@@ -439,9 +466,9 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                 selectedDocumentId == null || selectedDocumentId == "-1" -> {
                     showInfo(requireContext(), getString(R.string.please_select_document_type))
                 }
-                fragmentEditLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
-                    fragmentEditLockBoxBinding.edtNote.error = getString(R.string.enter_note)
-                }
+                /* fragmentEditLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
+                     fragmentEditLockBoxBinding.edtNote.error = getString(R.string.enter_note)
+                 }*/
 
                 /*uploadedFiles.isEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_upload_file))
