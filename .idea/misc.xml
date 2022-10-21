@@ -358,7 +358,7 @@
         <entry key="app/src/main/res/layout/adapter_menu_item.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_my_medications_list.xml" value="0.48481012658227846" />
         <entry key="app/src/main/res/layout/adapter_notifications.xml" value="0.2788288288288288" />
-        <entry key="app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_onboarding_pager.xml" value="0.125" />
         <entry key="app/src/main/res/layout/adapter_other_documents.xml" value="0.38894907908992415" />
         <entry key="app/src/main/res/layout/adapter_receipe_list.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/adapter_recommended_documents.xml" value="0.335" />

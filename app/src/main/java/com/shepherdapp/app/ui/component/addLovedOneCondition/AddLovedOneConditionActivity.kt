@@ -338,7 +338,27 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                                     selectedConditions.add(i)
                                 }
                             }
-                            when {
+                            // api to update medical condition
+                            val deleteId: ArrayList<Int> = arrayListOf()
+                            val newAdded: ArrayList<MedicalConditionsLovedOneRequestModel> =
+                                arrayListOf()
+                            for (i in conditions) {
+                                if (i.isSelected && i.isAlreadySelected == 0) {
+                                    newAdded.add(
+                                        MedicalConditionsLovedOneRequestModel(
+                                            i.id,
+                                            loveOneId
+                                        )
+                                    )
+                                }
+                                if (i.isAlreadySelected == 2 && !i.isSelected) {
+                                    deleteId.add(i.addConditionId!!)
+                                }
+                            }
+                            addLovedOneConditionViewModel.updateMedicalConditions(
+                                UpdateMedicalConditionRequestModel(newAdded, deleteId)
+                            )
+                            /*when {
                                 selectedConditions.size <= 0 -> {
                                     showError(this, "Please select at least one medical condition.")
                                 }
@@ -364,7 +384,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                                         UpdateMedicalConditionRequestModel(newAdded, deleteId)
                                     )
                                 }
-                            }
+                            }*/
                         }
                     }
                     else -> {
