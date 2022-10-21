@@ -88,9 +88,9 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 selectedDocumentId == null || selectedDocumentId == "-1" -> {
                     showInfo(requireContext(), getString(R.string.please_select_document_type))
                 }
-                fragmentAddNewLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
-                    fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
-                }
+                /* fragmentAddNewLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
+                     fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
+                 }*/
 
                 /*selectedFileList.isNullOrEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_upload_file))
@@ -175,7 +175,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     uploadedDocumentsUrl = it.data.payload?.document
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
                     fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
-                    fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    fileNote = if (fragmentAddNewLockBoxBinding.edtNote.text.isNullOrEmpty()) {
+                        null
+                    } else {
+                        fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    }
                     uploadedDocumentsUrl?.let { list ->
                         addNewLockBoxViewModel.addNewLockBox(
                             fileName,
@@ -329,7 +333,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             R.id.btnDone -> {
                 if (isValid) {
                     fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
-                    fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    fileNote = if (fragmentAddNewLockBoxBinding.edtNote.text.isNullOrEmpty()) {
+                        null
+                    } else {
+                        fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    }
                     if (selectedFileList.isNullOrEmpty()) {
                         addNewLockBoxViewModel.addNewLockBox(
                             fileName,
