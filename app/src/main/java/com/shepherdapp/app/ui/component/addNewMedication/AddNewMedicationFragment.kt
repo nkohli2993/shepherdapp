@@ -46,6 +46,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     var medLists: ArrayList<Medlist> = arrayListOf()
     private var selectedMedication: Medlist? = null
     private var searchFlag = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,6 +73,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
         setMedicineListAdapter()
         fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
+
         // Search med list
         fragmentAddNewMedicationBinding.imgCancel.setOnClickListener {
             fragmentAddNewMedicationBinding.editTextSearch.setText("")

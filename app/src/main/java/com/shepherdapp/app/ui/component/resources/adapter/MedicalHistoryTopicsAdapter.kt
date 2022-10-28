@@ -13,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.resource.AllResourceData
@@ -92,10 +91,10 @@ class MedicalHistoryTopicsAdapter(
                 val desc = Html.fromHtml(resourceData.content).toString().trim()
                 itemBinding.txtDesc.text = desc
 
-               /* itemBinding.txtDesc.text = HtmlCompat.fromHtml(
-                    resourceData.content ?: "",
-                    HtmlCompat.FROM_HTML_MODE_COMPACT
-                )*/
+                /* itemBinding.txtDesc.text = HtmlCompat.fromHtml(
+                     resourceData.content ?: "",
+                     HtmlCompat.FROM_HTML_MODE_COMPACT
+                 )*/
             }
 
             /* if(resourceData.thumbnailUrl!=null && resourceData.thumbnailUrl!=""){
@@ -175,6 +174,10 @@ class MedicalHistoryTopicsAdapter(
         } else {
             this.resourceList.addAll(resourceList)
         }
+
+        this.resourceList = this.resourceList.distinctBy {
+            it.id
+        } as ArrayList<AllResourceData>
 
         notifyDataSetChanged()
     }

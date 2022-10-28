@@ -85,12 +85,10 @@ class ResourceViewModel @Inject constructor(
     fun getAllResourceApi(
         pageNumber: Int,
         limit: Int,
-//        lovedOneId: String,
-//        conditions: String?,
     ): LiveData<Event<DataResult<ResponseRelationModel>>> {
         viewModelScope.launch {
             val response =
-                dataRepository.getAllResourceApi(pageNumber, limit/*, lovedOneId, conditions*/)
+                dataRepository.getAllResourceApi(pageNumber, limit)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _resourceResponseLiveData.postValue(Event(it))
@@ -102,16 +100,17 @@ class ResourceViewModel @Inject constructor(
 
     fun getSearchResourceResultApi(
         pageNumber: Int,
-        limit: Int, lovedOneId: String,
-        conditions: String,
+        limit: Int,
+//        lovedOneId: String,
+//        conditions: String,
         search: String
     ): LiveData<Event<DataResult<ResponseRelationModel>>> {
         viewModelScope.launch {
             val response = dataRepository.getSearchResourceResultApi(
                 pageNumber,
                 limit,
-                lovedOneId,
-                conditions,
+//                lovedOneId,
+//                conditions,
                 search
             )
             withContext(Dispatchers.Main) {

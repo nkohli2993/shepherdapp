@@ -449,11 +449,10 @@ interface ApiService {
         @Query("limit") limit: Int,
     ): Response<ResponseRelationModel>
 
-    @GET(ApiConstants.Resource.GET_ALL_RESOURCE_BY_LOVED_ONE)
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
     suspend fun getSearchResourceResultApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("id") id: String,
         @Query("search") search: String
     ): Response<ResponseRelationModel>
 

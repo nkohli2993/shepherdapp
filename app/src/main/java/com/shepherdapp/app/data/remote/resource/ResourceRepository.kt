@@ -20,8 +20,6 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
     suspend fun getAllResourceApi(
         page: Int,
         limit: Int,
-//        lovedOneId: String,
-//        conditions: String?
     ): Flow<DataResult<ResponseRelationModel>> {
         return object :
             NetworkOnlineDataRepo<ResponseRelationModel, ResponseRelationModel>() {
@@ -38,8 +36,6 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
     suspend fun getSearchResourceResultApi(
         page: Int,
         limit: Int,
-        lovedOneId: String,
-        conditions: String,
         search: String
     ): Flow<DataResult<ResponseRelationModel>> {
         return object :
@@ -48,7 +44,7 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
                 return apiService.getSearchResourceResultApi(
                     page = page,
                     limit = limit,
-                    id = lovedOneId,
+//                    id = lovedOneId,
 //                    conditions = conditions,
                     search = search
                 )

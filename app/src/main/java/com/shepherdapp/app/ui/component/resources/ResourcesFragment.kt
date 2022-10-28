@@ -76,6 +76,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         fragmentResourcesBinding.imgCancel.setOnClickListener {
             fragmentResourcesBinding.editTextSearch.setText("")
             showTrendingPost(View.VISIBLE)
+            resourceList.clear()
             pageNumber = 1
             isSearch = false
             hideKeyboard()
@@ -104,15 +105,16 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 resourcesViewModel.getSearchResourceResultApi(
                     pageNumber,
                     limit,
-                    resourcesViewModel.getLovedOneUUId()!!,
-                    conditionIDs.toString()
-                        .replace(" ", ""),
+//                    resourcesViewModel.getLovedOneUUId()!!,
+                    /*  conditionIDs.toString()
+                          .replace(" ", ""),*/
                     fragmentResourcesBinding.editTextSearch.text.toString()
                 )
 
             }
         }
     }
+
 
     private fun showTrendingPost(value: Int) {
 //        fragmentResourcesBinding.textViewTrendingTopics.visibility = value
@@ -139,8 +141,8 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                         (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
                         isScrolling = false
-                        currentPage++
-                        pageNumber++
+//                        currentPage++
+//                        pageNumber++
                         callAllResourceBasedOnMedicalHistory()
                     }
                 }
@@ -195,9 +197,10 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.visibility =
-                        View.GONE
+                    fragmentResourcesBinding.recyclerViewMedicalHistoryTopics.visibility = View.GONE
+                    fragmentResourcesBinding.btnJoin.visibility = View.GONE
                     fragmentResourcesBinding.noResourceTxt.visibility = View.VISIBLE
+
 //                    showError(requireContext(), it.message.toString())
                 }
                 is DataResult.Loading -> {
@@ -220,6 +223,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                             total = payload.total
                             currentPage = payload.currentPage
                             totalPage = payload.totalPages
+                            pageNumber = currentPage + 1
                         }
 
                         if (resourceList.isEmpty()) return@observeEvent
@@ -375,6 +379,9 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     override fun onResume() {
         super.onResume()
         fragmentResourcesBinding.editTextSearch.setText("")
+        resourceList.clear()
+        pageNumber = 1
+        isSearch = false
 //        fragmentResourcesBinding.medicalHistory.removeAllViews()
     }
 
