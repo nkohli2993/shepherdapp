@@ -37,6 +37,7 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
+    var usersTableName: String? = null
     var isUserAlreadyExists: Boolean = false
 
     var loginData = MutableLiveData<UserSignupData>().apply {
@@ -151,15 +152,20 @@ class LoginViewModel @Inject constructor(
 
     // Check if user's info already saved in Firestore
     private fun checkIfUserAlreadyExists(user: User) {
-        db.collection(TableName.USERS)
+        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.USERS_DEV
+        } else {
+            TableName.USERS
+        }
+        db.collection(usersTableName!!)
             .whereEqualTo("uuid", user.uuid)
             .get()
             .addOnSuccessListener {
                 if (it.documents.isNullOrEmpty()) {
 //                    isUserAlreadyExists = false
-                    db.collection(TableName.USERS).add(user.serializeToMap())
+                    db.collection(usersTableName!!).add(user.serializeToMap())
                         .addOnSuccessListener {
-                            db.collection(TableName.USERS).document(it.id)
+                            db.collection(usersTableName!!).document(it.id)
                                 .update("document_id", it.id)
                             user.documentID = it.id
                         }.addOnFailureListener {
@@ -173,7 +179,7 @@ class LoginViewModel @Inject constructor(
                     val documentID = it.documents[0].id
                     val fToken = userRepository.getFirebaseToken()
 
-                    db.collection(TableName.USERS).document(documentID)
+                    db.collection(usersTableName!!).document(documentID)
                         .update("firebase_token", fToken)
                 }
             }.addOnFailureListener {

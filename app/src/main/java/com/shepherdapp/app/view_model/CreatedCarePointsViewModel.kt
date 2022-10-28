@@ -48,6 +48,8 @@ class CreatedCarePointsViewModel @Inject constructor(
     var chatListener: ListenerRegistration? = null
     var groupName: String? = null
     var eventId: Int? = null
+    var tableName: String? = null
+    var usersTableName: String? = null
 
     private var chatResponseData = MutableLiveData<Event<DataResult<MessageGroupResponse>>>()
     fun getChatMessages(): LiveData<Event<DataResult<MessageGroupResponse>>> = chatResponseData
@@ -222,7 +224,13 @@ class CreatedCarePointsViewModel @Inject constructor(
         }
         userIDs?.sort()
 
-        db.collection(TableName.CHATS)
+        tableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.CHATS_DEV
+        } else {
+            TableName.CHATS
+        }
+
+        db.collection(tableName!!)
 //            .whereEqualTo("userIDs", userIDs)
 //            .whereEqualTo("group_name", groupName)
             .whereEqualTo("event_id", eventId)
@@ -260,10 +268,10 @@ class CreatedCarePointsViewModel @Inject constructor(
                      }*/
 
                     // Enter the event id and data
-                    db.collection(TableName.CHATS).add(chatListData.serializeToMap())
+                    db.collection(tableName!!).add(chatListData.serializeToMap())
                         .addOnSuccessListener {
 
-                            ShepherdApp.db.collection(TableName.CHATS).document(it.id)
+                            ShepherdApp.db.collection(tableName!!).document(it.id)
                                 .update("id", it.id)
                             chatListData?.id = it.id
 
@@ -284,8 +292,13 @@ class CreatedCarePointsViewModel @Inject constructor(
         isListenerInitialized = true
         chatResponseData.postValue(Event(DataResult.Loading()))
         Log.d(TAG, "initChatListener: ${chatListData?.id}")
+        tableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.CHATS_DEV
+        } else {
+            TableName.CHATS
+        }
         val chatDocReference =
-            chatListData?.id?.let { ShepherdApp.db.collection(TableName.CHATS).document(it) }
+            chatListData?.id?.let { ShepherdApp.db.collection(tableName!!).document(it) }
 
         var query = chatDocReference?.collection(TableName.MESSAGES)
             ?.orderBy("created", Query.Direction.DESCENDING)
@@ -346,8 +359,13 @@ class CreatedCarePointsViewModel @Inject constructor(
     }
 
     private fun listenUnreadUpdates() {
+        tableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.CHATS_DEV
+        } else {
+            TableName.CHATS
+        }
         val chatRef =
-            chatListData?.id?.let { ShepherdApp.db.collection(TableName.CHATS).document(it) }
+            chatListData?.id?.let { ShepherdApp.db.collection(tableName!!).document(it) }
         chatListener?.remove()
         chatListener = null
         chatListener = chatRef?.addSnapshotListener { value, error ->
@@ -368,11 +386,17 @@ class CreatedCarePointsViewModel @Inject constructor(
     }
 
     private fun updateReadByData() {
+        tableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.CHATS_DEV
+        } else {
+            TableName.CHATS
+        }
+
         ShepherdApp.db.runTransaction { transaction ->
             allMsgList.forEach { message ->
                 if (!message.readIds.contains(userRepository.getCurrentUser()?.id.toString())) {
                     val docRef =
-                        db.collection(TableName.CHATS).document(chatListData?.id ?: "")
+                        db.collection(tableName!!).document(chatListData?.id ?: "")
                             .collection(TableName.MESSAGES).document(message.id ?: "")
                     transaction.get(docRef).data?.let {
                         val messageModel = Gson().fromJson(
@@ -384,7 +408,6 @@ class CreatedCarePointsViewModel @Inject constructor(
                         transaction.update(docRef, "readIds", messageModel.readIds)
                         if (messageModel.readIds.size >= chatListData?.userIDs?.size ?: 0) {
                             transaction.update(docRef, "isRead", true)
-
                         }
                     }
 
@@ -479,11 +502,17 @@ class CreatedCarePointsViewModel @Inject constructor(
     }
 
     private fun createNewChat(onChatCreated: (created: Boolean) -> Unit) {
+        tableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.CHATS_DEV
+        } else {
+            TableName.CHATS
+        }
         if (chatListData?.id.isNullOrEmpty()) {
-            ShepherdApp.db.collection(TableName.CHATS).add(chatListData.serializeToMap())
+
+            ShepherdApp.db.collection(tableName!!).add(chatListData.serializeToMap())
                 .addOnSuccessListener {
 
-                    ShepherdApp.db.collection(TableName.CHATS).document(it.id).update("id", it.id)
+                    ShepherdApp.db.collection(tableName!!).document(it.id).update("id", it.id)
                     chatListData?.id = it.id
 
                     initChatListener()
@@ -491,7 +520,7 @@ class CreatedCarePointsViewModel @Inject constructor(
                 }
         } else {
             chatListData?.id?.let {
-                ShepherdApp.db.collection(TableName.CHATS).document(it)
+                ShepherdApp.db.collection(tableName!!).document(it)
                     .set(chatListData.serializeToMap())
                     .addOnSuccessListener {
                         initChatListener()
@@ -505,7 +534,12 @@ class CreatedCarePointsViewModel @Inject constructor(
     private fun addMessageInDb(messageData: MessageData) {
         var eventID: Int? = null
         var userIDs: ArrayList<String>? = ArrayList()
-        val chatReference = db.collection(TableName.CHATS).document(chatListData?.id ?: "")
+        tableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.CHATS_DEV
+        } else {
+            TableName.CHATS
+        }
+        val chatReference = db.collection(tableName!!).document(chatListData?.id ?: "")
         //Get group name, event_id and userIds
         chatReference.get().addOnSuccessListener {
             val chatData = Gson().fromJson(
@@ -559,7 +593,12 @@ class CreatedCarePointsViewModel @Inject constructor(
                 }
         }*/
 //        Log.d(TAG, "firebase Tokens are: $firebaseTokensList")
-        db.collection(TableName.USERS)
+        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.USERS_DEV
+        } else {
+            TableName.USERS
+        }
+        db.collection(usersTableName!!)
             .get()
             .addOnSuccessListener { querySnapshot ->
                 for (document in querySnapshot.documents) {
@@ -676,9 +715,14 @@ class CreatedCarePointsViewModel @Inject constructor(
 
     fun getPreviousMessages() {
         chatResponseData.postValue(Event(DataResult.Loading()))
+        tableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.CHATS_DEV
+        } else {
+            TableName.CHATS
+        }
 
         //get message list
-        val chatDocReference = db.collection(TableName.CHATS).document(chatListData?.id ?: "")
+        val chatDocReference = db.collection(tableName!!).document(chatListData?.id ?: "")
         var query = chatDocReference.collection(TableName.MESSAGES)
             .orderBy("created", Query.Direction.DESCENDING)
 
@@ -708,7 +752,6 @@ class CreatedCarePointsViewModel @Inject constructor(
                 } catch (e: JSONException) {
                     showException(e)
                 }
-
             }
             val groupList = allMsgList.sortMessages()
             val groupResponse = MessageGroupResponse(false, groupList)

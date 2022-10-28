@@ -283,6 +283,7 @@
         <entry key="app/src/main/res/drawable/ic_right_arrow.xml" value="0.2125" />
         <entry key="app/src/main/res/drawable/ic_search.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/ic_star_24.xml" value="0.2515" />
+        <entry key="app/src/main/res/drawable/pin_background.xml" value="0.182" />
         <entry key="app/src/main/res/drawable/rounded_box_12.xml" value="0.188" />
         <entry key="app/src/main/res/drawable/rounded_box_new.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/shape_auth_header.xml" value="0.182" />
