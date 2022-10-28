@@ -53,26 +53,68 @@ class CareTeamMembersAdapter(
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             val careTeam = careTeams[position]
+            if (careTeam.isPendingInvite) {
+                /* itemBinding.cardView.setCardBackgroundColor(
+                     ContextCompat.getColor(
+                         context,
+                         R.color.colorAccent
+                     )
+                 )*/
+                itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_waiting)
+                itemBinding.cardView.alpha = 0.4f
+                itemBinding.imageViewCareTeam.alpha = 0.4f
+                itemBinding.let {
+                    it.textViewCareTeamName.text = careTeam.email
+                    if (!careTeam.image.isNullOrEmpty()) {
+                        Picasso.get().load(careTeam.image)
+                            .placeholder(R.drawable.ic_defalut_profile_pic)
+                            .into(it.imageViewCareTeam)
+                    }
+                    it.textViewCareTeamRole.text = "As ${careTeam.careRoles.name}"
+                }
+            } else {
+                val firstName = careTeam.user_id_details.firstname
+                val lastName = careTeam.user_id_details.lastname
+                val fullName = "$firstName $lastName"
+                val imageUrl = careTeam.user_id_details.profilePhoto
+                itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_arrow)
+
+                itemBinding.let {
+                    it.textViewCareTeamName.text = fullName
+
+                    Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(it.imageViewCareTeam)
+
+                    it.textViewCareTeamRole.text = careTeam.careRoles.name
+                }
+
+                itemBinding.root.setOnClickListener {
+                    recyclerItemListener.onItemSelected(
+                        careTeams[position]
+                    )
+                }
+            }
+
 //            itemBinding.data = careTeam
-            val firstName = careTeam.user_id_details.firstname
-            val lastName = careTeam.user_id_details.lastname
-            val fullName = "$firstName $lastName"
-            val imageUrl = careTeam.user_id_details.profilePhoto
+            /* val firstName = careTeam.user_id_details.firstname
+             val lastName = careTeam.user_id_details.lastname
+             val fullName = "$firstName $lastName"
+             val imageUrl = careTeam.user_id_details.profilePhoto
 
-            itemBinding.let {
-                it.textViewCareTeamName.text = fullName
+             itemBinding.let {
+                 it.textViewCareTeamName.text = fullName
 
-                Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(it.imageViewCareTeam)
+                 Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
+                     .into(it.imageViewCareTeam)
 
-                it.textViewCareTeamRole.text = careTeam.careRoles.name
-            }
+                 it.textViewCareTeamRole.text = careTeam.careRoles.name
+             }
 
-            itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    careTeams[position]
-                )
-            }
+             itemBinding.root.setOnClickListener {
+                 recyclerItemListener.onItemSelected(
+                     careTeams[position]
+                 )
+             }*/
         }
     }
 

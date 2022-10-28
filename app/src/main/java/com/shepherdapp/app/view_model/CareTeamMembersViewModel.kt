@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
+import com.shepherdapp.app.data.dto.invitation.pending_invite.PendingInviteResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.care_teams.CareTeamsRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -44,6 +45,11 @@ class CareTeamMembersViewModel @Inject constructor(
     var careTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
         _careTeamsResponseLiveData
 
+    private var _pendingInviteResponseLiveData =
+        MutableLiveData<Event<DataResult<PendingInviteResponseModel>>>()
+    var pendingInviteResponseLiveData: LiveData<Event<DataResult<PendingInviteResponseModel>>> =
+        _pendingInviteResponseLiveData
+
 
     fun getCareTeamsByLovedOneId(
         pageNumber: Int,
@@ -65,6 +71,19 @@ class CareTeamMembersViewModel @Inject constructor(
             }
         }
         return careTeamsResponseLiveData
+    }
+
+    fun getPendingInvites(): LiveData<Event<DataResult<PendingInviteResponseModel>>> {
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = careTeamsRepository.getPendingInvite(lovedOneUUID)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _pendingInviteResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return pendingInviteResponseLiveData
     }
 
     fun saveLoggedInUserTeamLead(careTeamLeaderUUID: String) {

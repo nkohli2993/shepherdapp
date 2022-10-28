@@ -2,6 +2,9 @@ package com.shepherdapp.app.constants
 
 import com.shepherdapp.app.BuildConfig.BASE_URL
 import com.shepherdapp.app.BuildConfig.BASE_URL_USER
+import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.utils.Const.LOVED_ONE_UUID
+import com.shepherdapp.app.utils.Prefs
 
 
 /**
@@ -84,6 +87,9 @@ object ApiConstants {
     object Invitations {
         const val GET_INVITATIONS = "$BASE_URL${API_VERSION}invites"
         const val ACCEPT_INVITATIONS = "$BASE_URL${API_VERSION}invites/accept/{id}"
+
+        val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!.getString(LOVED_ONE_UUID, "")
+        const val GET_PENDING_INVITATIONS = "$BASE_URL${API_VERSION}invites/pending/{id}"
     }
 
     object LockBox {

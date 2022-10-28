@@ -23,7 +23,6 @@ import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.Exception
 
 
 /**
@@ -62,6 +61,9 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun initViewBinding() {
         fragmentCareTeamMembersBinding.listener = this
         setCareTeamAdapters()
+
+        // Get Pending Invites
+//        careTeamViewModel.getPendingInvites()
 
         // Get Care Teams by lovedOne Id
         careTeamViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
@@ -132,14 +134,27 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun observeViewModel() {
         observe(careTeamViewModel.openMemberDetails, ::openMemberDetails)
 
-        careTeamViewModel.careTeamsResponseLiveData.observeEvent(this) {
+        careTeamViewModel.pendingInviteResponseLiveData.observeEvent(this) {
             when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
                 is DataResult.Loading -> {
                     showLoading("")
+
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.data
+                    val results = it.data.payload?.results
+                    Log.d(TAG, "Pending Invite : Payload is $results")
+                    results?.forEach {
+                        it.isPendingInvite = true
+                    }
+
+                    if (results != null) {
+                        careTeams?.addAll(results)
+                    }
+
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     // Get the uuid of Care Team Leader
                     try {
@@ -150,14 +165,46 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         }?.get(0)
                         Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
                         uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }
-                    }catch (e:Exception){
-                        Log.d(TAG,"Error: ${e.toString()}")
+                    } catch (e: Exception) {
+                        Log.d(TAG, "Error: ${e.toString()}")
                     }
                     fragmentCareTeamMembersBinding.let {
                         it.recyclerViewCareTeam.visibility = View.VISIBLE
                         it.txtNoCareTeamFound.visibility = View.GONE
                     }
                     careTeamAdapter?.updateCareTeams(careTeams!!)
+                }
+            }
+        }
+
+        careTeamViewModel.careTeamsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    // Get Pending Invites
+                    careTeamViewModel.getPendingInvites()
+                    careTeams = it.data.payload.data
+                    /* if (careTeams.isNullOrEmpty()) return@observeEvent
+                     // Get the uuid of Care Team Leader
+                     try {
+                         val uuidTeamLead = careTeams?.filter {
+                             it.careRoles.slug == CareRole.CareTeamLead.slug
+                         }?.map {
+                             it.user_id
+                         }?.get(0)
+                         Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
+                         uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }
+                     } catch (e: Exception) {
+                         Log.d(TAG, "Error: ${e.toString()}")
+                     }
+                     fragmentCareTeamMembersBinding.let {
+                         it.recyclerViewCareTeam.visibility = View.VISIBLE
+                         it.txtNoCareTeamFound.visibility = View.GONE
+                     }
+                     careTeamAdapter?.updateCareTeams(careTeams!!)*/
                 }
                 is DataResult.Failure -> {
                     //handleAPIFailure(it.message, it.errorCode)

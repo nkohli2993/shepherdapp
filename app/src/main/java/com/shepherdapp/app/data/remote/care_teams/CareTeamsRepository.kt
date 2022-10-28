@@ -8,6 +8,7 @@ import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.invitation.InvitationsResponseModel
 import com.shepherdapp.app.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
+import com.shepherdapp.app.data.dto.invitation.pending_invite.PendingInviteResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.NetworkOnlineDataRepo
@@ -49,6 +50,19 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
             NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<CareTeamsResponseModel> {
                 return apiService.getCareTeamsByLovedOneId(pageNumber, limit, status, lovedOneUUID)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+
+    // Get Pending invite
+    suspend fun getPendingInvite(
+        lovedOneUUID: String?
+    ): Flow<DataResult<PendingInviteResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<PendingInviteResponseModel, PendingInviteResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<PendingInviteResponseModel> {
+                return apiService.getPendingInvites(lovedOneUUID)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

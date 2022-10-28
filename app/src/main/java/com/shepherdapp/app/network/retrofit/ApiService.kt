@@ -22,6 +22,7 @@ import com.shepherdapp.app.data.dto.edit_profile.UserUpdateData
 import com.shepherdapp.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherdapp.app.data.dto.invitation.InvitationsResponseModel
 import com.shepherdapp.app.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
+import com.shepherdapp.app.data.dto.invitation.pending_invite.PendingInviteResponseModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
@@ -199,6 +200,11 @@ interface ApiService {
         @Query("status") status: Int,
         @Query("loved_one_id") lovedOneUUID: String,
     ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.Invitations.GET_PENDING_INVITATIONS)
+    suspend fun getPendingInvites(
+        @Path("id") lovedOneUUID: String?
+    ): Response<PendingInviteResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
     suspend fun searchCareTeamsByLovedOneId(
