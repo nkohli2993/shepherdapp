@@ -17,7 +17,6 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.toTextFormat
 import com.shepherdapp.app.view_model.ResourceViewModel
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -66,13 +65,15 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
 
     @SuppressLint("SetTextI18n")
     private fun setDataResource() {
-        fragmentResourcesDetailBinding.textViewTitle.text =   HtmlCompat.fromHtml(resourceDetail!!.title ?: "", 0)
+        fragmentResourcesDetailBinding.textViewTitle.text =
+            HtmlCompat.fromHtml(resourceDetail!!.title ?: "", 0)
         if (resourceDetail!!.thumbnailUrl != null && resourceDetail!!.thumbnailUrl != "") {
-           /* Picasso.get().load(resourceDetail!!.thumbnailUrl)
-                .placeholder(R.drawable.image)
-                .into(fragmentResourcesDetailBinding.imageViewTopic)*/
+            /* Picasso.get().load(resourceDetail!!.thumbnailUrl)
+                 .placeholder(R.drawable.image)
+                 .into(fragmentResourcesDetailBinding.imageViewTopic)*/
         }
-        fragmentResourcesDetailBinding.descriptionTV.text =    HtmlCompat.fromHtml(resourceDetail!!.content ?: "", 0)
+        fragmentResourcesDetailBinding.descriptionTV.text =
+            HtmlCompat.fromHtml(resourceDetail!!.content ?: "", 0)
         val formattedDate = resourceDetail!!.createdAt!!.toTextFormat(
             resourceDetail!!.createdAt!!,
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
@@ -83,6 +84,8 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             "hh:mm a"
         )
+
+        fragmentResourcesDetailBinding.txtCategory.text = resourceDetail?.category?.name
 //        fragmentResourcesDetailBinding.tvDate.text = "${getString(R.string.created_on)} $formattedDate"
 //        fragmentResourcesDetailBinding.tvTime.text = formattedTime
 

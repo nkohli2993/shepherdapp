@@ -152,8 +152,8 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         resourcesViewModel.getAllResourceApi(
             pageNumber,
             limit,
-            resourcesViewModel.getLovedOneUUId()!!,
-            null
+//            resourcesViewModel.getLovedOneUUId()!!,
+//            null
             //conditionIDs.joinToString().replace(" ", "")
         )
     }

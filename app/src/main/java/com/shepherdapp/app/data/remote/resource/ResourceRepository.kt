@@ -20,17 +20,15 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
     suspend fun getAllResourceApi(
         page: Int,
         limit: Int,
-        lovedOneId: String,
-        conditions: String?
+//        lovedOneId: String,
+//        conditions: String?
     ): Flow<DataResult<ResponseRelationModel>> {
         return object :
             NetworkOnlineDataRepo<ResponseRelationModel, ResponseRelationModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<ResponseRelationModel> {
-                return apiService.getAllResourceApi(
+                return apiService.getAllResources(
                     page = page,
                     limit = limit,
-                    id = lovedOneId,
-                    conditions = conditions
                 )
             }
         }.asFlow().flowOn(Dispatchers.IO)
@@ -58,7 +56,7 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
-  //get result of particular id detail
+    //get result of particular id detail
     suspend fun getResourceDetail(
         id: Int
     ): Flow<DataResult<ParticularResourceResponseModel>> {

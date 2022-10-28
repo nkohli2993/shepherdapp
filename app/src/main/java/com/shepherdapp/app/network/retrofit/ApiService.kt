@@ -443,6 +443,12 @@ interface ApiService {
         @Query("conditions") conditions: String?
     ): Response<ResponseRelationModel>
 
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
+    suspend fun getAllResources(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<ResponseRelationModel>
+
     @GET(ApiConstants.Resource.GET_ALL_RESOURCE_BY_LOVED_ONE)
     suspend fun getSearchResourceResultApi(
         @Query("page") page: Int,
