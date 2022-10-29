@@ -22,6 +22,7 @@ import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -61,6 +62,30 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun initViewBinding() {
         fragmentCareTeamMembersBinding.listener = this
         setCareTeamAdapters()
+
+        //careTeamViewModel.getHomeData()
+        val lovedOneUUID = careTeamViewModel.getLovedOneUUID()
+        Log.d(TAG, "lovedOneUUID : $lovedOneUUID")
+
+        careTeamViewModel.getUserDetailByUUID()
+
+        /*  val lovedOne = careTeamViewModel.getLovedUserDetail()
+          val lovedOneFirstName = lovedOne?.firstName
+          val lovedOneLastName = lovedOne?.lastName
+          var lovedOneFullName: String? = null
+          lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
+              lovedOneFirstName
+          } else {
+              "$lovedOneFirstName $lovedOneLastName"
+          }
+
+          val lovedOneProfilePic = lovedOne?.profilePic
+
+          Picasso.get().load(lovedOneProfilePic)
+              .placeholder(R.drawable.ic_defalut_profile_pic)
+              .into(fragmentCareTeamMembersBinding.imgLovedOne)
+
+          fragmentCareTeamMembersBinding.txtLoved.text = lovedOneFullName*/
 
         // Get Pending Invites
 //        careTeamViewModel.getPendingInvites()
@@ -134,10 +159,84 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun observeViewModel() {
         observe(careTeamViewModel.openMemberDetails, ::openMemberDetails)
 
+        careTeamViewModel.userDetailByUUIDLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val userProfile = it.data.payload?.userProfiles
+                    val lovedOneFirstName = userProfile?.firstname
+                    val lovedOneLastName = userProfile?.lastname
+                    var lovedOneFullName: String? = null
+                    lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
+                        lovedOneFirstName
+                    } else {
+                        "$lovedOneFirstName $lovedOneLastName"
+                    }
+
+                    val lovedOneProfilePic = userProfile?.profilePhoto
+
+                    Picasso.get().load(lovedOneProfilePic)
+                        .placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(fragmentCareTeamMembersBinding.imgLovedOne)
+
+                    fragmentCareTeamMembersBinding.txtLoved.text = lovedOneFullName
+
+                }
+            }
+        }
+
+        /*  careTeamViewModel.homeResponseLiveData.observeEvent(this) {
+              when (it) {
+                  is DataResult.Failure -> {
+                      hideLoading()
+                  }
+                  is DataResult.Loading -> {
+                      showLoading("")
+                  }
+                  is DataResult.Success -> {
+                      hideLoading()
+                      val payload = it.data.payload
+                      if (it.data.payload?.lovedOneUserProfile != null || it.data.payload?.lovedOneUserProfile != "") {
+                          val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
+                          Picasso.get().load(lovedOneProfilePic)
+                              .placeholder(R.drawable.ic_defalut_profile_pic)
+                              .into(fragmentCareTeamMembersBinding.imgLovedOne)
+                      }
+
+                      //set loved one name
+                      fragmentCareTeamMembersBinding.txtLoved.text =
+                          it.data.payload?.firstname + " " + it.data.payload?.firstname
+                  }
+              }
+          }*/
+
         careTeamViewModel.pendingInviteResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
+                    careTeams?.clear()
+                    careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+                    fragmentCareTeamMembersBinding.let {
+                        it.recyclerViewCareTeam.visibility = View.GONE
+                        it.txtNoCareTeamFound.visibility = View.VISIBLE
+                    }
+
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle("CareTeams")
+                        setMessage("No CareTeam Found")
+                        setPositiveButton("OK") { _, _ ->
+                            // navigateToDashboardScreen()
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
                 is DataResult.Loading -> {
                     showLoading("")

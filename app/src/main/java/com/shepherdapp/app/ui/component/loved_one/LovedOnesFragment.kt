@@ -184,11 +184,14 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                     careTeams.love_user_id_details.let {
                         lovedOneViewModel.saveLovedOneUUID(it.uid!!)
                         val lovedOneDetail = UserLovedOne(
-                            it.id,
-                            it.uid,
-                            careTeams.love_user_id,
-                            careTeams.role_id,
-                            careTeams.permission
+                            id = it.id,
+                            userId = it.uid,
+                            loveUserId = careTeams.love_user_id,
+                            roleId = careTeams.role_id,
+                            permission = careTeams.permission,
+                            firstName = it.firstname,
+                            lastName = it.lastname,
+                            profilePic = it.profilePhoto
                         )
                         lovedOneViewModel.saveLovedOneUserDetail(lovedOneDetail)
 
