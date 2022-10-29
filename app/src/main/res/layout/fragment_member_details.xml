@@ -175,7 +175,7 @@
                                 android:layout_weight="1"
                                 android:drawableStart="@drawable/ic_care_team"
                                 android:drawablePadding="@dimen/_5sdp"
-                                android:text="@string/careteam"
+                                android:text="@string/care_point"
                                 android:textColor="@color/_192032"
                                 android:textSize="@dimen/_12ssp"
                                 app:fontFamily="@font/gotham_medium"
@@ -183,7 +183,7 @@
                                 app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
                             <androidx.appcompat.widget.SwitchCompat
-                                android:id="@+id/switchCareTeam"
+                                android:id="@+id/switchCarePoints"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:checked="false"

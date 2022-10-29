@@ -226,7 +226,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "LovedOneID : $lovedOneUUID")
 
                 // Checked the selected state of Care Team
-                val isCareTeamEnabled = fragmentAddMemberBinding.switchCareTeam.isChecked
+                val isCarePointsEnabled = fragmentAddMemberBinding.switchCarePoints.isChecked
 
                 // Checked the selected state of Care Team
                 val isLockBoxEnabled = fragmentAddMemberBinding.switchLockBox.isChecked
@@ -237,8 +237,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 // Checked the selected state of Care Team
                 val isResourcesEnabled = fragmentAddMemberBinding.switchResources.isChecked
                 selectedModule = ""
-                if (isCareTeamEnabled) {
-                    selectedModule += Modules.CareTeam.value.toString() + ","
+                if (isCarePointsEnabled) {
+                    selectedModule += Modules.CarePoints.value.toString() + ","
                 }
                 if (isLockBoxEnabled) {
                     selectedModule += Modules.LockBox.value.toString() + ","

@@ -152,7 +152,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
     private fun makeSwitchesNonClickable() {
         // Make switches non clickable
-        fragmentMemberDetailsBinding.switchCareTeam.isClickable = false
+        fragmentMemberDetailsBinding.switchCarePoints.isClickable = false
         fragmentMemberDetailsBinding.switchLockBox.isClickable = false
         fragmentMemberDetailsBinding.switchMyMedList.isClickable = false
         fragmentMemberDetailsBinding.switchResources.isClickable = false
@@ -183,8 +183,8 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
     private fun checkPermission(s: Int) {
         when {
-            Modules.CareTeam.value == s -> {
-                fragmentMemberDetailsBinding.switchCareTeam.isChecked = true
+            Modules.CarePoints.value == s -> {
+                fragmentMemberDetailsBinding.switchCarePoints.isChecked = true
             }
             Modules.LockBox.value == s -> {
                 fragmentMemberDetailsBinding.switchLockBox.isChecked = true
@@ -282,7 +282,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             }
             R.id.btnUpdate -> {
                 // Checked the selected state of Care Team
-                val isCareTeamEnabled = fragmentMemberDetailsBinding.switchCareTeam.isChecked
+                val isCarePointsEnabled = fragmentMemberDetailsBinding.switchCarePoints.isChecked
 
                 // Checked the selected state of Care Team
                 val isLockBoxEnabled = fragmentMemberDetailsBinding.switchLockBox.isChecked
@@ -294,8 +294,8 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 val isResourcesEnabled = fragmentMemberDetailsBinding.switchResources.isChecked
 
                 selectedModule = ""
-                if (isCareTeamEnabled) {
-                    selectedModule += Modules.CareTeam.value.toString() + ","
+                if (isCarePointsEnabled) {
+                    selectedModule += Modules.CarePoints.value.toString() + ","
                 }
                 if (isLockBoxEnabled) {
                     selectedModule += Modules.LockBox.value.toString() + ","

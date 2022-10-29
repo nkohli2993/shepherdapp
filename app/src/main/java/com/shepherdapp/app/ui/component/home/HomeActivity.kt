@@ -347,15 +347,15 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     }
 
     private fun permissionCards(value: Int) {
-        // Care Points and VitalStats Module are always visible
-        binding.llCarePoint.visibility = View.VISIBLE
+        // Care Teams and VitalStats Module are always visible
+        binding.llCareTeam.visibility = View.VISIBLE
         binding.llVitalStats.visibility = View.VISIBLE
 
         // Other Cards are shown according to the permission
         binding.llLockBox.visibility = value
         binding.llMedList.visibility = value
         binding.llResources.visibility = value
-        binding.llCareTeam.visibility = value
+        binding.llCarePoint.visibility = value
 
         binding.llDiscussions.visibility = View.GONE
 
@@ -686,8 +686,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     private fun checkPermission(permission: Int?) {
         when {
-            Modules.CareTeam.value == permission -> {
-                binding.llCareTeam.visibility = View.VISIBLE
+            Modules.CarePoints.value == permission -> {
+                binding.llCarePoint.visibility = View.VISIBLE
             }
             Modules.LockBox.value == permission -> {
                 binding.llLockBox.visibility = View.VISIBLE

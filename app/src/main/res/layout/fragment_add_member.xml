@@ -188,7 +188,7 @@
                             app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
                         <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchCareTeam"
+                            android:id="@+id/switchCarePoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"

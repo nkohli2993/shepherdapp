@@ -156,15 +156,15 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     }
 
     private fun permissionCards(value: Int) {
-        // Care Points and VitalStats Module are always visible
-        fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE
+        // Care Team and VitalStats Module are always visible
+        fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
 
         // Other Cards are shown according to the permission
         fragmentDashboardBinding.cvLockBox.visibility = value
         fragmentDashboardBinding.cvMedList.visibility = value
         fragmentDashboardBinding.cvResources.visibility = value
-        fragmentDashboardBinding.cvCareTeam.visibility = value
+        fragmentDashboardBinding.cvCarePoints.visibility = value
         fragmentDashboardBinding.cvDiscussion.visibility = View.GONE
     }
 
@@ -180,8 +180,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     private fun checkPermission(permission: Int?) {
         when {
-            Modules.CareTeam.value == permission -> {
-                fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
+            Modules.CarePoints.value == permission -> {
+                fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE
             }
             Modules.LockBox.value == permission -> {
                 fragmentDashboardBinding.cvLockBox.visibility = View.VISIBLE
