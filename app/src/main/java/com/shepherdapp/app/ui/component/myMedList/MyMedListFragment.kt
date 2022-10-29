@@ -33,6 +33,7 @@ import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observeEvent
 import com.shepherdapp.app.view_model.MyMedListViewModel
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import java.text.SimpleDateFormat
@@ -78,6 +79,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 //        setCalender()
         medListViewModel.getLovedOneMedLists(selectedDate)
 
+        medListViewModel.getUserDetailByUUID()
     }
 
     private fun setCalender() {
@@ -159,6 +161,40 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
         observeEvent(medListViewModel.medDetailItems, ::selectedMedication)
         observeEvent(medListViewModel.selectedMedicationLiveData, ::recordMedication)
+
+        medListViewModel.userDetailByUUIDLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val userProfile = it.data.payload?.userProfiles
+                    val lovedOneFirstName = userProfile?.firstname
+                    val lovedOneLastName = userProfile?.lastname
+                    var lovedOneFullName: String? = null
+                    lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
+                        lovedOneFirstName
+                    } else {
+                        "$lovedOneFirstName $lovedOneLastName"
+                    }
+
+                    val lovedOneProfilePic = userProfile?.profilePhoto
+
+                    Picasso.get().load(lovedOneProfilePic)
+                        .placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(myMedlistBinding.imgLovedOne)
+
+                    myMedlistBinding.txtLoved.text = lovedOneFullName
+
+                }
+            }
+        }
+
+
         // Observe get loved one med lists response
         medListViewModel.getLovedOneMedListsResponseLiveData.observeEvent(this) {
             when (it) {
