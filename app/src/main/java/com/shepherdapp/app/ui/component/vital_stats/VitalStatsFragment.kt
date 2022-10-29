@@ -50,6 +50,8 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.vital_stats.adapter.TypeAdapter
 import com.shepherdapp.app.utils.extensions.getEndTimeString
 import com.shepherdapp.app.utils.extensions.getStartTimeString
@@ -118,6 +120,19 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private var bodyTempMin: String? = null
     private var bodyTempMax: String? = null
     private var bodyTemp: String? = null
+
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
 
 
     override fun onCreateView(
@@ -1024,6 +1039,11 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     override fun getLayoutRes(): Int {
         return R.layout.fragment_vital_stats
 
+    }
+
+    override fun onResume() {
+        parentActivityListener?.msgFromChildFragmentToActivity()
+        super.onResume()
     }
 
     override fun onClick(p0: View?) {

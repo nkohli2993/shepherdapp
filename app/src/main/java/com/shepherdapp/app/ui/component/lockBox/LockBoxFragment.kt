@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.lockBox
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -23,6 +24,8 @@ import com.shepherdapp.app.databinding.FragmentLockboxBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.lockBox.adapter.OtherDocumentsAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.RecommendedDocumentsAdapter
 import com.shepherdapp.app.utils.ClickType
@@ -58,6 +61,20 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     var totalPage: Int = 0
     var total: Int = 0
     private var deletePostion: Int = -1
+
+
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -420,6 +437,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     }
 
     override fun onResume() {
+        parentActivityListener?.msgFromChildFragmentToActivity()
         super.onResume()
 
     }

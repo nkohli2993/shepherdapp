@@ -265,10 +265,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
         }
 
-//        parentActivityListener?.msgFromChildFragmentToActivity()
+        parentActivityListener?.msgFromChildFragmentToActivity()
 
         // Update Navigation Drawer Info
         homeActivity.setDrawerInfo()
+
     }
 
 

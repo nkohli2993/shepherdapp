@@ -1,6 +1,7 @@
 package com.shepherdapp.app.ui.component.careTeamMembers
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -17,12 +18,13 @@ import com.shepherdapp.app.databinding.FragmentCareTeamMembersBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.careTeamMembers.adapter.CareTeamMembersAdapter
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -47,6 +49,19 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private var careTeamAdapter: CareTeamMembersAdapter? = null
     private var TAG = "CareTeamMembersFragment"
 
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,7 +82,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         val lovedOneUUID = careTeamViewModel.getLovedOneUUID()
         Log.d(TAG, "lovedOneUUID : $lovedOneUUID")
 
-        careTeamViewModel.getUserDetailByUUID()
+//        careTeamViewModel.getUserDetailByUUID()
 
         /*  val lovedOne = careTeamViewModel.getLovedUserDetail()
           val lovedOneFirstName = lovedOne?.firstName
@@ -159,37 +174,37 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun observeViewModel() {
         observe(careTeamViewModel.openMemberDetails, ::openMemberDetails)
 
-        careTeamViewModel.userDetailByUUIDLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    val userProfile = it.data.payload?.userProfiles
-                    val lovedOneFirstName = userProfile?.firstname
-                    val lovedOneLastName = userProfile?.lastname
-                    var lovedOneFullName: String? = null
-                    lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
-                        lovedOneFirstName
-                    } else {
-                        "$lovedOneFirstName $lovedOneLastName"
-                    }
+        /* careTeamViewModel.userDetailByUUIDLiveData.observeEvent(this) {
+             when (it) {
+                 is DataResult.Failure -> {
+                     hideLoading()
+                 }
+                 is DataResult.Loading -> {
+                     showLoading("")
+                 }
+                 is DataResult.Success -> {
+                     hideLoading()
+                     val userProfile = it.data.payload?.userProfiles
+                     val lovedOneFirstName = userProfile?.firstname
+                     val lovedOneLastName = userProfile?.lastname
+                     var lovedOneFullName: String? = null
+                     lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
+                         lovedOneFirstName
+                     } else {
+                         "$lovedOneFirstName $lovedOneLastName"
+                     }
 
-                    val lovedOneProfilePic = userProfile?.profilePhoto
+                     val lovedOneProfilePic = userProfile?.profilePhoto
+                     if (!lovedOneProfilePic.isNullOrEmpty()) {
+                         Picasso.get().load(lovedOneProfilePic)
+                             .placeholder(R.drawable.ic_defalut_profile_pic)
+                             .into(imgLovedOne)
+                     }
+                     txtLoved.text = lovedOneFullName
 
-                    Picasso.get().load(lovedOneProfilePic)
-                        .placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(fragmentCareTeamMembersBinding.imgLovedOne)
-
-                    fragmentCareTeamMembersBinding.txtLoved.text = lovedOneFullName
-
-                }
-            }
-        }
+                 }
+             }
+         }*/
 
         /*  careTeamViewModel.homeResponseLiveData.observeEvent(this) {
               when (it) {
@@ -367,6 +382,9 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         return R.layout.fragment_care_team_members
     }
 
-
+    override fun onResume() {
+        parentActivityListener?.msgFromChildFragmentToActivity()
+        super.onResume()
+    }
 }
 

@@ -14,6 +14,7 @@ import com.shepherdapp.app.data.dto.dashboard.LoveUser
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.menuItem.MenuItemModel
 import com.shepherdapp.app.data.dto.user.UserDetailsResponseModel
+import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.data.remote.home_repository.HomeRepository
@@ -56,6 +57,11 @@ class HomeViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<HomeResponseModel>>>()
     var homeResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
         _homeResponseLiveData
+
+    private var _userDetailByUUIDLiveData =
+        MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
+    var userDetailByUUIDLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
+        _userDetailByUUIDLiveData
 
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -217,5 +223,19 @@ class HomeViewModel @Inject constructor(
 
     fun isLoggedInUserLovedOne(): Boolean? {
         return userRepository.isLoggedInUserLovedOne()
+    }
+
+    // Get User Details
+    fun getUserDetailByUUID(): LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> {
+        val uuid = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = uuid?.let { authRepository.getUserDetailsByUUID(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _userDetailByUUIDLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return userDetailByUUIDLiveData
     }
 }

@@ -48,6 +48,7 @@ import com.shepherdapp.app.view_model.HomeViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.app_bar_dashboard.*
+import kotlinx.android.synthetic.main.content_dashboard.*
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
@@ -77,8 +78,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
          }*/
 
 
-
         viewModel.getHomeData()
+        viewModel.getUserDetailByUUID()
         setupNavigationDrawer()
 
         setMenuItemAdapter()
@@ -214,10 +215,47 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 //            showError(this, "Not Implemented")
             navController.navigate(R.id.nav_notifications)
         }
+        cardViewUser.setOnClickListener {
+            navController.navigate(R.id.nav_loved_one)
+        }
     }
 
 
     override fun observeViewModel() {
+
+        viewModel.userDetailByUUIDLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val userProfile = it.data.payload?.userProfiles
+                    val lovedOneFirstName = userProfile?.firstname
+                    val lovedOneLastName = userProfile?.lastname
+                    var lovedOneFullName: String? = null
+                    lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
+                        lovedOneFirstName
+                    } else {
+                        "$lovedOneFirstName $lovedOneLastName"
+                    }
+
+                    val lovedOneProfilePic = userProfile?.profilePhoto
+
+                    Picasso.get().load(lovedOneProfilePic)
+                        .placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(imgLovedOne)
+
+                    txtLoved.text = lovedOneFullName
+
+                }
+            }
+        }
+
+
         // Observe Logout Response
         viewModel.logoutResponseLiveData.observeEvent(this) {
             when (it) {
@@ -344,6 +382,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = true
                         tvNew.isVisible = false
+                        cardViewUser.isVisible = false
                     }
                     lockUnlockDrawer(false)
                 }
@@ -353,6 +392,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clTopWrapper.isVisible = true
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
+                        cardViewUser.isVisible = true
+
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
@@ -369,6 +410,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clTopWrapper.isVisible = true
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
+                        cardViewUser.isVisible = true
+
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
@@ -384,6 +427,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clTopWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         tvNew.isVisible = false
+                        cardViewUser.isVisible = false
+
                         ivEditProfile.setOnClickListener() {
                             navController.navigate(R.id.nav_edit_profile)
                         }
@@ -399,6 +444,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clTopWrapper.isVisible = true
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
+                        cardViewUser.isVisible = true
+
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
@@ -409,6 +456,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     lockUnlockDrawer(false)
                 }
                 R.id.nav_resources -> {
+                    cardViewUser.isVisible = true
+
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.resources)
                         clTopWrapper.isVisible = true
@@ -417,6 +466,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     lockUnlockDrawer(false)
                 }
                 R.id.nav_care_points -> {
+                    cardViewUser.isVisible = true
+
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.care_points)
                         clTopWrapper.isVisible = true
@@ -433,6 +484,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
 
                 R.id.nav_lock_box -> {
+                    cardViewUser.isVisible = true
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.lockbox)
                         clTopWrapper.isVisible = true
@@ -448,6 +500,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     lockUnlockDrawer(false)
                 }
                 R.id.nav_care_team -> {
+                    cardViewUser.isVisible = true
+
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.careteam)
                         clTopWrapper.isVisible = true
@@ -465,6 +519,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
                 else -> {
                     lockUnlockDrawer(true)
+                    cardViewUser.isVisible = false
+
                     binding.appBarDashboard.apply {
                         clTopWrapper.isVisible = false
                     }
@@ -586,6 +642,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     override fun msgFromChildFragmentToActivity() {
         viewModel.getHomeData()
+        viewModel.getUserDetailByUUID()
 //        setDrawerInfo()
     }
 
@@ -645,5 +702,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     }
 
-
+    override fun onResume() {
+        viewModel.getHomeData()
+        viewModel.getUserDetailByUUID()
+        super.onResume()
+    }
 }

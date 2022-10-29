@@ -140,7 +140,7 @@
                     tools:itemCount="3"
                     tools:listitem="@layout/adapter_my_medications_list" />
 
-                <androidx.cardview.widget.CardView
+               <!-- <androidx.cardview.widget.CardView
                     android:id="@+id/cardViewUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
                             android:layout_marginBottom="@dimen/_6sdp"
                             android:textSize="@dimen/_9ssp" />
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>-->
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

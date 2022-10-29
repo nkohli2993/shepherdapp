@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.myMedList
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +24,9 @@ import com.shepherdapp.app.databinding.FragmentMyMedlistBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.addNewMedication.AddNewMedicationFragmentDirections
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.myMedList.adapter.MyMedicationsAdapter
 import com.shepherdapp.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.shepherdapp.app.utils.MedListAction
@@ -60,6 +63,19 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private var TAG = "MyMedListFragment"
     private var medicationRecordPayload: ArrayList<MedicationRecordData> = arrayListOf()
 
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -79,7 +95,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 //        setCalender()
         medListViewModel.getLovedOneMedLists(selectedDate)
 
-        medListViewModel.getUserDetailByUUID()
+//        medListViewModel.getUserDetailByUUID()
     }
 
     private fun setCalender() {
@@ -162,7 +178,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         observeEvent(medListViewModel.medDetailItems, ::selectedMedication)
         observeEvent(medListViewModel.selectedMedicationLiveData, ::recordMedication)
 
-        medListViewModel.userDetailByUUIDLiveData.observeEvent(this) {
+      /*  medListViewModel.userDetailByUUIDLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -192,7 +208,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
                 }
             }
-        }
+        }*/
 
 
         // Observe get loved one med lists response
@@ -555,5 +571,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         return R.layout.fragment_my_medlist
     }
 
-
+    override fun onResume() {
+        parentActivityListener?.msgFromChildFragmentToActivity()
+        super.onResume()
+    }
 }
