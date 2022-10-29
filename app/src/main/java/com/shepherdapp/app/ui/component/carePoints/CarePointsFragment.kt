@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.carePoints
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -25,7 +26,9 @@ import com.shepherdapp.app.databinding.FragmentCarePointsBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.carePoints.adapter.CarePointsDayAdapter
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.CalendarState
 import com.shepherdapp.app.utils.Chat
 import com.shepherdapp.app.utils.Const
@@ -59,6 +62,20 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private var chatModelList: ArrayList<ChatModel>? = ArrayList()
 
     private val TAG = "CarePointsFragment"
+
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,6 +89,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
     override fun onResume() {
         super.onResume()
+        // Update the home activity so that updated lovedOne is shown on the screen
+        parentActivityListener?.msgFromChildFragmentToActivity()
         fragmentCarePointsBinding.calendarPView.clearSelection()
         clickType = CalendarState.Today.value
         fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBold
