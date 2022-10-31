@@ -173,7 +173,7 @@
                             android:layout_height="@dimen/_20sdp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="@dimen/_5sdp"
-                            android:src="@drawable/ic_care_team" />
+                            android:src="@drawable/ic_care_point" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="0dp"
