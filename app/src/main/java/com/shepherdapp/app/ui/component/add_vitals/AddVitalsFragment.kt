@@ -188,56 +188,63 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
     }
 
     private fun timePicker() {
-        val mCurrentTime = Calendar.getInstance()
-        if (fragmentAddVitalsBinding.tvTime.text.toString().isNotEmpty()) {
-            val dateTime = SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().time)
-                .plus(" ").plus(fragmentAddVitalsBinding.tvTime.text.toString())
-            mCurrentTime.time = SimpleDateFormat("dd-MM-yyyy HH:mm").parse(dateTime)!!
-        }
-        val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
-        val minute = mCurrentTime.get(Calendar.MINUTE)
+        if (fragmentAddVitalsBinding.tvDate.text.toString().trim().isEmpty()) {
+            showError(requireContext(), getString(R.string.please_select_date_first))
+            fragmentAddVitalsBinding.tvDate.requestFocus()
+        } else {
+            val mCurrentTime = Calendar.getInstance()
+            if (fragmentAddVitalsBinding.tvTime.text.toString().isNotEmpty()) {
+                val dateTime = SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().time)
+                    .plus(" ").plus(fragmentAddVitalsBinding.tvTime.text.toString())
+                mCurrentTime.time = SimpleDateFormat("dd-MM-yyyy HH:mm").parse(dateTime)!!
+            }
+            val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
+            val minute = mCurrentTime.get(Calendar.MINUTE)
 
-        val mTimePicker = TimePickerDialog(
-            context, R.style.datepicker,
-            { _, hourOfDay, selectedMinute ->
-                // check time for current date
-                val selectedDateTime =
-                    fragmentAddVitalsBinding.tvDate.text.toString().trim().plus(" ")
-                        .plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
-                val currentDateTime =
-                    SimpleDateFormat("dd-MM-yyyy HH:mm").format(Calendar.getInstance().time)
+            val mTimePicker = TimePickerDialog(
+                context, R.style.datepicker,
+                { _, hourOfDay, selectedMinute ->
+                    // check time for current date
+                    val selectedDateTime =
+                        fragmentAddVitalsBinding.tvDate.text.toString().trim().plus(" ")
+                            .plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
+                    val currentDateTime =
+                        SimpleDateFormat("dd-MM-yyyy HH:mm").format(Calendar.getInstance().time)
 
-                val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
-                if (dateFormat.parse(selectedDateTime)!!
-                        .before(dateFormat.parse(currentDateTime)) || dateFormat.parse(
-                        selectedDateTime
-                    )!!
-                        .equals(dateFormat.parse(currentDateTime))
-                ) {
-                    if (hourOfDay < 12) {
-                        setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
-                        isAmPm = "am"
-                        fragmentAddVitalsBinding.tvTime.setText(
-                            String.format("%02d:%02d", hourOfDay, selectedMinute)
-                        )
+                    val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
+                    if (dateFormat.parse(selectedDateTime)!!
+                            .before(dateFormat.parse(currentDateTime)) || dateFormat.parse(
+                            selectedDateTime
+                        )!!
+                            .equals(dateFormat.parse(currentDateTime))
+                    ) {
+                        if (hourOfDay < 12) {
+                            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                            isAmPm = "am"
+                            fragmentAddVitalsBinding.tvTime.setText(
+                                String.format("%02d:%02d", hourOfDay, selectedMinute)
+                            )
+                        } else {
+                            isAmPm = "pm"
+                            setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                            fragmentAddVitalsBinding.tvTime.setText(
+                                String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                            )
+                        }
+
                     } else {
-                        isAmPm = "pm"
-                        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
-                        fragmentAddVitalsBinding.tvTime.setText(
-                            String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                        showError(
+                            requireContext(),
+                            getString(R.string.unable_to_add_future_time_data_vital_stats)
                         )
                     }
+                }, hour,
+                minute, true
+            )
+            mTimePicker.show()
+        }
 
-                } else {
-                    showError(
-                        requireContext(),
-                        getString(R.string.unable_to_add_future_time_data_vital_stats)
-                    )
-                }
-            }, hour,
-            minute, true
-        )
-        mTimePicker.show()
+
     }
 
     private fun setColorTimePicked(selected: Int, unselected: Int) {

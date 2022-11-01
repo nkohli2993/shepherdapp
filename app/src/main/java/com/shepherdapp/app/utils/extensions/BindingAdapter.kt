@@ -42,14 +42,14 @@ fun getValidBodyTemperature(view: EditText, data: String) {
             view.error = view.context.getString(R.string.please_choose_temp)
             view.requestFocus()
         }
-        if (view.checkString().isNotEmpty() && view.checkString().toDouble() < 95.9) {
+      /*  if (view.checkString().isNotEmpty() && view.checkString().toDouble() < 95.9) {
             view.error = view.context.getString(R.string.please_enter_valid_body_temperature)
             view.requestFocus()
-        }
-        if (view.checkString().isNotEmpty() && view.checkString().toDouble() > 105) {
+        }*/
+       /* if (view.checkString().isNotEmpty() && view.checkString().toDouble() > 105) {
             view.error = view.context.getString(R.string.please_enter_valid_body_temperature)
             view.requestFocus()
-        }
+        }*/
     }
 
 }
@@ -65,22 +65,22 @@ fun getBloodPressureValid(view: EditText, data: String) {
             }
             view.requestFocus()
         }
-        if (view.checkString().isNotEmpty() && view.checkString().toDouble() < 60) {
+       /* if (view.checkString().isNotEmpty() && view.checkString().toDouble() < 60) {
             if (view.id == R.id.etSbp) {
                 view.error = view.context.getString(R.string.please_enter_valid_sbp_bp)
             } else {
                 view.error = view.context.getString(R.string.please_enter_valid_dbp_bp)
             }
             view.requestFocus()
-        }
-        if (view.checkString().isNotEmpty() && view.checkString().toDouble() > 180) {
+        }*/
+       /* if (view.checkString().isNotEmpty() && view.checkString().toDouble() > 180) {
             if (view.id == R.id.etSbp) {
                 view.error = view.context.getString(R.string.please_enter_valid_sbp_bp)
             } else {
                 view.error = view.context.getString(R.string.please_enter_valid_dbp_bp)
             }
             view.requestFocus()
-        }
+        }*/
     }
 
 }
@@ -92,14 +92,14 @@ fun getValidOxygen(view: EditText, data: String) {
             view.error = view.context.getString(R.string.please_enter_body_oxygen)
             view.requestFocus()
         }
-        if (view.checkString().isNotEmpty() && view.checkString().toInt() <= 0) {
+       /* if (view.checkString().isNotEmpty() && view.checkString().toInt() <= 0) {
             view.error = view.context.getString(R.string.please_enter_valid_oxygen_level)
             view.requestFocus()
         }
         if (view.checkString().isNotEmpty() && view.checkString().toInt() > 100) {
             view.error = view.context.getString(R.string.please_enter_valid_oxygen_level)
             view.requestFocus()
-        }
+        }*/
     }
 }
 
@@ -110,13 +110,13 @@ fun getValidHeartRate(view: EditText, data: String) {
         if (view.isBlank()) {
             view.error = view.context.getString(R.string.please_enter_your_heart_rate)
             view.requestFocus()
-        } else if (view.checkString().isNotEmpty() && view.checkString().toDouble() < 60) {
+        } /*else if (view.checkString().isNotEmpty() && view.checkString().toDouble() < 60) {
             view.error = view.context.getString(R.string.please_enter_valid_heart_rate)
             view.requestFocus()
         } else if (view.checkString().isNotEmpty() && view.checkString().toDouble() > 100) {
             view.error = view.context.getString(R.string.please_enter_valid_heart_rate)
             view.requestFocus()
-        }
+        }*/
     }
 
 }
