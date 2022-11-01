@@ -258,6 +258,11 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 }
                 is DataResult.Failure -> {
                     hideLoading()
+                    /*fragmentVitalStatsBinding.typeChart.setNoDataText("No Data Available")
+                    fragmentVitalStatsBinding.typeChart.invalidate()*/
+
+                    fragmentVitalStatsBinding.typeChart.clear()
+
                 }
             }
         }
