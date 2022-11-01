@@ -1,8 +1,6 @@
 package com.shepherdapp.app.ui.component.careTeamMembers
 
-import android.app.AlertDialog
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -235,23 +233,42 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    careTeams?.clear()
-                    careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
-                    fragmentCareTeamMembersBinding.let {
-                        it.recyclerViewCareTeam.visibility = View.GONE
-                        it.txtNoCareTeamFound.visibility = View.VISIBLE
+                    if (careTeams.isNullOrEmpty()) return@observeEvent
+                    // Get the uuid of Care Team Leader
+                    try {
+                        val uuidTeamLead = careTeams?.filter {
+                            it.careRoles.slug == CareRole.CareTeamLead.slug
+                        }?.map {
+                            it.user_id
+                        }?.get(0)
+                        Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
+                        uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }
+                    } catch (e: Exception) {
+                        Log.d(TAG, "Error: ${e.toString()}")
                     }
+                    fragmentCareTeamMembersBinding.let {
+                        it.recyclerViewCareTeam.visibility = View.VISIBLE
+                        it.txtNoCareTeamFound.visibility = View.GONE
+                    }
+                    careTeamAdapter?.updateCareTeams(careTeams!!)
 
-                    val builder = AlertDialog.Builder(requireContext())
-                    val dialog = builder.apply {
-                        setTitle("CareTeams")
-                        setMessage("No CareTeam Found")
-                        setPositiveButton("OK") { _, _ ->
-                            // navigateToDashboardScreen()
-                        }
-                    }.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                    /* careTeams?.clear()
+                     careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+                     fragmentCareTeamMembersBinding.let {
+                         it.recyclerViewCareTeam.visibility = View.GONE
+                         it.txtNoCareTeamFound.visibility = View.VISIBLE
+                     }*/
+
+                    /*  val builder = AlertDialog.Builder(requireContext())
+                      val dialog = builder.apply {
+                          setTitle("CareTeams")
+                          setMessage("No CareTeam Found")
+                          setPositiveButton("OK") { _, _ ->
+                              // navigateToDashboardScreen()
+                          }
+                      }.create()
+                      dialog.show()
+                      dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)*/
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -334,16 +351,16 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         it.txtNoCareTeamFound.visibility = View.VISIBLE
                     }
 
-                    val builder = AlertDialog.Builder(requireContext())
-                    val dialog = builder.apply {
-                        setTitle("CareTeams")
-                        setMessage("No CareTeam Found")
-                        setPositiveButton("OK") { _, _ ->
-                            // navigateToDashboardScreen()
-                        }
-                    }.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                    /* val builder = AlertDialog.Builder(requireContext())
+                     val dialog = builder.apply {
+                         setTitle("CareTeams")
+                         setMessage("No CareTeam Found")
+                         setPositiveButton("OK") { _, _ ->
+                             // navigateToDashboardScreen()
+                         }
+                     }.create()
+                     dialog.show()
+                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)*/
                 }
             }
         }
