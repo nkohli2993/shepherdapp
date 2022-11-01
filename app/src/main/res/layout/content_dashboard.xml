@@ -18,12 +18,16 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/home_navigation" />
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardViewUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_10sdp"
-        app:cardCornerRadius="@dimen/_8sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        app:cardElevation="0dp"
+        app:strokeColor="#dce9e6"
+        app:strokeWidth="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -53,5 +57,5 @@
                 android:layout_marginBottom="@dimen/_6sdp"
                 android:textSize="@dimen/_9ssp" />
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
