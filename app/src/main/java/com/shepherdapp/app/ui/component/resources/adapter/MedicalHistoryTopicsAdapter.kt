@@ -64,38 +64,41 @@ class MedicalHistoryTopicsAdapter(
 
         fun bind(resourceData: AllResourceData, recyclerItemListener: RecyclerItemListener) {
             // Set Title
-            if (resourceData.title?.length!! > 50) {
-                setNotesClickForLong(
-                    resourceData.title!!,
-                    true,
-                    itemBinding.textViewTitle,
-                    resourceData,
-                    recyclerItemListener
-                )
-            } else {
-                itemBinding.textViewTitle.text = resourceData.title
-            }
+            itemBinding.textViewTitle.text = resourceData.title
+
+            /*  if (resourceData.title?.length!! > 50) {
+                  setNotesClickForLong(
+                      resourceData.title!!,
+                      true,
+                      itemBinding.textViewTitle,
+                      resourceData,
+                      recyclerItemListener
+                  )
+              } else {
+                  itemBinding.textViewTitle.text = resourceData.title
+              }*/
 
 
             //Set Description
             val content = Html.fromHtml(resourceData.content ?: "").toString()
-            if (resourceData.content?.length!! > 50) {
-                setNotesClickForLong(
-                    content,
-                    true,
-                    itemBinding.txtDesc,
-                    resourceData,
-                    recyclerItemListener
-                )
-            } else {
-                val desc = Html.fromHtml(resourceData.content).toString().trim()
-                itemBinding.txtDesc.text = desc
+            itemBinding.txtDesc.text = content
+            /*  if (resourceData.content?.length!! > 50) {
+                  setNotesClickForLong(
+                      content,
+                      true,
+                      itemBinding.txtDesc,
+                      resourceData,
+                      recyclerItemListener
+                  )
+              } else {
+                  val desc = Html.fromHtml(resourceData.content).toString().trim()
+                  itemBinding.txtDesc.text = desc
 
-                /* itemBinding.txtDesc.text = HtmlCompat.fromHtml(
+                  *//* itemBinding.txtDesc.text = HtmlCompat.fromHtml(
                      resourceData.content ?: "",
                      HtmlCompat.FROM_HTML_MODE_COMPACT
-                 )*/
-            }
+                 )*//*
+            }*/
 
             /* if(resourceData.thumbnailUrl!=null && resourceData.thumbnailUrl!=""){
                  Picasso.get().load(resourceData.thumbnailUrl)
