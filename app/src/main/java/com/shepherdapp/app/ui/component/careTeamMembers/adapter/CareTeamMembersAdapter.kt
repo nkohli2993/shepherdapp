@@ -60,9 +60,13 @@ class CareTeamMembersAdapter(
                          R.color.colorAccent
                      )
                  )*/
+//                itemBinding.cardView.alpha = 0.3f
+                itemBinding.llImageWrapper.alpha = 0.4f
+                itemBinding.textViewCareTeamName.alpha = 0.4f
+                itemBinding.textViewCareTeamRole.alpha = 0.4f
                 itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_waiting)
-                itemBinding.cardView.alpha = 0.4f
-                itemBinding.imageViewCareTeam.alpha = 0.4f
+//                itemBinding.cardView.alpha = 0.4f
+//                itemBinding.imageViewCareTeam.alpha = 0.4f
                 itemBinding.let {
                     it.textViewCareTeamName.text = careTeam.email
                     if (!careTeam.image.isNullOrEmpty()) {
