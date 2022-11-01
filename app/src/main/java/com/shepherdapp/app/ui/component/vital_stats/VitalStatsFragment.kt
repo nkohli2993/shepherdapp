@@ -340,6 +340,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
     override fun initViewBinding() {
         fragmentVitalStatsBinding.listener = this
+        fragmentVitalStatsBinding.typeChart.clear()
+
         fragmentVitalStatsBinding.dateSelectedTV.text =
             SimpleDateFormat("EEE, MMM dd").format(Calendar.getInstance().time)
         addType()
