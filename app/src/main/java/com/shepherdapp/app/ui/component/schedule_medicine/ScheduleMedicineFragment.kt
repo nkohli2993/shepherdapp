@@ -289,7 +289,7 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
 
                     if (doseList.isEmpty()) return@observeEvent
                     doseAdapter?.addData(doseList)
-                    doseList.add(0, DoseList(id = -1, name = "Dose Qty"))
+                    doseList.add(0, DoseList(id = -1, name = "Select Dosage"))
                     dosageAdapter =
                         DosageQtyTypeAdapter(
                             requireContext(),
