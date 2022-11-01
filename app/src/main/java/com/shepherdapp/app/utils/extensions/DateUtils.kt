@@ -274,14 +274,16 @@ fun String?.convertTimeStampToDate(): String? {
     return formattedDate
 }
 
-// Get time from timestamp
+// Get local time from server timestamp
 fun String?.convertTimeStampToTime(): String? {
     val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    sdf.timeZone = TimeZone.getTimeZone("UTC")
     var convertedDate: Date? = null
     var formattedDate: String? = null
     try {
         convertedDate = sdf.parse(this)
-        formattedDate = SimpleDateFormat("HH:mm aaa").format(convertedDate)
+        val df = SimpleDateFormat("hh:mm aaa", Locale.getDefault())
+        formattedDate = df.format(convertedDate)
     } catch (e: ParseException) {
         e.printStackTrace()
     }
