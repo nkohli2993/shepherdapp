@@ -149,7 +149,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     if (addedConditionPayload.size <= 0) {
                         binding.buttonFinish.text = getString(R.string.add)
                         // show popup for no medical conditions
-                        val builder = AlertDialog.Builder(this)
+                       /* val builder = AlertDialog.Builder(this)
                         val dialog = builder.apply {
                             setMessage(getString(R.string.no_medical_condition_added_for_loved_one))
                             setPositiveButton(getString(R.string.add)) { _, _ ->
@@ -162,7 +162,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         dialog.show()
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-                        return@observeEvent
+                        return@observeEvent*/
                     } else {
                         binding.txtMedicalCondition.text =
                             getString(R.string.edit_medical_conditions)
