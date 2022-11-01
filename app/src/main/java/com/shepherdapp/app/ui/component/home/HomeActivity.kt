@@ -285,6 +285,13 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = it.data.payload
+                    // Set the notification icon
+                    if (payload?.unreadNotificationsCount!! > 0) {
+                        binding.appBarDashboard.ivNotification.setImageResource(R.drawable.ic_home_notification)
+                    } else {
+                        binding.appBarDashboard.ivNotification.setImageResource(R.drawable.ic_home_notification_inactive)
+                    }
+
                     if (it.data.payload?.lovedOneUserProfile != null || it.data.payload?.lovedOneUserProfile != "") {
                         val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
                         Picasso.get().load(lovedOneProfilePic)
