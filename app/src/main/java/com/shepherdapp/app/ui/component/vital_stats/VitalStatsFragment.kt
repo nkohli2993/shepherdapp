@@ -261,6 +261,18 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     /*fragmentVitalStatsBinding.typeChart.setNoDataText("No Data Available")
                     fragmentVitalStatsBinding.typeChart.invalidate()*/
 
+                    fragmentVitalStatsBinding.tvHeartRateValue.text = "Not Available"
+                    fragmentVitalStatsBinding.tvHeartRateUnit.visibility = View.GONE
+
+                    fragmentVitalStatsBinding.tvBodyTempValue.text = "Not Available"
+                    fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.GONE
+
+                    fragmentVitalStatsBinding.tvBloodPressureValue.text = "Not Available"
+
+                    fragmentVitalStatsBinding.tvOxygenValue.text = "Not Available"
+                    fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.GONE
+
+
                     fragmentVitalStatsBinding.typeChart.clear()
 
                 }
