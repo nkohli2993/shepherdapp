@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.my_med_detail
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
+import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +59,13 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                         HtmlCompat.fromHtml(it.data.payload.medlist.name ?: "", 0)
                     /*fragmentMyMedDetailBinding.txtDescription1.text =
                         HtmlCompat.fromHtml( it.data.payload.medlist.description?: "", 0)*/
-                    fragmentMyMedDetailBinding.txtDescription1.text = it.data.payload.note
+                    if (it.data.payload.medlist.description.isNullOrEmpty()) {
+                        fragmentMyMedDetailBinding.txtDescription1.text =
+                            getString(R.string.no_description_available)
+                    } else {
+                        fragmentMyMedDetailBinding.txtDescription1.text =
+                            Html.fromHtml(it.data.payload.medlist.description)
+                    }
 
                     it.data.payload.assigned_by_details.let { assignedByDetail ->
                         fragmentMyMedDetailBinding.tvUsername.text =
@@ -69,7 +76,6 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                         Picasso.get().load(it.data.payload.assigned_by_details.profile_photo)
                             .placeholder(R.drawable.image_placeholder)
                             .into(fragmentMyMedDetailBinding.imageViewUser)
-
                     }
 
                 }

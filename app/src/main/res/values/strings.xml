@@ -564,6 +564,7 @@
     <string name="no_invitation_found">No invitation found</string>
     <string name="dosage_med">Dosage :</string>
     <string name="please_enter_medicine_name">Please enter medicine name</string>
+    <string name="no_description_available">No description available</string>
 
 
 </resources>
