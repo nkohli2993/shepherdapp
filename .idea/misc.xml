@@ -319,7 +319,7 @@
         <entry key="app/src/main/res/layout/activity_onboarding.xml" value="0.18" />
         <entry key="app/src/main/res/layout/activity_recipes_list.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.8486352357320099" />
-        <entry key="app/src/main/res/layout/activity_reset_password.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/activity_reset_password.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_subscription.xml" value="0.2734234234234234" />
         <entry key="app/src/main/res/layout/activity_upload_lock_box_document.xml" value="0.21171875" />

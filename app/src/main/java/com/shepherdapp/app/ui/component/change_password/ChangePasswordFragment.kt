@@ -17,7 +17,6 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.home.HomeActivity
-import com.shepherdapp.app.utils.extensions.isValidPassword
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.ChangePasswordViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +27,7 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(), Vi
     private lateinit var fragmentChangePasswordBinding: FragmentChangePasswordBinding
     private var isPasswordShown = false
     private lateinit var homeActivity: HomeActivity
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is HomeActivity) {
@@ -59,6 +59,25 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(), Vi
                 }
                 is DataResult.Success -> {
                     hideLoading()
+//                    homeActivity.navigateToLoginScreen()
+                    changePasswordViewModel.logOut()
+                }
+            }
+        }
+
+
+        // Observe Logout Response
+        changePasswordViewModel.logoutResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+//                    navigateToLoginScreen()
                     homeActivity.navigateToLoginScreen()
                 }
             }
@@ -147,14 +166,14 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(), Vi
                         "Please enter confirm password"
                     fragmentChangePasswordBinding.etConfirmPassword.requestFocus()
                 }
-                !fragmentChangePasswordBinding.etNewPassword.isValidPassword() -> {
+                fragmentChangePasswordBinding.etNewPassword.length() < 4 -> {
                     fragmentChangePasswordBinding.etNewPassword.error =
-                        getString(R.string.please_enter_valid_password)
+                        getString(R.string.password_should_be_min_4_character)
                     fragmentChangePasswordBinding.etNewPassword.requestFocus()
                 }
-                !fragmentChangePasswordBinding.etConfirmPassword.isValidPassword() -> {
+                fragmentChangePasswordBinding.etConfirmPassword.length() < 4 -> {
                     fragmentChangePasswordBinding.etConfirmPassword.error =
-                        getString(R.string.please_enter_valid_password)
+                        getString(R.string.password_should_be_min_4_character)
                     fragmentChangePasswordBinding.etConfirmPassword.requestFocus()
                 }
                 else -> {
