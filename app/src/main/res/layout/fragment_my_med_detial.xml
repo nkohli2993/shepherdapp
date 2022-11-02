@@ -163,7 +163,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="@id/tv_username"
             app:layout_constraintStart_toStartOf="@+id/llImageWrapper"
-            app:layout_constraintTop_toBottomOf="@+id/llImageWrapper" />
+            app:layout_constraintTop_toBottomOf="@+id/txtDescription1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detailTV"
