@@ -114,24 +114,24 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
 
 //                    noInvitationFound()
 
-                     val builder = AlertDialog.Builder(this)
-                     val dialog = builder.apply {
-                         setTitle("Join CareTeam Invitations")
-                         setMessage("No Invitations Found")
-                         setPositiveButton("OK") { _, _ ->
-                             // navigateToDashboardScreen()
-                             // Check if SharedPref contains lovedOne UUID
-                             val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
-                                 .getString(Const.LOVED_ONE_UUID, "")
-                             if (lovedOneUUID.isNullOrEmpty()) {
-                                 onBackPressed()
-                             } else {
-                                 navigateToDashboardScreen()
-                             }
-                         }
-                     }.create()
-                     dialog.show()
-                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                    val builder = AlertDialog.Builder(this)
+                    val dialog = builder.apply {
+                        setTitle("Join CareTeam Invitations")
+                        setMessage("No Invitations Found")
+                        setPositiveButton("OK") { _, _ ->
+                            // navigateToDashboardScreen()
+                            // Check if SharedPref contains lovedOne UUID
+                            val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
+                                .getString(Const.LOVED_ONE_UUID, "")
+                            if (lovedOneUUID.isNullOrEmpty()) {
+                                onBackPressed()
+                            } else {
+                                navigateToDashboardScreen()
+                            }
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -202,6 +202,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
 
     override fun onItemClick(result: Results?) {
         if (result?.id != null) {
+            Prefs.with(ShepherdApp.appContext)!!.save(Const.USER_ROLE, result.careRoles?.name)
             // Accept the invitation request
             careTeamsViewModel.acceptCareTeamInvitations(result.id!!)
         }
