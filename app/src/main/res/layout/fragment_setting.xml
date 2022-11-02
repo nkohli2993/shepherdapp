@@ -301,7 +301,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10ssp"
                         android:fontFamily="@font/gotham_book"
-                        android:text="@string/term_of_use"
+                        android:text="@string/term_and_conditions"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
