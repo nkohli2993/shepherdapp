@@ -253,6 +253,8 @@ class CreatedCarePointsViewModel @Inject constructor(
                                 _groupNameLiveData.postValue(Event(groupName))
                             }
                         }
+                        // Get the document id of the messages
+                        chatListData?.id = it.documents[0].id
                     }
                     onFound(true)
                     initChatListener()
@@ -271,7 +273,7 @@ class CreatedCarePointsViewModel @Inject constructor(
                     db.collection(tableName!!).add(chatListData.serializeToMap())
                         .addOnSuccessListener {
 
-                            ShepherdApp.db.collection(tableName!!).document(it.id)
+                            db.collection(tableName!!).document(it.id)
                                 .update("id", it.id)
                             chatListData?.id = it.id
 
@@ -287,6 +289,7 @@ class CreatedCarePointsViewModel @Inject constructor(
                 onFound(false)
             }
     }
+
 
     private fun initChatListener() {
         isListenerInitialized = true
