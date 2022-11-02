@@ -420,6 +420,9 @@
         <action
             android:id="@+id/action_nav_loved_one_to_lovedOneProfileFragment"
             app:destination="@id/lovedOneProfileFragment" />
+        <action
+            android:id="@+id/action_nav_loved_one_to_nav_dashboard"
+            app:destination="@id/nav_dashboard" />
     </fragment>
     <fragment
         android:id="@+id/addNewLockBoxFragment"

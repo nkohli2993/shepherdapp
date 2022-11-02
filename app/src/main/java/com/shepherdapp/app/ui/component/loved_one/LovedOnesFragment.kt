@@ -201,7 +201,9 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                     }
                 }
 
-                backPress()
+//                backPress()
+                // Redirect to dashboard fragment
+                findNavController().navigate(R.id.action_nav_loved_one_to_nav_dashboard)
             }
             R.id.ivBack -> {
                 backPress()
