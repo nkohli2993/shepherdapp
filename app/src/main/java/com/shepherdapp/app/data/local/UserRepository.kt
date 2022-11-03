@@ -135,7 +135,7 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
             .getObject(LOVED_ONE_DETAIL, UserLovedOne::class.java)
     }
 
-    fun saveFirebaseToken(firebaseToken: String) {
+    fun saveFirebaseToken(firebaseToken: String?) {
         Prefs.with(ShepherdApp.appContext)?.save(Const.FIREBASE_TOKEN, firebaseToken)
     }
 

@@ -28,6 +28,7 @@ import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
+import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.WelcomeUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_welcome_user.*
@@ -210,6 +211,9 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToLoginScreen() {
         //startActivityWithFinish<LoginActivity>()
+        showSuccess(this, "User logged out successfully")
+//        welcomeViewModel.clearFirebaseToken()
+        Prefs.with(ShepherdApp.appContext)?.removeAll()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)

@@ -21,6 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.databinding.ActivityCreateNewAccountBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -213,6 +215,14 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                                 )
                             }
                         }
+                        // Save User Info in Firestore
+                        val user = it1.payload?.let { it2 -> signUpResponseToUser(it2) }
+                        user?.let { it2 ->
+                            createNewAccountViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
+                                it2
+                            )
+                        }
+
                         if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                                 this
                             ) && BiometricUtils.isFingerprintAvailable(
@@ -269,6 +279,22 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     }[0].toString()
                 }
             }
+        }
+    }
+
+
+    private fun signUpResponseToUser(payload: Payload): User {
+        val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
+
+        return User().apply {
+            id = payload.userProfiles?.id
+            userId = payload.userProfiles?.userId
+            firstname = payload.userProfiles?.firstname
+            lastname = payload.userProfiles?.lastname
+            profilePhoto = payload.userProfiles?.profilePhoto
+            uuid = payload.uuid
+            email = payload.email
+            firebaseToken = fToken
         }
     }
 

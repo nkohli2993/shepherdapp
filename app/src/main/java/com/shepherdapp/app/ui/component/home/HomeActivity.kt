@@ -639,6 +639,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     fun navigateToLoginScreen() {
         //startActivityWithFinish<LoginActivity>()
         showSuccess(this, "User logged out successfully")
+//        viewModel.clearFirebaseToken()
         Prefs.with(ShepherdApp.appContext)?.removeAll()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

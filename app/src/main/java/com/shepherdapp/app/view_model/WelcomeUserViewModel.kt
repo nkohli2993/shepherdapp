@@ -1,8 +1,11 @@
 package com.shepherdapp.app.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.BuildConfig
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
@@ -12,6 +15,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseResponseModel
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.TableName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,6 +33,7 @@ class WelcomeUserViewModel @Inject constructor(
 
     /* private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
      var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData*/
+    var usersTableName: String? = null
 
     private var _userDetailsLiveData =
         MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
@@ -116,5 +121,26 @@ class WelcomeUserViewModel @Inject constructor(
             }
         }
         return logoutResponseLiveData
+    }
+
+    // Clear Firebase Token on logout
+    fun clearFirebaseToken() {
+        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.USERS_DEV
+        } else {
+            TableName.USERS
+        }
+        val uuid = userRepository.getUUID()
+        Log.d(TAG, "uuid : $uuid")
+        ShepherdApp.db.collection(usersTableName!!).whereEqualTo("uuid", userRepository.getUUID())
+            .get()
+            .addOnSuccessListener {
+                if (!it.documents.isNullOrEmpty()) {
+                    val documentID = it.documents[0].id
+                    // Clear firebaseToken
+                    ShepherdApp.db.collection(usersTableName!!).document(documentID)
+                        .update("firebase_token", "")
+                }
+            }
     }
 }

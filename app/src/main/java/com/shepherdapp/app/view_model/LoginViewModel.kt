@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.ShepherdApp.Companion.db
 import com.shepherdapp.app.data.dto.chat.User
@@ -39,6 +40,7 @@ class LoginViewModel @Inject constructor(
 
     var usersTableName: String? = null
     var isUserAlreadyExists: Boolean = false
+    var firebaseToken: String? = null
 
     var loginData = MutableLiveData<UserSignupData>().apply {
         value = UserSignupData()
@@ -150,6 +152,32 @@ class LoginViewModel @Inject constructor(
         checkIfUserAlreadyExists(user)
     }
 
+    // Check if firebase token matches with any user in firebase, then clear the firebase token
+    // Multiple user can loggedIn to same device, so firebase token should be updated for latest user
+    // and clear the firebase token for old users
+    fun checkIfFirebaseTokenMatchesWithOtherUser(user: User) {
+        val fToken = userRepository.getFirebaseToken()
+        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.USERS_DEV
+        } else {
+            TableName.USERS
+        }
+        db.collection(usersTableName!!)
+            .whereEqualTo("firebase_token", fToken)
+            .get()
+            .addOnSuccessListener {
+                if (!it.documents.isNullOrEmpty()) {
+                    it.documents.forEach { it1 ->
+                        val docID = it1.id
+                        // Update firebaseToken
+                        db.collection(usersTableName!!).document(docID)
+                            .update("firebase_token", "")
+                    }
+                }
+                checkIfUserAlreadyExists(user)
+            }
+    }
+
     // Check if user's info already saved in Firestore
     private fun checkIfUserAlreadyExists(user: User) {
         usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
@@ -177,12 +205,33 @@ class LoginViewModel @Inject constructor(
                 } else {
                     // Update the firebase token
                     val documentID = it.documents[0].id
-                    val fToken = userRepository.getFirebaseToken()
-
-                    db.collection(usersTableName!!).document(documentID)
-                        .update("firebase_token", fToken)
+                    Log.d(TAG, "DocumentID : $documentID")
+//                    val fToken = userRepository.getFirebaseToken()
+                    generateFirebaseToken(documentID)
+                    /*db.collection(usersTableName!!).document(documentID)
+                        .update("firebase_token", firebaseToken)*/
                 }
             }.addOnFailureListener {
+            }
+    }
+
+    private fun clearFirebaseToken() {
+        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.USERS_DEV
+        } else {
+            TableName.USERS
+        }
+
+        userRepository.getUUID()
+        db.collection(usersTableName!!).whereEqualTo("uuid", userRepository.getUUID())
+            .get()
+            .addOnSuccessListener {
+                if (!it.documents.isNullOrEmpty()) {
+                    val documentID = it.documents[0].id
+                    // Clear firebaseToken
+                    db.collection(usersTableName!!).document(documentID)
+                        .update("firebase_token", "")
+                }
             }
     }
 
@@ -193,4 +242,23 @@ class LoginViewModel @Inject constructor(
     fun isLoggedInUserLovedOne(): Boolean? {
         return userRepository.isLoggedInUserLovedOne()
     }
+
+
+    private fun generateFirebaseToken(documentID: String) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener {
+            if (!it.isSuccessful) {
+                Log.w(TAG, "Fetching FCM registration token failed", it.exception)
+                return@addOnCompleteListener
+            }
+            firebaseToken = it.result
+            // Get new FCM registration token
+            userRepository.saveFirebaseToken(firebaseToken)
+            Log.d(TAG, "Firebase token generated: ${it.result}")
+            // Update firebaseToken
+            db.collection(usersTableName!!).document(documentID)
+                .update("firebase_token", firebaseToken)
+        }
+    }
+
+
 }

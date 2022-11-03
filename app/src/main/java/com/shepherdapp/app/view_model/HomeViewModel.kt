@@ -1,11 +1,13 @@
 package com.shepherdapp.app.view_model
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.DataRepository
@@ -25,6 +27,7 @@ import com.shepherdapp.app.ui.base.BaseViewModel
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.TableName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +42,7 @@ class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val homeRepository: HomeRepository
 ) : BaseViewModel() {
+    var usersTableName: String? = null
 
     var menuItemList: ArrayList<MenuItemModel> = ArrayList()
     var menuItemMap: HashMap<String, ArrayList<MenuItemModel>> = HashMap()
@@ -237,5 +241,26 @@ class HomeViewModel @Inject constructor(
             }
         }
         return userDetailByUUIDLiveData
+    }
+
+    // Clear Firebase Token on logout
+    fun clearFirebaseToken() {
+        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.USERS_DEV
+        } else {
+            TableName.USERS
+        }
+        val uuid = userRepository.getUUID()
+        Log.d(TAG, "uuid : $uuid")
+        ShepherdApp.db.collection(usersTableName!!).whereEqualTo("uuid", userRepository.getUUID())
+            .get()
+            .addOnSuccessListener {
+                if (!it.documents.isNullOrEmpty()) {
+                    val documentID = it.documents[0].id
+                    // Clear firebaseToken
+                    ShepherdApp.db.collection(usersTableName!!).document(documentID)
+                        .update("firebase_token", "")
+                }
+            }
     }
 }
