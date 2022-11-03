@@ -287,11 +287,11 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
 
         return User().apply {
-            id = payload.userProfiles?.id
-            userId = payload.userProfiles?.userId
-            firstname = payload.userProfiles?.firstname
-            lastname = payload.userProfiles?.lastname
-            profilePhoto = payload.userProfiles?.profilePhoto
+            id = payload.id
+            userId = payload.id
+            firstname = payload.name
+            lastname = null
+            profilePhoto = null
             uuid = payload.uuid
             email = payload.email
             firebaseToken = fToken
