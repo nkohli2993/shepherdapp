@@ -384,13 +384,13 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
                     fragmentAddNewEventBinding.tvTime.requestFocus()
                 }
-                fragmentAddNewEventBinding.etNote.text.toString().trim().isEmpty() -> {
-                    showInfo(
-                        requireContext(),
-                        getString(R.string.please_enter_notes_for_care_point)
-                    )
-                    fragmentAddNewEventBinding.etNote.requestFocus()
-                }
+                /* fragmentAddNewEventBinding.etNote.text.toString().trim().isEmpty() -> {
+                     showInfo(
+                         requireContext(),
+                         getString(R.string.please_enter_notes_for_care_point)
+                     )
+                     fragmentAddNewEventBinding.etNote.requestFocus()
+                 }*/
                 else -> {
                     return true
                 }
@@ -413,13 +413,19 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         dateFormat = SimpleDateFormat("HH:mm")
         val selectedTime = dateFormat.format(formattedDate)
 
+        val note = if (fragmentAddNewEventBinding.etNote.text.toString().isNullOrEmpty()) {
+            null
+        } else {
+            fragmentAddNewEventBinding.etNote.text.toString().trim()
+        }
+
         addNewEventViewModel.createEvent(
             addNewEventViewModel.getLovedOneUUId(),
             fragmentAddNewEventBinding.etEventName.text.toString().trim(),
             fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
             selectedDate,
             selectedTime,
-            fragmentAddNewEventBinding.etNote.text.toString().trim(),
+            note,
             assignTo
         )
     }
