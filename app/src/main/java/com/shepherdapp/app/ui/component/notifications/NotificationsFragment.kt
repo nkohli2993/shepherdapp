@@ -21,10 +21,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.notifications.adapter.NotificationsAdapter
-import com.shepherdapp.app.utils.SingleEvent
-import com.shepherdapp.app.utils.observeEvent
-import com.shepherdapp.app.utils.setupSnackbar
-import com.shepherdapp.app.utils.showToast
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.view_model.NotificationsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -153,6 +150,31 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>(), View
             // If notification is unread
             if (it.isRead == false) {
                 notificationsViewModel.readNotifications(ReadNotificationRequestModel(it.notificationId))
+            }
+
+            // Handles Redirection of Notifications
+            val notificationType = it.notification?.eventName
+
+            when (notificationType) {
+                Const.NotificationAction.CARE_TEAM_INVITE -> {
+                    findNavController().navigate(R.id.action_nav_notifications_to_nav_invitation)
+                }
+                Const.NotificationAction.LOCK_BOX_CREATED -> {
+                    findNavController().navigate(R.id.action_nav_notifications_to_nav_lock_box)
+                }
+                Const.NotificationAction.LOCK_BOX_UPDATED -> {
+                    findNavController().navigate(R.id.action_nav_notifications_to_nav_lock_box)
+                }
+                Const.NotificationAction.MEDICATION_CREATED -> {
+                    findNavController().navigate(R.id.action_nav_notifications_to_nav_my_medlist)
+                }
+                Const.NotificationAction.MEDICATION_UPDATED -> {
+                    findNavController().navigate(R.id.action_nav_notifications_to_nav_my_medlist)
+                }
+                Const.NotificationAction.CARE_POINT_CREATED -> {
+                    findNavController().navigate(R.id.action_nav_notifications_to_nav_care_points)
+
+                }
             }
         }
     }
