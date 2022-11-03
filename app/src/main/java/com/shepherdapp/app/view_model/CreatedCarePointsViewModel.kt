@@ -606,12 +606,14 @@ class CreatedCarePointsViewModel @Inject constructor(
             .addOnSuccessListener { querySnapshot ->
                 for (document in querySnapshot.documents) {
                     val data = document.data
-                    val id = data?.get("id") as Number
-                    memberIDs.forEach {
-                        if (id.toInt() == it.toInt()) {
-                            val firebaseToken = data["firebase_token"] as String
-                            Log.d(TAG, "firebase Token :$firebaseToken")
-                            firebaseTokensList.add(firebaseToken)
+                    if (data?.get("id") != null) {
+                        val id = data["id"] as Number
+                        memberIDs.forEach {
+                            if (id.toInt() == it.toInt()) {
+                                val firebaseToken = data["firebase_token"] as String
+                                Log.d(TAG, "firebase Token :$firebaseToken")
+                                firebaseTokensList.add(firebaseToken)
+                            }
                         }
                     }
                 }
