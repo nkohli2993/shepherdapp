@@ -93,14 +93,20 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
+        if (intent.getStringExtra("source") != null) {
+            if (intent.getStringExtra("source") == "ChangePassword") {
+                binding.ivBack.visibility = View.INVISIBLE
+            }
+        }
+
 //        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "Test123@"
 
-//        loginViewModel.loginData.value!!.email = "karan@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "Admin@123"
+//        loginViewModel.loginData.value!!.email = "rickson@yopmail.com"
+//        loginViewModel.loginData.value!!.password = "1234"
 
         loginViewModel.loginData.value!!.email = "robert@yopmail.com"
-        loginViewModel.loginData.value!!.password = "1234"
+        loginViewModel.loginData.value!!.password = "12345"
 
         binding.viewModel = loginViewModel
 
@@ -207,6 +213,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
                 is DataResult.Success -> {
                     hideLoading()
+//                    loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser()
                     it.data.let { it ->
                         it.message?.let { it1 -> showSuccess(this, it1) }
                         it.payload.let { payload ->
@@ -296,7 +303,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
                         // Save User Info in Firestore
                         val user = it.payload?.let { it1 -> loginResponseToUser(it1) }
-                        user?.let { it1 -> loginViewModel.saveUserInfoInFirestore(it1) }
+                        // user?.let { it1 -> loginViewModel.saveUserInfoInFirestore(it1) }
+                        user?.let { it1 ->
+                            loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
+                                it1
+                            )
+                        }
 
                         // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
                         // Save lovedOneID to sharedPref
@@ -540,6 +552,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun loginResponseToUser(payload: Payload): User {
+        generateFirebaseToken()
         val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
 
         return User().apply {

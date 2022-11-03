@@ -78,7 +78,7 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(), Vi
                 }
                 is DataResult.Success -> {
 //                    navigateToLoginScreen()
-                    homeActivity.navigateToLoginScreen()
+                    homeActivity.navigateToLoginScreen("ChangePassword")
                 }
             }
         }

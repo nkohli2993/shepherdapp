@@ -267,7 +267,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    navigateToLoginScreen()
+                    navigateToLoginScreen("home")
                 }
             }
         }
@@ -636,13 +636,14 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         drawerLayout?.closeDrawer(GravityCompat.START)
     }
 
-    fun navigateToLoginScreen() {
+    fun navigateToLoginScreen(source: String) {
         //startActivityWithFinish<LoginActivity>()
         showSuccess(this, "User logged out successfully")
 //        viewModel.clearFirebaseToken()
         Prefs.with(ShepherdApp.appContext)?.removeAll()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra("source", source)
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
