@@ -63,7 +63,6 @@ class SubscriptionActivity : BaseActivity() {
         singleEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "openSubscriptionPlan: Clicked Plan is $it ")
         }
-
     }
 
     // Get Subscription Items
