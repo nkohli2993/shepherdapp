@@ -83,6 +83,7 @@ class NotificationsFragment : BaseFragment<FragmentNotificationsBinding>(), View
                     hideLoading()
                     fragmentNotificationsBinding.txtNoResultFound.visibility = View.VISIBLE
                     fragmentNotificationsBinding.recyclerViewNotifications.visibility = View.GONE
+                    fragmentNotificationsBinding.txtClearAll.visibility = View.GONE
                 }
                 is DataResult.Loading -> {
                     showLoading("")
