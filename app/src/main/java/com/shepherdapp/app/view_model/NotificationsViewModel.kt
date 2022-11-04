@@ -98,10 +98,12 @@ class NotificationsViewModel @Inject constructor(
         pageNumber: Int,
         limit: Int
     ): LiveData<Event<DataResult<NotificationResponseModel>>> {
+        val lovedOneUUID = userRepository.getLovedOneUUId()
         viewModelScope.launch {
-            val response = notificationRepository.getNotifications(pageNumber, limit)
+            val response =
+                lovedOneUUID?.let { notificationRepository.getNotifications(pageNumber, limit, it) }
             withContext(Dispatchers.Main) {
-                response.collect {
+                response?.collect {
                     _notificationResponseLiveData.postValue(Event(it))
                 }
             }

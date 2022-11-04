@@ -498,6 +498,7 @@ interface ApiService {
     suspend fun getNotifications(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
+        @Query("loved_one_id") lovedOneUUID: String,
     ): Response<NotificationResponseModel>
 
     @PUT(ApiConstants.Notification.READ_NOTIFICATIONS)
