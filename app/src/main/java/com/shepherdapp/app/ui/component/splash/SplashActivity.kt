@@ -56,10 +56,10 @@ class SplashActivity : BaseActivity() {
 
         if (token.isNullOrEmpty()) {
             navigateToOnBoardingScreen()
-//            navigateToSubscriptionScreen()
         } else {
             navigateToLoginScreen()
         }
+//        navigateToSubscriptionScreen()
     }
 
     override fun observeViewModel() {

@@ -556,7 +556,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
 
         return User().apply {
-            id = payload.userProfiles?.id
+            id = payload.userProfiles?.userId
             userId = payload.userProfiles?.userId
             firstname = payload.userProfiles?.firstname
             lastname = payload.userProfiles?.lastname
