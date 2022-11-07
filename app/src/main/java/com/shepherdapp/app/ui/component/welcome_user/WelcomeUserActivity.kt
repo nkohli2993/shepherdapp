@@ -240,7 +240,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         Prefs.with(ShepherdApp.appContext)?.removeAll()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra("source", "WelcomeUserActivity")
+//        intent.putExtra("source", "WelcomeUserActivity")
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open

@@ -94,8 +94,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         binding.listener = this
 
         if (intent.getStringExtra("source") != null) {
-            if (intent.getStringExtra("source") == "ChangePassword") {
-                binding.ivBack.visibility = View.INVISIBLE
+            if (intent.getStringExtra("source") == "WelcomeActivity") {
+                binding.ivBack.visibility = View.VISIBLE
             }
         }
 
@@ -105,8 +105,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //        loginViewModel.loginData.value!!.email = "rickson@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
 
-        loginViewModel.loginData.value!!.email = "robert@yopmail.com"
-        loginViewModel.loginData.value!!.password = "1234"
+//        loginViewModel.loginData.value!!.email = "robert@yopmail.com"
+//        loginViewModel.loginData.value!!.password = "1234"
 
         binding.viewModel = loginViewModel
 

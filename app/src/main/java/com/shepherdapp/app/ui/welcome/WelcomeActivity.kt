@@ -1,7 +1,7 @@
 package com.shepherdapp.app.ui.welcome
 
+import android.content.Intent
 import android.os.Bundle
-import android.text.method.LinkMovementMethod
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
@@ -97,12 +97,14 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToLogin() {
-        startActivity<LoginActivity>()
-        /* val intent = Intent(this, LoginActivity::class.java)
-         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-         startActivity(intent)
-         finish()*/
+//        startActivity<LoginActivity>()
         //startActivityWithFinish<LoginActivity>()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.putExtra("source", "WelcomeActivity")
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun navigateToSignUp() {
