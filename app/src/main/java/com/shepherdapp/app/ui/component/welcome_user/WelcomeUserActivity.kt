@@ -16,7 +16,8 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
-import com.shepherdapp.app.data.dto.user_detail.Payload
+import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.databinding.ActivityWelcomeUserBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -92,6 +93,14 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                         // Save Payload to shared Pref
                         welcomeViewModel.savePayload(payload)
 
+                        // Save User Info in Firestore
+                        val user = it.data.payload?.let { it2 -> signUpResponseToUser(it2) }
+                        user?.let { it2 ->
+                            welcomeViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
+                                it2
+                            )
+                        }
+
                         //Save User Role
                         /*payload?.userLovedOne?.get(0)?.careRoles?.name.let {
                             it?.let { it1 -> welcomeViewModel.saveUserRole(it1) }
@@ -129,6 +138,21 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                     navigateToLoginScreen()
                 }
             }
+        }
+    }
+
+    private fun signUpResponseToUser(payload: Payload): User {
+        val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
+
+        return User().apply {
+            id = payload.userProfiles?.userId
+            userId = payload.userProfiles?.userId
+            firstname = payload.userProfiles?.firstname
+            lastname = payload.userProfiles?.lastname
+            profilePhoto = payload.userProfiles?.profilePhoto
+            uuid = payload.uuid
+            email = payload.email
+            firebaseToken = fToken
         }
     }
 
@@ -216,6 +240,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         Prefs.with(ShepherdApp.appContext)?.removeAll()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra("source", "WelcomeUserActivity")
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open

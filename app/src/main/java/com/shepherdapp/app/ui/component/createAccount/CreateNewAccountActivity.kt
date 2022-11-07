@@ -216,12 +216,12 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
                         // Save User Info in Firestore
-                        val user = it1.payload?.let { it2 -> signUpResponseToUser(it2) }
+                       /* val user = it1.payload?.let { it2 -> signUpResponseToUser(it2) }
                         user?.let { it2 ->
                             createNewAccountViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
                                 it2
                             )
-                        }
+                        }*/
 
                         if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                                 this
