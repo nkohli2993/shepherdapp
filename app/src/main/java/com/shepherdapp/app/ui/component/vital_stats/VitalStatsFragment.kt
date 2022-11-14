@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -17,14 +16,14 @@ import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.components.YAxis.AxisDependency
-import com.github.mikephil.charting.data.CandleData
-import com.github.mikephil.charting.data.CandleDataSet
-import com.github.mikephil.charting.data.CandleEntry
 import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
@@ -920,9 +919,15 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private fun setData() {
         fragmentVitalStatsBinding.typeChart.setBackgroundColor(Color.WHITE)
         fragmentVitalStatsBinding.typeChart.description.isEnabled = false
+        val description = Description()
+        description.text = "Time"
+        description.textSize = 16f
+        fragmentVitalStatsBinding.typeChart.description.setPosition(0f, 0f)
+        fragmentVitalStatsBinding.typeChart.description = description
         fragmentVitalStatsBinding.typeChart.setMaxVisibleValueCount(xAxisLabel.size)
-        fragmentVitalStatsBinding.typeChart.setPinchZoom(false)
+        fragmentVitalStatsBinding.typeChart.setPinchZoom(true)
         fragmentVitalStatsBinding.typeChart.setDrawGridBackground(false)
+        fragmentVitalStatsBinding.typeChart.setTouchEnabled(true)
 
         // Fixed the increased x-axis label issue when we load the graph on clicking filter type
         fragmentVitalStatsBinding.typeChart.setVisibleXRangeMinimum(8f)
@@ -948,35 +953,28 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         fragmentVitalStatsBinding.typeChart.setDrawMarkers(true)
         fragmentVitalStatsBinding.typeChart.marker = markerView(requireContext())
 
-        val values = ArrayList<CandleEntry>()
+        val values = ArrayList<Entry>()
         values.clear()
         for (i in graphDataList.indices) {
             values.add(
-                /*CandleEntry(
-                    i.toFloat(),
-                    if (graphDataList[i].x == 0)
-                        (graphDataList[i].y - 10).toFloat()
-                    else graphDataList[i].x.toFloat(),
-                    graphDataList[i].y.toFloat(),
-                    if (graphDataList[i].x == 0)
-                        (graphDataList[i].y - 10).toFloat()
-                    else graphDataList[i].x.toFloat(),
-                    graphDataList[i].y.toFloat(),
-                    0
-                )*/
                 // in the response x,x1 -> min & y,y1 ->max
 
-                CandleEntry(
+                /* CandleEntry(
+                     i.toFloat(),
+                     // Shadow high
+                     graphDataList[i].y.toFloat(),
+                     // Shadow low
+                     graphDataList[i].x.toFloat(),
+                     //Open
+                     graphDataList[i].x.toFloat(),
+                     //Close
+                     graphDataList[i].y.toFloat(),
+                     0
+                 )*/
+
+                Entry(
                     i.toFloat(),
-                    // Shadow high
-                    graphDataList[i].y.toFloat(),
-                    // Shadow low
-                    graphDataList[i].x.toFloat(),
-                    //Open
-                    graphDataList[i].x.toFloat(),
-                    //Close
-                    graphDataList[i].y.toFloat(),
-                    0
+                    graphDataList[i].y.toFloat()
                 )
             )
         }
@@ -1000,32 +998,42 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         xAxis.setLabelCount(10, false)
         // To fix the issue of getting duplicate values on X axis
         xAxis.isGranularityEnabled = true
-//        xAxis.granularity = 2f
+//        xAxis.granularity = 7f
 //        xAxis.spaceMin = 0.5f
 //        xAxis.spaceMax = 0.5f
 
-        val set1 = CandleDataSet(values, "")
+        val set1 = LineDataSet(values, "Data")
         set1.setDrawIcons(false)
+        set1.mode = LineDataSet.Mode.CUBIC_BEZIER
         set1.axisDependency = AxisDependency.LEFT
-        set1.shadowColor = Color.WHITE
-        set1.shadowWidth = 20f
-        set1.decreasingColor = Color.rgb(159, 123, 179)
-        set1.decreasingPaintStyle = Paint.Style.FILL
-        set1.increasingColor = Color.rgb(159, 123, 179)
-        set1.increasingPaintStyle = Paint.Style.FILL
-        set1.neutralColor = Color.BLUE
+//        set1.shadowColor = Color.WHITE
+//        set1.shadowWidth = 20f
+//        set1.decreasingColor = Color.rgb(159, 123, 179)
+//        set1.decreasingPaintStyle = Paint.Style.FILL
+//        set1.increasingColor = Color.rgb(159, 123, 179)
+//        set1.increasingPaintStyle = Paint.Style.FILL
+//        set1.neutralColor = Color.BLUE
         set1.highlightLineWidth = 0f
-        set1.barSpace = 3f
-        set1.valueTextColor = ContextCompat.getColor(requireContext(), R.color.transparent)
+//        set1.barSpace = 3f
+        set1.valueTextColor = ContextCompat.getColor(requireContext(), R.color._2776FF)
         set1.isHighlightEnabled = true
         set1.highLightColor = Color.RED
+        set1.lineWidth = 3f
+        set1.circleRadius = 5f
+        set1.setCircleColor(ContextCompat.getColor(requireContext(), R.color._2776FF))
+        set1.setDrawCircleHole(true)
+        set1.setDrawCircles(true)
+        set1.valueTextSize = 10f
+        set1.formLineWidth = 5f
+
+        set1.color = ContextCompat.getColor(requireContext(), R.color._2776FF)
 //        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(24f)
         fragmentVitalStatsBinding.typeChart.setScaleEnabled(false)
         fragmentVitalStatsBinding.typeChart.zoom(3f, 0f, 3f, 0f)
         fragmentVitalStatsBinding.typeChart.axisLeft.setAxisMinValue(10f)
         fragmentVitalStatsBinding.typeChart.axisRight.setAxisMinValue(10f)
         Log.d(TAG, "setData: $set1")
-        val data = CandleData(set1)
+        val data = LineData(set1)
         fragmentVitalStatsBinding.typeChart.data = data
         fragmentVitalStatsBinding.typeChart.invalidate()
 

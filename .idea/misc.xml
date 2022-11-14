@@ -10,6 +10,7 @@
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/ic_image_placeholder.xml" value="0.255" />
         <entry key="../../../../../home/shami/.gradle/caches/transforms-3/b9f7cb194a5253dfdc1815f05c0ca817/transformed/jetified-Lassi-0.4.0/res/drawable/shape_circle_white.xml" value="0.255" />
         <entry key="../../../../layout/custom_preview.xml" value="0.21203703703703702" />
+        <entry key="../../AndroidSDK/platforms/android-33/data/res/layout/simple_spinner_dropdown_item.xml" value="0.16875" />
         <entry key="..\:/Users/itechnolab101/.gradle/caches/transforms-3/342dce9291abea3ff1834378267f2ba2/transformed/jetified-number-keyboard-3.0.0/res/drawable/numberkeyboard_key_bg.xml" value="0.259" />
         <entry key="..\:/Users/itechnolab101/.gradle/caches/transforms-3/342dce9291abea3ff1834378267f2ba2/transformed/jetified-number-keyboard-3.0.0/res/drawable/numberkeyboard_key_bg_pressed.xml" value="0.259" />
         <entry key="..\:/Users/itechnolab101/AndroidStudioProjects/androidshepherdcare/app/src/main/res/drawable/bg_image_place_holder.xml" value="0.2765" />
@@ -291,6 +292,8 @@
         <entry key="app/src/main/res/drawable/rounded_box_12.xml" value="0.188" />
         <entry key="app/src/main/res/drawable/rounded_box_new.xml" value="0.143" />
         <entry key="app/src/main/res/drawable/shape_auth_header.xml" value="0.182" />
+        <entry key="app/src/main/res/drawable/shape_black_border.xml" value="0.1755" />
+        <entry key="app/src/main/res/drawable/spinner_style.xml" value="0.189" />
         <entry key="app/src/main/res/drawable/switch_thumb_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/switch_track_selector.xml" value="0.255" />
         <entry key="app/src/main/res/drawable/test_ic_baseline_medication_24.xml" value="0.255" />
@@ -304,7 +307,7 @@
         <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_team_members.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_create_new_account.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_create_new_account.xml" value="0.125" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.534375" />
         <entry key="app/src/main/res/layout/activity_enter_enterprise_code.xml" value="0.29234234234234235" />
         <entry key="app/src/main/res/layout/activity_enterprise_user.xml" value="0.29234234234234235" />

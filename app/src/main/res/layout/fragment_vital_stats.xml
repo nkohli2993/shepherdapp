@@ -34,6 +34,7 @@
                 android:text="@string/remotely_monitor_your_loved_one_s_vitals_statistics_via_wearables"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
+                android:lineSpacingExtra="@dimen/_5sdp"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -360,7 +361,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:dropDownVerticalOffset="@dimen/_40sdp"
-                android:spinnerMode="dropdown"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/clBloodNOWrapper" />
 
@@ -397,7 +397,7 @@
                 android:layout_marginEnd="@dimen/_1sdp"
                 android:fontFamily="@font/gotham_medium"
                 android:text="Min - /"
-                android:textColor="@color/_CEB9D5"
+                android:textColor="@color/_2776FF"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
                 app:layout_constraintEnd_toStartOf="@+id/tvHRMax"
@@ -410,18 +410,29 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham_medium"
                 android:text="Max -"
-                android:textColor="@color/_8A569C"
+                android:textColor="@color/_D7293F"
                 android:textSize="@dimen/_12ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvHRMin"
                 tools:ignore="HardcodedText" />
+            <!--Candle Stick Chart-->
+            <!-- <com.github.mikephil.charting.charts.CandleStickChart
+                 android:id="@+id/typeChart"
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/_350sdp"
+                 android:layout_marginTop="@dimen/_10sdp"
+                 app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV" />-->
 
-            <com.github.mikephil.charting.charts.CandleStickChart
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/typeChart"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_350sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV" />
+                app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV"
+                android:background="@color/colorWhite"
+                android:elevation="@dimen/_10sdp" />
+
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
