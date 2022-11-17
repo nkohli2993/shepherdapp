@@ -272,7 +272,16 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     }
 //                    fragmentVitalStatsBinding.typeChart.invalidate()
 //                    fragmentVitalStatsBinding.typeChart.clear()
-                    setData()
+
+                    // Check if graph data is empty or not
+                    if (graphDataList.isNullOrEmpty()) {
+                        fragmentVitalStatsBinding.typeChart.clear()
+                        fragmentVitalStatsBinding.typeChart.invalidate()
+                        fragmentVitalStatsBinding.layoutMinMax.visibility = View.GONE
+                    } else {
+                        fragmentVitalStatsBinding.layoutMinMax.visibility = View.VISIBLE
+                        setData()
+                    }
                 }
                 is DataResult.Failure -> {
                     hideLoading()
@@ -292,6 +301,9 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
 
                     fragmentVitalStatsBinding.typeChart.clear()
+                    fragmentVitalStatsBinding.typeChart.invalidate()
+                    fragmentVitalStatsBinding.layoutMinMax.visibility = View.GONE
+
 
                 }
             }
