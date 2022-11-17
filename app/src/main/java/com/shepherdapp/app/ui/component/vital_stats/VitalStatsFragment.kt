@@ -12,10 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
 import android.widget.AdapterView
-import android.widget.TextView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -25,8 +25,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
-import com.github.mikephil.charting.highlight.Highlight
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.fitness.Fitness
 import com.google.android.gms.fitness.FitnessOptions
@@ -42,6 +41,7 @@ import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.AddBloodPres
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.AddVitalData
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.GraphData
+import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.Payload
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.TypeData
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.VitalStatsData
 import com.shepherdapp.app.databinding.FragmentVitalStatsBinding
@@ -52,6 +52,7 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.vital_stats.adapter.TypeAdapter
+import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.getEndTimeString
 import com.shepherdapp.app.utils.extensions.getStartTimeString
 import com.shepherdapp.app.utils.extensions.showError
@@ -88,6 +89,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private lateinit var fragmentVitalStatsBinding: FragmentVitalStatsBinding
     private var vitalStats: VitalStatsData? = null
     private var graphDataList: ArrayList<GraphData> = arrayListOf()
+    private var payload: Payload? = null
 
     //private var heartRate: Int
     var finalSelectedDate: Date? = null
@@ -197,9 +199,9 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     graphDataList.clear()
                     fragmentVitalStatsBinding.typeChart.invalidate()
                     fragmentVitalStatsBinding.typeChart.clear()
+                    payload = it.data.payload
                     vitalStats = it.data.payload.latestOne
                     graphDataList = it.data.payload.graphData
-
 
                     vitalStats.let { stats ->
                         //set data on dash board
@@ -248,11 +250,28 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     for (i in graphDataList) {
                         dataAdded.add(i.x.toDouble())
                     }
-                    fragmentVitalStatsBinding.tvHRMin.text = "Min ${Collections.min(dataAdded)}/"
-//                    fragmentVitalStatsBinding.tvHRMin.text = "Min ${it.data.payload.minAverage}/"
-                    fragmentVitalStatsBinding.tvHRMax.text = "Max ${it.data.payload.maxAverage}"
-                    fragmentVitalStatsBinding.typeChart.invalidate()
-                    fragmentVitalStatsBinding.typeChart.clear()
+//                    fragmentVitalStatsBinding.tvHRMin.text = "Min ${Collections.min(dataAdded)}/"
+                    if (payload?.type == Const.VitalStat.BLOOD_PRESSURE) {
+                        fragmentVitalStatsBinding.txtMinDBP.visibility = View.VISIBLE
+                        fragmentVitalStatsBinding.txtMaxDBP.visibility = View.VISIBLE
+
+                        fragmentVitalStatsBinding.tvHRMin.text =
+                            "SBP:Min ${it.data.payload.minValue}/"
+                        fragmentVitalStatsBinding.tvHRMax.text =
+                            "Max ${it.data.payload.maxValue}"
+                        fragmentVitalStatsBinding.txtMinDBP.text =
+                            "DBP:Min ${it.data.payload.minDBP}/"
+                        fragmentVitalStatsBinding.txtMaxDBP.text =
+                            "Max ${it.data.payload.maxDBP}"
+                    } else {
+                        fragmentVitalStatsBinding.tvHRMin.text = "Min ${it.data.payload.minValue}/"
+                        fragmentVitalStatsBinding.tvHRMax.text = "Max ${it.data.payload.maxValue}"
+
+                        fragmentVitalStatsBinding.txtMinDBP.visibility = View.GONE
+                        fragmentVitalStatsBinding.txtMaxDBP.visibility = View.GONE
+                    }
+//                    fragmentVitalStatsBinding.typeChart.invalidate()
+//                    fragmentVitalStatsBinding.typeChart.clear()
                     setData()
                 }
                 is DataResult.Failure -> {
@@ -314,28 +333,28 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             TypeData(
                 typeList.size,
                 getString(R.string.heart_rate),
-                "heart_rate"
+                Const.VitalStat.HEART_RATE
             )
         )
         typeList.add(
             TypeData(
                 typeList.size,
                 getString(R.string.body_temp),
-                "body_temp"
+                Const.VitalStat.BODY_TEMP
             )
         )
         typeList.add(
             TypeData(
                 typeList.size,
                 getString(R.string.blood_pressure),
-                "blood_pressure"
+                Const.VitalStat.BLOOD_PRESSURE
             )
         )
         typeList.add(
             TypeData(
                 typeList.size,
                 getString(R.string.oxygen),
-                "oxygen"
+                Const.VitalStat.OXYGEN
             )
         )
 
@@ -917,21 +936,26 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     }
 
     private fun setData() {
-        fragmentVitalStatsBinding.typeChart.setBackgroundColor(Color.WHITE)
-        fragmentVitalStatsBinding.typeChart.description.isEnabled = false
+        fragmentVitalStatsBinding.typeChart.setBackgroundColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color._F9F7FA
+            )
+        )
+        fragmentVitalStatsBinding.typeChart.description.isEnabled = true
         val description = Description()
         description.text = "Time"
         description.textSize = 16f
         fragmentVitalStatsBinding.typeChart.description.setPosition(0f, 0f)
         fragmentVitalStatsBinding.typeChart.description = description
-        fragmentVitalStatsBinding.typeChart.setMaxVisibleValueCount(xAxisLabel.size)
+        fragmentVitalStatsBinding.typeChart.setMaxVisibleValueCount(8)
         fragmentVitalStatsBinding.typeChart.setPinchZoom(true)
         fragmentVitalStatsBinding.typeChart.setDrawGridBackground(false)
         fragmentVitalStatsBinding.typeChart.setTouchEnabled(true)
 
         // Fixed the increased x-axis label issue when we load the graph on clicking filter type
-        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMinimum(8f)
-        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(8f)
+        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMinimum(4f)
+        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(4f)
 
 
         val xAxis: XAxis = fragmentVitalStatsBinding.typeChart.xAxis
@@ -949,11 +973,11 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         fragmentVitalStatsBinding.typeChart.legend.isEnabled = false
         fragmentVitalStatsBinding.typeChart.isHighlightPerTapEnabled = true
 
-        fragmentVitalStatsBinding.typeChart.resetTracking()
+//        fragmentVitalStatsBinding.typeChart.resetTracking()
         fragmentVitalStatsBinding.typeChart.setDrawMarkers(true)
-        fragmentVitalStatsBinding.typeChart.marker = markerView(requireContext())
 
         val values = ArrayList<Entry>()
+        val values1 = ArrayList<Entry>()
         values.clear()
         for (i in graphDataList.indices) {
             values.add(
@@ -974,11 +998,23 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
                 Entry(
                     i.toFloat(),
-                    graphDataList[i].y.toFloat()
+                    graphDataList[i].x.toFloat()
                 )
             )
+
+            // For Blood Pressure
+            if (payload?.type == Const.VitalStat.BLOOD_PRESSURE) {
+                values1.add(
+                    // For blood pressure x represents sbp and y represents dbp
+                    Entry(
+                        i.toFloat(),
+                        (graphDataList[i].y).toFloat()
+                    )
+                )
+            }
+
         }
-        Log.d(TAG, "setData: candleEntries : $values")
+        Log.d(TAG, "setData: LineEntries : $values")
 
         xAxisLabel = ArrayList<String>()
         xAxisLabel.clear()
@@ -989,6 +1025,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                  xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime))
              }*/
             xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime!!))
+//            xAxisLabel.add(i.day)
         }
 
         Log.d(TAG, "setData: xAxisLabel :$xAxisLabel ")
@@ -1018,49 +1055,88 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         set1.valueTextColor = ContextCompat.getColor(requireContext(), R.color._2776FF)
         set1.isHighlightEnabled = true
         set1.highLightColor = Color.RED
-        set1.lineWidth = 3f
+        set1.lineWidth = 2f
         set1.circleRadius = 5f
         set1.setCircleColor(ContextCompat.getColor(requireContext(), R.color._2776FF))
         set1.setDrawCircleHole(true)
         set1.setDrawCircles(true)
         set1.valueTextSize = 10f
         set1.formLineWidth = 5f
-
         set1.color = ContextCompat.getColor(requireContext(), R.color._2776FF)
-//        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(24f)
+
+
+//        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(10f)
+        fragmentVitalStatsBinding.typeChart.moveViewToX(0f)
         fragmentVitalStatsBinding.typeChart.setScaleEnabled(false)
         fragmentVitalStatsBinding.typeChart.zoom(3f, 0f, 3f, 0f)
         fragmentVitalStatsBinding.typeChart.axisLeft.setAxisMinValue(10f)
-        fragmentVitalStatsBinding.typeChart.axisRight.setAxisMinValue(10f)
+//        fragmentVitalStatsBinding.typeChart.xAxis.setAxisMinValue(1f)
+//        fragmentVitalStatsBinding.typeChart.axisRight.setAxisMinValue(10f)
         Log.d(TAG, "setData: $set1")
-        val data = LineData(set1)
+
+        // use the interface ILineDataSet
+        val dataSets = ArrayList<ILineDataSet>()
+        dataSets.add(set1)
+        if (payload?.type == Const.VitalStat.BLOOD_PRESSURE) {
+            val set2 = LineDataSet(values1, "Data2")
+            set2.setDrawIcons(false)
+            set2.mode = LineDataSet.Mode.CUBIC_BEZIER
+            set2.axisDependency = AxisDependency.LEFT
+            set2.highlightLineWidth = 0f
+            set2.valueTextColor = ContextCompat.getColor(requireContext(), R.color._D7293F)
+            set2.isHighlightEnabled = true
+            set2.highLightColor = Color.RED
+            set2.lineWidth = 2f
+            set2.circleRadius = 5f
+            set2.setCircleColor(ContextCompat.getColor(requireContext(), R.color._D7293F))
+            set2.setDrawCircleHole(true)
+            set2.setDrawCircles(true)
+            set2.valueTextSize = 10f
+            set2.formLineWidth = 5f
+            set2.color = ContextCompat.getColor(requireContext(), R.color._D7293F)
+            dataSets.add(set2)
+        }
+
+        val data = LineData(dataSets)
+        data.isHighlightEnabled = true
+
         fragmentVitalStatsBinding.typeChart.data = data
         fragmentVitalStatsBinding.typeChart.invalidate()
+        fragmentVitalStatsBinding.typeChart.setExtraOffsets(40f, 40f, 40f, 40f)
 
         fragmentVitalStatsBinding.typeChart.isHighlightPerTapEnabled = true
+        fragmentVitalStatsBinding.typeChart.animateX(1800, Easing.EaseInExpo)
+        // Set margin between x-axis and labels
+        fragmentVitalStatsBinding.typeChart.xAxis.yOffset = 10f
+        // Set margin between y-axis and labels
+        fragmentVitalStatsBinding.typeChart.axisLeft.xOffset = 10f
+        val mv = CustomMarkerView(requireContext(), R.layout.custom_marker_view, payload?.type)
+        mv.chartView = fragmentVitalStatsBinding.typeChart
+        fragmentVitalStatsBinding.typeChart.marker = mv
+
 
         // Chart Value Click
-        fragmentVitalStatsBinding.typeChart.setOnChartValueSelectedListener(
-            object : OnChartValueSelectedListener {
-                override fun onValueSelected(e: Entry?, h: Highlight?) {
-                    val x: Float = e!!.x
-                    val y: Float = e.y
-                    fragmentVitalStatsBinding.typeChart.highlightValue(h)
+        /*  fragmentVitalStatsBinding.typeChart.setOnChartValueSelectedListener(
+              object : OnChartValueSelectedListener {
+                  override fun onValueSelected(e: Entry?, h: Highlight?) {
+                      val x: Float = e!!.x
+                      val y: Float = e.y
+                      fragmentVitalStatsBinding.typeChart.highlightValue(h)
 
-                    val layout =
-                        LayoutInflater.from(context).inflate(R.layout.custom_marker_view, null)
-                    val tv = layout.findViewById<TextView>(R.id.tvContent)
-                    tv.textSize = 16.toFloat()
-                    tv.setTextColor(resources.getColor(R.color.colorGreen))
+                      val layout =
+                          LayoutInflater.from(context).inflate(R.layout.custom_marker_view, null)
+                      val tv = layout.findViewById<TextView>(R.id.tvContent)
+                      tv.textSize = 16.toFloat()
+                      tv.setTextColor(resources.getColor(R.color.colorGreen))
 
-                    tv.text = "x:$x y:$y"
-                }
+                      tv.text = "x:$x y:$y"
+                  }
 
-                override fun onNothingSelected() {
-                }
+                  override fun onNothingSelected() {
+                  }
 
-            }
-        )
+              }
+          )*/
     }
 
     override fun getLayoutRes(): Int {
@@ -1135,8 +1211,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
 
     private fun markerView(context: Context?): CustomMarkerView? {
-        val mv = CustomMarkerView(context, R.layout.custom_marker_view, 16, Color.RED)
-        mv.setOffset((-mv.width / 2).toFloat(), (-mv.height - 25).toFloat())
+        val mv = CustomMarkerView(context, R.layout.custom_marker_view, payload?.type)
+//        mv.setOffset((-mv.width / 2).toFloat(), (-mv.height - 25).toFloat())
         return mv
     }
 }

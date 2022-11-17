@@ -1,29 +1,63 @@
 package com.shepherdapp.app.ui.component.vital_stats
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.view.LayoutInflater
-import android.widget.LinearLayout
+import android.util.Log
+import android.view.View
 import android.widget.TextView
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import com.shepherdapp.app.R
+import com.shepherdapp.app.utils.Const
+import javax.inject.Inject
 
 
 /**
  * Created by Deepak Rattan on 14/10/22
  */
-class CustomMarkerView(context: Context?, layoutResource: Int, valueSize: Int, valueColor: Int) :
+@SuppressLint("ViewConstructor")
+class CustomMarkerView @Inject constructor(
+    context: Context?,
+    layoutResource: Int,
+    private val type: String?
+) :
     MarkerView(context, layoutResource) {
-    private var tvContent: TextView
+
+    var view: View? = null
+    var txtContent: TextView? = null
 
 
+    @SuppressLint("SetTextI18n")
     override fun refreshContent(e: Entry, highlight: Highlight?) {
-        // set the entry-value as the display text
-        tvContent.text = "x: ${e.x} y: ${e.y}"
 
+        // set the entry-value as the display text
+//        txtContent?.text = "y: ${e.y}"
+        var text: String? = null
+
+        when (type) {
+            Const.VitalStat.BLOOD_PRESSURE -> {
+                text = if (highlight?.dataSetIndex == 0)
+                    "${e.y} sbp"
+                else
+                    "${e.y} dbp"
+            }
+            Const.VitalStat.OXYGEN -> {
+                text = "${e.y} SpO2"
+            }
+            Const.VitalStat.HEART_RATE -> {
+                text = "${e.y} bpm"
+            }
+            Const.VitalStat.BODY_TEMP -> {
+                text = "${e.y} F"
+            }
+        }
+        txtContent?.text = text
+        Log.d(TAG, "refreshContent: x :${e.x} and y is ${e.y}")
         super.refreshContent(e, highlight)
+
+
     }
 
     private var mOffset: MPPointF? = null
@@ -36,12 +70,11 @@ class CustomMarkerView(context: Context?, layoutResource: Int, valueSize: Int, v
         return super.getOffset()
     }
 
+    override fun getOffsetForDrawingAtPoint(posX: Float, posY: Float): MPPointF {
+        return MPPointF(-width / 2f, -height - 10f)
+    }
+
     init {
-        // this markerView only displays a textview
-        val layout = LayoutInflater.from(context).inflate(layoutResource, null) as LinearLayout
-//        tvContent = findViewById(R.id.tvContent)
-        tvContent = layout.findViewById(R.id.tvContent)
-        tvContent.textSize = valueSize.toFloat()
-        tvContent.setTextColor(valueColor)
+        txtContent = findViewById(R.id.txtContent)
     }
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class GraphData(
-    @SerializedName("day")
+    @SerializedName("time")
     var day: String = "",
     @SerializedName("x")
     var x: Int = 0,

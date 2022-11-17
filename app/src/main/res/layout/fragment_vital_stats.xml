@@ -390,31 +390,130 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvHRMin"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_1sdp"
-                android:fontFamily="@font/gotham_medium"
-                android:text="Min - /"
-                android:textColor="@color/_2776FF"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
-                app:layout_constraintEnd_toStartOf="@+id/tvHRMax"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/typeSpinner"
-                tools:ignore="HardcodedText" />
+                app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
+                android:gravity="start"
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvHRMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="Min - /"
+                        android:textColor="@color/_2776FF"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvHRMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="Max -"
+                        android:textColor="@color/_D7293F"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtMinDBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="Min DBP - /"
+                        android:visibility="gone"
+                        android:textColor="@color/_2776FF"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtMaxDBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="Max DBP -"
+                        android:visibility="gone"
+                        android:textColor="@color/_D7293F"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--  <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/tvHRMin"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginEnd="@dimen/_1sdp"
+                  android:fontFamily="@font/gotham_medium"
+                  android:text="Min - /"
+                  android:textColor="@color/_2776FF"
+                  android:textSize="@dimen/_10ssp"
+                  app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
+                  app:layout_constraintEnd_toStartOf="@+id/tvHRMax"
+                  app:layout_constraintTop_toTopOf="@+id/typeSpinner"
+                  tools:ignore="HardcodedText" />-->
+
+            <!--<androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvHRMax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham_medium"
                 android:text="Max -"
                 android:textColor="@color/_D7293F"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvHRMin"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText" />-->
+
+            <!-- <androidx.appcompat.widget.AppCompatTextView
+                 android:id="@+id/txtMinDBP"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginEnd="@dimen/_1sdp"
+                 android:fontFamily="@font/gotham_medium"
+                 android:text="Min DBP - /"
+                 android:visibility=""
+                 android:textColor="@color/_2776FF"
+                 android:textSize="@dimen/_10ssp"
+                 app:layout_constraintEnd_toStartOf="@+id/txtMaxDBP"
+                 app:layout_constraintTop_toBottomOf="@+id/tvHRMin"
+                 app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
+                 tools:ignore="HardcodedText" />-->
+
+            <!--   <androidx.appcompat.widget.AppCompatTextView
+                   android:id="@+id/txtMaxDBP"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:fontFamily="@font/gotham_medium"
+                   android:text="Max DBP -"
+                   android:visibility=""
+                   android:textColor="@color/_D7293F"
+                   android:textSize="@dimen/_10ssp"
+                   tools:ignore="HardcodedText"
+                   android:layout_marginStart="@dimen/_10sdp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toTopOf="@+id/txtMinDBP" />
+   -->
             <!--Candle Stick Chart-->
             <!-- <com.github.mikephil.charting.charts.CandleStickChart
                  android:id="@+id/typeChart"
@@ -429,8 +528,9 @@
                 android:layout_height="@dimen/_350sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV"
-                android:background="@color/colorWhite"
-                android:elevation="@dimen/_10sdp" />
+                android:background="@color/_F9F7FA"
+                android:elevation="@dimen/_10sdp"
+                android:padding="@dimen/_20sdp" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

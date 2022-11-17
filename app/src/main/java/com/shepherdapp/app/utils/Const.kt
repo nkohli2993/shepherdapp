@@ -50,6 +50,13 @@ object Const {
         const val LOCK_BOX_UPDATED = "lockbox_updated"
         const val CARE_TEAM_INVITE = "care_team_invite"
     }
+
+    object VitalStat {
+        const val BLOOD_PRESSURE = "blood_pressure"
+        const val HEART_RATE = "heart_rate"
+        const val BODY_TEMP = "body_temp"
+        const val OXYGEN = "oxygen"
+    }
 }
 
 object Drawable {
