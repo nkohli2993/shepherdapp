@@ -966,8 +966,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         fragmentVitalStatsBinding.typeChart.setTouchEnabled(true)
 
         // Fixed the increased x-axis label issue when we load the graph on clicking filter type
-        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMinimum(4f)
-        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(4f)
+//        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMinimum(4f)
+//        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(4f)
 
 
         val xAxis: XAxis = fragmentVitalStatsBinding.typeChart.xAxis
@@ -975,7 +975,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         xAxis.setDrawGridLines(false)
 
         val leftAxis: YAxis = fragmentVitalStatsBinding.typeChart.axisLeft
-        leftAxis.setLabelCount(15, false)
+        leftAxis.setLabelCount(10, false)
         leftAxis.setDrawGridLines(false)
         leftAxis.setDrawAxisLine(true)
 
@@ -1036,7 +1036,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             /* if (SimpleDateFormat("HH:mm").format(dateTime!!) != "00:00") {
                  xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime))
              }*/
-            xAxisLabel.add(SimpleDateFormat("HH:mm").format(dateTime!!))
+            xAxisLabel.add(SimpleDateFormat("HH:mm a").format(dateTime!!))
 //            xAxisLabel.add(i.day)
         }
 
@@ -1078,10 +1078,10 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
 
 //        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(10f)
-        fragmentVitalStatsBinding.typeChart.moveViewToX(0f)
+//        fragmentVitalStatsBinding.typeChart.moveViewToX(1f)
         fragmentVitalStatsBinding.typeChart.setScaleEnabled(false)
         fragmentVitalStatsBinding.typeChart.zoom(3f, 0f, 3f, 0f)
-        fragmentVitalStatsBinding.typeChart.axisLeft.setAxisMinValue(10f)
+//        fragmentVitalStatsBinding.typeChart.axisLeft.axisMinimum = 10f
 //        fragmentVitalStatsBinding.typeChart.xAxis.setAxisMinValue(1f)
 //        fragmentVitalStatsBinding.typeChart.axisRight.setAxisMinValue(10f)
         Log.d(TAG, "setData: $set1")
@@ -1114,14 +1114,18 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
         fragmentVitalStatsBinding.typeChart.data = data
         fragmentVitalStatsBinding.typeChart.invalidate()
-        fragmentVitalStatsBinding.typeChart.setExtraOffsets(40f, 40f, 40f, 40f)
+        fragmentVitalStatsBinding.typeChart.setExtraOffsets(20f, 40f, 50f, 40f)
 
         fragmentVitalStatsBinding.typeChart.isHighlightPerTapEnabled = true
-        fragmentVitalStatsBinding.typeChart.animateX(1800, Easing.EaseInExpo)
+        fragmentVitalStatsBinding.typeChart.animateX(1000, Easing.EaseInExpo)
         // Set margin between x-axis and labels
         fragmentVitalStatsBinding.typeChart.xAxis.yOffset = 10f
         // Set margin between y-axis and labels
         fragmentVitalStatsBinding.typeChart.axisLeft.xOffset = 10f
+        // allow 4 values to be displayed at once on the x-axis, not more
+        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMinimum(4f)
+        fragmentVitalStatsBinding.typeChart.setVisibleXRangeMaximum(8f)
+
         val mv = CustomMarkerView(requireContext(), R.layout.custom_marker_view, payload?.type)
         mv.chartView = fragmentVitalStatsBinding.typeChart
         fragmentVitalStatsBinding.typeChart.marker = mv
