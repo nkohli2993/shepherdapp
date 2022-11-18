@@ -473,7 +473,9 @@
     <string name="please_enter_valid_sbp_bp">Please enter valid SBP.</string>
     <string name="please_enter_valid_dbp_bp">Please enter valid DBP.</string>
     <string name="sbp">SBP</string>
+    <string name="sbp_with_colon">SBP:</string>
     <string name="dbp">DBP</string>
+    <string name="dbp_with_colon">DBP:</string>
     <string name="reset_security_code">Reset Security Code</string>
     <string name="set_security_code">Set Security Code</string>
     <string name="this_security_code_can_only_use_for_web_login">This security code can only use for web login.</string>

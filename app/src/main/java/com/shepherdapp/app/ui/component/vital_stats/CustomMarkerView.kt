@@ -39,9 +39,9 @@ class CustomMarkerView @Inject constructor(
         when (type) {
             Const.VitalStat.BLOOD_PRESSURE -> {
                 text = if (highlight?.dataSetIndex == 0)
-                    "${e.y} sbp"
-                else
                     "${e.y} dbp"
+                else
+                    "${e.y} sbp"
             }
             Const.VitalStat.OXYGEN -> {
                 text = "${e.y} SpO2"

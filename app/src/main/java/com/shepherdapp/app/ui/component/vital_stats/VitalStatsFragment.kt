@@ -254,13 +254,15 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     if (payload?.type == Const.VitalStat.BLOOD_PRESSURE) {
                         fragmentVitalStatsBinding.txtMinDBP.visibility = View.VISIBLE
                         fragmentVitalStatsBinding.txtMaxDBP.visibility = View.VISIBLE
+                        fragmentVitalStatsBinding.txtSBP.visibility = View.VISIBLE
+                        fragmentVitalStatsBinding.txtDBP.visibility = View.VISIBLE
 
                         fragmentVitalStatsBinding.tvHRMin.text =
-                            "SBP:Min ${it.data.payload.minValue}/"
+                            "Min ${it.data.payload.minValue}/"
                         fragmentVitalStatsBinding.tvHRMax.text =
                             "Max ${it.data.payload.maxValue}"
                         fragmentVitalStatsBinding.txtMinDBP.text =
-                            "DBP:Min ${it.data.payload.minDBP}/"
+                            "Min ${it.data.payload.minDBP}/"
                         fragmentVitalStatsBinding.txtMaxDBP.text =
                             "Max ${it.data.payload.maxDBP}"
                     } else {
@@ -278,8 +280,44 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         fragmentVitalStatsBinding.typeChart.clear()
                         fragmentVitalStatsBinding.typeChart.invalidate()
                         fragmentVitalStatsBinding.layoutMinMax.visibility = View.GONE
+                        fragmentVitalStatsBinding.txtType.visibility = View.GONE
+                        fragmentVitalStatsBinding.view.visibility = View.GONE
+                        fragmentVitalStatsBinding.txtType1.visibility = View.GONE
+                        fragmentVitalStatsBinding.view1.visibility = View.GONE
+
                     } else {
                         fragmentVitalStatsBinding.layoutMinMax.visibility = View.VISIBLE
+                        fragmentVitalStatsBinding.txtType.visibility = View.VISIBLE
+                        fragmentVitalStatsBinding.view.visibility = View.VISIBLE
+
+                        var vitalType: String? = null
+                        var sbp: String? = null
+                        var dbp: String? = null
+                        when (type) {
+                            Const.VitalStat.BODY_TEMP -> {
+                                vitalType = getString(R.string.body_temp)
+                            }
+                            Const.VitalStat.OXYGEN -> {
+                                vitalType = getString(R.string.oxygen)
+                            }
+                            Const.VitalStat.BLOOD_PRESSURE -> {
+//                                vitalType = getString(R.string.blood_pressure)
+                                sbp = getString(R.string.sbp)
+                                dbp = getString(R.string.dbp)
+                                fragmentVitalStatsBinding.txtType1.visibility = View.VISIBLE
+                                fragmentVitalStatsBinding.view1.visibility = View.VISIBLE
+                            }
+                            Const.VitalStat.HEART_RATE -> {
+                                vitalType = getString(R.string.heart_rate)
+
+                            }
+                        }
+                        if (type == Const.VitalStat.BLOOD_PRESSURE) {
+                            fragmentVitalStatsBinding.txtType.text = dbp
+                            fragmentVitalStatsBinding.txtType1.text = sbp
+                        } else {
+                            fragmentVitalStatsBinding.txtType.text = vitalType
+                        }
                         setData()
                     }
                 }
@@ -992,10 +1030,10 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         val values1 = ArrayList<Entry>()
         values.clear()
         for (i in graphDataList.indices) {
-            values.add(
-                // in the response x,x1 -> min & y,y1 ->max
+            /*  values.add(
+                  // in the response x,x1 -> min & y,y1 ->max
 
-                /* CandleEntry(
+                  *//* CandleEntry(
                      i.toFloat(),
                      // Shadow high
                      graphDataList[i].y.toFloat(),
@@ -1006,21 +1044,37 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                      //Close
                      graphDataList[i].y.toFloat(),
                      0
-                 )*/
+                 )*//*
 
                 Entry(
                     i.toFloat(),
                     graphDataList[i].x.toFloat()
                 )
-            )
+            )*/
 
             // For Blood Pressure
             if (payload?.type == Const.VitalStat.BLOOD_PRESSURE) {
-                values1.add(
+
+                values.add(
                     // For blood pressure x represents sbp and y represents dbp
                     Entry(
                         i.toFloat(),
                         (graphDataList[i].y).toFloat()
+                    )
+                )
+                values1.add(
+                    // For blood pressure x represents sbp and y represents dbp
+                    Entry(
+                        i.toFloat(),
+                        (graphDataList[i].x).toFloat()
+                    )
+                )
+            } else {
+                values.add(
+                    // For blood pressure x represents sbp and y represents dbp
+                    Entry(
+                        i.toFloat(),
+                        (graphDataList[i].x).toFloat()
                     )
                 )
             }
@@ -1047,6 +1101,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         xAxis.setLabelCount(10, false)
         // To fix the issue of getting duplicate values on X axis
         xAxis.isGranularityEnabled = true
+        // To give space between starting of line (first entry) and y-axis
+        xAxis.spaceMin = 1f
 //        xAxis.granularity = 7f
 //        xAxis.spaceMin = 0.5f
 //        xAxis.spaceMax = 0.5f
@@ -1114,7 +1170,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
         fragmentVitalStatsBinding.typeChart.data = data
         fragmentVitalStatsBinding.typeChart.invalidate()
-        fragmentVitalStatsBinding.typeChart.setExtraOffsets(20f, 40f, 50f, 40f)
+        fragmentVitalStatsBinding.typeChart.setExtraOffsets(15f, 40f, 50f, 10f)
 
         fragmentVitalStatsBinding.typeChart.isHighlightPerTapEnabled = true
         fragmentVitalStatsBinding.typeChart.animateX(1000, Easing.EaseInExpo)

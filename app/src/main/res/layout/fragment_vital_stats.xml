@@ -406,6 +406,17 @@
                     android:orientation="horizontal">
 
                     <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtSBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:visibility="gone"
+                        android:text="@string/sbp_with_colon"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvHRMin"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -432,6 +443,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_3sdp"
                     android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtDBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="@string/dbp_with_colon"
+                        android:visibility="gone"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtMinDBP"
@@ -526,13 +548,58 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/typeChart"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_350sdp"
+                android:layout_height="@dimen/_320sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV"
                 android:background="@color/_F9F7FA"
-                android:elevation="@dimen/_10sdp"
-                android:padding="@dimen/_20sdp" />
+                android:paddingTop="@dimen/_20sdp"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp" />
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/_2776FF"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/typeChart" />
+
+            <TextView
+                style="@style/TextViewGothamMedium"
+                android:id="@+id/txtType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_11ssp"
+                android:text="Test"
+                android:layout_marginStart="@dimen/_5sdp"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view"
+                app:layout_constraintBottom_toBottomOf="@+id/view" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/_D7293F"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <TextView
+                style="@style/TextViewGothamMedium"
+                android:id="@+id/txtType1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_11ssp"
+                android:text="Test"
+                android:layout_marginStart="@dimen/_5sdp"
+                app:layout_constraintStart_toEndOf="@+id/view1"
+                app:layout_constraintTop_toTopOf="@+id/view1"
+                app:layout_constraintBottom_toBottomOf="@+id/view1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
