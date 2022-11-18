@@ -207,7 +207,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         //set data on dash board
 
                         //Heart Rate
-                        if (vitalStats!!.data?.heartRate.isNullOrEmpty()) {
+                        if (vitalStats!!.data?.heartRate.isNullOrEmpty() || (vitalStats?.data?.heartRate?.toInt() == 0)) {
                             fragmentVitalStatsBinding.tvHeartRateValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvHeartRateUnit.visibility = View.GONE
                         } else {
@@ -217,7 +217,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Body temperature
-                        if (vitalStats!!.data?.bodyTemp.isNullOrEmpty()) {
+                        if (vitalStats!!.data?.bodyTemp.isNullOrEmpty() || (vitalStats?.data?.bodyTemp?.toInt() == 0)) {
                             fragmentVitalStatsBinding.tvBodyTempValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.GONE
                         } else {
@@ -227,7 +227,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Blood Pressure
-                        if (vitalStats!!.data?.bloodPressure?.sbp.isNullOrEmpty()) {
+                        if (vitalStats!!.data?.bloodPressure?.sbp.isNullOrEmpty() || (vitalStats?.data?.bloodPressure?.sbp?.toInt() == 0)) {
                             fragmentVitalStatsBinding.tvBloodPressureValue.text = "Not Available"
                         } else {
                             fragmentVitalStatsBinding.tvBloodPressureValue.text =
@@ -235,7 +235,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Oxygen Level
-                        if (vitalStats!!.data?.oxygen.isNullOrEmpty()) {
+                        if (vitalStats!!.data?.oxygen.isNullOrEmpty() || (vitalStats?.data?.oxygen?.toInt() == 0)) {
                             fragmentVitalStatsBinding.tvOxygenValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.GONE
 
@@ -271,6 +271,9 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
                         fragmentVitalStatsBinding.txtMinDBP.visibility = View.GONE
                         fragmentVitalStatsBinding.txtMaxDBP.visibility = View.GONE
+
+                        fragmentVitalStatsBinding.txtType1.visibility = View.GONE
+                        fragmentVitalStatsBinding.view1.visibility = View.GONE
                     }
 //                    fragmentVitalStatsBinding.typeChart.invalidate()
 //                    fragmentVitalStatsBinding.typeChart.clear()
@@ -301,7 +304,6 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                                 vitalType = getString(R.string.oxygen)
                             }
                             Const.VitalStat.BLOOD_PRESSURE -> {
-//                                vitalType = getString(R.string.blood_pressure)
                                 sbp = getString(R.string.sbp)
                                 dbp = getString(R.string.dbp)
                                 fragmentVitalStatsBinding.txtType1.visibility = View.VISIBLE
@@ -336,6 +338,11 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
                     fragmentVitalStatsBinding.tvOxygenValue.text = "Not Available"
                     fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.GONE
+
+                    fragmentVitalStatsBinding.txtType.visibility = View.GONE
+                    fragmentVitalStatsBinding.view.visibility = View.GONE
+                    fragmentVitalStatsBinding.txtType1.visibility = View.GONE
+                    fragmentVitalStatsBinding.view1.visibility = View.GONE
 
 
                     fragmentVitalStatsBinding.typeChart.clear()

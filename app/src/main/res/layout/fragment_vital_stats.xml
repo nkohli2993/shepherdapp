@@ -573,7 +573,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_11ssp"
-                android:text="Test"
                 android:layout_marginStart="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@+id/view"
@@ -585,6 +584,7 @@
                 android:layout_height="@dimen/_1sdp"
                 android:background="@color/_D7293F"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/view"
                 app:layout_constraintTop_toBottomOf="@+id/view" />
 
@@ -595,7 +595,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_11ssp"
-                android:text="Test"
+                android:visibility="gone"
                 android:layout_marginStart="@dimen/_5sdp"
                 app:layout_constraintStart_toEndOf="@+id/view1"
                 app:layout_constraintTop_toTopOf="@+id/view1"
