@@ -19,5 +19,5 @@ data class UserSignupData(
     @SerializedName("phone_no") var phoneNo: String? = null,
     @SerializedName("profile_photo") var profilePhoto: String? = null,
     @SerializedName("device") var device: String? = null,
-
-    ):Parcelable
+    @SerializedName("enterprise_code") var enterprise_code: String? = null,
+) : Parcelable

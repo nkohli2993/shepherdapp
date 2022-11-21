@@ -4,6 +4,9 @@ import CommonFunctions
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -102,7 +105,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "Test123@"
 
-//        loginViewModel.loginData.value!!.email = "rickson@yopmail.com"
+//        loginViewModel.loginData.value!!.email = "jb123@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
 
         loginViewModel.loginData.value!!.email = "leo@yopmail.com"
@@ -296,8 +299,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                     email
                                 )
                             }
-
-
                         }
                         userLovedOneArrayList = it.payload?.userLovedOne
 
@@ -376,6 +377,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 navigateToWelcomeUserScreen()
             } else {
                 navigateToHomeScreen()
+                //showEnterpriseUserDialog()
             }
         }
     }
@@ -406,12 +408,20 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         val yesBtn = dialog.findViewById(R.id.btnYes) as TextView
         val noBtn = dialog.findViewById(R.id.btnNo) as TextView
         yesBtn.setOnClickListener {
+            showEnterpriseCodeDialog()
             dialog.dismiss()
         }
         noBtn.setOnClickListener {
+            navigateToHomeScreen()
             dialog.dismiss()
         }
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
         dialog.show()
     }
 
@@ -430,7 +440,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         btnCancel.setOnClickListener {
             dialog.dismiss()
         }
-        dialog.setCancelable(false)
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
         dialog.show()
     }
 

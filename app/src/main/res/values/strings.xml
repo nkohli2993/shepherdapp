@@ -551,6 +551,7 @@
     <string name="select_document_type">Select Document Type</string>
     <string name="are_you_an_enterprise_user">Are you an \n Enterprise User?</string>
     <string name="enter_enterprise_code">Enter Enterprise \n Code</string>
+    <string name="enter_enterprise_cod">Enter Enterprise Code</string>
     <string name="enterprise_code">Enterprise Code</string>
     <string name="are_you_enterprise_user">Are you an Enterprise User?</string>
     <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometrics for next time?</string>

@@ -74,7 +74,8 @@ class CreateNewAccountViewModel @Inject constructor(
         email: String?,
         passwd: String?,
         phoneNumber: String?,
-        roleId: String?
+        roleId: String?,
+        enterpriseCode: String?
     ): LiveData<Event<DataResult<LoginResponseModel>>> {
         //Update the phone code
         signUpData.value.let {
@@ -86,6 +87,7 @@ class CreateNewAccountViewModel @Inject constructor(
             it?.phoneNo = phoneNumber
             it?.profilePhoto = profilePicUrl
             it?.roleId = roleId
+            it?.enterprise_code = enterpriseCode
         }
         viewModelScope.launch {
             val response = signUpData.value?.let { authRepository.signup(it) }

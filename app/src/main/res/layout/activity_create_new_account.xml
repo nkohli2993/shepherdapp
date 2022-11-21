@@ -255,7 +255,7 @@
 
                     </LinearLayout>
 
-                  <!--  <TextView
+                    <TextView
                         android:id="@+id/txtEnterpriseUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -268,6 +268,7 @@
                         app:layout_constraintTop_toBottomOf="@id/layoutPhone" />
 
                     <LinearLayout
+                        android:id="@+id/layoutChekBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -281,7 +282,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/_10sdp"
-                            android:clickable="false"
+                            android:clickable="true"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/yes" />
 
@@ -292,10 +293,46 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="@dimen/_20sdp"
-                            android:clickable="false"
+                            android:clickable="true"
+                            android:checked="true"
                             android:padding="@dimen/_5sdp"
                             android:text="@string/no" />
-                    </LinearLayout>-->
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutEnterpriseCode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/layoutChekBox">
+
+                        <TextView
+                            android:id="@+id/txtEnterpriseCode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/gotham_light"
+                            android:text="@string/enter_enterprise_cod"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_12ssp"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/layoutChekBox" />
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edtEnterpriseCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                            android:hint="@string/enter_enterprise_cod"
+                            android:inputType="text"
+                            android:padding="@dimen/_10sdp"
+                            android:layout_marginVertical="@dimen/_5sdp"
+                            android:textColor="@color/_192032"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
 
                     <TextView
                         android:id="@+id/label_password"
@@ -307,7 +344,7 @@
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/layoutPhone" />
+                        app:layout_constraintTop_toBottomOf="@id/layoutEnterpriseCode" />
 
                     <LinearLayout
                         android:id="@+id/layoutPassword"

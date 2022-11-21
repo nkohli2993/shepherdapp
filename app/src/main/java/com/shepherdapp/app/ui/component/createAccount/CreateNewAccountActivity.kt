@@ -38,8 +38,10 @@ import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.CreateNewAccountViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_create_account.editTextPhoneNumber
+import kotlinx.android.synthetic.main.activity_create_account.*
 import kotlinx.android.synthetic.main.activity_create_new_account.*
+import kotlinx.android.synthetic.main.activity_create_new_account.editTextEmail
+import kotlinx.android.synthetic.main.activity_create_new_account.editTextPassword
 import java.io.File
 
 
@@ -61,6 +63,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var roleId: String? = null
     private var isPasswordShown = false
     private var profilePicCompleteUrl: String? = null
+    private var enterpriseCode: String? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var TAG = "CreateNewAccountActivity"
@@ -100,6 +103,14 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         getString(R.string.password_should_be_min_4_character)
                     binding.editTextPassword.requestFocus()
                 }
+                binding.chkYes.isChecked -> {
+                    if (binding.edtEnterpriseCode.text.toString().isEmpty()) {
+                        binding.edtEnterpriseCode.error = getString(R.string.enter_enterprise_cod)
+                        binding.edtEnterpriseCode.requestFocus()
+                    } else {
+                        return true
+                    }
+                }
                 !binding.checkboxTermsConditions.isChecked -> {
                     showInfo(
                         this,
@@ -137,6 +148,21 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             }
             isPasswordShown = !isPasswordShown
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
+        }
+
+        binding.chkYes.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                binding.chkNo.isChecked = false
+                binding.layoutEnterpriseCode.visibility = View.VISIBLE
+            } else {
+                binding.chkNo.isChecked = true
+                binding.layoutEnterpriseCode.visibility = View.GONE
+            }
+        }
+
+        binding.chkNo.setOnCheckedChangeListener { compoundButton, b ->
+            binding.chkYes.isChecked = !b
+            binding.layoutEnterpriseCode.visibility = View.GONE
         }
         // Get Roles
         createNewAccountViewModel.getRoles(pageNumber, limit)
@@ -216,12 +242,12 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
                         // Save User Info in Firestore
-                       /* val user = it1.payload?.let { it2 -> signUpResponseToUser(it2) }
-                        user?.let { it2 ->
-                            createNewAccountViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
-                                it2
-                            )
-                        }*/
+                        /* val user = it1.payload?.let { it2 -> signUpResponseToUser(it2) }
+                         user?.let { it2 ->
+                             createNewAccountViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
+                                 it2
+                             )
+                         }*/
 
                         if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                                 this
@@ -349,6 +375,11 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     passwd = editTextPassword.text.toString().trim()
                     phoneNumber = edtPhoneNumber.text.toString().trim()
                     phoneCode = ccp.selectedCountryCode
+                    enterpriseCode = if (binding.chkYes.isChecked) {
+                        binding.edtEnterpriseCode.text.toString().trim()
+                    } else {
+                        null
+                    }
                     profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
                         null
                     } else {
@@ -364,7 +395,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         email,
                         passwd,
                         phoneNumber,
-                        roleId
+                        roleId,
+                        enterpriseCode
                     )
                 }
                 /*else {
