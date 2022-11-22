@@ -158,11 +158,17 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                             )
                         )
                     } else {
+                        var message: String? = null
+                        if (type == Const.Type.ENTERPRISE) {
+                            message = getString(R.string.user_limit_exceeded)
+                        } else if (type == Const.Type.SUBSCRIPTION) {
+                            message = getString(R.string.your_subscription_has_been_expired)
+                        }
                         val builder = AlertDialog.Builder(requireContext())
                         val dialog = builder.apply {
-                            setTitle("Shepherd")
-                            setMessage("You can not add loved one...")
-                            setPositiveButton("OK") { _, _ ->
+                            setTitle(getString(R.string.app_name))
+                            setMessage(message)
+                            setPositiveButton(getString(R.string.ok)) { _, _ ->
                             }
                         }.create()
                         dialog.show()

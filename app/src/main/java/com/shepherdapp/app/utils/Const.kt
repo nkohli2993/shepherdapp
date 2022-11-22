@@ -57,6 +57,11 @@ object Const {
         const val BODY_TEMP = "body_temp"
         const val OXYGEN = "oxygen"
     }
+
+    object Type {
+        const val SUBSCRIPTION = "subscription"
+        const val ENTERPRISE = "enterprise"
+    }
 }
 
 object Drawable {
