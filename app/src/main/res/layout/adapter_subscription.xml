@@ -4,9 +4,9 @@
 
     <data>
 
-       <!-- <variable
-            name="data"
-            type="com.shepherdapp.app.data.dto.subscription.SubscriptionModel" />-->
+        <!-- <variable
+             name="data"
+             type="com.shepherdapp.app.data.dto.subscription.SubscriptionModel" />-->
 
         <variable
             name="listener"
@@ -23,7 +23,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_5sdp"
-            android:background="#FF9AA6"
             app:cardCornerRadius="@dimen/_12sdp"
             app:cardElevation="@dimen/_3sdp"
             app:cardUseCompatPadding="true"
@@ -33,10 +32,12 @@
             app:layout_constraintBottom_toBottomOf="parent">
 
             <LinearLayout
+                android:id="@+id/layoutCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_15sdp"
+                android:paddingVertical="@dimen/_60sdp"
+                android:paddingHorizontal="@dimen/_20sdp"
                 android:background="#FF9AA6">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -45,8 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_20ssp"
-                     />
+                    android:textSize="@dimen/_20ssp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtDesc"
@@ -54,8 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    />
+                    android:layout_marginTop="@dimen/_10sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtLovedOne"
@@ -63,8 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/_15sdp"
-                     />
+                    android:layout_marginTop="@dimen/_15sdp" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"

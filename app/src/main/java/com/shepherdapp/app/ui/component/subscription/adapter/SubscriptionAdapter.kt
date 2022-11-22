@@ -1,11 +1,14 @@
 package com.shepherdapp.app.ui.component.subscription.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.ProductDetails
+import com.shepherdapp.app.R
 import com.shepherdapp.app.databinding.AdapterSubscriptionBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.view_model.SubscriptionViewModel
@@ -44,7 +47,7 @@ class SubscriptionAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: SubscriptionViewHolder, position: Int) {
-        holder.bind(list?.get(position), onItemClickListener)
+        holder.bind(position, list?.get(position), onItemClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -60,9 +63,30 @@ class SubscriptionAdapter constructor(
         RecyclerView.ViewHolder(itemBinding.root) {
 
 
-        fun bind(productDetails: ProductDetails?, recyclerItemListener: RecyclerItemListener) {
+        @SuppressLint("ResourceAsColor")
+        fun bind(
+            position: Int,
+            productDetails: ProductDetails?,
+            recyclerItemListener: RecyclerItemListener
+        ) {
 
 //            itemBinding.data = subscriptionModel
+            if (position % 2 == 0) {
+                itemBinding.layoutCard.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color._FF9AA6
+                    )
+                )
+            } else {
+                itemBinding.layoutCard.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color._7ECEFF
+                    )
+                )
+
+            }
 
             itemBinding.txtTitle.text = productDetails?.name
 //            itemBinding.txtDesc.text = productDetails?.description

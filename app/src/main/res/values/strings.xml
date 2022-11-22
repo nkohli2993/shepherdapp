@@ -569,7 +569,7 @@
     <string name="dosage_med">Dosage :</string>
     <string name="please_enter_medicine_name">Please enter medicine name</string>
     <string name="no_description_available">No description available</string>
-    <string name="choose_your_subscription">Choose your monthly subscription plan to add your loved one.</string>
+    <string name="choose_your_subscription">Choose your subscription plan to add your loved one.</string>
     <string name="buy_subscription_plan">Buy Subscription Plan</string>
     <string name="user_limit_exceeded">User limit exceeded</string>
     <string name="your_subscription_has_been_expired">Your subscription has been expired</string>
