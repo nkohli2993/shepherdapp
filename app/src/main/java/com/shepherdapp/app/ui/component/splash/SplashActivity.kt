@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.android.billingclient.api.*
 import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.SPLASH_DELAY
 import com.shepherdapp.app.ShepherdApp
@@ -22,6 +23,7 @@ import com.shepherdapp.app.utils.Const.DEVICE_ID
 import com.shepherdapp.app.utils.Prefs
 import dagger.hilt.android.AndroidEntryPoint
 
+
 /**
  * Created by Sumit Kumar
  */
@@ -31,6 +33,8 @@ class SplashActivity : BaseActivity() {
     private lateinit var binding: ActivitySplashBinding
     private var TAG = "SplashActivity"
     private var firebaseToken: String? = null
+    var handler: Handler? = null
+    var billingClient: BillingClient? = null
 
 
     override fun initViewBinding() {
@@ -117,4 +121,43 @@ class SplashActivity : BaseActivity() {
             startActivityWithFinish<SubscriptionActivity>()
         }, SPLASH_DELAY.toLong())
     }
+
+    fun checkSubscription() {
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
+            .setListener { billingResult: BillingResult?, list: List<Purchase?>? -> }
+            .build()
+        val finalBillingClient: BillingClient = billingClient as BillingClient
+        billingClient?.startConnection(object : BillingClientStateListener {
+            override fun onBillingServiceDisconnected() {}
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    finalBillingClient.queryPurchasesAsync(
+                        QueryPurchasesParams.newBuilder()
+                            .setProductType(BillingClient.ProductType.SUBS).build()
+                    ) { billingResult1: BillingResult, list: List<Purchase> ->
+                        if (billingResult1.responseCode == BillingClient.BillingResponseCode.OK) {
+                            Log.d("testOffer", list.size.toString() + " size")
+                            if (list.size > 0) {
+//                                prefs.setPremium(1) // set 1 to activate premium feature
+                                var i = 0
+                                for (purchase in list) {
+                                    //Here you can manage each product, if you have multiple subscription
+                                    Log.d(
+                                        "testOffer",
+                                        purchase.originalJson
+                                    ) // Get to see the order information
+                                    Log.d("testOffer", " index$i")
+                                    i++
+                                }
+                            } else {
+//                                prefs.setPremium(0) // set 0 to de-activate premium feature
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+
 }

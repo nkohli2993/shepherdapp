@@ -37,8 +37,8 @@ android {
         applicationId "com.shepherdapp.app"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0.4"
+        versionCode 2
+        versionName "1.0.1"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        signingConfig signingConfigs.debug
@@ -70,12 +70,13 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             signingConfig signingConfigs.release
 //            buildConfigField("String", "BASE_URL", base_url_live)
 //            buildConfigField("String", "BASE_URL", base_url_local)
 //            buildConfigField("String", "BASE_URL", base_url_staging)
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //dev urls
 //            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
 //            buildConfigField("String", "BASE_URL", base_url_dev)
@@ -287,6 +288,8 @@ dependencies {
 
     //View Pager2
     implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
 }
 kapt {
     correctErrorTypes true

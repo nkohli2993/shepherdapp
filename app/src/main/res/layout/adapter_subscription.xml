@@ -4,9 +4,9 @@
 
     <data>
 
-        <variable
+       <!-- <variable
             name="data"
-            type="com.shepherdapp.app.data.dto.subscription.SubscriptionModel" />
+            type="com.shepherdapp.app.data.dto.subscription.SubscriptionModel" />-->
 
         <variable
             name="listener"
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_20ssp"
-                    android:text="@{data.planName}" />
+                     />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtDesc"
@@ -55,7 +55,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:text="@{data.planDesc}" />
+                    />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtLovedOne"
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:layout_marginTop="@dimen/_15sdp"
-                    android:text="@{data.lovedOneCount}" />
+                     />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -77,7 +77,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
-                        android:text="@{data.planPrice}"
+
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_20ssp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
-                        android:text="$/month"
+
                         android:textColor="@color/colorWhite"
                         app:layout_constraintStart_toEndOf="@id/txtPrice"
                         app:layout_constraintTop_toTopOf="@+id/txtPrice" />

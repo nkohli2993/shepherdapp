@@ -162,5 +162,11 @@ object ApiConstants {
         const val GET_NOTIFICATIONS = "$BASE_URL${API_VERSION}notifications"
         const val READ_NOTIFICATIONS = "$BASE_URL${API_VERSION}notifications/read"
     }
+
+    object Subscription {
+        const val CREATE_SUBSCRIPTION = "${BASE_URL_USER}${API_VERSION}subscriptions/"
+        const val CHECK_SUBSCRIPTION_STATUS =
+            "${BASE_URL_USER}${API_VERSION}enterprises/check-subscription-status"
+    }
 }
 

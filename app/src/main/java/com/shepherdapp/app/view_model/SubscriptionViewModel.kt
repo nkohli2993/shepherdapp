@@ -10,18 +10,20 @@ import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.shepherdapp.app.billing.BillingClientWrapper
-import com.shepherdapp.app.billing.MainState
 import com.shepherdapp.app.data.DataRepository
-import com.shepherdapp.app.data.dto.subscription.SubscriptionModel
+import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
+import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
-import com.shepherdapp.app.data.subscription_data_repository.SubscriptionDataRepository
+import com.shepherdapp.app.data.remote.subscription.SubscriptionRepository
+import com.shepherdapp.app.network.retrofit.DataResult
+import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
 import com.shepherdapp.app.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 /**
@@ -32,23 +34,44 @@ class SubscriptionViewModel @Inject constructor(
     private val dataRepository: DataRepository,
     private val lockBoxRepository: LockBoxRepository,
     private val userRepository: UserRepository,
+    private val subscriptionRepository: SubscriptionRepository,
     private val application: Application
 ) : BaseViewModel() {
 
 
     // Buy Subscription Plan Live Data
-    private val _openSubscriptionPlanLiveData = MutableLiveData<SingleEvent<SubscriptionModel>>()
+    /*private val _openSubscriptionPlanLiveData = MutableLiveData<SingleEvent<SubscriptionModel>>()
     val openSubscriptionPlanLiveData: LiveData<SingleEvent<SubscriptionModel>> get() = _openSubscriptionPlanLiveData
+*/
+    private val _openSubscriptionPlanLiveData = MutableLiveData<SingleEvent<ProductDetails?>>()
+    val openSubscriptionPlanLiveData: LiveData<SingleEvent<ProductDetails?>> get() = _openSubscriptionPlanLiveData
 
-    fun openSubscriptionPlan(subscriptionModel: SubscriptionModel) {
-        _openSubscriptionPlanLiveData.value = SingleEvent(subscriptionModel)
+    private var _createSubscriptionResponseLiveData =
+        MutableLiveData<Event<DataResult<SubscriptionResponseModel>>>()
+    var createSubscriptionResponseLiveData: LiveData<Event<DataResult<SubscriptionResponseModel>>> =
+        _createSubscriptionResponseLiveData
+
+    fun openSubscriptionPlan(productDetails: ProductDetails?) {
+        _openSubscriptionPlanLiveData.value = SingleEvent(productDetails)
+    }
+
+    fun createSubscription(subscriptionRequestModel: SubscriptionRequestModel): LiveData<Event<DataResult<SubscriptionResponseModel>>> {
+        viewModelScope.launch {
+            val response = subscriptionRepository.createSubscription(subscriptionRequestModel)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _createSubscriptionResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return createSubscriptionResponseLiveData
     }
 
 
     var billingClient: BillingClientWrapper = BillingClientWrapper(application)
 
-   /* private var repo: SubscriptionDataRepository =
-        SubscriptionDataRepository(billingClientWrapper = billingClient)*/
+    /* private var repo: SubscriptionDataRepository =
+         SubscriptionDataRepository(billingClientWrapper = billingClient)*/
 
     private val _billingConnectionState = MutableLiveData(false)
     val billingConnectionState: LiveData<Boolean> = _billingConnectionState
@@ -61,71 +84,72 @@ class SubscriptionViewModel @Inject constructor(
         billingClient.startBillingConnection(billingConnectionState = _billingConnectionState)
     }
 
+
     // The productsForSaleFlows object combines all the Product flows into one for emission.
-   /* val productsForSaleFlows = combine(
-        repo.basicProductDetails,
-        repo.premiumProductDetails
-    ) { basicProductDetails,
-        premiumProductDetails
-        ->
-        MainState(
-            basicProductDetails = basicProductDetails,
-            premiumProductDetails = premiumProductDetails
-        )
-    }*/
+    /* val productsForSaleFlows = combine(
+         repo.basicProductDetails,
+         repo.premiumProductDetails
+     ) { basicProductDetails,
+         premiumProductDetails
+         ->
+         MainState(
+             basicProductDetails = basicProductDetails,
+             premiumProductDetails = premiumProductDetails
+         )
+     }*/
 
     // The userCurrentSubscriptionFlow object combines all the possible subscription flows into one
     // for emission.
-   /* private val userCurrentSubscriptionFlow = combine(
-        repo.hasRenewableBasic,
-        repo.hasPrepaidBasic,
-        repo.hasRenewablePremium,
-        repo.hasPrepaidPremium
-    ) { hasRenewableBasic,
-        hasPrepaidBasic,
-        hasRenewablePremium,
-        hasPrepaidPremium
-        ->
-        MainState(
-            hasRenewableBasic = hasRenewableBasic,
-            hasPrepaidBasic = hasPrepaidBasic,
-            hasRenewablePremium = hasRenewablePremium,
-            hasPrepaidPremium = hasPrepaidPremium
-        )
-    }*/
+    /* private val userCurrentSubscriptionFlow = combine(
+         repo.hasRenewableBasic,
+         repo.hasPrepaidBasic,
+         repo.hasRenewablePremium,
+         repo.hasPrepaidPremium
+     ) { hasRenewableBasic,
+         hasPrepaidBasic,
+         hasRenewablePremium,
+         hasPrepaidPremium
+         ->
+         MainState(
+             hasRenewableBasic = hasRenewableBasic,
+             hasPrepaidBasic = hasPrepaidBasic,
+             hasRenewablePremium = hasRenewablePremium,
+             hasPrepaidPremium = hasPrepaidPremium
+         )
+     }*/
 
     // Current purchases.
 //    val currentPurchasesFlow = repo.purchases
 
     init {
-       /* viewModelScope.launch {
-            userCurrentSubscriptionFlow.collectLatest { collectedSubscriptions ->
-                when {
-                    collectedSubscriptions.hasRenewableBasic == true &&
-                            collectedSubscriptions.hasRenewablePremium == false -> {
-                        _destinationScreen.postValue(DestinationScreen.BASIC_RENEWABLE_PROFILE)
-                    }
-                    collectedSubscriptions.hasRenewablePremium == true &&
-                            collectedSubscriptions.hasRenewableBasic == false -> {
-                        _destinationScreen.postValue(DestinationScreen.PREMIUM_RENEWABLE_PROFILE)
-                    }
-                    collectedSubscriptions.hasPrepaidBasic == true &&
-                            collectedSubscriptions.hasPrepaidPremium == false -> {
-                        _destinationScreen.postValue(DestinationScreen.BASIC_PREPAID_PROFILE_SCREEN)
-                    }
-                    collectedSubscriptions.hasPrepaidPremium == true &&
-                            collectedSubscriptions.hasPrepaidBasic == false -> {
-                        _destinationScreen.postValue(
-                            DestinationScreen.PREMIUM_PREPAID_PROFILE_SCREEN
-                        )
-                    }
-                    else -> {
-                        _destinationScreen.postValue(DestinationScreen.SUBSCRIPTIONS_OPTIONS_SCREEN)
-                    }
-                }
-            }
+        /* viewModelScope.launch {
+             userCurrentSubscriptionFlow.collectLatest { collectedSubscriptions ->
+                 when {
+                     collectedSubscriptions.hasRenewableBasic == true &&
+                             collectedSubscriptions.hasRenewablePremium == false -> {
+                         _destinationScreen.postValue(DestinationScreen.BASIC_RENEWABLE_PROFILE)
+                     }
+                     collectedSubscriptions.hasRenewablePremium == true &&
+                             collectedSubscriptions.hasRenewableBasic == false -> {
+                         _destinationScreen.postValue(DestinationScreen.PREMIUM_RENEWABLE_PROFILE)
+                     }
+                     collectedSubscriptions.hasPrepaidBasic == true &&
+                             collectedSubscriptions.hasPrepaidPremium == false -> {
+                         _destinationScreen.postValue(DestinationScreen.BASIC_PREPAID_PROFILE_SCREEN)
+                     }
+                     collectedSubscriptions.hasPrepaidPremium == true &&
+                             collectedSubscriptions.hasPrepaidBasic == false -> {
+                         _destinationScreen.postValue(
+                             DestinationScreen.PREMIUM_PREPAID_PROFILE_SCREEN
+                         )
+                     }
+                     else -> {
+                         _destinationScreen.postValue(DestinationScreen.SUBSCRIPTIONS_OPTIONS_SCREEN)
+                     }
+                 }
+             }
 
-        }*/
+         }*/
     }
 
     /**

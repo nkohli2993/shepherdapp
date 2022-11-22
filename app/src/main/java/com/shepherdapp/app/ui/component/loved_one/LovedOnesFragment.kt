@@ -1,6 +1,5 @@
 package com.shepherdapp.app.ui.component.loved_one
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -9,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -139,6 +139,39 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                 }
             }
         }
+        lovedOneViewModel.checkSubscriptionStatusResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val type = it.data.payload?.type
+                    val status = it.data.payload?.status
+                    if (status == true) {
+                        findNavController().navigate(
+                            LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
+                                source = Const.ADD_LOVE_ONE
+                            )
+                        )
+                    } else {
+                        val builder = AlertDialog.Builder(requireContext())
+                        val dialog = builder.apply {
+                            setTitle("Shepherd")
+                            setMessage("You can not add loved one...")
+                            setPositiveButton("OK") { _, _ ->
+                            }
+                        }.create()
+                        dialog.show()
+                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                    }
+
+                }
+            }
+        }
     }
 
     override fun initViewBinding() {
@@ -160,24 +193,26 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvNew -> {
-                Log.d(TAG, "onClick:${careTeams.size} ")
-                if (careTeams.size < 3) {
-                    findNavController().navigate(
-                        LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
-                            source = Const.ADD_LOVE_ONE
-                        )
-                    )
-                } else {
-                    val builder = AlertDialog.Builder(requireContext())
-                    val dialog = builder.apply {
-                        setTitle("Shepherd")
-                        setMessage("You can add up to 3 loved ones!")
-                        setPositiveButton("OK") { _, _ ->
-                        }
-                    }.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                }
+                lovedOneViewModel.checkSubscriptionStatus()
+
+                /*  Log.d(TAG, "onClick:${careTeams.size} ")
+                  if (careTeams.size < 3) {
+                      findNavController().navigate(
+                          LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
+                              source = Const.ADD_LOVE_ONE
+                          )
+                      )
+                  } else {
+                      val builder = AlertDialog.Builder(requireContext())
+                      val dialog = builder.apply {
+                          setTitle("Shepherd")
+                          setMessage("You can add up to 3 loved ones!")
+                          setPositiveButton("OK") { _, _ ->
+                          }
+                      }.create()
+                      dialog.show()
+                      dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                  }*/
             }
             R.id.btnDone -> {
                 selectedCare?.let { careTeams ->
