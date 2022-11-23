@@ -168,5 +168,9 @@ object ApiConstants {
         const val CHECK_SUBSCRIPTION_STATUS =
             "${BASE_URL_USER}${API_VERSION}enterprises/check-subscription-status"
     }
+
+    object Enterprise{
+        const val ATTACH_ENTERPRISE="${BASE_URL_USER}${API_VERSION}user_profiles/attach-enterprise"
+    }
 }
 

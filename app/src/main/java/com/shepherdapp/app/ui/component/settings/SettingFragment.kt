@@ -1,15 +1,23 @@
 package com.shepherdapp.app.ui.component.settings
 
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.EditText
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseRequestModel
 import com.shepherdapp.app.databinding.FragmentSettingBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -19,6 +27,7 @@ import com.shepherdapp.app.utils.BiometricUtils
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -66,6 +75,22 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                                 .save(Const.BIOMETRIC_ENABLE, payload.userProfiles?.isBiometric!!)
                         }
                     }
+                }
+            }
+        }
+
+        settingViewModel.attachEnterpriseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), it.data.message.toString())
                 }
             }
         }
@@ -132,6 +157,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                 findNavController().navigate(R.id.action_nav_setting_to_invitation)
 
             }
+            R.id.clBecomeAnEnterpriseUser -> {
+                showEnterpriseCodeDialog()
+            }
             R.id.clAboutUs -> {
                 findNavController().navigate(
                     SettingFragmentDirections.actionNavSettingToInformation(
@@ -158,4 +186,35 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             }
         }
     }
+
+
+    // Enter Enterprise code dialog
+    private fun showEnterpriseCodeDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_enterprise_code)
+        val edtEnterCode = dialog.findViewById(R.id.edtEnterCode) as EditText
+        val btnSubmit = dialog.findViewById(R.id.btnSubmit) as TextView
+        val btnCancel = dialog.findViewById(R.id.btnCancel) as TextView
+
+        btnSubmit.setOnClickListener {
+            val enterpriseCode = edtEnterCode.text.toString().trim()
+            if (enterpriseCode.isNotEmpty()) {
+                settingViewModel.attachEnterprise(AttachEnterpriseRequestModel(enterpriseCode))
+            }
+            dialog.dismiss()
+        }
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
+        dialog.show()
+    }
+
 }

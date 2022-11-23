@@ -574,6 +574,8 @@
     <string name="user_limit_exceeded">User limit exceeded</string>
     <string name="your_subscription_has_been_expired">Your subscription has been expired</string>
     <string name="ok">Ok</string>
+    <string name="max_3_loved_one_can_be_added">Max 3 loved one can added</string>
+    <string name="become_an_enterprise_User">Become an Enterprise User</string>
 
 
 </resources>

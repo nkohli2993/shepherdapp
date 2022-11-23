@@ -19,6 +19,8 @@ import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
 import com.shepherdapp.app.data.dto.dashboard.HomeResponseModel
 import com.shepherdapp.app.data.dto.edit_loved_one.EditLovedOneResponseModel
 import com.shepherdapp.app.data.dto.edit_profile.UserUpdateData
+import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseRequestModel
+import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseResponseModel
 import com.shepherdapp.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherdapp.app.data.dto.invitation.InvitationsResponseModel
 import com.shepherdapp.app.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
@@ -527,5 +529,8 @@ interface ApiService {
 
     @GET(ApiConstants.Subscription.CHECK_SUBSCRIPTION_STATUS)
     suspend fun checkSubscriptionStatus(): Response<CheckSubscriptionStatusResponseModel>
+
+    @PUT(ApiConstants.Enterprise.ATTACH_ENTERPRISE)
+    suspend fun attachEnterprise(@Body attachEnterpriseRequestModel: AttachEnterpriseRequestModel): Response<AttachEnterpriseResponseModel>
 
 }
