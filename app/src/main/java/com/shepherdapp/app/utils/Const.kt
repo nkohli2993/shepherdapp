@@ -62,6 +62,12 @@ object Const {
         const val SUBSCRIPTION = "subscription"
         const val ENTERPRISE = "enterprise"
     }
+
+    object SubscriptionPlan {
+        const val ONE_WEEK = "One Week"
+        const val ONE_MONTH = "One Month"
+        const val ONE_YEAR = "One Year"
+    }
 }
 
 object Drawable {

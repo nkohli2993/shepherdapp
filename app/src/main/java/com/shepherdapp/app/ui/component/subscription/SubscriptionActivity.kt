@@ -1,5 +1,8 @@
 package com.shepherdapp.app.ui.component.subscription
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Handler
 import android.util.Log
 import androidx.activity.viewModels
@@ -10,17 +13,25 @@ import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.QueryProductDetailsParams.Product
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.subscription.SubscriptionModel
+import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.databinding.ActivitySubscriptionBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
+import com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity
 import com.shepherdapp.app.ui.component.subscription.adapter.SubscriptionAdapter
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.SubscriptionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.abs
 
 
@@ -35,6 +46,9 @@ class SubscriptionActivity : BaseActivity() {
     private var billingClient: BillingClient? = null
     private var productDetailsList: ArrayList<ProductDetails?>? = ArrayList()
     var handler: Handler? = null
+    private var planName: String? = null
+    private var nameOfPlan: String? = null
+    private var amount: Double? = null
 
 
     private val TAG = "SubscriptionActivity"
@@ -43,8 +57,15 @@ class SubscriptionActivity : BaseActivity() {
         binding = ActivitySubscriptionBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+//        getDateAfterOneWeek()
+//        getDateAfterOneMonth()
+//        getDateAfterOneYear()
 
-//        setAdapter()
+//        getDate(Const.SubscriptionPlan.ONE_WEEK)
+//        getDate(Const.SubscriptionPlan.ONE_MONTH)
+//        getDate(Const.SubscriptionPlan.ONE_YEAR)
+
+        setAdapter()
 
         //Step 2. Initialize a BillingClient with PurchasesUpdatedListener onCreate method
         billingClient = BillingClient.newBuilder(this)
@@ -65,20 +86,20 @@ class SubscriptionActivity : BaseActivity() {
         subscriptionAdapter = SubscriptionAdapter(subscriptionViewModel, productDetailsList)
         binding.viewPagerSubscription.adapter = subscriptionAdapter
 
-        /* //For multiple page
-         binding.viewPagerSubscription.clipToPadding = false
-         binding.viewPagerSubscription.clipChildren = false
-         binding.viewPagerSubscription.offscreenPageLimit = 3
-         binding.viewPagerSubscription.getChildAt(0).overScrollMode =
-             OVER_SCROLL_NEVER
+        //For multiple page
+        binding.viewPagerSubscription.clipToPadding = false
+        binding.viewPagerSubscription.clipChildren = false
+        binding.viewPagerSubscription.offscreenPageLimit = 3
+        binding.viewPagerSubscription.getChildAt(0).overScrollMode =
+            OVER_SCROLL_NEVER
 
-         val compositeTransformer = CompositePageTransformer()
-         compositeTransformer.addTransformer(MarginPageTransformer(40))
-         compositeTransformer.addTransformer { page, position ->
-             val r = 1 - abs(position)
-             page.scaleY = (0.95f + r * 0.05f)
-         }
-         binding.viewPagerSubscription.setPageTransformer(compositeTransformer)*/
+        val compositeTransformer = CompositePageTransformer()
+        compositeTransformer.addTransformer(MarginPageTransformer(40))
+        compositeTransformer.addTransformer { page, position ->
+            val r = 1 - abs(position)
+            page.scaleY = (0.95f + r * 0.05f)
+        }
+        binding.viewPagerSubscription.setPageTransformer(compositeTransformer)
 
     }
 
@@ -126,27 +147,27 @@ class SubscriptionActivity : BaseActivity() {
             Log.d(TAG, "showProducts: prodDetailsList:${prodDetailsList}")
             productDetailsList?.clear()
             productDetailsList?.addAll(prodDetailsList)
-//            subscriptionAdapter?.addData(productDetailsList)
+            subscriptionAdapter?.addData(productDetailsList)
 
 
-            subscriptionAdapter = SubscriptionAdapter(subscriptionViewModel, productDetailsList)
-            subscriptionAdapter?.notifyDataSetChanged()
-            binding.viewPagerSubscription.adapter = subscriptionAdapter
+            /*   subscriptionAdapter = SubscriptionAdapter(subscriptionViewModel, productDetailsList)
+               subscriptionAdapter?.notifyDataSetChanged()
+               binding.viewPagerSubscription.adapter = subscriptionAdapter*/
             //For multiple page
-            binding.viewPagerSubscription.clipToPadding = false
-            binding.viewPagerSubscription.clipChildren = false
-            binding.viewPagerSubscription.offscreenPageLimit = 3
-            binding.viewPagerSubscription.getChildAt(0).overScrollMode =
-                OVER_SCROLL_NEVER
+            /*  binding.viewPagerSubscription.clipToPadding = false
+              binding.viewPagerSubscription.clipChildren = false
+              binding.viewPagerSubscription.offscreenPageLimit = 3
+              binding.viewPagerSubscription.getChildAt(0).overScrollMode =
+                  OVER_SCROLL_NEVER
 
-            val compositeTransformer = CompositePageTransformer()
-            compositeTransformer.addTransformer(MarginPageTransformer(40))
-            compositeTransformer.addTransformer { page, position ->
-                val r = 1 - abs(position)
-                page.scaleY = (0.95f + r * 0.05f)
-            }
-            binding.viewPagerSubscription.setPageTransformer(compositeTransformer)
-
+              val compositeTransformer = CompositePageTransformer()
+              compositeTransformer.addTransformer(MarginPageTransformer(40))
+              compositeTransformer.addTransformer { page, position ->
+                  val r = 1 - abs(position)
+                  page.scaleY = (0.95f + r * 0.05f)
+              }
+              binding.viewPagerSubscription.setPageTransformer(compositeTransformer)
+  */
         }
     }
 
@@ -228,7 +249,7 @@ class SubscriptionActivity : BaseActivity() {
 
     // Step 5 : Launch the purchase flow
 
-    fun launchPurchaseFlow(productDetails: ProductDetails) {
+    private fun launchPurchaseFlow(productDetails: ProductDetails) {
         assert(productDetails.subscriptionOfferDetails != null)
         val productDetailsParamsList = ImmutableList.of(
             ProductDetailsParams.newBuilder()
@@ -249,23 +270,54 @@ class SubscriptionActivity : BaseActivity() {
             .newBuilder()
             .setPurchaseToken(purchases.purchaseToken)
             .build()
+
         billingClient!!.acknowledgePurchase(
             acknowledgePurchaseParams
         ) { billingResult: BillingResult ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 val purchaseToken = purchases.purchaseToken
+                val orderID = purchases.orderId
+//                var nameOfPlan: String? = null
+                when (planName) {
+                    Const.SubscriptionPlan.ONE_WEEK -> {
+                        nameOfPlan = "Weekly"
+//                        expiryDate =
+                    }
+                    Const.SubscriptionPlan.ONE_MONTH -> {
+                        nameOfPlan = "Monthly"
+                    }
+                    Const.SubscriptionPlan.ONE_YEAR -> {
+                        nameOfPlan = "Yearly"
+                    }
+                }
+                val expiryDate = planName?.let { getDate(it) }
+
+                Log.d(TAG, "transactionId : $orderID")
+                Log.d(TAG, "plan : $nameOfPlan")
+                Log.d(TAG, "amount : $amount")
+                Log.d(TAG, "expiryDate : $expiryDate")
+
+                subscriptionViewModel.createSubscription(
+                    SubscriptionRequestModel(
+                        transactionId = orderID,
+                        plan = nameOfPlan,
+                        amount = amount,
+                        expiryDate = expiryDate
+                    )
+                )
+
 
                 //user prefs to set premium
-                /* showSuccess(
-                     this,
-                     "Subscription activated, Enjoy!",
-                 )*/
+                /*showSuccess(
+                    this,
+                    "Subscription activated, Enjoy!",
+                )*/
                 //Setting premium to 1
                 // 1 - premium
                 // 0 - no premium
 //                prefs.setPremium(1)
 //                startActivity(Intent(this, MainActivity::class.java))
-                finish()
+//                finish()
             }
         }
         Log.d(TAG, "Purchase Token: " + purchases.purchaseToken)
@@ -289,16 +341,51 @@ class SubscriptionActivity : BaseActivity() {
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(this, it.data.message.toString())
+                    val currentUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+                        Const.USER_DETAILS,
+                        UserProfile::class.java
+                    )
+                    val firstName = currentUser?.firstname
+                    val lastName = currentUser?.lastname
+                    val fullName = if (lastName.isNullOrEmpty()) {
+                        firstName
+                    } else {
+                        "$firstName $lastName"
+                    }
+
+                    val builder = AlertDialog.Builder(this)
+                    val dialog = builder.apply {
+                        setTitle("Hi, $fullName")
+                        setMessage("You have successfully bought your $nameOfPlan plan")
+                        setPositiveButton("OK") { _, _ ->
+                            startActivity<AddLovedOneActivity>()
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+
                 }
             }
         }
-
-
     }
+
 
     private fun openSubscriptionPlan(singleEvent: SingleEvent<ProductDetails?>) {
         singleEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "openSubscriptionPlan: Clicked Plan is $it ")
+            planName = it.name
+            /*  amount = it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                  0
+              )?.formattedPrice*/
+
+            val priceMicros =
+                it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceAmountMicros
+            // 1,000,000 micro-units equal one unit of the currency
+            val price = priceMicros?.div(1000000)
+            amount = price?.toDouble()
+            Log.d(TAG, "priceMicros : $priceMicros")
+            Log.d(TAG, "amount : $amount")
+
             launchPurchaseFlow(it)
 
         }
@@ -351,6 +438,64 @@ class SubscriptionActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    fun getDateAfterOneWeek(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val currentCal: Calendar = Calendar.getInstance()
+        val currentDate: String = dateFormat.format(currentCal.time)
+        Log.d(TAG, "current date : $currentDate")
+        currentCal.add(Calendar.DATE, 7)
+        val toDate: String = dateFormat.format(currentCal.time)
+        Log.d(TAG, "date after 1 week  : $toDate")
+        return toDate
+    }
+
+    fun getDateAfterOneMonth(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val currentCal: Calendar = Calendar.getInstance()
+        val currentDate: String = dateFormat.format(currentCal.time)
+        Log.d(TAG, "current date : $currentDate")
+        currentCal.add(Calendar.MONTH, 1)
+        val toDate: String = dateFormat.format(currentCal.time)
+        Log.d(TAG, "date after 1 month  : $toDate")
+        return toDate
+    }
+
+    fun getDateAfterOneYear(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val currentCal: Calendar = Calendar.getInstance()
+        val currentDate: String = dateFormat.format(currentCal.time)
+        Log.d(TAG, "current date : $currentDate")
+        currentCal.add(Calendar.YEAR, 1)
+        val toDate: String = dateFormat.format(currentCal.time)
+        Log.d(TAG, "date after 1 year  : $toDate")
+        return toDate
+    }
+
+
+    @SuppressLint("SimpleDateFormat")
+    fun getDate(planName: String): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val currentCal: Calendar = Calendar.getInstance()
+        val currentDate: String = dateFormat.format(currentCal.time)
+        Log.d(TAG, "current date : $currentDate")
+        when (planName) {
+            Const.SubscriptionPlan.ONE_WEEK -> {
+                currentCal.add(Calendar.DATE, 7)
+            }
+            Const.SubscriptionPlan.ONE_MONTH -> {
+                currentCal.add(Calendar.MONTH, 1)
+            }
+            Const.SubscriptionPlan.ONE_YEAR -> {
+                currentCal.add(Calendar.YEAR, 1)
+            }
+        }
+
+//        currentCal.add(Calendar.DATE, 7)
+        val toDate: String = dateFormat.format(currentCal.time)
+        Log.d(TAG, "expiry date for $planName plan  : $toDate")
+        return toDate
     }
 
 }

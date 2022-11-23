@@ -25,6 +25,7 @@ import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity
 import com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.shepherdapp.app.ui.component.login.LoginActivity
+import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.showError
@@ -160,11 +161,11 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.ivBack -> navigateToLoginScreen()
-            R.id.cardViewAddLovedOne -> navigateToAddLovedOneScreen()
-            R.id.imageViewAddLovedOne -> navigateToAddLovedOneScreen()
-            R.id.txtAdd -> navigateToAddLovedOneScreen()
-            R.id.txtLovedOne -> navigateToAddLovedOneScreen()
-            R.id.layoutAddLovedOne -> navigateToAddLovedOneScreen()
+            R.id.cardViewAddLovedOne -> navigateToSubscriptionScreen()
+            R.id.imageViewAddLovedOne -> navigateToSubscriptionScreen()
+            R.id.txtAdd -> navigateToSubscriptionScreen()
+            R.id.txtLovedOne -> navigateToSubscriptionScreen()
+            R.id.layoutAddLovedOne -> navigateToSubscriptionScreen()
             R.id.cardViewCareTeam -> navigateToJoinCareTeamScreen()
             R.id.ivCareTeam -> navigateToJoinCareTeamScreen()
             R.id.txtJoin -> navigateToJoinCareTeamScreen()
@@ -184,6 +185,28 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         startActivity(a)
     }
 
+    private fun navigateToSubscriptionScreen() {
+        var payload: Payload? = null
+        welcomeViewModel.getUserDetails()
+        Handler(Looper.getMainLooper()).postDelayed({
+            payload =
+                Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
+
+            if (payload?.isActive == true) {
+                startActivity<SubscriptionActivity>()
+            } else {
+                val builder = AlertDialog.Builder(this)
+                val dialog = builder.apply {
+                    setMessage(getString(R.string.account_inactive_click_link_on_email))
+                    setPositiveButton("OK") { _, _ ->
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+            }
+        }, 2000)
+
+    }
 
     private fun navigateToAddLovedOneScreen() {
         var payload: Payload? = null
