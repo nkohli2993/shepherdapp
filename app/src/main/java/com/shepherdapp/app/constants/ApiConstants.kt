@@ -167,10 +167,13 @@ object ApiConstants {
         const val CREATE_SUBSCRIPTION = "${BASE_URL_USER}${API_VERSION}subscriptions/"
         const val CHECK_SUBSCRIPTION_STATUS =
             "${BASE_URL_USER}${API_VERSION}enterprises/check-subscription-status"
+        const val GET_ACTIVE_SUBSCRIPTIONS = "${BASE_URL_USER}${API_VERSION}subscriptions/active"
+        const val GET_SUBSCRIPTIONS_PLANS = "${BASE_URL_USER}${API_VERSION}subscriptions/plans"
     }
 
-    object Enterprise{
-        const val ATTACH_ENTERPRISE="${BASE_URL_USER}${API_VERSION}user_profiles/attach-enterprise"
+    object Enterprise {
+        const val ATTACH_ENTERPRISE =
+            "${BASE_URL_USER}${API_VERSION}user_profiles/attach-enterprise"
     }
 }
 

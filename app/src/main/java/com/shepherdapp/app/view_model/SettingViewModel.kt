@@ -13,7 +13,6 @@ import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.data.remote.enterprise_repository.EnterpriseRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
-import com.shepherdapp.app.ui.base.BaseResponseModel
 import com.shepherdapp.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +36,8 @@ class SettingViewModel @Inject constructor(
     var bioMetricLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
         _bioMetricLiveData
 
-    private var _attachEnterpriseLiveData = MutableLiveData<Event<DataResult<AttachEnterpriseResponseModel>>>()
+    private var _attachEnterpriseLiveData =
+        MutableLiveData<Event<DataResult<AttachEnterpriseResponseModel>>>()
     var attachEnterpriseLiveData: LiveData<Event<DataResult<AttachEnterpriseResponseModel>>> =
         _attachEnterpriseLiveData
 

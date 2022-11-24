@@ -62,6 +62,7 @@ import com.shepherdapp.app.data.dto.signup.UserSignupData
 import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
 import com.shepherdapp.app.data.dto.subscription.check_subscription_status.CheckSubscriptionStatusResponseModel
+import com.shepherdapp.app.data.dto.subscription.get_active_subscriptions.GetActiveSubscriptionResponseModel
 import com.shepherdapp.app.data.dto.user.UserDetailsResponseModel
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.shepherdapp.app.ui.base.BaseResponseModel
@@ -526,6 +527,9 @@ interface ApiService {
 
     @POST(ApiConstants.Subscription.CREATE_SUBSCRIPTION)
     suspend fun createSubscription(@Body subscriptionRequestModel: SubscriptionRequestModel): Response<SubscriptionResponseModel>
+
+    @GET(ApiConstants.Subscription.GET_ACTIVE_SUBSCRIPTIONS)
+    suspend fun getActiveSubscriptions(): Response<GetActiveSubscriptionResponseModel>
 
     @GET(ApiConstants.Subscription.CHECK_SUBSCRIPTION_STATUS)
     suspend fun checkSubscriptionStatus(): Response<CheckSubscriptionStatusResponseModel>
