@@ -213,6 +213,12 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    // For handling user attached to signup, save status in SharedPref
+                    if (!enterpriseCode.isNullOrEmpty()) {
+                        createNewAccountViewModel.saveUSerAttachedToEnterprise(true)
+                        Log.d(TAG, "Sign Up : Save status of user attached to enterprise in SharedPref successfully.... ")
+                    }
+
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
 

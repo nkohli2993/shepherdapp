@@ -57,34 +57,12 @@ class SubscriptionActivity : BaseActivity() {
         binding = ActivitySubscriptionBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-//        getDateAfterOneWeek()
-//        getDateAfterOneMonth()
-//        getDateAfterOneYear()
-
-//        getDate(Const.SubscriptionPlan.ONE_WEEK)
-//        getDate(Const.SubscriptionPlan.ONE_MONTH)
-//        getDate(Const.SubscriptionPlan.ONE_YEAR)
-
-        setAdapter()
-
-        //Step 2. Initialize a BillingClient with PurchasesUpdatedListener onCreate method
-        billingClient = BillingClient.newBuilder(this)
-            .enablePendingPurchases()
-            .setListener { billingResult, list ->
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && list != null) {
-                    for (purchase in list) {
-                        verifySubPurchase(purchase)
-                    }
-                }
-            }.build()
-
-        // start the connection after initializing the billing client
-        establishConnection()
     }
 
     private fun setAdapter() {
-        subscriptionAdapter = SubscriptionAdapter(subscriptionViewModel, productDetailsList)
+        subscriptionAdapter = SubscriptionAdapter(this, subscriptionViewModel, productDetailsList)
         binding.viewPagerSubscription.adapter = subscriptionAdapter
+        binding.viewPagerSubscription.setCurrentItem((productDetailsList?.get(0) ?: 0) as Int, false)
 
         //For multiple page
         binding.viewPagerSubscription.clipToPadding = false
@@ -147,7 +125,8 @@ class SubscriptionActivity : BaseActivity() {
             Log.d(TAG, "showProducts: prodDetailsList:${prodDetailsList}")
             productDetailsList?.clear()
             productDetailsList?.addAll(prodDetailsList)
-            subscriptionAdapter?.addData(productDetailsList)
+            setAdapter()
+//            subscriptionAdapter?.addData(productDetailsList)
 
 
             /*   subscriptionAdapter = SubscriptionAdapter(subscriptionViewModel, productDetailsList)
@@ -426,6 +405,20 @@ class SubscriptionActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
+        //Step 2. Initialize a BillingClient with PurchasesUpdatedListener onCreate method
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener { billingResult, list ->
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && list != null) {
+                    for (purchase in list) {
+                        verifySubPurchase(purchase)
+                    }
+                }
+            }.build()
+
+        // start the connection after initializing the billing client
+        establishConnection()
+
         // Step 7: Handling pending transactions
         billingClient!!.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()

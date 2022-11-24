@@ -98,6 +98,10 @@ class WelcomeUserViewModel @Inject constructor(
         userRepository.saveUserRole(role)
     }
 
+    fun isUserAttachedToEnterprise(): Boolean? {
+        return userRepository.isUserAttachedToEnterprise()
+    }
+
     private var _verificationResponseLiveData =
         MutableLiveData<Event<DataResult<BaseResponseModel>>>()
     var verificationResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =

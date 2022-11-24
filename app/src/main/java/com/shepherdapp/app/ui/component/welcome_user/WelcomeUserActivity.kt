@@ -161,11 +161,11 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.ivBack -> navigateToLoginScreen()
-            R.id.cardViewAddLovedOne -> navigateToSubscriptionScreen()
-            R.id.imageViewAddLovedOne -> navigateToSubscriptionScreen()
-            R.id.txtAdd -> navigateToSubscriptionScreen()
-            R.id.txtLovedOne -> navigateToSubscriptionScreen()
-            R.id.layoutAddLovedOne -> navigateToSubscriptionScreen()
+            R.id.cardViewAddLovedOne -> checkNavigation()
+            R.id.imageViewAddLovedOne -> checkNavigation()
+            R.id.txtAdd -> checkNavigation()
+            R.id.txtLovedOne -> checkNavigation()
+            R.id.layoutAddLovedOne -> checkNavigation()
             R.id.cardViewCareTeam -> navigateToJoinCareTeamScreen()
             R.id.ivCareTeam -> navigateToJoinCareTeamScreen()
             R.id.txtJoin -> navigateToJoinCareTeamScreen()
@@ -206,6 +206,15 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
             }
         }, 2000)
 
+    }
+
+    private fun checkNavigation() {
+        // If user is attached to Enterprise, navigate to Add LovedOne Screen
+        if (welcomeViewModel.isUserAttachedToEnterprise() == true) {
+            navigateToAddLovedOneScreen()
+        } else {
+            navigateToSubscriptionScreen()
+        }
     }
 
     private fun navigateToAddLovedOneScreen() {

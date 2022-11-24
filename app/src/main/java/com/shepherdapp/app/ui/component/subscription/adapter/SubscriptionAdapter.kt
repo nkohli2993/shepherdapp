@@ -17,14 +17,13 @@ import com.shepherdapp.app.view_model.SubscriptionViewModel
  * Created by Deepak Rattan on 29/09/22
  */
 class SubscriptionAdapter constructor(
+    val context: Context,
     private val viewModel: SubscriptionViewModel,
 //    private val list: List<SubscriptionModel>
     private var list: ArrayList<ProductDetails?>?
-) :
-    RecyclerView.Adapter<SubscriptionAdapter.SubscriptionViewHolder>() {
+) : RecyclerView.Adapter<SubscriptionAdapter.SubscriptionViewHolder>() {
 
     lateinit var binding: AdapterSubscriptionBinding
-    lateinit var context: Context
     private var TAG = "SubscriptionAdapter"
 
 
@@ -36,10 +35,9 @@ class SubscriptionAdapter constructor(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubscriptionViewHolder {
-        context = parent.context
-        binding =
-            AdapterSubscriptionBinding.inflate(
-                LayoutInflater.from(parent.context),
+//        context = parent.context
+        binding = AdapterSubscriptionBinding.inflate(
+                LayoutInflater.from(context),
                 parent,
                 false
             )
@@ -59,9 +57,7 @@ class SubscriptionAdapter constructor(
     class SubscriptionViewHolder(
         private val itemBinding: AdapterSubscriptionBinding,
         val context: Context
-    ) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-
+    ) : RecyclerView.ViewHolder(itemBinding.root) {
 
         @SuppressLint("ResourceAsColor")
         fun bind(
@@ -89,7 +85,7 @@ class SubscriptionAdapter constructor(
             }
 
             itemBinding.txtTitle.text = productDetails?.name
-//            itemBinding.txtDesc.text = productDetails?.description
+            itemBinding.txtDesc.text = context.getString(R.string.max_3_loved_one_can_be_added)
             itemBinding.txtPrice.text =
                 productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                     0

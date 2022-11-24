@@ -149,5 +149,13 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun isLoggedInUserLovedOne() =
         Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_LOVED_ONE, false)
 
+    fun saveUserAttachedToEnterprise(isUserAttachedToEnterprise: Boolean) {
+        Prefs.with(ShepherdApp.appContext)!!
+            .save(Const.Is_USER_ATTACHED_TO_ENTERPRISE, isUserAttachedToEnterprise)
+    }
+
+    fun isUserAttachedToEnterprise() =
+        Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_USER_ATTACHED_TO_ENTERPRISE, false)
+
 
 }
