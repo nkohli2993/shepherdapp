@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView.OVER_SCROLL_NEVER
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -13,6 +15,7 @@ import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.QueryProductDetailsParams.Product
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.subscription.SubscriptionModel
@@ -39,7 +42,7 @@ import kotlin.math.abs
  * Created by Deepak Rattan on 29/09/22
  */
 @AndroidEntryPoint
-class SubscriptionActivity : BaseActivity() {
+class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivitySubscriptionBinding
     private var subscriptionAdapter: SubscriptionAdapter? = null
     private val subscriptionViewModel: SubscriptionViewModel by viewModels()
@@ -57,12 +60,31 @@ class SubscriptionActivity : BaseActivity() {
         binding = ActivitySubscriptionBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        binding.listener = this
+        showLoading("")
+        //Step 2. Initialize a BillingClient with PurchasesUpdatedListener onCreate method
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener { billingResult, list ->
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && list != null) {
+                    for (purchase in list) {
+                        verifySubPurchase(purchase)
+                    }
+                }
+            }.build()
+
+        // start the connection after initializing the billing client
+        establishConnection()
+
+
     }
 
     private fun setAdapter() {
+        hideLoading()
         subscriptionAdapter = SubscriptionAdapter(this, subscriptionViewModel, productDetailsList)
         binding.viewPagerSubscription.adapter = subscriptionAdapter
-        binding.viewPagerSubscription.setCurrentItem((productDetailsList?.get(0) ?: 0) as Int, false)
+//        binding.viewPagerSubscription.setCurrentItem((productDetailsList?.get(0) ?: 0) as Int, false)
 
         //For multiple page
         binding.viewPagerSubscription.clipToPadding = false
@@ -124,110 +146,15 @@ class SubscriptionActivity : BaseActivity() {
         billingClient?.queryProductDetailsAsync(params) { billingResult, prodDetailsList ->
             Log.d(TAG, "showProducts: prodDetailsList:${prodDetailsList}")
             productDetailsList?.clear()
-            productDetailsList?.addAll(prodDetailsList)
-            setAdapter()
-//            subscriptionAdapter?.addData(productDetailsList)
-
-
-            /*   subscriptionAdapter = SubscriptionAdapter(subscriptionViewModel, productDetailsList)
-               subscriptionAdapter?.notifyDataSetChanged()
-               binding.viewPagerSubscription.adapter = subscriptionAdapter*/
-            //For multiple page
-            /*  binding.viewPagerSubscription.clipToPadding = false
-              binding.viewPagerSubscription.clipChildren = false
-              binding.viewPagerSubscription.offscreenPageLimit = 3
-              binding.viewPagerSubscription.getChildAt(0).overScrollMode =
-                  OVER_SCROLL_NEVER
-
-              val compositeTransformer = CompositePageTransformer()
-              compositeTransformer.addTransformer(MarginPageTransformer(40))
-              compositeTransformer.addTransformer { page, position ->
-                  val r = 1 - abs(position)
-                  page.scaleY = (0.95f + r * 0.05f)
-              }
-              binding.viewPagerSubscription.setPageTransformer(compositeTransformer)
-  */
+//            productDetailsList?.addAll(prodDetailsList)
+            Handler(Looper.getMainLooper()).postDelayed({
+                productDetailsList?.addAll(prodDetailsList)
+                setAdapter()
+            }, 2000)
         }
     }
 
-    /* @SuppressLint("SetTextI18n")
-     fun showProducts() {
-         val productList: ImmutableList<Product> = ImmutableList.of(
-             //Product 1
-             Product.newBuilder()
-                 .setProductId("one_week")
-                 .setProductType(BillingClient.ProductType.SUBS)
-                 .build(),
-             //Product 2
-             Product.newBuilder()
-                 .setProductId("one_month")
-                 .setProductType(BillingClient.ProductType.SUBS)
-                 .build(),
-             //Product 3
-             Product.newBuilder()
-                 .setProductId("one_year")
-                 .setProductType(BillingClient.ProductType.SUBS)
-                 .build()
-         )
-         val params = QueryProductDetailsParams.newBuilder()
-             .setProductList(productList)
-             .build()
-
-         billingClient!!.queryProductDetailsAsync(
-             params,
-         ) { billingResult: BillingResult?, prodDetailsList: List<ProductDetails?>? ->
-
-             Log.d(TAG, "showProducts: prodDetailsList:${prodDetailsList}")
-             // Process the result
-             productDetailsList?.clear()
-             handler?.postDelayed(Runnable {
- //                loadProducts.setVisibility(View.INVISIBLE)
-                 if (prodDetailsList != null) {
-                     productDetailsList?.addAll(prodDetailsList)
-                 }
-                 Log.d(
-                     TAG,
-                     productDetailsList?.size.toString() + " number of products"
-                 )
-                 *//*adapter = ProductDetailsAdapter(
-                    applicationContext,
-                    productDetailsList,
-                    this@Subscriptions
-                )*//*
-//                recyclerView.setHasFixedSize(true)
-                *//* recyclerView.setLayoutManager(
-                     LinearLayoutManager(
-                         this@Subscriptions,
-                         LinearLayoutManager.VERTICAL,
-                         false
-                     )
-                 )*//*
-//                recyclerView.setAdapter(adapter)
-                val adapter = SubscriptionAdapter(subscriptionViewModel, prodDetailsList)
-                binding.viewPagerSubscription.adapter = adapter
-
-
-                //For multiple page
-                binding.viewPagerSubscription.clipToPadding = false
-                binding.viewPagerSubscription.clipChildren = false
-                binding.viewPagerSubscription.offscreenPageLimit = 3
-                binding.viewPagerSubscription.getChildAt(0).overScrollMode =
-                    RecyclerView.OVER_SCROLL_NEVER
-
-                val compositeTransformer = CompositePageTransformer()
-                compositeTransformer.addTransformer(MarginPageTransformer(40))
-                compositeTransformer.addTransformer { page, position ->
-                    val r = 1 - abs(position)
-                    page.scaleY = (0.95f + r * 0.05f)
-                }
-                binding.viewPagerSubscription.setPageTransformer(compositeTransformer)
-
-            }, 2000)
-        }
-    }*/
-
     // Step 5 : Launch the purchase flow
-
     private fun launchPurchaseFlow(productDetails: ProductDetails) {
         assert(productDetails.subscriptionOfferDetails != null)
         val productDetailsParamsList = ImmutableList.of(
@@ -284,19 +211,6 @@ class SubscriptionActivity : BaseActivity() {
                         expiryDate = expiryDate
                     )
                 )
-
-
-                //user prefs to set premium
-                /*showSuccess(
-                    this,
-                    "Subscription activated, Enjoy!",
-                )*/
-                //Setting premium to 1
-                // 1 - premium
-                // 0 - no premium
-//                prefs.setPremium(1)
-//                startActivity(Intent(this, MainActivity::class.java))
-//                finish()
             }
         }
         Log.d(TAG, "Purchase Token: " + purchases.purchaseToken)
@@ -405,20 +319,6 @@ class SubscriptionActivity : BaseActivity() {
 
     override fun onResume() {
         super.onResume()
-        //Step 2. Initialize a BillingClient with PurchasesUpdatedListener onCreate method
-        billingClient = BillingClient.newBuilder(this)
-            .enablePendingPurchases()
-            .setListener { billingResult, list ->
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && list != null) {
-                    for (purchase in list) {
-                        verifySubPurchase(purchase)
-                    }
-                }
-            }.build()
-
-        // start the connection after initializing the billing client
-        establishConnection()
-
         // Step 7: Handling pending transactions
         billingClient!!.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()
@@ -432,40 +332,6 @@ class SubscriptionActivity : BaseActivity() {
             }
         }
     }
-
-    fun getDateAfterOneWeek(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val currentCal: Calendar = Calendar.getInstance()
-        val currentDate: String = dateFormat.format(currentCal.time)
-        Log.d(TAG, "current date : $currentDate")
-        currentCal.add(Calendar.DATE, 7)
-        val toDate: String = dateFormat.format(currentCal.time)
-        Log.d(TAG, "date after 1 week  : $toDate")
-        return toDate
-    }
-
-    fun getDateAfterOneMonth(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val currentCal: Calendar = Calendar.getInstance()
-        val currentDate: String = dateFormat.format(currentCal.time)
-        Log.d(TAG, "current date : $currentDate")
-        currentCal.add(Calendar.MONTH, 1)
-        val toDate: String = dateFormat.format(currentCal.time)
-        Log.d(TAG, "date after 1 month  : $toDate")
-        return toDate
-    }
-
-    fun getDateAfterOneYear(): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val currentCal: Calendar = Calendar.getInstance()
-        val currentDate: String = dateFormat.format(currentCal.time)
-        Log.d(TAG, "current date : $currentDate")
-        currentCal.add(Calendar.YEAR, 1)
-        val toDate: String = dateFormat.format(currentCal.time)
-        Log.d(TAG, "date after 1 year  : $toDate")
-        return toDate
-    }
-
 
     @SuppressLint("SimpleDateFormat")
     fun getDate(planName: String): String {
@@ -485,10 +351,17 @@ class SubscriptionActivity : BaseActivity() {
             }
         }
 
-//        currentCal.add(Calendar.DATE, 7)
         val toDate: String = dateFormat.format(currentCal.time)
         Log.d(TAG, "expiry date for $planName plan  : $toDate")
         return toDate
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.ivBack -> {
+                onBackPressedDispatcher.onBackPressed()
+            }
+        }
     }
 
 }

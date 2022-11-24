@@ -5,11 +5,9 @@
 
     <data>
 
-
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
-
     </data>
 
     <LinearLayout
@@ -552,8 +550,7 @@
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="@+id/chkLovedOne"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/chkLovedOne"
-                         />
+                        app:layout_constraintStart_toEndOf="@id/chkLovedOne" />
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnContinue"
