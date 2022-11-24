@@ -139,7 +139,8 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                 }
             }
         }
-        lovedOneViewModel.checkSubscriptionStatusResponseLiveData.observeEvent(this) {
+
+ /*       lovedOneViewModel.checkSubscriptionStatusResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -177,7 +178,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
 
                 }
             }
-        }
+        }*/
     }
 
     override fun initViewBinding() {
@@ -199,26 +200,26 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvNew -> {
-                lovedOneViewModel.checkSubscriptionStatus()
+//                lovedOneViewModel.checkSubscriptionStatus()
 
-                /*  Log.d(TAG, "onClick:${careTeams.size} ")
-                  if (careTeams.size < 3) {
-                      findNavController().navigate(
-                          LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
-                              source = Const.ADD_LOVE_ONE
-                          )
-                      )
-                  } else {
-                      val builder = AlertDialog.Builder(requireContext())
-                      val dialog = builder.apply {
-                          setTitle("Shepherd")
-                          setMessage("You can add up to 3 loved ones!")
-                          setPositiveButton("OK") { _, _ ->
-                          }
-                      }.create()
-                      dialog.show()
-                      dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                  }*/
+                Log.d(TAG, "onClick:${careTeams.size} ")
+                if (careTeams.size < 3) {
+                    findNavController().navigate(
+                        LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
+                            source = Const.ADD_LOVE_ONE
+                        )
+                    )
+                } else {
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle(getString(R.string.app_name))
+                        setMessage(getString(R.string.user_limit_exceeded))
+                        setPositiveButton(getString(R.string.ok)) { _, _ ->
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                }
             }
             R.id.btnDone -> {
                 selectedCare?.let { careTeams ->
