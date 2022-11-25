@@ -310,6 +310,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                 it1
                             )
                         }
+                        // If login response contains enterprise code, then the loggedIn user is the enterprise user
+                        if (!it.payload?.userProfiles?.enterpriseId.isNullOrEmpty()) {
+                            // Save status in SharedPrefs
+                            loginViewModel.saveUSerAttachedToEnterprise(true)
+                        }
 
                         // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
                         // Save lovedOneID to sharedPref

@@ -260,5 +260,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-
+    fun saveUSerAttachedToEnterprise(isUserAttachedToEnterprise: Boolean) {
+        userRepository.saveUserAttachedToEnterprise(isUserAttachedToEnterprise)
+    }
 }

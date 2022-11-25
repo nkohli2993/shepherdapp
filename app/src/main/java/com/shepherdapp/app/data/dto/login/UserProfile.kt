@@ -24,6 +24,8 @@ data class UserProfile(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
-    @SerializedName("security_code") var security_code: String? = null
+    @SerializedName("security_code") var security_code: String? = null,
+    @SerializedName("enterprise_id") var enterpriseId: String? = null,
+    @SerializedName("stripe_id") var stripeId: String? = null
 
-):Parcelable
+) : Parcelable

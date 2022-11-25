@@ -75,4 +75,8 @@ class SettingViewModel @Inject constructor(
     fun getUserDetail(): UserProfile? {
         return userRepository.getCurrentUser()
     }
+
+    fun isUserAttachedToEnterprise(): Boolean? {
+        return userRepository.isUserAttachedToEnterprise()
+    }
 }

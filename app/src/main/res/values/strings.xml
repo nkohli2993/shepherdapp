@@ -576,6 +576,7 @@
     <string name="ok">Ok</string>
     <string name="max_3_loved_one_can_be_added">Max 3 loved one can added</string>
     <string name="become_an_enterprise_User">Become an Enterprise User</string>
+    <string name="enterprise_detail">Enterprise Detail:</string>
 
 
 </resources>

@@ -121,6 +121,14 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             fragmentSettingBinding.tvSet.visibility = View.VISIBLE
         }
         fragmentSettingBinding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
+
+        if (settingViewModel.isUserAttachedToEnterprise() == true) {
+            fragmentSettingBinding.txtEnterprise.text = getString(R.string.enterprise_detail)
+            fragmentSettingBinding.txtEnterpriseName.visibility = View.VISIBLE
+            fragmentSettingBinding.clSubscription.visibility = View.GONE
+            // To make the view non-clickable
+            fragmentSettingBinding.clBecomeAnEnterpriseUser.isEnabled = false
+        }
     }
 
     private fun registerBiometric(checked: Boolean) {

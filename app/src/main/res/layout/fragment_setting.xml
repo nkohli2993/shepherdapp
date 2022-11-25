@@ -98,7 +98,8 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="0dp"
+                        android:id="@+id/txtEnterprise"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10ssp"
                         android:fontFamily="@font/gotham_book"
@@ -106,9 +107,21 @@
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivBecomeAnEnterpriseUser"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtEnterpriseName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@+id/txtEnterprise"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="@dimen/_4sdp"
+                        android:textSize="@dimen/_14ssp"
+                        android:textColor="@color/_399282"
+                        app:fontFamily="@font/gotham_medium"
+                        android:visibility="gone"
+                        android:text="Enterprise Name" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
