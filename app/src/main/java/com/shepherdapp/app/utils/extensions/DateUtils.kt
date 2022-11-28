@@ -1,5 +1,6 @@
 package com.shepherdapp.app.utils.extensions
 
+import android.annotation.SuppressLint
 import com.google.android.gms.fitness.data.DataPoint
 import java.text.DateFormat
 import java.text.ParseException
@@ -289,4 +290,18 @@ fun String?.convertTimeStampToTime(): String? {
     }
 
     return formattedDate
+}
+
+
+@SuppressLint("SimpleDateFormat")
+fun String?.changeDatesFormat(sourceFormat: String?, targetFormat: String?): String? {
+    // convert the Source string to Date object
+    val formatter = SimpleDateFormat(sourceFormat)
+    val date = this?.let { formatter.parse(it) }
+
+    // Convert the Date object into desired format
+    val desiredFormat = date?.let { SimpleDateFormat(targetFormat).format(it) }
+    println(desiredFormat) //08, Aug 2019
+
+    return desiredFormat
 }

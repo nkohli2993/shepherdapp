@@ -577,6 +577,10 @@
     <string name="max_3_loved_one_can_be_added">Max 3 loved one can added</string>
     <string name="become_an_enterprise_User">Become an Enterprise User</string>
     <string name="enterprise_detail">Enterprise Detail:</string>
+    <string name="you_have_choosen_plan">You have chosen basic plan</string>
+    <string name="your_plan_will_expire_on">Your plan will expire on : </string>
+    <string name="renew">Renew</string>
+    <string name="change_plan">Change Plan</string>
 
 
 </resources>

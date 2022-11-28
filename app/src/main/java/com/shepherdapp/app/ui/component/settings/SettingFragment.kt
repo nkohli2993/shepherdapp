@@ -161,6 +161,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                     )
                 )
             }
+            R.id.clSubscription -> {
+                findNavController().navigate(R.id.action_nav_setting_to_mySubscriptionFragment)
+            }
             R.id.clInvitations -> {
                 findNavController().navigate(R.id.action_nav_setting_to_invitation)
 
