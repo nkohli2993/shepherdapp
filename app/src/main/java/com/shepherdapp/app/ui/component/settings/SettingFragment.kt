@@ -126,6 +126,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             fragmentSettingBinding.txtEnterprise.text = getString(R.string.enterprise_detail)
             fragmentSettingBinding.txtEnterpriseName.visibility = View.VISIBLE
             fragmentSettingBinding.clSubscription.visibility = View.GONE
+
+            fragmentSettingBinding.txtEnterpriseName.text =
+                settingViewModel.getUserDetail()?.enterprise?.name
             // To make the view non-clickable
             fragmentSettingBinding.clBecomeAnEnterpriseUser.isEnabled = false
         }

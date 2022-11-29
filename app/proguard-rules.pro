@@ -43,3 +43,21 @@
 -keepclasseswithmembernames class * {
      public <methods>;
 }
+
+-keepclassmembers class * extends android.app.Activity {
+     public void *(android.view.View);
+ }
+
+ -keepclassmembers class * extends android.app.Fragment {
+      public void *(android.view.View);
+  }
+
+  -keepclasseswithmembers class * {
+      void listener_*(...);
+  }
+
+ # -keep class * {
+  #    public void * (android.view.View);
+  #}
+
+

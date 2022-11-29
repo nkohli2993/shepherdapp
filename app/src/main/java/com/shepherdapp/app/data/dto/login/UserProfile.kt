@@ -9,7 +9,6 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class UserProfile(
-
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("firstname") var firstname: String? = null,
@@ -26,6 +25,6 @@ data class UserProfile(
     @SerializedName("deleted_at") var deletedAt: String? = null,
     @SerializedName("security_code") var security_code: String? = null,
     @SerializedName("enterprise_id") var enterpriseId: String? = null,
-    @SerializedName("stripe_id") var stripeId: String? = null
-
+    @SerializedName("stripe_id") var stripeId: String? = null,
+    @SerializedName("enterprise") var enterprise: Enterprise? = Enterprise()
 ) : Parcelable
