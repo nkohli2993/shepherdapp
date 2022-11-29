@@ -314,6 +314,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         if (!it.payload?.userProfiles?.enterpriseId.isNullOrEmpty()) {
                             // Save status in SharedPrefs
                             loginViewModel.saveUSerAttachedToEnterprise(true)
+                        } else if (it.payload?.activeSubscription?.id != null) {
+                            //If subscription object in Login response contains data, then user has taken subscription
+                            loginViewModel.saveUSerAttachedToEnterprise(false)
                         }
 
                         // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
