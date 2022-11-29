@@ -91,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
+                    android:lineSpacingExtra="@dimen/_5sdp"
                     android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
                     android:layout_marginTop="@dimen/_10sdp" />
 
@@ -172,9 +173,10 @@
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/gotham_book"
             android:textColor="@color/_D7293F"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_14ssp"
             android:text="@string/renew"
             android:layout_marginEnd="@dimen/_20sdp"
+            android:onClick="@{listener::onClick}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtExpirePlan"
             android:layout_marginTop="@dimen/_10sdp" />

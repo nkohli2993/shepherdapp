@@ -10,6 +10,7 @@ import com.shepherdapp.app.databinding.FragmentMySubscriptionBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
 import com.shepherdapp.app.utils.extensions.changeDatesFormat
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.MySubscriptionViewModel
@@ -42,7 +43,7 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
                                 targetFormat = "dd MMM, yyyy"
                             )
                         fragmentMySubscriptionBinding.txtLovedOne.text =
-                            "Max ${payload?.allowedLovedOnesCount} can be added"
+                            "Max ${payload?.allowedLovedOnesCount} lovedOne can be added"
                         fragmentMySubscriptionBinding.txtPrice.text = payload?.amount.toString()
                         fragmentMySubscriptionBinding.txtPriceUnit.text = "$/${payload?.plan}"
                         fragmentMySubscriptionBinding.txtTitle.text = "${payload?.plan}"
@@ -77,6 +78,12 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
         when (view?.id) {
             R.id.ivBack -> {
                 backPress()
+            }
+            R.id.txtRenew -> {
+
+            }
+            R.id.btnChangePlan -> {
+                requireContext().startActivity<SubscriptionActivity>()
             }
         }
     }
