@@ -2,7 +2,6 @@ package com.shepherdapp.app.ui.component.my_med_detail
 
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
-import android.text.Html
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -59,12 +58,19 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                         HtmlCompat.fromHtml(it.data.payload.medlist.name ?: "", 0)
                     /*fragmentMyMedDetailBinding.txtDescription1.text =
                         HtmlCompat.fromHtml( it.data.payload.medlist.description?: "", 0)*/
-                    if (it.data.payload.medlist.description.isNullOrEmpty()) {
+                    /* if (it.data.payload.medlist.description.isNullOrEmpty()) {
+                         fragmentMyMedDetailBinding.txtDescription1.text =
+                             getString(R.string.no_description_available)
+                     } else {
+                         fragmentMyMedDetailBinding.txtDescription1.text =
+                             Html.fromHtml(it.data.payload.medlist.description)
+                     }*/
+
+                    if (it.data.payload.note.isEmpty()) {
                         fragmentMyMedDetailBinding.txtDescription1.text =
                             getString(R.string.no_description_available)
                     } else {
-                        fragmentMyMedDetailBinding.txtDescription1.text =
-                            Html.fromHtml(it.data.payload.medlist.description)
+                        fragmentMyMedDetailBinding.txtDescription1.text = it.data.payload.note
                     }
 
                     it.data.payload.assigned_by_details.let { assignedByDetail ->

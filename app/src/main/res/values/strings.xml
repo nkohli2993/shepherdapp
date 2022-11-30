@@ -157,6 +157,7 @@
     <string name="select_time">Select Time</string>
     <string name="notes">Notes</string>
     <string name="note">Note</string>
+    <string name="note_with_colon">Note : </string>
     <string name="today">Today</string>
     <string name="month">Month</string>
     <string name="week">Week</string>
@@ -571,6 +572,7 @@
     <string name="dosage_med">Dosage :</string>
     <string name="please_enter_medicine_name">Please enter medicine name</string>
     <string name="no_description_available">No description available</string>
+    <string name="no_note_available">No note available</string>
     <string name="choose_your_subscription">Choose your subscription plan to add your loved one.</string>
     <string name="buy_subscription_plan">Buy Subscription Plan</string>
     <string name="user_limit_exceeded">User limit exceeded</string>
