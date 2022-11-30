@@ -13,7 +13,7 @@ data class ActiveSubscription(
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("plan") var plan: String? = null,
     @SerializedName("transaction_id") var transactionId: String? = null,
-    @SerializedName("amount") var amount: Int? = null,
+    @SerializedName("amount") var amount: String? = null,
     @SerializedName("expiry_date") var expiryDate: String? = null,
     @SerializedName("allowed_loved_ones_count") var allowedLovedOnesCount: Int? = null,
     @SerializedName("is_active") var isActive: Boolean = false,

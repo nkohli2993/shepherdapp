@@ -103,14 +103,14 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         getString(R.string.password_should_be_min_4_character)
                     binding.editTextPassword.requestFocus()
                 }
-                binding.chkYes.isChecked -> {
-                    if (binding.edtEnterpriseCode.text.toString().isEmpty()) {
-                        binding.edtEnterpriseCode.error = getString(R.string.enter_enterprise_cod)
-                        binding.edtEnterpriseCode.requestFocus()
-                    } else {
-                        return true
-                    }
-                }
+                /* binding.chkYes.isChecked -> {
+                     if (binding.edtEnterpriseCode.text.toString().isEmpty()) {
+                         binding.edtEnterpriseCode.error = getString(R.string.enter_enterprise_cod)
+                         binding.edtEnterpriseCode.requestFocus()
+                     } else {
+                         return true
+                     }
+                 }*/
                 !binding.checkboxTermsConditions.isChecked -> {
                     showInfo(
                         this,
@@ -150,20 +150,20 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
         }
 
-        binding.chkYes.setOnCheckedChangeListener { compoundButton, b ->
-            if (b) {
-                binding.chkNo.isChecked = false
-                binding.layoutEnterpriseCode.visibility = View.VISIBLE
-            } else {
-                binding.chkNo.isChecked = true
-                binding.layoutEnterpriseCode.visibility = View.GONE
-            }
-        }
+        /*  binding.chkYes.setOnCheckedChangeListener { compoundButton, b ->
+              if (b) {
+                  binding.chkNo.isChecked = false
+                  binding.layoutEnterpriseCode.visibility = View.VISIBLE
+              } else {
+                  binding.chkNo.isChecked = true
+                  binding.layoutEnterpriseCode.visibility = View.GONE
+              }
+          }*/
 
-        binding.chkNo.setOnCheckedChangeListener { compoundButton, b ->
+        /*binding.chkNo.setOnCheckedChangeListener { compoundButton, b ->
             binding.chkYes.isChecked = !b
             binding.layoutEnterpriseCode.visibility = View.GONE
-        }
+        }*/
         // Get Roles
         createNewAccountViewModel.getRoles(pageNumber, limit)
     }
@@ -216,7 +216,10 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     // For handling user attached to signup, save status in SharedPref
                     if (!enterpriseCode.isNullOrEmpty()) {
                         createNewAccountViewModel.saveUSerAttachedToEnterprise(true)
-                        Log.d(TAG, "Sign Up : Save status of user attached to enterprise in SharedPref successfully.... ")
+                        Log.d(
+                            TAG,
+                            "Sign Up : Save status of user attached to enterprise in SharedPref successfully.... "
+                        )
                     }
 
                     it.data.let { it1 ->
@@ -381,10 +384,14 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     passwd = editTextPassword.text.toString().trim()
                     phoneNumber = edtPhoneNumber.text.toString().trim()
                     phoneCode = ccp.selectedCountryCode
-                    enterpriseCode = if (binding.chkYes.isChecked) {
-                        binding.edtEnterpriseCode.text.toString().trim()
-                    } else {
-                        null
+                    /* enterpriseCode = if (binding.chkYes.isChecked) {
+                         binding.edtEnterpriseCode.text.toString().trim()
+                     } else {
+                         null
+                     }*/
+                    enterpriseCode = edtEnterpriseCode.text.toString().trim()
+                    if (enterpriseCode?.isEmpty() == true) {
+                        enterpriseCode = null
                     }
                     profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
                         null

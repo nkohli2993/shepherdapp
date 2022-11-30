@@ -552,6 +552,8 @@
     <string name="are_you_an_enterprise_user">Are you an \n Enterprise User?</string>
     <string name="enter_enterprise_code">Enter Enterprise \n Code</string>
     <string name="enter_enterprise_cod">Enter Enterprise Code</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="enter_enterprise_code_optional">Enter Enterprise Code (Optional)</string>
     <string name="enterprise_code">Enterprise Code</string>
     <string name="are_you_enterprise_user">Are you an Enterprise User?</string>
     <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometrics for next time?</string>
@@ -581,6 +583,7 @@
     <string name="your_plan_will_expire_on">Your plan will expire on : </string>
     <string name="renew">Renew</string>
     <string name="change_plan">Change Plan</string>
+    <string name="create_a_password">Create a password</string>
 
 
 </resources>

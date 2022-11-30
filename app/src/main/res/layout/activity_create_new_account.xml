@@ -255,58 +255,57 @@
 
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/txtEnterpriseUser"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:fontFamily="@font/gotham_light"
-                        android:text="@string/are_you_enterprise_user"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_12ssp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/layoutPhone" />
+                    <!--  <TextView
+                          android:id="@+id/txtEnterpriseUser"
+                          android:layout_width="wrap_content"
+                          android:layout_height="wrap_content"
+                          android:layout_marginTop="@dimen/_10sdp"
+                          android:fontFamily="@font/gotham_light"
+                          android:text="@string/are_you_enterprise_user"
+                          android:textColor="@color/_192032"
+                          android:textSize="@dimen/_12ssp"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintTop_toBottomOf="@id/layoutPhone" />-->
 
-                    <LinearLayout
-                        android:id="@+id/layoutChekBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/txtEnterpriseUser">
+                    <!--  <LinearLayout
+                          android:id="@+id/layoutChekBox"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:orientation="horizontal"
+                          app:layout_constraintStart_toStartOf="parent"
+                          app:layout_constraintTop_toBottomOf="@id/txtEnterpriseUser">
 
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/chkYes"
-                            style="@style/CustomCheckbox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:clickable="true"
-                            android:padding="@dimen/_5sdp"
-                            android:text="@string/yes" />
+                          <androidx.appcompat.widget.AppCompatCheckBox
+                              android:id="@+id/chkYes"
+                              style="@style/CustomCheckbox"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_centerVertical="true"
+                              android:layout_marginStart="@dimen/_10sdp"
+                              android:clickable="true"
+                              android:padding="@dimen/_5sdp"
+                              android:text="@string/yes" />
 
-                        <androidx.appcompat.widget.AppCompatCheckBox
-                            android:id="@+id/chkNo"
-                            style="@style/CustomCheckbox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="@dimen/_20sdp"
-                            android:clickable="true"
-                            android:checked="true"
-                            android:padding="@dimen/_5sdp"
-                            android:text="@string/no" />
-                    </LinearLayout>
+                          <androidx.appcompat.widget.AppCompatCheckBox
+                              android:id="@+id/chkNo"
+                              style="@style/CustomCheckbox"
+                              android:layout_width="wrap_content"
+                              android:layout_height="wrap_content"
+                              android:layout_centerVertical="true"
+                              android:layout_marginStart="@dimen/_20sdp"
+                              android:clickable="true"
+                              android:checked="true"
+                              android:padding="@dimen/_5sdp"
+                              android:text="@string/no" />
+                      </LinearLayout>-->
 
                     <LinearLayout
                         android:id="@+id/layoutEnterpriseCode"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/layoutChekBox">
+                        app:layout_constraintTop_toBottomOf="@+id/layoutPhone">
 
                         <TextView
                             android:id="@+id/txtEnterpriseCode"
@@ -314,18 +313,16 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_light"
-                            android:text="@string/enter_enterprise_cod"
+                            android:text="@string/enter_enterprise_code_optional"
                             android:textColor="@color/_192032"
-                            android:textSize="@dimen/_12ssp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/layoutChekBox" />
+                            android:textSize="@dimen/_12ssp" />
 
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/edtEnterpriseCode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                            android:hint="@string/enter_enterprise_cod"
+                            android:hint="@string/enter_code"
                             android:inputType="text"
                             android:padding="@dimen/_10sdp"
                             android:layout_marginVertical="@dimen/_5sdp"
@@ -365,7 +362,7 @@
                             android:background="@null"
                             android:drawableStart="@drawable/ic_passwd"
                             android:drawablePadding="@dimen/_5sdp"
-                            android:hint="@string/enter_your_password"
+                            android:hint="@string/create_a_password"
                             android:inputType="textPassword"
                             android:padding="@dimen/_2sdp"
                             android:textColor="@color/_192032"

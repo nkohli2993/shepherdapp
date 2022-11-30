@@ -308,7 +308,7 @@
         <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_care_team_members.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_create_account.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_create_new_account.xml" value="0.125" />
+        <entry key="app/src/main/res/layout/activity_create_new_account.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_details.xml" value="0.534375" />
         <entry key="app/src/main/res/layout/activity_enter_enterprise_code.xml" value="0.29234234234234235" />
         <entry key="app/src/main/res/layout/activity_enterprise_user.xml" value="0.29234234234234235" />
