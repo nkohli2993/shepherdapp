@@ -1,6 +1,7 @@
 package com.shepherdapp.app.ui.component.lockBoxDocInfo
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,7 +22,6 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.lockBoxDocInfo.adapter.UploadedDocumentImagesAdapter
 import com.shepherdapp.app.utils.extensions.showError
-import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.LockBoxDocInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -157,8 +157,26 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                     hideLoading()
                     shareLockBoxDocUrl = it.data.payload?.documentUrl
                     Log.d(TAG, "ShareLockBox DocUrl : $shareLockBoxDocUrl")
+                    if (shareLockBoxDocUrl.isNullOrEmpty()) {
+                        showError(requireContext(), "Shareable Link Not found...")
+                    } else {
+                        shareUrl()
+                    }
                 }
             }
+        }
+    }
+
+    // Share LockBox Document Url with other apps
+    private fun shareUrl() {
+        try {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "LockBox Document URL")
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "LockBox Document URL : $shareLockBoxDocUrl")
+            startActivity(Intent.createChooser(shareIntent, "choose one"))
+        } catch (e: Exception) {
+            Log.d(TAG, "shareUrl exception :$e")
         }
     }
 
@@ -167,28 +185,7 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         when (p0?.id) {
             R.id.tvShare -> {
                 lockBoxDocInfoViewModel.shareLockBoxDoc(lockBoxId)
-                showInfo(requireContext(), getString(R.string.not_implmented))
-//                val urls = payload?.documents?.map {
-//                    it.url
-//                }
-//                val uriList = ArrayList<Uri>()
-//                urls?.forEach {
-//                    uriList.add(Uri.parse(it))
-//                }
-//                Log.d(TAG, "File Urls : $urls")
-//
-//                val intent = Intent(Intent.ACTION_SEND_MULTIPLE)
-//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                intent.type = "*/*"
-//                intent.putExtra(Intent.EXTRA_SUBJECT,"Document : ${payload?.name}")
-//                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
-//                try {
-//                    startActivity(Intent.createChooser(intent, "Share"))
-//                    uriList.clear()
-//                } catch (e: ActivityNotFoundException) {
-//                    Toast.makeText(requireContext(), "No App Available", Toast.LENGTH_SHORT).show()
-//                }
-
+//                showInfo(requireContext(), getString(R.string.not_implmented))
             }
             R.id.ivBack -> {
                 backPress()
