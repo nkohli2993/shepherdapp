@@ -133,29 +133,30 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtDescription"
-            style="@style/TextViewGothamBold"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/_5sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:lineSpacingExtra="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/note_with_colon"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_13ssp"
             app:layout_constraintStart_toStartOf="@id/txtBrandName"
             app:layout_constraintTop_toBottomOf="@id/tv_username" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtDescription1"
-            style="@style/TextViewGothamBook"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_marginEnd="@dimen/_5sdp"
-            android:layout_marginStart="@dimen/_5sdp"
-            android:paddingHorizontal="@dimen/_8sdp"
-            android:textColor="@color/_192032"
-            android:lineSpacingExtra="@dimen/_3sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/txtDescription"
-            app:layout_constraintTop_toBottomOf="@id/tv_username" />
+        <!--  <androidx.appcompat.widget.AppCompatTextView
+              android:id="@+id/txtDescription1"
+              style="@style/TextViewGothamBook"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/_15sdp"
+              android:layout_marginEnd="@dimen/_5sdp"
+              android:layout_marginStart="@dimen/_5sdp"
+              android:paddingHorizontal="@dimen/_8sdp"
+              android:textColor="@color/_192032"
+              android:lineSpacingExtra="@dimen/_3sdp"
+              android:text="edbewkjfbwkerlfbrfbkrbrekfelrwjfe jf vjfvefvejfvjefvejvfejfvejvfvjefvefvef"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintTop_toBottomOf="@id/tv_username" />-->
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -165,7 +166,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="@id/tv_username"
             app:layout_constraintStart_toStartOf="@+id/llImageWrapper"
-            app:layout_constraintTop_toBottomOf="@+id/txtDescription1" />
+            app:layout_constraintTop_toBottomOf="@+id/txtDescription" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/detailTV"

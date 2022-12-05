@@ -572,6 +572,7 @@
     <string name="dosage_med">Dosage :</string>
     <string name="please_enter_medicine_name">Please enter medicine name</string>
     <string name="no_description_available">No description available</string>
+    <string name="format_notes"><![CDATA[<b>Note:</b> %1s]]></string>
     <string name="no_note_available">No note available</string>
     <string name="choose_your_subscription">Choose your subscription plan to add your loved one.</string>
     <string name="buy_subscription_plan">Buy Subscription Plan</string>
