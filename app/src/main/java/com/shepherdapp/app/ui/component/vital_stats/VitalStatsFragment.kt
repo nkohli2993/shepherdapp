@@ -90,6 +90,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private var vitalStats: VitalStatsData? = null
     private var graphDataList: ArrayList<GraphData> = arrayListOf()
     private var payload: Payload? = null
+    var bloodPressureData: AddBloodPressureData? = null
+
 
     //private var heartRate: Int
     var finalSelectedDate: Date? = null
@@ -207,7 +209,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         //set data on dash board
 
                         //Heart Rate
-                        if (vitalStats!!.data?.heartRate.isNullOrEmpty() || (vitalStats?.data?.heartRate?.toInt() == 0)) {
+                        if (vitalStats!!.data?.heartRate.isNullOrEmpty() || (vitalStats?.data?.heartRate?.toDouble() == 0.0)) {
                             fragmentVitalStatsBinding.tvHeartRateValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvHeartRateUnit.visibility = View.GONE
                         } else {
@@ -217,7 +219,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Body temperature
-                        if (vitalStats!!.data?.bodyTemp.isNullOrEmpty() || (vitalStats?.data?.bodyTemp?.toInt() == 0)) {
+                        if (vitalStats!!.data?.bodyTemp.isNullOrEmpty() || (vitalStats?.data?.bodyTemp?.toDouble() == 0.0)) {
                             fragmentVitalStatsBinding.tvBodyTempValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.GONE
                         } else {
@@ -227,7 +229,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Blood Pressure
-                        if (vitalStats!!.data?.bloodPressure?.sbp.isNullOrEmpty() || (vitalStats?.data?.bloodPressure?.sbp?.toInt() == 0)) {
+                        if (vitalStats!!.data?.bloodPressure?.sbp.isNullOrEmpty() || (vitalStats?.data?.bloodPressure?.sbp?.toDouble() == 0.0)) {
                             fragmentVitalStatsBinding.tvBloodPressureValue.text = "Not Available"
                         } else {
                             fragmentVitalStatsBinding.tvBloodPressureValue.text =
@@ -235,7 +237,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Oxygen Level
-                        if (vitalStats!!.data?.oxygen.isNullOrEmpty() || (vitalStats?.data?.oxygen?.toInt() == 0)) {
+                        if (vitalStats!!.data?.oxygen.isNullOrEmpty() || (vitalStats?.data?.oxygen?.toDouble() == 0.0)) {
                             fragmentVitalStatsBinding.tvOxygenValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.GONE
 
@@ -371,7 +373,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                      )*/
 
                     Log.d(TAG, "Vital Stats added successfully...")
-//                    callGraphApi()
+                    callGraphApi()
                 }
 
                 is DataResult.Failure -> {
@@ -456,17 +458,17 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             }
 
         // Read the data from google fit server only if the loggedIn user is loved one
-        if (vitalStatsViewModel.isLoggedInUserLovedOne() == true) {
-            Log.d(TAG, "Read Data from Google Fit as loggedIn user is lovedOne ")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                val isPermissionGranted = (activity as BaseActivity).checkGoogleFitPermission()
-                if (!isPermissionGranted) {
-                    (activity as BaseActivity).requestGoogleFitPermission(this)
-                } else {
-                    fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
-                }
-            } else fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
-        }
+        /* if (vitalStatsViewModel.isLoggedInUserLovedOne() == true) {
+             Log.d(TAG, "Read Data from Google Fit as loggedIn user is lovedOne ")
+             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                 val isPermissionGranted = (activity as BaseActivity).checkGoogleFitPermission()
+                 if (!isPermissionGranted) {
+                     (activity as BaseActivity).requestGoogleFitPermission(this)
+                 } else {
+                     fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+                 }
+             } else fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+         }*/
     }
 
     /**
@@ -712,15 +714,46 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         }
 
         Log.d(TAG, "parseVitalData: body temp :$bodyTemp")
-        val data = AddVitalData(
-            heartRate,
-            AddBloodPressureData(
-                bloodPressureSys,
-                bloodPressureDia
-            ),
-            bodyTemp,
-            oxygenSaturation
+        if (heartRate.isNullOrEmpty()) {
+            heartRate = null
+        }
+        if (bodyTemp.isNullOrEmpty()) {
+            bodyTemp = null
+        }
+        if (oxygenSaturation.isNullOrEmpty()) {
+            oxygenSaturation = null
+        }
+        if (bloodPressureSys.isNullOrEmpty()) {
+            bloodPressureSys = null
+        }
+        if (bloodPressureDia.isNullOrEmpty()) {
+            bloodPressureDia = null
+        }
+
+        bloodPressureData =
+            if (bloodPressureSys.isNullOrEmpty() && bloodPressureDia.isNullOrEmpty()) {
+                null
+            } else {
+                AddBloodPressureData(sbp = bloodPressureSys, dbp = bloodPressureDia)
+            }
+
+        val data1 = AddVitalData(
+            heartRate = heartRate,
+            bloodPressure = bloodPressureData,
+            bodyTemp = bodyTemp,
+            oxygen = oxygenSaturation
         )
+
+
+        /* val data = AddVitalData(
+             heartRate,
+             AddBloodPressureData(
+                 bloodPressureSys,
+                 bloodPressureDia
+             ),
+             bodyTemp,
+             oxygenSaturation
+         )*/
 
         val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
         val currentTime = SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())
@@ -730,7 +763,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             vitalStatsViewModel.getLovedOneUUId(),
             currentDate,
             currentTime,
-            data
+            data1
         )
         vitalStatsViewModel.addVitalStats(stats)
     }
@@ -1227,6 +1260,18 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     }
 
     override fun onResume() {
+        // Read the data from google fit server only if the loggedIn user is loved one
+        if (vitalStatsViewModel.isLoggedInUserLovedOne() == true) {
+            Log.d(TAG, "Read Data from Google Fit as loggedIn user is lovedOne ")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                val isPermissionGranted = (activity as BaseActivity).checkGoogleFitPermission()
+                if (!isPermissionGranted) {
+                    (activity as BaseActivity).requestGoogleFitPermission(this)
+                } else {
+                    fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+                }
+            } else fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
+        }
         parentActivityListener?.msgFromChildFragmentToActivity()
         super.onResume()
     }
