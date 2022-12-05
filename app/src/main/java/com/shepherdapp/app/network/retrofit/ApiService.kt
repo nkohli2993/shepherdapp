@@ -31,6 +31,7 @@ import com.shepherdapp.app.data.dto.lock_box.delete_uploaded_lock_box_doc.Delete
 import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.EditLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
+import com.shepherdapp.app.data.dto.lock_box.share_lock_box.ShareLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
@@ -334,6 +335,11 @@ interface ApiService {
         @Body updateLockBoxRequestModel: UpdateLockBoxRequestModel
     ): Response<UpdateLockBoxResponseModel>
 
+    @PUT(ApiConstants.LockBox.SHARE_LOCK_BOX)
+    suspend fun shareLockBoxDoc(
+        @Path("id") id: Int?
+    ): Response<ShareLockBoxResponseModel>
+
     //---------MedList---------------------------------------
 
     @GET(ApiConstants.MedList.GET_ALL_MED_LIST)
@@ -536,5 +542,4 @@ interface ApiService {
 
     @PUT(ApiConstants.Enterprise.ATTACH_ENTERPRISE)
     suspend fun attachEnterprise(@Body attachEnterpriseRequestModel: AttachEnterpriseRequestModel): Response<AttachEnterpriseResponseModel>
-
 }

@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.lockBoxDocInfo
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.lock_box.create_lock_box.Payload
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherdapp.app.databinding.FragmentUploadedLockBoxDocDetailBinding
@@ -40,6 +42,9 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     private var lockBox: LockBox? = null
     private var lockBoxId: Int? = null
     private var lbtId: Int? = null
+    private var payload: Payload? = null
+    private var shareLockBoxDocUrl: String? = null
+    private val TAG = "LockBoxDocInfoFragment"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -97,23 +102,23 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val lockBox = result.data.payload
+                    payload = result.data.payload
                     fragmentUploadedLockBoxDocDetailBinding.let {
-                        it.txtLockBoxName.text = lockBox?.name
-                        it.txtLockBoxNote.text = lockBox?.note
-                        it.edtFileName.setText(lockBox?.name)
-                        it.edtNote.setText(lockBox?.note)
-                        it.txtTypeTV.text = lockBox?.lockbox_types?.name
+                        it.txtLockBoxName.text = payload?.name
+                        it.txtLockBoxNote.text = payload?.note
+                        it.edtFileName.setText(payload?.name)
+                        it.edtNote.setText(payload?.note)
+                        it.txtTypeTV.text = payload?.lockbox_types?.name
                     }
-                    lbtId = lockBox?.lbtId
-                    if (lockBox?.documents.isNullOrEmpty()) {
+                    lbtId = payload?.lbtId
+                    if (payload?.documents.isNullOrEmpty()) {
                         fragmentUploadedLockBoxDocDetailBinding.viewPager.visibility = View.GONE
                         fragmentUploadedLockBoxDocDetailBinding.dotsIndicator.visibility = View.GONE
                     } else {
                         documentImagesAdapter =
                             UploadedDocumentImagesAdapter(
                                 requireContext().applicationContext,
-                                lockBox?.documents,
+                                payload?.documents,
                                 this@LockBoxDocInfoFragment
                             )
                         viewPager.adapter = documentImagesAdapter
@@ -138,14 +143,52 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 }
             }
         }
-
+        // Observe Share LockBox Response
+        lockBoxDocInfoViewModel.shareLockBoxDocResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    shareLockBoxDocUrl = it.data.payload?.documentUrl
+                    Log.d(TAG, "ShareLockBox DocUrl : $shareLockBoxDocUrl")
+                }
+            }
+        }
     }
 
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvShare -> {
+                lockBoxDocInfoViewModel.shareLockBoxDoc(lockBoxId)
                 showInfo(requireContext(), getString(R.string.not_implmented))
+//                val urls = payload?.documents?.map {
+//                    it.url
+//                }
+//                val uriList = ArrayList<Uri>()
+//                urls?.forEach {
+//                    uriList.add(Uri.parse(it))
+//                }
+//                Log.d(TAG, "File Urls : $urls")
+//
+//                val intent = Intent(Intent.ACTION_SEND_MULTIPLE)
+//                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+//                intent.type = "*/*"
+//                intent.putExtra(Intent.EXTRA_SUBJECT,"Document : ${payload?.name}")
+//                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uriList)
+//                try {
+//                    startActivity(Intent.createChooser(intent, "Share"))
+//                    uriList.clear()
+//                } catch (e: ActivityNotFoundException) {
+//                    Toast.makeText(requireContext(), "No App Available", Toast.LENGTH_SHORT).show()
+//                }
+
             }
             R.id.ivBack -> {
                 backPress()
