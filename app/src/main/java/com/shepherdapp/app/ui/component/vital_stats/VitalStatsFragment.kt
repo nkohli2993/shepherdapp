@@ -272,6 +272,9 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         fragmentVitalStatsBinding.txtMinDBP.visibility = View.GONE
                         fragmentVitalStatsBinding.txtMaxDBP.visibility = View.GONE
 
+                        fragmentVitalStatsBinding.txtSBP.visibility = View.GONE
+                        fragmentVitalStatsBinding.txtDBP.visibility = View.GONE
+
                         fragmentVitalStatsBinding.txtType1.visibility = View.GONE
                         fragmentVitalStatsBinding.view1.visibility = View.GONE
                     }
