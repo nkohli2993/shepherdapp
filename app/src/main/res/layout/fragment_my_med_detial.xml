@@ -152,7 +152,6 @@
             android:layout_marginStart="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_8sdp"
             android:textColor="@color/_192032"
-            android:text="fdjfvdsvfdjvdsvshvfdsh,fgds,jfghdsjhfgsjfgsfsdjfgsd,jfgsdffgsjfgdsjf,gd"
             android:lineSpacingExtra="@dimen/_3sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/txtDescription"
