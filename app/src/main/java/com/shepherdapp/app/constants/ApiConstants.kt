@@ -132,11 +132,14 @@ object ApiConstants {
 
     object UpdateProfile {
         const val UPDATE_LOGIN_USER_PROFILE = "$BASE_URL_USER${API_VERSION}user_profiles/{id}"
+        const val UPDATE_USER_PROFILE_FOR_LAST_SYNC =
+            "$BASE_URL_USER${API_VERSION}user_profiles/settings/{id}"
     }
 
     object VitalStats {
         const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital"
         const val GET_GRAPH_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital/graph-data"
+        const val BULK_CREATE_VITAL = "$BASE_URL${API_VERSION}loveone_vital/bulk-create"
     }
 
     object SecurityCode {

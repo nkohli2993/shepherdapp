@@ -2,6 +2,7 @@ package com.shepherdapp.app.data.remote.update_profile
 
 import android.webkit.MimeTypeMap
 import com.shepherdapp.app.data.dto.add_loved_one.UploadPicResponseModel
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncRequestModel
 import com.shepherdapp.app.data.dto.edit_profile.UserUpdateData
 import com.shepherdapp.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherdapp.app.data.dto.login.EditResponseModel
@@ -10,6 +11,7 @@ import com.shepherdapp.app.data.dto.roles.RolesResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.NetworkOnlineDataRepo
+import com.shepherdapp.app.ui.base.BaseResponseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -53,10 +55,25 @@ class UpdateProfileRepository @Inject constructor(private val apiService: ApiSer
 
 
     //Update Profile fragment
-    suspend fun updateProfile(value: UserUpdateData,id:Int): Flow<DataResult<EditResponseModel>> {
+    suspend fun updateProfile(value: UserUpdateData, id: Int): Flow<DataResult<EditResponseModel>> {
         return object : NetworkOnlineDataRepo<EditResponseModel, EditResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<EditResponseModel> {
-                return apiService.updateProfile(value,id)
+                return apiService.updateProfile(value, id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //Update Profile fragment
+    suspend fun updateProfileForLastSync(
+        updateUserProfileForLastSyncRequestModel: UpdateUserProfileForLastSyncRequestModel,
+        id: Int
+    ): Flow<DataResult<BaseResponseModel>> {
+        return object : NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.updateProfileForLastSync(
+                    updateUserProfileForLastSyncRequestModel,
+                    id
+                )
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

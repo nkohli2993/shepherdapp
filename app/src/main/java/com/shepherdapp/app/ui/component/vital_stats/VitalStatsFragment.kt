@@ -40,6 +40,12 @@ import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.AddBloodPressureData
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.AddVitalData
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.BloodPressure
+import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.BulkCreateVitalRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.Data
+import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.VitalStats
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.Settings
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncRequestModel
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.GraphData
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.Payload
 import com.shepherdapp.app.data.dto.add_vital_stats.vital_stats_dashboard.TypeData
@@ -53,9 +59,7 @@ import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.vital_stats.adapter.TypeAdapter
 import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.extensions.getEndTimeString
-import com.shepherdapp.app.utils.extensions.getStartTimeString
-import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.view_model.VitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
@@ -91,6 +95,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     private var graphDataList: ArrayList<GraphData> = arrayListOf()
     private var payload: Payload? = null
     var bloodPressureData: AddBloodPressureData? = null
+    var vitalStatsList: ArrayList<VitalStats> = arrayListOf()
 
 
     //private var heartRate: Int
@@ -359,7 +364,6 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             }
         }
 
-
         vitalStatsViewModel.addVitalStatsLiveData.observeEvent(this) { addedStatsResult ->
             when (addedStatsResult) {
                 is DataResult.Loading -> {
@@ -387,6 +391,46 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             }
         }
 
+        // Observe the response of Create Bulk Vital for lovedOne
+        vitalStatsViewModel.createBulkVitalStatsLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), "Data synced successfully...")
+
+                    val currentDateTime = Date().getStringDate("yyyy-MM-dd kk:mm")
+                    Log.d(TAG, "observeViewModel: currentDateTime : $currentDateTime")
+
+                    vitalStatsViewModel.updateProfileForLastSync(
+                        UpdateUserProfileForLastSyncRequestModel(Settings(lastSyncAt = currentDateTime))
+                    )
+                }
+            }
+        }
+
+        // Observe the response of update profile for last synced
+        vitalStatsViewModel.updateProfileForLastSyncLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                   // showSuccess(requireContext(), it.data.message.toString())
+                    Log.d(TAG, "observeViewModel: lastSync done successfully")
+                    callGraphApi()
+                }
+            }
+        }
     }
 
     private fun addType() {
@@ -620,6 +664,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
      * data.
      */
     private fun readHistoryData(): Task<DataReadResponse> {
+        showLoading("Syncing Data")
         // Begin by creating the query.
         val readRequest = queryFitnessData()
 
@@ -630,9 +675,10 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 // For the sake of the sample, we'll print the data so we can see what we just
                 // added. In general, logging fitness information should be avoided for privacy
                 // reasons.
-//                printData(dataReadResponse)
+                printData(dataReadResponse)
 //                parseData(dataReadResponse)
-                parseVitalData(dataReadResponse)
+
+//                parseVitalData(dataReadResponse)
             }
             .addOnFailureListener { e ->
                 Log.e(TAG, "There was a problem reading the data.", e)
@@ -655,8 +701,18 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
         if (dataReadResult.buckets.isNotEmpty()) {
             Log.i(TAG, "Number of returned buckets of DataSets is: " + dataReadResult.buckets.size)
+            vitalStatsList.clear()
             for (bucket in dataReadResult.buckets) {
                 bucket.dataSets.forEach { dumpDataSet(it) }
+            }
+            Log.d(TAG, "final VitalStatList: $vitalStatsList")
+            hideLoading()
+            if (!vitalStatsList.isNullOrEmpty()) {
+                vitalStatsViewModel.createBulkVitalStats(
+                    bulkCreateVitalRequestModel = BulkCreateVitalRequestModel(
+                        vitalStatsList
+                    )
+                )
             }
         } else if (dataReadResult.dataSets.isNotEmpty()) {
             Log.i(TAG, "Number of returned DataSets is: " + dataReadResult.dataSets.size)
@@ -665,6 +721,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
         // [END parse_read_data_result]
     }
 
+    // Parse VitalData when the limit is 1
     private fun parseVitalData(dataReadResult: DataReadResponse) {
         dataReadResult.dataSets.forEach { dataSet ->
             dataSet.dataPoints.forEachIndexed { index, dataPoint ->
@@ -842,31 +899,188 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
     // [START parse_dataset]
     private fun dumpDataSet(dataSet: DataSet) {
         Log.i(TAG, "Data returned for Data type: ${dataSet.dataType.name}")
-
         for (dp in dataSet.dataPoints) {
-            Log.i(TAG, "Data point:")
-            Log.i(TAG, "\tType: ${dp.dataType.name}")
-            Log.i(TAG, "\tStart: ${dp.getStartTimeString()}")
-            Log.i(TAG, "\tEnd: ${dp.getEndTimeString()}")
+//            Log.i(TAG, "Data point:")
+//            Log.i(TAG, "\tType: ${dp.dataType.name}")
+//            Log.i(TAG, "\tStart: ${dp.getStartTimeString()}")
+//            Log.i(TAG, "\tEnd: ${dp.getEndTimeString()}")
+            val timeStamp = dp.getTimestamp(TimeUnit.MILLISECONDS)
+//            Log.d(TAG, "timestamp is $timeStamp")
+
+            val date = Date(timeStamp)
+            Log.d(TAG, "dumpDataSet: Date $date")
+
+            val formattedDate = date.getStringDate()
+            Log.d(TAG, "Formatted Date $formattedDate")
+
+            val formattedTime = date.getStringDate(format = "hh:mm a")
+            Log.d(TAG, "Formatted Time $formattedTime")
 
 
-            dp.dataType.fields.forEach {
-                Log.i(TAG, "\tField: ${it.name} Value: ${dp.getValue(it)}")
+            // Get Heart Rate data
+            if (dp.dataType.name == DataType.TYPE_HEART_RATE_BPM.name) {
+                dp.dataType.fields.forEach {
+                    if (it.name == "bpm") {
+                        Log.i(TAG, "Heart Rate \tField: ${it.name} Value: ${dp.getValue(it)}")
+                        val value = dp.getValue(it)
+                        if (value.toString() != "unset") {
+                            val data = Data(heartRate = value.toString(), bloodPressure = null)
+                            val vitalStat = VitalStats(
+                                data = data,
+                                date = formattedDate,
+                                time = formattedTime,
+                                loveoneUserId = vitalStatsViewModel.getLovedOneUUId(),
+
+                                )
+                            vitalStatsList.add(vitalStat)
+                        }
+                    }
+
+                }
             }
+
+            // Get Blood Pressure
+            if (dp.dataType.name == HealthDataTypes.TYPE_BLOOD_PRESSURE.name) {
+                bloodPressureSys = dp.getValue(FIELD_BLOOD_PRESSURE_SYSTOLIC).toString()
+                bloodPressureDia = dp.getValue(FIELD_BLOOD_PRESSURE_DIASTOLIC).toString()
+                Log.d(TAG, "parseData1: bloodPressure Sys is $bloodPressureSys")
+                Log.d(TAG, "parseData1: bloodPressure Dia is $bloodPressureDia")
+
+                val data = Data(
+                    bloodPressure = BloodPressure(
+                        dbp = bloodPressureDia,
+                        sbp = bloodPressureSys
+                    )
+                )
+                val vitalStat = VitalStats(
+                    data = data,
+                    date = formattedDate,
+                    time = formattedTime,
+                    loveoneUserId = vitalStatsViewModel.getLovedOneUUId(),
+                )
+
+                vitalStatsList.add(vitalStat)
+
+                /* dp.dataType.fields.forEach {
+                     Log.i(TAG, "Blood Pressure \tField: ${it.name} Value: ${dp.getValue(it)}")
+                 }*/
+            }
+
+            // Get Body Temperature
+            if (dp.dataType.name == HealthDataTypes.TYPE_BODY_TEMPERATURE.name) {
+                dp.dataType.fields.forEach {
+                    if (it.name == "body_temperature") {
+                        Log.i(TAG, "Body temp \tField: ${it.name} Value: ${dp.getValue(it)}")
+                        val value = dp.getValue(it)
+                        if (value.toString() != "unset") {
+                            val data = Data(bodyTemp = value.toString(), bloodPressure = null)
+                            val vitalStat = VitalStats(
+                                data = data,
+                                date = formattedDate,
+                                time = formattedTime,
+                                loveoneUserId = vitalStatsViewModel.getLovedOneUUId(),
+                            )
+                            vitalStatsList.add(vitalStat)
+                        }
+                    }
+                }
+            }
+
+            // Get Oxygen Saturation
+            if (dp.dataType.name == HealthDataTypes.TYPE_OXYGEN_SATURATION.name) {
+                dp.dataType.fields.forEach {
+                    if (it.name == "oxygen_saturation") {
+                        Log.i(
+                            TAG,
+                            "Oxygen Saturation \tField: ${it.name} Value: ${dp.getValue(it)}"
+                        )
+                        val value = dp.getValue(it)
+                        if (value.toString() != "unset") {
+                            val data = Data(oxygen = value.toString(), bloodPressure = null)
+                            val vitalStat = VitalStats(
+                                data = data,
+                                date = formattedDate,
+                                time = formattedTime,
+                                loveoneUserId = vitalStatsViewModel.getLovedOneUUId(),
+                            )
+                            vitalStatsList.add(vitalStat)
+                        }
+                    }
+                }
+            }
+            /* dp.dataType.fields.forEach {
+                 Log.i(TAG, "\tField: ${it.name} Value: ${dp.getValue(it)}")
+             }*/
         }
+
+
+        /* dataSet.dataPoints.forEachIndexed { index, dataPoint ->
+                 val startTime = dataPoint.getStartTimeString()
+                 Log.d(TAG, "parseVitalData: StartTime is : $startTime")
+                 val endTime = dataPoint.getEndTimeString()
+                 Log.d(TAG, "parseVitalData: EndTime is : $endTime")
+
+                 val timeStamp = dataPoint.getTimestamp(TimeUnit.MILLISECONDS)
+                 Log.d(TAG, "parseVitalData: timestamp is $timeStamp")
+
+                 val date = Date(timeStamp)
+                 Log.d(TAG, "dumpDataSet: Date $date")
+                 // Get Heart Rate data
+                 if (dataPoint.dataType.name == DataType.TYPE_HEART_RATE_BPM.name) {
+                     heartRate = dataPoint.getValue(dataPoint.dataType.fields[index]).toString()
+                     Log.d(TAG, "parseData1: heartRate is $heartRate")
+                 }
+
+                 // Get Blood Pressure
+                 if (dataPoint.dataType.name == HealthDataTypes.TYPE_BLOOD_PRESSURE.name) {
+                     bloodPressureSys = dataPoint.getValue(FIELD_BLOOD_PRESSURE_SYSTOLIC).toString()
+                     bloodPressureDia = dataPoint.getValue(FIELD_BLOOD_PRESSURE_DIASTOLIC).toString()
+                     Log.d(TAG, "parseData1: bloodPressure Sys is $bloodPressureSys")
+                     Log.d(TAG, "parseData1: bloodPressure Dia is $bloodPressureDia")
+                 }
+
+                 // Get Body Temperature
+                 if (dataPoint.dataType.name == HealthDataTypes.TYPE_BODY_TEMPERATURE.name) {
+                     bodyTemp = dataPoint.getValue(dataPoint.dataType.fields[index]).toString()
+                     Log.d(TAG, "parseData1: Body Temp is $bodyTemp")
+                 }
+
+                 // Get Oxygen Saturation
+                 if (dataPoint.dataType.name == HealthDataTypes.TYPE_OXYGEN_SATURATION.name) {
+                     oxygenSaturation =
+                         dataPoint.getValue(dataPoint.dataType.fields[index]).toString()
+                     Log.d(TAG, "parseData1: oxygen saturation is $oxygenSaturation")
+                 }
+             }*/
+
+
     }
     // [END parse_dataset]
 
-    /** Returns a [DataReadRequest] for all step count changes in the past week.  */
+    /** Returns a [DataReadRequest] for all vitalStats in the past week.  */
     private fun queryFitnessData(): DataReadRequest {
         // [START build_read_data_request]
+
+        val lastSyncAt = vitalStatsViewModel.getUser()?.settings?.lastSyncAt
+        Log.d(TAG, "queryFitnessData: lastSyncAt : $lastSyncAt")
         // Setting a start and end date using a range of 1 week before this moment.
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         val now = Date()
         calendar.time = now
         val endTime = calendar.timeInMillis
-        calendar.add(Calendar.WEEK_OF_YEAR, -1)
-        val startTime = calendar.timeInMillis
+        var startTime: Long? = null
+        if (!lastSyncAt.isNullOrEmpty()) {
+            val sdf = SimpleDateFormat("yyyy-MM-dd kk:mm")
+            val d = sdf.parse(lastSyncAt)
+            calendar.time = d
+            startTime = calendar.timeInMillis
+            Log.d(TAG, "queryFitnessData: startTime : $startTime")
+
+        } else {
+            calendar.add(Calendar.WEEK_OF_YEAR, -1)
+            startTime = calendar.timeInMillis
+            Log.d(TAG, "queryFitnessData: startTime : $startTime")
+        }
 
         Log.i(TAG, "Range Start: ${dateFormat.format(startTime)}")
         Log.i(TAG, "Range End: ${dateFormat.format(endTime)}")
@@ -898,8 +1112,8 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             // bucketByTime allows for a time span, whereas bucketBySession would allow
             // bucketing by "sessions", which would need to be defined in code.
             .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
-//            .bucketByTime(1, TimeUnit.DAYS)
-            .setLimit(1)
+            .bucketByTime(1, TimeUnit.DAYS)
+//            .setLimit(1)
             .enableServerQueries()
             .build()
     }

@@ -2,6 +2,7 @@ package com.shepherdapp.app.data.dto.login
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.Settings
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -26,5 +27,6 @@ data class UserProfile(
     @SerializedName("security_code") var security_code: String? = null,
     @SerializedName("enterprise_id") var enterpriseId: String? = null,
     @SerializedName("stripe_id") var stripeId: String? = null,
-    @SerializedName("enterprise") var enterprise: Enterprise? = Enterprise()
+    @SerializedName("enterprise") var enterprise: Enterprise? = Enterprise(),
+    @SerializedName("settings") var settings: Settings? = Settings()
 ) : Parcelable

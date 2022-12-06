@@ -9,6 +9,8 @@ import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTea
 import com.shepherdapp.app.data.dto.add_vital_stats.AddVitalStatsResponseModel
 import com.shepherdapp.app.data.dto.add_vital_stats.VitalStatsResponseModel
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.BulkCreateVitalRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncRequestModel
 import com.shepherdapp.app.data.dto.added_events.*
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
@@ -418,11 +420,23 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<EditResponseModel>
 
+    @PUT(ApiConstants.UpdateProfile.UPDATE_USER_PROFILE_FOR_LAST_SYNC)
+    suspend fun updateProfileForLastSync(
+        @Body updateUserProfileForLastSyncRequestModel: UpdateUserProfileForLastSyncRequestModel,
+        @Path("id") id: Int
+    ): Response<BaseResponseModel>
+
     // add vital stats for loginLoved one
     @POST(ApiConstants.VitalStats.ADD_VITAL_STATS)
     suspend fun addVitalStats(
         @Body addNewLockBoxRequestModel: VitalStatsRequestModel
     ): Response<AddVitalStatsResponseModel>
+
+    // Bulk Create Vital for loginLoved one
+    @POST(ApiConstants.VitalStats.BULK_CREATE_VITAL)
+    suspend fun createBulkVitalStats(
+        @Body bulkCreateVitalRequestModel: BulkCreateVitalRequestModel
+    ): Response<BaseResponseModel>
 
     // get vital stats for loginLoved one
     @GET(ApiConstants.VitalStats.ADD_VITAL_STATS)
