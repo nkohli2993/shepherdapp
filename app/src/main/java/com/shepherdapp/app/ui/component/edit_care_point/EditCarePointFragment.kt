@@ -88,8 +88,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         }
 
         // Set Assignee
-
-
         if (!carePoint?.user_assignes.isNullOrEmpty()) {
             val assignee: ArrayList<String> = arrayListOf()
 

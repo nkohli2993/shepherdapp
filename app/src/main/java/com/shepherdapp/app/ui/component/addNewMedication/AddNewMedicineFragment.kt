@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.med_list.add_med_list.AddMedListRequestModel
 import com.shepherdapp.app.databinding.FragmentAddNewMedicineBinding
@@ -23,6 +25,8 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
     private val addMedicationViewModel: AddMedicationViewModel by viewModels()
     private var medicationName: String? = null
     private var description: String? = null
+    private val args: AddNewMedicineFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +38,16 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
 
     override fun initViewBinding() {
         fragmentAddNewMedicineBinding.listener = this
-
+        val medList = args.medicine
+        if (!medList?.name.isNullOrEmpty()) {
+            fragmentAddNewMedicineBinding.tvMedList.text = getString(R.string.edit_medicine)
+            fragmentAddNewMedicineBinding.btnSubmit.text = getString(R.string.save_changes)
+            fragmentAddNewMedicineBinding.medicineNameET.setText(medList?.name)
+            if (!medList?.description.isNullOrEmpty()) {
+                val med = HtmlCompat.fromHtml(medList?.description ?: "", 0)
+                fragmentAddNewMedicineBinding.etDescription.setText(med)
+            }
+        }
     }
 
     override fun observeViewModel() {

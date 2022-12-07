@@ -13,12 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.med_list.MedListData
 import com.shepherdapp.app.data.dto.med_list.Medlist
 import com.shepherdapp.app.databinding.FragmentAddNewMedicationBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
+import com.shepherdapp.app.utils.ClickType
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.observe
@@ -264,18 +266,26 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     }
 
-    private fun selectedMedicationDetail(navigateEvent: SingleEvent<Int>) {
+    private fun selectedMedicationDetail(navigateEvent: SingleEvent<MedListData>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            searchFlag = false
-            Log.e("catch_exception", "position: $it medication ${medLists[it]}")
-            selectedMedication = medLists[it]
-            shouldSearch = false
-            fragmentAddNewMedicationBinding.editTextSearch.setText("")
-            findNavController().navigate(
-                AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                    selectedMedication!!
+            if (it.type == ClickType.View.value) {
+                searchFlag = false
+                Log.e("catch_exception", "position: $it medication ${medLists[it.position!!]}")
+                selectedMedication = medLists[it.position!!]
+                shouldSearch = false
+                fragmentAddNewMedicationBinding.editTextSearch.setText("")
+                findNavController().navigate(
+                    AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
+                        selectedMedication!!
+                    )
                 )
-            )
+            } else if (it.type == ClickType.Edit.value) {
+                selectedMedication = medLists[it.position!!]
+//                showToast("Edit clicked: Selected medicine is : $selectedMedication")
+                val action =
+                    AddNewMedicationFragmentDirections.actionNavAddNewMedicine(medicine = selectedMedication)
+                findNavController().navigate(action)
+            }
         }
     }
 
@@ -322,8 +332,10 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             R.id.btnNext -> {
             }
             R.id.tvNew -> {
-
-                findNavController().navigate(R.id.action_nav_add_new_medicine)
+                val action =
+                    AddNewMedicationFragmentDirections.actionNavAddNewMedicine(medicine = null)
+                findNavController().navigate(action)
+//                findNavController().navigate(R.id.action_nav_add_new_medicine)
             }
         }
     }

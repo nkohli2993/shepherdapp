@@ -36,8 +36,8 @@ class AddMedicationViewModel @Inject constructor(
 ) :
     BaseViewModel() {
     // selected med list data
-    private val _selectedMedicationDetail = MutableLiveData<SingleEvent<Int>>()
-    val selectedMedicationDetail: LiveData<SingleEvent<Int>> get() = _selectedMedicationDetail
+    private val _selectedMedicationDetail = MutableLiveData<SingleEvent<MedListData>>()
+    val selectedMedicationDetail: LiveData<SingleEvent<MedListData>> get() = _selectedMedicationDetail
 
     // selected time list position
     private val _timeSelectedlist = MutableLiveData<SingleEvent<TimePickerData>>()
@@ -144,6 +144,7 @@ class AddMedicationViewModel @Inject constructor(
         return getDoseListResponseLiveData
 
     }
+
     // Get All dose type list
     fun getAllDoseTypeList(
         pageNumber: Int,
@@ -161,8 +162,9 @@ class AddMedicationViewModel @Inject constructor(
 
     }
 
-    fun openScheduleMedication(medlistPosition: Int) {
-        _selectedMedicationDetail.value = SingleEvent(medlistPosition)
+    fun openScheduleMedication(medlistPosition: Int, clickType: Int) {
+        val medData = MedListData(medlistPosition, clickType)
+        _selectedMedicationDetail.value = SingleEvent(medData)
     }
 
     fun setSelectedTime(timeSelectedlist: TimePickerData) {
@@ -196,10 +198,15 @@ class AddMedicationViewModel @Inject constructor(
         }
         return addScheduledMedicationResponseLiveData
     }
-  // add scheduled medication for loved ones
-    fun updateScheduledMedication(scheduledMedication: UpdateScheduledMedList, id:Int): LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> {
+
+    // add scheduled medication for loved ones
+    fun updateScheduledMedication(
+        scheduledMedication: UpdateScheduledMedList,
+        id: Int
+    ): LiveData<Event<DataResult<AddScheduledMedicationResponseModel>>> {
         viewModelScope.launch {
-            val response = scheduledMedication.let { medListRepository.updateScheduledMedication(id,it) }
+            val response =
+                scheduledMedication.let { medListRepository.updateScheduledMedication(id, it) }
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _addScheduledMedicationResponseLiveData.postValue(Event(it))
