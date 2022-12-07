@@ -17,6 +17,8 @@ data class Medlist(
     @SerializedName("description") val description: String? = "",
     @SerializedName("is_active") val is_active: Boolean = false,
     @SerializedName("created_at") val created_at: String? = "",
+    @SerializedName("created_by") val createdBy: String? = "",
+    @SerializedName("created_by_id") val createdById: String? = "",
     @SerializedName("updated_at") val updated_at: String? = "",
     @SerializedName("deleted_at") val deleted_at: String? = ""
 ) : Parcelable

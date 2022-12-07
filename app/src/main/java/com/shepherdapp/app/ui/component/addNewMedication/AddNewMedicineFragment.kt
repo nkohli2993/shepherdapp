@@ -68,7 +68,22 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
             }
         }
 
-
+        addMedicationViewModel.editMedicineResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                    backPress()
+                }
+            }
+        }
     }
 
     override fun getLayoutRes(): Int {
@@ -95,9 +110,20 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
                         description =
                             fragmentAddNewMedicineBinding.etDescription.text.toString().trim()
                     }
-                    addMedicationViewModel.addNewMedlistMedicine(
-                        AddMedListRequestModel(medicationName, description, "user")
-                    )
+                    if (!args.medicine?.name.isNullOrEmpty()) {
+                        // Edit Medicine
+                        args.medicine?.id?.let {
+                            addMedicationViewModel.editMedicine(
+                                AddMedListRequestModel(medicationName, description, null),
+                                it
+                            )
+                        }
+                    } else {
+                        // Add medicine
+                        addMedicationViewModel.addNewMedlistMedicine(
+                            AddMedListRequestModel(medicationName, description, "user")
+                        )
+                    }
                 }
             }
         }

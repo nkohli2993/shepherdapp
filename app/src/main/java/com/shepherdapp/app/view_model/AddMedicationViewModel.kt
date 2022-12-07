@@ -87,6 +87,12 @@ class AddMedicationViewModel @Inject constructor(
     var addMedicineResponseLiveData: LiveData<Event<DataResult<AddedMedlistResponseModel>>> =
         _addMedicineResponseLiveData
 
+    // edit medicine
+    private var _editMedicineResponseLiveData =
+        MutableLiveData<Event<DataResult<AddedMedlistResponseModel>>>()
+    var editMedicineResponseLiveData: LiveData<Event<DataResult<AddedMedlistResponseModel>>> =
+        _editMedicineResponseLiveData
+
     private var _getMedicationDetailResponseLiveData =
         MutableLiveData<Event<DataResult<GetMedicationDetailResponse>>>()
 
@@ -245,5 +251,20 @@ class AddMedicationViewModel @Inject constructor(
         return addMedicineResponseLiveData
     }
 
-
+    // Edit medicine
+    fun editMedicine(
+        medicineMedlist: AddMedListRequestModel,
+        id: Int
+    ): LiveData<Event<DataResult<AddedMedlistResponseModel>>> {
+        viewModelScope.launch {
+            val response =
+                medicineMedlist.let { medListRepository.editMedicine(medicineMedlist,id) }
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _editMedicineResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return editMedicineResponseLiveData
+    }
 }

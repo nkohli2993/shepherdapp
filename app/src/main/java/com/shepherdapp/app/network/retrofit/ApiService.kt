@@ -414,6 +414,12 @@ interface ApiService {
     @POST(ApiConstants.MedList.ADD_MED_LIST)
     suspend fun addNewMedlistMedicine(@Body medlist: AddMedListRequestModel): Response<AddedMedlistResponseModel>
 
+    @PUT(ApiConstants.MedList.UPDATE_MED_LIST)
+    suspend fun editMedList(
+        @Body medList: AddMedListRequestModel,
+        @Path("id") id: Int
+    ): Response<AddedMedlistResponseModel>
+
     @PUT(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
     suspend fun updateProfile(
         @Body value: UserUpdateData,
