@@ -292,6 +292,22 @@ fun String?.convertTimeStampToTime(): String? {
     return formattedDate
 }
 
+// Get local time from server timestamp
+fun String?.convertTimeStampToTim(): String? {
+    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    var convertedDate: Date? = null
+    var formattedDate: String? = null
+    try {
+        convertedDate = sdf.parse(this)
+        val df = SimpleDateFormat("hh:mm aaa", Locale.getDefault())
+        formattedDate = df.format(convertedDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return formattedDate
+}
+
 
 @SuppressLint("SimpleDateFormat")
 fun String?.changeDatesFormat(sourceFormat: String?, targetFormat: String?): String? {

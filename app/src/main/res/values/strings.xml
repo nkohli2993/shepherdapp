@@ -281,7 +281,8 @@
     <string name="medical_conditions">Medical Conditions</string>
     <string name="hint_select_one">Select one</string>
     <!--<string name="google_maps_api_key">AIzaSyCBlq2RHLf3oCHct3RIMp-iF00r8J_szrQ</string>-->
-    <string name="google_maps_api_key">AIzaSyB8L96ED27rCDdxOF3DNAagrQzEi3jRUAE</string>
+    <!--<string name="google_maps_api_key">AIzaSyB8L96ED27rCDdxOF3DNAagrQzEi3jRUAE</string>-->
+    <string name="google_maps_api_key">AIzaSyBw-6xS6SIwHGkWQJeWZKg38n-faZFeJIM</string>
     <string name="search_places">Search Places</string>
 
 
@@ -372,6 +373,7 @@
     <string name="dd_mm_yy">DD/MM/YY</string>
     <string name="select">Select</string>
     <string name="add_new_care_point">Add New CarePoint</string>
+    <string name="edit_care_point">Edit CarePoint</string>
     <string name="add_new_lock_box">Add New Item</string>
     <string name="assign_to_">Assign To</string>
     <string name="wed_18_jul">wed, 18 jul</string>

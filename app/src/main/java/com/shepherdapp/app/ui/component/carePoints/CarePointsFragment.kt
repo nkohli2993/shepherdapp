@@ -29,10 +29,7 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.carePoints.adapter.CarePointsDayAdapter
 import com.shepherdapp.app.ui.component.home.HomeActivity
-import com.shepherdapp.app.utils.CalendarState
-import com.shepherdapp.app.utils.Chat
-import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
@@ -466,69 +463,81 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     }
 
     override fun onEventSelected(detail: AddedEventModel) {
-        // Get Login User's detail
-        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
-            Const.USER_DETAILS,
-            UserProfile::class.java
-        )
+        when (detail.clickType) {
+            ClickType.View.value -> {
+                // Get Login User's detail
+                val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+                    Const.USER_DETAILS,
+                    UserProfile::class.java
+                )
 
-        val loggedInUserId = loggedInUser?.id
-        val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+                val loggedInUserId = loggedInUser?.id
+                val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
 
-        Log.d(TAG, "onEventSelected: $detail ")
-        val eventId = detail.id
-        val eventName = detail.name
-        val eventLocation = detail.location
-        val eventDate = detail.date
-        val eventTime = detail.time
-        detail.user_assignes.forEach {
-            val receiverName = it.user_details.firstname + " " + it.user_details.lastname
-            val receiverID = it.user_details.id
-            val receiverPicUrl = it.user_details.profilePhoto
-            val documentID = null
-            val chatType = Chat.CHAT_GROUP
+                Log.d(TAG, "onEventSelected: $detail ")
+                val eventId = detail.id
+                val eventName = detail.name
+                val eventLocation = detail.location
+                val eventDate = detail.date
+                val eventTime = detail.time
+                detail.user_assignes.forEach {
+                    val receiverName = it.user_details.firstname + " " + it.user_details.lastname
+                    val receiverID = it.user_details.id
+                    val receiverPicUrl = it.user_details.profilePhoto
+                    val documentID = null
+                    val chatType = Chat.CHAT_GROUP
 
-            // Create Chat Model
-            val chatModel = ChatModel(
-                documentID,
-                loggedInUserId,
-                loggedInUserName,
-                receiverID,
-                receiverName,
-                receiverPicUrl,
-                null,
-                chatType,
-                eventName,
-                eventId
-            )
-            chatModelList?.add(chatModel)
+                    // Create Chat Model
+                    val chatModel = ChatModel(
+                        documentID,
+                        loggedInUserId,
+                        loggedInUserName,
+                        receiverID,
+                        receiverName,
+                        receiverPicUrl,
+                        null,
+                        chatType,
+                        eventName,
+                        eventId
+                    )
+                    chatModelList?.add(chatModel)
+                }
+
+                //open event detail page
+                /* findNavController().navigate(
+                     detail?.id?.let {
+                         CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                             "Care Point",
+                             it
+                         )
+                     }
+                 )*/
+
+                val action = detail.id?.let {
+                    CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                        "Care Point",
+                        it
+                    )
+                }
+                action?.let { findNavController().navigate(it) }
+
+                // Navigate to chat screen
+                /* findNavController().navigate(
+                     CarePointsFragmentDirections.actionNavCarePointsToNavChat(
+                         "CarePoint",
+                         chatModelList?.toTypedArray()
+                     )
+                 )*/
+            }
+
+            ClickType.Edit.value -> {
+                val action =
+                    CarePointsFragmentDirections.actionNavCarePointsToEditCarePointFragment(
+                        carePoint = detail
+                    )
+                findNavController().navigate(action)
+            }
         }
-
-        //open event detail page
-        /* findNavController().navigate(
-             detail?.id?.let {
-                 CarePointsFragmentDirections.actionCarePointsToDetailFragment(
-                     "Care Point",
-                     it
-                 )
-             }
-         )*/
-
-        val action = detail.id?.let {
-            CarePointsFragmentDirections.actionCarePointsToDetailFragment(
-                "Care Point",
-                it
-            )
-        }
-        action?.let { findNavController().navigate(it) }
-
-        // Navigate to chat screen
-        /* findNavController().navigate(
-             CarePointsFragmentDirections.actionNavCarePointsToNavChat(
-                 "CarePoint",
-                 chatModelList?.toTypedArray()
-             )
-         )*/
     }
 }
 

@@ -207,6 +207,9 @@
         <action
             android:id="@+id/action_nav_care_points_to_nav_chat"
             app:destination="@id/nav_chat" />
+        <action
+            android:id="@+id/action_nav_care_points_to_editCarePointFragment"
+            app:destination="@id/editCarePointFragment" />
 
     </fragment>
     <fragment
@@ -481,4 +484,15 @@
         android:name="com.shepherdapp.app.ui.component.my_subscription.MySubscriptionFragment"
         android:label="MySubscriptionFragment"
         tools:layout="@layout/fragment_my_subscription"/>
+    <fragment
+        android:id="@+id/editCarePointFragment"
+        android:name="com.shepherdapp.app.ui.component.edit_care_point.EditCarePointFragment"
+        android:label="EditCarePointFragment"
+        tools:layout="@layout/fragment_edit_care_point">
+        <argument
+            android:name="care_point"
+            app:argType="com.shepherdapp.app.data.dto.added_events.AddedEventModel"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>

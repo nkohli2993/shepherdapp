@@ -23,4 +23,5 @@ data class AddedEventModel(
     @SerializedName("user_assignes") var user_assignes: ArrayList<UserAssigneeModel> = arrayListOf(),
     @SerializedName("loved_one_user_id_details") var loved_one_user_id_details: LoveUser = LoveUser(),
     @SerializedName("created_by_details") var createdByDetails: CreatedByDetails? = CreatedByDetails(),
+    @SerializedName("click_type") var clickType: Int? = null,
 ) : Parcelable
