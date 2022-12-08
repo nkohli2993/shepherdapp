@@ -53,6 +53,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:padding="@dimen/_3sdp"
+                android:visibility="gone"
                 android:src="@drawable/ic_edit_lock_box_doc_info"
                 android:layout_marginEnd="@dimen/_5sdp" />
 

@@ -3,6 +3,7 @@ package com.shepherdapp.app.ui.component.addNewMedication.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.data.dto.med_list.Medlist
@@ -56,6 +57,11 @@ class AddMedicineListAdapter(
              if (medList.isSelected) {
                  itemBinding.cbReminder.isChecked = true
              }*/
+            // Check if the medicine is being created by the user
+            if (medList.createdBy == "user") {
+                itemBinding.imgEditMedicine.visibility = View.VISIBLE
+            }
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     absoluteAdapterPosition,
