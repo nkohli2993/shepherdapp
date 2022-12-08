@@ -2,6 +2,8 @@ package com.shepherdapp.app.data.remote.care_point
 
 import com.shepherdapp.app.data.dto.added_events.*
 import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
+import com.shepherdapp.app.data.dto.edit_event.EditEventRequestModel
+import com.shepherdapp.app.data.dto.edit_event.EditEventResponseModel
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -46,6 +48,19 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
             NetworkOnlineDataRepo<EventDetailResponseModel, EventDetailResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<EventDetailResponseModel> {
                 return apiService.getEventDetail(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Edit CarePoint
+    suspend fun editCarePoint(
+        editEventRequestModel: EditEventRequestModel,
+        id: Int
+    ): Flow<DataResult<EditEventResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<EditEventResponseModel, EditEventResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<EditEventResponseModel> {
+                return apiService.editEvent(editEventRequestModel, id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

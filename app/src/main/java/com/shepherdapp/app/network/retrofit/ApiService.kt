@@ -19,6 +19,8 @@ import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.change_password.ChangePasswordModel
 import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
 import com.shepherdapp.app.data.dto.dashboard.HomeResponseModel
+import com.shepherdapp.app.data.dto.edit_event.EditEventRequestModel
+import com.shepherdapp.app.data.dto.edit_event.EditEventResponseModel
 import com.shepherdapp.app.data.dto.edit_loved_one.EditLovedOneResponseModel
 import com.shepherdapp.app.data.dto.edit_profile.UserUpdateData
 import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseRequestModel
@@ -181,6 +183,12 @@ interface ApiService {
     suspend fun getEventDetail(
         @Path("id") id: Int
     ): Response<EventDetailResponseModel>
+
+    @PUT(ApiConstants.Event.EDIT_EVENT)
+    suspend fun editEvent(
+        @Body editEventRequestModel: EditEventRequestModel,
+        @Path("id") id: Int
+    ): Response<EditEventResponseModel>
 
 
     @POST(ApiConstants.MedicalConditions.CREATE_BULK_ONE_CONDITIONS)

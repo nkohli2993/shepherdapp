@@ -18,6 +18,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.Resource
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
+import com.shepherdapp.app.data.dto.edit_event.EditEventRequestModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.databinding.FragmentEditCarePointBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -27,12 +28,14 @@ import com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
 import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.extensions.changeDatesFormat
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
+import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.utils.setupSnackbar
 import com.shepherdapp.app.utils.showToast
-import com.shepherdapp.app.view_model.AddNewEventViewModel
+import com.shepherdapp.app.view_model.EditEventViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,7 +51,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     DatePickerDialog.OnDateSetListener {
     private lateinit var fragmentEditCarePointBinding: FragmentEditCarePointBinding
     private var assigneeAdapter: AssigneAdapter? = null
-    private val addNewEventViewModel: AddNewEventViewModel by viewModels()
+    private val editEventViewModel: EditEventViewModel by viewModels()
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var status: Int = 1
@@ -59,6 +62,11 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     private var placeId: String? = null
     private val TAG = "EditCarePointFragment"
     private val args: EditCarePointFragmentArgs by navArgs()
+    private var oldAssignee: ArrayList<String> = arrayListOf()
+    private var selectedAssigneeUUIDList: ArrayList<String> = arrayListOf()
+    private var oldAssigneeUUIDList: ArrayList<String> = arrayListOf()
+    private var deletedAssigneeUUIDList: ArrayList<String> = arrayListOf()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,8 +97,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
         // Set Assignee
         if (!carePoint?.user_assignes.isNullOrEmpty()) {
-            val assignee: ArrayList<String> = arrayListOf()
-
             carePoint?.user_assignes?.forEach {
                 var name: String? = null
                 val firstName = it.user_details.firstname.plus(" ")
@@ -100,11 +106,17 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 } else {
                     firstName
                 }
-                assignee.add(name)
+                oldAssignee.add(name)
             }
 
-            if (assignee.size > 0) {
-                fragmentEditCarePointBinding.assigneET.setText(assignee.joinToString())
+            oldAssigneeUUIDList = carePoint?.user_assignes?.map {
+                it.user_id
+            } as ArrayList<String>
+
+
+            if (oldAssignee.size > 0) {
+                oldAssignee = oldAssignee.distinct() as ArrayList<String>
+                fragmentEditCarePointBinding.assigneET.setText(oldAssignee.joinToString())
             } else {
                 fragmentEditCarePointBinding.assigneET.setText("")
             }
@@ -112,7 +124,10 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
         // Set Date
         if (!carePoint?.date.isNullOrEmpty()) {
-            fragmentEditCarePointBinding.tvDate.text = carePoint?.date
+            fragmentEditCarePointBinding.tvDate.text = carePoint?.date.changeDatesFormat(
+                sourceFormat = "yyyy-MM-dd",
+                targetFormat = "dd-MM-yyyy"
+            )
         }
 
         // Set Time
@@ -123,8 +138,10 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             val time = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             Log.d(TAG, "initViewBinding: time is $time")
             if (time.contains("am")) {
+                isAmPm = "am"
                 setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
             } else {
+                isAmPm = "pm"
                 setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
             }
             fragmentEditCarePointBinding.tvTime.text = time.dropLast(2)
@@ -168,18 +185,18 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     }
 
     private fun getAssignedToMembers() {
-        addNewEventViewModel.getMembers(
+        editEventViewModel.getMembers(
             pageNumber,
             limit,
             status,
-            addNewEventViewModel.getLovedOneUUId()
+            editEventViewModel.getLovedOneUUId()
         )
     }
 
     override fun observeViewModel() {
-        observe(addNewEventViewModel.loginLiveData, ::handleLoginResult)
-        observeSnackBarMessages(addNewEventViewModel.showSnackBar)
-        observeToast(addNewEventViewModel.showToast)
+        observe(editEventViewModel.loginLiveData, ::handleLoginResult)
+        observeSnackBarMessages(editEventViewModel.showSnackBar)
+        observeToast(editEventViewModel.showToast)
         observeEventMembers()
         observeCreateEvent()
     }
@@ -187,7 +204,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
     private fun observeEventMembers() {
 
-        addNewEventViewModel.eventMemberLiveData.observeEvent(this) { result ->
+        editEventViewModel.eventMemberLiveData.observeEvent(this) { result ->
             when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
@@ -221,10 +238,28 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             }
         }
 
+        // Observe edit care point response
+        editEventViewModel.editCarePointResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), it.data.message.toString())
+                    backPress()
+                }
+            }
+        }
+
     }
 
     private fun observeCreateEvent() {
-        addNewEventViewModel.createEventLiveData.observeEvent(this) { result ->
+        editEventViewModel.createEventLiveData.observeEvent(this) { result ->
             when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
@@ -249,7 +284,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
             }
             is Resource.DataError -> {
-                status.errorCode?.let { addNewEventViewModel.showToastMessage(it) }
+                status.errorCode?.let { editEventViewModel.showToastMessage(it) }
             }
         }
     }
@@ -303,18 +338,39 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     rotate(180f)
                 }
             }
-            R.id.btnAdd -> {
+            R.id.btnSaveChanges -> {
                 assignTo.clear()
                 for (i in careteams) {
                     if (i.isSelected) {
                         assignTo.add(i.user_id_details.uid!!)
                     }
-
                 }
+//                Log.d(TAG, "Old Assignee UUIDS : $oldAssigneeUUIDList")
+//                Log.d(TAG, "New Assignee UUIDS : ${selectedAssigneeUUIDList.distinct()}}")
+//                Log.d(TAG, "New Assignee UUIDS : $assignTo}")
+
+                deletedAssigneeUUIDList.clear()
+                if (assignTo.isNullOrEmpty()) {
+                    assignTo = oldAssigneeUUIDList
+                } else {
+                    if (!oldAssigneeUUIDList.isNullOrEmpty()) {
+                        assignTo.forEach { selectedAssignee ->
+                            oldAssigneeUUIDList.forEach { oldAssignee ->
+                                if (selectedAssignee != oldAssignee) {
+                                    deletedAssigneeUUIDList.add(oldAssignee)
+                                }
+                            }
+                        }
+                        deletedAssigneeUUIDList =
+                            deletedAssigneeUUIDList.distinct() as ArrayList<String>
+                    }
+                }
+                Log.d(TAG, "Deleted assignee list :$deletedAssigneeUUIDList ")
                 if (isValid) {
-                    createEvent()
+                    editEvent()
                 }
             }
+
             R.id.clTimeWrapper, R.id.tvTime -> {
                 timePicker()
             }
@@ -408,10 +464,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     fragmentEditCarePointBinding.etEventName.requestFocus()
                 }
                 assignTo.size <= 0 -> {
-                    showInfo(
-                        requireContext(),
-                        getString(R.string.please_select_whome_to_assign_event)
-                    )
+                    if (oldAssigneeUUIDList.isNullOrEmpty()) {
+                        showInfo(
+                            requireContext(),
+                            getString(R.string.please_select_whome_to_assign_event)
+                        )
+                    }
                 }
                 fragmentEditCarePointBinding.tvDate.text.toString().trim() == "DD/MM/YY" -> {
                     showInfo(requireContext(), getString(R.string.please_enter_date_of_event))
@@ -439,9 +497,9 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             return false
         }
 
-    private fun createEvent() {
+    private fun editEvent() {
         var selectedDate = fragmentEditCarePointBinding.tvDate.text.toString().trim()
-        var dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
+        var dateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm a")
         val formattedDate: Date = dateFormat.parse(
             selectedDate.plus(
                 " ${
@@ -451,13 +509,38 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         )!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         selectedDate = dateFormat.format(formattedDate)
-        dateFormat = SimpleDateFormat("HH:mm")
+        dateFormat = SimpleDateFormat("HH:mm a")
         val selectedTime = dateFormat.format(formattedDate)
 
         val note = if (fragmentEditCarePointBinding.etNote.text.toString().isNullOrEmpty()) {
             null
         } else {
             fragmentEditCarePointBinding.etNote.text.toString().trim()
+        }
+        if (deletedAssigneeUUIDList.isNotEmpty()) {
+            deletedAssigneeUUIDList = deletedAssigneeUUIDList.distinct() as ArrayList<String>
+        }
+
+        if (assignTo.isNotEmpty()) {
+            assignTo = assignTo.distinct() as ArrayList<String>
+        }
+
+        Log.d(TAG, "editEvent: deletedAssignee : $deletedAssigneeUUIDList")
+        Log.d(TAG, "editEvent: newAssignee : $assignTo")
+
+        args.carePoint?.id?.let {
+            editEventViewModel.editCarePoint(
+                EditEventRequestModel(
+                    name = fragmentEditCarePointBinding.etEventName.text.toString().trim(),
+                    location = fragmentEditCarePointBinding.edtAddress.text.toString().trim(),
+                    date = selectedDate,
+                    time = selectedTime,
+                    notes = note,
+                    deletedAssignee = deletedAssigneeUUIDList,
+                    newAssignee = assignTo
+                ),
+                it
+            )
         }
 
         /* addNewEventViewModel.createEvent(
@@ -482,8 +565,11 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         }, 100)
         val assignee: ArrayList<String> = arrayListOf()
         assignee.clear()
+        selectedAssigneeUUIDList.clear()
         for (i in careteams) {
             if (i.isSelected) {
+                val uuid = i.user_id_details.uid
+                uuid?.let { selectedAssigneeUUIDList.add(it) }
                 assignee.add(
                     i.user_id_details.firstname!!.plus(" ")
                         .plus(i.user_id_details.lastname?.ifEmpty { null })
@@ -506,7 +592,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             val mCurrentTime = Calendar.getInstance()
             if (fragmentEditCarePointBinding.tvTime.text.isNotEmpty()) {
                 val dateTime = fragmentEditCarePointBinding.tvDate.text.toString().trim().plus(" ")
-                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus(" $isAmPm"))
+                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus("$isAmPm"))
                 mCurrentTime.time = SimpleDateFormat("dd-MM-yyyy hh:mm a").parse(dateTime)!!
             }
             val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
@@ -520,9 +606,9 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         fragmentEditCarePointBinding.tvDate.text.toString().trim().plus(" ")
                             .plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
                     val currentDateTime =
-                        SimpleDateFormat("MM-dd-yyyy HH:mm").format(Calendar.getInstance().time)
+                        SimpleDateFormat("dd-MM-yyyy HH:mm").format(Calendar.getInstance().time)
 
-                    val dateFormat = SimpleDateFormat("MM-dd-yyyy HH:mm")
+                    val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
                     if (dateFormat.parse(selectedDateTime)!!
                             .after(dateFormat.parse(currentDateTime))
                     ) {
