@@ -11,6 +11,8 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import com.shepherdapp.app.R
 import com.shepherdapp.app.utils.Const
+import java.math.RoundingMode
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 
@@ -50,7 +52,11 @@ class CustomMarkerView @Inject constructor(
                 text = "${e.y} bpm"
             }
             Const.VitalStat.BODY_TEMP -> {
-                text = "${e.y} F"
+                // Round Off to two decimal places
+                val df = DecimalFormat("#.##")
+                df.roundingMode = RoundingMode.DOWN
+                val roundOff = df.format(e.y)
+                text = "$roundOff F"
             }
         }
         txtContent?.text = text

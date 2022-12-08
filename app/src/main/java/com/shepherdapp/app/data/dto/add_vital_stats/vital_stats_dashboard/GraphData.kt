@@ -7,11 +7,11 @@ data class GraphData(
     @SerializedName("time")
     var day: String = "",
     @SerializedName("x")
-    var x: Int = 0,
+    var x: Double = 0.0,
     @SerializedName("x1")
-    var x1: Int = 0,
+    var x1: Double = 0.0,
     @SerializedName("y")
-    var y: Int = 0,
+    var y: Double = 0.0,
     @SerializedName("y2")
-    var y2: Int = 0
+    var y2: Double = 0.0
 )

@@ -62,7 +62,9 @@ import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.view_model.VitalStatsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.math.RoundingMode
 import java.text.DateFormat
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -228,8 +230,10 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                             fragmentVitalStatsBinding.tvBodyTempValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.GONE
                         } else {
-                            fragmentVitalStatsBinding.tvBodyTempValue.text =
-                                vitalStats!!.data?.bodyTemp
+                            val df = DecimalFormat("#.##")
+                            df.roundingMode = RoundingMode.DOWN
+                            val roundOff = df.format(vitalStats!!.data?.bodyTemp?.toDouble())
+                            fragmentVitalStatsBinding.tvBodyTempValue.text = roundOff
                             fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.VISIBLE
                         }
 
@@ -273,8 +277,13 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         fragmentVitalStatsBinding.txtMaxDBP.text =
                             "Max ${it.data.payload.maxDBP}"
                     } else {
-                        fragmentVitalStatsBinding.tvHRMin.text = "Min ${it.data.payload.minValue}/"
-                        fragmentVitalStatsBinding.tvHRMax.text = "Max ${it.data.payload.maxValue}"
+                        val df = DecimalFormat("#.##")
+                        df.roundingMode = RoundingMode.DOWN
+                        val roundOffMin = df.format(it.data.payload.minValue?.toDouble())
+                        val roundOffMax = df.format(it.data.payload.maxValue?.toDouble())
+
+                        fragmentVitalStatsBinding.tvHRMin.text = "Min ${roundOffMin}/"
+                        fragmentVitalStatsBinding.tvHRMax.text = "Max $roundOffMax"
 
                         fragmentVitalStatsBinding.txtMinDBP.visibility = View.GONE
                         fragmentVitalStatsBinding.txtMaxDBP.visibility = View.GONE
@@ -425,7 +434,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                   // showSuccess(requireContext(), it.data.message.toString())
+                    // showSuccess(requireContext(), it.data.message.toString())
                     Log.d(TAG, "observeViewModel: lastSync done successfully")
                     callGraphApi()
                 }
