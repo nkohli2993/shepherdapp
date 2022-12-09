@@ -126,7 +126,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         if (!carePoint?.date.isNullOrEmpty()) {
             fragmentEditCarePointBinding.tvDate.text = carePoint?.date.changeDatesFormat(
                 sourceFormat = "yyyy-MM-dd",
-                targetFormat = "dd-MM-yyyy"
+                targetFormat = "MM-dd-yyyy"
             )
         }
 
@@ -499,7 +499,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
     private fun editEvent() {
         var selectedDate = fragmentEditCarePointBinding.tvDate.text.toString().trim()
-        var dateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm a")
+        var dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
         val formattedDate: Date = dateFormat.parse(
             selectedDate.plus(
                 " ${
@@ -592,8 +592,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             val mCurrentTime = Calendar.getInstance()
             if (fragmentEditCarePointBinding.tvTime.text.isNotEmpty()) {
                 val dateTime = fragmentEditCarePointBinding.tvDate.text.toString().trim().plus(" ")
-                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus("$isAmPm"))
-                mCurrentTime.time = SimpleDateFormat("dd-MM-yyyy hh:mm a").parse(dateTime)!!
+                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus(" $isAmPm"))
+                mCurrentTime.time = SimpleDateFormat("MM-dd-yyyy hh:mm a").parse(dateTime)!!
             }
             val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
             val minute = mCurrentTime.get(Calendar.MINUTE)
@@ -606,12 +606,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         fragmentEditCarePointBinding.tvDate.text.toString().trim().plus(" ")
                             .plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
                     val currentDateTime =
-                        SimpleDateFormat("dd-MM-yyyy HH:mm").format(Calendar.getInstance().time)
+                        SimpleDateFormat("MM-dd-yyyy HH:mm").format(Calendar.getInstance().time)
 
-                    val dateFormat = SimpleDateFormat("dd-MM-yyyy HH:mm")
-                    if (dateFormat.parse(selectedDateTime)!!
-                            .after(dateFormat.parse(currentDateTime))
-                    ) {
+                    val dateFormat = SimpleDateFormat("MM-dd-yyyy HH:mm")
+                    val selDateTime = dateFormat.parse(selectedDateTime)
+                    val curDateTime = dateFormat.parse(currentDateTime)
+                    if (selDateTime?.after(curDateTime) == true) {
                         if (hourOfDay < 12) {
                             isAmPm = "am"
                             setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
@@ -624,7 +624,10 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                                 String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
                         }
                     } else {
-                        showError(requireContext(), getString(R.string.please_select_future_time))
+                        showError(
+                            requireContext(),
+                            getString(R.string.please_select_future_time)
+                        )
                     }
 
                 }, hour,
