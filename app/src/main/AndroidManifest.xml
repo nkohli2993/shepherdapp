@@ -29,10 +29,13 @@
 
         <activity
             android:name=".ui.component.createAccount.InformationActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.component.addLovedOneCondition.AddMedicalConditionActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            />
         <!--
          <activity
             android:name=".ui.component.lockBox.UploadLockBoxDocumentActivity"
@@ -41,24 +44,30 @@
         <activity
             android:name="com.shepherdapp.app.ui.component.login.LoginActivity"
             android:label="@string/title_activity_login"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.component.createAccount.CreateNewAccountActivity"
             android:label="@string/create_account"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.resetPassword.ResetPasswordActivity"
             android:label="@string/title_activity_reset_password"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.forgot_password.ForgotPasswordActivity"
-            android:label="@string/forgot_passwd" />
+            android:label="@string/forgot_passwd"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity"
-            android:label="@string/welcome_user" />
+            android:label="@string/welcome_user"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.splash.SplashActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -71,38 +80,47 @@
             android:label="@string/title_activity_on_boarding" />
         <activity
             android:name="com.shepherdapp.app.ui.component.walk_through.WalkThroughActivity"
-            android:label="@string/title_activity_walk_through" />
+            android:label="@string/title_activity_walk_through"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.component.subscription.SubscriptionActivity"
-            android:label="@string/title_activity_subscription" />
+            android:label="@string/title_activity_subscription"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.shepherdapp.app.ui.welcome.WelcomeActivity"
-            android:label="@string/title_activity_welcome" />
+            android:label="@string/title_activity_welcome"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity"
-            android:label="@string/title_activity_add_loved_one" />
+            android:label="@string/title_activity_add_loved_one"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity"
-            android:label="@string/title_activity_add_loved_one_condition" />
+            android:label="@string/title_activity_add_loved_one_condition"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity"
-            android:label="@string/title_activity_join_care_team" />
+            android:label="@string/title_activity_join_care_team"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity"
-            android:label="@string/search_places" />
+            android:label="@string/search_places"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.shepherdapp.app.ui.component.home.HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_dashboard"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
             android:name="com.shepherdapp.app.ui.component.lockBox.UploadLockBoxDocumentActivity"
             android:exported="false"
             android:label="@string/google_drive_upload"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
