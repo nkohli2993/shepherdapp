@@ -9,7 +9,6 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class AddMedicalConditionRequestModel(
-
     @SerializedName("name") var name: String? = null,
     @SerializedName("description") var description: String? = null,
     @SerializedName("created_by") var createdBy: String? = null

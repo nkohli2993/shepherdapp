@@ -50,6 +50,7 @@ import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedLi
 import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
 import com.shepherdapp.app.data.dto.medical_conditions.*
+import com.shepherdapp.app.data.dto.medical_conditions.edit_medical_conditions.EditMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.notification.NotificationResponseModel
 import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotificationRequestModel
@@ -199,6 +200,12 @@ interface ApiService {
 
     @POST(ApiConstants.MedicalConditions.ADD_MEDICAL_CONDITION)
     suspend fun addMedicalConditions(@Body value: AddMedicalConditionRequestModel): Response<AddedUserMedicalConditionResposneModel>
+
+    @PUT(ApiConstants.MedicalConditions.EDIT_MEDICAL_CONDITION)
+    suspend fun editMedicalConditions(
+        @Body value: AddMedicalConditionRequestModel,
+        @Path("id") id: Int
+    ): Response<EditMedicalConditionsResponseModel>
 
     @GET(ApiConstants.Authentication.LOGOUT)
     suspend fun logout(): Response<BaseResponseModel>

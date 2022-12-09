@@ -26,6 +26,7 @@ import com.shepherdapp.app.ui.component.addLovedOneCondition.adapter.AddLovedOne
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.Type
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -314,6 +315,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         when (p0?.id) {
             R.id.tvNew -> {
                 val intent = Intent(this, AddMedicalConditionActivity::class.java)
+                intent.putExtra("type", Type.ADD.value)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
@@ -490,6 +492,11 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
 
     override fun itemEditSelected(conditions: Conditions) {
         Log.d(TAG, "itemEditSelected:$conditions ")
+        val intent = Intent(this, AddMedicalConditionActivity::class.java)
+        intent.putExtra("type", Type.EDIT.value)
+        intent.putExtra("condition", conditions)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 }
 

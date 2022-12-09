@@ -143,4 +143,10 @@ enum class TimePickerType(val value: Int) {
     EDIT(2)
 }
 
+enum class Type(val value: String) {
+    ADD("Add"),
+    EDIT("Edit"),
+    DELETE("Delete")
+}
+
 

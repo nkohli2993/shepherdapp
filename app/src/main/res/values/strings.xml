@@ -540,7 +540,8 @@
     <string name="edit_medicine">Edit Medicine</string>
     <string name="description">Description</string>
     <string name="medicine_name">Medicine Name</string>
-    <string name="add_medical_condition">Add Medical Condition</string>
+    <string name="add_medical_condition">Add Medical\nCondition</string>
+    <string name="edit_medical_condition">Edit Medical\nCondition</string>
     <string name="medical_condition">Medical Condition</string>
     <string name="please_enter_medical_condition">Please enter medical condition name.</string>
     <string name="document_added_successfully">Document added successfully!</string>
