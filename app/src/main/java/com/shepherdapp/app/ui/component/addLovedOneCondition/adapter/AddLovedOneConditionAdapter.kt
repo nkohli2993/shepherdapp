@@ -1,7 +1,7 @@
 package com.shepherdapp.app.ui.component.addLovedOneCondition.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -20,15 +20,21 @@ class AddLovedOneConditionAdapter(
     lateinit var binding: AdapterAddLovedOneConditionBinding
 
     private var onItemClickListener: ItemSelectedListener? = null
+    private var itemEditClickListener: ItemEditClickListener? = null
 
-    fun setClickListener(clickListener: ItemSelectedListener) {
+    fun setClickListener(
+        clickListener: ItemSelectedListener,
+        itemEditListener: ItemEditClickListener
+    ) {
         onItemClickListener = clickListener
+        itemEditClickListener = itemEditListener
     }
 
     fun updateConditions(conditions: ArrayList<Conditions>) {
         this.conditionList = conditions
         notifyDataSetChanged()
     }
+
     fun addConditions(conditions: ArrayList<Conditions>) {
         this.conditionList.addAll(conditions)
         notifyDataSetChanged()
@@ -36,6 +42,10 @@ class AddLovedOneConditionAdapter(
 
     interface ItemSelectedListener {
         fun itemSelected(position: Int)
+    }
+
+    interface ItemEditClickListener {
+        fun itemEditSelected(conditions: Conditions)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -67,8 +77,22 @@ class AddLovedOneConditionAdapter(
             if (conditions.isSelected) {
                 itemBinding.checkbox.isChecked = true
             }
+            // Check if the medical condition is being created by the user
+            if (conditions.createdBy == "user") {
+                itemBinding.imgEditMedicalCondition.visibility = View.VISIBLE
+            }
 
-            itemBinding.cardView.setOnClickListener {  onItemClickListener?.itemSelected(absoluteAdapterPosition) }
+            itemBinding.cardView.setOnClickListener {
+                onItemClickListener?.itemSelected(
+                    absoluteAdapterPosition
+                )
+            }
+
+            // Handle click of edit medical condition
+            itemBinding.imgEditMedicalCondition.setOnClickListener {
+                itemEditClickListener?.itemEditSelected(conditions)
+            }
+
 //            itemBinding.textViewCondition.setOnClickListener { itemBinding.checkbox.performClick() }
         }
     }

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.widget.NestedScrollView
@@ -34,7 +35,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
-    AddLovedOneConditionAdapter.ItemSelectedListener {
+    AddLovedOneConditionAdapter.ItemSelectedListener,
+    AddLovedOneConditionAdapter.ItemEditClickListener {
 
     private lateinit var binding: ActivityAddLovedOneConditionBinding
     private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
@@ -54,6 +56,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var currentPage: Int = 0
     private var totalPage: Int = 0
     private var total: Int = 0
+    private val TAG = "AddLovedOneCondition"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,20 +152,20 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     if (addedConditionPayload.size <= 0) {
                         binding.buttonFinish.text = getString(R.string.add)
                         // show popup for no medical conditions
-                       /* val builder = AlertDialog.Builder(this)
-                        val dialog = builder.apply {
-                            setMessage(getString(R.string.no_medical_condition_added_for_loved_one))
-                            setPositiveButton(getString(R.string.add)) { _, _ ->
+                        /* val builder = AlertDialog.Builder(this)
+                         val dialog = builder.apply {
+                             setMessage(getString(R.string.no_medical_condition_added_for_loved_one))
+                             setPositiveButton(getString(R.string.add)) { _, _ ->
 
-                            }
-                            setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                                finishActivity()
-                            }
-                        }.create()
-                        dialog.show()
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-                        return@observeEvent*/
+                             }
+                             setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                                 finishActivity()
+                             }
+                         }.create()
+                         dialog.show()
+                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                         return@observeEvent*/
                     } else {
                         binding.txtMedicalCondition.text =
                             getString(R.string.edit_medical_conditions)
@@ -269,7 +272,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 it1
             )
         }
-        addLovedOneConditionAdapter?.setClickListener(this)
+        addLovedOneConditionAdapter?.setClickListener(this, this)
         binding.recyclerViewCondition.adapter = addLovedOneConditionAdapter
         handleAddedLovedOneConditionPagination()
     }
@@ -483,6 +486,10 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
+    }
+
+    override fun itemEditSelected(conditions: Conditions) {
+        Log.d(TAG, "itemEditSelected:$conditions ")
     }
 }
 
