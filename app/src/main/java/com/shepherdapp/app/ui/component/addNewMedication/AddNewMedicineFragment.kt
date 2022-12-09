@@ -132,7 +132,7 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
     private val isValid: Boolean
         get() {
             when {
-                fragmentAddNewMedicineBinding.medicineNameET.text.toString().isEmpty() -> {
+                fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim().isEmpty() -> {
                     fragmentAddNewMedicineBinding.medicineNameET.error =
                         getString(R.string.please_enter_medicine_name)
                     fragmentAddNewMedicineBinding.medicineNameET.requestFocus()
