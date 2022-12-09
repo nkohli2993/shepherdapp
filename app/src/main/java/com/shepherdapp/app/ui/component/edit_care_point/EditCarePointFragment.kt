@@ -220,7 +220,15 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     )
                     fragmentEditCarePointBinding.assigneRV.adapter = assigneeAdapter
 
+                    args.carePoint?.user_assignes?.forEach { assignee ->
+                        careteams.forEach {
+                            if (it.user_id == assignee.user_id) {
+                                it.isSelected = true
+                            }
+                        }
+                    }
 
+                    assigneeAdapter!!.setData(careteams)
                 }
 
                 is DataResult.Failure -> {
