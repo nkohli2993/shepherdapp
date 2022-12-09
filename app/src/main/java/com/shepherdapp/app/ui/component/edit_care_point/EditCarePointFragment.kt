@@ -250,7 +250,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    showSuccess(requireContext(), it.data.message.toString())
+//                    showSuccess(requireContext(), it.data.message.toString())
+                    showSuccess(requireContext(), "CarePoint updated successfully")
                     backPress()
                 }
             }
