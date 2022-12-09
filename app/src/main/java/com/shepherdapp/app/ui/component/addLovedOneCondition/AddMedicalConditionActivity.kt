@@ -37,7 +37,7 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    onBackPressed()
+                    onBackPressedDispatcher.onBackPressed()
                 }
                 is DataResult.Failure -> {
                     hideLoading()
@@ -59,6 +59,7 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(this, it.data.message.toString())
+                    onBackPressedDispatcher.onBackPressed()
                 }
             }
         }
@@ -138,7 +139,7 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
                                 AddMedicalConditionRequestModel(
                                     name = medicalConditionName,
                                     description = description,
-                                    createdBy = "user"
+                                    createdBy = null
                                 ),
                                 it
                             )
