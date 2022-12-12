@@ -63,6 +63,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     private val TAG = "EditCarePointFragment"
     private val args: EditCarePointFragmentArgs by navArgs()
     private var oldAssignee: ArrayList<String> = arrayListOf()
+    private var newAssigneesUUIDList: ArrayList<String> = arrayListOf()
     private var selectedAssigneeUUIDList: ArrayList<String> = arrayListOf()
     private var oldAssigneeUUIDList: ArrayList<String> = arrayListOf()
     private var list: ArrayList<String> = arrayListOf()
@@ -116,8 +117,13 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
 
             if (oldAssignee.size > 0) {
-                oldAssignee = oldAssignee.distinct() as ArrayList<String>
-                fragmentEditCarePointBinding.assigneET.setText(oldAssignee.joinToString())
+                if (oldAssignee.size == 1) {
+                    fragmentEditCarePointBinding.assigneET.setText(oldAssignee.joinToString())
+                } else {
+                    oldAssignee = oldAssignee.distinct() as ArrayList<String>
+                    fragmentEditCarePointBinding.assigneET.setText(oldAssignee.joinToString())
+                }
+
             } else {
                 fragmentEditCarePointBinding.assigneET.setText("")
             }
@@ -349,24 +355,48 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 }
             }
             R.id.btnSaveChanges -> {
+                // assignTo contains UUID of total assignees
                 assignTo.clear()
                 list.clear()
+                newAssigneesUUIDList.clear()
+                // Adds old assignees to list
                 list.addAll(oldAssigneeUUIDList)
                 for (i in careteams) {
                     if (i.isSelected) {
                         assignTo.add(i.user_id_details.uid!!)
                     }
                 }
+                // Here newAssigneesUUIDList contains list of total assignees
+                newAssigneesUUIDList.addAll(assignTo)
+
                 Log.d(TAG, "Old Assignee : $oldAssigneeUUIDList")
-                Log.d(TAG, "New Assignee : $assignTo")
+                Log.d(TAG, "Total Assignee : $assignTo")
+
+
+                // Get new assignees
+                // To get need to removed old assignees from newAssigneesUUIDList
+                newAssigneesUUIDList.removeAll(oldAssigneeUUIDList)
+
+                Log.d(TAG, "New assignee : $newAssigneesUUIDList")
+
                 // Remove the new assignee from old assignees to get deleted assignees
                 // list contains the uuid of deleted assignees
-                list.removeAll(assignTo)
+                if (newAssigneesUUIDList.isEmpty() && (assignTo.size == oldAssigneeUUIDList.size)) {
+                    list.clear()
+                } else if (oldAssigneeUUIDList.size > assignTo.size) {
+                    list.removeAll(assignTo)
+                } else {
+                    if (list.containsAll(newAssigneesUUIDList)) {
+                        list.removeAll(newAssigneesUUIDList)
+                    } else {
+                        list.clear()
+                    }
+                }
                 Log.d(TAG, "del : Deleted Assignee List : $list")
 
-                if (isValid) {
-                    editEvent()
-                }
+                  if (isValid) {
+                      editEvent()
+                  }
             }
 
             R.id.clTimeWrapper, R.id.tvTime -> {
@@ -528,7 +558,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     time = selectedTime,
                     notes = note,
                     deletedAssignee = list, // list contains the uuid of deleted assignees
-                    newAssignee = assignTo
+                    newAssignee = newAssigneesUUIDList
                 ),
                 it
             )
