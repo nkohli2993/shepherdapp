@@ -65,6 +65,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     private var oldAssignee: ArrayList<String> = arrayListOf()
     private var selectedAssigneeUUIDList: ArrayList<String> = arrayListOf()
     private var oldAssigneeUUIDList: ArrayList<String> = arrayListOf()
+    private var list: ArrayList<String> = arrayListOf()
     private var deletedAssigneeUUIDList: ArrayList<String> = arrayListOf()
 
 
@@ -349,32 +350,20 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             }
             R.id.btnSaveChanges -> {
                 assignTo.clear()
+                list.clear()
+                list.addAll(oldAssigneeUUIDList)
                 for (i in careteams) {
                     if (i.isSelected) {
                         assignTo.add(i.user_id_details.uid!!)
                     }
                 }
-//                Log.d(TAG, "Old Assignee UUIDS : $oldAssigneeUUIDList")
-//                Log.d(TAG, "New Assignee UUIDS : ${selectedAssigneeUUIDList.distinct()}}")
-//                Log.d(TAG, "New Assignee UUIDS : $assignTo}")
+                Log.d(TAG, "Old Assignee : $oldAssigneeUUIDList")
+                Log.d(TAG, "New Assignee : $assignTo")
+                // Remove the new assignee from old assignees to get deleted assignees
+                // list contains the uuid of deleted assignees
+                list.removeAll(assignTo)
+                Log.d(TAG, "del : Deleted Assignee List : $list")
 
-                deletedAssigneeUUIDList.clear()
-                if (assignTo.isNullOrEmpty()) {
-                    assignTo = oldAssigneeUUIDList
-                } else {
-                    if (!oldAssigneeUUIDList.isNullOrEmpty()) {
-                        assignTo.forEach { selectedAssignee ->
-                            oldAssigneeUUIDList.forEach { oldAssignee ->
-                                if (selectedAssignee != oldAssignee) {
-                                    deletedAssigneeUUIDList.add(oldAssignee)
-                                }
-                            }
-                        }
-                        deletedAssigneeUUIDList =
-                            deletedAssigneeUUIDList.distinct() as ArrayList<String>
-                    }
-                }
-                Log.d(TAG, "Deleted assignee list :$deletedAssigneeUUIDList ")
                 if (isValid) {
                     editEvent()
                 }
@@ -526,15 +515,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         } else {
             fragmentEditCarePointBinding.etNote.text.toString().trim()
         }
-        if (deletedAssigneeUUIDList.isNotEmpty()) {
-            deletedAssigneeUUIDList = deletedAssigneeUUIDList.distinct() as ArrayList<String>
-        }
-
-        if (assignTo.isNotEmpty()) {
-            assignTo = assignTo.distinct() as ArrayList<String>
-        }
-
-        Log.d(TAG, "editEvent: deletedAssignee : $deletedAssigneeUUIDList")
+        Log.d(TAG, "editEvent: oldAssignee : $oldAssigneeUUIDList")
+        Log.d(TAG, "editEvent: deletedAssignee : $list")
         Log.d(TAG, "editEvent: newAssignee : $assignTo")
 
         args.carePoint?.id?.let {
@@ -545,22 +527,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     date = selectedDate,
                     time = selectedTime,
                     notes = note,
-                    deletedAssignee = deletedAssigneeUUIDList,
+                    deletedAssignee = list, // list contains the uuid of deleted assignees
                     newAssignee = assignTo
                 ),
                 it
             )
         }
-
-        /* addNewEventViewModel.createEvent(
-             addNewEventViewModel.getLovedOneUUId(),
-             fragmentEditCarePointBinding.etEventName.text.toString().trim(),
-             fragmentEditCarePointBinding.edtAddress.text.toString().trim(),
-             selectedDate,
-             selectedTime,
-             note,
-             assignTo
-         )*/
     }
 
     override fun getLayoutRes(): Int {
