@@ -390,6 +390,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = true
                         tvNew.isVisible = false
                         cardViewUser.isVisible = false
+
+
                     }
                     lockUnlockDrawer(false)
                 }
@@ -400,6 +402,10 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         cardViewUser.isVisible = true
+
+                        imgClose.setOnClickListener {
+                            cardViewUser.isVisible = false
+                        }
 
                         tvNew.apply {
                             isVisible = true
@@ -418,6 +424,10 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
                         cardViewUser.isVisible = true
+
+                        imgClose.setOnClickListener {
+                            cardViewUser.isVisible = false
+                        }
 
                         tvNew.apply {
                             isVisible = true
@@ -453,6 +463,10 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clHomeWrapper.isVisible = false
                         cardViewUser.isVisible = true
 
+                        imgClose.setOnClickListener {
+                            cardViewUser.isVisible = false
+                        }
+
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {
@@ -464,6 +478,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
                 R.id.nav_resources -> {
                     cardViewUser.isVisible = true
+                    imgClose.setOnClickListener {
+                        cardViewUser.isVisible = false
+                    }
 
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.resources)
@@ -474,6 +491,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 }
                 R.id.nav_care_points -> {
                     cardViewUser.isVisible = true
+                    imgClose.setOnClickListener {
+                        cardViewUser.isVisible = false
+                    }
 
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.care_points)
@@ -492,6 +512,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
                 R.id.nav_lock_box -> {
                     cardViewUser.isVisible = true
+                    imgClose.setOnClickListener {
+                        cardViewUser.isVisible = false
+                    }
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.lockbox)
                         clTopWrapper.isVisible = true
@@ -514,6 +537,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         clTopWrapper.isVisible = true
                         clEndWrapper.isVisible = true
                         clHomeWrapper.isVisible = false
+
+                        imgClose.setOnClickListener {
+                            cardViewUser.isVisible = false
+                        }
+
                         tvNew.apply {
                             isVisible = true
                             setOnClickListener {

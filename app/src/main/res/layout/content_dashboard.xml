@@ -18,44 +18,70 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/home_navigation" />
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
         android:id="@+id/cardViewUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        app:cardCornerRadius="@dimen/_10sdp"
-        app:cardElevation="0dp"
-        app:strokeColor="#dce9e6"
-        app:strokeWidth="@dimen/_1sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="@dimen/_8sdp"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="0dp"
+            app:strokeColor="#dce9e6"
+            app:strokeWidth="@dimen/_1sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/imgLovedOne"
-                android:layout_width="@dimen/_40sdp"
-                android:layout_height="@dimen/_40sdp"
-                android:scaleType="fitXY"
-                app:shapeAppearanceOverlay="@style/roundedCornersImageView12"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:src="@drawable/ic_defalut_profile_pic" />
-
-            <TextView
-                style="@style/TextViewGothamMedium"
-                android:id="@+id/txtLoved"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="fghfhjhf"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_6sdp"
-                android:textSize="@dimen/_9ssp" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+                android:layout_height="match_parent"
+                android:padding="@dimen/_8sdp"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imgLovedOne"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:scaleType="fitXY"
+                    app:shapeAppearanceOverlay="@style/roundedCornersImageView12"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:src="@drawable/ic_defalut_profile_pic" />
+
+                <TextView
+                    style="@style/TextViewGothamMedium"
+                    android:id="@+id/txtLoved"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_6sdp"
+                    android:textSize="@dimen/_9ssp" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgClose"
+            android:layout_width="@dimen/_26sdp"
+            android:layout_height="@dimen/_26sdp"
+            android:elevation="@dimen/_4sdp"
+            app:civ_circle_background_color="@color/colorWhite"
+            android:src="@drawable/ic_close"
+            app:civ_border_width="@dimen/_2sdp"
+            app:civ_border_color="@color/colorWhite"
+            android:padding="@dimen/_4sdp"
+            android:layout_gravity="end|top" />
+
+<!--        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_close_user_profile"
+            android:layout_gravity="end|top" />-->
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
