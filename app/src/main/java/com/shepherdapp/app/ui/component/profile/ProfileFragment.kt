@@ -205,13 +205,30 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                         lovedOnesAdapter = null
                         setLovedOnesAdapter()
                     }
-                    it.data.payload.let { payload ->
-                        careTeams = payload.data
-                        total = payload.total!!
-                        currentPage = payload.currentPage!!
-                        totalPage = payload.totalPages!!
+
+                    //To fix : Duplicate LovedOne names in LovedOne Listing
+                    // If LoggedIn user is loved one, get first object and add to careTeams
+
+                    if (profileViewModel.isLoggedInUserLovedOne() == true) {
+                        careTeams.add(it.data.payload.data.first())
+                        lovedOnesAdapter?.addData(careTeams)
+                    } else {
+                        it.data.payload.let { payload ->
+                            careTeams = payload.data
+                            total = payload.total!!
+                            currentPage = payload.currentPage!!
+                            totalPage = payload.totalPages!!
+                        }
+                        lovedOnesAdapter?.addData(careTeams)
                     }
-                    lovedOnesAdapter?.addData(careTeams)
+
+                    /* it.data.payload.let { payload ->
+                         careTeams = payload.data
+                         total = payload.total!!
+                         currentPage = payload.currentPage!!
+                         totalPage = payload.totalPages!!
+                     }
+                     lovedOnesAdapter?.addData(careTeams)*/
 
                 }
             }
