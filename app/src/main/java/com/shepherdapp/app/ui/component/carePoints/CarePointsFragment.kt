@@ -86,6 +86,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: ")
         // Update the home activity so that updated lovedOne is shown on the screen
         parentActivityListener?.msgFromChildFragmentToActivity()
         fragmentCarePointsBinding.calendarPView.clearSelection()
@@ -108,22 +109,18 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         fragmentCarePointsBinding.calendarPView.clearSelection()
         val cal = Calendar.getInstance()
         fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
-    }
 
-    @SuppressLint("SimpleDateFormat")
-    override fun initViewBinding() {
-        typeFaceGothamBold = ResourcesCompat.getFont(requireContext(), R.font.gotham_bold)
-        typeFaceGothamBook = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
-        fragmentCarePointsBinding.listener = this
 
         fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
             Log.d(TAG, " date is ${date.date}")
 
             fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
+
             getDateSelectedOnTypeBased(
                 date.date
             )
         }
+
         fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
             // Show care point data as per month change from calendar
             Log.d(TAG, "initViewBinding: date is ${date.date}")
@@ -162,6 +159,66 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             }
 
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    override fun initViewBinding() {
+        Log.d(TAG, "initViewBinding: ")
+        typeFaceGothamBold = ResourcesCompat.getFont(requireContext(), R.font.gotham_bold)
+        typeFaceGothamBook = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
+        fragmentCarePointsBinding.listener = this
+        fragmentCarePointsBinding.calendarPView.clearSelection()
+        clickType = CalendarState.Today.value
+
+
+       /* fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
+            Log.d(TAG, " date is ${date.date}")
+
+            fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
+
+            getDateSelectedOnTypeBased(
+                date.date
+            )
+        }*/
+
+      /*  fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
+            // Show care point data as per month change from calendar
+            Log.d(TAG, "initViewBinding: date is ${date.date}")
+            val month = SimpleDateFormat("MM").format(date.date)
+            val year = SimpleDateFormat("yyyy").format(date.date)
+            fragmentCarePointsBinding.textViewSelectGroup.text =
+                SimpleDateFormat("MMM yyyy").format(date.date)
+            fragmentCarePointsBinding.calendarPView.clearSelection()
+            val calendar = Calendar.getInstance()
+            calendar.time = date.date
+            startDate = sdf!!.format(calendar.time)
+            calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
+            endDate = sdf!!.format(calendar.time)
+            getCarePointList(startDate, endDate)
+
+            when (clickType) {
+                CalendarState.Month.value -> {
+                    fragmentCarePointsBinding.calendarPView.selectionMode =
+                        MaterialCalendarView.SELECTION_MODE_NONE
+                    val month = SimpleDateFormat("MM").format(date.date)
+                    val year = SimpleDateFormat("yyyy").format(date.date)
+                    fragmentCarePointsBinding.textViewSelectGroup.text =
+                        SimpleDateFormat("MMM yyyy").format(date.date)
+                    fragmentCarePointsBinding.calendarPView.clearSelection()
+                    val calendar = Calendar.getInstance()
+                    calendar.time = date.date
+                    startDate = sdf!!.format(calendar.time)
+                    calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
+                    endDate = sdf!!.format(calendar.time)
+                    getCarePointList(startDate, endDate)
+                }
+                else -> {
+                    fragmentCarePointsBinding.calendarPView.selectionMode =
+                        MaterialCalendarView.SELECTION_MODE_SINGLE
+                }
+            }
+
+        }*/
     }
 
     private fun getDateSelectedOnTypeBased(selectedDate: Date) {
