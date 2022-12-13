@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Context
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -14,8 +15,10 @@ import android.view.animation.RotateAnimation
 import android.widget.AdapterView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.charts.Chart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.XAxis.XAxisPosition
@@ -365,6 +368,13 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
 
                     fragmentVitalStatsBinding.typeChart.clear()
+
+                    fragmentVitalStatsBinding.typeChart.setNoDataText("No Data Available")
+                    val paint: Paint =
+                        fragmentVitalStatsBinding.typeChart.getPaint(Chart.PAINT_INFO)
+                    paint.textSize = 50f
+                    paint.color = ContextCompat.getColor(requireContext(), R.color.colorBlack)
+                    paint.typeface = ResourcesCompat.getFont(requireContext(), R.font.gotham_bold)
                     fragmentVitalStatsBinding.typeChart.invalidate()
                     fragmentVitalStatsBinding.layoutMinMax.visibility = View.GONE
 
