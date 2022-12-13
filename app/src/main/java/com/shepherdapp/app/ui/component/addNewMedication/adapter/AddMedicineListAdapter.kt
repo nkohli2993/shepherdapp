@@ -60,6 +60,8 @@ class AddMedicineListAdapter(
             // Check if the medicine is being created by the user
             if (medList.createdBy == "user") {
                 itemBinding.imgEditMedicine.visibility = View.VISIBLE
+            } else {
+                itemBinding.imgEditMedicine.visibility = View.GONE
             }
 
             itemBinding.root.setOnClickListener {
