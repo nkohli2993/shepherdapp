@@ -121,13 +121,29 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                         lovedOneAdapter = null
                         setLovedOnesAdapter()
                     }
-                    result.data.payload.let { payload ->
+                    //To fix : Duplicate LovedOne names in LovedOne Listing
+                    // If LoggedIn user is loved one, get first object and add to careTeams
+
+                    if (lovedOneViewModel.isLoggedInUserLovedOne() == true) {
+                        careTeams.add(result.data.payload.data.first())
+                        lovedOneAdapter?.addData(careTeams)
+                    } else {
+                        result.data.payload.let { payload ->
+                            careTeams = payload.data
+                            total = payload.total!!
+                            currentPage = payload.currentPage!!
+                            totalPage = payload.totalPages!!
+                        }
+                        lovedOneAdapter?.addData(careTeams)
+                    }
+
+                  /*  result.data.payload.let { payload ->
                         careTeams = payload.data
                         total = payload.total!!
                         currentPage = payload.currentPage!!
                         totalPage = payload.totalPages!!
                     }
-                    lovedOneAdapter?.addData(careTeams)
+                    lovedOneAdapter?.addData(careTeams)*/
                     val lovedOneIDInPrefs =
                         Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
                     for (i in careTeams) {
@@ -140,45 +156,45 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
             }
         }
 
- /*       lovedOneViewModel.checkSubscriptionStatusResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    val type = it.data.payload?.type
-                    val status = it.data.payload?.status
-                    if (status == true) {
-                        findNavController().navigate(
-                            LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
-                                source = Const.ADD_LOVE_ONE
-                            )
-                        )
-                    } else {
-                        var message: String? = null
-                        if (type == Const.Type.ENTERPRISE) {
-                            message = getString(R.string.user_limit_exceeded)
-                        } else if (type == Const.Type.SUBSCRIPTION) {
-                            message = getString(R.string.your_subscription_has_been_expired)
-                        }
-                        val builder = AlertDialog.Builder(requireContext())
-                        val dialog = builder.apply {
-                            setTitle(getString(R.string.app_name))
-                            setMessage(message)
-                            setPositiveButton(getString(R.string.ok)) { _, _ ->
-                            }
-                        }.create()
-                        dialog.show()
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                    }
+        /*       lovedOneViewModel.checkSubscriptionStatusResponseLiveData.observeEvent(this) {
+                   when (it) {
+                       is DataResult.Failure -> {
+                           hideLoading()
+                       }
+                       is DataResult.Loading -> {
+                           showLoading("")
+                       }
+                       is DataResult.Success -> {
+                           hideLoading()
+                           val type = it.data.payload?.type
+                           val status = it.data.payload?.status
+                           if (status == true) {
+                               findNavController().navigate(
+                                   LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
+                                       source = Const.ADD_LOVE_ONE
+                                   )
+                               )
+                           } else {
+                               var message: String? = null
+                               if (type == Const.Type.ENTERPRISE) {
+                                   message = getString(R.string.user_limit_exceeded)
+                               } else if (type == Const.Type.SUBSCRIPTION) {
+                                   message = getString(R.string.your_subscription_has_been_expired)
+                               }
+                               val builder = AlertDialog.Builder(requireContext())
+                               val dialog = builder.apply {
+                                   setTitle(getString(R.string.app_name))
+                                   setMessage(message)
+                                   setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                   }
+                               }.create()
+                               dialog.show()
+                               dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                           }
 
-                }
-            }
-        }*/
+                       }
+                   }
+               }*/
     }
 
     override fun initViewBinding() {

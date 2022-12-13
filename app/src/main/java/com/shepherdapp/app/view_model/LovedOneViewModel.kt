@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.login.UserLovedOne
+import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.subscription.check_subscription_status.CheckSubscriptionStatusResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
@@ -108,6 +109,14 @@ class LovedOneViewModel @Inject constructor(
     // Save User's Role
     fun saveUserRole(role: String) {
         userRepository.saveUserRole(role)
+    }
+
+    fun getUser(): UserProfile? {
+        return userRepository.getCurrentUser()
+    }
+
+    fun getUUID(): String? {
+        return userRepository.getUUID()
     }
 
 }
