@@ -3,12 +3,15 @@ package com.shepherdapp.app.ui.component.login
 import CommonFunctions
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
@@ -16,6 +19,8 @@ import android.view.View
 import android.view.Window
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
@@ -65,6 +70,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private var token: String? = null
     private var userLovedOneArrayList: ArrayList<UserLovedOne>? = null
     private var firebaseToken: String? = null
+    private var mContext: Context? = null
+    private var doubleBackToExitPressedOnce: Boolean = false
     private var TAG = "LoginActivity"
 
     // Handle Validation
@@ -96,11 +103,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
-        if (intent.getStringExtra("source") != null) {
+        terminateApp()
+
+       /* if (intent.getStringExtra("source") != null) {
             if (intent.getStringExtra("source") == "WelcomeActivity") {
                 binding.ivBack.visibility = View.VISIBLE
             }
-        }
+        }*/
 
 //        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "Test123@"
@@ -503,12 +512,44 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 navigateToCreateNewAccountScreen()
             }
             R.id.ivBack -> {
-                onBackPressed()
+//                onBackPressed()
+                terminateApp()
             }
             R.id.imgBiometric -> {
                 fingerPrintExecute()
             }
         }
+    }
+
+    override fun onBackPressed() {
+        terminateApp()
+        super.onBackPressed()
+    }
+
+    // Implements the logic to Tap back button twice to terminate application
+    private fun terminateApp() {
+        mContext = this
+        // Tap back button twice to terminate application
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (doubleBackToExitPressedOnce) {
+                    finish()
+                }
+                doubleBackToExitPressedOnce = true
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        doubleBackToExitPressedOnce = false
+                    },
+                    2000
+                )
+                Toast.makeText(
+                    mContext,
+                    "Press back again to exit",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun navigateToCreateNewAccountScreen() {
