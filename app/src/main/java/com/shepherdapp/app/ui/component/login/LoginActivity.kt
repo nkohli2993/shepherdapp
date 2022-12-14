@@ -521,10 +521,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    override fun onBackPressed() {
+   /* override fun onBackPressed() {
         terminateApp()
         super.onBackPressed()
-    }
+    }*/
 
     // Implements the logic to Tap back button twice to terminate application
     private fun terminateApp() {
