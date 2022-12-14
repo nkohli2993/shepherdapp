@@ -565,6 +565,14 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         } else {
             fragmentEditCarePointBinding.etNote.text.toString().trim()
         }
+
+        val location =
+            if (fragmentEditCarePointBinding.edtAddress.text.toString().trim().isNullOrEmpty()) {
+                null
+            } else {
+                fragmentEditCarePointBinding.edtAddress.text.toString().trim()
+            }
+
         Log.d(TAG, "Old Assignees : $oldAssigneeUUIDList")
         Log.d(TAG, "Total Selected Assignees : $assignTo")
         Log.d(TAG, "Deleted Assignees : $deletedAssigneeUUIDList")
@@ -574,7 +582,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             editEventViewModel.editCarePoint(
                 EditEventRequestModel(
                     name = fragmentEditCarePointBinding.etEventName.text.toString().trim(),
-                    location = fragmentEditCarePointBinding.edtAddress.text.toString().trim(),
+                    location = location,
                     date = selectedDate,
                     time = selectedTime,
                     notes = note,
