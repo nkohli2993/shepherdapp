@@ -170,6 +170,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         fragmentCarePointsBinding.calendarPView.clearSelection()
         clickType = CalendarState.Today.value
 
+        fragmentCarePointsBinding.calendarPView.elevation = 20f
+
 
        /* fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
             Log.d(TAG, " date is ${date.date}")
