@@ -106,7 +106,7 @@ class AddMedicalConditionActivity : BaseActivity(), View.OnClickListener {
     private val isValid: Boolean
         get() {
             when {
-                binding.medicineNameET.text.toString().isEmpty() -> {
+                binding.medicineNameET.text.toString().trim().isEmpty() -> {
                     binding.medicineNameET.error =
                         getString(R.string.please_enter_medical_condition)
                     binding.medicineNameET.requestFocus()
