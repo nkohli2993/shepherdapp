@@ -357,6 +357,7 @@
         <entry key="app/src/main/res/layout/adapter_direct_messages.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_discussion_groups.xml" value="0.221875" />
         <entry key="app/src/main/res/layout/adapter_discussion_groups_members.xml" value="0.25405405405405407" />
+        <entry key="app/src/main/res/layout/adapter_document_pager.xml" value="0.13194444444444445" />
         <entry key="app/src/main/res/layout/adapter_documents.xml" value="0.855" />
         <entry key="app/src/main/res/layout/adapter_event_chat.xml" value="0.638121546961326" />
         <entry key="app/src/main/res/layout/adapter_events.xml" value="0.855" />
@@ -429,7 +430,7 @@
         <entry key="app/src/main/res/layout/fragment_my_subscription.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_new_message.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.2788288288288288" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2487231869254341" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_resource_detail.xml" value="0.24010416666666667" />
         <entry key="app/src/main/res/layout/fragment_resources.xml" value="0.302945301542777" />
         <entry key="app/src/main/res/layout/fragment_schedulwe_medicine.xml" value="0.26666666666666666" />
