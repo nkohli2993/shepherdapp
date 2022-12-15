@@ -79,7 +79,7 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/_16ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvRole"
                             app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                             app:layout_constraintTop_toTopOf="parent"
@@ -92,7 +92,7 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_book"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_12ssp"
+                            android:textSize="@dimen/_14ssp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                             app:layout_constraintTop_toBottomOf="@+id/ivName" />
@@ -101,7 +101,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_60sdp"
                         android:gravity="center"
                         android:orientation="vertical"
                         app:layout_constraintTop_toBottomOf="@+id/clProfileWrapper">
@@ -131,7 +131,7 @@
                                 android:fontFamily="@font/gotham_book"
                                 android:text="@string/menu_home"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_16ssp" />
 
                             <View
                                 android:layout_width="0dp"
@@ -144,7 +144,7 @@
                             android:id="@+id/llCarePoint"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_13sdp"
                             android:onClick="@{listener::onClick}"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/_5sdp">
@@ -165,7 +165,7 @@
                                 android:fontFamily="@font/gotham_book"
                                 android:text="@string/care_points"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_16ssp" />
 
                             <View
                                 android:layout_width="0dp"
@@ -178,7 +178,7 @@
                             android:id="@+id/llDiscussions"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_13sdp"
                             android:onClick="@{listener::onClick}"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/_5sdp">
@@ -199,7 +199,7 @@
                                 android:fontFamily="@font/gotham_book"
                                 android:text="@string/discussions"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_16ssp" />
 
                             <View
                                 android:layout_width="0dp"
@@ -212,7 +212,7 @@
                             android:id="@+id/llMedList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_13sdp"
                             android:onClick="@{listener::onClick}"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/_5sdp">
@@ -234,7 +234,7 @@
                                 android:fontFamily="@font/gotham_book"
                                 android:text="@string/medlist"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_16ssp" />
 
                             <View
                                 android:layout_width="0dp"
@@ -247,7 +247,7 @@
                             android:id="@+id/llResources"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_13sdp"
                             android:onClick="@{listener::onClick}"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/_5sdp">
@@ -268,7 +268,7 @@
                                 android:fontFamily="@font/gotham_book"
                                 android:text="@string/resources"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_16ssp" />
 
                             <View
                                 android:layout_width="0dp"
@@ -281,7 +281,7 @@
                             android:id="@+id/llLockBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_13sdp"
                             android:onClick="@{listener::onClick}"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/_5sdp">
@@ -303,7 +303,7 @@
                                 android:fontFamily="@font/gotham_book"
                                 android:text="@string/lock_box"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_16ssp" />
 
                             <View
                                 android:layout_width="0dp"
@@ -316,7 +316,7 @@
                             android:id="@+id/llVitalStats"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_13sdp"
                             android:onClick="@{listener::onClick}"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/_5sdp">
@@ -337,7 +337,7 @@
                                 android:fontFamily="@font/gotham_book"
                                 android:text="@string/vital_stats"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_16ssp" />
 
                             <View
                                 android:layout_width="0dp"
@@ -350,7 +350,7 @@
                             android:id="@+id/llCareTeam"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_13sdp"
                             android:onClick="@{listener::onClick}"
                             android:orientation="horizontal"
                             android:paddingVertical="@dimen/_5sdp">
@@ -371,7 +371,7 @@
                                 android:fontFamily="@font/gotham_book"
                                 android:text="@string/care_team"
                                 android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_14ssp" />
+                                android:textSize="@dimen/_16ssp" />
 
                             <View
                                 android:layout_width="0dp"
@@ -397,7 +397,7 @@
                 android:onClick="@{listener::onClick}"
                 android:text="@string/log_out"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_14ssp"
+                android:textSize="@dimen/_16ssp"
                 app:layout_constraintBottom_toTopOf="@+id/tvVersion"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
