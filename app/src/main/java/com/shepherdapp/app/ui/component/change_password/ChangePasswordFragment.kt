@@ -153,15 +153,16 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(), Vi
     private val isValid: Boolean
         get() {
             when {
-                fragmentChangePasswordBinding.etOldPassword.text.toString().isEmpty() -> {
+                fragmentChangePasswordBinding.etOldPassword.text.toString().trim().isEmpty() -> {
                     fragmentChangePasswordBinding.etOldPassword.error = "Please enter old password"
                     fragmentChangePasswordBinding.etOldPassword.requestFocus()
                 }
-                fragmentChangePasswordBinding.etNewPassword.text.toString().isEmpty() -> {
+                fragmentChangePasswordBinding.etNewPassword.text.toString().trim().isEmpty() -> {
                     fragmentChangePasswordBinding.etNewPassword.error = "Please enter new password"
                     fragmentChangePasswordBinding.etNewPassword.requestFocus()
                 }
-                fragmentChangePasswordBinding.etConfirmPassword.text.toString().isEmpty() -> {
+                fragmentChangePasswordBinding.etConfirmPassword.text.toString().trim()
+                    .isEmpty() -> {
                     fragmentChangePasswordBinding.etConfirmPassword.error =
                         "Please enter confirm password"
                     fragmentChangePasswordBinding.etConfirmPassword.requestFocus()
@@ -174,6 +175,13 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>(), Vi
                 fragmentChangePasswordBinding.etConfirmPassword.length() < 4 -> {
                     fragmentChangePasswordBinding.etConfirmPassword.error =
                         getString(R.string.password_should_be_min_4_character)
+                    fragmentChangePasswordBinding.etConfirmPassword.requestFocus()
+                }
+                fragmentChangePasswordBinding.etNewPassword.text.toString()
+                    .trim() != fragmentChangePasswordBinding.etConfirmPassword.text.toString()
+                    .trim() -> {
+                    fragmentChangePasswordBinding.etConfirmPassword.error =
+                        getString(R.string.new_and_confirm_password_not_match)
                     fragmentChangePasswordBinding.etConfirmPassword.requestFocus()
                 }
                 else -> {

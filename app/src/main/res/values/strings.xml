@@ -283,7 +283,7 @@
     <string name="google_maps_api_key">AIzaSyCBlq2RHLf3oCHct3RIMp-iF00r8J_szrQ</string>
     <!--<string name="google_maps_api_key">AIzaSyB8L96ED27rCDdxOF3DNAagrQzEi3jRUAE</string>-->
     <!--<string name="google_maps_api_key">AIzaSyBw-6xS6SIwHGkWQJeWZKg38n-faZFeJIM</string>-->
-<!--    <string name="google_maps_api_key">AIzaSyA-UO-cSZj8GtoG1y4D6FCSrY-doNMwoFM</string>-->
+    <!--    <string name="google_maps_api_key">AIzaSyA-UO-cSZj8GtoG1y4D6FCSrY-doNMwoFM</string>-->
     <string name="search_places">Search Places</string>
 
 
@@ -592,6 +592,5 @@
     <string name="renew">Renew</string>
     <string name="change_plan">Change Plan</string>
     <string name="create_a_password">Create a password</string>
-
-
+    <string name="new_and_confirm_password_not_match">New and Confirm Password doesn\'t match</string>
 </resources>
