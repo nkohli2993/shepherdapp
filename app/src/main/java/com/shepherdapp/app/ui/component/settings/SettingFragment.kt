@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.SettingViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickListener {
@@ -229,6 +231,11 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             )
         )
         dialog.show()
-    }
 
+        val metrics = DisplayMetrics() //get metrics of screen
+        activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
+        val height = (metrics.heightPixels * 0.6).toInt() //set height to 60% of total
+        val width = (metrics.widthPixels * 0.9).toInt() //set width to 90% of total
+        dialog.window?.setLayout(width, height) //set layout
+    }
 }

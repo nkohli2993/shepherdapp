@@ -19,8 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:paddingVertical="@dimen/_20sdp"
-            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_30sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -39,9 +39,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                android:textSize="@dimen/_12ssp"
-                android:padding="@dimen/_12ssp"
-                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:textSize="@dimen/_13ssp"
+                android:paddingHorizontal="@dimen/_12ssp"
+                android:paddingVertical="@dimen/_15sdp"
+                android:singleLine="true"
                 android:hint="@string/enterprise_code"
                 android:layout_marginTop="@dimen/_15sdp" />
 
@@ -62,13 +63,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="10dp"
-                    android:textSize="@dimen/_12ssp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_15sdp"
+                    android:textSize="@dimen/_13ssp"
                     android:text="@string/cancel"
                     android:fontFamily="@font/gotham_medium"
                     android:textAllCaps="false"
                     android:textColor="@color/colorBlack"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,11 +82,11 @@
                     android:layout_weight="1"
                     android:backgroundTint="@color/_399282"
                     android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="10dp"
-                    android:textSize="@dimen/_12ssp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_15sdp"
+                    android:textSize="@dimen/_13ssp"
                     android:text="@string/submit"
                     android:textAllCaps="false"
-                    android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_marginStart="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

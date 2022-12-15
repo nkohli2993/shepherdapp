@@ -410,6 +410,7 @@
         <entry key="app/src/main/res/layout/fragment_care_point_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_care_points.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_care_team_members.xml" value="0.19263458251953125" />
+        <entry key="app/src/main/res/layout/fragment_change_password.xml" value="0.18125" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.212890625" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/fragment_edit_care_point.xml" value="0.246875" />
