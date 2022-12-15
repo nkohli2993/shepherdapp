@@ -77,7 +77,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
              checkNotificationAction(intent.getBundleExtra("detail"))
          }*/
 
-
+        showLoading("")
         viewModel.getHomeData()
         viewModel.getUserDetailByUUID()
         setupNavigationDrawer()
