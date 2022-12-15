@@ -80,6 +80,8 @@ class AddLovedOneConditionAdapter(
             // Check if the medical condition is being created by the user
             if (conditions.createdBy == "user") {
                 itemBinding.imgEditMedicalCondition.visibility = View.VISIBLE
+            } else {
+                itemBinding.imgEditMedicalCondition.visibility = View.GONE
             }
 
             itemBinding.cardView.setOnClickListener {
