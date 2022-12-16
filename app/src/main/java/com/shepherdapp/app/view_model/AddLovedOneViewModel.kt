@@ -185,4 +185,8 @@ class AddLovedOneViewModel @Inject constructor(
         userRepository.saveLovedOneUUId(lovedOneUUID)
     }
 
+    fun isLoggedInUserLovedOne(): Boolean? {
+        return userRepository.isLoggedInUserLovedOne()
+    }
+
 }

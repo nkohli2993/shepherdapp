@@ -63,6 +63,20 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
+
+        if (!intent.getStringExtra("source").isNullOrEmpty()) {
+            val source = intent.getStringExtra("source")
+            // Check if Screen is launched from LovedOne Profile Screen to edit medical conditions
+            if (source == Const.MEDICAL_CONDITION) {
+                binding.txtMedicalCondition.text = getString(R.string.edit_medical_conditions)
+                binding.buttonFinish.text = getString(R.string.save_changes)
+            } else {
+                binding.txtMedicalCondition.text = getString(R.string.medical_conditions)
+                binding.buttonFinish.text = getString(R.string.finish)
+            }
+        }
+
+
         setConditionAdapter()
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
 
@@ -150,10 +164,10 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         it.conditionId
                     }
                     callAllMedicalCondition()
-                    if (addedConditionPayload.size <= 0) {
-                        binding.buttonFinish.text = getString(R.string.add)
-                        // show popup for no medical conditions
-                        /* val builder = AlertDialog.Builder(this)
+                    /* if (addedConditionPayload.size <= 0) {
+                         binding.buttonFinish.text = getString(R.string.add)
+                         // show popup for no medical conditions
+                         *//* val builder = AlertDialog.Builder(this)
                          val dialog = builder.apply {
                              setMessage(getString(R.string.no_medical_condition_added_for_loved_one))
                              setPositiveButton(getString(R.string.add)) { _, _ ->
@@ -166,12 +180,12 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                          dialog.show()
                          dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                          dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-                         return@observeEvent*/
+                         return@observeEvent*//*
                     } else {
                         binding.txtMedicalCondition.text =
                             getString(R.string.edit_medical_conditions)
                         binding.buttonFinish.text = getString(R.string.save_changes)
-                    }
+                    }*/
                 }
             }
         }
