@@ -3,6 +3,7 @@ package com.shepherdapp.app.data.local
 import android.util.Log
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.dashboard.LoveUser
+import com.shepherdapp.app.data.dto.login.Enterprise
 import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
@@ -157,5 +158,15 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun isUserAttachedToEnterprise() =
         Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_USER_ATTACHED_TO_ENTERPRISE, false)
 
+    // Save Enterprise Detail
+    fun saveEnterpriseDetail(enterprise: Enterprise) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.ENTERPRISE_DETAIL, enterprise)
+    }
+
+    // Get Enterprise Detail
+    fun getEnterpriseDetail(): Enterprise? {
+        return Prefs.with(ShepherdApp.appContext)
+            ?.getObject(Const.ENTERPRISE_DETAIL, Enterprise::class.java)
+    }
 
 }

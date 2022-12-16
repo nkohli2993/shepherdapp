@@ -8,5 +8,5 @@ import com.shepherdapp.app.ui.base.BaseResponseModel
  */
 
 data class AttachEnterpriseResponseModel(
-    @SerializedName("payload") var payload: Boolean = false
+    @SerializedName("payload" ) var payload : Payload? = Payload()
 ) : BaseResponseModel()

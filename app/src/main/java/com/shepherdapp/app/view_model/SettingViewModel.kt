@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseRequestModel
 import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseResponseModel
+import com.shepherdapp.app.data.dto.login.Enterprise
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.signup.BioMetricData
@@ -79,4 +80,19 @@ class SettingViewModel @Inject constructor(
     fun isUserAttachedToEnterprise(): Boolean? {
         return userRepository.isUserAttachedToEnterprise()
     }
+
+    fun saveUSerAttachedToEnterprise(isUserAttachedToEnterprise: Boolean) {
+        userRepository.saveUserAttachedToEnterprise(isUserAttachedToEnterprise)
+    }
+
+    // Save Enterprise Detail
+    fun saveEnterpriseDetail(enterprise: Enterprise) {
+        userRepository.saveEnterpriseDetail(enterprise)
+    }
+
+    // Get Enterprise Detail
+    fun getEnterpriseDetail(): Enterprise? {
+        return userRepository.getEnterpriseDetail()
+    }
+
 }

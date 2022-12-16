@@ -105,11 +105,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         terminateApp()
 
-       /* if (intent.getStringExtra("source") != null) {
-            if (intent.getStringExtra("source") == "WelcomeActivity") {
-                binding.ivBack.visibility = View.VISIBLE
-            }
-        }*/
+        /* if (intent.getStringExtra("source") != null) {
+             if (intent.getStringExtra("source") == "WelcomeActivity") {
+                 binding.ivBack.visibility = View.VISIBLE
+             }
+         }*/
 
 //        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "Test123@"
@@ -326,6 +326,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         if (!it.payload?.userProfiles?.enterpriseId.isNullOrEmpty()) {
                             // Save status in SharedPrefs
                             loginViewModel.saveUSerAttachedToEnterprise(true)
+                            // Save enterprise detail in SharedPrefs
+                            val enterprise = it.payload?.userProfiles?.enterprise
+                            if (enterprise != null) {
+                                loginViewModel.saveEnterpriseDetail(enterprise)
+                            }
                         } else if (it.payload?.activeSubscription?.id != null) {
                             //If subscription object in Login response contains data, then user has taken subscription
                             loginViewModel.saveUSerAttachedToEnterprise(false)
@@ -521,10 +526,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-   /* override fun onBackPressed() {
-        terminateApp()
-        super.onBackPressed()
-    }*/
+    /* override fun onBackPressed() {
+         terminateApp()
+         super.onBackPressed()
+     }*/
 
     // Implements the logic to Tap back button twice to terminate application
     private fun terminateApp() {

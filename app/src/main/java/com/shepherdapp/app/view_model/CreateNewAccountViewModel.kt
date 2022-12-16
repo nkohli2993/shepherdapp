@@ -9,6 +9,7 @@ import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.add_loved_one.UploadPicResponseModel
 import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Enterprise
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.roles.RolesResponseModel
 import com.shepherdapp.app.data.dto.signup.BioMetricData
@@ -261,5 +262,16 @@ class CreateNewAccountViewModel @Inject constructor(
             ShepherdApp.db.collection(usersTableName!!).document(documentID)
                 .update("firebase_token", firebaseToken)
         }
+    }
+
+
+    // Save Enterprise Detail
+    fun saveEnterpriseDetail(enterprise: Enterprise) {
+        userRepository.saveEnterpriseDetail(enterprise)
+    }
+
+    // Get Enterprise Detail
+    fun getEnterpriseDetail(): Enterprise? {
+        return userRepository.getEnterpriseDetail()
     }
 }

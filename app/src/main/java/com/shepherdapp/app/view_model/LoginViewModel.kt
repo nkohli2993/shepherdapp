@@ -8,6 +8,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.ShepherdApp.Companion.db
 import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Enterprise
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
@@ -262,5 +263,16 @@ class LoginViewModel @Inject constructor(
 
     fun saveUSerAttachedToEnterprise(isUserAttachedToEnterprise: Boolean) {
         userRepository.saveUserAttachedToEnterprise(isUserAttachedToEnterprise)
+    }
+
+
+    // Save Enterprise Detail
+    fun saveEnterpriseDetail(enterprise: Enterprise) {
+        userRepository.saveEnterpriseDetail(enterprise)
+    }
+
+    // Get Enterprise Detail
+    fun getEnterpriseDetail(): Enterprise? {
+        return userRepository.getEnterpriseDetail()
     }
 }

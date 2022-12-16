@@ -102,6 +102,17 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                             )
                         }
 
+                        if (!it.data.payload?.userProfiles?.enterpriseId.isNullOrEmpty()) {
+                            // Save status of user attached to enterprise as true
+                            welcomeViewModel.saveUSerAttachedToEnterprise(true)
+
+                            // Save enterprise detail in SharedPrefs
+                            val enterprise = it.data.payload?.userProfiles?.enterprise
+                            if (enterprise != null) {
+                                welcomeViewModel.saveEnterpriseDetail(enterprise)
+                            }
+                        }
+
                         //Save User Role
                         /*payload?.userLovedOne?.get(0)?.careRoles?.name.let {
                             it?.let { it1 -> welcomeViewModel.saveUserRole(it1) }

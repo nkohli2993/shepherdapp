@@ -8,6 +8,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Enterprise
 import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
@@ -100,6 +101,20 @@ class WelcomeUserViewModel @Inject constructor(
 
     fun isUserAttachedToEnterprise(): Boolean? {
         return userRepository.isUserAttachedToEnterprise()
+    }
+
+    fun saveUSerAttachedToEnterprise(isUserAttachedToEnterprise: Boolean) {
+        userRepository.saveUserAttachedToEnterprise(isUserAttachedToEnterprise)
+    }
+
+    // Save Enterprise Detail
+    fun saveEnterpriseDetail(enterprise: Enterprise) {
+        userRepository.saveEnterpriseDetail(enterprise)
+    }
+
+    // Get Enterprise Detail
+    fun getEnterpriseDetail(): Enterprise? {
+        return userRepository.getEnterpriseDetail()
     }
 
     private var _verificationResponseLiveData =

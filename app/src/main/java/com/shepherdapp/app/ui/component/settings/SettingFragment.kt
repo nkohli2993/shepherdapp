@@ -57,6 +57,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
     }
 
     override fun observeViewModel() {
+        // Observe Biometric Resposne
         settingViewModel.bioMetricLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -81,6 +82,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             }
         }
 
+        // Observe Attach Enterprise Response
         settingViewModel.attachEnterpriseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -93,9 +95,30 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(requireContext(), it.data.message.toString())
+
+                    // Save status of user attached to enterprise successfully
+                    settingViewModel.saveUSerAttachedToEnterprise(true)
+
+                    // Save Enterprise detail to SharedPref
+                    val enterprise = it.data.payload?.enterprise
+                    enterprise?.let { it1 -> settingViewModel.saveEnterpriseDetail(it1) }
+
+                    // Update Ui for enterprise
+                    enterprise?.name?.let { it1 -> updateUIForEnterprise(enterpriseName = it1) }
                 }
             }
         }
+    }
+
+    fun updateUIForEnterprise(enterpriseName: String) {
+        fragmentSettingBinding.txtEnterprise.text =
+            getString(R.string.enterprise_detail)
+        fragmentSettingBinding.txtEnterpriseName.visibility = View.VISIBLE
+        fragmentSettingBinding.clSubscription.visibility = View.GONE
+
+        fragmentSettingBinding.txtEnterpriseName.text = enterpriseName
+        // To make the view non-clickable
+        fragmentSettingBinding.clBecomeAnEnterpriseUser.isEnabled = false
     }
 
     override fun initViewBinding() {
@@ -125,14 +148,10 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
         fragmentSettingBinding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
 
         if (settingViewModel.isUserAttachedToEnterprise() == true) {
-            fragmentSettingBinding.txtEnterprise.text = getString(R.string.enterprise_detail)
-            fragmentSettingBinding.txtEnterpriseName.visibility = View.VISIBLE
-            fragmentSettingBinding.clSubscription.visibility = View.GONE
-
-            fragmentSettingBinding.txtEnterpriseName.text =
-                settingViewModel.getUserDetail()?.enterprise?.name
-            // To make the view non-clickable
-            fragmentSettingBinding.clBecomeAnEnterpriseUser.isEnabled = false
+            // Get enterprise detail from SharedPrefs
+            val enterprise = settingViewModel.getEnterpriseDetail()
+            if (enterprise != null)
+                updateUIForEnterprise(enterprise.name.toString())
         }
     }
 
