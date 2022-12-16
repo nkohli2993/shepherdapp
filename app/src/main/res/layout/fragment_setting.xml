@@ -95,6 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_star"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,15 +111,16 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ivBecomeAnEnterpriseUser"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"/>
+                        app:layout_constraintEnd_toStartOf="@id/txtEnterpriseName"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtEnterpriseName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        app:layout_constraintStart_toEndOf="@+id/txtEnterprise"
+                        app:layout_constraintStart_toEndOf="@id/txtEnterprise"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginStart="@dimen/_4sdp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
                         android:textSize="@dimen/_14ssp"
                         android:textColor="@color/_399282"
                         app:fontFamily="@font/gotham_medium"
