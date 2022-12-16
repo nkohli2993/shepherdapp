@@ -200,6 +200,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
 
     @SuppressLint("SetTextI18n")
     override fun observeViewModel() {
+        // Observe Get VitalStat response
         vitalStatsViewModel.getVitatStatsLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Loading -> {
@@ -383,6 +384,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
             }
         }
 
+        // Observe Add VitalStat response
         vitalStatsViewModel.addVitalStatsLiveData.observeEvent(this) { addedStatsResult ->
             when (addedStatsResult) {
                 is DataResult.Loading -> {
@@ -446,6 +448,11 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                     hideLoading()
                     // showSuccess(requireContext(), it.data.message.toString())
                     Log.d(TAG, "observeViewModel: lastSync done successfully")
+
+                    val useProfile = it.data.payload
+                    // Save UserProfile to SharedPref
+                    vitalStatsViewModel.saveUser(useProfile)
+
                     callGraphApi()
                 }
             }

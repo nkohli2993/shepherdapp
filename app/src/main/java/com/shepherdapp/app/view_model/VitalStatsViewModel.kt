@@ -11,6 +11,7 @@ import com.shepherdapp.app.data.dto.add_vital_stats.VitalStatsResponseModel
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.BulkCreateVitalRequestModel
 import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncResponseModel
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.update_profile.UpdateProfileRepository
@@ -62,8 +63,8 @@ class VitalStatsViewModel @Inject constructor(
         _createBulkVitalStatsLiveData
 
     private var _updateProfileForLastSyncLiveData =
-        MutableLiveData<Event<DataResult<BaseResponseModel>>>()
-    var updateProfileForLastSyncLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+        MutableLiveData<Event<DataResult<UpdateUserProfileForLastSyncResponseModel>>>()
+    var updateProfileForLastSyncLiveData: LiveData<Event<DataResult<UpdateUserProfileForLastSyncResponseModel>>> =
         _updateProfileForLastSyncLiveData
 
     //get vital stats
@@ -143,7 +144,7 @@ class VitalStatsViewModel @Inject constructor(
     // Update profile for last sync
     fun updateProfileForLastSync(
         updateUserProfileForLastSyncRequestModel: UpdateUserProfileForLastSyncRequestModel
-    ): LiveData<Event<DataResult<BaseResponseModel>>> {
+    ): LiveData<Event<DataResult<UpdateUserProfileForLastSyncResponseModel>>> {
         val id = userRepository.getCurrentUser()?.id
         Log.d(TAG, "updateProfileForLastSync: userId : $id")
         viewModelScope.launch {
@@ -168,8 +169,14 @@ class VitalStatsViewModel @Inject constructor(
         return userRepository.isLoggedInUserLovedOne()
     }
 
+    // Get UserProfile from SharedPref
     fun getUser(): UserProfile? {
         return userRepository.getCurrentUser()
+    }
+
+    // SaveUserProfile to SharedPred
+    fun saveUser(user: UserProfile?) {
+        userRepository.saveUser(user)
     }
 
 }

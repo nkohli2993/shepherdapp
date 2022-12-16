@@ -11,6 +11,7 @@ import com.shepherdapp.app.data.dto.add_vital_stats.VitalStatsResponseModel
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
 import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.BulkCreateVitalRequestModel
 import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncResponseModel
 import com.shepherdapp.app.data.dto.added_events.*
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
@@ -445,7 +446,7 @@ interface ApiService {
     suspend fun updateProfileForLastSync(
         @Body updateUserProfileForLastSyncRequestModel: UpdateUserProfileForLastSyncRequestModel,
         @Path("id") id: Int
-    ): Response<BaseResponseModel>
+    ): Response<UpdateUserProfileForLastSyncResponseModel>
 
     // add vital stats for loginLoved one
     @POST(ApiConstants.VitalStats.ADD_VITAL_STATS)

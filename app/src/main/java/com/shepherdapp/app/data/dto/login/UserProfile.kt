@@ -28,5 +28,6 @@ data class UserProfile(
     @SerializedName("enterprise_id") var enterpriseId: String? = null,
     @SerializedName("stripe_id") var stripeId: String? = null,
     @SerializedName("enterprise") var enterprise: Enterprise? = Enterprise(),
-    @SerializedName("settings") var settings: Settings? = Settings()
+    @SerializedName("settings") var settings: Settings? = Settings(),
+    @SerializedName("is_verified") var isVerified: Boolean? = null
 ) : Parcelable
