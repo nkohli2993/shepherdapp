@@ -180,6 +180,7 @@
                 android:lineSpacingExtra="@dimen/_5sdp"
                 android:linksClickable="true"
                 android:autoLink="web|email"
+                android:textColorLink="@color/colorDarkBlue"
                 app:fontFamily="@font/gotham_book"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
