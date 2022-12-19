@@ -433,6 +433,7 @@
         <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.2788288288288288" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_resource_detail.xml" value="0.24010416666666667" />
+        <entry key="app/src/main/res/layout/fragment_resource_detail_web_view.xml" value="0.16458333333333333" />
         <entry key="app/src/main/res/layout/fragment_resources.xml" value="0.302945301542777" />
         <entry key="app/src/main/res/layout/fragment_schedulwe_medicine.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.335" />
@@ -448,6 +449,7 @@
         <entry key="app/src/main/res/layout/recipe_item.xml" value="0.56875" />
         <entry key="app/src/main/res/layout/rv_love_ones.xml" value="0.30572916666666666" />
         <entry key="app/src/main/res/layout/selected_calendar_item.xml" value="0.25390625" />
+        <entry key="app/src/main/res/layout/simple_web_view_fragment.xml" value="0.18125" />
         <entry key="app/src/main/res/layout/spinner_drop_down_list.xml" value="0.15243055555555557" />
         <entry key="app/src/main/res/layout/splash_layout.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/vehicle_spinner_drop_view_item.xml" value="0.25885416666666666" />
