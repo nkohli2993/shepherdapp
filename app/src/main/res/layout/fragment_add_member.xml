@@ -133,6 +133,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/_6sdp"
+                            android:onClick="@{listener::onClick}"
                             android:contentDescription="@string/app_name"
                             android:padding="@dimen/_4sdp"
                             app:srcCompat="@drawable/ic_arrow_spinner"

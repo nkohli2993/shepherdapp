@@ -208,6 +208,10 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 backPress()
             }
 
+            R.id.spinner_down_arrow_image -> {
+                fragmentAddMemberBinding.spRoles.performClick()
+            }
+
             R.id.btnInvitation -> {
                 val email = fragmentAddMemberBinding.edtEmail.text.toString().trim()
                 val roleID = selectedCareRole?.id
