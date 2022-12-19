@@ -112,6 +112,11 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                                 (monthOfYear + 1)
                             } + "-" + year
                         )
+                        // Remove the error after date is being set
+                        fragmentAddVitalsBinding.tvDate.let {
+                            it.clearFocus()
+                            it.error = null
+                        }
                     }, mYear, mMonth, mDay
                 )
                 datePickerDialog.datePicker.maxDate = c.timeInMillis
@@ -224,14 +229,24 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
                             fragmentAddVitalsBinding.tvTime.setText(
                                 String.format("%02d:%02d", hourOfDay, selectedMinute)
                             )
+                            if (fragmentAddVitalsBinding.tvTime.text.toString().trim()
+                                    .isNotEmpty()
+                            ) {
+
+                                clearTimeError()
+                            }
                         } else {
                             isAmPm = "pm"
                             setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
                             fragmentAddVitalsBinding.tvTime.setText(
                                 String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
                             )
+                            if (fragmentAddVitalsBinding.tvTime.text.toString().trim()
+                                    .isNotEmpty()
+                            ) {
+                                clearTimeError()
+                            }
                         }
-
                     } else {
                         showError(
                             requireContext(),
@@ -245,6 +260,13 @@ class AddVitalsFragment : BaseFragment<FragmentAddVitalsBinding>(), View.OnClick
         }
 
 
+    }
+
+    fun clearTimeError() {
+        fragmentAddVitalsBinding.tvTime.let {
+            it.clearFocus()
+            it.error = null
+        }
     }
 
     private fun setColorTimePicked(selected: Int, unselected: Int) {
