@@ -85,6 +85,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/schedule_events_set_reminders_assign_tasks"
                             android:textColor="@color/colorWhite"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvCarePoint"
@@ -319,8 +320,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
-                            android:text="@string/schedule_medication_reminders_set_refill_alerts_research"
+                            android:text="@string/create_and_maintain_a_list_of_loved_one_medication"
                             android:textColor="@color/colorWhite"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvMedList"
@@ -419,6 +421,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/discover_health_and_well_being_resources_for_caregivers_and_loved_ones"
                             android:textColor="@color/colorWhite"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvResource"
@@ -468,7 +471,6 @@
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-
                 app:layout_constraintTop_toBottomOf="@+id/cvResources">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -519,6 +521,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/lock_box_desc"
                             android:textColor="@color/colorWhite"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvLockBox"
@@ -616,6 +619,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/remotely_monitor_your_loved_one_s_vitals_statistics_via_wearables"
                             android:textColor="@color/colorWhite"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvVitalStats"
@@ -725,6 +729,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/create_care_team"
                             android:textColor="@color/colorWhite"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvCareTeam"

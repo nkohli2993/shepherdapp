@@ -39,9 +39,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_12sdp"
                     android:fontFamily="@font/gotham_book"
-                    android:text="@string/schedule_medication_reminders_set_refill_alerts_research"
+                    android:text="@string/create_and_maintain_a_list_of_loved_one_medication"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14sdp"
+                    android:lineSpacingExtra="@dimen/_5sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
