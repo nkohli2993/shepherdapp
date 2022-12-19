@@ -2,12 +2,16 @@ package com.shepherdapp.app.ui.component.careTeamMembers.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
 import com.squareup.picasso.Picasso
 
@@ -54,29 +58,30 @@ class CareTeamMembersAdapter(
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             val careTeam = careTeams[position]
             if (careTeam.isPendingInvite) {
-                /* itemBinding.cardView.setCardBackgroundColor(
-                     ContextCompat.getColor(
-                         context,
-                         R.color.colorAccent
-                     )
-                 )*/
-//                itemBinding.cardView.alpha = 0.3f
-                itemBinding.llImageWrapper.alpha = 0.4f
-                itemBinding.textViewCareTeamName.alpha = 0.4f
-                itemBinding.textViewCareTeamRole.alpha = 0.4f
-                itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_waiting)
-//                itemBinding.cardView.alpha = 0.4f
-//                itemBinding.imageViewCareTeam.alpha = 0.4f
-                itemBinding.let {
-                    it.textViewCareTeamName.text = careTeam.email
-                    if (!careTeam.image.isNullOrEmpty()) {
-                        Picasso.get().load(careTeam.image)
-                            .placeholder(R.drawable.ic_defalut_profile_pic)
-                            .into(it.imageViewCareTeam)
+                val isLoggedInUserCareTeamLead = Prefs.with(ShepherdApp.appContext)
+                    ?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
+
+                // Pending Invite will be shown to loggedIn User only
+                if (isLoggedInUserCareTeamLead == true) {
+                    itemBinding.cardView.visibility = View.VISIBLE
+                    itemBinding.llImageWrapper.alpha = 0.4f
+                    itemBinding.textViewCareTeamName.alpha = 0.4f
+                    itemBinding.textViewCareTeamRole.alpha = 0.4f
+                    itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_waiting)
+                    itemBinding.let {
+                        it.textViewCareTeamName.text = careTeam.email
+                        if (!careTeam.image.isNullOrEmpty()) {
+                            Picasso.get().load(careTeam.image)
+                                .placeholder(R.drawable.ic_defalut_profile_pic)
+                                .into(it.imageViewCareTeam)
+                        }
+                        it.textViewCareTeamRole.text = "As ${careTeam.careRoles.name}"
                     }
-                    it.textViewCareTeamRole.text = "As ${careTeam.careRoles.name}"
+                } else {
+                    itemBinding.cardView.visibility = View.GONE
                 }
             } else {
+                itemBinding.cardView.visibility = View.VISIBLE
                 val firstName = careTeam.user_id_details.firstname
                 val lastName = careTeam.user_id_details.lastname
                 val fullName = "$firstName $lastName"
