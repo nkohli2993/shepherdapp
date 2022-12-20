@@ -701,8 +701,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 findNavController(R.id.nav_host_fragment_content_dashboard).navigate(R.id.nav_profile)
             }
             is DashboardFragment -> {
-                if (backPressed + 2000 > System.currentTimeMillis()) super.onBackPressed()
-                else Toast.makeText(
+                if (backPressed + 2000 > System.currentTimeMillis()) {
+                    // Finish this activity as well as all activities immediately below it in the current task that have the same affinity.
+                    // finishAffinity()
+                    super.onBackPressed()
+                } else Toast.makeText(
                     applicationContext,
                     "Press once again to exit!",
                     Toast.LENGTH_SHORT
