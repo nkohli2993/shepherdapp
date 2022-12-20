@@ -9,9 +9,14 @@ import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
+import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.appcompat.widget.AppCompatTextView
@@ -21,12 +26,12 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
-import com.shepherdapp.app.R
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.shepherdapp.app.R
+import com.squareup.picasso.Picasso
 import java.io.File
 import java.util.*
 
@@ -247,7 +252,8 @@ fun AppCompatTextView.datePicker(fm: FragmentManager, tag: String) {
     }
 }
 
-fun AppCompatTextView.timePicker(context: Context) { val mCurrentTime = Calendar.getInstance()
+fun AppCompatTextView.timePicker(context: Context) {
+    val mCurrentTime = Calendar.getInstance()
     val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
     val minute = mCurrentTime.get(Calendar.MINUTE)
 
@@ -263,5 +269,28 @@ fun AppCompatTextView.timePicker(context: Context) { val mCurrentTime = Calendar
         mTimePicker.show()
     }
 }
+
+// Set Margins
+fun View.margin(
+    left: Float? = null,
+    top: Float? = null,
+    right: Float? = null,
+    bottom: Float? = null
+) {
+    layoutParams<ViewGroup.MarginLayoutParams> {
+        left?.run { leftMargin = dpToPx(this) }
+        top?.run { topMargin = dpToPx(this) }
+        right?.run { rightMargin = dpToPx(this) }
+        bottom?.run { bottomMargin = dpToPx(this) }
+    }
+}
+
+inline fun <reified T : ViewGroup.LayoutParams> View.layoutParams(block: T.() -> Unit) {
+    if (layoutParams is T) block(layoutParams as T)
+}
+
+fun View.dpToPx(dp: Float): Int = context.dpToPx(dp)
+fun Context.dpToPx(dp: Float): Int =
+    TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
 
 
