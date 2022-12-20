@@ -21,6 +21,8 @@ import com.shepherdapp.app.ui.component.careTeamMembers.adapter.CareTeamMembersA
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -366,7 +368,24 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
             }
         }
 
-
+        // Observe Response of delete pending invitee by Id
+        careTeamViewModel.deletePendingInviteeByIdResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(requireContext(), it.data.message.toString())
+                    // Get Care Teams by lovedOne Id
+                    careTeamViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
+                }
+            }
+        }
     }
 
     private fun setCareTeamAdapters() {
@@ -388,6 +407,8 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private fun deletePendingInvite(singleEvent: SingleEvent<CareTeamModel>) {
         singleEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "deletePendingInvite: $it")
+
+            it.id?.let { it1 -> careTeamViewModel.deletePendingInviteeById(it1) }
         }
     }
 

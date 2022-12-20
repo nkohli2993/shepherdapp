@@ -8,6 +8,7 @@ import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.dashboard.HomeResponseModel
+import com.shepherdapp.app.data.dto.invitation.delete_pending_invitee.DeletePendingInviteeByIdResponseModel
 import com.shepherdapp.app.data.dto.invitation.pending_invite.PendingInviteResponseModel
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
@@ -69,6 +70,11 @@ class CareTeamMembersViewModel @Inject constructor(
     var pendingInviteResponseLiveData: LiveData<Event<DataResult<PendingInviteResponseModel>>> =
         _pendingInviteResponseLiveData
 
+    private var _deletePendingInviteeByIdResponseLiveData =
+        MutableLiveData<Event<DataResult<DeletePendingInviteeByIdResponseModel>>>()
+    var deletePendingInviteeByIdResponseLiveData: LiveData<Event<DataResult<DeletePendingInviteeByIdResponseModel>>> =
+        _deletePendingInviteeByIdResponseLiveData
+
     private var _homeResponseLiveData =
         MutableLiveData<Event<DataResult<HomeResponseModel>>>()
     var homeResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
@@ -113,6 +119,18 @@ class CareTeamMembersViewModel @Inject constructor(
             }
         }
         return pendingInviteResponseLiveData
+    }
+
+    fun deletePendingInviteeById(id: Int): LiveData<Event<DataResult<DeletePendingInviteeByIdResponseModel>>> {
+        viewModelScope.launch {
+            val response = careTeamsRepository.deletePendingInviteeById(id)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _deletePendingInviteeByIdResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return deletePendingInviteeByIdResponseLiveData
     }
 
     fun saveLoggedInUserTeamLead(careTeamLeaderUUID: String) {

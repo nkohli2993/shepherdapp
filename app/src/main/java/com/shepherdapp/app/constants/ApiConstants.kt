@@ -92,6 +92,7 @@ object ApiConstants {
 
         val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!.getString(LOVED_ONE_UUID, "")
         const val GET_PENDING_INVITATIONS = "$BASE_URL${API_VERSION}invites/pending/{id}"
+        const val DELETE_PENDING_INVITEE_BY_ID = "$BASE_URL${API_VERSION}invites/{id}"
     }
 
     object LockBox {

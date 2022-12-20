@@ -306,7 +306,7 @@
         <entry key="app/src/main/res/layout-v23/adapter_care_points_events.xml" value="0.35625" />
         <entry key="app/src/main/res/layout-v23/adapter_events.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/act_welcome.xml" value="0.22083333333333333" />
-        <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/activity_add_loved_one.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_add_loved_one_condition.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_add_medical_condition.xml" value="0.24279279279279278" />
         <entry key="app/src/main/res/layout/activity_care_points.xml" value="0.25" />

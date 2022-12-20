@@ -8,6 +8,7 @@ import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.invitation.InvitationsResponseModel
 import com.shepherdapp.app.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
+import com.shepherdapp.app.data.dto.invitation.delete_pending_invitee.DeletePendingInviteeByIdResponseModel
 import com.shepherdapp.app.data.dto.invitation.pending_invite.PendingInviteResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -63,6 +64,18 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
             NetworkOnlineDataRepo<PendingInviteResponseModel, PendingInviteResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<PendingInviteResponseModel> {
                 return apiService.getPendingInvites(lovedOneUUID)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    // Delete Pending invitee by id
+    suspend fun deletePendingInviteeById(
+        id: Int
+    ): Flow<DataResult<DeletePendingInviteeByIdResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<DeletePendingInviteeByIdResponseModel, DeletePendingInviteeByIdResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<DeletePendingInviteeByIdResponseModel> {
+                return apiService.deletePendingInviteeById(id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
