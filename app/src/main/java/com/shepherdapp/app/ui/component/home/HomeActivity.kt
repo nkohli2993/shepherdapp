@@ -283,7 +283,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    hideLoading()
                     val payload = it.data.payload
                     // Set the notification icon
                     if (payload?.unreadNotificationsCount!! > 0) {
@@ -342,7 +341,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     for (i in perList?.indices!!) {
                         checkPermission(perList[i].toInt())
                     }
-
+                    hideLoading()
                 }
             }
         }
