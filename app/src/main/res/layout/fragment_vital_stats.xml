@@ -37,12 +37,39 @@
                 android:lineSpacingExtra="@dimen/_5sdp"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <LinearLayout
+                android:id="@+id/layoutVitalSyncInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvRemoteMonitor"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_info_vital_stat" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="@string/loved_one_needs_to_log_in_to_sync_vitalStats_data"
+                    android:textColor="@color/_D7293F"
+                    android:textSize="@dimen/_12ssp"
+                    android:lineSpacingExtra="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clHeartNTempWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/tvRemoteMonitor">
+                app:layout_constraintTop_toBottomOf="@+id/layoutVitalSyncInfo">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvHeartRate"
