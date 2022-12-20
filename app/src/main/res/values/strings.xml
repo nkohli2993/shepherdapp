@@ -597,4 +597,5 @@
     <string name="create_a_password">Create a password</string>
     <string name="new_and_confirm_password_not_match">New and Confirm Password doesn\'t match</string>
     <string name="loved_one_needs_to_log_in_to_sync_vitalStats_data">The loved one needs to log in to sync VitalStats data.</string>
+    <string name="the_loved_one_will_log_in_using_the_same_credentials_to_sync_vitalStats_data">The loved one will log in using the same credentials to sync VitalStats data.</string>
 </resources>
