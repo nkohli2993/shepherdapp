@@ -18,6 +18,7 @@ import com.shepherdapp.app.data.remote.home_repository.HomeRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.ClickType
 import com.shepherdapp.app.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -41,9 +42,20 @@ class CareTeamMembersViewModel @Inject constructor(
     private val openMemberDetailsPrivate = MutableLiveData<SingleEvent<CareTeamModel>>()
     val openMemberDetails: LiveData<SingleEvent<CareTeamModel>> get() = openMemberDetailsPrivate
 
+    private val _deletePendingInviteLiveData = MutableLiveData<SingleEvent<CareTeamModel>>()
+    val deletePendingInviteLiveData: LiveData<SingleEvent<CareTeamModel>> get() = _deletePendingInviteLiveData
 
-    fun openMemberDetails(careTeam: CareTeamModel) {
-        openMemberDetailsPrivate.value = SingleEvent(careTeam)
+
+    fun openMemberDetails(careTeam: CareTeamModel, clickTypeValue: Int) {
+        when (clickTypeValue) {
+            ClickType.View.value -> {
+                openMemberDetailsPrivate.value = SingleEvent(careTeam)
+            }
+            ClickType.Delete.value -> {
+                _deletePendingInviteLiveData.value = SingleEvent(careTeam)
+            }
+        }
+
     }
 
 

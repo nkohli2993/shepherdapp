@@ -50,6 +50,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     private var productDetailsList: ArrayList<ProductDetails?>? = ArrayList()
     var handler: Handler? = null
     private var planName: String? = null
+    private var productID: String? = null
     private var nameOfPlan: String? = null
     private var amount: Double? = null
 
@@ -202,6 +203,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 Log.d(TAG, "plan : $nameOfPlan")
                 Log.d(TAG, "amount : $amount")
                 Log.d(TAG, "expiryDate : $expiryDate")
+                purchases.packageName
 
                 subscriptionViewModel.createSubscription(
                     SubscriptionRequestModel(
@@ -211,11 +213,15 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                         expiryDate = expiryDate
                     )
                 )
+
+                Log.d(TAG, "Purchase Token: " + purchases.purchaseToken)
+                Log.d(TAG, "Purchase Time: " + purchases.purchaseTime)
+                Log.d(TAG, "Package Name: " + purchases.packageName)
+                Log.d(TAG, "Purchase OrderID: " + purchases.orderId)
+                Log.d(TAG, "Product ID: $productID")
+                Log.d(TAG, "Plan Name : $planName")
             }
         }
-        Log.d(TAG, "Purchase Token: " + purchases.purchaseToken)
-        Log.d(TAG, "Purchase Time: " + purchases.purchaseTime)
-        Log.d(TAG, "Purchase OrderID: " + purchases.orderId)
     }
 
 
@@ -267,6 +273,9 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         singleEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "openSubscriptionPlan: Clicked Plan is $it ")
             planName = it.name
+            productID = it.productId
+            Log.d(TAG, "openSubscriptionPlan: Plan Name : ${it.name}")
+            Log.d(TAG, "openSubscriptionPlan: Plan id : $productID")
             /*  amount = it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                   0
               )?.formattedPrice*/

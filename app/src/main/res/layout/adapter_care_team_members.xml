@@ -65,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_13ssp"
                     app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                     app:layout_constraintTop_toTopOf="@+id/llImageWrapper" />
 
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_8sdp"
-                    android:textSize="@dimen/_13ssp"
+                    android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="@+id/llImageWrapper"
                     app:layout_constraintStart_toStartOf="@+id/textViewCareTeamName" />
 
@@ -84,6 +84,19 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imageViewInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_6sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewDelete"
+                android:src="@drawable/ic_waiting" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imageViewDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"

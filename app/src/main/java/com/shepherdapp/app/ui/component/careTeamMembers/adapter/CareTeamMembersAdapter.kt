@@ -10,8 +10,10 @@ import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.ClickType
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.margin
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
 import com.squareup.picasso.Picasso
 
@@ -28,7 +30,8 @@ class CareTeamMembersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openMemberDetails(itemData[0] as CareTeamModel)
+            // First parameter is the CareTeamModel and 2nd is the click type
+            viewModel.openMemberDetails(itemData[0] as CareTeamModel, itemData[1] as Int)
         }
     }
 
@@ -64,10 +67,19 @@ class CareTeamMembersAdapter(
                 // Pending Invite will be shown to loggedIn User only
                 if (isLoggedInUserCareTeamLead == true) {
                     itemBinding.cardView.visibility = View.VISIBLE
+                    itemBinding.imageViewInfo.visibility = View.VISIBLE
+                    itemBinding.imageViewDelete.isClickable = true
+
                     itemBinding.llImageWrapper.alpha = 0.4f
                     itemBinding.textViewCareTeamName.alpha = 0.4f
                     itemBinding.textViewCareTeamRole.alpha = 0.4f
+                    itemBinding.imageViewDelete.setBackgroundResource(R.drawable.ic_delete_pending_invite)
                     itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_waiting)
+
+                    // Set top margin
+                    itemBinding.imageViewDelete.margin(top = 30f)
+                    itemBinding.imageViewInfo.margin(top = 30f)
+
                     itemBinding.let {
                         it.textViewCareTeamName.text = careTeam.email
                         if (!careTeam.image.isNullOrEmpty()) {
@@ -77,16 +89,27 @@ class CareTeamMembersAdapter(
                         }
                         it.textViewCareTeamRole.text = "As ${careTeam.careRoles.name}"
                     }
+
+                    // Handle click of delete button
+                    itemBinding.imageViewDelete.setOnClickListener {
+                        recyclerItemListener.onItemSelected(
+                            careTeams[position],
+                            ClickType.Delete.value
+                        )
+                    }
                 } else {
                     itemBinding.cardView.visibility = View.GONE
                 }
             } else {
                 itemBinding.cardView.visibility = View.VISIBLE
+                itemBinding.imageViewInfo.visibility = View.GONE
+                itemBinding.imageViewDelete.isClickable = false
+
                 val firstName = careTeam.user_id_details.firstname
                 val lastName = careTeam.user_id_details.lastname
                 val fullName = "$firstName $lastName"
                 val imageUrl = careTeam.user_id_details.profilePhoto
-                itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_arrow)
+                itemBinding.imageViewDelete.setBackgroundResource(R.drawable.ic_arrow)
 
                 itemBinding.let {
                     it.textViewCareTeamName.text = fullName
@@ -99,31 +122,11 @@ class CareTeamMembersAdapter(
 
                 itemBinding.root.setOnClickListener {
                     recyclerItemListener.onItemSelected(
-                        careTeams[position]
+                        careTeams[position],
+                        ClickType.View.value
                     )
                 }
             }
-
-//            itemBinding.data = careTeam
-            /* val firstName = careTeam.user_id_details.firstname
-             val lastName = careTeam.user_id_details.lastname
-             val fullName = "$firstName $lastName"
-             val imageUrl = careTeam.user_id_details.profilePhoto
-
-             itemBinding.let {
-                 it.textViewCareTeamName.text = fullName
-
-                 Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                     .into(it.imageViewCareTeam)
-
-                 it.textViewCareTeamRole.text = careTeam.careRoles.name
-             }
-
-             itemBinding.root.setOnClickListener {
-                 recyclerItemListener.onItemSelected(
-                     careTeams[position]
-                 )
-             }*/
         }
     }
 

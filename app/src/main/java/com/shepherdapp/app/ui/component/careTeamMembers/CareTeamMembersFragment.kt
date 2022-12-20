@@ -171,6 +171,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
 
     override fun observeViewModel() {
         observe(careTeamViewModel.openMemberDetails, ::openMemberDetails)
+        observe(careTeamViewModel.deletePendingInviteLiveData, ::deletePendingInvite)
 
         /* careTeamViewModel.userDetailByUUIDLiveData.observeEvent(this) {
              when (it) {
@@ -368,7 +369,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
 
     }
 
-
     private fun setCareTeamAdapters() {
         careTeamAdapter = CareTeamMembersAdapter(careTeamViewModel)
         fragmentCareTeamMembersBinding.recyclerViewCareTeam.adapter = careTeamAdapter
@@ -383,7 +383,12 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
             //findNavController().navigate(R.id.action_care_team_members_to_member_details)
             findNavController().navigate(action)
         }
+    }
 
+    private fun deletePendingInvite(singleEvent: SingleEvent<CareTeamModel>) {
+        singleEvent.getContentIfNotHandled()?.let {
+            Log.d(TAG, "deletePendingInvite: $it")
+        }
     }
 
     override fun onClick(p0: View?) {
