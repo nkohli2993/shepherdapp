@@ -40,6 +40,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                 android:textSize="@dimen/_13ssp"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321,.-!@#$%^&amp;*()"
                 android:paddingHorizontal="@dimen/_12ssp"
                 android:paddingVertical="@dimen/_15sdp"
                 android:singleLine="true"
