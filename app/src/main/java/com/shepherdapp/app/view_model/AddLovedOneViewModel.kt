@@ -189,4 +189,8 @@ class AddLovedOneViewModel @Inject constructor(
         return userRepository.isLoggedInUserLovedOne()
     }
 
+    fun getLoggedInUserUUID(): String? {
+        return userRepository.getUUID()
+    }
+
 }

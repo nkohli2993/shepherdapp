@@ -209,6 +209,26 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
                 userProfileId = payload?.userProfiles?.id
 
+                // Get LovedOne UUID
+                val lovedOneUUID = payload?.uniqueUUID
+                Log.d(TAG, "initViewBinding: lovedOneUUID : $lovedOneUUID")
+
+                // Get LoggedInUser
+                val loggedInUserUUID = addLovedOneViewModel.getLoggedInUserUUID()
+                Log.d(TAG, "initViewBinding: loggedInUserUUID : $loggedInUserUUID")
+
+                // If UUID of loggedInUser and LovedOne matches
+              /*  if (loggedInUserUUID == lovedOneUUID) {
+                    binding.txtRelationship.visibility = View.GONE
+                    binding.relationshipSpinnerLayout.visibility = View.GONE
+                    binding.chkLovedOne.visibility = View.GONE
+                    binding.chkSendInvitation.visibility = View.GONE
+                } else {
+                    binding.txtRelationship.visibility = View.VISIBLE
+                    binding.relationshipSpinnerLayout.visibility = View.VISIBLE
+                    binding.chkLovedOne.visibility = View.VISIBLE
+                    binding.chkSendInvitation.visibility = View.VISIBLE
+                }*/
             }
         }
         binding.ccp.setOnCountryChangeListener { this.phoneCode = it.phoneCode }
