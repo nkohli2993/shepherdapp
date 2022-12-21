@@ -347,7 +347,7 @@
         <entry key="app/src/main/res/layout/adapter_care_points_day.xml" value="0.25" />
         <entry key="app/src/main/res/layout/adapter_care_points_day_date_based.xml" value="0.34479166666666666" />
         <entry key="app/src/main/res/layout/adapter_care_points_events.xml" value="0.29243266353142366" />
-        <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.29243266353142366" />
+        <entry key="app/src/main/res/layout/adapter_care_team_members.xml" value="0.165" />
         <entry key="app/src/main/res/layout/adapter_care_team_members_dashboard.xml" value="0.2579162410623085" />
         <entry key="app/src/main/res/layout/adapter_chat.xml" value="0.5745341614906833" />
         <entry key="app/src/main/res/layout/adapter_chat_group.xml" value="0.209765625" />
@@ -422,7 +422,7 @@
         <entry key="app/src/main/res/layout/fragment_invitation.xml" value="0.31197916666666664" />
         <entry key="app/src/main/res/layout/fragment_lockbox.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_lockbox_doc_info.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_loved_one_profile.xml" value="0.26216216216216215" />
+        <entry key="app/src/main/res/layout/fragment_loved_one_profile.xml" value="0.2823381529463098" />
         <entry key="app/src/main/res/layout/fragment_loved_ones.xml" value="0.3276955602536998" />
         <entry key="app/src/main/res/layout/fragment_member_details.xml" value="0.24329071044921877" />
         <entry key="app/src/main/res/layout/fragment_messages.xml" value="0.25" />
