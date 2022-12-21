@@ -1,11 +1,15 @@
 package com.shepherdapp.app.ui.component.resources
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -69,7 +73,7 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
         resourcesViewModel.getResourceDetail(resourceId ?: 0)
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SetJavaScriptEnabled")
     private fun setDataResource() {
         fragmentResourcesDetailBinding.textViewTitle.text =
             HtmlCompat.fromHtml(resourceDetail!!.title ?: "", 0)
@@ -78,8 +82,44 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
                  .placeholder(R.drawable.image)
                  .into(fragmentResourcesDetailBinding.imageViewTopic)*/
         }
-        fragmentResourcesDetailBinding.descriptionTV.text =
-            HtmlCompat.fromHtml(resourceDetail!!.content ?: "", 0)
+        /* fragmentResourcesDetailBinding.descriptionTV.text =
+             HtmlCompat.fromHtml(resourceDetail!!.content ?: "", 0)*/
+
+
+        fragmentResourcesDetailBinding.descriptionTV.settings.javaScriptEnabled = true
+        fragmentResourcesDetailBinding.descriptionTV.settings.domStorageEnabled = true
+        fragmentResourcesDetailBinding.descriptionTV.webChromeClient = WebChromeClient()
+        fragmentResourcesDetailBinding.descriptionTV.webViewClient = object : WebViewClient() {
+
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                // Send the clicked url to ResourceDetailWebViewFragment
+                val action =
+                    ResourceDetailFragmentDirections.actionNavResourceDetailToResourceDetailWebViewFragment(
+                        url = url
+                    )
+                findNavController().navigate(action)
+                return true
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                hideLoading()
+            }
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                super.onPageStarted(view, url, favicon)
+                showLoading("")
+            }
+        }
+
+        // Load HTML data into WebView
+        fragmentResourcesDetailBinding.descriptionTV.loadData(
+            resourceDetail?.content ?: "",
+            "text/html",
+            null
+        )
+
+
         val formattedDate = resourceDetail!!.createdAt!!.toTextFormat(
             resourceDetail!!.createdAt!!,
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
@@ -95,11 +135,11 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
 //        fragmentResourcesDetailBinding.tvDate.text = "${getString(R.string.created_on)} $formattedDate"
 //        fragmentResourcesDetailBinding.tvTime.text = formattedTime
 
-        fragmentResourcesDetailBinding.descriptionTV.linksClickable = true
+//        fragmentResourcesDetailBinding.descriptionTV.linksClickable = true
 //        fragmentResourcesDetailBinding.descriptionTV.autoLinkMask = Linkify.ALL
-        fragmentResourcesDetailBinding.descriptionTV.movementMethod =
-            TextViewClickMovement(this, context)
-
+        /*  fragmentResourcesDetailBinding.descriptionTV.movementMethod =
+              TextViewClickMovement(this, context)
+  */
     }
 
     override fun getLayoutRes(): Int {

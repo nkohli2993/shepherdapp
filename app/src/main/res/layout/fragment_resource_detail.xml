@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -169,12 +170,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/llImageWrapper" />-->
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <WebView
                 android:id="@+id/descriptionTV"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="@dimen/_2sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_10sdp"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_13ssp"
                 android:lineSpacingExtra="@dimen/_5sdp"
@@ -184,7 +185,9 @@
                 app:fontFamily="@font/gotham_book"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtCategory" />
+                app:layout_constraintTop_toBottomOf="@+id/txtCategory"
+                app:layout_constraintBottom_toTopOf="@id/txtJoinCommunityConversation"
+                tools:ignore="WebViewLayout" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtJoinCommunityConversation"
