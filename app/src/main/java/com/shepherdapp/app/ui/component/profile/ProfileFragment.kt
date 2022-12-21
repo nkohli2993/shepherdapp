@@ -132,7 +132,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         // Get loggedIn User's Profile Pic
         if (payload?.userProfiles?.profilePhoto != null && payload?.userProfiles?.profilePhoto != "") {
             val profilePicLoggedInUser = payload?.userProfiles?.profilePhoto
-            Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.image_placeholder)
+            Picasso.get().load(profilePicLoggedInUser).placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(fragmentProfileBinding.imageViewUser)
         }
 

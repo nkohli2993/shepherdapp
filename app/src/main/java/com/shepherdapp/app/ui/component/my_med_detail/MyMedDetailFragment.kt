@@ -142,7 +142,7 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                     }
                     if (it.data.payload.assigned_by_details.profile_photo != null && it.data.payload.assigned_by_details.profile_photo != "") {
                         Picasso.get().load(it.data.payload.assigned_by_details.profile_photo)
-                            .placeholder(R.drawable.image_placeholder)
+                            .placeholder(R.drawable.ic_defalut_profile_pic)
                             .into(fragmentMyMedDetailBinding.imageViewUser)
                     }
 
