@@ -541,9 +541,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (doubleBackToExitPressedOnce) {
-                    finish()
+//                    finish()
                     //Finish this activity as well as all activities immediately below it in the current task that have the same affinity.
-//                    finishAffinity()
+                    finishAffinity()
                 }
                 doubleBackToExitPressedOnce = true
                 Handler(Looper.getMainLooper()).postDelayed(

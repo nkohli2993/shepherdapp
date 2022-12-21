@@ -703,7 +703,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             is DashboardFragment -> {
                 if (backPressed + 2000 > System.currentTimeMillis()) {
                     // Finish this activity as well as all activities immediately below it in the current task that have the same affinity.
-                    // finishAffinity()
+                    finishAffinity()
                     super.onBackPressed()
                 } else Toast.makeText(
                     applicationContext,
