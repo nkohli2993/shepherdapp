@@ -178,4 +178,8 @@ class CareTeamMembersViewModel @Inject constructor(
         }
         return userDetailByUUIDLiveData
     }
+
+    fun isLoggedInUserCareTeamLead(): Boolean? {
+        return userRepository.isLoggedInUserTeamLead()
+    }
 }

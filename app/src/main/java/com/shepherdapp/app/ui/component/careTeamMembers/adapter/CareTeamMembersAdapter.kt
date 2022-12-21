@@ -64,42 +64,78 @@ class CareTeamMembersAdapter(
                 val isLoggedInUserCareTeamLead = Prefs.with(ShepherdApp.appContext)
                     ?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
 
-                // Pending Invite will be shown to loggedIn User only
-                if (isLoggedInUserCareTeamLead == true) {
-                    itemBinding.cardView.visibility = View.VISIBLE
-                    itemBinding.imageViewInfo.visibility = View.VISIBLE
-                    itemBinding.imageViewDelete.isClickable = true
 
-                    itemBinding.llImageWrapper.alpha = 0.4f
-                    itemBinding.textViewCareTeamName.alpha = 0.4f
-                    itemBinding.textViewCareTeamRole.alpha = 0.4f
-                    itemBinding.imageViewDelete.setBackgroundResource(R.drawable.ic_delete_pending_invite)
-                    itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_waiting)
+                itemBinding.cardView.visibility = View.VISIBLE
+                itemBinding.imageViewInfo.visibility = View.VISIBLE
+                itemBinding.imageViewDelete.isClickable = true
 
-                    // Set top margin
-                    itemBinding.imageViewDelete.margin(top = 30f)
-                    itemBinding.imageViewInfo.margin(top = 30f)
+                itemBinding.llImageWrapper.alpha = 0.4f
+                itemBinding.textViewCareTeamName.alpha = 0.4f
+                itemBinding.textViewCareTeamRole.alpha = 0.4f
+                itemBinding.imageViewDelete.setBackgroundResource(R.drawable.ic_delete_pending_invite)
+                itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_waiting)
 
-                    itemBinding.let {
-                        it.textViewCareTeamName.text = careTeam.email
-                        if (!careTeam.image.isNullOrEmpty()) {
-                            Picasso.get().load(careTeam.image)
-                                .placeholder(R.drawable.ic_defalut_profile_pic)
-                                .into(it.imageViewCareTeam)
-                        }
-                        it.textViewCareTeamRole.text = "As ${careTeam.careRoles.name}"
+                // Set top margin
+                itemBinding.imageViewDelete.margin(top = 30f)
+                itemBinding.imageViewInfo.margin(top = 30f)
+
+                itemBinding.let {
+                    it.textViewCareTeamName.text = careTeam.email
+                    if (!careTeam.image.isNullOrEmpty()) {
+                        Picasso.get().load(careTeam.image)
+                            .placeholder(R.drawable.ic_defalut_profile_pic)
+                            .into(it.imageViewCareTeam)
                     }
-
-                    // Handle click of delete button
-                    itemBinding.imageViewDelete.setOnClickListener {
-                        recyclerItemListener.onItemSelected(
-                            careTeams[position],
-                            ClickType.Delete.value
-                        )
-                    }
-                } else {
-                    itemBinding.cardView.visibility = View.GONE
+                    it.textViewCareTeamRole.text = "As ${careTeam.careRoles.name}"
                 }
+
+                // Delete button is clickable for CareTeam Lead Only
+//                itemBinding.imageViewDelete.isClickable = isLoggedInUserCareTeamLead == true
+
+                // Handle click of delete button
+                itemBinding.imageViewDelete.setOnClickListener {
+                    recyclerItemListener.onItemSelected(
+                        careTeams[position],
+                        ClickType.Delete.value
+                    )
+                }
+
+                // Pending Invite will be shown to loggedIn User only
+                /* if (isLoggedInUserCareTeamLead == true) {
+                     itemBinding.cardView.visibility = View.VISIBLE
+                     itemBinding.imageViewInfo.visibility = View.VISIBLE
+                     itemBinding.imageViewDelete.isClickable = true
+
+                     itemBinding.llImageWrapper.alpha = 0.4f
+                     itemBinding.textViewCareTeamName.alpha = 0.4f
+                     itemBinding.textViewCareTeamRole.alpha = 0.4f
+                     itemBinding.imageViewDelete.setBackgroundResource(R.drawable.ic_delete_pending_invite)
+                     itemBinding.imageViewInfo.setBackgroundResource(R.drawable.ic_waiting)
+
+                     // Set top margin
+                     itemBinding.imageViewDelete.margin(top = 30f)
+                     itemBinding.imageViewInfo.margin(top = 30f)
+
+                     itemBinding.let {
+                         it.textViewCareTeamName.text = careTeam.email
+                         if (!careTeam.image.isNullOrEmpty()) {
+                             Picasso.get().load(careTeam.image)
+                                 .placeholder(R.drawable.ic_defalut_profile_pic)
+                                 .into(it.imageViewCareTeam)
+                         }
+                         it.textViewCareTeamRole.text = "As ${careTeam.careRoles.name}"
+                     }
+
+                     // Handle click of delete button
+                     itemBinding.imageViewDelete.setOnClickListener {
+                         recyclerItemListener.onItemSelected(
+                             careTeams[position],
+                             ClickType.Delete.value
+                         )
+                     }
+                 } else {
+                     itemBinding.cardView.visibility = View.GONE
+                 }*/
             } else {
                 itemBinding.cardView.visibility = View.VISIBLE
                 itemBinding.imageViewInfo.visibility = View.GONE

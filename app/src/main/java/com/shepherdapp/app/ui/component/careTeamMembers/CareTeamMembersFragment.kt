@@ -24,6 +24,7 @@ import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
@@ -409,20 +410,24 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private fun deletePendingInvite(singleEvent: SingleEvent<CareTeamModel>) {
         singleEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "deletePendingInvite: $it")
-            //show delete dialog
-            val builder = AlertDialog.Builder(requireContext())
-            val dialog = builder.apply {
-                setTitle("Delete Pending Invitee")
-                setMessage("Are you sure, you want to delete this pending invitee?")
-                setPositiveButton("Yes") { _, _ ->
-                    it.id?.let { it1 -> careTeamViewModel.deletePendingInviteeById(it1) }
-                }
-                setNegativeButton("Cancel") { _, _ ->
-                }
-            }.create()
-            dialog.show()
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+            if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
+                //show delete dialog
+                val builder = AlertDialog.Builder(requireContext())
+                val dialog = builder.apply {
+                    setTitle("Delete Pending Invitee")
+                    setMessage("Are you sure, you want to delete this pending invitee?")
+                    setPositiveButton("Yes") { _, _ ->
+                        it.id?.let { it1 -> careTeamViewModel.deletePendingInviteeById(it1) }
+                    }
+                    setNegativeButton("Cancel") { _, _ ->
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+            } else {
+                showInfo(requireContext(), "Only CareTeam Leader can delete the pending invitee")
+            }
         }
     }
 
