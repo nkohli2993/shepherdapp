@@ -1,6 +1,8 @@
 package com.shepherdapp.app.ui.component.careTeamMembers
 
+import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -407,8 +409,20 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private fun deletePendingInvite(singleEvent: SingleEvent<CareTeamModel>) {
         singleEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "deletePendingInvite: $it")
-
-            it.id?.let { it1 -> careTeamViewModel.deletePendingInviteeById(it1) }
+            //show delete dialog
+            val builder = AlertDialog.Builder(requireContext())
+            val dialog = builder.apply {
+                setTitle("Delete Pending Invitee")
+                setMessage("Are you sure, you want to delete this pending invitee?")
+                setPositiveButton("Yes") { _, _ ->
+                    it.id?.let { it1 -> careTeamViewModel.deletePendingInviteeById(it1) }
+                }
+                setNegativeButton("Cancel") { _, _ ->
+                }
+            }.create()
+            dialog.show()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
         }
     }
 
