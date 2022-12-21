@@ -74,7 +74,7 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                     val firstWord = "Note : "
                     var secondWord: String? = null
 
-                    if (it.data.payload.note.isEmpty()) {
+                    if (it.data.payload.note.isNullOrEmpty()) {
 
                         secondWord = getString(R.string.no_description_available)
                         // Create a new spannable with the two strings
@@ -123,7 +123,7 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                                 ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
                             ),
                             firstWord.length,
-                            firstWord.length + secondWord.length,
+                            firstWord.length + secondWord?.length,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
 
