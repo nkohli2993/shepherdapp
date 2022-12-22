@@ -4,6 +4,8 @@ import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
 import com.shepherdapp.app.data.dto.subscription.check_subscription_status.CheckSubscriptionStatusResponseModel
 import com.shepherdapp.app.data.dto.subscription.get_active_subscriptions.GetActiveSubscriptionResponseModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.NetworkOnlineDataRepo
@@ -19,6 +21,16 @@ import javax.inject.Singleton
  */
 @Singleton
 data class SubscriptionRepository @Inject constructor(private val apiService: ApiService) {
+
+    //validate subscription
+    suspend fun validateSubscription(validateSubscriptionRequestModel: ValidateSubscriptionRequestModel): Flow<DataResult<ValidateSubscriptionResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<ValidateSubscriptionResponseModel, ValidateSubscriptionResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<ValidateSubscriptionResponseModel> {
+                return apiService.validateSubscription(validateSubscriptionRequestModel)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 
     //create subscription
     suspend fun createSubscription(subscriptionRequestModel: SubscriptionRequestModel): Flow<DataResult<SubscriptionResponseModel>> {

@@ -13,6 +13,8 @@ import com.shepherdapp.app.billing.BillingClientWrapper
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
 import com.shepherdapp.app.data.remote.subscription.SubscriptionRepository
@@ -51,10 +53,16 @@ class SubscriptionViewModel @Inject constructor(
     var createSubscriptionResponseLiveData: LiveData<Event<DataResult<SubscriptionResponseModel>>> =
         _createSubscriptionResponseLiveData
 
+    private var _validateSubscriptionResponseLiveData =
+        MutableLiveData<Event<DataResult<ValidateSubscriptionResponseModel>>>()
+    var validateSubscriptionResponseLiveData: LiveData<Event<DataResult<ValidateSubscriptionResponseModel>>> =
+        _validateSubscriptionResponseLiveData
+
     fun openSubscriptionPlan(productDetails: ProductDetails?) {
         _openSubscriptionPlanLiveData.value = SingleEvent(productDetails)
     }
 
+    // Create Subscription
     fun createSubscription(subscriptionRequestModel: SubscriptionRequestModel): LiveData<Event<DataResult<SubscriptionResponseModel>>> {
         viewModelScope.launch {
             val response = subscriptionRepository.createSubscription(subscriptionRequestModel)
@@ -65,6 +73,20 @@ class SubscriptionViewModel @Inject constructor(
             }
         }
         return createSubscriptionResponseLiveData
+    }
+
+    // Validate Subscription
+    fun validateSubscription(validateSubscriptionRequestModel: ValidateSubscriptionRequestModel): LiveData<Event<DataResult<ValidateSubscriptionResponseModel>>> {
+        viewModelScope.launch {
+            val response =
+                subscriptionRepository.validateSubscription(validateSubscriptionRequestModel)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _validateSubscriptionResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return validateSubscriptionResponseLiveData
     }
 
 

@@ -67,6 +67,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var relationSelected: Relation? = null
     private var lovedOneId: Int? = null
     private var lovedOneUUID: String? = null
+    private var loggedInUserUUID: String? = null
     private var userProfileId: Int? = null
     private var sendInvitation: Boolean? = null
 
@@ -210,15 +211,15 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 userProfileId = payload?.userProfiles?.id
 
                 // Get LovedOne UUID
-                val lovedOneUUID = payload?.uniqueUUID
+//                val lovedOneUUID = payload?.uniqueUUID
                 Log.d(TAG, "initViewBinding: lovedOneUUID : $lovedOneUUID")
 
                 // Get LoggedInUser
-                val loggedInUserUUID = addLovedOneViewModel.getLoggedInUserUUID()
+                loggedInUserUUID = addLovedOneViewModel.getLoggedInUserUUID()
                 Log.d(TAG, "initViewBinding: loggedInUserUUID : $loggedInUserUUID")
 
                 // If UUID of loggedInUser and LovedOne matches
-              /*  if (loggedInUserUUID == lovedOneUUID) {
+                if (loggedInUserUUID == lovedOneUUID) {
                     binding.txtRelationship.visibility = View.GONE
                     binding.relationshipSpinnerLayout.visibility = View.GONE
                     binding.chkLovedOne.visibility = View.GONE
@@ -228,7 +229,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     binding.relationshipSpinnerLayout.visibility = View.VISIBLE
                     binding.chkLovedOne.visibility = View.VISIBLE
                     binding.chkSendInvitation.visibility = View.VISIBLE
-                }*/
+                }
             }
         }
         binding.ccp.setOnCountryChangeListener { this.phoneCode = it.phoneCode }
@@ -831,21 +832,41 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 yearSelected + "-" + (if (monthIdSelected!! < 10) "0$monthIdSelected" else monthIdSelected!!.toString()) + "-" + (if (dateSelected.toInt() < 10) "0$dateSelected" else dateSelected)
 
             if (isEditLovedOne) {
-                lovedOneUUID?.let {
-                    addLovedOneViewModel.editLovedOne(
-                        email,
-                        firstName,
-                        lastName,
-                        relationId,
-                        phoneCode,
-                        dob,
-                        placeId,
-                        customAddress,
-                        phoneNumber,
-                        completeURLProfilePic,
-                        it,
-                        sendInvitation
-                    )
+                if (loggedInUserUUID == lovedOneUUID) {
+
+                    lovedOneUUID?.let {
+                        addLovedOneViewModel.editLovedOne(
+                            email,
+                            firstName,
+                            lastName,
+                            null,
+                            phoneCode,
+                            dob,
+                            placeId,
+                            customAddress,
+                            phoneNumber,
+                            completeURLProfilePic,
+                            it,
+                            null
+                        )
+                    }
+                } else {
+                    lovedOneUUID?.let {
+                        addLovedOneViewModel.editLovedOne(
+                            email,
+                            firstName,
+                            lastName,
+                            relationId,
+                            phoneCode,
+                            dob,
+                            placeId,
+                            customAddress,
+                            phoneNumber,
+                            completeURLProfilePic,
+                            it,
+                            sendInvitation
+                        )
+                    }
                 }
             } else {
                 addLovedOneViewModel.createLovedOne(

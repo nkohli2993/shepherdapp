@@ -172,6 +172,7 @@ object ApiConstants {
     }
 
     object Subscription {
+        const val VALIDATE_SUBSCRIPTION = "${BASE_URL_USER}${API_VERSION}subscriptions/validate-subscription"
         const val CREATE_SUBSCRIPTION = "${BASE_URL_USER}${API_VERSION}subscriptions/"
         const val CHECK_SUBSCRIPTION_STATUS =
             "${BASE_URL_USER}${API_VERSION}enterprises/check-subscription-status"

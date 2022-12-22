@@ -33,6 +33,7 @@ class MyAppInterceptor @Inject constructor() : Interceptor {
                 "fcm-token",
                 "${Prefs.with(ShepherdApp.appContext)?.getString(Const.FIREBASE_TOKEN)}"
             )
+            .add("deviceType", "0")
             .build()
 
         request = request.newBuilder().headers(headers).build()

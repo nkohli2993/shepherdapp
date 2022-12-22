@@ -71,6 +71,8 @@ import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
 import com.shepherdapp.app.data.dto.subscription.check_subscription_status.CheckSubscriptionStatusResponseModel
 import com.shepherdapp.app.data.dto.subscription.get_active_subscriptions.GetActiveSubscriptionResponseModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionResponseModel
 import com.shepherdapp.app.data.dto.user.UserDetailsResponseModel
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.shepherdapp.app.ui.base.BaseResponseModel
@@ -572,6 +574,9 @@ interface ApiService {
 //        @Header ("Authorization") "AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg"
         @Body chatNotificationModel: ChatNotificationModel
     ): Response<FCMResponseModel>
+
+    @POST(ApiConstants.Subscription.VALIDATE_SUBSCRIPTION)
+    suspend fun validateSubscription(@Body validateSubscriptionRequestModel: ValidateSubscriptionRequestModel): Response<ValidateSubscriptionResponseModel>
 
     @POST(ApiConstants.Subscription.CREATE_SUBSCRIPTION)
     suspend fun createSubscription(@Body subscriptionRequestModel: SubscriptionRequestModel): Response<SubscriptionResponseModel>

@@ -20,6 +20,7 @@ import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.subscription.SubscriptionModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
 import com.shepherdapp.app.databinding.ActivitySubscriptionBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -29,6 +30,7 @@ import com.shepherdapp.app.ui.component.subscription.adapter.SubscriptionAdapter
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.SubscriptionViewModel
@@ -53,6 +55,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     private var productID: String? = null
     private var nameOfPlan: String? = null
     private var amount: Double? = null
+    private var orderID: String? = null
+    private var expiryDate: String? = null
 
 
     private val TAG = "SubscriptionActivity"
@@ -183,7 +187,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         ) { billingResult: BillingResult ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 val purchaseToken = purchases.purchaseToken
-                val orderID = purchases.orderId
+                orderID = purchases.orderId
 //                var nameOfPlan: String? = null
                 when (planName) {
                     Const.SubscriptionPlan.ONE_WEEK -> {
@@ -197,22 +201,12 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                         nameOfPlan = "Yearly"
                     }
                 }
-                val expiryDate = planName?.let { getDate(it) }
+                expiryDate = planName?.let { getDate(it) }
 
                 Log.d(TAG, "transactionId : $orderID")
                 Log.d(TAG, "plan : $nameOfPlan")
                 Log.d(TAG, "amount : $amount")
                 Log.d(TAG, "expiryDate : $expiryDate")
-                purchases.packageName
-
-                subscriptionViewModel.createSubscription(
-                    SubscriptionRequestModel(
-                        transactionId = orderID,
-                        plan = nameOfPlan,
-                        amount = amount,
-                        expiryDate = expiryDate
-                    )
-                )
 
                 Log.d(TAG, "Purchase Token: " + purchases.purchaseToken)
                 Log.d(TAG, "Purchase Time: " + purchases.purchaseTime)
@@ -220,6 +214,27 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 Log.d(TAG, "Purchase OrderID: " + purchases.orderId)
                 Log.d(TAG, "Product ID: $productID")
                 Log.d(TAG, "Plan Name : $planName")
+
+                //Validate Subscription
+                subscriptionViewModel.validateSubscription(
+                    ValidateSubscriptionRequestModel(
+                        purchaseToken = purchases.purchaseToken,
+                        packageName = purchases.packageName,
+                        productId = productID
+
+                    )
+                )
+
+                /*  subscriptionViewModel.createSubscription(
+                      SubscriptionRequestModel(
+                          transactionId = orderID,
+                          plan = nameOfPlan,
+                          amount = amount,
+                          expiryDate = expiryDate
+                      )
+                  )*/
+
+
             }
         }
     }
@@ -229,6 +244,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         // Observe open subscription plan live data
         observe(subscriptionViewModel.openSubscriptionPlanLiveData, ::openSubscriptionPlan)
 
+        // Observe the response of Create Subscription
         subscriptionViewModel.createSubscriptionResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -266,6 +282,34 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+
+        // Observe the response of Validate Subscription
+        subscriptionViewModel.validateSubscriptionResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(this, it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    showSuccess(this, "Subscription Validated Successfully")
+
+                    // Create Subscription
+                    subscriptionViewModel.createSubscription(
+                        SubscriptionRequestModel(
+                            transactionId = orderID,
+                            plan = nameOfPlan,
+                            amount = amount,
+                            expiryDate = expiryDate
+                        )
+                    )
+                }
+            }
+        }
+
     }
 
 
