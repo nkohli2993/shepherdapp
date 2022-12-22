@@ -292,8 +292,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                             transactionId = orderID,
                             plan = nameOfPlan,
                             amount = amount,
-                            expiryDate = expiryDate,
-                            status = "active"
+                            expiryDate = expiryDate
                         )
                     )
                 }
