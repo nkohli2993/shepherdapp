@@ -224,17 +224,6 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
                     )
                 )
-
-                /*  subscriptionViewModel.createSubscription(
-                      SubscriptionRequestModel(
-                          transactionId = orderID,
-                          plan = nameOfPlan,
-                          amount = amount,
-                          expiryDate = expiryDate
-                      )
-                  )*/
-
-
             }
         }
     }
@@ -303,7 +292,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                             transactionId = orderID,
                             plan = nameOfPlan,
                             amount = amount,
-                            expiryDate = expiryDate
+                            expiryDate = expiryDate,
+                            status = "active"
                         )
                     )
                 }

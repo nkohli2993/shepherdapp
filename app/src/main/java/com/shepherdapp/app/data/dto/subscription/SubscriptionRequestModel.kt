@@ -9,5 +9,6 @@ data class SubscriptionRequestModel(
     @SerializedName("transaction_id") var transactionId: String? = null,
     @SerializedName("plan") var plan: String? = null,
     @SerializedName("amount") var amount: Double? = null,
-    @SerializedName("expiry_date") var expiryDate: String? = null
+    @SerializedName("expiry_date") var expiryDate: String? = null,
+    @SerializedName("status") var status: String? = null
 )
