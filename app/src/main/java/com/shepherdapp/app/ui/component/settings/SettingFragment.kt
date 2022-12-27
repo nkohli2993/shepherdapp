@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.settings
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
@@ -18,12 +19,15 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
+import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.delete_account.DeleteAccountModel
 import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseRequestModel
 import com.shepherdapp.app.databinding.FragmentSettingBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.home.HomeActivity
+import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.utils.BiometricUtils
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
@@ -77,6 +81,26 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                             Prefs.with(requireContext())!!
                                 .save(Const.BIOMETRIC_ENABLE, payload.userProfiles?.isBiometric!!)
                         }
+                    }
+                }
+            }
+        }
+        settingViewModel.deleteAccountLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(requireContext(), it.toString()) }
+
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.let { it1 ->
+                        showSuccess(requireContext(), it.data.message.toString())
+                        homeActivity.gotoLogin("setting_screen")
                     }
                 }
             }
@@ -165,6 +189,9 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
 
     override fun onClick(v: View?) {
         when (v!!.id) {
+            R.id.clDeleteAccountCL -> {
+
+            }
             R.id.ivBack -> {
                 homeActivity.onBackPressed()
             }
@@ -240,6 +267,43 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
             dialog.dismiss()
         }
         btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
+        dialog.show()
+
+        val metrics = DisplayMetrics() //get metrics of screen
+        activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
+        val height = (metrics.heightPixels * 0.6).toInt() //set height to 60% of total
+        val width = (metrics.widthPixels * 0.9).toInt() //set width to 90% of total
+        dialog.window?.setLayout(width, height) //set layout
+    }
+
+    // Enter Enterprise code dialog
+    private fun showDeleteAccountDialog() {
+        val dialog = Dialog(requireContext())
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_delete_account)
+        val edtEnterReason = dialog.findViewById(R.id.edtEnterReason) as EditText
+        val btnYes = dialog.findViewById(R.id.btnYes) as TextView
+        val btnNo = dialog.findViewById(R.id.btnNo) as TextView
+
+        btnYes.setOnClickListener {
+            val reason = edtEnterReason.text.toString().trim()
+            if (reason.isNotEmpty()) {
+                settingViewModel.deleteAccount(settingViewModel.getUserDetail()?.id!!,DeleteAccountModel(reason))
+                dialog.dismiss()
+            } else {
+                showError(requireContext(), getString(R.string.please_enter_reason))
+            }
+        }
+        btnNo.setOnClickListener {
             dialog.dismiss()
         }
         dialog.setCancelable(true)

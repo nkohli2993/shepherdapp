@@ -3,6 +3,7 @@ package com.shepherdapp.app.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.data.dto.delete_account.DeleteAccountModel
 import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseRequestModel
 import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseResponseModel
 import com.shepherdapp.app.data.dto.login.Enterprise
@@ -14,6 +15,7 @@ import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.data.remote.enterprise_repository.EnterpriseRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
+import com.shepherdapp.app.ui.base.BaseResponseModel
 import com.shepherdapp.app.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +44,11 @@ class SettingViewModel @Inject constructor(
     var attachEnterpriseLiveData: LiveData<Event<DataResult<AttachEnterpriseResponseModel>>> =
         _attachEnterpriseLiveData
 
+    private var _deleteAccountLiveData =
+        MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+    var deleteAccountLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+        _deleteAccountLiveData
+
 
     fun registerBioMetric(
         isBioMetricEnable: Boolean
@@ -67,6 +74,18 @@ class SettingViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 response.collect {
                     _attachEnterpriseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return attachEnterpriseLiveData
+    }
+
+    fun deleteAccount(id:Int,value: DeleteAccountModel): LiveData<Event<DataResult<AttachEnterpriseResponseModel>>> {
+        viewModelScope.launch {
+            val response = enterpriseRepository.deleteAccount(id,value)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _deleteAccountLiveData.postValue(Event(it))
                 }
             }
         }

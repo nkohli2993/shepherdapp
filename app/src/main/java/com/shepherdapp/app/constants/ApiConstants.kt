@@ -30,6 +30,7 @@ object ApiConstants {
         const val USER_ROLES = "$BASE_URL_USER${API_VERSION}roles"
         const val USER_RESEND_VERIFICATION = "$BASE_URL_USER${API_VERSION}users/resend"
         const val CHANGE_PASSWORD = "$BASE_URL_USER${API_VERSION}users/change-password"
+        const val DELETE_ACCOUNT = "$BASE_URL_USER${API_VERSION}users/delete/{id}"
     }
 
     object Relations {
@@ -157,6 +158,7 @@ object ApiConstants {
         const val GET_ALL_RESOURCE_BY_LOVED_ONE = "$BASE_URL${API_VERSION}posts/lovedone"
         const val GET_TRENDING_RESOURCE = "$BASE_URL${API_VERSION}posts/features"
         const val GET_RESOURCE_DETAIL = "$BASE_URL${API_VERSION}posts/{id}"
+        const val GET_CATEGORIES = "$BASE_URL${API_VERSION}categories"
     }
 
     object Settings {

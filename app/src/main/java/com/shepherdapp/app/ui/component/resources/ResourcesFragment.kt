@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload
 import com.shepherdapp.app.data.dto.resource.AllResourceData
+import com.shepherdapp.app.data.dto.resource.CategoryData
+import com.shepherdapp.app.data.dto.resource.CategoryPayload
 import com.shepherdapp.app.databinding.FragmentResourcesBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -43,7 +45,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
     private lateinit var fragmentResourcesBinding: FragmentResourcesBinding
     private val resourcesViewModel: ResourceViewModel by viewModels()
-    private var addedConditionPayload: ArrayList<Payload> = arrayListOf()
+    private var addedConditionPayload: ArrayList<CategoryData> = arrayListOf()
     private var pageNumber = 1
     private val limit = 20
     private var currentPage: Int = 0
@@ -88,6 +90,10 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 //        resourcesViewModel.getTrendingResourceApi(pageNumber, limit)
         setTopicsAdapter()
         setMedicalHistoryTopicsAdapter()
+        resourcesViewModel.getResourceCategories(
+            pageNumber,
+            limit
+        )
 //        resourcesViewModel.getUserDetailByUUID()
 
         fragmentResourcesBinding.imgCancel.setOnClickListener {
@@ -175,6 +181,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 //            null
             //conditionIDs.joinToString().replace(" ", "")
         )
+
     }
 
     override fun observeViewModel() {
@@ -214,7 +221,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         }*/
 
         //Observe the response of get loved one's medical conditions api
-        resourcesViewModel.lovedOneMedicalConditionResponseLiveData.observeEvent(this) { result ->
+        resourcesViewModel.categoryRespurceResponseLiveData.observeEvent(this) { result ->
             when (result) {
                 is DataResult.Failure -> {
                     // hideLoading()
@@ -227,12 +234,11 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 is DataResult.Success -> {
                     //   hideLoading()
                     addedConditionPayload.clear()
-//                    fragmentResourcesBinding.medicalHistory.removeAllViews()
-                    for (i in result.data.payload) {
-                        if (i.conditionId != null) {
-                            addedConditionPayload.add(i)
-                            conditionIDs.add(i.conditionId!!)
-                        }
+                    fragmentResourcesBinding.medicalHistory.removeAllViews()
+                    for (i in result.data.payload.categories) {
+                        i.isSelected = true
+                        addedConditionPayload.add(i)
+                        conditionIDs.add(i.id!!)
                     }
                     // set tags
                     setMedicalTags()
@@ -353,7 +359,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 //        fragmentResourcesBinding.recyclerViewTopics.adapter = topicsAdapter
     }
 
-    private fun createTagView(text: Payload, position: Int): View {
+    private fun createTagView(text: CategoryData, position: Int): View {
         val parent = LinearLayout(context)
 
         parent.layoutParams =
@@ -375,7 +381,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         val textConditionName = TextView(context)
         layout2.addView(textConditionName)
         layout2.addView(closeIV)
-        textConditionName.text = text.conditions!!.name
+        textConditionName.text = text.name
         textConditionName.typeface = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
         textConditionName.setTextColor(ContextCompat.getColor(requireContext(), R.color._192032))
         textConditionName.setPadding(20, 15, 10, 15)
@@ -384,7 +390,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         textConditionName.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorWhite))
         parent.setBackgroundResource(R.drawable.shape_black_border_filled)
         closeIV.setImageResource(R.drawable.ic_round_cancel)
-        if (addedConditionPayload[position].isUnselected) {
+        if (addedConditionPayload[position].isSelected) {
             textConditionName.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -398,7 +404,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         layout2.gravity = Gravity.CENTER_HORIZONTAL
 
         textConditionName.setOnClickListener {
-            if (addedConditionPayload[position].isUnselected) {
+            if (addedConditionPayload[position].isSelected) {
                 callSelectedConditionResources(position)
             }
         }
@@ -410,16 +416,14 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     }
 
     private fun callSelectedConditionResources(position: Int) {
-        addedConditionPayload[position].isUnselected =
-            !addedConditionPayload[position].isUnselected
+        addedConditionPayload[position].isSelected =
+            !addedConditionPayload[position].isSelected
         setMedicalTags()
         conditionIDs.clear()
         isLoading = true
         for (i in addedConditionPayload) {
-            if (i.conditionId != null) {
-                if (!i.isUnselected) {
-                    conditionIDs.add(i.conditionId!!)
-                }
+            if (!i.isSelected) {
+                conditionIDs.add(i.id!!)
             }
         }
         callAllResourceBasedOnMedicalHistory()
@@ -437,15 +441,15 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
     private fun setMedicalTags() {
         //set medical history names
-//        fragmentResourcesBinding.medicalHistory.removeAllViews()
+        fragmentResourcesBinding.medicalHistory.removeAllViews()
         for (medicalCondition in addedConditionPayload.indices) {
-            /* fragmentResourcesBinding.medicalHistory.addView(
-                 createTagView(addedConditionPayload[medicalCondition], medicalCondition),
-                 ViewGroup.LayoutParams(
-                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                     ViewGroup.LayoutParams.WRAP_CONTENT
-                 )
-             )*/
+            fragmentResourcesBinding.medicalHistory.addView(
+                createTagView(addedConditionPayload[medicalCondition], medicalCondition),
+                ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            )
         }
     }
 

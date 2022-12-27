@@ -1,6 +1,7 @@
 package com.shepherdapp.app.data.remote.resource
 
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
+import com.shepherdapp.app.data.dto.resource.GetCategoriesResponseModel
 import com.shepherdapp.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherdapp.app.data.dto.resource.ResponseRelationModel
 import com.shepherdapp.app.network.retrofit.ApiService
@@ -47,6 +48,22 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
 //                    id = lovedOneId,
 //                    conditions = conditions,
                     search = search
+                )
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //get result of search result
+    suspend fun getResourceCategories(
+        page: Int,
+        limit: Int,
+    ): Flow<DataResult<GetCategoriesResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<GetCategoriesResponseModel, GetCategoriesResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetCategoriesResponseModel> {
+                return apiService.getResourceCategories(
+                    page = page,
+                    limit = limit
                 )
             }
         }.asFlow().flowOn(Dispatchers.IO)

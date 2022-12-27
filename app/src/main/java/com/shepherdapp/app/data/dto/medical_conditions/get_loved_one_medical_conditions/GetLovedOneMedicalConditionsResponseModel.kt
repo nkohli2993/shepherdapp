@@ -9,3 +9,5 @@ import com.shepherdapp.app.ui.base.BaseResponseModel
 data class GetLovedOneMedicalConditionsResponseModel(
     @SerializedName("payload") var payload: ArrayList<Payload> = arrayListOf()
 ) : BaseResponseModel()
+
+

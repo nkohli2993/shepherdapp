@@ -1,5 +1,6 @@
 package com.shepherdapp.app.data.remote.enterprise_repository
 
+import com.shepherdapp.app.data.dto.delete_account.DeleteAccountModel
 import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseRequestModel
 import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
@@ -25,6 +26,15 @@ data class EnterpriseRepository @Inject constructor(private val apiService: ApiS
             NetworkOnlineDataRepo<AttachEnterpriseResponseModel, AttachEnterpriseResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AttachEnterpriseResponseModel> {
                 return apiService.attachEnterprise(attachEnterpriseRequestModel)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+    //delete Account
+    suspend fun deleteAccount(id:Int,deleteAccountModel: DeleteAccountModel): Flow<DataResult<BaseResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.deleteAccount(id,deleteAccountModel)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

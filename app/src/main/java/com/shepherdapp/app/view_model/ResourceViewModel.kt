@@ -8,6 +8,7 @@ import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.resource.AllResourceData
+import com.shepherdapp.app.data.dto.resource.GetCategoriesResponseModel
 import com.shepherdapp.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherdapp.app.data.dto.resource.ResponseRelationModel
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
@@ -70,6 +71,11 @@ class ResourceViewModel @Inject constructor(
     var lovedOneMedicalConditionResponseLiveData: LiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>> =
         _lovedOneMedicalConditionResponseLiveData
 
+    private var _categoryRespurceResponseLiveData =
+        MutableLiveData<Event<DataResult<GetCategoriesResponseModel>>>()
+    var categoryRespurceResponseLiveData: LiveData<Event<DataResult<GetCategoriesResponseModel>>> =
+        _categoryRespurceResponseLiveData
+
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val showSnackBarPrivate = MutableLiveData<SingleEvent<Any>>()
@@ -124,6 +130,23 @@ class ResourceViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 response.collect {
                     _resourceResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return resourceResponseLiveData
+    }
+    fun getResourceCategories(
+        pageNumber: Int,
+        limit: Int
+    ): LiveData<Event<DataResult<ResponseRelationModel>>> {
+        viewModelScope.launch {
+            val response = dataRepository.getResourceCategories(
+                pageNumber,
+                limit
+            )
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _categoryRespurceResponseLiveData.postValue(Event(it))
                 }
             }
         }

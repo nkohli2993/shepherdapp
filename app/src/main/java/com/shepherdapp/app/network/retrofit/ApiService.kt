@@ -20,6 +20,7 @@ import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.change_password.ChangePasswordModel
 import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
 import com.shepherdapp.app.data.dto.dashboard.HomeResponseModel
+import com.shepherdapp.app.data.dto.delete_account.DeleteAccountModel
 import com.shepherdapp.app.data.dto.edit_event.EditEventRequestModel
 import com.shepherdapp.app.data.dto.edit_event.EditEventResponseModel
 import com.shepherdapp.app.data.dto.edit_loved_one.EditLovedOneResponseModel
@@ -59,6 +60,7 @@ import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotifica
 import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotificationsResponseModel
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.data.dto.relation.RelationResponseModel
+import com.shepherdapp.app.data.dto.resource.GetCategoriesResponseModel
 import com.shepherdapp.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherdapp.app.data.dto.resource.ResponseRelationModel
 import com.shepherdapp.app.data.dto.roles.RolesResponseModel
@@ -110,6 +112,9 @@ interface ApiService {
 
     @POST(ApiConstants.Authentication.CHANGE_PASSWORD)
     suspend fun changePassword(@Body value: ChangePasswordModel): Response<BaseResponseModel>
+
+    @POST(ApiConstants.Authentication.DELETE_ACCOUNT)
+    suspend fun deleteAccount(  @Path("id") uuid: Int,@Body value: DeleteAccountModel): Response<BaseResponseModel>
 
     @GET(ApiConstants.Relations.GET_RELATIONS)
     suspend fun getRelations(
@@ -517,6 +522,12 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("search") search: String
     ): Response<ResponseRelationModel>
+
+    @GET(ApiConstants.Resource.GET_CATEGORIES)
+    suspend fun getResourceCategories(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<GetCategoriesResponseModel>
 
     @GET(ApiConstants.Resource.GET_RESOURCE_DETAIL)
     suspend fun getResourceDetail(

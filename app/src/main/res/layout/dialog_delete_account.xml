@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="@dimen/_10sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:backgroundTint="@color/colorWhite"
+        app:cardCornerRadius="@dimen/_14sdp">
+
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:paddingVertical="@dimen/_30sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtDeleteAccount"
+                style="@style/TextViewGothamBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/_5sdp"
+                android:textSize="@dimen/_20ssp"
+                android:text="@string/delete_account" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtDescription"
+                style="@style/TextViewGothamBook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:lineSpacingExtra="@dimen/_5sdp"
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/please_let_us_know_why_you_want_to_delete_your_account" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtReason"
+                style="@style/TextViewGothamBook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:lineSpacingExtra="@dimen/_5sdp"
+                android:textSize="@dimen/_14ssp"
+                android:text="@string/give_a_reason" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edtEnterReason"
+                style="@style/TextViewGothamMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                android:textSize="@dimen/_13ssp"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0987654321,.-!@#$%^&amp;*()"
+                android:paddingHorizontal="@dimen/_12ssp"
+                android:paddingVertical="@dimen/_15sdp"
+                android:singleLine="true"
+                android:gravity="top"
+                android:maxHeight="@dimen/_200sdp"
+                android:minHeight="@dimen/_150sdp"
+                android:hint="@string/write"
+                android:layout_marginTop="@dimen/_15sdp" />
+
+            <LinearLayout
+                android:id="@+id/llYesNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/txtEnterprise"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnNo"
+                    android:background="@drawable/shape_black_border"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_15sdp"
+                    android:textSize="@dimen/_13ssp"
+                    android:text="@string/no"
+                    android:fontFamily="@font/gotham_medium"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnYes"
+                    style="@style/ButtonPrimary"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/_399282"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:paddingVertical="@dimen/_15sdp"
+                    android:textSize="@dimen/_13ssp"
+                    android:text="@string/yes"
+                    android:textAllCaps="false"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
