@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="listener"
+            type="android.view.View.OnClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/_FCFCFC"
+        android:orientation="vertical">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{listener::onClick}"
+            android:src="@drawable/ic_back"
+            android:padding="@dimen/_10sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtMySubscriptionPlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/gotham_bold"
+            android:text="@string/my_subscription_plan"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintStart_toEndOf="@+id/ivBack"
+            app:layout_constraintTop_toTopOf="@+id/ivBack"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBack" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtPlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/gotham_book"
+            android:text="@string/you_have_choosen_plan"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintStart_toStartOf="@+id/txtMySubscriptionPlan"
+            app:layout_constraintTop_toBottomOf="@+id/txtMySubscriptionPlan"
+            android:layout_marginTop="@dimen/_10sdp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            app:cardCornerRadius="@dimen/_12sdp"
+            app:cardElevation="@dimen/_3sdp"
+            app:cardUseCompatPadding="true"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPlan">
+
+            <LinearLayout
+                android:id="@+id/layoutCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/_30sdp"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:background="#FF9AA6">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtTitle"
+                    style="@style/TextViewGothamBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:text="Basic"
+                    android:textSize="@dimen/_30ssp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtDesc"
+                    style="@style/TextViewGothamBook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:lineSpacingExtra="@dimen/_5sdp"
+                    android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+                    android:layout_marginTop="@dimen/_10sdp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtLovedOne"
+                    style="@style/TextViewGothamMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorWhite"
+                    android:text="@string/max_3_loved_one_can_be_added"
+                    android:layout_marginTop="@dimen/_15sdp" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15sdp">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtPrice"
+                        style="@style/TextViewGothamBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_20ssp"
+                        android:text="50"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtPriceUnit"
+                        style="@style/TextViewGothamLight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:textColor="@color/colorWhite"
+                        android:text="$/month"
+                        app:layout_constraintStart_toEndOf="@id/txtPrice"
+                        app:layout_constraintTop_toTopOf="@+id/txtPrice" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtExpirePlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/gotham_book"
+            android:text="@string/your_plan_will_expire_on"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_14ssp"
+            android:layout_marginStart="@dimen/_20sdp"
+            app:layout_constraintStart_toStartOf="@+id/cv"
+            app:layout_constraintTop_toBottomOf="@+id/cv"
+            android:layout_marginTop="@dimen/_10sdp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtPlanExpireDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/gotham_bold"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_14ssp"
+            android:text="21 July, 2022"
+            app:layout_constraintStart_toStartOf="@+id/txtExpirePlan"
+            app:layout_constraintTop_toBottomOf="@+id/txtExpirePlan"
+            android:layout_marginTop="@dimen/_10sdp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtRenew"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/gotham_book"
+            android:textColor="@color/_D7293F"
+            android:textSize="@dimen/_14ssp"
+            android:text="@string/renew"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:onClick="@{listener::onClick}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtExpirePlan"
+            android:layout_marginTop="@dimen/_10sdp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnChangePlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:background="@drawable/button_transparent_green"
+            android:fontFamily="@font/gotham_medium"
+            android:onClick="@{listener::onClick}"
+            android:paddingHorizontal="@dimen/_50sdp"
+            android:paddingVertical="@dimen/_15sdp"
+            android:text="@string/change_plan"
+            android:textAllCaps="false"
+            android:textColor="@color/_399282"
+            android:textSize="@dimen/_16ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -7,6 +7,7 @@ import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
+import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.care_teams.CareTeamsRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AddMemberViewModel @Inject constructor(
     private val dataRepository: DataRepository,
-    private val careTeamsRepository: CareTeamsRepository
+    private val careTeamsRepository: CareTeamsRepository,
+    private val userRepository: UserRepository
 ) :
     BaseViewModel() {
 
@@ -68,6 +70,10 @@ class AddMemberViewModel @Inject constructor(
 
     fun getLovedOneUUId(): String? {
         return dataRepository.getLovedOneUUId()
+    }
+
+    fun getLoggedInUserUUID(): String? {
+        return userRepository.getUUID()
     }
 
 }

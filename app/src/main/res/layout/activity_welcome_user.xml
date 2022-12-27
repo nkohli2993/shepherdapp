@@ -20,9 +20,25 @@
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorGreyLight"
             android:orientation="vertical"
             tools:context="com.shepherdapp.app.ui.component.addLovedOne.Hilt_CreateAccountActivity">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                style="@style/TextViewGothamBook"
+                android:id="@+id/txtLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_22sdp"
+                android:text="@string/log_out"
+                android:onClick="@{listener::onClick}"
+                android:drawableStart="@drawable/ic_log_out"
+                android:drawablePadding="@dimen/_10sdp"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:textColor="@color/_D7293F"
+                android:textSize="@dimen/_15ssp" />
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/textViewTitle"
@@ -44,6 +60,7 @@
                 android:text="@string/welcome_user_desc"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
+                android:lineSpacingExtra="@dimen/_5sdp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtLogin" />
 
@@ -56,7 +73,7 @@
                 android:layout_marginTop="@dimen/_24sdp"
                 android:onClick="@{listener::onClick}"
                 app:cardBackgroundColor="#EBF4F2"
-                app:cardCornerRadius="@dimen/_12sdp"
+                app:cardCornerRadius="@dimen/_22sdp"
                 app:cardElevation="0dp"
                 app:cardPreventCornerOverlap="false"
                 tools:layout_editor_absoluteX="16dp">
@@ -128,7 +145,7 @@
                 android:layout_marginTop="@dimen/_24sdp"
                 android:onClick="@{listener::onClick}"
                 app:cardBackgroundColor="#EBF5FB"
-                app:cardCornerRadius="@dimen/_12sdp"
+                app:cardCornerRadius="@dimen/_22sdp"
                 app:cardElevation="0dp"
                 app:cardPreventCornerOverlap="false"
                 tools:layout_editor_absoluteX="16dp">
@@ -161,7 +178,7 @@
                         android:onClick="@{listener::onClick}"
                         android:paddingVertical="@dimen/_2sdp"
                         android:text="@string/join_an_existing"
-                        android:textColor="#399282"
+                        android:textColor="@color/_41A1DA"
                         android:textSize="@dimen/_16ssp"
                         app:layout_constraintBottom_toTopOf="@id/txtCareTeam"
                         app:layout_constraintStart_toEndOf="@id/ivCareTeam"
@@ -176,7 +193,7 @@
                         android:onClick="@{listener::onClick}"
                         android:paddingVertical="@dimen/_2sdp"
                         android:text="@string/care_team"
-                        android:textColor="#399282"
+                        android:textColor="@color/_41A1DA"
                         android:textSize="@dimen/_18ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ivCareTeam"
@@ -214,7 +231,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_book"
-            android:text="Didn't received email yet? Resend"
+            android:text="@string/did_not_received_mail_yet"
             android:textColor="@color/_192032"
             android:layout_marginBottom="@dimen/_15sdp"
             android:textSize="@dimen/_12ssp"

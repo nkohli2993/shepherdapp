@@ -1,17 +1,18 @@
 package com.shepherdapp.app.ui.component.loved_one
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
@@ -47,6 +48,8 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     private var totalPage: Int = 0
     private var total: Int = 0
 
+    private var TAG = "LovedOnesFragment"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,7 +64,12 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
         super.onResume()
         careTeams.clear()
         page = 1
-        lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+        if (lovedOneViewModel.isLoggedInUserLovedOne() == true) {
+            Log.d(TAG, "onResume: LovedOne loggedIn")
+            lovedOneViewModel.getCareTeamsByLovedOneId(page, limit, status)
+        } else {
+            lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+        }
     }
 
     private fun handleAddedLovedOnePagination() {
@@ -113,13 +121,29 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                         lovedOneAdapter = null
                         setLovedOnesAdapter()
                     }
-                    result.data.payload.let { payload ->
+                    //To fix : Duplicate LovedOne names in LovedOne Listing
+                    // If LoggedIn user is loved one, get first object and add to careTeams
+
+                    if (lovedOneViewModel.isLoggedInUserLovedOne() == true) {
+                        careTeams.add(result.data.payload.data.first())
+                        lovedOneAdapter?.addData(careTeams)
+                    } else {
+                        result.data.payload.let { payload ->
+                            careTeams = payload.data
+                            total = payload.total!!
+                            currentPage = payload.currentPage!!
+                            totalPage = payload.totalPages!!
+                        }
+                        lovedOneAdapter?.addData(careTeams)
+                    }
+
+                  /*  result.data.payload.let { payload ->
                         careTeams = payload.data
                         total = payload.total!!
                         currentPage = payload.currentPage!!
                         totalPage = payload.totalPages!!
                     }
-                    lovedOneAdapter?.addData(careTeams)
+                    lovedOneAdapter?.addData(careTeams)*/
                     val lovedOneIDInPrefs =
                         Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
                     for (i in careTeams) {
@@ -131,6 +155,46 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                 }
             }
         }
+
+        /*       lovedOneViewModel.checkSubscriptionStatusResponseLiveData.observeEvent(this) {
+                   when (it) {
+                       is DataResult.Failure -> {
+                           hideLoading()
+                       }
+                       is DataResult.Loading -> {
+                           showLoading("")
+                       }
+                       is DataResult.Success -> {
+                           hideLoading()
+                           val type = it.data.payload?.type
+                           val status = it.data.payload?.status
+                           if (status == true) {
+                               findNavController().navigate(
+                                   LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
+                                       source = Const.ADD_LOVE_ONE
+                                   )
+                               )
+                           } else {
+                               var message: String? = null
+                               if (type == Const.Type.ENTERPRISE) {
+                                   message = getString(R.string.user_limit_exceeded)
+                               } else if (type == Const.Type.SUBSCRIPTION) {
+                                   message = getString(R.string.your_subscription_has_been_expired)
+                               }
+                               val builder = AlertDialog.Builder(requireContext())
+                               val dialog = builder.apply {
+                                   setTitle(getString(R.string.app_name))
+                                   setMessage(message)
+                                   setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                   }
+                               }.create()
+                               dialog.show()
+                               dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                           }
+
+                       }
+                   }
+               }*/
     }
 
     override fun initViewBinding() {
@@ -152,28 +216,52 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvNew -> {
-                findNavController().navigate(
-                    LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
-                        source = Const.ADD_LOVE_ONE
+//                lovedOneViewModel.checkSubscriptionStatus()
+
+                Log.d(TAG, "onClick:${careTeams.size} ")
+                if (careTeams.size < 3) {
+                    findNavController().navigate(
+                        LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
+                            source = Const.ADD_LOVE_ONE
+                        )
                     )
-                )
+                } else {
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle(getString(R.string.app_name))
+                        setMessage(getString(R.string.user_limit_exceeded))
+                        setPositiveButton(getString(R.string.ok)) { _, _ ->
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                }
             }
             R.id.btnDone -> {
                 selectedCare?.let { careTeams ->
                     careTeams.love_user_id_details.let {
                         lovedOneViewModel.saveLovedOneUUID(it.uid!!)
                         val lovedOneDetail = UserLovedOne(
-                            it.id,
-                            it.uid,
-                            careTeams.love_user_id,
-                            careTeams.role_id,
-                            careTeams.permission
+                            id = it.id,
+                            userId = it.uid,
+                            loveUserId = careTeams.love_user_id,
+                            roleId = careTeams.role_id,
+                            permission = careTeams.permission,
+                            firstName = it.firstname,
+                            lastName = it.lastname,
+                            profilePic = it.profilePhoto
                         )
                         lovedOneViewModel.saveLovedOneUserDetail(lovedOneDetail)
+
+                        // Get the care role name and saved into shared preferences
+                        val roleName = careTeams.careRoles.name
+                        roleName?.let { it1 -> lovedOneViewModel.saveUserRole(it1) }
                     }
                 }
 
-                backPress()
+//                backPress()
+                // Redirect to dashboard fragment
+                findNavController().navigate(R.id.action_nav_loved_one_to_nav_dashboard)
             }
             R.id.ivBack -> {
                 backPress()

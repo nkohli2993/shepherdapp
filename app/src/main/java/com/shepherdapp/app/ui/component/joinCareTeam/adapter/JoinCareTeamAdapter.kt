@@ -76,8 +76,6 @@ class JoinCareTeamAdapter(
 
             }
 
-
-
             binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
                 result.isSelected = isChecked
 

@@ -528,7 +528,7 @@
     <string name="add_medical_condition">Ajouter une condition médicale</string>
     <string name="medical_condition">Condition médicale</string>
     <string name="please_enter_medical_condition">Veuillez saisir le nom de la condition médicale.</string>
-    <string name="document_added_successfully">Document ajouté avec succès !</string>
+    <string name="document_added_successfully">Document ajouté avec succès!</string>
     <string name="files_uploaded_successfully">Fichiers téléchargés avec succès…</string>
     <string name="about_us">À propos de nous</string>
     <string name="loved_one_not_available">Nom de LovedOne non disponible</string>
@@ -536,4 +536,12 @@
     <string name="edit_medical_conditions">Modifier les conditions médicales</string>
     <string name="no_medical_condition_found">Aucune condition médicale trouvée…</string>
     <string name="everyday">Tous les jours</string>
+    <string name="edit_loved_one_profile">Modifier les détails d\'un être cher</string>
+    <string name="selected_recommended_document_type">Sélectionnez le type de document recommandé</string>
+    <string name="select_document_type">Sélectionnez le type de document</string>
+<!--    <string name="are_you_an_enterprise_user">Êtes-vous un \n Utilisateur d'entreprise?</string>-->
+    <string name="enter_enterprise_code">Entrer dans l\'entreprise \n Code</string>
+<!--    <string name="enterprise_code">Code d\'entreprise</string>-->
+<!--    <string name="are_you_enterprise_user">Êtes-vous un utilisateur d\'entreprise?</string>-->
+
 </resources>

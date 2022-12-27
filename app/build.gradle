@@ -37,8 +37,8 @@ android {
         applicationId "com.shepherdapp.app"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 1
-        versionName "1.0.4"
+        versionCode 2
+        versionName "1.0.1"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        signingConfig signingConfigs.debug
@@ -70,12 +70,13 @@ android {
         }
         release {
             debuggable false
-            minifyEnabled true
+            minifyEnabled false
             signingConfig signingConfigs.release
 //            buildConfigField("String", "BASE_URL", base_url_live)
 //            buildConfigField("String", "BASE_URL", base_url_local)
 //            buildConfigField("String", "BASE_URL", base_url_staging)
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //dev urls
 //            buildConfigField("String", "BASE_URL_USER", base_url_user_dev)
 //            buildConfigField("String", "BASE_URL", base_url_dev)
@@ -199,6 +200,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.3.1')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'androidx.preference:preference:1.1.1'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.2'
 
     androidTestImplementation "androidx.test.ext:junit-ktx:$androidXJunitVersion"
     /**-------------------testing libs------------------------------------------**/
@@ -256,6 +258,7 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.6.0'
 
     implementation "com.michalsvec:single-row-calednar:$calednarVersion"
+    //MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 //    implementation "com.github.wRorsjakz:Android-NumPad:$numberpadVersion"
     implementation "androidx.biometric:biometric:$biometric_version"
@@ -274,8 +277,19 @@ dependencies {
         exclude group: 'org.apache.httpcomponents'
     }
 
+    // Google Play Billing Library dependency
+    implementation("com.android.billingclient:billing-ktx:$billing_version")
+
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
+    // Google Fit
+    implementation 'com.google.android.gms:play-services-fitness:21.1.0'
+
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:2.1.0'
+
+    //View Pager2
+    implementation "androidx.viewpager2:viewpager2:$viewPager2Version"
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
 }
 kapt {
     correctErrorTypes true

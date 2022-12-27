@@ -248,6 +248,7 @@ class MessagesViewModel @Inject constructor(
                         }
 
                     }
+                    else -> {}
                 }
             }
             /* if (!userIdList.isNullOrEmpty() && userIdList.size < 10) {

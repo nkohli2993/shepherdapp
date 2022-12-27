@@ -80,11 +80,13 @@ class OtherDocumentsAdapter(
                     lockBox
                 )
             }
-            /*itemBinding.root.setOnClickListener {
+            // Handle click on whole card
+            itemBinding.root.setOnClickListener {
+                lockBox.clickType = ClickType.View.value
                 recyclerItemListener.onItemSelected(
                     lockBox
                 )
-            }*/
+            }
         }
 
         private fun openDocumentOptions(

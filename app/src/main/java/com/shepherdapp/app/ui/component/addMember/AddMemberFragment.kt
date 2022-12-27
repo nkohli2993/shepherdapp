@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
+import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.Resource
@@ -25,9 +26,7 @@ import com.shepherdapp.app.ui.component.addMember.adapter.AddMemberRoleAdapter
 import com.shepherdapp.app.ui.component.addMember.adapter.RestrictionsModuleAdapter
 import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.showError
-import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.AddMemberViewModel
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -57,13 +56,13 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
             when {
                 fragmentAddMemberBinding.edtEmail.text.toString().isEmpty() -> {
                     fragmentAddMemberBinding.edtEmail.error =
-                        getString(R.string.please_enter_email_id)
+                        getString(R.string.enter_email)
                     fragmentAddMemberBinding.edtEmail.requestFocus()
                 }
                 selectedCareRole?.id == null -> {
                     showError(requireContext(), "Please select any role...")
                 }
-                selectedModule.isEmpty() ->{
+                selectedModule.isEmpty() -> {
                     showError(requireContext(), "Please select atleast one permission")
                 }
                 else -> {
@@ -119,7 +118,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     //binding.txtNoCareTeamFound.visibility = View.VISIBLE
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
-                        setTitle("Care Teams")
+                        setTitle("CareTeam")
                         setMessage("No CareTeam Found")
                         setPositiveButton("OK") { _, _ ->
                             // navigateToDashboardScreen()
@@ -143,11 +142,23 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     //it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
-                    showSuccess(
-                        requireContext(),
-                        "Request sent to the member for joining careTeam successfully..."
-                    )
-                    backPress()
+                    /* showSuccess(
+                         requireContext(),
+                         "Request sent to the member for joining careTeam successfully..."
+                     )
+                     backPress()*/
+
+
+                    val builder = AlertDialog.Builder(requireContext())
+                    val dialog = builder.apply {
+                        setTitle("Shepherd")
+                        setMessage("Invitation sent successfully.")
+                        setPositiveButton("OK") { _, _ ->
+                            backPress()
+                        }
+                    }.create()
+                    dialog.show()
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
             }
         }
@@ -197,6 +208,10 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 backPress()
             }
 
+            R.id.spinner_down_arrow_image -> {
+                fragmentAddMemberBinding.spRoles.performClick()
+            }
+
             R.id.btnInvitation -> {
                 val email = fragmentAddMemberBinding.edtEmail.text.toString().trim()
                 val roleID = selectedCareRole?.id
@@ -206,7 +221,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     UserProfiles::class.java
                 )
 
-                val loggedInUserID = addMemberViewModel.getLovedOneUUId()
+                val loggedInUserID = addMemberViewModel.getLoggedInUserUUID()
                 Log.d(TAG, "loggedInUserID : $loggedInUserID")
 
                 // Get LovedOneId
@@ -215,7 +230,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 Log.d(TAG, "LovedOneID : $lovedOneUUID")
 
                 // Checked the selected state of Care Team
-                val isCareTeamEnabled = fragmentAddMemberBinding.switchCareTeam.isChecked
+                val isCarePointsEnabled = fragmentAddMemberBinding.switchCarePoints.isChecked
 
                 // Checked the selected state of Care Team
                 val isLockBoxEnabled = fragmentAddMemberBinding.switchLockBox.isChecked
@@ -226,8 +241,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 // Checked the selected state of Care Team
                 val isResourcesEnabled = fragmentAddMemberBinding.switchResources.isChecked
                 selectedModule = ""
-                if (isCareTeamEnabled) {
-                    selectedModule += Modules.CareTeam.value.toString() + ","
+                if (isCarePointsEnabled) {
+                    selectedModule += Modules.CarePoints.value.toString() + ","
                 }
                 if (isLockBoxEnabled) {
                     selectedModule += Modules.LockBox.value.toString() + ","

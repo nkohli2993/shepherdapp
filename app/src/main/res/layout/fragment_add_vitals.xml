@@ -251,8 +251,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tvBpm"
                         app:layout_constraintStart_toEndOf="@+id/ivHeart"
-                        app:layout_constraintTop_toTopOf="parent"
-                        bind:getValidHeartRate="@{@string/heart_rate}" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvBpm"
@@ -313,8 +312,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/tvTemp"
                         app:layout_constraintStart_toEndOf="@+id/ivTemp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        bind:getValidBodyTemperature="@{@string/body_temp}" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvTemp"
@@ -385,8 +383,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/ivBp"
-                            app:layout_constraintTop_toTopOf="parent"
-                            bind:getBloodPressureValid="@{@string/sbp}" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -444,7 +441,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/ivdBp"
                             app:layout_constraintTop_toTopOf="parent"
-                            bind:getBloodPressureValid="@{@string/dbp}" />
+                             />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -496,7 +493,7 @@
                         app:layout_constraintEnd_toStartOf="@+id/tvSp0"
                         app:layout_constraintStart_toEndOf="@+id/ivOxygen"
                         app:layout_constraintTop_toTopOf="parent"
-                        bind:getValidOxygen="@{@string/oxygen}" />
+                        />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/tvSp0"

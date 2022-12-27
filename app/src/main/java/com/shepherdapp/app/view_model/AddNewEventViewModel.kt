@@ -92,7 +92,7 @@ class AddNewEventViewModel @Inject constructor(
         location: String,
         date: String,
         time: String,
-        notes: String,
+        notes: String?,
         assign_to: ArrayList<String>
     ): LiveData<Event<DataResult<CreateEventResponseModel>>> {
         createEventData.value.let {

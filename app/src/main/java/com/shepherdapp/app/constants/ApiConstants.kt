@@ -2,6 +2,9 @@ package com.shepherdapp.app.constants
 
 import com.shepherdapp.app.BuildConfig.BASE_URL
 import com.shepherdapp.app.BuildConfig.BASE_URL_USER
+import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.utils.Const.LOVED_ONE_UUID
+import com.shepherdapp.app.utils.Prefs
 
 
 /**
@@ -13,7 +16,7 @@ object ApiConstants {
 
     private const val API_VERSION = "api/v1/"
 
-//    const val BASE_URL = "https://sheperdstagging.itechnolabs.tech:3055/"
+    //    const val BASE_URL = "https://sheperdstagging.itechnolabs.tech:3055/"
 //    // Field from build type: debug
 //    const val BASE_URL_USER = "https://usersherperd.itechnolabs.tech/"
     object Authentication {
@@ -35,7 +38,8 @@ object ApiConstants {
 
     object LovedOne {
         const val CREATE_LOVED_ONE = "$BASE_URL_USER${API_VERSION}users/create-loved-one"
-//        const val EDIT_LOVED_ONE = "$BASE_URL_USER${API_VERSION}user_profiles/{id}"
+
+        //        const val EDIT_LOVED_ONE = "$BASE_URL_USER${API_VERSION}user_profiles/{id}"
         const val EDIT_LOVED_ONE = "$BASE_URL_USER${API_VERSION}user_profiles/lovedone/{uuid}"
         const val GET_LOVED_ONE_DETAIL_WITH_RELATION =
             "$BASE_URL${API_VERSION}care_teams/love_detail/{id}"
@@ -51,7 +55,8 @@ object ApiConstants {
             "$BASE_URL${API_VERSION}user_conditions/getAllByLovedOne/{id}"
         const val UPDATE_MEDICAL_CONDITIONS =
             "$BASE_URL${API_VERSION}user_conditions/updateOne"
-        const val ADD_MEDICAL_CONDITION =   "$BASE_URL${API_VERSION}conditions"
+        const val ADD_MEDICAL_CONDITION = "$BASE_URL${API_VERSION}conditions"
+        const val EDIT_MEDICAL_CONDITION = "$BASE_URL${API_VERSION}conditions/{id}"
     }
 
     object CareTeams {
@@ -71,6 +76,7 @@ object ApiConstants {
         const val CREATE_EVENT = "$BASE_URL${API_VERSION}events"
         const val GET_EVENT = "$BASE_URL${API_VERSION}events"
         const val GET_EVENT_DETAIL = "$BASE_URL${API_VERSION}events/{id}"
+        const val EDIT_EVENT = "$BASE_URL${API_VERSION}events/{id}"
         const val ADD_EVENT_COMMENT = "$BASE_URL${API_VERSION}event_comments"
         const val GET_ALL_EVENT_COMMENT = "$BASE_URL${API_VERSION}event_comments/"
     }
@@ -83,6 +89,10 @@ object ApiConstants {
     object Invitations {
         const val GET_INVITATIONS = "$BASE_URL${API_VERSION}invites"
         const val ACCEPT_INVITATIONS = "$BASE_URL${API_VERSION}invites/accept/{id}"
+
+        val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!.getString(LOVED_ONE_UUID, "")
+        const val GET_PENDING_INVITATIONS = "$BASE_URL${API_VERSION}invites/pending/{id}"
+        const val DELETE_PENDING_INVITEE_BY_ID = "$BASE_URL${API_VERSION}invites/{id}"
     }
 
     object LockBox {
@@ -99,6 +109,7 @@ object ApiConstants {
               "$BASE_URL${API_VERSION}lockboxs"*/
         const val DELETE_UPLOADED_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
         const val UPDATE_LOCK_BOX_DOC = "$BASE_URL${API_VERSION}lockboxs/{id}"
+        const val SHARE_LOCK_BOX = "$BASE_URL${API_VERSION}lockboxs/share/{id}"
     }
 
     object MedList {
@@ -106,7 +117,7 @@ object ApiConstants {
         const val GET_ALL_DOSE_LIST = "$BASE_URL${API_VERSION}dosages"
         const val GET_ALL_DOSE_TYPE_LIST = "$BASE_URL${API_VERSION}dosage_types"
 
-        //const val GET_LOVED_ONE_MED_LIST = "$BASE_URL${API_VERSION}user_medications/lovedone-user/{id}"
+        //        const val GET_LOVED_ONE_MED_LIST = "$BASE_URL${API_VERSION}user_medications/lovedone-user/{id}"
         const val GET_LOVED_ONE_MED_LIST = "$BASE_URL${API_VERSION}user_medications/loved-one/{id}"
 
         // Scheduled medication
@@ -120,15 +131,19 @@ object ApiConstants {
         const val GET_MEDICATION_RECORD =
             "$BASE_URL${API_VERSION}user_medication_records/loved_one/{id}"
         const val ADD_MED_LIST = "$BASE_URL${API_VERSION}medlists"
+        const val UPDATE_MED_LIST = "$BASE_URL${API_VERSION}medlists/{id}"
     }
 
     object UpdateProfile {
         const val UPDATE_LOGIN_USER_PROFILE = "$BASE_URL_USER${API_VERSION}user_profiles/{id}"
+        const val UPDATE_USER_PROFILE_FOR_LAST_SYNC =
+            "$BASE_URL_USER${API_VERSION}user_profiles/settings/{id}"
     }
 
     object VitalStats {
         const val ADD_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital"
         const val GET_GRAPH_VITAL_STATS = "$BASE_URL${API_VERSION}loveone_vital/graph-data"
+        const val BULK_CREATE_VITAL = "$BASE_URL${API_VERSION}loveone_vital/bulk-create"
     }
 
     object SecurityCode {
@@ -139,7 +154,7 @@ object ApiConstants {
 
     object Resource {
         const val GET_ALL_RESOURCE = "$BASE_URL${API_VERSION}posts"
-        const val GET_ALL_RESOURCE_BY_LOVED_ONE  = "$BASE_URL${API_VERSION}posts/lovedone"
+        const val GET_ALL_RESOURCE_BY_LOVED_ONE = "$BASE_URL${API_VERSION}posts/lovedone"
         const val GET_TRENDING_RESOURCE = "$BASE_URL${API_VERSION}posts/features"
         const val GET_RESOURCE_DETAIL = "$BASE_URL${API_VERSION}posts/{id}"
     }
@@ -148,9 +163,26 @@ object ApiConstants {
         const val GET_STATIC_PAGE = "$BASE_URL${API_VERSION}settings"
     }
 
-    object Notification{
+    object Notification {
         const val GET_NOTIFICATION_LIST = "$BASE_URL${API_VERSION}notification"
         const val GET_USER_NOTIFICATIONS = "$BASE_URL${API_VERSION}user_notifications"
+        const val SEND_PUSH_NOTIFICATIONS = "https://fcm.googleapis.com/fcm/send"
+        const val GET_NOTIFICATIONS = "$BASE_URL${API_VERSION}notifications"
+        const val READ_NOTIFICATIONS = "$BASE_URL${API_VERSION}notifications/read"
+    }
+
+    object Subscription {
+        const val VALIDATE_SUBSCRIPTION = "${BASE_URL_USER}${API_VERSION}subscriptions/validate-subscription"
+        const val CREATE_SUBSCRIPTION = "${BASE_URL_USER}${API_VERSION}subscriptions/"
+        const val CHECK_SUBSCRIPTION_STATUS =
+            "${BASE_URL_USER}${API_VERSION}enterprises/check-subscription-status"
+        const val GET_ACTIVE_SUBSCRIPTIONS = "${BASE_URL_USER}${API_VERSION}subscriptions/active"
+        const val GET_SUBSCRIPTIONS_PLANS = "${BASE_URL_USER}${API_VERSION}subscriptions/plans"
+    }
+
+    object Enterprise {
+        const val ATTACH_ENTERPRISE =
+            "${BASE_URL_USER}${API_VERSION}user_profiles/attach-enterprise"
     }
 }
 

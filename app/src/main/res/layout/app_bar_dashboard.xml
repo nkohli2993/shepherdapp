@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
-                    android:src="@drawable/ic_home_notification"
+                    android:src="@drawable/ic_home_notification_inactive"
                     app:layout_constraintEnd_toStartOf="@+id/ivLovedOneProfile"
                     app:layout_constraintTop_toTopOf="parent" />
 

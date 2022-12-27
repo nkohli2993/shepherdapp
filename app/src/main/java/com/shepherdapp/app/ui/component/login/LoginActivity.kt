@@ -3,24 +3,36 @@ package com.shepherdapp.app.ui.component.login
 import CommonFunctions
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.databinding.ActivityLoginNewBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -40,8 +52,6 @@ import com.shepherdapp.app.utils.extensions.isValidEmail
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.LoginViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executor
 
@@ -59,6 +69,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private lateinit var biometricPrompt: BiometricPrompt
     private var token: String? = null
     private var userLovedOneArrayList: ArrayList<UserLovedOne>? = null
+    private var firebaseToken: String? = null
+    private var mContext: Context? = null
+    private var doubleBackToExitPressedOnce: Boolean = false
     private var TAG = "LoginActivity"
 
     // Handle Validation
@@ -66,7 +79,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         get() {
             when {
                 loginViewModel.loginData.value?.email.isNullOrEmpty() -> {
-                    binding.edtEmail.error = getString(R.string.please_enter_email_id)
+                    binding.edtEmail.error = getString(R.string.enter_email)
                     binding.edtEmail.requestFocus()
                 }
                 loginViewModel.loginData.value?.email?.isValidEmail() == false -> {
@@ -90,8 +103,29 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
-//        loginViewModel.loginData.value!!.email = "rony@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "Admin@123"
+        terminateApp()
+
+        /* if (intent.getStringExtra("source") != null) {
+             if (intent.getStringExtra("source") == "WelcomeActivity") {
+                 binding.ivBack.visibility = View.VISIBLE
+             }
+         }*/
+
+//        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
+//        loginViewModel.loginData.value!!.password = "Test123@"
+
+//        loginViewModel.loginData.value!!.email = "jb123@yopmail.com"
+//        loginViewModel.loginData.value!!.password = "1234"
+
+//        loginViewModel.loginData.value!!.email = "leo@yopmail.com"
+//        loginViewModel.loginData.value!!.password = "1234"
+
+//        loginViewModel.loginData.value!!.email = "honey@yopmail.com"
+//        loginViewModel.loginData.value!!.password = "1234"
+
+        loginViewModel.loginData.value!!.email = "user1@yopmail.com"
+        loginViewModel.loginData.value!!.password = "1234"
+
         binding.viewModel = loginViewModel
 
 
@@ -111,6 +145,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             binding.edtPasswd.setSelection(binding.edtPasswd.length())
         }
         fingerPrintExecute()
+
+        // Check if FirebaseToken is empty then regenerate it
+        if (Prefs.with(this)?.getString(Const.FIREBASE_TOKEN, "").isNullOrEmpty()) {
+            generateFirebaseToken()
+        }
+
 
     }
 
@@ -184,14 +224,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun observeViewModel() {
         // Observe Login response
-        loginViewModel.loginResponseLiveData.observeEvent(this) {
+        loginViewModel.loginResponseLiveData.observeEvent(this) { it ->
             when (it) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-//                    it.data.message?.let { it1 -> showSuccess(this, it1) }
+//                    loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser()
                     it.data.let { it ->
                         it.message?.let { it1 -> showSuccess(this, it1) }
                         it.payload.let { payload ->
@@ -205,7 +245,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
                                 }
                             }
-                            generateFirebaseToken()
+//                            generateFirebaseToken()
                             // Save UUID
                             payload?.uuid.let { uuid ->
                                 uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
@@ -214,39 +254,90 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                             // Save token
                             payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
 
-                            payload?.userLovedOne?.let {
-                                if (it.isNotEmpty()) {
-                                    // Save Loved One UUID
-                                    it[0].let {
-                                        loginViewModel.saveLovedOneDetail(it)
-                                    }
-                                    it[0].loveUserId?.let { it1 ->
-                                        loginViewModel.saveLovedOneUUID(
+                            val lovedOneSlug = payload?.userRoles?.filter {
+                                it.role?.slug?.equals("user-loved-one") == true
+                            }?.size
+
+                            // Check if the loggedIn user is loved one on the basis of role slug
+                            val userRoleSlug = payload?.userRoles?.first()?.role?.slug
+                            if (lovedOneSlug != null) {
+                                if (/*userRoleSlug.equals("user-loved-one")*/lovedOneSlug >= 1) {
+
+                                    // Save Loved One Role
+                                    payload?.userRoles?.first()?.role?.name?.let { it1 ->
+                                        loginViewModel.saveUserRole(
                                             it1
                                         )
                                     }
-                                    // Save LovedOne ID
-                                    it[0].id?.let { it1 ->
-                                        loginViewModel.saveLovedOneId(
-                                            it1.toString()
-                                        )
+                                    loginViewModel.saveLoggedInUserAsLovedOne(true)
+                                    Log.d(
+                                        TAG,
+                                        "LoggedIn user is loved one . Status saved to shared pref..."
+                                    )
+                                    // save id
+                                    loginViewModel.saveLovedOneId(payload?.id.toString())
+
+                                    // save uuid
+                                    loginViewModel.saveLovedOneUUID(payload?.uuid.toString())
+
+                                } else {
+                                    payload?.userLovedOne?.let {
+                                        if (it.isNotEmpty()) {
+                                            // Save Loved One UUID
+                                            it[0].let {
+                                                loginViewModel.saveLovedOneDetail(it)
+                                            }
+                                            it[0].loveUserId?.let { it1 ->
+                                                loginViewModel.saveLovedOneUUID(
+                                                    it1
+                                                )
+                                            }
+                                            // Save LovedOne ID
+                                            it[0].id?.let { it1 ->
+                                                loginViewModel.saveLovedOneId(
+                                                    it1.toString()
+                                                )
+                                            }
+
+                                            // Save Role
+                                            it[0].careRoles?.name.let {
+                                                it?.let { it1 -> loginViewModel.saveUserRole(it1) }
+                                            }
+                                        }
                                     }
 
-                                    // Save Role
-                                    it[0].careRoles?.name.let {
-                                        it?.let { it1 -> loginViewModel.saveUserRole(it1) }
-                                    }
                                 }
                             }
+
                             payload?.email?.let { email ->
                                 loginViewModel.saveEmail(
                                     email
                                 )
                             }
                         }
-
-
                         userLovedOneArrayList = it.payload?.userLovedOne
+
+                        // Save User Info in Firestore
+                        val user = it.payload?.let { it1 -> loginResponseToUser(it1) }
+                        // user?.let { it1 -> loginViewModel.saveUserInfoInFirestore(it1) }
+                        user?.let { it1 ->
+                            loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
+                                it1
+                            )
+                        }
+                        // If login response contains enterprise code, then the loggedIn user is the enterprise user
+                        if (!it.payload?.userProfiles?.enterpriseId.isNullOrEmpty()) {
+                            // Save status in SharedPrefs
+                            loginViewModel.saveUSerAttachedToEnterprise(true)
+                            // Save enterprise detail in SharedPrefs
+                            val enterprise = it.payload?.userProfiles?.enterprise
+                            if (enterprise != null) {
+                                loginViewModel.saveEnterpriseDetail(enterprise)
+                            }
+                        } else if (it.payload?.activeSubscription?.id != null) {
+                            //If subscription object in Login response contains data, then user has taken subscription
+                            loginViewModel.saveUSerAttachedToEnterprise(false)
+                        }
 
                         // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
                         // Save lovedOneID to sharedPref
@@ -306,12 +397,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToScreen() {
-
-        if (userLovedOneArrayList.isNullOrEmpty()) {
-            navigateToWelcomeUserScreen()
+        // If loggedIn user is loved one, then redirect to home screen
+        if (loginViewModel.isLoggedInUserLovedOne() == true) {
+            navigateToHomeScreen()
         } else {
-            //navigateToHomeScreen()
-            navigateToHomeScreenWithLovedOneArray()
+            if (userLovedOneArrayList.isNullOrEmpty()) {
+                navigateToWelcomeUserScreen()
+            } else {
+                navigateToHomeScreen()
+                //showEnterpriseUserDialog()
+            }
         }
     }
 
@@ -332,6 +427,57 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         dialog.setCancelable(false)
         dialog.show()
     }
+
+    // Show Enterprise user dialog
+    private fun showEnterpriseUserDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_enterprise_user)
+        val yesBtn = dialog.findViewById(R.id.btnYes) as TextView
+        val noBtn = dialog.findViewById(R.id.btnNo) as TextView
+        yesBtn.setOnClickListener {
+            showEnterpriseCodeDialog()
+            dialog.dismiss()
+        }
+        noBtn.setOnClickListener {
+            navigateToHomeScreen()
+            dialog.dismiss()
+        }
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
+        dialog.show()
+    }
+
+
+    // Enter Enterprise code dialog
+    private fun showEnterpriseCodeDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_enterprise_code)
+        val edtEnterCode = dialog.findViewById(R.id.edtEnterCode) as EditText
+        val btnSubmit = dialog.findViewById(R.id.btnSubmit) as TextView
+        val btnCancel = dialog.findViewById(R.id.btnCancel) as TextView
+        btnSubmit.setOnClickListener {
+            dialog.dismiss()
+        }
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
+        dialog.show()
+    }
+
 
     private fun registerBiometric(isBioMetricEnable: Boolean) {
         loginViewModel.registerBioMetric(
@@ -374,12 +520,46 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 navigateToCreateNewAccountScreen()
             }
             R.id.ivBack -> {
-                onBackPressed()
+//                onBackPressed()
+                terminateApp()
             }
             R.id.imgBiometric -> {
                 fingerPrintExecute()
             }
         }
+    }
+
+    /* override fun onBackPressed() {
+         terminateApp()
+         super.onBackPressed()
+     }*/
+
+    // Implements the logic to Tap back button twice to terminate application
+    private fun terminateApp() {
+        mContext = this
+        // Tap back button twice to terminate application
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (doubleBackToExitPressedOnce) {
+//                    finish()
+                    //Finish this activity as well as all activities immediately below it in the current task that have the same affinity.
+                    finishAffinity()
+                }
+                doubleBackToExitPressedOnce = true
+                Handler(Looper.getMainLooper()).postDelayed(
+                    {
+                        doubleBackToExitPressedOnce = false
+                    },
+                    2000
+                )
+                Toast.makeText(
+                    mContext,
+                    "Press back again to exit",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+        onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun navigateToCreateNewAccountScreen() {
@@ -420,7 +600,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
     // Navigate to Home Screen with loved one array
-    private fun navigateToHomeScreenWithLovedOneArray() {
+    private fun navigateToHomeScreen() {
         if (!userLovedOneArrayList.isNullOrEmpty()) {
             Log.d(TAG, "LovedOneArrayList Size :${userLovedOneArrayList?.size} ")
         } else {
@@ -434,17 +614,34 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
-    fun generateFirebaseToken(){
+    private fun generateFirebaseToken() {
         FirebaseMessaging.getInstance().token.addOnCompleteListener {
-            if (!it.isSuccessful){
+            if (!it.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", it.exception)
                 return@addOnCompleteListener
             }
-
+            firebaseToken = it.result
             // Get new FCM registration token
             Prefs.with(this)!!.save(Const.FIREBASE_TOKEN, it.result)
             // Log and toast
             Log.d(TAG, "Firebase token generated: ${it.result}")
+        }
+    }
+
+
+    private fun loginResponseToUser(payload: Payload): User {
+        generateFirebaseToken()
+        val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
+
+        return User().apply {
+            id = payload.userProfiles?.userId
+            userId = payload.userProfiles?.userId
+            firstname = payload.userProfiles?.firstname
+            lastname = payload.userProfiles?.lastname
+            profilePhoto = payload.userProfiles?.profilePhoto
+            uuid = payload.uuid
+            email = payload.email
+            firebaseToken = fToken
         }
     }
 

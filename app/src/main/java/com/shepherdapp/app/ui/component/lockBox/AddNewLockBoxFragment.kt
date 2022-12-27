@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -69,6 +70,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var documentAdapter: DocumentAdapter? = null
     private var selectedDocumentId: String? = null
 
+    private val args: AddNewLockBoxFragmentArgs by navArgs()
+
     companion object {
         private const val REQUEST_CODE_SIGN_IN = 1
         private const val REQUEST_CODE_OPEN_DOCUMENT = 2
@@ -85,13 +88,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 selectedDocumentId == null || selectedDocumentId == "-1" -> {
                     showInfo(requireContext(), getString(R.string.please_select_document_type))
                 }
-                fragmentAddNewLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
-                    fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
-                }
+                /* fragmentAddNewLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
+                     fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
+                 }*/
 
-                selectedFileList.isNullOrEmpty() -> {
+                /*selectedFileList.isNullOrEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_upload_file))
-                }
+                }*/
                 else -> {
                     return true
                 }
@@ -114,6 +117,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
         fragmentAddNewLockBoxBinding.listener = this
         addNewLockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
         setUploadedFilesAdapter()
@@ -124,6 +129,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
             false
         }
+
         fragmentAddNewLockBoxBinding.documentSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -135,6 +141,16 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
             }
 
+        /* val lBType = args.lockBoxType
+         Log.d(TAG, "lockBoxType : $lBType ")
+
+
+         val index = lockBoxTypes.indexOfFirst {
+             it.id == lBType?.id
+         }
+
+         fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
+ */
     }
 
     override fun observeViewModel() {
@@ -159,7 +175,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     uploadedDocumentsUrl = it.data.payload?.document
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
                     fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
-                    fileNote = fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    fileNote = if (fragmentAddNewLockBoxBinding.edtNote.text.isNullOrEmpty()) {
+                        null
+                    } else {
+                        fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    }
                     uploadedDocumentsUrl?.let { list ->
                         addNewLockBoxViewModel.addNewLockBox(
                             fileName,
@@ -234,13 +254,19 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                                 if ((i.lockbox == null || i.lockbox.size <= 0)) {
                                     lockBoxTypes.add(i)
                                 }
-                                if(i.name?.lowercase()=="other" && i.lockbox.size > 0){
+                                if (i.name?.lowercase() == "other" && i.lockbox.size > 0) {
                                     lockBoxTypes.add(i)
                                 }
                             }
                         }
                     }
-                    lockBoxTypes.add(0, LockBoxTypes(id = -1, name = getString(R.string.selected_recommended_document_type)))
+                    lockBoxTypes.add(
+                        0,
+                        LockBoxTypes(
+                            id = -1,
+                            name = getString(R.string.selected_recommended_document_type)
+                        )
+                    )
                     if (lockBoxTypes.isEmpty()) return@observeEvent
                     // show types in dropdown
                     documentAdapter =
@@ -250,6 +276,21 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             lockBoxTypes
                         )
                     fragmentAddNewLockBoxBinding.documentSpinner.adapter = documentAdapter
+
+                    // Get selected
+                    val lBType = args.lockBoxType
+                    Log.d(TAG, "lockBoxType : $lBType ")
+
+
+                    val index = lockBoxTypes.indexOfFirst {
+                        it.id == lBType?.id
+                    }
+
+                    fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
+                    // Set Document name if lockBox slug is not other
+                    /*if (!lBType?.slug.equals("other"))
+                        fragmentAddNewLockBoxBinding.edtFileName.setText(lBType?.name)
+*/
                 }
             }
         }
@@ -291,25 +332,45 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
             R.id.btnDone -> {
                 if (isValid) {
-                    var isFileFormatValid = false
-                    for (i in selectedFileList?.indices!!) {
-                        isFileFormatValid =
-                            FileValidator().validate(selectedFileList!![i].toString())
-
-                        if (!isFileFormatValid) break
-                    }
-                    if (!isFileFormatValid) {
-                        showError(
-                            requireContext(),
-                            getString(R.string.only_jpg_png_word_text_file_can_be_uploaded)
-                        )
-                    } else if (selectedFileList!!.size > 5) {
-                        showError(
-                            requireContext(),
-                            getString(R.string.you_can_upload_at_max_five_file)
-                        )
+                    fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()
+                    fileNote = if (fragmentAddNewLockBoxBinding.edtNote.text.isNullOrEmpty()) {
+                        null
                     } else {
-                        selectedFileList?.let { addNewLockBoxViewModel.uploadMultipleLockBoxDoc(it) }
+                        fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
+                    }
+                    if (selectedFileList.isNullOrEmpty()) {
+                        addNewLockBoxViewModel.addNewLockBox(
+                            fileName,
+                            fileNote,
+                            null,
+                            selectedDocumentId?.toInt()
+                        )
+
+                    } else {
+                        var isFileFormatValid = false
+                        for (i in selectedFileList?.indices!!) {
+                            isFileFormatValid =
+                                FileValidator().validate(selectedFileList!![i].toString())
+
+                            if (!isFileFormatValid) break
+                        }
+                        if (!isFileFormatValid) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.only_jpg_png_word_text_file_can_be_uploaded)
+                            )
+                        } else if (selectedFileList!!.size > 5) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.you_can_upload_at_max_five_file)
+                            )
+                        } else {
+                            selectedFileList?.let {
+                                addNewLockBoxViewModel.uploadMultipleLockBoxDoc(
+                                    it
+                                )
+                            }
+                        }
                     }
                 }
             }

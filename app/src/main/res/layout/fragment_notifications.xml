@@ -46,7 +46,7 @@
             app:layout_constraintTop_toTopOf="@+id/ivBack" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txtMedicalCondition"
+            android:id="@+id/txtClearAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_book"
@@ -54,6 +54,7 @@
             android:text="@string/clear_all"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_12ssp"
+            android:onClick="@{listener::onClick}"
             app:layout_constraintBottom_toBottomOf="@+id/ivBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/ivBack" />
@@ -68,13 +69,13 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:paddingVertical="@dimen/_20sdp"
-            android:text="@string/no_result_found"
-            android:textSize="18dp"
+            android:text="@string/no_notification_found"
+            android:textSize="@dimen/_21ssp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtMedicalCondition" />
+            app:layout_constraintTop_toBottomOf="@+id/txtClearAll" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewNotifications"
@@ -90,7 +91,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtMedicalCondition"
+            app:layout_constraintTop_toBottomOf="@+id/txtClearAll"
             tools:listitem="@layout/adapter_notifications" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

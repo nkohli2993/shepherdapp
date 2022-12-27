@@ -67,7 +67,9 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var relationSelected: Relation? = null
     private var lovedOneId: Int? = null
     private var lovedOneUUID: String? = null
+    private var loggedInUserUUID: String? = null
     private var userProfileId: Int? = null
+    private var sendInvitation: Boolean? = null
 
 
     private var mDay: Int = 0
@@ -127,6 +129,15 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 }
                 selectedRelationship?.id == -1 -> {
                     showInfo(this, getString(R.string.please_select_relationship))
+                }
+
+                binding.chkLovedOne.isChecked -> {
+                    if (binding.editTextEmail.text.toString().isEmpty()) {
+                        binding.editTextEmail.error = getString(R.string.enter_email)
+                        binding.editTextEmail.requestFocus()
+                    } else {
+                        return true
+                    }
                 }
                 else -> {
                     return true
@@ -199,6 +210,26 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
                 userProfileId = payload?.userProfiles?.id
 
+                // Get LovedOne UUID
+//                val lovedOneUUID = payload?.uniqueUUID
+                Log.d(TAG, "initViewBinding: lovedOneUUID : $lovedOneUUID")
+
+                // Get LoggedInUser
+                loggedInUserUUID = addLovedOneViewModel.getLoggedInUserUUID()
+                Log.d(TAG, "initViewBinding: loggedInUserUUID : $loggedInUserUUID")
+
+                // If UUID of loggedInUser and LovedOne matches
+                if (loggedInUserUUID == lovedOneUUID) {
+                    binding.txtRelationship.visibility = View.GONE
+                    binding.relationshipSpinnerLayout.visibility = View.GONE
+                    binding.chkLovedOne.visibility = View.GONE
+                    binding.chkSendInvitation.visibility = View.GONE
+                } else {
+                    binding.txtRelationship.visibility = View.VISIBLE
+                    binding.relationshipSpinnerLayout.visibility = View.VISIBLE
+                    binding.chkLovedOne.visibility = View.VISIBLE
+                    binding.chkSendInvitation.visibility = View.VISIBLE
+                }
             }
         }
         binding.ccp.setOnCountryChangeListener { this.phoneCode = it.phoneCode }
@@ -295,6 +326,18 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
 
+            }
+
+        }
+
+        binding.chkLovedOne.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                if (binding.editTextEmail.text.toString().isEmpty()) {
+                    binding.editTextEmail.error = getString(R.string.enter_email)
+                    binding.editTextEmail.requestFocus()
+                }
+            } else {
+                binding.editTextEmail.error = null
             }
 
         }
@@ -515,78 +558,81 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 initDatePicker()
             }
             R.id.btnContinue -> {
-                if (isValid) {
-                    email = binding.editTextEmail.text.toString().trim()
-                    if (email.isNullOrEmpty()) {
-                        email = null
-                    }
-                    val firstName = binding.edtFirstName.text.toString().trim()
-                    lastName = binding.edtLastName.text.toString().trim()
-                    val relationId = selectedRelationship?.id
-                    phoneCode = ccp.selectedCountryCode
-                    phoneNumber = binding.edtPhoneNumber.text.toString().trim()
+                /* if (isValid) {
+                     sendInvitation = binding.chkLovedOne.isChecked
+                     email = binding.editTextEmail.text.toString().trim()
+                     if (email.isNullOrEmpty()) {
+                         email = null
+                     }
+                     val firstName = binding.edtFirstName.text.toString().trim()
+                     lastName = binding.edtLastName.text.toString().trim()
+                     val relationId = selectedRelationship?.id
+                     phoneCode = ccp.selectedCountryCode
+                     phoneNumber = binding.edtPhoneNumber.text.toString().trim()
 
-                    if (phoneNumber.isNullOrEmpty()) {
-                        phoneCode = null
-                        phoneNumber = null
-                    }
+                     if (phoneNumber.isNullOrEmpty()) {
+                         phoneCode = null
+                         phoneNumber = null
+                     }
 
-                    if (lovedOnePicUrl.isNullOrEmpty()) {
-                        lovedOnePicUrl = null
-                        completeURLProfilePic = null
-                    } else {
-                        if ((lovedOnePicUrl ?: "").startsWith(BuildConfig.BASE_URL_USER)) {
-                            completeURLProfilePic = lovedOnePicUrl
-                        } else {
-                            completeURLProfilePic = BuildConfig.BASE_URL_USER + lovedOnePicUrl
-                        }
+                     if (lovedOnePicUrl.isNullOrEmpty()) {
+                         lovedOnePicUrl = null
+                         completeURLProfilePic = null
+                     } else {
+                         if ((lovedOnePicUrl ?: "").startsWith(BuildConfig.BASE_URL_USER)) {
+                             completeURLProfilePic = lovedOnePicUrl
+                         } else {
+                             completeURLProfilePic = BuildConfig.BASE_URL_USER + lovedOnePicUrl
+                         }
 
-//                        completeURLProfilePic = ApiConstants.BASE_URL_USER + lovedOnePicUrl
-                    }
+ //                        completeURLProfilePic = ApiConstants.BASE_URL_USER + lovedOnePicUrl
+                     }
 
-                    customAddress = binding.edtCustomAddress.text.toString()
-                    if (customAddress.isNullOrEmpty()) {
-                        customAddress = null
-                    }
+                     customAddress = binding.edtCustomAddress.text.toString()
+                     if (customAddress.isNullOrEmpty()) {
+                         customAddress = null
+                     }
 
-                    if (lastName.isNullOrEmpty()) {
-                        lastName = null
-                    }
-                    dob =
-                        yearSelected + "-" + (if (monthIdSelected!! < 10) "0$monthIdSelected" else monthIdSelected!!.toString()) + "-" + (if (dateSelected.toInt() < 10) "0$dateSelected" else dateSelected)
+                     if (lastName.isNullOrEmpty()) {
+                         lastName = null
+                     }
+                     dob =
+                         yearSelected + "-" + (if (monthIdSelected!! < 10) "0$monthIdSelected" else monthIdSelected!!.toString()) + "-" + (if (dateSelected.toInt() < 10) "0$dateSelected" else dateSelected)
 
-                    if (isEditLovedOne) {
-                        lovedOneUUID?.let {
-                            addLovedOneViewModel.editLovedOne(
-                                email,
-                                firstName,
-                                lastName,
-                                relationId,
-                                phoneCode,
-                                dob,
-                                placeId,
-                                customAddress,
-                                phoneNumber,
-                                completeURLProfilePic,
-                                it
-                            )
-                        }
-                    } else {
-                        addLovedOneViewModel.createLovedOne(
-                            email,
-                            firstName,
-                            lastName,
-                            relationId,
-                            phoneCode,
-                            dob,
-                            placeId,
-                            customAddress,
-                            phoneNumber,
-                            completeURLProfilePic
-                        )
-                    }
-                }
-
+                     if (isEditLovedOne) {
+                         lovedOneUUID?.let {
+                             addLovedOneViewModel.editLovedOne(
+                                 email,
+                                 firstName,
+                                 lastName,
+                                 relationId,
+                                 phoneCode,
+                                 dob,
+                                 placeId,
+                                 customAddress,
+                                 phoneNumber,
+                                 completeURLProfilePic,
+                                 it,
+                                 sendInvitation
+                             )
+                         }
+                     } else {
+                         addLovedOneViewModel.createLovedOne(
+                             email,
+                             firstName,
+                             lastName,
+                             relationId,
+                             phoneCode,
+                             dob,
+                             placeId,
+                             customAddress,
+                             phoneNumber,
+                             completeURLProfilePic,
+                             sendInvitation
+                         )
+                     }
+                 }*/
+                saveChanges()
             }
             R.id.layoutAddress -> {
                 val intent = Intent(this, SearchPlacesActivity::class.java)
@@ -715,6 +761,129 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private fun selectState(position: Int) {
         val stateData = relationshipsAdapter?.getItem(position)
         if (stateData != null) selectedRelationship = stateData
+    }
+
+    override fun onBackPressed() {
+        if (isEditLovedOne) {
+            val builder = android.app.AlertDialog.Builder(this)
+            val dialog = builder.apply {
+                setTitle("Edit LovedOne")
+                setMessage("Do you want to save your changes?")
+                setPositiveButton("Yes") { _, _ ->
+                    saveChanges()
+                }
+                setNegativeButton("No") { _, _ ->
+                    super.onBackPressed()
+                }
+            }.create()
+            dialog.show()
+            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(Color.BLACK)
+            dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(Color.BLACK)
+        } else {
+            super.onBackPressed()
+        }
+
+        // super.onBackPressed()
+
+    }
+
+    private fun saveChanges() {
+        if (isValid) {
+            sendInvitation = binding.chkLovedOne.isChecked
+            email = binding.editTextEmail.text.toString().trim()
+            if (email.isNullOrEmpty()) {
+                email = null
+            }
+            val firstName = binding.edtFirstName.text.toString().trim()
+            lastName = binding.edtLastName.text.toString().trim()
+            val relationId = selectedRelationship?.id
+            phoneCode = ccp.selectedCountryCode
+            phoneNumber = binding.edtPhoneNumber.text.toString().trim()
+
+            if (phoneNumber.isNullOrEmpty()) {
+                phoneCode = null
+                phoneNumber = null
+            }
+
+            if (lovedOnePicUrl.isNullOrEmpty()) {
+                lovedOnePicUrl = null
+                completeURLProfilePic = null
+            } else {
+                if ((lovedOnePicUrl ?: "").startsWith(BuildConfig.BASE_URL_USER)) {
+                    completeURLProfilePic = lovedOnePicUrl
+                } else {
+                    completeURLProfilePic = BuildConfig.BASE_URL_USER + lovedOnePicUrl
+                }
+
+//                        completeURLProfilePic = ApiConstants.BASE_URL_USER + lovedOnePicUrl
+            }
+
+            customAddress = binding.edtCustomAddress.text.toString()
+            if (customAddress.isNullOrEmpty()) {
+                customAddress = null
+            }
+
+            if (lastName.isNullOrEmpty()) {
+                lastName = null
+            }
+            dob =
+                yearSelected + "-" + (if (monthIdSelected!! < 10) "0$monthIdSelected" else monthIdSelected!!.toString()) + "-" + (if (dateSelected.toInt() < 10) "0$dateSelected" else dateSelected)
+
+            if (isEditLovedOne) {
+                if (loggedInUserUUID == lovedOneUUID) {
+
+                    lovedOneUUID?.let {
+                        addLovedOneViewModel.editLovedOne(
+                            email,
+                            firstName,
+                            lastName,
+                            null,
+                            phoneCode,
+                            dob,
+                            placeId,
+                            customAddress,
+                            phoneNumber,
+                            completeURLProfilePic,
+                            it,
+                            null
+                        )
+                    }
+                } else {
+                    lovedOneUUID?.let {
+                        addLovedOneViewModel.editLovedOne(
+                            email,
+                            firstName,
+                            lastName,
+                            relationId,
+                            phoneCode,
+                            dob,
+                            placeId,
+                            customAddress,
+                            phoneNumber,
+                            completeURLProfilePic,
+                            it,
+                            sendInvitation
+                        )
+                    }
+                }
+            } else {
+                addLovedOneViewModel.createLovedOne(
+                    email,
+                    firstName,
+                    lastName,
+                    relationId,
+                    phoneCode,
+                    dob,
+                    placeId,
+                    customAddress,
+                    phoneNumber,
+                    completeURLProfilePic,
+                    sendInvitation
+                )
+            }
+        }
     }
 }
 

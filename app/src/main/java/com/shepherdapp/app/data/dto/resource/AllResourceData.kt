@@ -25,5 +25,10 @@ data class AllResourceData(
     @SerializedName("updated_at")
     var updatedAt: String? = null,
     @SerializedName("user_id")
-    var userId: String? = null
+    var userId: String? = null,
+    @SerializedName("post_tag")
+    var postTag: ArrayList<PostTag> = arrayListOf(),
+    @SerializedName("category")
+    var category: Category? = Category()
+
 ) : Parcelable

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.notification.Data
 import com.shepherdapp.app.databinding.AdapterNotificationsBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
@@ -23,7 +24,7 @@ class NotificationsAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+            viewModel.readNotification(itemData[0] as Data)
         }
     }
 
@@ -60,6 +61,14 @@ class NotificationsAdapter(
             val time = date.convertTimeStampToTime()
             itemBinding.textViewDescription.text = "$formattedDate at $time"
 
+            if (data.isRead == true) {
+                // Grey color means notifications is read
+                itemBinding.view.setBackgroundResource(R.drawable.background_notification_grey)
+            } else {
+                // Read means notification is unread
+                itemBinding.view.setBackgroundResource(R.drawable.background_notification_red)
+            }
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     data
@@ -77,8 +86,18 @@ class NotificationsAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<Data>) {
-        this.requestList.addAll(dashboard)
+    fun addData(data: MutableList<Data>, isPagination: Boolean) {
+        if (isPagination) {
+            this.requestList.addAll(data)
+        } else {
+            this.requestList = data
+        }
+
+//        this.requestList.addAll(data)
+/*
+        this.requestList = this.requestList.distinctBy {
+            it.notificationId
+        } as MutableList<Data>*/
         notifyDataSetChanged()
     }
 

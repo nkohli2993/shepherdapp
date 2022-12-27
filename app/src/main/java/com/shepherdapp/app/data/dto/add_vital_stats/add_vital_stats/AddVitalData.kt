@@ -11,8 +11,8 @@ import kotlinx.android.parcel.Parcelize
 data class AddVitalData(
     @SerializedName("heart_rate") var heartRate: String? = null,
     @SerializedName("blood_pressure") var bloodPressure: AddBloodPressureData? = null,
-    @SerializedName("sbp") var sbp: String? = null,
-    @SerializedName("dbp") var dbp: String? = null,
+//    @SerializedName("sbp") var sbp: String? = null,
+//    @SerializedName("dbp") var dbp: String? = null,
     @SerializedName("body_temp") var bodyTemp: String? = null,
     @SerializedName("oxygen") var oxygen: String? = null
 ):Parcelable

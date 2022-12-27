@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.data.dto.added_events.AddedEventModel
 import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
 import com.shepherdapp.app.databinding.AdapterCarePointsDayBinding
+import com.shepherdapp.app.utils.ClickType
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import java.text.SimpleDateFormat
 
@@ -62,9 +63,19 @@ class CarePointsDateBasedAdapter(
                 )
                 itemBinding.timeTV.text = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             }
+            // View CarePoint
             itemBinding.root.setOnClickListener {
-                listener.selectedCarePoint(carePointList[position])
+                val carePoint = carePointList[position]
+                carePoint.clickType = ClickType.View.value
+                listener.selectedCarePoint(carePoint)
             }
+            // Edit Care Point
+            itemBinding.imgEditCarePoint.setOnClickListener {
+                val carePoint = carePointList[position]
+                carePoint.clickType = ClickType.Edit.value
+                listener.selectedCarePoint(carePoint)
+            }
+
             itemBinding.view.visibility = View.VISIBLE
             if (position + 1 == carePointList.size) {
                 itemBinding.view.visibility = View.GONE

@@ -27,6 +27,7 @@
     <string name="title_activity_add_loved_one_condition">Add Loved One Condition</string>
     <string name="title_activity_join_care_team">Join CareTeam</string>
     <string name="title_activity_dashboard">Dashboard</string>
+    <string name="title_activity_subscription">Subscription</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -156,6 +157,7 @@
     <string name="select_time">Select Time</string>
     <string name="notes">Notes</string>
     <string name="note">Note</string>
+    <string name="note_with_colon">Note : </string>
     <string name="today">Today</string>
     <string name="month">Month</string>
     <string name="week">Week</string>
@@ -215,7 +217,7 @@
     <string name="test_topic_title">How do different types of insulin work?</string>
     <string name="by">by</string>
     <string name="test_website">Holadoctor.com</string>
-    <string name="based_on_medical_history">Based on your Medical History</string>
+    <string name="based_on_medical_history">Based on your LovedOne’s Medical Condition</string>
     <string name="test_diabetes">Diabetes</string>
     <string name="menu_resources">Resources</string>
     <string name="menu_add_loved_one">Add Loved One</string>
@@ -228,7 +230,7 @@
     <string name="create">Create</string>
     <string name="welcome">Welcome</string>
     <string name="login_or_create_new_account">Please log in or create a new account.</string>
-    <string name="desc_text">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</string>
+    <string name="desc_text">We’re happy you’re joining us.\n\nPlease email <a herf="info@shepherd.systems">info@shepherd.systems</a> with any questions you may have.</string>
     <string name="hello">Hello!</string>
     <string name="log_in_to_access_your_account">Log in to access your \naccount</string>
     <string name="please_log_in">Please Log In</string>
@@ -242,6 +244,7 @@
     <string name="please_enter_first_name">Please enter first name</string>
     <string name="please_enter_last_name">Please enter last name</string>
     <string name="please_enter_valid_password">Password must be at least 8 characters long with 1 capital letter, 1 number and 1 special character</string>
+    <string name="password_should_be_min_4_character">Password must contain at least 4 characters</string>
     <string name="enter_your_old_password">Enter your old password</string>
     <string name="enter_new_password">Enter new password</string>
     <string name="enter_confirm_password">Enter confirm password</string>
@@ -262,7 +265,7 @@
     <string name="please_enter_date_of_birth">Please enter date of birth</string>
     <string name="should_be_minimum_5_digits">Length Should Be of 5 to 15 Digits</string>
     <string name="should_be_minimum_3_characters">should be minimum of 3 characters</string>
-    <string name="or_login_with_biometric">Or login with biometric</string>
+    <string name="or_login_with_biometric">Or login with biometrics</string>
     <string name="welcome_user_desc">Now either add the name of the Loved One for whom you will be caring, or, if you received an invitation from someone else, join an existing CareTeam.</string>
     <string name="add_your">Add Your</string>
     <string name="loved_one">Loved One</string>
@@ -277,7 +280,12 @@
     <string name="relationship">Relationship<font color="#D7293F">*</font></string>
     <string name="medical_conditions">Medical Conditions</string>
     <string name="hint_select_one">Select one</string>
-    <string name="google_maps_api_key">AIzaSyCBlq2RHLf3oCHct3RIMp-iF00r8J_szrQ</string>
+    <!--<string name="google_maps_api_key">AIzaSyCBlq2RHLf3oCHct3RIMp-iF00r8J_szrQ</string>-->
+<!--    <string name="google_maps_api_key">AIzaSyBbytCk92gm3MK3Mrs_374RDKf4bz0X1ck</string>-->
+    <string name="google_maps_api_key">AIzaSyBrCmIsXxbG76U0Jz7rA75Wg-Hc0kW-8Ww</string>
+    <!--<string name="google_maps_api_key">AIzaSyB8L96ED27rCDdxOF3DNAagrQzEi3jRUAE</string>-->
+    <!--<string name="google_maps_api_key">AIzaSyBw-6xS6SIwHGkWQJeWZKg38n-faZFeJIM</string>-->
+    <!--    <string name="google_maps_api_key">AIzaSyA-UO-cSZj8GtoG1y4D6FCSrY-doNMwoFM</string>-->
     <string name="search_places">Search Places</string>
 
 
@@ -313,16 +321,17 @@
     <string name="blood_pressure">Blood Pressure</string>
     <string name="oxygen">Oxygen(%)</string>
     <string name="log_out">Log out</string>
-    <string name="_2022_the_shepherd_company_llc_all_rights_reserved">©2022 The Shepherd Company LLC. All rights reserved.</string>
+    <string name="_2022_the_shepherd_company_llc_all_rights_reserved">©2022 The Shepherd Company LLC.\nAll rights reserved.</string>
     <string name="reminders">Reminders</string>
     <string name="schedule_medication_reminders_set_refill_alerts_research">Schedule medication, set refill alerts, research.</string>
+    <string name="create_and_maintain_a_list_of_loved_one_medication">Create and maintain a list of your Loved One\'s medications and related information.</string>
     <string name="medications">Medications</string>
     <string name="create_and_join_conversations_among_careteam_members">Create and join conversations among CareTeam members.</string>
-    <string name="create_care_team">Create a supportive careTeam of family, friends and professionals.</string>
+    <string name="create_care_team">Create a supportive CareTeam of family, friends and professionals.</string>
     <string name="home">Home</string>
     <string name="medlist_reminder">MedList\n\nReminder</string>
     <string name="my_profile">My Profile</string>
-    <string name="no_care_team_found">No CareTeam member Found</string>
+    <string name="no_care_team_found">No CareTeam Found</string>
     <string name="discover_health_and_well_being_resources_for_caregivers_and_loved_ones">Discover health and well-being resources for caregivers and loved ones.</string>
     <string name="plus_new">+ New</string>
     <string name="discussion_s">Discussion(s)</string>
@@ -332,11 +341,11 @@
     <string name="no_stats_yet">No stats yet</string>
     <string name="prompt_info_title">Shepherd app Authentication</string>
     <string name="prompt_info_subtitle">Please login to get access</string>
-    <string name="prompt_info_description">Shepherd App is using Android biometric authentication</string>
+    <string name="prompt_info_description">Shepherd App is using Android biometrics authentication</string>
     <string name="prompt_info_use_app_password">Use app password</string>
     <string name="secret_key_name">biometric_sample_encryption_key</string>
     <string name="account_activation_required">Account Activation Required!</string>
-    <string name="account_inactive_click_link_on_email">Your account is inactive. Please verify your account by clicking on the Verify Email link sent to your email…</string>
+    <string name="account_inactive_click_link_on_email">Please verify your account by clicking the link we have sent to your email.</string>
     <string name="time">Time</string>
     <string name="schedule_events_set_reminders_assign_tasks">Schedule events, set reminders, assign tasks.</string>
     <string name="please_enter_event_name">Please enter event name</string>
@@ -344,7 +353,7 @@
     <string name="remove">Remove</string>
     <string name="careteam">CareTeam</string>
     <string name="lockbox">LockBox</string>
-    <string name="mymedlist">MyMedList</string>
+    <string name="mymedlist">MedList</string>
     <string name="role">Role</string>
     <string name="invitation">Invitation</string>
     <string name="information">Information</string>
@@ -355,7 +364,9 @@
     <string name="security_code">Security Code</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="terms_of_use">Terms &amp; Conditions</string>
-    <string name="login_with_biometric">Login with Biometric</string>
+    <string name="term_of_use">Terms of Use</string>
+    <string name="term_and_conditions">Terms and Conditions</string>
+    <string name="login_with_biometric">Login with Biometrics</string>
     <string name="add_vitals">Add VitalStats</string>
     <string name="date">Date</string>
     <string name="am">Am</string>
@@ -366,6 +377,7 @@
     <string name="dd_mm_yy">DD/MM/YY</string>
     <string name="select">Select</string>
     <string name="add_new_care_point">Add New CarePoint</string>
+    <string name="edit_care_point">Edit CarePoint</string>
     <string name="add_new_lock_box">Add New Item</string>
     <string name="assign_to_">Assign To</string>
     <string name="wed_18_jul">wed, 18 jul</string>
@@ -410,6 +422,7 @@
     <string name="new_care_point_added_successfully">CarePoint added successfully…</string>
     <string name="vital_stats_added_successfully">VitalStats added successfully…</string>
     <string name="please_select_new_care_point_date_firts">Please select new CarePoint date first.</string>
+    <string name="please_select_date_first">Please select date first</string>
     <string name="please_select_future_time">Please select future time for new CarePoint.</string>
     <string name="view_more"> … View more.</string>
     <string name="view_less"> … View more.</string>
@@ -467,7 +480,9 @@
     <string name="please_enter_valid_sbp_bp">Please enter valid SBP.</string>
     <string name="please_enter_valid_dbp_bp">Please enter valid DBP.</string>
     <string name="sbp">SBP</string>
+    <string name="sbp_with_colon">SBP:</string>
     <string name="dbp">DBP</string>
+    <string name="dbp_with_colon">DBP:</string>
     <string name="reset_security_code">Reset Security Code</string>
     <string name="set_security_code">Set Security Code</string>
     <string name="this_security_code_can_only_use_for_web_login">This security code can only use for web login.</string>
@@ -481,13 +496,14 @@
     <string name="no_medical_condition_added_for_loved_one">No medical condition added, Please add medical condition for loved one.</string>
     <string name="please_select_at_least_one_condition">Please select at least once medical condition…</string>
     <string name="no_result_found">No Result Found…</string>
+    <string name="no_notification_found">No Notification Found…</string>
     <string name="slash">/</string>
     <string name="unable_to_add_future_time_data_vital_stats">Unable to add future date &amp; time data for vital stats.</string>
     <string name="please_enter_the_loved_one_address">Please enter the Loved One\'s address</string>
     <string name="please_enter_the_event_address">Please enter the event address</string>
     <string name="this_day_does_not_lie_between_selected_end_date_of_medication">This day does not lie between selected end date of medication.</string>
     <string name="please_add_medication_for_future_time">Please add medication for future time.</string>
-    <string name="care_point">CarePoint</string>
+    <string name="care_point">CarePoints</string>
     <string name="notification">Notifications</string>
     <string name="clear_all">Clear All</string>
     <string name="medlist_header">MedList</string>
@@ -505,7 +521,7 @@
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="toggle_between_loved_one">Toggle between Loved One\'s</string>
+    <string name="toggle_between_loved_one">Toggle between Loved Ones</string>
     <string name="close">Close</string>
     <string name="only_jpg_png_word_text_file_can_be_uploaded">Only jpg, jpeg, png, gif, pdf, word and txt file can be uploaded…</string>
     <string name="you_can_upload_at_max_five_file">You can upload at max 5 files…</string>
@@ -524,9 +540,11 @@
     <string name="no_resource_post_found">No Resource Post Found</string>
     <string name="created_on">Created on</string>
     <string name="add_medicine">Add Medicine</string>
+    <string name="edit_medicine">Edit Medicine</string>
     <string name="description">Description</string>
     <string name="medicine_name">Medicine Name</string>
-    <string name="add_medical_condition">Add Medical Condition</string>
+    <string name="add_medical_condition">Add Medical\nCondition</string>
+    <string name="edit_medical_condition">Edit Medical\nCondition</string>
     <string name="medical_condition">Medical Condition</string>
     <string name="please_enter_medical_condition">Please enter medical condition name.</string>
     <string name="document_added_successfully">Document added successfully!</string>
@@ -540,4 +558,44 @@
     <string name="edit_loved_one_profile">Edit Loved One Details</string>
     <string name="selected_recommended_document_type">Select Recommended Document Type</string>
     <string name="select_document_type">Select Document Type</string>
+    <string name="are_you_an_enterprise_user">Are you an \n Enterprise User?</string>
+    <string name="enter_enterprise_code">Enter Enterprise \n Code</string>
+    <string name="enter_enterprise_cod">Enter Enterprise Code</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="enter_enterprise_code_optional">Enter Enterprise Code (Optional)</string>
+    <string name="enterprise_code">Enterprise Code</string>
+    <string name="are_you_enterprise_user">Are you an Enterprise User?</string>
+    <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometrics for next time?</string>
+    <string name="buy_plan">Buy Plan</string>
+    <string name="select_access">Select Access</string>
+    <string name="enter_email">Enter email</string>
+    <string name="send_invitation_to_loved_one">Send an Invitation to the \nloved one.</string>
+    <string name="current_medications">Current Medications</string>
+    <string name="todays_medications">Today\'s Medications</string>
+    <string name="did_not_received_mail_yet">Didn\'t received email yet? <font color="#A26DCB">Resend</font></string>
+    <string name="recent_content">Recent Content</string>
+    <string name="join_our_family">Join Our Family Caregivers Community</string>
+    <string name="join_commmunity_conversation">Join the Community Conversation</string>
+    <string name="no_invitation_found">No invitation found</string>
+    <string name="dosage_med">Dosage :</string>
+    <string name="please_enter_medicine_name">Please enter medicine name</string>
+    <string name="no_description_available">No description available</string>
+    <string name="format_notes"><![CDATA[<b>Note:</b> %1s]]></string>
+    <string name="no_note_available">No note available</string>
+    <string name="choose_your_subscription">Choose your subscription plan to add your loved one.</string>
+    <string name="buy_subscription_plan">Buy Subscription Plan</string>
+    <string name="user_limit_exceeded">User limit exceeded</string>
+    <string name="your_subscription_has_been_expired">Your subscription has been expired</string>
+    <string name="ok">Ok</string>
+    <string name="max_3_loved_one_can_be_added">Max 3 loved one can added</string>
+    <string name="become_an_enterprise_User">Become an Enterprise User</string>
+    <string name="enterprise_detail">Enterprise Detail:</string>
+    <string name="you_have_choosen_plan">You have chosen basic plan</string>
+    <string name="your_plan_will_expire_on">Your plan will expire on : </string>
+    <string name="renew">Renew</string>
+    <string name="change_plan">Change Plan</string>
+    <string name="create_a_password">Create a password</string>
+    <string name="new_and_confirm_password_not_match">New and Confirm Password doesn\'t match</string>
+    <string name="loved_one_needs_to_log_in_to_sync_vitalStats_data">The loved one needs to log in to sync VitalStats data.</string>
+    <string name="the_loved_one_will_log_in_using_the_same_credentials_to_sync_vitalStats_data">The loved one will log in using the same credentials to sync VitalStats data.</string>
 </resources>

@@ -10,6 +10,9 @@ object Const {
     const val UUID = "UUID"
     const val CARE_TEAM_LEADER_UUID = "CARE TEAM LEADER UUID"
     const val Is_LOGGED_IN_USER_TEAM_LEAD = "Is_LOGGED_IN_USER_TEAM_LEAD"
+    const val Is_LOGGED_IN_USER_LOVED_ONE = "Is_LOGGED_IN_USER_LOVED_ONE"
+    const val Is_USER_ATTACHED_TO_ENTERPRISE = "Is USER ATTACHED TO ENTERPRISE"
+    const val ENTERPRISE_DETAIL = "ENTERPRISE DETAIL"
     const val EMAIL_ID = "EMAIL_ID"
     const val USER_ROLE = "USER_ROLE"
     const val PAYLOAD = "PAYLOAD"
@@ -30,7 +33,43 @@ object Const {
     const val LOVED_ONE_DETAIL = "LOVED ONE DETAIL"
     const val RESET_SECURITY_CODE = "RESET"
     const val SET_SECURITY_CODE = "SET"
-    const val FIREBASE_TOKEN = "SET"
+    const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
+
+
+    object NotificationAction {
+        const val ADD_COMMENT = "post_comment"
+        const val ADD_COMMENT_REPLY = "comment_reply"
+        const val FOLLOW = "follow"
+        const val LIKE_COMMENT = "comment_like"
+        const val LIKE_POST = "post_like"
+        const val MESSAGE = "message"
+        const val AUDIO_CALL = "Audio_call"
+        const val VIDEO_CALL = "Video_call"
+        const val CARE_POINT_CREATED = "carepoint_created"
+        const val MEDICATION_CREATED = "user_medication_created"
+        const val MEDICATION_UPDATED = "user_medication_updated"
+        const val LOCK_BOX_CREATED = "lockbox_created"
+        const val LOCK_BOX_UPDATED = "lockbox_updated"
+        const val CARE_TEAM_INVITE = "care_team_invite"
+    }
+
+    object VitalStat {
+        const val BLOOD_PRESSURE = "blood_pressure"
+        const val HEART_RATE = "heart_rate"
+        const val BODY_TEMP = "body_temp"
+        const val OXYGEN = "oxygen"
+    }
+
+    object Type {
+        const val SUBSCRIPTION = "subscription"
+        const val ENTERPRISE = "enterprise"
+    }
+
+    object SubscriptionPlan {
+        const val ONE_WEEK = "One Week"
+        const val ONE_MONTH = "One Month"
+        const val ONE_YEAR = "One Year"
+    }
 }
 
 object Drawable {
@@ -42,7 +81,7 @@ object Drawable {
 
 
 enum class Modules(val value: Int) {
-    CareTeam(1),
+    CarePoints(1),
     LockBox(2),
     MedList(3),
     Resources(4)
@@ -80,24 +119,35 @@ enum class CalendarState(val value: Int) {
     Month(3)
 }
 
-enum class ClickType(val value: Int){
+enum class ClickType(val value: Int) {
     View(1),
-    Delete(2)
+    Delete(2),
+    Edit(3)
 }
 
-enum class MedListAction(val value: Int){
+enum class MedListAction(val value: Int) {
     View(1),
     EDIT(2),
     Delete(3)
 }
-enum class FrequencyType(val value :String){
+
+enum class FrequencyType(val value: String) {
     ONCE("1"),
     TWICE("2"),
     THRICE("3"),
     FOUR("4"),
     FIVE("5")
 }
-enum class TimePickerType(val value :Int){
+
+enum class TimePickerType(val value: Int) {
     ADD(1),
     EDIT(2)
 }
+
+enum class Type(val value: String) {
+    ADD("Add"),
+    EDIT("Edit"),
+    DELETE("Delete")
+}
+
+

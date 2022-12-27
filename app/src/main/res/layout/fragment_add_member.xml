@@ -81,7 +81,7 @@
                         android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                         android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:hint="@string/enter_your_email"
+                        android:hint="@string/enter_email"
                         android:inputType="textEmailAddress"
                         android:padding="@dimen/_12ssp"
                         android:textColor="@color/_192032"
@@ -133,6 +133,7 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/_6sdp"
+                            android:onClick="@{listener::onClick}"
                             android:contentDescription="@string/app_name"
                             android:padding="@dimen/_4sdp"
                             app:srcCompat="@drawable/ic_arrow_spinner"
@@ -141,6 +142,16 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_15sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:fontFamily="@font/gotham_bold"
+                    android:text="@string/select_access"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_15ssp" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -163,7 +174,7 @@
                             android:layout_height="@dimen/_20sdp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginEnd="@dimen/_5sdp"
-                            android:src="@drawable/ic_care_team" />
+                            android:src="@drawable/ic_care_point" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="0dp"
@@ -178,7 +189,7 @@
                             app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
 
                         <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchCareTeam"
+                            android:id="@+id/switchCarePoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="true"

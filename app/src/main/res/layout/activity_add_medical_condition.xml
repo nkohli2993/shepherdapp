@@ -35,6 +35,8 @@
             android:text="@string/add_medical_condition"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
+            android:lineSpacingExtra="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="@+id/ivBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ivBack"

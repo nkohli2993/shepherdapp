@@ -82,3 +82,17 @@ data class ChatListResponse(
     @SerializedName("scroll_to_bottom")
     var scrollToBottom: Boolean = false
 ) : Parcelable
+
+
+@Parcelize
+data class User(
+    @SerializedName("id") var id: Int? = null,
+    @SerializedName("user_id") var userId: Int? = null,
+    @SerializedName("firstname") var firstname: String? = null,
+    @SerializedName("lastname") var lastname: String? = null,
+    @SerializedName("profile_photo") var profilePhoto: String? = null,
+    @SerializedName("uuid") var uuid: String? = null,
+    @SerializedName("email") var email: String? = null,
+    @SerializedName("firebase_token") var firebaseToken: String? = null,
+    @SerializedName("document_id") var documentID: String? = null,
+) : Parcelable

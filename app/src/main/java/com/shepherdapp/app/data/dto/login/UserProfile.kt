@@ -2,6 +2,7 @@ package com.shepherdapp.app.data.dto.login
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.Settings
 import kotlinx.android.parcel.Parcelize
 
 /**
@@ -9,7 +10,6 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class UserProfile(
-
     @SerializedName("id") var id: Int? = null,
     @SerializedName("user_id") var userId: Int? = null,
     @SerializedName("firstname") var firstname: String? = null,
@@ -24,6 +24,10 @@ data class UserProfile(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
-    @SerializedName("security_code") var security_code: String? = null
-
-):Parcelable
+    @SerializedName("security_code") var security_code: String? = null,
+    @SerializedName("enterprise_id") var enterpriseId: String? = null,
+    @SerializedName("stripe_id") var stripeId: String? = null,
+    @SerializedName("enterprise") var enterprise: Enterprise? = Enterprise(),
+    @SerializedName("settings") var settings: Settings? = Settings(),
+    @SerializedName("is_verified") var isVerified: Boolean? = null
+) : Parcelable

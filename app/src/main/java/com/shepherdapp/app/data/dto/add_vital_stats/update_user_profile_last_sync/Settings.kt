@@ -1,0 +1,13 @@
+package com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync
+
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
+
+/**
+ * Created by Deepak Rattan on 06/12/22
+ */
+@Parcelize
+data class Settings(
+    @SerializedName("last_sync_at") var lastSyncAt: String? = null
+) : Parcelable

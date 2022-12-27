@@ -16,7 +16,8 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
-import com.shepherdapp.app.data.dto.user_detail.Payload
+import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.databinding.ActivityWelcomeUserBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -24,10 +25,12 @@ import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity
 import com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity
 import com.shepherdapp.app.ui.component.login.LoginActivity
+import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
+import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.WelcomeUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_welcome_user.*
@@ -42,7 +45,6 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     private val welcomeViewModel: WelcomeUserViewModel by viewModels()
     private lateinit var binding: ActivityWelcomeUserBinding
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
@@ -56,7 +58,13 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         binding = ActivityWelcomeUserBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        setResendText(binding.emailResendTV.text.toString())
+//        setResendText(binding.emailResendTV.text.toString())
+
+        // resend email
+        binding.emailResendTV.setOnClickListener {
+            // send resend verification email
+            welcomeViewModel.sendUserVerificationEmail()
+        }
     }
 
     override fun observeViewModel() {
@@ -86,6 +94,25 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                         // Save Payload to shared Pref
                         welcomeViewModel.savePayload(payload)
 
+                        // Save User Info in Firestore
+                        val user = it.data.payload?.let { it2 -> signUpResponseToUser(it2) }
+                        user?.let { it2 ->
+                            welcomeViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
+                                it2
+                            )
+                        }
+
+                        if (!it.data.payload?.userProfiles?.enterpriseId.isNullOrEmpty()) {
+                            // Save status of user attached to enterprise as true
+                            welcomeViewModel.saveUSerAttachedToEnterprise(true)
+
+                            // Save enterprise detail in SharedPrefs
+                            val enterprise = it.data.payload?.userProfiles?.enterprise
+                            if (enterprise != null) {
+                                welcomeViewModel.saveEnterpriseDetail(enterprise)
+                            }
+                        }
+
                         //Save User Role
                         /*payload?.userLovedOne?.get(0)?.careRoles?.name.let {
                             it?.let { it1 -> welcomeViewModel.saveUserRole(it1) }
@@ -109,22 +136,53 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                 }
             }
         }
+        // Observe Logout Response
+        welcomeViewModel.logoutResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    it.message?.let { showError(this, it.toString()) }
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    navigateToLoginScreen()
+                }
+            }
+        }
+    }
+
+    private fun signUpResponseToUser(payload: Payload): User {
+        val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
+
+        return User().apply {
+            id = payload.userProfiles?.userId
+            userId = payload.userProfiles?.userId
+            firstname = payload.userProfiles?.firstname
+            lastname = payload.userProfiles?.lastname
+            profilePhoto = payload.userProfiles?.profilePhoto
+            uuid = payload.uuid
+            email = payload.email
+            firebaseToken = fToken
+        }
     }
 
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.ivBack -> navigateToLoginScreen()
-            R.id.cardViewAddLovedOne -> navigateToAddLovedOneScreen()
-            R.id.imageViewAddLovedOne -> navigateToAddLovedOneScreen()
-            R.id.txtAdd -> navigateToAddLovedOneScreen()
-            R.id.txtLovedOne -> navigateToAddLovedOneScreen()
-            R.id.layoutAddLovedOne -> navigateToAddLovedOneScreen()
+            R.id.cardViewAddLovedOne -> checkNavigation()
+            R.id.imageViewAddLovedOne -> checkNavigation()
+            R.id.txtAdd -> checkNavigation()
+            R.id.txtLovedOne -> checkNavigation()
+            R.id.layoutAddLovedOne -> checkNavigation()
             R.id.cardViewCareTeam -> navigateToJoinCareTeamScreen()
             R.id.ivCareTeam -> navigateToJoinCareTeamScreen()
             R.id.txtJoin -> navigateToJoinCareTeamScreen()
             R.id.txtCareTeam -> navigateToJoinCareTeamScreen()
             R.id.btnResend -> welcomeViewModel.sendUserVerificationEmail()
+            R.id.txtLogout -> welcomeViewModel.logOut()
         }
     }
 
@@ -138,6 +196,37 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
         startActivity(a)
     }
 
+    private fun navigateToSubscriptionScreen() {
+        var payload: Payload? = null
+        welcomeViewModel.getUserDetails()
+        Handler(Looper.getMainLooper()).postDelayed({
+            payload =
+                Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
+
+            if (payload?.isActive == true) {
+                startActivity<SubscriptionActivity>()
+            } else {
+                val builder = AlertDialog.Builder(this)
+                val dialog = builder.apply {
+                    setMessage(getString(R.string.account_inactive_click_link_on_email))
+                    setPositiveButton("OK") { _, _ ->
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+            }
+        }, 2000)
+
+    }
+
+    private fun checkNavigation() {
+        // If user is attached to Enterprise, navigate to Add LovedOne Screen
+        if (welcomeViewModel.isUserAttachedToEnterprise() == true) {
+            navigateToAddLovedOneScreen()
+        } else {
+            navigateToSubscriptionScreen()
+        }
+    }
 
     private fun navigateToAddLovedOneScreen() {
         var payload: Payload? = null
@@ -147,11 +236,11 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                 Prefs.with(ShepherdApp.appContext)?.getObject(Const.PAYLOAD, Payload::class.java)
 
             if (payload?.isActive == true) {
-                startActivityWithFinish<AddLovedOneActivity>()
+                startActivity<AddLovedOneActivity>()
             } else {
                 val builder = AlertDialog.Builder(this)
                 val dialog = builder.apply {
-                    setTitle(getString(R.string.account_activation_required))
+//                    setTitle(getString(R.string.account_activation_required))
                     setMessage(getString(R.string.account_inactive_click_link_on_email))
                     setPositiveButton("OK") { _, _ ->
                         //navigateToLoginScreen()
@@ -189,11 +278,19 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToLoginScreen() {
         //startActivityWithFinish<LoginActivity>()
+        showSuccess(this, "User logged out successfully")
+//        welcomeViewModel.clearFirebaseToken()
+        Prefs.with(ShepherdApp.appContext)?.removeAll()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+//        intent.putExtra("source", "WelcomeUserActivity")
         startActivity(intent)
         finish()
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
+
+    }
+
+    private fun resendVerificationEmail() {
 
     }
 
@@ -218,7 +315,7 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
 
         binding.emailResendTV.text = ss
         binding.emailResendTV.movementMethod = LinkMovementMethod.getInstance()
-       // binding.emailResendTV.highlightColor = Color.GREEN
+        // binding.emailResendTV.highlightColor = Color.GREEN
     }
 
 

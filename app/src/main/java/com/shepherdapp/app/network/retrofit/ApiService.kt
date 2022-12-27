@@ -9,24 +9,35 @@ import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTea
 import com.shepherdapp.app.data.dto.add_vital_stats.AddVitalStatsResponseModel
 import com.shepherdapp.app.data.dto.add_vital_stats.VitalStatsResponseModel
 import com.shepherdapp.app.data.dto.add_vital_stats.add_vital_stats.VitalStatsRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.BulkCreateVitalRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncResponseModel
 import com.shepherdapp.app.data.dto.added_events.*
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.change_password.ChangePasswordModel
+import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
 import com.shepherdapp.app.data.dto.dashboard.HomeResponseModel
+import com.shepherdapp.app.data.dto.edit_event.EditEventRequestModel
+import com.shepherdapp.app.data.dto.edit_event.EditEventResponseModel
 import com.shepherdapp.app.data.dto.edit_loved_one.EditLovedOneResponseModel
 import com.shepherdapp.app.data.dto.edit_profile.UserUpdateData
+import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseRequestModel
+import com.shepherdapp.app.data.dto.enterprise.AttachEnterpriseResponseModel
 import com.shepherdapp.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherdapp.app.data.dto.invitation.InvitationsResponseModel
 import com.shepherdapp.app.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
+import com.shepherdapp.app.data.dto.invitation.delete_pending_invitee.DeletePendingInviteeByIdResponseModel
+import com.shepherdapp.app.data.dto.invitation.pending_invite.PendingInviteResponseModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.delete_uploaded_lock_box_doc.DeleteUploadedLockBoxDocResponseModel
 import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.EditLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
+import com.shepherdapp.app.data.dto.lock_box.share_lock_box.ShareLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
@@ -41,8 +52,12 @@ import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.GetLovedOneMedLi
 import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordRequestModel
 import com.shepherdapp.app.data.dto.med_list.medication_record.MedicationRecordResponseModel
 import com.shepherdapp.app.data.dto.medical_conditions.*
+import com.shepherdapp.app.data.dto.medical_conditions.edit_medical_conditions.EditMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.notification.NotificationResponseModel
+import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotificationRequestModel
+import com.shepherdapp.app.data.dto.notification.read_notifications.ReadNotificationsResponseModel
+import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.data.dto.relation.RelationResponseModel
 import com.shepherdapp.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherdapp.app.data.dto.resource.ResponseRelationModel
@@ -52,6 +67,12 @@ import com.shepherdapp.app.data.dto.security_code.SendSecurityCodeRequestModel
 import com.shepherdapp.app.data.dto.settings_pages.StaticPageResponseModel
 import com.shepherdapp.app.data.dto.signup.BioMetricData
 import com.shepherdapp.app.data.dto.signup.UserSignupData
+import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
+import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
+import com.shepherdapp.app.data.dto.subscription.check_subscription_status.CheckSubscriptionStatusResponseModel
+import com.shepherdapp.app.data.dto.subscription.get_active_subscriptions.GetActiveSubscriptionResponseModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
+import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionResponseModel
 import com.shepherdapp.app.data.dto.user.UserDetailsResponseModel
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.shepherdapp.app.ui.base.BaseResponseModel
@@ -168,6 +189,12 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<EventDetailResponseModel>
 
+    @PUT(ApiConstants.Event.EDIT_EVENT)
+    suspend fun editEvent(
+        @Body editEventRequestModel: EditEventRequestModel,
+        @Path("id") id: Int
+    ): Response<EditEventResponseModel>
+
 
     @POST(ApiConstants.MedicalConditions.CREATE_BULK_ONE_CONDITIONS)
     suspend fun createBulkOneConditions(@Body value: ArrayList<MedicalConditionsLovedOneRequestModel>): Response<UserConditionsResponseModel>
@@ -177,6 +204,12 @@ interface ApiService {
 
     @POST(ApiConstants.MedicalConditions.ADD_MEDICAL_CONDITION)
     suspend fun addMedicalConditions(@Body value: AddMedicalConditionRequestModel): Response<AddedUserMedicalConditionResposneModel>
+
+    @PUT(ApiConstants.MedicalConditions.EDIT_MEDICAL_CONDITION)
+    suspend fun editMedicalConditions(
+        @Body value: AddMedicalConditionRequestModel,
+        @Path("id") id: Int
+    ): Response<EditMedicalConditionsResponseModel>
 
     @GET(ApiConstants.Authentication.LOGOUT)
     suspend fun logout(): Response<BaseResponseModel>
@@ -195,6 +228,16 @@ interface ApiService {
         @Query("status") status: Int,
         @Query("loved_one_id") lovedOneUUID: String,
     ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.Invitations.GET_PENDING_INVITATIONS)
+    suspend fun getPendingInvites(
+        @Path("id") lovedOneUUID: String?
+    ): Response<PendingInviteResponseModel>
+
+    @DELETE(ApiConstants.Invitations.DELETE_PENDING_INVITEE_BY_ID)
+    suspend fun deletePendingInviteeById(
+        @Path("id") id: Int
+    ): Response<DeletePendingInviteeByIdResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
     suspend fun searchCareTeamsByLovedOneId(
@@ -318,6 +361,11 @@ interface ApiService {
         @Body updateLockBoxRequestModel: UpdateLockBoxRequestModel
     ): Response<UpdateLockBoxResponseModel>
 
+    @PUT(ApiConstants.LockBox.SHARE_LOCK_BOX)
+    suspend fun shareLockBoxDoc(
+        @Path("id") id: Int?
+    ): Response<ShareLockBoxResponseModel>
+
     //---------MedList---------------------------------------
 
     @GET(ApiConstants.MedList.GET_ALL_MED_LIST)
@@ -349,7 +397,7 @@ interface ApiService {
 
     @GET(ApiConstants.MedList.GET_LOVED_ONE_MED_LIST)
     suspend fun getLovedOneMedList(
-        @Path("id") id: String, @Query("date") date: String
+        @Path("id") id: String/*, @Query("date") date: String*/
     ): Response<GetLovedOneMedList>
 
     // scheduled medication
@@ -390,17 +438,35 @@ interface ApiService {
     @POST(ApiConstants.MedList.ADD_MED_LIST)
     suspend fun addNewMedlistMedicine(@Body medlist: AddMedListRequestModel): Response<AddedMedlistResponseModel>
 
+    @PUT(ApiConstants.MedList.UPDATE_MED_LIST)
+    suspend fun editMedList(
+        @Body medList: AddMedListRequestModel,
+        @Path("id") id: Int
+    ): Response<AddedMedlistResponseModel>
+
     @PUT(ApiConstants.UpdateProfile.UPDATE_LOGIN_USER_PROFILE)
     suspend fun updateProfile(
         @Body value: UserUpdateData,
         @Path("id") id: Int
     ): Response<EditResponseModel>
 
+    @PUT(ApiConstants.UpdateProfile.UPDATE_USER_PROFILE_FOR_LAST_SYNC)
+    suspend fun updateProfileForLastSync(
+        @Body updateUserProfileForLastSyncRequestModel: UpdateUserProfileForLastSyncRequestModel,
+        @Path("id") id: Int
+    ): Response<UpdateUserProfileForLastSyncResponseModel>
+
     // add vital stats for loginLoved one
     @POST(ApiConstants.VitalStats.ADD_VITAL_STATS)
     suspend fun addVitalStats(
         @Body addNewLockBoxRequestModel: VitalStatsRequestModel
     ): Response<AddVitalStatsResponseModel>
+
+    // Bulk Create Vital for loginLoved one
+    @POST(ApiConstants.VitalStats.BULK_CREATE_VITAL)
+    suspend fun createBulkVitalStats(
+        @Body bulkCreateVitalRequestModel: BulkCreateVitalRequestModel
+    ): Response<BaseResponseModel>
 
     // get vital stats for loginLoved one
     @GET(ApiConstants.VitalStats.ADD_VITAL_STATS)
@@ -436,14 +502,19 @@ interface ApiService {
         @Query("page") page: Int,
         @Query("limit") limit: Int,
         @Query("id") id: String,
-        @Query("conditions") conditions: String
+        @Query("conditions") conditions: String?
     ): Response<ResponseRelationModel>
 
-    @GET(ApiConstants.Resource.GET_ALL_RESOURCE_BY_LOVED_ONE)
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
+    suspend fun getAllResources(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<ResponseRelationModel>
+
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
     suspend fun getSearchResourceResultApi(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
-        @Query("id") id: String,
         @Query("search") search: String
     ): Response<ResponseRelationModel>
 
@@ -478,4 +549,44 @@ interface ApiService {
         @Query("limit") limit: Int,
         @Query("loved_one_id") love_user_id: String
     ): Response<NotificationResponseModel>
+
+    @GET(ApiConstants.Notification.GET_NOTIFICATIONS)
+    suspend fun getNotifications(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("loved_one_id") lovedOneUUID: String,
+    ): Response<NotificationResponseModel>
+
+    @PUT(ApiConstants.Notification.READ_NOTIFICATIONS)
+    suspend fun readNotifications(
+        @Body readNotificationRequestModel: ReadNotificationRequestModel?
+    ): Response<ReadNotificationsResponseModel>
+
+    @PUT(ApiConstants.Notification.READ_NOTIFICATIONS)
+    suspend fun clearNotifications(): Response<ReadNotificationsResponseModel>
+
+    @Headers(
+        "Authorization: key=AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg",
+        "Content-Type:application/json"
+    )
+    @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)
+    suspend fun sendPushNotification(
+//        @Header ("Authorization") "AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg"
+        @Body chatNotificationModel: ChatNotificationModel
+    ): Response<FCMResponseModel>
+
+    @POST(ApiConstants.Subscription.VALIDATE_SUBSCRIPTION)
+    suspend fun validateSubscription(@Body validateSubscriptionRequestModel: ValidateSubscriptionRequestModel): Response<ValidateSubscriptionResponseModel>
+
+    @POST(ApiConstants.Subscription.CREATE_SUBSCRIPTION)
+    suspend fun createSubscription(@Body subscriptionRequestModel: SubscriptionRequestModel): Response<SubscriptionResponseModel>
+
+    @GET(ApiConstants.Subscription.GET_ACTIVE_SUBSCRIPTIONS)
+    suspend fun getActiveSubscriptions(): Response<GetActiveSubscriptionResponseModel>
+
+    @GET(ApiConstants.Subscription.CHECK_SUBSCRIPTION_STATUS)
+    suspend fun checkSubscriptionStatus(): Response<CheckSubscriptionStatusResponseModel>
+
+    @PUT(ApiConstants.Enterprise.ATTACH_ENTERPRISE)
+    suspend fun attachEnterprise(@Body attachEnterpriseRequestModel: AttachEnterpriseRequestModel): Response<AttachEnterpriseResponseModel>
 }

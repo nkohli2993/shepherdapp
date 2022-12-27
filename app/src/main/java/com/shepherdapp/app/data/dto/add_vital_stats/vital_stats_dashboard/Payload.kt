@@ -10,13 +10,15 @@ import com.google.gson.annotations.SerializedName
 data class Payload(
     @SerializedName("latestOne") var latestOne: VitalStatsData? = null,
     @SerializedName("graphData") var graphData: ArrayList<GraphData> = arrayListOf(),
-    @SerializedName("minAverage") var minAverage: Double? = null,
-    @SerializedName("maxAverage") var maxAverage: Double? = null,
+    @SerializedName("minValue") var minValue: String? = null,
+    @SerializedName("maxValue") var maxValue: String? = null,
+    @SerializedName("minDBP") var minDBP: String? = null,
+    @SerializedName("maxDBP") var maxDBP: String? = null,
+    @SerializedName("type") var type: String? = null
     /* @SerializedName("total") var total: Int? = null,
      @SerializedName("current_page") var currentPage: Int? = null,
      @SerializedName("total_pages") var totalPages: Int? = null,
      @SerializedName("per_page") var perPage: Int? = null,
      @SerializedName("data") var data: ArrayList<VitalStatsData> = arrayListOf(),*/
-
 )
 

@@ -10,7 +10,9 @@ import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_con
 import com.shepherdapp.app.data.dto.resource.AllResourceData
 import com.shepherdapp.app.data.dto.resource.ParticularResourceResponseModel
 import com.shepherdapp.app.data.dto.resource.ResponseRelationModel
+import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.shepherdapp.app.data.local.UserRepository
+import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.data.remote.resource.ResourceRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
@@ -27,7 +29,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ResourceViewModel @Inject constructor(
     private val dataRepository: ResourceRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val authRepository: AuthRepository
 ) : BaseViewModel() {
 
     // Resource list Response Live Data
@@ -51,6 +54,13 @@ class ResourceViewModel @Inject constructor(
     // selected resource
     private val _selectedResourceDetail = MutableLiveData<SingleEvent<AllResourceData>>()
     val selectedResourceDetail: LiveData<SingleEvent<AllResourceData>> get() = _selectedResourceDetail
+
+    private var _userDetailByUUIDLiveData =
+        MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
+    var userDetailByUUIDLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
+        _userDetailByUUIDLiveData
+
+
     fun openSelectedResource(position: AllResourceData) {
         _selectedResourceDetail.value = SingleEvent(position)
     }
@@ -82,11 +92,11 @@ class ResourceViewModel @Inject constructor(
 
     fun getAllResourceApi(
         pageNumber: Int,
-        limit: Int,lovedOneId:String,
-        conditions:String,
+        limit: Int,
     ): LiveData<Event<DataResult<ResponseRelationModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.getAllResourceApi(pageNumber, limit,lovedOneId,conditions)
+            val response =
+                dataRepository.getAllResourceApi(pageNumber, limit)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _resourceResponseLiveData.postValue(Event(it))
@@ -98,12 +108,19 @@ class ResourceViewModel @Inject constructor(
 
     fun getSearchResourceResultApi(
         pageNumber: Int,
-        limit: Int,lovedOneId:String,
-        conditions:String,
-        search:String
+        limit: Int,
+//        lovedOneId: String,
+//        conditions: String,
+        search: String
     ): LiveData<Event<DataResult<ResponseRelationModel>>> {
         viewModelScope.launch {
-            val response = dataRepository.getSearchResourceResultApi(pageNumber, limit,lovedOneId,conditions,search)
+            val response = dataRepository.getSearchResourceResultApi(
+                pageNumber,
+                limit,
+//                lovedOneId,
+//                conditions,
+                search
+            )
             withContext(Dispatchers.Main) {
                 response.collect {
                     _resourceResponseLiveData.postValue(Event(it))
@@ -114,7 +131,7 @@ class ResourceViewModel @Inject constructor(
     }
 
     fun getResourceDetail(
-        id:Int
+        id: Int
     ): LiveData<Event<DataResult<ParticularResourceResponseModel>>> {
         viewModelScope.launch {
             val response = dataRepository.getResourceDetail(id)
@@ -153,6 +170,20 @@ class ResourceViewModel @Inject constructor(
             }
         }
         return lovedOneMedicalConditionResponseLiveData
+    }
+
+    // Get User Details
+    fun getUserDetailByUUID(): LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> {
+        val uuid = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = uuid?.let { authRepository.getUserDetailsByUUID(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _userDetailByUUIDLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return userDetailByUUIDLiveData
     }
 
 }

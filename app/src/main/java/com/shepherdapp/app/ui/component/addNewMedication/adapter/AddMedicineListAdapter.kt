@@ -3,11 +3,13 @@ package com.shepherdapp.app.ui.component.addNewMedication.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.data.dto.med_list.Medlist
 import com.shepherdapp.app.databinding.AdapterAddMedicineListBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.ClickType
 import com.shepherdapp.app.view_model.AddMedicationViewModel
 
 @SuppressLint("NotifyDataSetChanged")
@@ -22,7 +24,7 @@ class AddMedicineListAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            viewModel.openScheduleMedication(itemData[0] as Int)
+            viewModel.openScheduleMedication(itemData[0] as Int, itemData[1] as Int)
         }
     }
 
@@ -55,9 +57,25 @@ class AddMedicineListAdapter(
              if (medList.isSelected) {
                  itemBinding.cbReminder.isChecked = true
              }*/
+            // Check if the medicine is being created by the user
+            if (medList.createdBy == "user") {
+                itemBinding.imgEditMedicine.visibility = View.VISIBLE
+            } else {
+                itemBinding.imgEditMedicine.visibility = View.GONE
+            }
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    absoluteAdapterPosition
+                    absoluteAdapterPosition,
+                    ClickType.View.value
+                )
+            }
+
+            // Edit Medicine click
+            itemBinding.imgEditMedicine.setOnClickListener {
+                recyclerItemListener.onItemSelected(
+                    absoluteAdapterPosition,
+                    ClickType.Edit.value
                 )
             }
         }

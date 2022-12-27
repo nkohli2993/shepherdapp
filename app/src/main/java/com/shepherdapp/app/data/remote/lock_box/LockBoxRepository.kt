@@ -8,6 +8,7 @@ import com.shepherdapp.app.data.dto.lock_box.delete_uploaded_lock_box_doc.Delete
 import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.EditLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
+import com.shepherdapp.app.data.dto.lock_box.share_lock_box.ShareLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
@@ -34,14 +35,14 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
         pageNumber: Int,
         limit: Int,
         lovedOneUUID: String,
-        isQuery:Boolean
+        isQuery: Boolean
     ): Flow<DataResult<LockBoxTypeResponseModel>> {
         return object :
             NetworkOnlineDataRepo<LockBoxTypeResponseModel, LockBoxTypeResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LockBoxTypeResponseModel> {
                 return apiService.getAllLockBoxTypes(
                     pageNumber,
-                    limit,lovedOneUUID
+                    limit, lovedOneUUID
                 )
             }
         }.asFlow().flowOn(Dispatchers.IO)
@@ -106,8 +107,9 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
     // get lockbox detail info by ID
-    suspend fun getDetailLockBox(id:Int): Flow<DataResult<AddNewLockBoxResponseModel>> {
+    suspend fun getDetailLockBox(id: Int): Flow<DataResult<AddNewLockBoxResponseModel>> {
         return object :
             NetworkOnlineDataRepo<AddNewLockBoxResponseModel, AddNewLockBoxResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AddNewLockBoxResponseModel> {
@@ -115,12 +117,16 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
     // edit New LockBox
-    suspend fun editNewLockBox(addNewLockBoxRequestModel: EditLockBoxRequestModel, id:Int): Flow<DataResult<AddNewLockBoxResponseModel>> {
+    suspend fun editNewLockBox(
+        addNewLockBoxRequestModel: EditLockBoxRequestModel,
+        id: Int
+    ): Flow<DataResult<AddNewLockBoxResponseModel>> {
         return object :
             NetworkOnlineDataRepo<AddNewLockBoxResponseModel, AddNewLockBoxResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<AddNewLockBoxResponseModel> {
-                return apiService.editNewLockBox(addNewLockBoxRequestModel,id)
+                return apiService.editNewLockBox(addNewLockBoxRequestModel, id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
@@ -187,5 +193,18 @@ class LockBoxRepository @Inject constructor(private val apiService: ApiService) 
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
+    // Share LockBox
+    suspend fun shareLockBoxDoc(
+        id: Int?,
+    ): Flow<DataResult<ShareLockBoxResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<ShareLockBoxResponseModel, ShareLockBoxResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<ShareLockBoxResponseModel> {
+                return apiService.shareLockBoxDoc(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 }
 

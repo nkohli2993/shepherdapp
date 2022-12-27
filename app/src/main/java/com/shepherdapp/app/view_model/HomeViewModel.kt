@@ -1,11 +1,13 @@
 package com.shepherdapp.app.view_model
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.DataRepository
@@ -14,6 +16,7 @@ import com.shepherdapp.app.data.dto.dashboard.LoveUser
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.menuItem.MenuItemModel
 import com.shepherdapp.app.data.dto.user.UserDetailsResponseModel
+import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.data.remote.home_repository.HomeRepository
@@ -24,6 +27,7 @@ import com.shepherdapp.app.ui.base.BaseViewModel
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.TableName
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -38,6 +42,7 @@ class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val homeRepository: HomeRepository
 ) : BaseViewModel() {
+    var usersTableName: String? = null
 
     var menuItemList: ArrayList<MenuItemModel> = ArrayList()
     var menuItemMap: HashMap<String, ArrayList<MenuItemModel>> = HashMap()
@@ -56,6 +61,11 @@ class HomeViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<HomeResponseModel>>>()
     var homeResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
         _homeResponseLiveData
+
+    private var _userDetailByUUIDLiveData =
+        MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
+    var userDetailByUUIDLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
+        _userDetailByUUIDLiveData
 
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -205,10 +215,52 @@ class HomeViewModel @Inject constructor(
         }
         return homeResponseLiveData
     }
+
     //get userinfo from Shared Pref
     fun getLovedUserDetail(): UserLovedOne? {
         return userRepository.getLovedOneUserDetail()
     }
 
     fun getUUID() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+
+    fun getLovedOneUUID() = userRepository.getLovedOneUUId()
+
+    fun isLoggedInUserLovedOne(): Boolean? {
+        return userRepository.isLoggedInUserLovedOne()
+    }
+
+    // Get User Details
+    fun getUserDetailByUUID(): LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> {
+        val uuid = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response = uuid?.let { authRepository.getUserDetailsByUUID(it) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _userDetailByUUIDLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return userDetailByUUIDLiveData
+    }
+
+    // Clear Firebase Token on logout
+    fun clearFirebaseToken() {
+        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
+            TableName.USERS_DEV
+        } else {
+            TableName.USERS
+        }
+        val uuid = userRepository.getUUID()
+        Log.d(TAG, "uuid : $uuid")
+        ShepherdApp.db.collection(usersTableName!!).whereEqualTo("uuid", userRepository.getUUID())
+            .get()
+            .addOnSuccessListener {
+                if (!it.documents.isNullOrEmpty()) {
+                    val documentID = it.documents[0].id
+                    // Clear firebaseToken
+                    ShepherdApp.db.collection(usersTableName!!).document(documentID)
+                        .update("firebase_token", "")
+                }
+            }
+    }
 }

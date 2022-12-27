@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.lockBox
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -23,6 +24,8 @@ import com.shepherdapp.app.databinding.FragmentLockboxBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.lockBox.adapter.OtherDocumentsAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.RecommendedDocumentsAdapter
 import com.shepherdapp.app.utils.ClickType
@@ -59,6 +62,20 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     var total: Int = 0
     private var deletePostion: Int = -1
 
+
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,7 +97,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
         fragmentLockboxBinding.imgCancel.setOnClickListener {
             fragmentLockboxBinding.editTextSearch.setText("")
-            fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+            fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
             resetPageNumber()
             isSearch = false
             lockBoxList!!.clear()
@@ -100,17 +117,17 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             ) {
                 if (s.toString().isEmpty() && (lengthBefore == 0 && lengthAfter == 0)) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
-                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                    fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
                 } else if (s.toString().isEmpty() && (lengthBefore > 0 && lengthAfter >= 0)) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
-                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                    fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
                     resetPageNumber()
                     isSearch = false
                     lockBoxList!!.clear()
                     lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
                 } else {
                     fragmentLockboxBinding.imgCancel.visibility = View.VISIBLE
-                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.GONE
+                    fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.GONE
                     //Hit search api
                     lockBoxViewModel.searchAllLockBoxUploadedDocumentsByLovedOneUUID(
                         pageNumber,
@@ -133,7 +150,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 val searchData = fragmentLockboxBinding.editTextSearch.text.toString().trim()
                 if (searchData.isEmpty()) {
                     fragmentLockboxBinding.imgCancel.visibility = View.GONE
-                    fragmentLockboxBinding.cvRecommendedDocuments.visibility = View.VISIBLE
+                    fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
                     resetPageNumber()
                     isSearch = false
                     lockBoxList!!.clear()
@@ -161,6 +178,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     override fun observeViewModel() {
         observe(lockBoxViewModel.openUploadedDocDetail, ::openUploadedDocDetail)
         observe(lockBoxViewModel.createRecommendedLockBoxDocLiveData, ::createRecommendedLockBoxDoc)
+        observe(lockBoxViewModel.viewRecommendedLockBoxDocLiveData, ::viewRecommendedLockBoxDoc)
 
 
         lockBoxViewModel.lockBoxTypeResponseLiveData.observeEvent(this) {
@@ -309,6 +327,16 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
     }
 
+    private fun viewRecommendedLockBoxDoc(singleEvent: SingleEvent<LockBoxTypes>) {
+        singleEvent.getContentIfNotHandled()?.let {
+            //Get id of uploaded lock box
+            val lockBoxId = it.lockbox.first().id
+            val action =
+                lockBoxId?.let { it1 -> LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(it1) }
+            action?.let { it1 -> findNavController().navigate(it1) }
+        }
+    }
+
     private fun createRecommendedLockBoxDoc(singleEvent: SingleEvent<LockBoxTypes>) {
         singleEvent.getContentIfNotHandled()?.let {
             // Sending LockBoxTypes object through safeArgs
@@ -321,8 +349,15 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         navigateEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "Uploaded Doc detail :$it")
             if (it.clickType == ClickType.View.value) {
-                val action = LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(it)
-                findNavController().navigate(action)
+                val lockBoxId = it.id
+                val action = lockBoxId?.let { it1 ->
+                    LockBoxFragmentDirections.actionLockBoxToLockBoxDocInfo(
+                        it1
+                    )
+                }
+                if (action != null) {
+                    findNavController().navigate(action)
+                }
             } else {
                 //show delete dialog
                 val builder = AlertDialog.Builder(requireContext())
@@ -402,6 +437,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     }
 
     override fun onResume() {
+        parentActivityListener?.msgFromChildFragmentToActivity()
         super.onResume()
 
     }

@@ -8,7 +8,6 @@ import com.shepherdapp.app.R
 import com.shepherdapp.app.databinding.ActivityWalkThroughBinding
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.onBoarding.adapter.OnBoardingImagesAdapter
-import com.shepherdapp.app.ui.component.walkThrough.WalkThroughModel
 import com.shepherdapp.app.ui.welcome.WelcomeActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
@@ -50,7 +49,7 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
             WalkThroughModel(
                 R.drawable.walkthrough_2,
                 "Manage the stress that \ncomes with caregiving.",
-                "Whether you are managing the care of a parent, a husband or wife, or a special- needs child, Shepherd can help you reduce the stress that comes with caregiving."
+                "Whether you are managing the care of a parent, a husband or wife, or a special-needs child, Shepherd can help you reduce the stress that comes with caregiving."
             )
         )
         list.add(

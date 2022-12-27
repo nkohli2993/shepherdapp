@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
+import com.shepherdapp.app.data.dto.lock_box.share_lock_box.ShareLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
 import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
@@ -33,6 +34,11 @@ class LockBoxDocInfoViewModel @Inject constructor(
     var updateLockBoxDocResponseLiveData: LiveData<Event<DataResult<UpdateLockBoxResponseModel>>> =
         _updateLockBoxDocResponseLiveData
 
+    private var _shareLockBoxDocResponseLiveData =
+        MutableLiveData<Event<DataResult<ShareLockBoxResponseModel>>>()
+    var shareLockBoxDocResponseLiveData: LiveData<Event<DataResult<ShareLockBoxResponseModel>>> =
+        _shareLockBoxDocResponseLiveData
+
 
     private var _getDetailLockBoxResponseLiveData =
         MutableLiveData<Event<DataResult<AddNewLockBoxResponseModel>>>()
@@ -54,9 +60,10 @@ class LockBoxDocInfoViewModel @Inject constructor(
         }
         return updateLockBoxDocResponseLiveData
     }
+
     //get Detail of lockbox by ID
     fun getDetailLockBox(
-        id:Int
+        id: Int
     ): LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> {
         viewModelScope.launch {
             val response = lockBoxRepository.getDetailLockBox(id)
@@ -67,5 +74,21 @@ class LockBoxDocInfoViewModel @Inject constructor(
             }
         }
         return getDetailLockBoxResponseLiveData
+    }
+
+
+    // Share Lock Box Doc
+    fun shareLockBoxDoc(
+        id: Int?
+    ): LiveData<Event<DataResult<ShareLockBoxResponseModel>>> {
+        viewModelScope.launch {
+            val response = lockBoxRepository.shareLockBoxDoc(id)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _shareLockBoxDocResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return shareLockBoxDocResponseLiveData
     }
 }

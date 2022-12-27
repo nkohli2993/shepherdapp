@@ -1,9 +1,11 @@
 package com.shepherdapp.app.ui.welcome
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.LiveData
+import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.Resource
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
@@ -16,7 +18,6 @@ import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.ui.component.welcome.WelcomeViewModel
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.observe
-import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.utils.setupSnackbar
 import com.shepherdapp.app.utils.showToast
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +43,7 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
         binding = ActWelcomeBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+//        binding.tvDescription.movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun observeViewModel() {
@@ -95,12 +97,14 @@ class WelcomeActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToLogin() {
-        startActivity<LoginActivity>()
-        /* val intent = Intent(this, LoginActivity::class.java)
-         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-         startActivity(intent)
-         finish()*/
+//        startActivity<LoginActivity>()
         //startActivityWithFinish<LoginActivity>()
+
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.putExtra("source", "WelcomeActivity")
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun navigateToSignUp() {

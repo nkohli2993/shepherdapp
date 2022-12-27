@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.data.dto.medical_conditions.*
+import com.shepherdapp.app.data.dto.medical_conditions.edit_medical_conditions.EditMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.remote.medical_conditions.MedicalConditionRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -49,6 +50,11 @@ class AddLovedOneConditionViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<AddedUserMedicalConditionResposneModel>>>()
     var addedConditionsResponseLiveData: LiveData<Event<DataResult<AddedUserMedicalConditionResposneModel>>> =
         _addedConditionsResponseLiveData
+
+    private var _editConditionResponseLiveData =
+        MutableLiveData<Event<DataResult<EditMedicalConditionsResponseModel>>>()
+    var editConditionResponseLiveData: LiveData<Event<DataResult<EditMedicalConditionsResponseModel>>> =
+        _editConditionResponseLiveData
 
     private var _userIDLiveData = MutableLiveData<Event<DataResult<Int>>>()
     var userIDLiveData: LiveData<Event<DataResult<Int>>> = _userIDLiveData
@@ -103,6 +109,7 @@ class AddLovedOneConditionViewModel @Inject constructor(
         }
         return updateConditionsResponseLiveData
     }
+
     // add Medical Conditions
     fun addMedicalConditions(conditions: AddMedicalConditionRequestModel): LiveData<Event<DataResult<AddedUserMedicalConditionResposneModel>>> {
         viewModelScope.launch {
@@ -112,6 +119,20 @@ class AddLovedOneConditionViewModel @Inject constructor(
             }
         }
         return addedConditionsResponseLiveData
+    }
+
+    // Edit Medical Condition
+    fun editMedicalCondition(
+        conditions: AddMedicalConditionRequestModel,
+        id: Int
+    ): LiveData<Event<DataResult<EditMedicalConditionsResponseModel>>> {
+        viewModelScope.launch {
+            val response = medicalConditionRepository.editMedicalConditions(conditions, id)
+            withContext(Dispatchers.Main) {
+                response.collect { _editConditionResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return editConditionResponseLiveData
     }
 
 

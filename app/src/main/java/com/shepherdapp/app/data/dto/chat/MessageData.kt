@@ -66,7 +66,9 @@ data class ChatNotificationModel(
     @SerializedName("notification")
     var notification: ChatNotificationData?,
     @SerializedName("to")
-    var to: String? = null
+    var to: String? = null,
+    @SerializedName("registration_ids")
+    var registrationIDs: ArrayList<String>? = null
 ) : Parcelable
 
 @SuppressLint("ParcelCreator")
@@ -96,5 +98,7 @@ data class ChatNotificationData(
     @SerializedName("from_name", alternate = ["sender_name"])
     var senderName: String? = null,
     @SerializedName("title")
-    var title: String? = null
+    var title: String? = null,
+    @SerializedName("group_id")
+    var groupId: String? = null
 ) : Parcelable

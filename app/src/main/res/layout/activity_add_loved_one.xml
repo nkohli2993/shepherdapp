@@ -5,11 +5,9 @@
 
     <data>
 
-
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
-
     </data>
 
     <LinearLayout
@@ -192,7 +190,7 @@
                         android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                         android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="@dimen/_5sdp"
-                        android:hint="@string/enter_your_email"
+                        android:hint="@string/enter_email"
                         android:inputType="textEmailAddress"
                         android:paddingHorizontal="@dimen/_8sdp"
                         android:singleLine="true"
@@ -530,6 +528,56 @@
                         android:entries="@array/relationship_array"
                         android:spinnerMode="dropdown" />-->
 
+                    <CheckBox
+                        android:id="@+id/chkLovedOne"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:button="@drawable/shape_circular_checkbox"
+                        android:buttonTint="@color/colorPurple"
+                        app:layout_constraintEnd_toStartOf="@id/chkSendInvitation"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/relationshipSpinnerLayout" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/chkSendInvitation"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_book"
+                        android:lineSpacingMultiplier="1.4"
+                        android:text="@string/send_invitation_to_loved_one"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintBottom_toBottomOf="@+id/chkLovedOne"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/chkLovedOne" />
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_10sdp"
+                        android:src="@drawable/ic_info_vital_stat"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/chkSendInvitation" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/gotham_book"
+                        android:text="@string/the_loved_one_will_log_in_using_the_same_credentials_to_sync_vitalStats_data"
+                        android:textColor="@color/_D7293F"
+                        android:textSize="@dimen/_12ssp"
+                        android:lineSpacingExtra="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        app:layout_constraintStart_toEndOf="@id/img"
+                        app:layout_constraintTop_toTopOf="@id/img"
+                        app:layout_constraintBottom_toBottomOf="@id/img"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/btnContinue"
@@ -550,7 +598,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/relationshipSpinnerLayout" />
+                        app:layout_constraintTop_toBottomOf="@id/img" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

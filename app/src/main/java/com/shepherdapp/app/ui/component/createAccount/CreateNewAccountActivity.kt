@@ -1,6 +1,5 @@
 package com.shepherdapp.app.ui.component.createAccount
 
-import android.Manifest.permission.*
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
@@ -22,6 +21,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.databinding.ActivityCreateNewAccountBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -37,8 +38,10 @@ import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.CreateNewAccountViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_create_account.editTextPhoneNumber
+import kotlinx.android.synthetic.main.activity_create_account.*
 import kotlinx.android.synthetic.main.activity_create_new_account.*
+import kotlinx.android.synthetic.main.activity_create_new_account.editTextEmail
+import kotlinx.android.synthetic.main.activity_create_new_account.editTextPassword
 import java.io.File
 
 
@@ -60,6 +63,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
     private var roleId: String? = null
     private var isPasswordShown = false
     private var profilePicCompleteUrl: String? = null
+    private var enterpriseCode: String? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var TAG = "CreateNewAccountActivity"
@@ -79,7 +83,7 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     binding.edtLastName.requestFocus()
                 }
                 binding.editTextEmail.text.toString().isEmpty() -> {
-                    binding.editTextEmail.error = getString(R.string.please_enter_email_id)
+                    binding.editTextEmail.error = getString(R.string.enter_email)
                     binding.editTextEmail.requestFocus()
                 }
                 !binding.editTextEmail.text.toString().isValidEmail() -> {
@@ -94,6 +98,19 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     binding.editTextPassword.error = getString(R.string.please_enter_your_password)
                     binding.editTextPassword.requestFocus()
                 }
+                binding.editTextPassword.text.toString().length < 4 -> {
+                    binding.editTextPassword.error =
+                        getString(R.string.password_should_be_min_4_character)
+                    binding.editTextPassword.requestFocus()
+                }
+                /* binding.chkYes.isChecked -> {
+                     if (binding.edtEnterpriseCode.text.toString().isEmpty()) {
+                         binding.edtEnterpriseCode.error = getString(R.string.enter_enterprise_cod)
+                         binding.edtEnterpriseCode.requestFocus()
+                     } else {
+                         return true
+                     }
+                 }*/
                 !binding.checkboxTermsConditions.isChecked -> {
                     showInfo(
                         this,
@@ -132,6 +149,21 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             isPasswordShown = !isPasswordShown
             binding.editTextPassword.setSelection(binding.editTextPassword.length())
         }
+
+        /*  binding.chkYes.setOnCheckedChangeListener { compoundButton, b ->
+              if (b) {
+                  binding.chkNo.isChecked = false
+                  binding.layoutEnterpriseCode.visibility = View.VISIBLE
+              } else {
+                  binding.chkNo.isChecked = true
+                  binding.layoutEnterpriseCode.visibility = View.GONE
+              }
+          }*/
+
+        /*binding.chkNo.setOnCheckedChangeListener { compoundButton, b ->
+            binding.chkYes.isChecked = !b
+            binding.layoutEnterpriseCode.visibility = View.GONE
+        }*/
         // Get Roles
         createNewAccountViewModel.getRoles(pageNumber, limit)
     }
@@ -181,6 +213,15 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    /* // For handling user attached to signup, save status in SharedPref
+                     if (!enterpriseCode.isNullOrEmpty()) {
+                         createNewAccountViewModel.saveUSerAttachedToEnterprise(true)
+                         Log.d(
+                             TAG,
+                             "Sign Up : Save status of user attached to enterprise in SharedPref successfully.... "
+                         )
+                     }*/
+
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
 
@@ -209,6 +250,14 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                                 )
                             }
                         }
+                        // Save User Info in Firestore
+                        /* val user = it1.payload?.let { it2 -> signUpResponseToUser(it2) }
+                         user?.let { it2 ->
+                             createNewAccountViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
+                                 it2
+                             )
+                         }*/
+
                         if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
                                 this
                             ) && BiometricUtils.isFingerprintAvailable(
@@ -268,6 +317,22 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+
+    private fun signUpResponseToUser(payload: Payload): User {
+        val fToken = Prefs.with(this)?.getString(Const.FIREBASE_TOKEN)
+
+        return User().apply {
+            id = payload.id
+            userId = payload.id
+            firstname = payload.name
+            lastname = null
+            profilePhoto = null
+            uuid = payload.uuid
+            email = payload.email
+            firebaseToken = fToken
+        }
+    }
+
     private fun navigateToHomeScreen() {
         startActivityWithFinish<HomeActivity>()
     }
@@ -319,6 +384,15 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                     passwd = editTextPassword.text.toString().trim()
                     phoneNumber = edtPhoneNumber.text.toString().trim()
                     phoneCode = ccp.selectedCountryCode
+                    /* enterpriseCode = if (binding.chkYes.isChecked) {
+                         binding.edtEnterpriseCode.text.toString().trim()
+                     } else {
+                         null
+                     }*/
+                    enterpriseCode = edtEnterpriseCode.text.toString().trim()
+                    if (enterpriseCode?.isEmpty() == true) {
+                        enterpriseCode = null
+                    }
                     profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
                         null
                     } else {
@@ -334,7 +408,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                         email,
                         passwd,
                         phoneNumber,
-                        roleId
+                        roleId,
+                        enterpriseCode
                     )
                 }
                 /*else {

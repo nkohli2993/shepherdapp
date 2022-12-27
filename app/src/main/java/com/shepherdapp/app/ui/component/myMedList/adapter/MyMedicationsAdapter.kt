@@ -9,7 +9,6 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.UserMedicationData
@@ -80,7 +79,7 @@ class MyMedicationsAdapter(
                 )
             }
 
-            when (medList.frequency) {
+           /* when (medList.frequency) {
                 FrequencyType.ONCE.value -> {
                     itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
                 }
@@ -99,9 +98,11 @@ class MyMedicationsAdapter(
                 else -> {
                     itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
                 }
-            }
+            }*/
 
-            itemBinding.tvDosage.text = medList.dosage?.name.plus(" ${medList.dosageType?.name}")
+//            itemBinding.tvDosage.text = medList.dosage?.name.plus(" ${medList.dosageType?.name}")
+            itemBinding.tvDosage.text = medList.dosage?.name
+
         }
 
     }

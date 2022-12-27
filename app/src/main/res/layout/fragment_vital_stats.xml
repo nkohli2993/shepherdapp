@@ -34,14 +34,42 @@
                 android:text="@string/remotely_monitor_your_loved_one_s_vitals_statistics_via_wearables"
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_12ssp"
+                android:lineSpacingExtra="@dimen/_5sdp"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/layoutVitalSyncInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvRemoteMonitor"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_info_vital_stat" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham_book"
+                    android:text="@string/loved_one_needs_to_log_in_to_sync_vitalStats_data"
+                    android:textColor="@color/_D7293F"
+                    android:textSize="@dimen/_12ssp"
+                    android:lineSpacingExtra="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/clHeartNTempWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/tvRemoteMonitor">
+                app:layout_constraintTop_toBottomOf="@+id/layoutVitalSyncInfo">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cvHeartRate"
@@ -360,7 +388,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:dropDownVerticalOffset="@dimen/_40sdp"
-                android:spinnerMode="dropdown"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/clBloodNOWrapper" />
 
@@ -390,38 +417,217 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvHRMin"
+            <LinearLayout
+                android:id="@+id/layoutMinMax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/_1sdp"
-                android:fontFamily="@font/gotham_medium"
-                android:text="Min - /"
-                android:textColor="@color/_CEB9D5"
-                android:textSize="@dimen/_12ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
-                app:layout_constraintEnd_toStartOf="@+id/tvHRMax"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/typeSpinner"
-                tools:ignore="HardcodedText" />
+                app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
+                android:gravity="start"
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtSBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:visibility="gone"
+                        android:text="@string/sbp_with_colon"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvHRMin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="Min - /"
+                        android:textColor="@color/_2776FF"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvHRMax"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="Max -"
+                        android:textColor="@color/_D7293F"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_3sdp"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtDBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="@string/dbp_with_colon"
+                        android:visibility="gone"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtMinDBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="Min DBP - /"
+                        android:visibility="gone"
+                        android:textColor="@color/_2776FF"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtMaxDBP"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="Max DBP -"
+                        android:visibility="gone"
+                        android:textColor="@color/_D7293F"
+                        android:textSize="@dimen/_9ssp"
+                        tools:ignore="HardcodedText" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--  <androidx.appcompat.widget.AppCompatTextView
+                  android:id="@+id/tvHRMin"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginEnd="@dimen/_1sdp"
+                  android:fontFamily="@font/gotham_medium"
+                  android:text="Min - /"
+                  android:textColor="@color/_2776FF"
+                  android:textSize="@dimen/_10ssp"
+                  app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
+                  app:layout_constraintEnd_toStartOf="@+id/tvHRMax"
+                  app:layout_constraintTop_toTopOf="@+id/typeSpinner"
+                  tools:ignore="HardcodedText" />-->
+
+            <!--<androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvHRMax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/gotham_medium"
                 android:text="Max -"
-                android:textColor="@color/_8A569C"
-                android:textSize="@dimen/_12ssp"
+                android:textColor="@color/_D7293F"
+                android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/tvHRMin"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText" />-->
 
-            <com.github.mikephil.charting.charts.CandleStickChart
+            <!-- <androidx.appcompat.widget.AppCompatTextView
+                 android:id="@+id/txtMinDBP"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginEnd="@dimen/_1sdp"
+                 android:fontFamily="@font/gotham_medium"
+                 android:text="Min DBP - /"
+                 android:visibility=""
+                 android:textColor="@color/_2776FF"
+                 android:textSize="@dimen/_10ssp"
+                 app:layout_constraintEnd_toStartOf="@+id/txtMaxDBP"
+                 app:layout_constraintTop_toBottomOf="@+id/tvHRMin"
+                 app:layout_constraintBottom_toBottomOf="@+id/typeSpinner"
+                 tools:ignore="HardcodedText" />-->
+
+            <!--   <androidx.appcompat.widget.AppCompatTextView
+                   android:id="@+id/txtMaxDBP"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:fontFamily="@font/gotham_medium"
+                   android:text="Max DBP -"
+                   android:visibility=""
+                   android:textColor="@color/_D7293F"
+                   android:textSize="@dimen/_10ssp"
+                   tools:ignore="HardcodedText"
+                   android:layout_marginStart="@dimen/_10sdp"
+                   app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toTopOf="@+id/txtMinDBP" />
+   -->
+            <!--Candle Stick Chart-->
+            <!-- <com.github.mikephil.charting.charts.CandleStickChart
+                 android:id="@+id/typeChart"
+                 android:layout_width="match_parent"
+                 android:layout_height="@dimen/_350sdp"
+                 android:layout_marginTop="@dimen/_10sdp"
+                 app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV" />-->
+
+            <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/typeChart"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_350sdp"
+                android:layout_height="@dimen/_320sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV" />
+                app:layout_constraintTop_toBottomOf="@+id/dateSelectedTV"
+                android:background="@color/_F9F7FA"
+                android:paddingTop="@dimen/_20sdp"
+                android:paddingStart="@dimen/_20sdp"
+                android:paddingEnd="@dimen/_20sdp" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/_2776FF"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                app:layout_constraintTop_toBottomOf="@+id/typeChart" />
+
+            <TextView
+                style="@style/TextViewGothamMedium"
+                android:id="@+id/txtType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_11ssp"
+                android:layout_marginStart="@dimen/_5sdp"
+                app:layout_constraintStart_toEndOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view"
+                app:layout_constraintBottom_toBottomOf="@+id/view" />
+
+            <View
+                android:id="@+id/view1"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_1sdp"
+                android:background="@color/_D7293F"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <TextView
+                style="@style/TextViewGothamMedium"
+                android:id="@+id/txtType1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_11ssp"
+                android:visibility="gone"
+                android:layout_marginStart="@dimen/_5sdp"
+                app:layout_constraintStart_toEndOf="@+id/view1"
+                app:layout_constraintTop_toTopOf="@+id/view1"
+                app:layout_constraintBottom_toBottomOf="@+id/view1" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

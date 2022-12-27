@@ -3,6 +3,7 @@ package com.shepherdapp.app.data.local
 import android.util.Log
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.dashboard.LoveUser
+import com.shepherdapp.app.data.dto.login.Enterprise
 import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
@@ -129,8 +130,43 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun saveLovedOneUserDetail(userLovedOne: UserLovedOne) {
         Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_DETAIL, userLovedOne)
     }
-    fun getLovedOneUserDetail(): UserLovedOne?{
-       return Prefs.with(ShepherdApp.appContext)!!.getObject(LOVED_ONE_DETAIL, UserLovedOne::class.java )
+
+    fun getLovedOneUserDetail(): UserLovedOne? {
+        return Prefs.with(ShepherdApp.appContext)!!
+            .getObject(LOVED_ONE_DETAIL, UserLovedOne::class.java)
+    }
+
+    fun saveFirebaseToken(firebaseToken: String?) {
+        Prefs.with(ShepherdApp.appContext)?.save(Const.FIREBASE_TOKEN, firebaseToken)
+    }
+
+    fun getFirebaseToken() = Prefs.with(ShepherdApp.appContext)?.getString(Const.FIREBASE_TOKEN)
+
+    fun saveLoggedInUserAsLovedOne(isLoggedInUserLovedOne: Boolean) {
+        Prefs.with(ShepherdApp.appContext)!!
+            .save(Const.Is_LOGGED_IN_USER_LOVED_ONE, isLoggedInUserLovedOne)
+    }
+
+    fun isLoggedInUserLovedOne() =
+        Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_LOVED_ONE, false)
+
+    fun saveUserAttachedToEnterprise(isUserAttachedToEnterprise: Boolean) {
+        Prefs.with(ShepherdApp.appContext)!!
+            .save(Const.Is_USER_ATTACHED_TO_ENTERPRISE, isUserAttachedToEnterprise)
+    }
+
+    fun isUserAttachedToEnterprise() =
+        Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_USER_ATTACHED_TO_ENTERPRISE, false)
+
+    // Save Enterprise Detail
+    fun saveEnterpriseDetail(enterprise: Enterprise) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.ENTERPRISE_DETAIL, enterprise)
+    }
+
+    // Get Enterprise Detail
+    fun getEnterpriseDetail(): Enterprise? {
+        return Prefs.with(ShepherdApp.appContext)
+            ?.getObject(Const.ENTERPRISE_DETAIL, Enterprise::class.java)
     }
 
 }

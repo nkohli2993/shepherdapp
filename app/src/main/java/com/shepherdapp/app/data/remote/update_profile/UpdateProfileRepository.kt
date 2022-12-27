@@ -2,6 +2,8 @@ package com.shepherdapp.app.data.remote.update_profile
 
 import android.webkit.MimeTypeMap
 import com.shepherdapp.app.data.dto.add_loved_one.UploadPicResponseModel
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncRequestModel
+import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncResponseModel
 import com.shepherdapp.app.data.dto.edit_profile.UserUpdateData
 import com.shepherdapp.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherdapp.app.data.dto.login.EditResponseModel
@@ -53,10 +55,26 @@ class UpdateProfileRepository @Inject constructor(private val apiService: ApiSer
 
 
     //Update Profile fragment
-    suspend fun updateProfile(value: UserUpdateData,id:Int): Flow<DataResult<EditResponseModel>> {
+    suspend fun updateProfile(value: UserUpdateData, id: Int): Flow<DataResult<EditResponseModel>> {
         return object : NetworkOnlineDataRepo<EditResponseModel, EditResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<EditResponseModel> {
-                return apiService.updateProfile(value,id)
+                return apiService.updateProfile(value, id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //Update Profile fragment
+    suspend fun updateProfileForLastSync(
+        updateUserProfileForLastSyncRequestModel: UpdateUserProfileForLastSyncRequestModel,
+        id: Int
+    ): Flow<DataResult<UpdateUserProfileForLastSyncResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<UpdateUserProfileForLastSyncResponseModel, UpdateUserProfileForLastSyncResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<UpdateUserProfileForLastSyncResponseModel> {
+                return apiService.updateProfileForLastSync(
+                    updateUserProfileForLastSyncRequestModel,
+                    id
+                )
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

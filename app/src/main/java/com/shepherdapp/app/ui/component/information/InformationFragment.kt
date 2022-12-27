@@ -84,7 +84,7 @@ class InformationFragment : BaseFragment<FragmentInformationBinding>(), View.OnC
                     tvTitle.text = getString(R.string.privacy_policy)
                 }
                 Const.TERM_OF_USE -> {
-                    tvTitle.text = getString(R.string.terms_of_use)
+                    tvTitle.text = getString(R.string.term_and_conditions)
                 }
             }
         }

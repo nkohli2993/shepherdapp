@@ -1,15 +1,13 @@
 package com.shepherdapp.app.ui.component.addNewMedication
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import com.shepherdapp.app.R
-import com.shepherdapp.app.data.dto.med_list.Medlist
 import com.shepherdapp.app.data.dto.med_list.add_med_list.AddMedListRequestModel
 import com.shepherdapp.app.databinding.FragmentAddNewMedicineBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -27,6 +25,8 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
     private val addMedicationViewModel: AddMedicationViewModel by viewModels()
     private var medicationName: String? = null
     private var description: String? = null
+    private val args: AddNewMedicineFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +38,16 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
 
     override fun initViewBinding() {
         fragmentAddNewMedicineBinding.listener = this
-
+        val medList = args.medicine
+        if (!medList?.name.isNullOrEmpty()) {
+            fragmentAddNewMedicineBinding.tvMedList.text = getString(R.string.edit_medicine)
+            fragmentAddNewMedicineBinding.btnSubmit.text = getString(R.string.save_changes)
+            fragmentAddNewMedicineBinding.medicineNameET.setText(medList?.name)
+            if (!medList?.description.isNullOrEmpty()) {
+                val med = HtmlCompat.fromHtml(medList?.description ?: "", 0)
+                fragmentAddNewMedicineBinding.etDescription.setText(med)
+            }
+        }
     }
 
     override fun observeViewModel() {
@@ -59,7 +68,22 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
             }
         }
 
-
+        addMedicationViewModel.editMedicineResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    showError(requireContext(), it.message.toString())
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
+                    backPress()
+                }
+            }
+        }
     }
 
     override fun getLayoutRes(): Int {
@@ -74,15 +98,32 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
             }
             R.id.btnSubmit -> {
                 if (isValid) {
-                    if (fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim().isNotEmpty()) {
-                        medicationName = fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim()
+                    if (fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim()
+                            .isNotEmpty()
+                    ) {
+                        medicationName =
+                            fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim()
                     }
-                    if (fragmentAddNewMedicineBinding.etDescription.text.toString().trim().isNotEmpty()) {
-                        description = fragmentAddNewMedicineBinding.etDescription.text.toString().trim()
+                    if (fragmentAddNewMedicineBinding.etDescription.text.toString().trim()
+                            .isNotEmpty()
+                    ) {
+                        description =
+                            fragmentAddNewMedicineBinding.etDescription.text.toString().trim()
                     }
-                    addMedicationViewModel.addNewMedlistMedicine(
-                        AddMedListRequestModel(medicationName, description, "user")
-                    )
+                    if (!args.medicine?.name.isNullOrEmpty()) {
+                        // Edit Medicine
+                        args.medicine?.id?.let {
+                            addMedicationViewModel.editMedicine(
+                                AddMedListRequestModel(medicationName, description, null),
+                                it
+                            )
+                        }
+                    } else {
+                        // Add medicine
+                        addMedicationViewModel.addNewMedlistMedicine(
+                            AddMedListRequestModel(medicationName, description, "user")
+                        )
+                    }
                 }
             }
         }
@@ -91,9 +132,9 @@ class AddNewMedicineFragment : BaseFragment<FragmentAddNewMedicineBinding>(),
     private val isValid: Boolean
         get() {
             when {
-                fragmentAddNewMedicineBinding.medicineNameET.text.toString().isEmpty() -> {
+                fragmentAddNewMedicineBinding.medicineNameET.text.toString().trim().isEmpty() -> {
                     fragmentAddNewMedicineBinding.medicineNameET.error =
-                        getString(R.string.please_enter_medical_condition)
+                        getString(R.string.please_enter_medicine_name)
                     fragmentAddNewMedicineBinding.medicineNameET.requestFocus()
                 }
                 else -> {

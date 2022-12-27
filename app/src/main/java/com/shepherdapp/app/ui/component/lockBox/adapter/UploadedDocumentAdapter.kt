@@ -7,9 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.DocumentData
 import com.shepherdapp.app.databinding.AdapterUploadedFileLockboxBinding
-import com.shepherdapp.app.utils.extensions.convertISOTimeToDate
 import com.shepherdapp.app.utils.extensions.toTextFormat
-import java.util.*
 
 class UploadedDocumentAdapter(
     var selectedFiles: MutableList<DocumentData> = ArrayList()
@@ -58,8 +56,17 @@ class UploadedDocumentAdapter(
             itemBinding.let {
 
                 it.txtFolderName.text = file.filePath.substring(file.filePath.lastIndexOf("/") + 1)
-                it.txtUploadDate.text = "Uploaded ${file.uploadDate.toTextFormat(file.uploadDate,"yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
-                    "MMMM dd, yyyy")}"
+                if (file.uploadDate.endsWith("Z")) {
+                    it.txtUploadDate.text = "Uploaded ${
+                        file.uploadDate.toTextFormat(
+                            file.uploadDate, "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                            "MMMM dd, yyyy"
+                        )
+                    }"
+                } else {
+                    it.txtUploadDate.text = "Uploaded ${file.uploadDate}"
+                }
+
                 if (file.filePath.lowercase()
                         .endsWith(".png") || file.filePath.lowercase()
                         .endsWith(".jpg") || file.filePath.lowercase()

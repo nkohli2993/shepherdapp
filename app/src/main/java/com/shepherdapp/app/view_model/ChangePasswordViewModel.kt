@@ -30,6 +30,12 @@ constructor(private val authRepository: AuthRepository) :
     var changePasswordResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _changePasswordResponseLiveData
 
+
+    private var _logoutResponseLiveData = MutableLiveData<Event<DataResult<BaseResponseModel>>>()
+
+    var logoutResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
+        _logoutResponseLiveData
+
     fun changePassword(
         oldPassword: String,
         newPassword: String,
@@ -49,4 +55,17 @@ constructor(private val authRepository: AuthRepository) :
 
         return changePasswordResponseLiveData
     }
+
+    fun logOut(): LiveData<Event<DataResult<BaseResponseModel>>> {
+        viewModelScope.launch {
+            val response = authRepository.logout()
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _logoutResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return logoutResponseLiveData
+    }
+
 }

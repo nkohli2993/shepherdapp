@@ -1,5 +1,8 @@
 package com.shepherdapp.app.utils.extensions
 
+import android.annotation.SuppressLint
+import com.google.android.gms.fitness.data.DataPoint
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -250,6 +253,13 @@ fun String?.convertISOTimeToDate(): String? {
     return formattedDate
 }
 
+
+fun DataPoint.getStartTimeString(): String = DateFormat.getTimeInstance()
+    .format(this.getStartTime(TimeUnit.MILLISECONDS))
+
+fun DataPoint.getEndTimeString(): String = DateFormat.getTimeInstance()
+    .format(this.getEndTime(TimeUnit.MILLISECONDS))
+
 // Convert String timestamp into string of date
 fun String?.convertTimeStampToDate(): String? {
     val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
@@ -265,17 +275,49 @@ fun String?.convertTimeStampToDate(): String? {
     return formattedDate
 }
 
-// Get time from timestamp
+// Get local time from server timestamp
 fun String?.convertTimeStampToTime(): String? {
     val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    sdf.timeZone = TimeZone.getTimeZone("UTC")
     var convertedDate: Date? = null
     var formattedDate: String? = null
     try {
         convertedDate = sdf.parse(this)
-        formattedDate = SimpleDateFormat("HH:mm aaa").format(convertedDate)
+        val df = SimpleDateFormat("hh:mm aaa", Locale.getDefault())
+        formattedDate = df.format(convertedDate)
     } catch (e: ParseException) {
         e.printStackTrace()
     }
 
     return formattedDate
+}
+
+// Get local time from server timestamp
+fun String?.convertTimeStampToTim(): String? {
+    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    var convertedDate: Date? = null
+    var formattedDate: String? = null
+    try {
+        convertedDate = sdf.parse(this)
+        val df = SimpleDateFormat("hh:mm aaa", Locale.getDefault())
+        formattedDate = df.format(convertedDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+
+    return formattedDate
+}
+
+
+@SuppressLint("SimpleDateFormat")
+fun String?.changeDatesFormat(sourceFormat: String?, targetFormat: String?): String? {
+    // convert the Source string to Date object
+    val formatter = SimpleDateFormat(sourceFormat)
+    val date = this?.let { formatter.parse(it) }
+
+    // Convert the Date object into desired format
+    val desiredFormat = date?.let { SimpleDateFormat(targetFormat).format(it) }
+    println(desiredFormat) //08, Aug 2019
+
+    return desiredFormat
 }

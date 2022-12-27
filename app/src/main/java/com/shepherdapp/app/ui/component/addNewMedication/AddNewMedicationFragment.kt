@@ -13,12 +13,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.med_list.MedListData
 import com.shepherdapp.app.data.dto.med_list.Medlist
 import com.shepherdapp.app.databinding.FragmentAddNewMedicationBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addNewMedication.adapter.AddMedicineListAdapter
+import com.shepherdapp.app.utils.ClickType
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.observe
@@ -36,6 +38,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     View.OnClickListener {
     private lateinit var fragmentAddNewMedicationBinding: FragmentAddNewMedicationBinding
     private var isSearch: Boolean = false
+    private var shouldSearch: Boolean = true
     private val addMedicationViewModel: AddMedicationViewModel by viewModels()
     private var pageNumber = 1
     private val limit = 15
@@ -46,6 +49,8 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     var medLists: ArrayList<Medlist> = arrayListOf()
     private var selectedMedication: Medlist? = null
     private var searchFlag = false
+//    private var textWatcher: TextWatcher? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,14 +69,21 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
         pageNumber = 1
         isSearch = false
         searchFlag = false
+        addMedicationViewModel.getAllMedLists(pageNumber, limit)
+        shouldSearch = true
     }
 
     override fun initViewBinding() {
         fragmentAddNewMedicationBinding.listener = this
         addMedicationViewModel.getAllMedLists(pageNumber, limit)
 
+//        fragmentAddNewMedicationBinding.editTextSearch.removeTextChangedListener(textWatcher)
+        fragmentAddNewMedicationBinding.editTextSearch.setText("")
+//        textWatcher = null
+
         setMedicineListAdapter()
         fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
+
         // Search med list
         fragmentAddNewMedicationBinding.imgCancel.setOnClickListener {
             fragmentAddNewMedicationBinding.editTextSearch.setText("")
@@ -82,13 +94,20 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             addMedicationViewModel.getAllMedLists(pageNumber, limit)
         }
 
-
         fragmentAddNewMedicationBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int, count: Int,
+                after: Int
+            ) {
+
 
             }
 
-            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun afterTextChanged(s: Editable) {
+                if (!shouldSearch) return
                 if (s.toString().isEmpty()) {
                     fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
                     pageNumber = 1
@@ -99,6 +118,7 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                 } else {
                     searchFlag = true
                     fragmentAddNewMedicationBinding.imgCancel.visibility = View.VISIBLE
+                    pageNumber = 1
                     //Hit search api
                     addMedicationViewModel.searchMedList(
                         pageNumber,
@@ -107,12 +127,41 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
                     )
                 }
             }
-
-            override fun afterTextChanged(s: Editable?) {
-
-
-            }
         })
+
+//        fragmentAddNewMedicationBinding.editTextSearch.addTextChangedListener(textWatcher)
+
+        /*  fragmentAddNewMedicationBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
+              override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+              }
+
+              override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                  if (s.toString().isEmpty()) {
+                      fragmentAddNewMedicationBinding.imgCancel.visibility = View.GONE
+                      pageNumber = 1
+                      isSearch = false
+                      searchFlag = false
+                      medLists.clear()
+                      addMedicationViewModel.getAllMedLists(pageNumber, limit)
+                  } else {
+                      searchFlag = true
+                      fragmentAddNewMedicationBinding.imgCancel.visibility = View.VISIBLE
+                      pageNumber = 1
+                      //Hit search api
+                      addMedicationViewModel.searchMedList(
+                          pageNumber,
+                          limit,
+                          s.toString()
+                      )
+                  }
+              }
+
+              override fun afterTextChanged(s: Editable?) {
+
+
+              }
+          })*/
     }
 
 
@@ -217,16 +266,26 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
 
     }
 
-    private fun selectedMedicationDetail(navigateEvent: SingleEvent<Int>) {
+    private fun selectedMedicationDetail(navigateEvent: SingleEvent<MedListData>) {
         navigateEvent.getContentIfNotHandled()?.let {
-            searchFlag = false
-            Log.e("catch_exception","position: $it medication ${medLists[it]}")
-            selectedMedication = medLists[it]
-            findNavController().navigate(
-                AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
-                    selectedMedication!!
+            if (it.type == ClickType.View.value) {
+                searchFlag = false
+                Log.e("catch_exception", "position: $it medication ${medLists[it.position!!]}")
+                selectedMedication = medLists[it.position!!]
+                shouldSearch = false
+                fragmentAddNewMedicationBinding.editTextSearch.setText("")
+                findNavController().navigate(
+                    AddNewMedicationFragmentDirections.actionAddNewMedicationToAddMedication(
+                        selectedMedication!!
+                    )
                 )
-            )
+            } else if (it.type == ClickType.Edit.value) {
+                selectedMedication = medLists[it.position!!]
+//                showToast("Edit clicked: Selected medicine is : $selectedMedication")
+                val action =
+                    AddNewMedicationFragmentDirections.actionNavAddNewMedicine(medicine = selectedMedication)
+                findNavController().navigate(action)
+            }
         }
     }
 
@@ -273,8 +332,10 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
             R.id.btnNext -> {
             }
             R.id.tvNew -> {
-
-                findNavController().navigate(R.id.action_nav_add_new_medicine)
+                val action =
+                    AddNewMedicationFragmentDirections.actionNavAddNewMedicine(medicine = null)
+                findNavController().navigate(action)
+//                findNavController().navigate(R.id.action_nav_add_new_medicine)
             }
         }
     }
@@ -285,10 +346,13 @@ class AddNewMedicationFragment : BaseFragment<FragmentAddNewMedicationBinding>()
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
+//        textWatcher = null
         addMedicineListAdapter?.clearData()
+        fragmentAddNewMedicationBinding.editTextSearch.setText("")
+//        fragmentAddNewMedicationBinding.editTextSearch.removeTextChangedListener(textWatcher)
         Log.d(TAG, "onDestroyView: ")
         pageNumber = 1
+        super.onDestroyView()
     }
 }
 

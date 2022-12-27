@@ -1,10 +1,10 @@
 package com.shepherdapp.app.ui.component.joinCareTeam
 
-import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
@@ -112,6 +112,8 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     results?.clear()
                     results?.let { it1 -> joinCareTeamAdapter?.updateCareTeams(it1) }
 
+//                    noInvitationFound()
+
                     val builder = AlertDialog.Builder(this)
                     val dialog = builder.apply {
                         setTitle("Join CareTeam Invitations")
@@ -200,6 +202,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
 
     override fun onItemClick(result: Results?) {
         if (result?.id != null) {
+            Prefs.with(ShepherdApp.appContext)!!.save(Const.USER_ROLE, result.careRoles?.name)
             // Accept the invitation request
             careTeamsViewModel.acceptCareTeamInvitations(result.id!!)
         }
@@ -218,6 +221,11 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
         else if (careTeam.isSelected == false && selectedCareTeams?.contains(careTeam) == true)
             selectedCareTeams?.remove(careTeam)
     }*/
+
+    fun noInvitationFound() {
+        binding.txtNoCareTeamFound.visibility = View.VISIBLE
+        binding.buttonJoin.visibility = View.GONE
+    }
 }
 
 

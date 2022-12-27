@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -56,6 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:onClick="@{listener::onClick}"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:paddingVertical="@dimen/_10sdp">
 
@@ -79,6 +79,53 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivSubscription"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clBecomeAnEnterpriseUser"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingVertical="@dimen/_10sdp">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivBecomeAnEnterpriseUser"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtEnterprise"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10ssp"
+                        android:fontFamily="@font/gotham_book"
+                        android:text="@string/become_an_enterprise_User"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_14ssp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/ivBecomeAnEnterpriseUser"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/txtEnterpriseName"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtEnterpriseName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toEndOf="@id/txtEnterprise"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:textSize="@dimen/_14ssp"
+                        android:textColor="@color/_399282"
+                        app:fontFamily="@font/gotham_medium"
+                        android:visibility="gone"
+                        android:text="Enterprise Name" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -301,7 +348,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10ssp"
                         android:fontFamily="@font/gotham_book"
-                        android:text="@string/terms_of_use"
+                        android:text="@string/term_and_conditions"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_14ssp"
                         app:layout_constraintBottom_toBottomOf="parent"

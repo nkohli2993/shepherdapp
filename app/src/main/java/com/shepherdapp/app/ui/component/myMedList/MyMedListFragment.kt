@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.myMedList
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +24,9 @@ import com.shepherdapp.app.databinding.FragmentMyMedlistBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.addNewMedication.AddNewMedicationFragmentDirections
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.myMedList.adapter.MyMedicationsAdapter
 import com.shepherdapp.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
 import com.shepherdapp.app.utils.MedListAction
@@ -33,6 +36,7 @@ import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observeEvent
 import com.shepherdapp.app.view_model.MyMedListViewModel
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.calendar_item.view.*
 import java.text.SimpleDateFormat
@@ -58,6 +62,20 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private var selectedDate = ""
     private var TAG = "MyMedListFragment"
     private var medicationRecordPayload: ArrayList<MedicationRecordData> = arrayListOf()
+
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,10 +89,13 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     override fun initViewBinding() {
 
         setMyMedicationsAdapter()
-        setSelectedDayMedicineAdapter()
+//        setSelectedDayMedicineAdapter()
         calendar.time = Date()
         currentMonth = calendar[Calendar.MONTH]
-        setCalender()
+//        setCalender()
+        medListViewModel.getLovedOneMedLists(selectedDate)
+
+//        medListViewModel.getUserDetailByUUID()
     }
 
     private fun setCalender() {
@@ -137,18 +158,18 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 }
             }
         }
-        val singleRowCalendar = myMedlistBinding.srCalender.apply {
-            calendarViewManager = myCalendarViewManager
-            calendarChangesObserver = myCalendarChangesObserver
-            calendarSelectionManager = mySelectionManager
-            futureDaysCount = 30
-            pastDaysCount = 30
-            init()
-            includeCurrentDate = true
-            initialPositionIndex = 30
-            scrollToPosition(30)
-            select(30)
-        }
+        /* val singleRowCalendar = myMedlistBinding.srCalender.apply {
+             calendarViewManager = myCalendarViewManager
+             calendarChangesObserver = myCalendarChangesObserver
+             calendarSelectionManager = mySelectionManager
+             futureDaysCount = 30
+             pastDaysCount = 30
+             init()
+             includeCurrentDate = true
+             initialPositionIndex = 30
+             scrollToPosition(30)
+             select(30)
+         }*/
     }
 
     @SuppressLint("NotifyDataSetChanged", "SimpleDateFormat")
@@ -156,14 +177,48 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         observeEvent(medListViewModel.openMedDetailItems, ::navigateToMedDetail)
         observeEvent(medListViewModel.medDetailItems, ::selectedMedication)
         observeEvent(medListViewModel.selectedMedicationLiveData, ::recordMedication)
+
+      /*  medListViewModel.userDetailByUUIDLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    val userProfile = it.data.payload?.userProfiles
+                    val lovedOneFirstName = userProfile?.firstname
+                    val lovedOneLastName = userProfile?.lastname
+                    var lovedOneFullName: String? = null
+                    lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
+                        lovedOneFirstName
+                    } else {
+                        "$lovedOneFirstName $lovedOneLastName"
+                    }
+
+                    val lovedOneProfilePic = userProfile?.profilePhoto
+
+                    Picasso.get().load(lovedOneProfilePic)
+                        .placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(myMedlistBinding.imgLovedOne)
+
+                    myMedlistBinding.txtLoved.text = lovedOneFullName
+
+                }
+            }
+        }*/
+
+
         // Observe get loved one med lists response
         medListViewModel.getLovedOneMedListsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+//                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
                     myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
-                    myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
+//                    myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
                     myMedlistBinding.txtMedication.visibility = View.VISIBLE
                 }
                 is DataResult.Loading -> {
@@ -172,10 +227,15 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                 is DataResult.Success -> {
                     hideLoading()
                     payload.clear()
+
+                    val payload1 = it.data.payload
+
+
+
                     medListReminderList.clear()
-                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
+//                    myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
                     myMedlistBinding.recyclerViewMyMedications.visibility = View.VISIBLE
-                    myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
+//                    myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
                     myMedlistBinding.txtMedication.visibility = View.GONE
                     // check day for payload data
                     for (i in it.data.payload!!.userMedicationAll) {
@@ -186,26 +246,26 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
                     if (payload.size <= 0) {
                         myMedlistBinding.recyclerViewMyMedications.visibility = View.GONE
                         myMedlistBinding.txtMedication.visibility = View.VISIBLE
-                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
-                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
+//                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+//                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
                     }
                     if (payload.isEmpty()) return@observeEvent
 
                     for (i in it.data.payload!!.userMedicationRepeat) {
                         if (i.days!!.contains(dayId)) {
-                            if((i.frequency?:"0").toInt()<5){
+                            if ((i.frequency ?: "0").toInt() < 5) {
                                 i.selectedDate = selectedDate
                                 medListReminderList.add(i)
                             }
                         }
                     }
                     if (medListReminderList.size <= 0) {
-                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
-                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
+//                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.GONE
+//                        myMedlistBinding.txtNoMedicationReminder.visibility = View.VISIBLE
                     } else {
 
-                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
-                        myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
+//                        myMedlistBinding.recyclerViewSelectedDayMedicine.visibility = View.VISIBLE
+//                        myMedlistBinding.txtNoMedicationReminder.visibility = View.GONE
                         selectedDayMedicineAdapter?.addData(medListReminderList)
                     }
                     if (payload.size <= 0) {
@@ -502,7 +562,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
 
     private fun setSelectedDayMedicineAdapter() {
         selectedDayMedicineAdapter = SelectedDayMedicineAdapter(medListViewModel)
-        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
+//        myMedlistBinding.recyclerViewSelectedDayMedicine.adapter = selectedDayMedicineAdapter
 
     }
 
@@ -511,5 +571,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         return R.layout.fragment_my_medlist
     }
 
-
+    override fun onResume() {
+        parentActivityListener?.msgFromChildFragmentToActivity()
+        super.onResume()
+    }
 }

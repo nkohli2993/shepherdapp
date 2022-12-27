@@ -32,54 +32,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/recommendedTxt"
-            style="@style/TextViewGothamBold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_3sdp"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:text="@string/recommended_documents"
-            android:textColor="@color/_192032"
-            android:textSize="@dimen/_14sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtLockBoxDesc" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvRecommendedDocuments"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_130sdp"
-            android:layout_marginHorizontal="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            app:cardBackgroundColor="@color/_9888B5"
-            app:cardCornerRadius="@dimen/_18sdp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recommendedTxt">
-
-            <LinearLayout
-                android:id="@+id/layoutRecommendedDoc"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="@dimen/_5sdp">
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvRecommendedDoc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_5sdp"
-                    android:overScrollMode="never"
-                    android:scrollbarThumbVertical="@color/colorWhite"
-                    android:scrollbars="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="8"
-                    tools:listitem="@layout/adapter_recommended_documents" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewSearch"
             android:layout_width="match_parent"
@@ -89,7 +41,7 @@
             android:orientation="horizontal"
             app:cardCornerRadius="@dimen/_18sdp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cvRecommendedDocuments">
+            app:layout_constraintTop_toBottomOf="@+id/txtLockBoxDesc">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -145,6 +97,58 @@
 
         </androidx.cardview.widget.CardView>
 
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/recommendedTxt"
+            style="@style/TextViewGothamBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_3sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/recommended_documents"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_14sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
+
+        <!--<androidx.cardview.widget.CardView
+            android:id="@+id/cvRecommendedDocuments"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_130sdp"
+            android:layout_marginHorizontal="@dimen/_2sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:cardCornerRadius="@dimen/_18sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recommendedTxt">
+-->
+            <LinearLayout
+                android:id="@+id/layoutRecommendedDoc"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginHorizontal="@dimen/_2sdp"
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/recommendedTxt">
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvRecommendedDoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:overScrollMode="never"
+                    android:scrollbarThumbVertical="@color/colorWhite"
+                    android:scrollbars="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="8"
+                    tools:listitem="@layout/adapter_recommended_documents" />
+
+            </LinearLayout>
+
+<!--        </androidx.cardview.widget.CardView>-->
+
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtOtherDocuments"
             style="@style/TextViewGothamBold"
@@ -154,8 +158,8 @@
             android:layout_marginTop="@dimen/_14ssp"
             android:text="@string/uploaded_documents"
             android:textSize="@dimen/_14sdp"
-            app:layout_constraintStart_toStartOf="@+id/cardViewSearch"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch" />
+            app:layout_constraintStart_toStartOf="@+id/layoutRecommendedDoc"
+            app:layout_constraintTop_toBottomOf="@+id/layoutRecommendedDoc" />
 
         <LinearLayout
             android:layout_width="match_parent"

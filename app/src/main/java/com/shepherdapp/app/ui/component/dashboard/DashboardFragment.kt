@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.dashboard
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,10 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
     private var parentActivityListener: ChildFragmentToActivityListener? = null
 
     private lateinit var homeActivity: HomeActivity
+
+    private var permissions: String? = null
+
+    private val TAG = "DashboardFragment"
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -81,6 +86,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     initHomeViews(it.data.payload)
+                    // Update Navigation Drawer Info
+                    homeActivity.setDrawerInfo()
                 }
             }
         }
@@ -109,21 +116,71 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
             }
         }
+
+        // Get loved one user uuid
+        val lovedOneUUID = viewModel.getLovedOneUUID()
+        Log.d(TAG, "initHomeViews: lovedOneUUID :$lovedOneUUID")
+        // Get LoggedIn User uuid
+        val loggedInUserId = viewModel.getUUID()
+        Log.d(TAG, "initHomeViews: loggedInUserId :$loggedInUserId")
+        // find permission for loved one user
+        permissions = if (viewModel.isLoggedInUserLovedOne() == true) {
+            payload?.careTeamProfiles?.filter {
+                it.loveUserId == viewModel.getLovedOneUUID()
+            }?.map {
+                it.permission
+            }?.first()
+        } else {
+            payload?.careTeamProfiles?.filter {
+                (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+            }?.map {
+                it.permission
+            }?.first()
+        }
+
+
+        /* val permissions = payload?.careTeamProfiles?.filter {
+             (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+         }?.map {
+             it.permission
+         }?.first()*/
+
+        Log.d(TAG, "initHomeViews: Permissions : $permissions")
+
+        val perList = permissions?.split(',')
+            ?.map { it.trim() }
+        permissionCards(View.GONE)
+        for (i in perList?.indices!!) {
+            checkPermission(perList[i].toInt())
+        }
     }
 
     private fun permissionCards(value: Int) {
-        fragmentDashboardBinding.cvCarePoints.visibility = value
-        fragmentDashboardBinding.cvLockBox.visibility = value
-        fragmentDashboardBinding.cvMedList.visibility = View.VISIBLE    //value
-        fragmentDashboardBinding.cvResources.visibility = value
+        // Care Team and VitalStats Module are always visible
         fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
+
+        // Other Cards are shown according to the permission
+        fragmentDashboardBinding.cvLockBox.visibility = value
+        fragmentDashboardBinding.cvMedList.visibility = value
+        fragmentDashboardBinding.cvResources.visibility = value
+        fragmentDashboardBinding.cvCarePoints.visibility = value
         fragmentDashboardBinding.cvDiscussion.visibility = View.GONE
     }
 
+    /* private fun permissionCards(value: Int) {
+         fragmentDashboardBinding.cvCarePoints.visibility = value
+         fragmentDashboardBinding.cvLockBox.visibility = value
+         fragmentDashboardBinding.cvMedList.visibility = View.VISIBLE    //value
+         fragmentDashboardBinding.cvResources.visibility = value
+         fragmentDashboardBinding.cvCareTeam.visibility = View.VISIBLE
+         fragmentDashboardBinding.cvVitalStats.visibility = View.VISIBLE
+         fragmentDashboardBinding.cvDiscussion.visibility = View.GONE
+     }*/
+
     private fun checkPermission(permission: Int?) {
         when {
-            Modules.CareTeam.value == permission -> {
+            Modules.CarePoints.value == permission -> {
                 fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE
             }
             Modules.LockBox.value == permission -> {
@@ -141,25 +198,23 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
     override fun initViewBinding() {
         fragmentDashboardBinding.listener = this
-        permissionCards(View.VISIBLE)
+//        permissionCards(View.VISIBLE)
         // show accessed cards only to users
-/*
-        if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
-            if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
-                if (viewModel.getLovedUserDetail() != null) {
-                    val perList = viewModel.getLovedUserDetail()?.permission?.split(',')
-                        ?.map { it.trim() }
-                    permissionCards(View.GONE)
-                    for (i in perList?.indices!!) {
-                        checkPermission(perList[i].toInt())
-                    }
-                } else {
-                    permissionCards(View.VISIBLE)
-                }
-        } else {
-            permissionCards(View.VISIBLE)
-        }
-*/
+        /* if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
+             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
+                 if (viewModel.getLovedUserDetail() != null) {
+                     val perList = viewModel.getLovedUserDetail()?.permission?.split(',')
+                         ?.map { it.trim() }
+                     permissionCards(View.GONE)
+                     for (i in perList?.indices!!) {
+                         checkPermission(perList[i].toInt())
+                     }
+                 } else {
+                     permissionCards(View.VISIBLE)
+                 }
+         } else {
+             permissionCards(View.VISIBLE)
+         }*/
         setCareTeamAdapters()
     }
 
@@ -195,8 +250,8 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 findNavController().navigate(R.id.action_dashboard_to_lock_box)
             }
             R.id.cvVitalStats -> {
-                showError(requireContext(), "Not implemented")
-//                findNavController().navigate(R.id.action_dashboard_to_vital_stats)
+//                showError(requireContext(), "Not implemented")
+                findNavController().navigate(R.id.action_dashboard_to_vital_stats)
             }
             R.id.cvCareTeam -> {
                 findNavController().navigate(R.id.action_dashboard_to_care_team_members)

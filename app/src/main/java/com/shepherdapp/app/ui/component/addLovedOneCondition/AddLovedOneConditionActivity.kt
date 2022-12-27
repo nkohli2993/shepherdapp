@@ -14,7 +14,6 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
-import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.medical_conditions.Conditions
 import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionsLovedOneRequestModel
 import com.shepherdapp.app.data.dto.medical_conditions.UpdateMedicalConditionRequestModel
@@ -27,7 +26,7 @@ import com.shepherdapp.app.ui.component.addLovedOneCondition.adapter.AddLovedOne
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
-import com.shepherdapp.app.utils.Status
+import com.shepherdapp.app.utils.Type
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +36,8 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
-    AddLovedOneConditionAdapter.ItemSelectedListener {
+    AddLovedOneConditionAdapter.ItemSelectedListener,
+    AddLovedOneConditionAdapter.ItemEditClickListener {
 
     private lateinit var binding: ActivityAddLovedOneConditionBinding
     private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
@@ -57,11 +57,26 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var currentPage: Int = 0
     private var totalPage: Int = 0
     private var total: Int = 0
+    private val TAG = "AddLovedOneCondition"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
+
+        if (!intent.getStringExtra("source").isNullOrEmpty()) {
+            val source = intent.getStringExtra("source")
+            // Check if Screen is launched from LovedOne Profile Screen to edit medical conditions
+            if (source == Const.MEDICAL_CONDITION) {
+                binding.txtMedicalCondition.text = getString(R.string.edit_medical_conditions)
+                binding.buttonFinish.text = getString(R.string.save_changes)
+            } else {
+                binding.txtMedicalCondition.text = getString(R.string.medical_conditions)
+                binding.buttonFinish.text = getString(R.string.finish)
+            }
+        }
+
+
         setConditionAdapter()
         binding.recyclerViewCondition.layoutManager = LinearLayoutManager(this)
 
@@ -149,28 +164,28 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         it.conditionId
                     }
                     callAllMedicalCondition()
-                    if (addedConditionPayload.size <= 0) {
-                        binding.buttonFinish.text = getString(R.string.add)
-                        // show popup for no medical conditions
-                        val builder = AlertDialog.Builder(this)
-                        val dialog = builder.apply {
-                            setMessage(getString(R.string.no_medical_condition_added_for_loved_one))
-                            setPositiveButton(getString(R.string.add)) { _, _ ->
+                    /* if (addedConditionPayload.size <= 0) {
+                         binding.buttonFinish.text = getString(R.string.add)
+                         // show popup for no medical conditions
+                         *//* val builder = AlertDialog.Builder(this)
+                         val dialog = builder.apply {
+                             setMessage(getString(R.string.no_medical_condition_added_for_loved_one))
+                             setPositiveButton(getString(R.string.add)) { _, _ ->
 
-                            }
-                            setNegativeButton(getString(R.string.cancel)) { _, _ ->
-                                finishActivity()
-                            }
-                        }.create()
-                        dialog.show()
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
-                        return@observeEvent
+                             }
+                             setNegativeButton(getString(R.string.cancel)) { _, _ ->
+                                 finishActivity()
+                             }
+                         }.create()
+                         dialog.show()
+                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                         return@observeEvent*//*
                     } else {
                         binding.txtMedicalCondition.text =
                             getString(R.string.edit_medical_conditions)
                         binding.buttonFinish.text = getString(R.string.save_changes)
-                    }
+                    }*/
                 }
             }
         }
@@ -272,7 +287,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 it1
             )
         }
-        addLovedOneConditionAdapter?.setClickListener(this)
+        addLovedOneConditionAdapter?.setClickListener(this, this)
         binding.recyclerViewCondition.adapter = addLovedOneConditionAdapter
         handleAddedLovedOneConditionPagination()
     }
@@ -314,6 +329,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         when (p0?.id) {
             R.id.tvNew -> {
                 val intent = Intent(this, AddMedicalConditionActivity::class.java)
+                intent.putExtra("type", Type.ADD.value)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
@@ -341,7 +357,27 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                                     selectedConditions.add(i)
                                 }
                             }
-                            when {
+                            // api to update medical condition
+                            val deleteId: ArrayList<Int> = arrayListOf()
+                            val newAdded: ArrayList<MedicalConditionsLovedOneRequestModel> =
+                                arrayListOf()
+                            for (i in conditions) {
+                                if (i.isSelected && i.isAlreadySelected == 0) {
+                                    newAdded.add(
+                                        MedicalConditionsLovedOneRequestModel(
+                                            i.id,
+                                            loveOneId
+                                        )
+                                    )
+                                }
+                                if (i.isAlreadySelected == 2 && !i.isSelected) {
+                                    deleteId.add(i.addConditionId!!)
+                                }
+                            }
+                            addLovedOneConditionViewModel.updateMedicalConditions(
+                                UpdateMedicalConditionRequestModel(newAdded, deleteId)
+                            )
+                            /*when {
                                 selectedConditions.size <= 0 -> {
                                     showError(this, "Please select at least one medical condition.")
                                 }
@@ -367,7 +403,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                                         UpdateMedicalConditionRequestModel(newAdded, deleteId)
                                     )
                                 }
-                            }
+                            }*/
                         }
                     }
                     else -> {
@@ -404,7 +440,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 medicalConditionsLovedOneArray
             )
         } else {
-            showError(this, getString(R.string.please_select_at_least_one_condition))
+            // showError(this, getString(R.string.please_select_at_least_one_condition))
+            navigateToHomeScreen()
         }
 
     }
@@ -465,6 +502,15 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 }
             }
         }
+    }
+
+    override fun itemEditSelected(conditions: Conditions) {
+        Log.d(TAG, "itemEditSelected:$conditions ")
+        val intent = Intent(this, AddMedicalConditionActivity::class.java)
+        intent.putExtra("type", Type.EDIT.value)
+        intent.putExtra("condition", conditions)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 }
 

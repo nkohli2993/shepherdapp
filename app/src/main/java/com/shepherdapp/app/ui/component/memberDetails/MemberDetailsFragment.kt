@@ -120,13 +120,20 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                   fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
               }*/
 
-            fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
-            fragmentMemberDetailsBinding.btnUpdate.visibility = View.VISIBLE
-        } else {
-            fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
-            fragmentMemberDetailsBinding.btnUpdate.visibility = View.GONE
-        }
+            val loggedInUserUUID = memberDetailsViewModel.getLoggedInUserUUID()
+            // Check if the uuiD of loggedIn user matches the uuid of care team member
+            if (loggedInUserUUID == careTeam?.user_id_details?.uid) {
+                hideButtons()
+                makeSwitchesNonClickable()
+            } else {
+                showButtons()
+            }
 
+        } else {
+            hideButtons()
+            makeSwitchesNonClickable()
+
+        }
 
         // Set role
         fragmentMemberDetailsBinding.txtCareTeamMemberDesignation.text = careTeam?.careRoles?.name
@@ -141,6 +148,24 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 checkPermission(perList[i].toInt())
             }
         }
+    }
+
+    private fun makeSwitchesNonClickable() {
+        // Make switches non clickable
+        fragmentMemberDetailsBinding.switchCarePoints.isClickable = false
+        fragmentMemberDetailsBinding.switchLockBox.isClickable = false
+        fragmentMemberDetailsBinding.switchMyMedList.isClickable = false
+        fragmentMemberDetailsBinding.switchResources.isClickable = false
+    }
+
+    private fun hideButtons() {
+        fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
+        fragmentMemberDetailsBinding.btnUpdate.visibility = View.GONE
+    }
+
+    private fun showButtons() {
+        fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
+        fragmentMemberDetailsBinding.btnUpdate.visibility = View.VISIBLE
     }
 
     fun getStringWithHyphen(str: String): String {
@@ -158,8 +183,8 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
     private fun checkPermission(s: Int) {
         when {
-            Modules.CareTeam.value == s -> {
-                fragmentMemberDetailsBinding.switchCareTeam.isChecked = true
+            Modules.CarePoints.value == s -> {
+                fragmentMemberDetailsBinding.switchCarePoints.isChecked = true
             }
             Modules.LockBox.value == s -> {
                 fragmentMemberDetailsBinding.switchLockBox.isChecked = true
@@ -257,7 +282,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             }
             R.id.btnUpdate -> {
                 // Checked the selected state of Care Team
-                val isCareTeamEnabled = fragmentMemberDetailsBinding.switchCareTeam.isChecked
+                val isCarePointsEnabled = fragmentMemberDetailsBinding.switchCarePoints.isChecked
 
                 // Checked the selected state of Care Team
                 val isLockBoxEnabled = fragmentMemberDetailsBinding.switchLockBox.isChecked
@@ -269,8 +294,8 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 val isResourcesEnabled = fragmentMemberDetailsBinding.switchResources.isChecked
 
                 selectedModule = ""
-                if (isCareTeamEnabled) {
-                    selectedModule += Modules.CareTeam.value.toString() + ","
+                if (isCarePointsEnabled) {
+                    selectedModule += Modules.CarePoints.value.toString() + ","
                 }
                 if (isLockBoxEnabled) {
                     selectedModule += Modules.LockBox.value.toString() + ","

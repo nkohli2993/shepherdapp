@@ -19,5 +19,6 @@ data class CreateLovedOneModel(
     @SerializedName("place_id") var placeId: String? = null,
     @SerializedName("address") var customAddress: String? = null,
     @SerializedName("phone_no") var phoneNo: String? = null,
-    @SerializedName("profile_photo") var profilePhoto: String? = null
-):Parcelable
+    @SerializedName("profile_photo") var profilePhoto: String? = null,
+    @SerializedName("send_invitation") var sendInvitation: Boolean? = null,
+) : Parcelable

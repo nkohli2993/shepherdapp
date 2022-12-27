@@ -5,37 +5,36 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.RotateAnimation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.Resource
+import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.databinding.FragmentAddNewEventBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
-import com.shepherdapp.app.utils.*
+import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
+import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
+import com.shepherdapp.app.utils.observe
+import com.shepherdapp.app.utils.setupSnackbar
+import com.shepherdapp.app.utils.showToast
 import com.shepherdapp.app.view_model.AddNewEventViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.shepherdapp.app.data.dto.care_team.CareTeamModel
-import com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity
-import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 /**
@@ -72,7 +71,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     override fun initViewBinding() {
         fragmentAddNewEventBinding.listener = this
 
-
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         getAssignedToMembers()
         setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50)
         fragmentAddNewEventBinding.etNote.setOnTouchListener { view, event ->
@@ -84,6 +83,21 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         }
         assigneeAdapter?.setHasStableIds(true)
 
+        /*fragmentAddNewEventBinding.etNote.setOnFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                fragmentAddNewEventBinding.scrollView.postDelayed(Runnable {
+                    val lastChild: View =
+                        fragmentAddNewEventBinding.scrollView.getChildAt(fragmentAddNewEventBinding.scrollView.getChildCount() - 1)
+                    val bottom: Int =
+                        lastChild.bottom + fragmentAddNewEventBinding.scrollView.getPaddingBottom()
+                    val sy: Int = fragmentAddNewEventBinding.scrollView.getScrollY()
+                    val sh: Int = fragmentAddNewEventBinding.scrollView.getHeight()
+                    val delta = bottom - (sy + sh)
+                    fragmentAddNewEventBinding.scrollView.smoothScrollBy(0, delta)
+                }, 200)
+            }
+
+        }*/
     }
 
     private fun getAssignedToMembers() {
@@ -370,13 +384,13 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
                     fragmentAddNewEventBinding.tvTime.requestFocus()
                 }
-                fragmentAddNewEventBinding.etNote.text.toString().trim().isEmpty() -> {
-                    showInfo(
-                        requireContext(),
-                        getString(R.string.please_enter_notes_for_care_point)
-                    )
-                    fragmentAddNewEventBinding.etNote.requestFocus()
-                }
+                /* fragmentAddNewEventBinding.etNote.text.toString().trim().isEmpty() -> {
+                     showInfo(
+                         requireContext(),
+                         getString(R.string.please_enter_notes_for_care_point)
+                     )
+                     fragmentAddNewEventBinding.etNote.requestFocus()
+                 }*/
                 else -> {
                     return true
                 }
@@ -399,13 +413,19 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         dateFormat = SimpleDateFormat("HH:mm")
         val selectedTime = dateFormat.format(formattedDate)
 
+        val note = if (fragmentAddNewEventBinding.etNote.text.toString().isNullOrEmpty()) {
+            null
+        } else {
+            fragmentAddNewEventBinding.etNote.text.toString().trim()
+        }
+
         addNewEventViewModel.createEvent(
             addNewEventViewModel.getLovedOneUUId(),
             fragmentAddNewEventBinding.etEventName.text.toString().trim(),
             fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
             selectedDate,
             selectedTime,
-            fragmentAddNewEventBinding.etNote.text.toString().trim(),
+            note,
             assignTo
         )
     }

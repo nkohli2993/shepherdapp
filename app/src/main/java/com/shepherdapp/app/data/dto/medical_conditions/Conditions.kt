@@ -16,6 +16,7 @@ data class Conditions(
     @SerializedName("data") var data: String? = null,
     @SerializedName("is_active") var isActive: Boolean? = null,
     @SerializedName("created_at") var createdAt: String? = null,
+    @SerializedName("created_by") var createdBy: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
     @SerializedName("is_selected") var isSelected: Boolean = false,

@@ -18,5 +18,8 @@ data class UserLovedOne(
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
     @SerializedName("deleted_at") var deletedAt: String? = null,
-    @SerializedName("care_roles") var careRoles: CareRoles? = CareRoles()
+    @SerializedName("care_roles") var careRoles: CareRoles? = CareRoles(),
+    @SerializedName("first_name") var firstName: String? = null,
+    @SerializedName("last_name") var lastName: String? = null,
+    @SerializedName("profile_pic") var profilePic: String? = null
 ) : Parcelable

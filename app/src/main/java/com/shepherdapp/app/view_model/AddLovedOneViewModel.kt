@@ -100,7 +100,8 @@ class AddLovedOneViewModel @Inject constructor(
         place_id: String?,
         customAddress: String?,
         phone_no: String?,
-        profile_photo: String?
+        profile_photo: String?,
+        sendInvitation: Boolean?
     ): LiveData<Event<DataResult<CreateLovedOneResponseModel>>> {
         createLovedOneData.value.let {
             it?.email = email
@@ -113,6 +114,7 @@ class AddLovedOneViewModel @Inject constructor(
             it?.customAddress = customAddress
             it?.phoneNo = phone_no
             it?.profilePhoto = profile_photo
+            it?.sendInvitation = sendInvitation
         }
 
 
@@ -139,7 +141,8 @@ class AddLovedOneViewModel @Inject constructor(
         customAddress: String?,
         phone_no: String?,
         profile_photo: String?,
-        uuid: String?
+        uuid: String?,
+        sendInvitation: Boolean?
     ): LiveData<Event<DataResult<EditLovedOneResponseModel>>> {
         createLovedOneData.value.let {
             it?.email = email
@@ -152,6 +155,7 @@ class AddLovedOneViewModel @Inject constructor(
             it?.customAddress = customAddress
             it?.phoneNo = phone_no
             it?.profilePhoto = profile_photo
+            it?.sendInvitation = sendInvitation
         }
 
 
@@ -179,6 +183,14 @@ class AddLovedOneViewModel @Inject constructor(
 
     fun saveLovedOneUUID(lovedOneUUID: String) {
         userRepository.saveLovedOneUUId(lovedOneUUID)
+    }
+
+    fun isLoggedInUserLovedOne(): Boolean? {
+        return userRepository.isLoggedInUserLovedOne()
+    }
+
+    fun getLoggedInUserUUID(): String? {
+        return userRepository.getUUID()
     }
 
 }

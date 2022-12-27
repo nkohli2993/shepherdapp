@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.carePoints
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -25,11 +26,10 @@ import com.shepherdapp.app.databinding.FragmentCarePointsBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.carePoints.adapter.CarePointsDayAdapter
-import com.shepherdapp.app.utils.CalendarState
-import com.shepherdapp.app.utils.Chat
-import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.ui.component.home.HomeActivity
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
@@ -59,6 +59,20 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private var chatModelList: ArrayList<ChatModel>? = ArrayList()
 
     private val TAG = "CarePointsFragment"
+
+    private var parentActivityListener: ChildFragmentToActivityListener? = null
+
+    private lateinit var homeActivity: HomeActivity
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeActivity) {
+            homeActivity = context
+        }
+        if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,6 +86,9 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: ")
+        // Update the home activity so that updated lovedOne is shown on the screen
+        parentActivityListener?.msgFromChildFragmentToActivity()
         fragmentCarePointsBinding.calendarPView.clearSelection()
         clickType = CalendarState.Today.value
         fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBold
@@ -92,21 +109,33 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         fragmentCarePointsBinding.calendarPView.clearSelection()
         val cal = Calendar.getInstance()
         fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
-    }
 
-    @SuppressLint("SimpleDateFormat")
-    override fun initViewBinding() {
-        typeFaceGothamBold = ResourcesCompat.getFont(requireContext(), R.font.gotham_bold)
-        typeFaceGothamBook = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
-        fragmentCarePointsBinding.listener = this
 
         fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
+            Log.d(TAG, " date is ${date.date}")
+
             fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
+
             getDateSelectedOnTypeBased(
                 date.date
             )
         }
+
         fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
+            // Show care point data as per month change from calendar
+            Log.d(TAG, "initViewBinding: date is ${date.date}")
+            val month = SimpleDateFormat("MM").format(date.date)
+            val year = SimpleDateFormat("yyyy").format(date.date)
+            fragmentCarePointsBinding.textViewSelectGroup.text =
+                SimpleDateFormat("MMM yyyy").format(date.date)
+            fragmentCarePointsBinding.calendarPView.clearSelection()
+            val calendar = Calendar.getInstance()
+            calendar.time = date.date
+            startDate = sdf!!.format(calendar.time)
+            calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
+            endDate = sdf!!.format(calendar.time)
+            getCarePointList(startDate, endDate)
+
             when (clickType) {
                 CalendarState.Month.value -> {
                     fragmentCarePointsBinding.calendarPView.selectionMode =
@@ -130,6 +159,68 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             }
 
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    override fun initViewBinding() {
+        Log.d(TAG, "initViewBinding: ")
+        typeFaceGothamBold = ResourcesCompat.getFont(requireContext(), R.font.gotham_bold)
+        typeFaceGothamBook = ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
+        fragmentCarePointsBinding.listener = this
+        fragmentCarePointsBinding.calendarPView.clearSelection()
+        clickType = CalendarState.Today.value
+
+        fragmentCarePointsBinding.calendarPView.elevation = 20f
+
+
+       /* fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
+            Log.d(TAG, " date is ${date.date}")
+
+            fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
+
+            getDateSelectedOnTypeBased(
+                date.date
+            )
+        }*/
+
+      /*  fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
+            // Show care point data as per month change from calendar
+            Log.d(TAG, "initViewBinding: date is ${date.date}")
+            val month = SimpleDateFormat("MM").format(date.date)
+            val year = SimpleDateFormat("yyyy").format(date.date)
+            fragmentCarePointsBinding.textViewSelectGroup.text =
+                SimpleDateFormat("MMM yyyy").format(date.date)
+            fragmentCarePointsBinding.calendarPView.clearSelection()
+            val calendar = Calendar.getInstance()
+            calendar.time = date.date
+            startDate = sdf!!.format(calendar.time)
+            calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
+            endDate = sdf!!.format(calendar.time)
+            getCarePointList(startDate, endDate)
+
+            when (clickType) {
+                CalendarState.Month.value -> {
+                    fragmentCarePointsBinding.calendarPView.selectionMode =
+                        MaterialCalendarView.SELECTION_MODE_NONE
+                    val month = SimpleDateFormat("MM").format(date.date)
+                    val year = SimpleDateFormat("yyyy").format(date.date)
+                    fragmentCarePointsBinding.textViewSelectGroup.text =
+                        SimpleDateFormat("MMM yyyy").format(date.date)
+                    fragmentCarePointsBinding.calendarPView.clearSelection()
+                    val calendar = Calendar.getInstance()
+                    calendar.time = date.date
+                    startDate = sdf!!.format(calendar.time)
+                    calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
+                    endDate = sdf!!.format(calendar.time)
+                    getCarePointList(startDate, endDate)
+                }
+                else -> {
+                    fragmentCarePointsBinding.calendarPView.selectionMode =
+                        MaterialCalendarView.SELECTION_MODE_SINGLE
+                }
+            }
+
+        }*/
     }
 
     private fun getDateSelectedOnTypeBased(selectedDate: Date) {
@@ -431,58 +522,81 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     }
 
     override fun onEventSelected(detail: AddedEventModel) {
-        // Get Login User's detail
-        val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
-            Const.USER_DETAILS,
-            UserProfile::class.java
-        )
+        when (detail.clickType) {
+            ClickType.View.value -> {
+                // Get Login User's detail
+                val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+                    Const.USER_DETAILS,
+                    UserProfile::class.java
+                )
 
-        val loggedInUserId = loggedInUser?.id
-        val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
+                val loggedInUserId = loggedInUser?.id
+                val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
 
-        Log.d(TAG, "onEventSelected: $detail ")
-        val eventId = detail.id
-        val eventName = detail.name
-        val eventLocation = detail.location
-        val eventDate = detail.date
-        val eventTime = detail.time
-        detail.user_assignes.forEach {
-            val receiverName = it.user_details.firstname + " " + it.user_details.lastname
-            val receiverID = it.user_details.id
-            val receiverPicUrl = it.user_details.profilePhoto
-            val documentID = null
-            val chatType = Chat.CHAT_GROUP
+                Log.d(TAG, "onEventSelected: $detail ")
+                val eventId = detail.id
+                val eventName = detail.name
+                val eventLocation = detail.location
+                val eventDate = detail.date
+                val eventTime = detail.time
+                detail.user_assignes.forEach {
+                    val receiverName = it.user_details.firstname + " " + it.user_details.lastname
+                    val receiverID = it.user_details.id
+                    val receiverPicUrl = it.user_details.profilePhoto
+                    val documentID = null
+                    val chatType = Chat.CHAT_GROUP
 
-            // Create Chat Model
-            val chatModel = ChatModel(
-                documentID,
-                loggedInUserId,
-                loggedInUserName,
-                receiverID,
-                receiverName,
-                receiverPicUrl,
-                null,
-                chatType,
-                eventName,
-                eventId
-            )
-            chatModelList?.add(chatModel)
+                    // Create Chat Model
+                    val chatModel = ChatModel(
+                        documentID,
+                        loggedInUserId,
+                        loggedInUserName,
+                        receiverID,
+                        receiverName,
+                        receiverPicUrl,
+                        null,
+                        chatType,
+                        eventName,
+                        eventId
+                    )
+                    chatModelList?.add(chatModel)
+                }
+
+                //open event detail page
+                /* findNavController().navigate(
+                     detail?.id?.let {
+                         CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                             "Care Point",
+                             it
+                         )
+                     }
+                 )*/
+
+                val action = detail.id?.let {
+                    CarePointsFragmentDirections.actionCarePointsToDetailFragment(
+                        "Care Point",
+                        it
+                    )
+                }
+                action?.let { findNavController().navigate(it) }
+
+                // Navigate to chat screen
+                /* findNavController().navigate(
+                     CarePointsFragmentDirections.actionNavCarePointsToNavChat(
+                         "CarePoint",
+                         chatModelList?.toTypedArray()
+                     )
+                 )*/
+            }
+
+            ClickType.Edit.value -> {
+                val action =
+                    CarePointsFragmentDirections.actionNavCarePointsToEditCarePointFragment(
+                        carePoint = detail
+                    )
+                findNavController().navigate(action)
+            }
         }
-
-        //open event detail page
-        findNavController().navigate(
-            CarePointsFragmentDirections.actionCarePointsToDetailFragment(
-                detail
-            )
-        )
-
-        // Navigate to chat screen
-        /* findNavController().navigate(
-             CarePointsFragmentDirections.actionNavCarePointsToNavChat(
-                 "CarePoint",
-                 chatModelList?.toTypedArray()
-             )
-         )*/
     }
 }
 

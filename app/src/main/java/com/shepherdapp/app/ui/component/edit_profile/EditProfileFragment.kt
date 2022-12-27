@@ -182,7 +182,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
                 }
                 fragmentEditProfileBinding.etEmailId.text.toString().isEmpty() -> {
                     fragmentEditProfileBinding.etEmailId.error =
-                        getString(R.string.please_enter_email_id)
+                        getString(R.string.enter_email)
                     fragmentEditProfileBinding.etEmailId.requestFocus()
                 }
                 !fragmentEditProfileBinding.etEmailId.text.toString().isValidEmail() -> {

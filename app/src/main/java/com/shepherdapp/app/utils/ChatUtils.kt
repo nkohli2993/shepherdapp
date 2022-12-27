@@ -21,8 +21,10 @@ import kotlin.collections.ArrayList
 
 object TableName {
     const val CHATS = "chats"
+    const val CHATS_DEV = "chatsDev"
     const val MESSAGES = "messages"
     const val USERS = "users"
+    const val USERS_DEV = "usersDev"
 }
 
 object Chat {
