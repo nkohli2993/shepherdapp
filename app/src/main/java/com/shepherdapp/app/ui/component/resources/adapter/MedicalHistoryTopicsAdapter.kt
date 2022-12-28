@@ -171,12 +171,15 @@ class MedicalHistoryTopicsAdapter(
     }
 
     fun addData(resourceList: MutableList<AllResourceData>, isSearch: Boolean) {
-        if (isSearch) {
+      /*  if (isSearch) {
             this.resourceList.clear()
             this.resourceList.addAll(resourceList)
         } else {
             this.resourceList.addAll(resourceList)
-        }
+        }*/
+
+        this.resourceList.clear()
+        this.resourceList.addAll(resourceList)
 
         this.resourceList = this.resourceList.distinctBy {
             it.id
