@@ -302,10 +302,12 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                     settingViewModel.getUserDetail()?.id!!,
                     DeleteAccountModel(reason)
                 )
-                dialog.dismiss()
             } else {
-                showError(requireContext(), getString(R.string.please_enter_reason))
+                settingViewModel.deleteAccountWithoutReason(
+                    settingViewModel.getUserDetail()?.id!!,
+                )
             }
+            dialog.dismiss()
         }
         btnNo.setOnClickListener {
             dialog.dismiss()

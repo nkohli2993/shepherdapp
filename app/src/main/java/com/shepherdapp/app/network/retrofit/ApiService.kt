@@ -119,6 +119,11 @@ interface ApiService {
         @Body value: DeleteAccountModel
     ): Response<BaseResponseModel>
 
+    @POST(ApiConstants.Authentication.DELETE_ACCOUNT)
+    suspend fun deleteAccountWithoutReason(
+        @Path("id") uuid: Int,
+    ): Response<BaseResponseModel>
+
     @GET(ApiConstants.Relations.GET_RELATIONS)
     suspend fun getRelations(
         @Query("page") page: Int,

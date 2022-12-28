@@ -29,12 +29,26 @@ data class EnterpriseRepository @Inject constructor(private val apiService: ApiS
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+
     //delete Account
-    suspend fun deleteAccount(id:Int,deleteAccountModel: DeleteAccountModel): Flow<DataResult<BaseResponseModel>> {
+    suspend fun deleteAccount(
+        id: Int,
+        deleteAccountModel: DeleteAccountModel
+    ): Flow<DataResult<BaseResponseModel>> {
         return object :
             NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
-                return apiService.deleteAccount(id,deleteAccountModel)
+                return apiService.deleteAccount(id, deleteAccountModel)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //delete Account without reason
+    suspend fun deleteAccountWithoutReason(id: Int): Flow<DataResult<BaseResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<BaseResponseModel, BaseResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<BaseResponseModel> {
+                return apiService.deleteAccountWithoutReason(id)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

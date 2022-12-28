@@ -80,9 +80,27 @@ class SettingViewModel @Inject constructor(
         return attachEnterpriseLiveData
     }
 
-    fun deleteAccount(id:Int,value: DeleteAccountModel): LiveData<Event<DataResult<BaseResponseModel>>> {
+    fun deleteAccount(
+        id: Int,
+        value: DeleteAccountModel
+    ): LiveData<Event<DataResult<BaseResponseModel>>> {
         viewModelScope.launch {
-            val response = enterpriseRepository.deleteAccount(id,value)
+            val response = enterpriseRepository.deleteAccount(id, value)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _deleteAccountLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return deleteAccountLiveData
+    }
+
+
+    fun deleteAccountWithoutReason(
+        id: Int,
+    ): LiveData<Event<DataResult<BaseResponseModel>>> {
+        viewModelScope.launch {
+            val response = enterpriseRepository.deleteAccountWithoutReason(id)
             withContext(Dispatchers.Main) {
                 response.collect {
                     _deleteAccountLiveData.postValue(Event(it))
