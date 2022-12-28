@@ -4,24 +4,25 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherdapp.app.data.dto.dashboard.DashboardModel
+import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.resource.CategoryData
 import com.shepherdapp.app.databinding.AdapterMedicalHistoryBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.view_model.ResourceViewModel
 
 
-class MedicalHistoryAdapter(
+class MedicalCategoryTagsAdapter(
     private val viewModel: ResourceViewModel,
-    var requestList: MutableList<String> = ArrayList()
+    var requestList: MutableList<CategoryData> = ArrayList()
 ) :
-    RecyclerView.Adapter<MedicalHistoryAdapter.MedicalHistoryViewHolder>() {
+    RecyclerView.Adapter<MedicalCategoryTagsAdapter.MedicalHistoryViewHolder>() {
     lateinit var binding: AdapterMedicalHistoryBinding
     lateinit var context: Context
 
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
+            viewModel.openSelectedMedicalCategoryTag(itemData[0] as CategoryData)
         }
     }
 
@@ -40,23 +41,34 @@ class MedicalHistoryAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
-        return 3
+        return requestList.size
     }
 
     override fun onBindViewHolder(holder: MedicalHistoryViewHolder, position: Int) {
-        //holder.bind(requestList[position], onItemClickListener)
+        holder.bind(requestList[position], onItemClickListener)
     }
 
 
     class MedicalHistoryViewHolder(private val itemBinding: AdapterMedicalHistoryBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(dashboard: DashboardModel, recyclerItemListener: RecyclerItemListener) {
+        fun bind(categoryData: CategoryData, recyclerItemListener: RecyclerItemListener) {
             // itemBinding.data = dashboard
+
+            // Set Category Name
+            itemBinding.txtCategoryName.text = categoryData.name
+
+            if (categoryData.isSelected) {
+                itemBinding.imgCategory.setImageResource(R.drawable.ic_round_cancel)
+                itemBinding.layoutCategory.setBackgroundResource(R.drawable.shape_black_border_filled)
+            } else {
+                itemBinding.imgCategory.setImageResource(R.drawable.ic_add_filled)
+                itemBinding.layoutCategory.setBackgroundResource(R.drawable.shape_black_border)
+            }
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
-                    dashboard
+                    categoryData
                 )
             }
         }
@@ -71,9 +83,9 @@ class MedicalHistoryAdapter(
         return position
     }
 
-    fun addData(dashboard: MutableList<String>) {
+    fun addData(categoryDataList: MutableList<CategoryData>) {
         this.requestList.clear()
-        this.requestList.addAll(dashboard)
+        this.requestList.addAll(categoryDataList)
         notifyDataSetChanged()
     }
 

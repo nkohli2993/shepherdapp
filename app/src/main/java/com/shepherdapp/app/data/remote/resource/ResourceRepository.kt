@@ -33,6 +33,25 @@ class ResourceRepository @Inject constructor(private val apiService: ApiService)
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    // get all resources according to categories
+    suspend fun getAllResourceAsPerCategory(
+        page: Int,
+        limit: Int,
+        categoryIds: String
+    ): Flow<DataResult<ResponseRelationModel>> {
+        return object :
+            NetworkOnlineDataRepo<ResponseRelationModel, ResponseRelationModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<ResponseRelationModel> {
+                return apiService.getAllResourcesAsPerCategory(
+                    page = page,
+                    limit = limit,
+                    categoryIds = categoryIds
+                )
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+
     //get result of search result
     suspend fun getSearchResourceResultApi(
         page: Int,

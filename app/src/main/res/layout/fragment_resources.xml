@@ -165,10 +165,10 @@
                 android:textColor="@color/_192032"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintStart_toStartOf="@+id/trendingCl"
-                app:layout_constraintTop_toBottomOf="@+id/medicalHistory" />
+                app:layout_constraintTop_toBottomOf="@+id/rvMedicalConditionsTag" />
 
 
-            <com.shepherdapp.app.ui.component.resources.FlowLayout
+          <!--  <com.shepherdapp.app.ui.component.resources.FlowLayout
                 android:id="@+id/medicalHistory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -176,7 +176,24 @@
                 android:padding="@dimen/_10sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/trendingCl" />
+                app:layout_constraintTop_toBottomOf="@+id/trendingCl" />-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMedicalConditionsTag"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@color/colorWhite"
+                android:nestedScrollingEnabled="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/txtRecentContent"
+                app:layout_constraintTop_toBottomOf="@+id/trendingCl"
+                tools:itemCount="10"
+                tools:listitem="@layout/adapter_medical_history" />
 
 
             <androidx.recyclerview.widget.RecyclerView

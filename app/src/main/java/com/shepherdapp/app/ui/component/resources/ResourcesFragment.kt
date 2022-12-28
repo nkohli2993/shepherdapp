@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.resources
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.home.HomeActivity
+import com.shepherdapp.app.ui.component.resources.adapter.MedicalCategoryTagsAdapter
 import com.shepherdapp.app.ui.component.resources.adapter.MedicalHistoryTopicsAdapter
 import com.shepherdapp.app.ui.component.resources.adapter.TopicsAdapter
 import com.shepherdapp.app.utils.SingleEvent
@@ -45,17 +47,22 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private val resourcesViewModel: ResourceViewModel by viewModels()
     private var addedConditionPayload: ArrayList<CategoryData> = arrayListOf()
     private var pageNumber = 1
+    private var pageNumberCategoryTag = 1
+    private var currentPageCategoryTag: Int = 0
     private val limit = 20
     private var currentPage: Int = 0
     private var totalPage: Int = 0
     private var total: Int = 0
     private var topicsAdapter: TopicsAdapter? = null
     private var medicalHistoryTopicsAdapter: MedicalHistoryTopicsAdapter? = null
+    private var medicalCategoryTagsAdapter: MedicalCategoryTagsAdapter? = null
     private var resourceList: ArrayList<AllResourceData> = arrayListOf()
+    private var medicalCategoryTagList: ArrayList<CategoryData> = arrayListOf()
     private var trendingResourceList: ArrayList<AllResourceData> = arrayListOf()
     private var conditionIDs: ArrayList<Int> = arrayListOf()
     private var isSearch: Boolean = false
     private var isLoading = false
+    private var TAG = "ResourcesFragment"
 
     private var parentActivityListener: ChildFragmentToActivityListener? = null
 
@@ -85,13 +92,22 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         resourcesViewModel.getLovedOneUUId()
             ?.let { resourcesViewModel.getLovedOneMedicalConditions(it) }
 
+
+        /*resourcesViewModel.getResourceCategories(
+            pageNumberCategoryTag,
+            limit
+        )*/
+
+//        callAllResourceBasedOnMedicalConditions()
+
 //        resourcesViewModel.getTrendingResourceApi(pageNumber, limit)
         setTopicsAdapter()
         setMedicalHistoryTopicsAdapter()
-      /*  resourcesViewModel.getResourceCategories(
-            pageNumber,
-            limit
-        )*/
+        setMedicalConditionsTagAdapter()
+        /*  resourcesViewModel.getResourceCategories(
+              pageNumber,
+              limit
+          )*/
 //        resourcesViewModel.getUserDetailByUUID()
 
         fragmentResourcesBinding.imgCancel.setOnClickListener {
@@ -101,7 +117,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
             pageNumber = 1
             isSearch = false
             hideKeyboard()
-            callAllResourceBasedOnMedicalHistory()
+            callAllResourceBasedOnMedicalConditions()
         }
 
 
@@ -116,7 +132,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 pageNumber = 1
                 isSearch = false
                 hideKeyboard()
-                callAllResourceBasedOnMedicalHistory()
+                callAllResourceBasedOnMedicalConditions()
             } else {
                 fragmentResourcesBinding.imgCancel.visibility = View.VISIBLE
                 showTrendingPost(View.GONE)
@@ -164,14 +180,25 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                         isScrolling = false
 //                        currentPage++
 //                        pageNumber++
-                        callAllResourceBasedOnMedicalHistory()
+                        callAllResourceBasedOnMedicalConditions()
                     }
                 }
             }
         })
     }
 
-    private fun callAllResourceBasedOnMedicalHistory() {
+    private fun getAllResourcesBasedOnMedicalConditionsSelected() {
+        resourcesViewModel.getAllResourceApi(
+            pageNumber,
+            limit,
+//            resourcesViewModel.getLovedOneUUId()!!,
+//            null
+            //conditionIDs.joinToString().replace(" ", "")
+        )
+
+    }
+
+    private fun callAllResourceBasedOnMedicalConditions() {
         resourcesViewModel.getAllResourceApi(
             pageNumber,
             limit,
@@ -185,6 +212,10 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     override fun observeViewModel() {
 
         observeEvent(resourcesViewModel.selectedResourceDetail, ::navigateToResourceItems)
+        observeEvent(
+            resourcesViewModel.selectedMedicalCategoryTAG,
+            ::openSelectedMedicalCategoryTag
+        )
 
         /*resourcesViewModel.userDetailByUUIDLiveData.observeEvent(this) {
             when (it) {
@@ -219,28 +250,38 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         }*/
 
         //Observe the response of get loved one's medical conditions api
-        resourcesViewModel.categoryRespurceResponseLiveData.observeEvent(this) { result ->
+        resourcesViewModel.categoryResourceResponseLiveData.observeEvent(this) { result ->
             when (result) {
                 is DataResult.Failure -> {
-                    // hideLoading()
+                    hideLoading()
                     result.message?.let { showError(requireContext(), it) }
-                    callAllResourceBasedOnMedicalHistory()
+                    if (conditionIDs.isEmpty()) {
+                        pageNumber = 1
+                        callAllResourceBasedOnMedicalConditions()
+                    }
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    //   hideLoading()
-                    addedConditionPayload.clear()
-                    fragmentResourcesBinding.medicalHistory.removeAllViews()
-                    for (i in result.data.payload.categories) {
-                        i.isSelected = true
-                        addedConditionPayload.add(i)
-                        conditionIDs.add(i.id!!)
-                    }
+                    hideLoading()
+//                    addedConditionPayload.clear()
+//                    fragmentResourcesBinding.medicalHistory.removeAllViews()
+                    /*  for (i in result.data.payload.categories) {
+                          i.isSelected = true
+                          addedConditionPayload.add(i)
+                          conditionIDs.add(i.id!!)
+                      }*/
                     // set tags
-                    setMedicalTags()
-                    callAllResourceBasedOnMedicalHistory()
+//                    setMedicalTags()
+
+
+//                    callAllResourceBasedOnMedicalConditions()
+                    // Get categories
+                    medicalCategoryTagList = result.data.payload.categories
+                    medicalCategoryTagsAdapter?.addData(medicalCategoryTagList)
+                    currentPageCategoryTag = result.data.payload.currentPage
+//                    pageNumberCategoryTag = currentPage + 1
                 }
             }
         }
@@ -352,6 +393,41 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
     }
 
+
+    private fun openSelectedMedicalCategoryTag(navigateEvent: SingleEvent<CategoryData>) {
+        navigateEvent.getContentIfNotHandled()?.let { it ->
+            medicalCategoryTagList.map { categoryData ->
+                if (categoryData.id == it.id) {
+                    categoryData.isSelected = !categoryData.isSelected
+                }
+            }
+            Log.d(TAG, "medicalCategoryTagList : $medicalCategoryTagList")
+            medicalCategoryTagsAdapter?.addData(medicalCategoryTagList)
+
+            conditionIDs.clear()
+            conditionIDs = medicalCategoryTagList.filter {
+                it.isSelected
+            }.map {
+                it.id
+            } as ArrayList<Int>
+
+            Log.d(TAG, "selected IDs : $conditionIDs")
+
+            if (conditionIDs.size == 0) {
+                pageNumber = 1
+                callAllResourceBasedOnMedicalConditions()
+            } else {
+                resourcesViewModel.getAllResourceAsPerCategoryApi(
+                    pageNumberCategoryTag,
+                    limit,
+                    conditionIDs.joinToString().replace(" ", "")
+                )
+            }
+
+
+        }
+    }
+
     private fun setTopicsAdapter() {
         topicsAdapter = TopicsAdapter(resourcesViewModel)
 //        fragmentResourcesBinding.recyclerViewTopics.adapter = topicsAdapter
@@ -416,7 +492,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private fun callSelectedConditionResources(position: Int) {
         addedConditionPayload[position].isSelected =
             !addedConditionPayload[position].isSelected
-        setMedicalTags()
+//        setMedicalTags()
         conditionIDs.clear()
         isLoading = true
         for (i in addedConditionPayload) {
@@ -424,7 +500,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 conditionIDs.add(i.id!!)
             }
         }
-        callAllResourceBasedOnMedicalHistory()
+        callAllResourceBasedOnMedicalConditions()
     }
 
     override fun onResume() {
@@ -433,15 +509,18 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         fragmentResourcesBinding.editTextSearch.setText("")
         resourceList.clear()
         pageNumber = 1
+        pageNumberCategoryTag = 1
         isSearch = false
 //        fragmentResourcesBinding.medicalHistory.removeAllViews()
+
+        callAllResourceBasedOnMedicalConditions()
         resourcesViewModel.getResourceCategories(
-            pageNumber,
+            pageNumberCategoryTag,
             limit
         )
     }
 
-    private fun setMedicalTags() {
+    /*private fun setMedicalTags() {
         //set medical history names
         fragmentResourcesBinding.medicalHistory.removeAllViews()
         for (medicalCondition in addedConditionPayload.indices) {
@@ -453,7 +532,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 )
             )
         }
-    }
+    }*/
 
     private fun setMedicalHistoryTopicsAdapter() {
         medicalHistoryTopicsAdapter = MedicalHistoryTopicsAdapter(resourcesViewModel)
@@ -462,11 +541,15 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         handleResourcesPagination()
     }
 
+    private fun setMedicalConditionsTagAdapter() {
+        medicalCategoryTagsAdapter = MedicalCategoryTagsAdapter(resourcesViewModel)
+        fragmentResourcesBinding.rvMedicalConditionsTag.adapter = medicalCategoryTagsAdapter
+    }
+
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_resources
     }
-
 
 }
 

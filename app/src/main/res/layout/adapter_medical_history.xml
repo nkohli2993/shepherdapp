@@ -5,11 +5,11 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/cardView5"
-        app:layout_constraintStart_toStartOf="@+id/cardView5">
+        app:layout_constraintEnd_toStartOf="@+id/cardViewMedicalCategory"
+        app:layout_constraintStart_toStartOf="@+id/cardViewMedicalCategory">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView5"
+            android:id="@+id/cardViewMedicalCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_12sdp"
@@ -19,13 +19,16 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
+                android:id="@+id/layoutCategory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_black_border"
-                android:padding="@dimen/_4sdp">
+                android:paddingVertical="@dimen/_6sdp"
+                android:paddingHorizontal="@dimen/_8sdp">
 
 
                 <TextView
+                    android:id="@+id/txtCategoryName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -37,10 +40,11 @@
                     android:textSize="@dimen/_10ssp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/imgCategory"
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_round_cancel" />
+                    android:src="@drawable/ic_add_filled" />
 
             </LinearLayout>
 

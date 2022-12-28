@@ -7,10 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
-import com.shepherdapp.app.data.dto.resource.AllResourceData
-import com.shepherdapp.app.data.dto.resource.GetCategoriesResponseModel
-import com.shepherdapp.app.data.dto.resource.ParticularResourceResponseModel
-import com.shepherdapp.app.data.dto.resource.ResponseRelationModel
+import com.shepherdapp.app.data.dto.resource.*
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
@@ -56,6 +53,10 @@ class ResourceViewModel @Inject constructor(
     private val _selectedResourceDetail = MutableLiveData<SingleEvent<AllResourceData>>()
     val selectedResourceDetail: LiveData<SingleEvent<AllResourceData>> get() = _selectedResourceDetail
 
+    // selected medical category TAG
+    private val _selectedMedicalCategoryTAG = MutableLiveData<SingleEvent<CategoryData>>()
+    val selectedMedicalCategoryTAG: LiveData<SingleEvent<CategoryData>> get() = _selectedMedicalCategoryTAG
+
     private var _userDetailByUUIDLiveData =
         MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
     var userDetailByUUIDLiveData: LiveData<Event<DataResult<UserDetailByUUIDResponseModel>>> =
@@ -66,15 +67,20 @@ class ResourceViewModel @Inject constructor(
         _selectedResourceDetail.value = SingleEvent(position)
     }
 
+    fun openSelectedMedicalCategoryTag(category: CategoryData) {
+        _selectedMedicalCategoryTAG.value = SingleEvent(category)
+    }
+
+
     private var _lovedOneMedicalConditionResponseLiveData =
         MutableLiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>>()
     var lovedOneMedicalConditionResponseLiveData: LiveData<Event<DataResult<GetLovedOneMedicalConditionsResponseModel>>> =
         _lovedOneMedicalConditionResponseLiveData
 
-    private var _categoryRespurceResponseLiveData =
+    private var _categoryResourceResponseLiveData =
         MutableLiveData<Event<DataResult<GetCategoriesResponseModel>>>()
-    var categoryRespurceResponseLiveData: LiveData<Event<DataResult<GetCategoriesResponseModel>>> =
-        _categoryRespurceResponseLiveData
+    var categoryResourceResponseLiveData: LiveData<Event<DataResult<GetCategoriesResponseModel>>> =
+        _categoryResourceResponseLiveData
 
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
@@ -112,6 +118,23 @@ class ResourceViewModel @Inject constructor(
         return resourceResponseLiveData
     }
 
+    fun getAllResourceAsPerCategoryApi(
+        pageNumber: Int,
+        limit: Int,
+        categoryIds: String
+    ): LiveData<Event<DataResult<ResponseRelationModel>>> {
+        viewModelScope.launch {
+            val response =
+                dataRepository.getAllResourceAsPerCategory(pageNumber, limit, categoryIds)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _resourceResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return resourceResponseLiveData
+    }
+
     fun getSearchResourceResultApi(
         pageNumber: Int,
         limit: Int,
@@ -135,10 +158,11 @@ class ResourceViewModel @Inject constructor(
         }
         return resourceResponseLiveData
     }
+
     fun getResourceCategories(
         pageNumber: Int,
         limit: Int
-    ): LiveData<Event<DataResult<ResponseRelationModel>>> {
+    ): LiveData<Event<DataResult<GetCategoriesResponseModel>>> {
         viewModelScope.launch {
             val response = dataRepository.getResourceCategories(
                 pageNumber,
@@ -146,11 +170,11 @@ class ResourceViewModel @Inject constructor(
             )
             withContext(Dispatchers.Main) {
                 response.collect {
-                    _categoryRespurceResponseLiveData.postValue(Event(it))
+                    _categoryResourceResponseLiveData.postValue(Event(it))
                 }
             }
         }
-        return resourceResponseLiveData
+        return categoryResourceResponseLiveData
     }
 
     fun getResourceDetail(

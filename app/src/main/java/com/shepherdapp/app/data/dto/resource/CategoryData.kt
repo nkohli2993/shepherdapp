@@ -1,4 +1,5 @@
 package com.shepherdapp.app.data.dto.resource
+
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -19,6 +20,6 @@ data class CategoryData(
     @SerializedName("deleted_at")
     var deleted_at: String? = null,
     @SerializedName("is_selected")
-    var isSelected :Boolean = true
+    var isSelected: Boolean = false
 
 ) : Parcelable

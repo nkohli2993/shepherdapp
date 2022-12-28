@@ -114,7 +114,10 @@ interface ApiService {
     suspend fun changePassword(@Body value: ChangePasswordModel): Response<BaseResponseModel>
 
     @POST(ApiConstants.Authentication.DELETE_ACCOUNT)
-    suspend fun deleteAccount(  @Path("id") uuid: Int,@Body value: DeleteAccountModel): Response<BaseResponseModel>
+    suspend fun deleteAccount(
+        @Path("id") uuid: Int,
+        @Body value: DeleteAccountModel
+    ): Response<BaseResponseModel>
 
     @GET(ApiConstants.Relations.GET_RELATIONS)
     suspend fun getRelations(
@@ -514,6 +517,14 @@ interface ApiService {
     suspend fun getAllResources(
         @Query("page") page: Int,
         @Query("limit") limit: Int,
+    ): Response<ResponseRelationModel>
+
+
+    @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
+    suspend fun getAllResourcesAsPerCategory(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("categoryIds") categoryIds: String,
     ): Response<ResponseRelationModel>
 
     @GET(ApiConstants.Resource.GET_ALL_RESOURCE)
