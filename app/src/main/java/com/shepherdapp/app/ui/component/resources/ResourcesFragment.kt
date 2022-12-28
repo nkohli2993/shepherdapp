@@ -49,6 +49,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private var pageNumber = 1
     private var pageNumberCategoryTag = 1
     private var currentPageCategoryTag: Int = 0
+    private var totalPageCategoryTag: Int = 0
     private val limit = 20
     private var currentPage: Int = 0
     private var totalPage: Int = 0
@@ -187,6 +188,38 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         })
     }
 
+    private fun handleMedicalCategoryPagination() {
+        var isScrolling: Boolean
+        var visibleItemCount: Int
+        var totalItemCount: Int
+        var pastVisibleItems: Int
+
+        fragmentResourcesBinding.rvMedicalConditionsTag.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    isScrolling = true
+                    visibleItemCount = recyclerView.layoutManager!!.childCount
+                    totalItemCount = recyclerView.layoutManager!!.itemCount
+                    pastVisibleItems =
+                        (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                    if (isScrolling && visibleItemCount + pastVisibleItems >= totalItemCount && (currentPageCategoryTag < totalPageCategoryTag)) {
+                        isScrolling = false
+//                        currentPage++
+//                        pageNumber++
+//                        getAllResourcesBasedOnMedicalConditionsSelected()
+                        resourcesViewModel.getResourceCategories(
+                            pageNumberCategoryTag,
+                            limit
+                        )
+
+                    }
+                }
+            }
+        })
+    }
+
     private fun getAllResourcesBasedOnMedicalConditionsSelected() {
         resourcesViewModel.getAllResourceApi(
             pageNumber,
@@ -281,7 +314,8 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     medicalCategoryTagList = result.data.payload.categories
                     medicalCategoryTagsAdapter?.addData(medicalCategoryTagList)
                     currentPageCategoryTag = result.data.payload.currentPage
-//                    pageNumberCategoryTag = currentPage + 1
+                    totalPageCategoryTag = result.data.payload.total
+                    pageNumberCategoryTag = currentPage + 1
                 }
             }
         }
@@ -390,7 +424,6 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 )
             )
         }
-
     }
 
 
@@ -544,6 +577,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     private fun setMedicalConditionsTagAdapter() {
         medicalCategoryTagsAdapter = MedicalCategoryTagsAdapter(resourcesViewModel)
         fragmentResourcesBinding.rvMedicalConditionsTag.adapter = medicalCategoryTagsAdapter
+        handleMedicalCategoryPagination()
     }
 
 
