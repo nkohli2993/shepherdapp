@@ -80,7 +80,7 @@ class SettingViewModel @Inject constructor(
         return attachEnterpriseLiveData
     }
 
-    fun deleteAccount(id:Int,value: DeleteAccountModel): LiveData<Event<DataResult<AttachEnterpriseResponseModel>>> {
+    fun deleteAccount(id:Int,value: DeleteAccountModel): LiveData<Event<DataResult<BaseResponseModel>>> {
         viewModelScope.launch {
             val response = enterpriseRepository.deleteAccount(id,value)
             withContext(Dispatchers.Main) {
@@ -89,7 +89,7 @@ class SettingViewModel @Inject constructor(
                 }
             }
         }
-        return attachEnterpriseLiveData
+        return deleteAccountLiveData
     }
 
     fun getUserDetail(): UserProfile? {

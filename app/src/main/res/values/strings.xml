@@ -603,4 +603,5 @@
     <string name="please_let_us_know_why_you_want_to_delete_your_account">Please let us know why you want to delete your account.</string>
     <string name="give_a_reason">Give a reason</string>
     <string name="please_enter_reason">Please enter reason.</string>
+    <string name="user_account_deleted_successfully">User account deleted successfully</string>
 </resources>

@@ -96,7 +96,11 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                 is DataResult.Success -> {
                     hideLoading()
                     it.data.let { it1 ->
-                        showSuccess(requireContext(), it.data.message.toString())
+//                        showSuccess(requireContext(), it.data.message.toString())
+                        showSuccess(
+                            requireContext(),
+                            getString(R.string.user_account_deleted_successfully)
+                        )
                         homeActivity.gotoLogin("setting_screen")
                     }
                 }
