@@ -17,10 +17,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
-import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload
 import com.shepherdapp.app.data.dto.resource.AllResourceData
 import com.shepherdapp.app.data.dto.resource.CategoryData
-import com.shepherdapp.app.data.dto.resource.CategoryPayload
 import com.shepherdapp.app.databinding.FragmentResourcesBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -90,10 +88,10 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 //        resourcesViewModel.getTrendingResourceApi(pageNumber, limit)
         setTopicsAdapter()
         setMedicalHistoryTopicsAdapter()
-        resourcesViewModel.getResourceCategories(
+      /*  resourcesViewModel.getResourceCategories(
             pageNumber,
             limit
-        )
+        )*/
 //        resourcesViewModel.getUserDetailByUUID()
 
         fragmentResourcesBinding.imgCancel.setOnClickListener {
@@ -437,6 +435,10 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         pageNumber = 1
         isSearch = false
 //        fragmentResourcesBinding.medicalHistory.removeAllViews()
+        resourcesViewModel.getResourceCategories(
+            pageNumber,
+            limit
+        )
     }
 
     private fun setMedicalTags() {

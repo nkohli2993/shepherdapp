@@ -393,6 +393,7 @@
         <entry key="app/src/main/res/layout/details_layout.xml" value="0.35625" />
         <entry key="app/src/main/res/layout/dialog_bio_metric.xml" value="0.26927083333333335" />
         <entry key="app/src/main/res/layout/dialog_choose_lockbox_file.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/dialog_delete_account.xml" value="0.2263888888888889" />
         <entry key="app/src/main/res/layout/dialog_enter_group_name.xml" value="0.222265625" />
         <entry key="app/src/main/res/layout/dialog_enterprise_code.xml" value="0.24279279279279278" />
         <entry key="app/src/main/res/layout/dialog_enterprise_user.xml" value="0.24279279279279278" />
@@ -460,7 +461,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8 (2)" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
