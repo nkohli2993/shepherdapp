@@ -450,6 +450,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 pageNumber = 1
                 callAllResourceBasedOnMedicalConditions()
             } else {
+                pageNumberCategoryTag = 1
                 resourcesViewModel.getAllResourceAsPerCategoryApi(
                     pageNumberCategoryTag,
                     limit,
