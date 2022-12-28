@@ -140,13 +140,14 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                 //Hit search api
                 isSearch = true
                 resourceList.clear()
+                pageNumber = 1
                 resourcesViewModel.getSearchResourceResultApi(
                     pageNumber,
                     limit,
 //                    resourcesViewModel.getLovedOneUUId()!!,
                     /*  conditionIDs.toString()
                           .replace(" ", ""),*/
-                    fragmentResourcesBinding.editTextSearch.text.toString()
+                    fragmentResourcesBinding.editTextSearch.text.toString().trim()
                 )
 
             }
