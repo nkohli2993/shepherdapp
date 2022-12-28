@@ -317,8 +317,8 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
 
         val metrics = DisplayMetrics() //get metrics of screen
         activity?.windowManager?.defaultDisplay?.getMetrics(metrics)
-        val height = (metrics.heightPixels * 0.6).toInt() //set height to 60% of total
-        val width = (metrics.widthPixels * 0.9).toInt() //set width to 90% of total
+        val height = (metrics.heightPixels * 0.8).toInt() //set height to 80% of total
+        val width = (metrics.widthPixels * 0.95).toInt() //set width to 95% of total
         dialog.window?.setLayout(width, height) //set layout
     }
 }

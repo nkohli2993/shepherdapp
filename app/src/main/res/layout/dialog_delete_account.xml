@@ -26,13 +26,14 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtDeleteAccount"
-                style="@style/TextViewGothamBold"
+                style="@style/TextViewGothamMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:lineSpacingExtra="@dimen/_5sdp"
                 android:textSize="@dimen/_20ssp"
                 android:text="@string/delete_account" />
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtDescription"
                 style="@style/TextViewGothamBook"
@@ -49,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="start"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:lineSpacingExtra="@dimen/_5sdp"
                 android:textSize="@dimen/_14ssp"
                 android:text="@string/give_a_reason" />
@@ -68,8 +69,8 @@
                 android:gravity="top"
                 android:maxHeight="@dimen/_200sdp"
                 android:minHeight="@dimen/_150sdp"
-                android:hint="@string/write"
-                android:layout_marginTop="@dimen/_15sdp" />
+                android:hint="@string/_write"
+                android:layout_marginTop="@dimen/_10sdp" />
 
             <LinearLayout
                 android:id="@+id/llYesNo"

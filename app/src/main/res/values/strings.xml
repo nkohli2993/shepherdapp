@@ -281,7 +281,7 @@
     <string name="medical_conditions">Medical Conditions</string>
     <string name="hint_select_one">Select one</string>
     <!--<string name="google_maps_api_key">AIzaSyCBlq2RHLf3oCHct3RIMp-iF00r8J_szrQ</string>-->
-<!--    <string name="google_maps_api_key">AIzaSyBbytCk92gm3MK3Mrs_374RDKf4bz0X1ck</string>-->
+    <!--    <string name="google_maps_api_key">AIzaSyBbytCk92gm3MK3Mrs_374RDKf4bz0X1ck</string>-->
     <string name="google_maps_api_key">AIzaSyBrCmIsXxbG76U0Jz7rA75Wg-Hc0kW-8Ww</string>
     <!--<string name="google_maps_api_key">AIzaSyB8L96ED27rCDdxOF3DNAagrQzEi3jRUAE</string>-->
     <!--<string name="google_maps_api_key">AIzaSyBw-6xS6SIwHGkWQJeWZKg38n-faZFeJIM</string>-->
@@ -304,6 +304,7 @@
     <string name="create_discussion_with">Create Discussion with :</string>
     <string name="start_discussion">Start Discussion</string>
     <string name="write">Write</string>
+    <string name="_write">Write...</string>
     <string name="change">Change</string>
     <string name="your_loved_ones">Your Loved Ones</string>
     <string name="old_password">Old Password</string>
