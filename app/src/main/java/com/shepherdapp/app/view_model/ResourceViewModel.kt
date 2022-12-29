@@ -233,4 +233,20 @@ class ResourceViewModel @Inject constructor(
         return userDetailByUUIDLiveData
     }
 
+    fun saveCategoryIds(categoryIds: ArrayList<Int>) {
+        userRepository.saveCategoryIds(categoryIds)
+    }
+
+    fun getCategoryIds(): java.util.ArrayList<Int?>? {
+        return userRepository.getCategoryIds()
+    }
+
+    fun saveCategoryDataList(categoryDataList: ArrayList<CategoryData>) {
+        userRepository.saveCategoryDataList(categoryDataList)
+    }
+
+    fun getCategoryDataList(): java.util.ArrayList<CategoryData?>? {
+        return userRepository.getCategoryDataList()
+    }
+
 }

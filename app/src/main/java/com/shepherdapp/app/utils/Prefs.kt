@@ -7,6 +7,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.shepherdapp.app.data.dto.resource.CategoryData
+import java.lang.reflect.Type
 
 
 class Prefs @SuppressLint("CommitPrefEdits") internal constructor(context: Context) {
@@ -107,6 +110,37 @@ class Prefs @SuppressLint("CommitPrefEdits") internal constructor(context: Conte
     fun removeAll() {
         editor.clear()
         editor.apply()
+    }
+
+    // Save array
+
+    fun saveArrayList(key: String, list: ArrayList<Int>) {
+        val gson = Gson()
+        val json: String = gson.toJson(list)
+        editor.putString(key, json)
+        editor.apply()
+    }
+
+    fun getArrayList(key: String?): java.util.ArrayList<Int?>? {
+        val gson = Gson()
+        val json: String? = preferences.getString(key, null)
+        val type: Type? = object : TypeToken<ArrayList<String?>?>() {}.type
+        return gson.fromJson(json, type)
+    }
+
+
+    fun saveArrayLst(key: String, list: ArrayList<CategoryData>) {
+        val gson = Gson()
+        val json: String = gson.toJson(list)
+        editor.putString(key, json)
+        editor.apply()
+    }
+
+    fun getArrayLst(key: String?): java.util.ArrayList<CategoryData?>? {
+        val gson = Gson()
+        val json: String? = preferences.getString(key, null)
+        val type: Type? = object : TypeToken<ArrayList<String?>?>() {}.type
+        return gson.fromJson(json, type)
     }
 
     private class Builder(context: Context?) {

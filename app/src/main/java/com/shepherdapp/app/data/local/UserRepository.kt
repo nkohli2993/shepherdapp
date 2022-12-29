@@ -7,6 +7,7 @@ import com.shepherdapp.app.data.dto.login.Enterprise
 import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
+import com.shepherdapp.app.data.dto.resource.CategoryData
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Const.LOVED_ONE_DETAIL
@@ -168,5 +169,22 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
         return Prefs.with(ShepherdApp.appContext)
             ?.getObject(Const.ENTERPRISE_DETAIL, Enterprise::class.java)
     }
+
+    fun saveCategoryIds(categoryIds: ArrayList<Int>) {
+        Prefs.with(ShepherdApp.appContext)?.saveArrayList("CATEGORY_IDS", categoryIds)
+    }
+
+    fun getCategoryIds(): java.util.ArrayList<Int?>? {
+        return Prefs.with(ShepherdApp.appContext)?.getArrayList("CATEGORY_IDS")
+    }
+
+    fun saveCategoryDataList(categoryDataList: ArrayList<CategoryData>) {
+        Prefs.with(ShepherdApp.appContext)?.saveArrayLst("CATEGORY_DATA_LIST", categoryDataList)
+    }
+
+    fun getCategoryDataList(): java.util.ArrayList<CategoryData?>? {
+        return Prefs.with(ShepherdApp.appContext)?.getArrayLst("CATEGORY_DATA_LIST")
+    }
+
 
 }

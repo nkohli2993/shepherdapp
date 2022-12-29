@@ -154,6 +154,59 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        parentActivityListener?.msgFromChildFragmentToActivity()
+        fragmentResourcesBinding.editTextSearch.setText("")
+        resourceList.clear()
+        pageNumber = 1
+        pageNumberCategoryTag = 1
+        isSearch = false
+
+
+        if (!resourcesViewModel.getCategoryIds().isNullOrEmpty()) {
+            val conditionIDs = resourcesViewModel.getCategoryIds()
+            Log.d(TAG, "onResume: categoryIds : $conditionIDs")
+            if (conditionIDs?.size == 0) {
+                pageNumber = 1
+                callAllResourceBasedOnMedicalConditions()
+                resourcesViewModel.getResourceCategories(
+                    pageNumberCategoryTag,
+                    limit
+                )
+
+            } else if (!medicalCategoryTagList.isNullOrEmpty()) {
+                Log.d(TAG, "medicalCategoryTagList : $medicalCategoryTagList")
+                medicalCategoryTagsAdapter?.addData(medicalCategoryTagList)
+                pageNumberCategoryTag = 1
+                conditionIDs?.joinToString()?.replace(" ", "")?.let {
+                    resourcesViewModel.getAllResourceAsPerCategoryApi(
+                        pageNumberCategoryTag,
+                        limit,
+                        it
+                    )
+                }
+            } else {
+                callAllResourceBasedOnMedicalConditions()
+                resourcesViewModel.getResourceCategories(
+                    pageNumberCategoryTag,
+                    limit
+                )
+            }
+
+        } else {
+            callAllResourceBasedOnMedicalConditions()
+            resourcesViewModel.getResourceCategories(
+                pageNumberCategoryTag,
+                limit
+            )
+        }
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_resources
+    }
+
 
     private fun showTrendingPost(value: Int) {
 //        fragmentResourcesBinding.textViewTrendingTopics.visibility = value
@@ -417,6 +470,12 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     }
 
     private fun navigateToResourceItems(navigateEvent: SingleEvent<AllResourceData>) {
+        // Save selected categoryIDs to sharedPref
+        /* Log.d(TAG, "CategoryIDs : $conditionIDs")
+         if (conditionIDs.size != 0) {
+             resourcesViewModel.saveCategoryIds(categoryIds = conditionIDs)
+             resourcesViewModel.saveCategoryDataList(categoryDataList = medicalCategoryTagList)
+         }*/
         navigateEvent.getContentIfNotHandled()?.let {
             findNavController().navigate(
                 ResourcesFragmentDirections.actionNavResourceToResourceToResourceDetail(
@@ -448,6 +507,13 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
             Log.d(TAG, "selected IDs : $conditionIDs")
 
             if (conditionIDs.size == 0) {
+
+                conditionIDs.clear()
+                medicalCategoryTagList.clear()
+                // Save the empty categoryIDs and categoryDataList in SharedPref
+                resourcesViewModel.saveCategoryIds(categoryIds = conditionIDs)
+                resourcesViewModel.saveCategoryDataList(categoryDataList = medicalCategoryTagList)
+
                 pageNumber = 1
                 callAllResourceBasedOnMedicalConditions()
             } else {
@@ -457,6 +523,10 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     limit,
                     conditionIDs.joinToString().replace(" ", "")
                 )
+
+                // Save the categoryIDs and categoryDataList in SharedPref
+                resourcesViewModel.saveCategoryIds(categoryIds = conditionIDs)
+                resourcesViewModel.saveCategoryDataList(categoryDataList = medicalCategoryTagList)
             }
 
 
@@ -538,22 +608,6 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         callAllResourceBasedOnMedicalConditions()
     }
 
-    override fun onResume() {
-        super.onResume()
-        parentActivityListener?.msgFromChildFragmentToActivity()
-        fragmentResourcesBinding.editTextSearch.setText("")
-        resourceList.clear()
-        pageNumber = 1
-        pageNumberCategoryTag = 1
-        isSearch = false
-//        fragmentResourcesBinding.medicalHistory.removeAllViews()
-
-        callAllResourceBasedOnMedicalConditions()
-        resourcesViewModel.getResourceCategories(
-            pageNumberCategoryTag,
-            limit
-        )
-    }
 
     /*private fun setMedicalTags() {
         //set medical history names
@@ -582,10 +636,6 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         handleMedicalCategoryPagination()
     }
 
-
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_resources
-    }
 
 }
 
