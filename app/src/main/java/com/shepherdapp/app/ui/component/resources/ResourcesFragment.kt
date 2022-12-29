@@ -166,6 +166,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
         if (!resourcesViewModel.getCategoryIds().isNullOrEmpty()) {
             val conditionIDs = resourcesViewModel.getCategoryIds()
+            val medicalCategoryTagList = resourcesViewModel.getCategoryDataList()
             Log.d(TAG, "onResume: categoryIds : $conditionIDs")
             if (conditionIDs?.size == 0) {
                 pageNumber = 1
@@ -174,10 +175,11 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     pageNumberCategoryTag,
                     limit
                 )
-
-            } else if (!medicalCategoryTagList.isNullOrEmpty()) {
-                Log.d(TAG, "medicalCategoryTagList : $medicalCategoryTagList")
-                medicalCategoryTagsAdapter?.addData(medicalCategoryTagList)
+            } else if (!resourcesViewModel.getCategoryDataList().isNullOrEmpty()) {
+                Log.d(TAG, "onResume: medicalCategoryTagList : $medicalCategoryTagList")
+                if (medicalCategoryTagList != null) {
+                    medicalCategoryTagsAdapter?.addData(medicalCategoryTagList)
+                }
                 pageNumberCategoryTag = 1
                 conditionIDs?.joinToString()?.replace(" ", "")?.let {
                     resourcesViewModel.getAllResourceAsPerCategoryApi(
@@ -187,6 +189,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
                     )
                 }
             } else {
+                Log.d(TAG, "onResume: ")
                 callAllResourceBasedOnMedicalConditions()
                 resourcesViewModel.getResourceCategories(
                     pageNumberCategoryTag,
@@ -510,12 +513,17 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
 
                 conditionIDs.clear()
                 medicalCategoryTagList.clear()
+
                 // Save the empty categoryIDs and categoryDataList in SharedPref
                 resourcesViewModel.saveCategoryIds(categoryIds = conditionIDs)
                 resourcesViewModel.saveCategoryDataList(categoryDataList = medicalCategoryTagList)
 
                 pageNumber = 1
                 callAllResourceBasedOnMedicalConditions()
+                resourcesViewModel.getResourceCategories(
+                    pageNumberCategoryTag,
+                    limit
+                )
             } else {
                 pageNumberCategoryTag = 1
                 resourcesViewModel.getAllResourceAsPerCategoryApi(

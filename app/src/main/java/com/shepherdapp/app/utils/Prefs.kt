@@ -136,10 +136,10 @@ class Prefs @SuppressLint("CommitPrefEdits") internal constructor(context: Conte
         editor.apply()
     }
 
-    fun getArrayLst(key: String?): java.util.ArrayList<CategoryData?>? {
+    fun getArrayLst(key: String?): java.util.ArrayList<CategoryData> {
         val gson = Gson()
         val json: String? = preferences.getString(key, null)
-        val type: Type? = object : TypeToken<ArrayList<String?>?>() {}.type
+        val type: Type? = object : TypeToken<ArrayList<CategoryData?>?>() {}.type
         return gson.fromJson(json, type)
     }
 

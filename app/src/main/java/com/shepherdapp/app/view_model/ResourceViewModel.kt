@@ -245,7 +245,7 @@ class ResourceViewModel @Inject constructor(
         userRepository.saveCategoryDataList(categoryDataList)
     }
 
-    fun getCategoryDataList(): java.util.ArrayList<CategoryData?>? {
+    fun getCategoryDataList(): java.util.ArrayList<CategoryData>? {
         return userRepository.getCategoryDataList()
     }
 

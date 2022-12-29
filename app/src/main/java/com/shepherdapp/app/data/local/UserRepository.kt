@@ -182,7 +182,7 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
         Prefs.with(ShepherdApp.appContext)?.saveArrayLst("CATEGORY_DATA_LIST", categoryDataList)
     }
 
-    fun getCategoryDataList(): java.util.ArrayList<CategoryData?>? {
+    fun getCategoryDataList(): java.util.ArrayList<CategoryData>? {
         return Prefs.with(ShepherdApp.appContext)?.getArrayLst("CATEGORY_DATA_LIST")
     }
 
