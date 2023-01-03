@@ -12,6 +12,7 @@ import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Const.LOVED_ONE_DETAIL
 import com.shepherdapp.app.utils.Const.LOVED_ONE_ID
+import com.shepherdapp.app.utils.Const.LOVED_ONE_PIC
 import com.shepherdapp.app.utils.Const.LOVED_ONE_UUID
 import com.shepherdapp.app.utils.Const.LOVED_USER_DETAILS
 import com.shepherdapp.app.utils.Const.PAYLOAD
@@ -184,6 +185,14 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
 
     fun getCategoryDataList(): java.util.ArrayList<CategoryData>? {
         return Prefs.with(ShepherdApp.appContext)?.getArrayLst("CATEGORY_DATA_LIST")
+    }
+
+    fun saveLovedOneProfilePic(lovedOnePic: String) {
+        Prefs.with(ShepherdApp.appContext)?.save(LOVED_ONE_PIC, lovedOnePic)
+    }
+
+    fun getLovedOneProfilePic(): String? {
+        return Prefs.with(ShepherdApp.appContext)?.getString(LOVED_ONE_PIC, null)
     }
 
 

@@ -193,4 +193,8 @@ class AddLovedOneViewModel @Inject constructor(
         return userRepository.getUUID()
     }
 
+    fun saveLovedOneProfilePhoto(lovedOnePic: String) {
+        userRepository.saveLovedOneProfilePic(lovedOnePic)
+    }
+
 }

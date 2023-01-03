@@ -517,6 +517,11 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     hideLoading()
                     val payload = it.data.payload
                     Log.d(TAG, "observeViewModel: $payload")
+
+                    val lovedOneProfilePhoto = payload?.profilePhoto
+                    if (lovedOneProfilePhoto != null) {
+                        addLovedOneViewModel.saveLovedOneProfilePhoto(lovedOneProfilePhoto)
+                    }
                     Handler(Looper.getMainLooper()).postDelayed({
                         // Your Code
                         finishActivity()

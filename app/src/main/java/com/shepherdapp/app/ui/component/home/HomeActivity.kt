@@ -588,11 +588,33 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
         binding.ivName.text = fullName
 
-        if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {
-            Picasso.get().load(profilePicLoggedInUser)
-                .placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(binding.ivLoggedInUserProfile)
+        // Check if LovedOne is the loggedIn user
+        if (viewModel.isLoggedInUserLovedOne() == true) {
+            val lovedOnePic = viewModel.getLovedOnePic()
+            if (lovedOnePic != null && lovedOnePic != "") {
+                Picasso.get().load(lovedOnePic)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(binding.ivLoggedInUserProfile)
+            } else {
+                if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {
+                    Picasso.get().load(profilePicLoggedInUser)
+                        .placeholder(R.drawable.ic_defalut_profile_pic)
+                        .into(binding.ivLoggedInUserProfile)
+                }
+            }
+        } else {
+            if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {
+                Picasso.get().load(profilePicLoggedInUser)
+                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                    .into(binding.ivLoggedInUserProfile)
+            }
         }
+
+        /* if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {
+             Picasso.get().load(profilePicLoggedInUser)
+                 .placeholder(R.drawable.ic_defalut_profile_pic)
+                 .into(binding.ivLoggedInUserProfile)
+         }*/
 
         // Set User's Role
         val role = Prefs.with(ShepherdApp.appContext)!!.getString(Const.USER_ROLE, "")
@@ -684,6 +706,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         viewModel.getHomeData()
         viewModel.getUserDetailByUUID()
 //        setDrawerInfo()
+
     }
 
     private var backPressed: Long = 0

@@ -263,4 +263,8 @@ class HomeViewModel @Inject constructor(
                 }
             }
     }
+
+    fun getLovedOnePic(): String? {
+        return userRepository.getLovedOneProfilePic()
+    }
 }

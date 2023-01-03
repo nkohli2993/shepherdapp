@@ -34,6 +34,7 @@ object Const {
     const val RESET_SECURITY_CODE = "RESET"
     const val SET_SECURITY_CODE = "SET"
     const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
+    const val LOVED_ONE_PIC = "LOVED_ONE_PIC"
 
 
     object NotificationAction {
