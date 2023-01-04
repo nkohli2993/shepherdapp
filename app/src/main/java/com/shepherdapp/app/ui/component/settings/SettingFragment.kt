@@ -39,6 +39,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
     private lateinit var fragmentSettingBinding: FragmentSettingBinding
     private val settingViewModel: SettingViewModel by viewModels()
     private lateinit var homeActivity: HomeActivity
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is HomeActivity) {
@@ -58,7 +59,7 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
     }
 
     override fun observeViewModel() {
-        // Observe Biometric Resposne
+        // Observe Biometric Response
         settingViewModel.bioMetricLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {

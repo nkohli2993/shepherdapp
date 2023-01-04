@@ -161,7 +161,6 @@
             android:fontFamily="@font/gotham_bold"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_14ssp"
-            android:text="21 July, 2022"
             app:layout_constraintStart_toStartOf="@+id/txtExpirePlan"
             app:layout_constraintTop_toBottomOf="@+id/txtExpirePlan"
             android:layout_marginTop="@dimen/_10sdp" />
