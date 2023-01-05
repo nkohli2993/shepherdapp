@@ -256,7 +256,10 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         it.recyclerViewCareTeam.visibility = View.VISIBLE
                         it.txtNoCareTeamFound.visibility = View.GONE
                     }
-                    careTeamAdapter?.updateCareTeams(careTeams!!)
+
+                    // Move CareTeam Leader to first position
+                    val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
+                    careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
 
                     /* careTeams?.clear()
                      careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
@@ -309,7 +312,10 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         it.recyclerViewCareTeam.visibility = View.VISIBLE
                         it.txtNoCareTeamFound.visibility = View.GONE
                     }
-                    careTeamAdapter?.updateCareTeams(careTeams!!)
+
+                    // Move CareTeam Leader to first position
+                    val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
+                    careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
                 }
             }
         }
@@ -324,32 +330,9 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Get Pending Invites
                     careTeamViewModel.getPendingInvites()
                     careTeams = it.data.payload.data
-                    /* if (careTeams.isNullOrEmpty()) return@observeEvent
-                     // Get the uuid of Care Team Leader
-                     try {
-                         val uuidTeamLead = careTeams?.filter {
-                             it.careRoles.slug == CareRole.CareTeamLead.slug
-                         }?.map {
-                             it.user_id
-                         }?.get(0)
-                         Log.d(TAG, "Care team Leader UUID : $uuidTeamLead ")
-                         uuidTeamLead?.let { it1 -> careTeamViewModel.saveLoggedInUserTeamLead(it1) }
-                     } catch (e: Exception) {
-                         Log.d(TAG, "Error: ${e.toString()}")
-                     }
-                     fragmentCareTeamMembersBinding.let {
-                         it.recyclerViewCareTeam.visibility = View.VISIBLE
-                         it.txtNoCareTeamFound.visibility = View.GONE
-                     }
-                     careTeamAdapter?.updateCareTeams(careTeams!!)*/
                 }
                 is DataResult.Failure -> {
-                    //handleAPIFailure(it.message, it.errorCode)
-
                     hideLoading()
-                    // it.message?.let { showError(this, it.toString()) }
-                    //binding.layoutCareTeam.visibility = View.GONE
-                    //binding.txtNoCareTeamFound.visibility = View.VISIBLE
                     careTeams?.clear()
                     careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
                     fragmentCareTeamMembersBinding.let {
@@ -447,6 +430,21 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun onResume() {
         parentActivityListener?.msgFromChildFragmentToActivity()
         super.onResume()
+    }
+
+    // Move CareTeam Leader to first position
+    private fun moveCareTeamLeaderToFirstPosition(careTeams: ArrayList<CareTeamModel>?): ArrayList<CareTeamModel>? {
+        // Get List of CareTeam Leader
+        val careTeamLeadList = careTeams?.filter {
+            it.careRoles.slug == CareRole.CareTeamLead.slug
+        } as ArrayList
+
+        Log.d(TAG, "CareTeam Leader List : $careTeamLeadList")
+        // Remove CareTeam Leaders from CareTeam
+        careTeams.removeAll(careTeamLeadList)
+        // Add Remaining elements of careTeams to CareTeamLeadList
+        careTeamLeadList.addAll(careTeams)
+        return careTeamLeadList
     }
 }
 
