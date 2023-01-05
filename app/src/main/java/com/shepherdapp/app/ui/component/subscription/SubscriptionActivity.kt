@@ -182,11 +182,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
             .setPurchaseToken(purchases.purchaseToken)
             .build()
 
-        billingClient!!.acknowledgePurchase(
+        billingClient?.acknowledgePurchase(
             acknowledgePurchaseParams
         ) { billingResult: BillingResult ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                val purchaseToken = purchases.purchaseToken
                 orderID = purchases.orderId
 //                var nameOfPlan: String? = null
                 when (planName) {
@@ -362,7 +361,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         // Step 7: Handling pending transactions
-        billingClient!!.queryPurchasesAsync(
+        billingClient?.queryPurchasesAsync(
             QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()
         ) { billingResult: BillingResult, list: List<Purchase> ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
