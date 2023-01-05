@@ -5,7 +5,6 @@
 
     <data>
 
-
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
@@ -168,15 +167,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/rvMedicalConditionsTag" />
 
 
-          <!--  <com.shepherdapp.app.ui.component.resources.FlowLayout
-                android:id="@+id/medicalHistory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:padding="@dimen/_10sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/trendingCl" />-->
+            <!--  <com.shepherdapp.app.ui.component.resources.FlowLayout
+                  android:id="@+id/medicalHistory"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginHorizontal="@dimen/_8sdp"
+                  android:padding="@dimen/_10sdp"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@+id/trendingCl" />-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvMedicalConditionsTag"

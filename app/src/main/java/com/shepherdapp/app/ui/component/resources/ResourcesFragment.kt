@@ -32,6 +32,7 @@ import com.shepherdapp.app.ui.component.resources.adapter.TopicsAdapter
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.hideKeyboard
 import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.observeEvent
 import com.shepherdapp.app.view_model.ResourceViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,7 +42,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Nikita 31-08-2022
  */
 @AndroidEntryPoint
-class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
+class ResourcesFragment : BaseFragment<FragmentResourcesBinding>(), View.OnClickListener {
 
     private lateinit var fragmentResourcesBinding: FragmentResourcesBinding
     private val resourcesViewModel: ResourceViewModel by viewModels()
@@ -90,6 +91,7 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
     }
 
     override fun initViewBinding() {
+        fragmentResourcesBinding.listener = this
         resourcesViewModel.getLovedOneUUId()
             ?.let { resourcesViewModel.getLovedOneMedicalConditions(it) }
 
@@ -642,6 +644,14 @@ class ResourcesFragment : BaseFragment<FragmentResourcesBinding>() {
         medicalCategoryTagsAdapter = MedicalCategoryTagsAdapter(resourcesViewModel)
         fragmentResourcesBinding.rvMedicalConditionsTag.adapter = medicalCategoryTagsAdapter
         handleMedicalCategoryPagination()
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.btnJoin -> {
+                showInfo(requireContext(), getString(R.string.coming_soon))
+            }
+        }
     }
 
 
