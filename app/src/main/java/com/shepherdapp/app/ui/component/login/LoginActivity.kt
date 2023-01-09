@@ -337,6 +337,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                         } else if (it.payload?.activeSubscription?.id != null) {
                             //If subscription object in Login response contains data, then user has taken subscription
                             loginViewModel.saveUSerAttachedToEnterprise(false)
+
+                            // Save subscription purchased status
+                            loginViewModel.saveSubscriptionPurchased(
+                                isSubscriptionPurchased = true
+                            )
                         }
 
                         // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId

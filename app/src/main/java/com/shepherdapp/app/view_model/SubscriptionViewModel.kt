@@ -380,5 +380,12 @@ class SubscriptionViewModel @Inject constructor(
         private const val MAX_CURRENT_PURCHASES_ALLOWED = 1
     }
 
+    fun saveSubscriptionPurchased(isSubscriptionPurchased: Boolean) {
+        userRepository.saveSubscriptionPurchased(isSubscriptionPurchased)
+    }
+
+    fun isSubscriptionPurchased(): Boolean? {
+        return userRepository.isSubscriptionPurchased()
+    }
 
 }

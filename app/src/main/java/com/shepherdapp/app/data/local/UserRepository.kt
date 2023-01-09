@@ -160,6 +160,16 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun isUserAttachedToEnterprise() =
         Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_USER_ATTACHED_TO_ENTERPRISE, false)
 
+    fun saveSubscriptionPurchased(isSubscriptionPurchased: Boolean) {
+        Prefs.with(ShepherdApp.appContext)
+            ?.save(Const.IS_SUBSCRIPTION_PURCHASED, isSubscriptionPurchased)
+    }
+
+    fun isSubscriptionPurchased(): Boolean? {
+        return Prefs.with(ShepherdApp.appContext)
+            ?.getBoolean(Const.IS_SUBSCRIPTION_PURCHASED, false)
+    }
+
     // Save Enterprise Detail
     fun saveEnterpriseDetail(enterprise: Enterprise) {
         Prefs.with(ShepherdApp.appContext)!!.save(Const.ENTERPRISE_DETAIL, enterprise)

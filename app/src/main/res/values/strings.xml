@@ -589,6 +589,7 @@
     <string name="your_subscription_has_been_expired">Your subscription has been expired</string>
     <string name="ok">Ok</string>
     <string name="max_3_loved_one_can_be_added">Max 3 loved one can added</string>
+    <string name="you_can_add_up_to_3_loved_one">You can add up to 3 lovedOne!</string>
     <string name="become_an_enterprise_User">Become an Enterprise User</string>
     <string name="enterprise_detail">Enterprise Detail:</string>
     <string name="you_have_choosen_plan">You have chosen basic plan</string>

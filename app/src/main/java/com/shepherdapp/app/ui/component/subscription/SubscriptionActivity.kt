@@ -244,6 +244,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(this, it.data.message.toString())
+
+                    // Save Subscription Status
+                    subscriptionViewModel.saveSubscriptionPurchased(isSubscriptionPurchased = true)
+
                     val currentUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
                         Const.USER_DETAILS,
                         UserProfile::class.java

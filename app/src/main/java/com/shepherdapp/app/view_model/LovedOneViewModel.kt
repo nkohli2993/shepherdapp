@@ -119,4 +119,16 @@ class LovedOneViewModel @Inject constructor(
         return userRepository.getUUID()
     }
 
+    fun saveSubscriptionPurchased(isSubscriptionPurchased: Boolean) {
+        userRepository.saveSubscriptionPurchased(isSubscriptionPurchased)
+    }
+
+    fun isSubscriptionPurchased(): Boolean? {
+        return userRepository.isSubscriptionPurchased()
+    }
+
+    fun isUserAttachedToEnterprise(): Boolean? {
+        return userRepository.isUserAttachedToEnterprise()
+    }
+
 }

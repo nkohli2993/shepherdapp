@@ -275,4 +275,12 @@ class LoginViewModel @Inject constructor(
     fun getEnterpriseDetail(): Enterprise? {
         return userRepository.getEnterpriseDetail()
     }
+
+    fun saveSubscriptionPurchased(isSubscriptionPurchased: Boolean) {
+        userRepository.saveSubscriptionPurchased(isSubscriptionPurchased)
+    }
+
+    fun isSubscriptionPurchased(): Boolean? {
+        return userRepository.isSubscriptionPurchased()
+    }
 }
