@@ -30,7 +30,6 @@ import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.component.carePoints.adapter.CarePointsDayAdapter
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.*
-import com.shepherdapp.app.utils.extensions.showWarning
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
@@ -58,6 +57,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private var clickType = CalendarState.Today.value
     private var sdf: SimpleDateFormat? = null
     private var chatModelList: ArrayList<ChatModel>? = ArrayList()
+    private var selDate: Date? = null
 
     private val TAG = "CarePointsFragment"
 
@@ -114,28 +114,34 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         val cal = Calendar.getInstance()
         fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
 
-        fragmentCarePointsBinding.calendarPView.addDecorator(DayDisableDecorator())
+//        fragmentCarePointsBinding.calendarPView.addDecorator(DayDisableDecorator())
 
 
         fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
-            Log.d(TAG, " selected date is ${date.date}")
-            val selectedDate = date.date
+            selDate = date.date
+            Log.d(TAG, " onDateChangeListener :selected date is $selDate")
+            Log.d(TAG, " onDateChangeListener1 :selected date is ${date.date}")
 
 
             // Get Current date
             val currentDate = Date()
             Log.d(TAG, "current date is :$currentDate ")
 
-          /*  if (selectedDate.before(currentDate)) {
-                Log.d(TAG, "Selected Date is before current date")
-                showWarning(requireContext(), "You can not view the events before current date...")
+            /*  if (selectedDate.before(currentDate)) {
+                  Log.d(TAG, "Selected Date is before current date")
+  //                showWarning(requireContext(), "You can not view the events before current date...")
+                  fragmentCarePointsBinding.noCareFoundTV.let {
+                      it.visibility = View.VISIBLE
+                      it.text = "You can not view events before current date..."
+                  }
 
-            } else {
-                Log.d(TAG, "Selected Date is after current date")
-                getDateSelectedOnTypeBased(
-                    date.date
-                )
-            }*/
+              } else {
+                  Log.d(TAG, "Selected Date is after current date")
+                  fragmentCarePointsBinding.noCareFoundTV.visibility = View.GONE
+                  getDateSelectedOnTypeBased(
+                      date.date
+                  )
+              }*/
 
             fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
 
@@ -148,17 +154,35 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
         fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
             // Show care point data as per month change from calendar
-            val selectedDate = date.date
-            Log.d(TAG, "selected date is ${date.date}")
+            selDate = date.date
+            Log.d(TAG, "onMonthChangeListener :  date is $selDate")
+            Log.d(TAG, "onMonthChangeListener1 :  date is ${date.date}")
 
             // Get Current date
             val currentDate = Date()
-            Log.d(TAG, "current date is :$currentDate ")
+            Log.d(TAG, "onMonthChangeListener : current date is :$currentDate ")
 
-           /* if (selectedDate.before(currentDate)) {
+            val selectedDateMonth = SimpleDateFormat("MM").format(date.date)
+            val currentDateMonth = SimpleDateFormat("MM").format(currentDate)
+
+            Log.d(TAG, "onMonthChangeListener : current date month  is :$currentDateMonth ")
+            Log.d(TAG, "onMonthChangeListener : selected date month  is :$selectedDateMonth ")
+
+
+            if ((selDate?.before(currentDate) == true) && (selectedDateMonth != currentDateMonth)) {
                 Log.d(TAG, "Selected Date is before current date")
-                showWarning(requireContext(), "You can not view the events before current date...")
+                //                showWarning(requireContext(), "You can not view the events before current date...")
+                fragmentCarePointsBinding.noCareFoundTV.let {
+                    it.visibility = View.VISIBLE
+                    it.text = getString(R.string.care_points_before_current_date_are_not_available)
+                }
+
+                fragmentCarePointsBinding.recyclerViewEventDays.visibility = View.GONE
+                fragmentCarePointsBinding.textViewSelectGroup.text =
+                    SimpleDateFormat("MMM yyyy").format(date.date)
             } else {
+                fragmentCarePointsBinding.recyclerViewEventDays.visibility = View.VISIBLE
+                fragmentCarePointsBinding.noCareFoundTV.visibility = View.GONE
                 Log.d(TAG, "Selected Date is after current date")
                 val month = SimpleDateFormat("MM").format(date.date)
                 val year = SimpleDateFormat("yyyy").format(date.date)
@@ -193,41 +217,41 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                             MaterialCalendarView.SELECTION_MODE_SINGLE
                     }
                 }
-            }*/
+            }
 
-               val month = SimpleDateFormat("MM").format(date.date)
-               val year = SimpleDateFormat("yyyy").format(date.date)
-               fragmentCarePointsBinding.textViewSelectGroup.text =
-                   SimpleDateFormat("MMM yyyy").format(date.date)
-               fragmentCarePointsBinding.calendarPView.clearSelection()
-               val calendar = Calendar.getInstance()
-               calendar.time = date.date
-               startDate = sdf!!.format(calendar.time)
-               calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
-               endDate = sdf!!.format(calendar.time)
-               getCarePointList(startDate, endDate)
+            /*  val month = SimpleDateFormat("MM").format(date.date)
+              val year = SimpleDateFormat("yyyy").format(date.date)
+              fragmentCarePointsBinding.textViewSelectGroup.text =
+                  SimpleDateFormat("MMM yyyy").format(date.date)
+              fragmentCarePointsBinding.calendarPView.clearSelection()
+              val calendar = Calendar.getInstance()
+              calendar.time = date.date
+              startDate = sdf!!.format(calendar.time)
+              calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
+              endDate = sdf!!.format(calendar.time)
+              getCarePointList(startDate, endDate)
 
-               when (clickType) {
-                   CalendarState.Month.value -> {
-                       fragmentCarePointsBinding.calendarPView.selectionMode =
-                           MaterialCalendarView.SELECTION_MODE_NONE
-                       val month = SimpleDateFormat("MM").format(date.date)
-                       val year = SimpleDateFormat("yyyy").format(date.date)
-                       fragmentCarePointsBinding.textViewSelectGroup.text =
-                           SimpleDateFormat("MMM yyyy").format(date.date)
-                       fragmentCarePointsBinding.calendarPView.clearSelection()
-                       val calendar = Calendar.getInstance()
-                       calendar.time = date.date
-                       startDate = sdf!!.format(calendar.time)
-                       calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
-                       endDate = sdf!!.format(calendar.time)
-                       getCarePointList(startDate, endDate)
-                   }
-                   else -> {
-                       fragmentCarePointsBinding.calendarPView.selectionMode =
-                           MaterialCalendarView.SELECTION_MODE_SINGLE
-                   }
-               }
+              when (clickType) {
+                  CalendarState.Month.value -> {
+                      fragmentCarePointsBinding.calendarPView.selectionMode =
+                          MaterialCalendarView.SELECTION_MODE_NONE
+                      val month = SimpleDateFormat("MM").format(date.date)
+                      val year = SimpleDateFormat("yyyy").format(date.date)
+                      fragmentCarePointsBinding.textViewSelectGroup.text =
+                          SimpleDateFormat("MMM yyyy").format(date.date)
+                      fragmentCarePointsBinding.calendarPView.clearSelection()
+                      val calendar = Calendar.getInstance()
+                      calendar.time = date.date
+                      startDate = sdf!!.format(calendar.time)
+                      calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
+                      endDate = sdf!!.format(calendar.time)
+                      getCarePointList(startDate, endDate)
+                  }
+                  else -> {
+                      fragmentCarePointsBinding.calendarPView.selectionMode =
+                          MaterialCalendarView.SELECTION_MODE_SINGLE
+                  }
+              }*/
 
         }
     }
@@ -377,6 +401,20 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                         }
                     })
 
+                    /* val date = selDate.toString().changeDateFormat(
+                         sourceDateFormat = "EEE MMM dd HH:mm:ss zzz yyyy",
+                         targetDateFormat = "MM"
+                     )
+                     Log.d(TAG, "observeViewModel: Selected Month is $date")*/
+
+                    /* if (selDate?.before(Date()) == true) {
+                         fragmentCarePointsBinding.noCareFoundTV.visibility = View.VISIBLE
+                         fragmentCarePointsBinding.noCareFoundTV.text =
+                             "You can not view the CarePoints before current date"
+                     } else {
+                         if (carePoints.isEmpty()) return@observeEvent
+                         carePointsAdapter?.updateCarePoints(carePoints)
+                     }*/
                     if (carePoints.isEmpty()) return@observeEvent
                     carePointsAdapter?.updateCarePoints(carePoints)
 
@@ -404,13 +442,19 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                                     ), dates
                                 )
                             )
-
                         }
                         else -> {
 
                         }
                     }
-
+                    /* if (selDate?.before(Date()) == true) {
+                         fragmentCarePointsBinding.noCareFoundTV.visibility = View.VISIBLE
+                         fragmentCarePointsBinding.noCareFoundTV.text =
+                             "You can not view the CarePoints before current date"
+                     } else {
+                         fragmentCarePointsBinding.noCareFoundTV.visibility = View.GONE
+                         setCarePointsAdapter()
+                     }*/
                     setCarePointsAdapter()
                 }
                 is DataResult.Failure -> {
@@ -418,6 +462,16 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                     carePoints.clear()
                     carePoints.let { it1 -> carePointsAdapter?.updateCarePoints(it1) }
                     fragmentCarePointsBinding.noCareFoundTV.visibility = View.VISIBLE
+                    fragmentCarePointsBinding.noCareFoundTV.text =
+                        getString(R.string.no_care_points_found)
+                    /* if (selDate?.before(Date()) == true) {
+                         fragmentCarePointsBinding.noCareFoundTV.text =
+                             "You can not view the CarePoints before current date"
+                     } else {
+                         fragmentCarePointsBinding.noCareFoundTV.text =
+                             getString(R.string.no_care_points_found)
+                     }*/
+
                 }
             }
         }
