@@ -237,7 +237,7 @@ dependencies {
     implementation "com.intuit.ssp:ssp-android:$sspVersion"
     implementation "com.intuit.sdp:sdp-android:$sspVersion"
     //Pick Media Library
-    implementation 'com.github.Mindinventory:Lassi:0.4.0'
+    implementation 'com.github.Mindinventory:Lassi:1.1.0'
     //Circle ImageView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
