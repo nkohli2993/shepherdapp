@@ -228,7 +228,19 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                     requireContext().startActivity<SubscriptionActivity>()
                 } else {
                     Log.d(TAG, "onClick:${careTeams.size} ")
-                    if (careTeams.size < 3) {
+
+                    // Filter the CareTeam(LovedOne List) according to "isInvited as false" as we need
+                    // to get the careTeam whose members(lovedOne) are added by the loggedIn User i.e not invited
+
+                    // isInvited = false means that the lovedOne is added by the loggedIn user
+                    // isInvited = true means that the loggedIn user is being invited for the lovedOne
+
+                    val addedCareTeamList = careTeams.filter {
+                        it.isInvited == false
+                    }
+
+                    Log.d(TAG, "onClick: addedCareTeamList Size is  ${addedCareTeamList.size}")
+                    if (addedCareTeamList.size < 3) {
                         findNavController().navigate(
                             LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
                                 source = Const.ADD_LOVE_ONE

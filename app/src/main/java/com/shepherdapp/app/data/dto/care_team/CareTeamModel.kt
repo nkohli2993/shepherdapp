@@ -22,5 +22,7 @@ data class CareTeamModel(
     @SerializedName("love_user_id_details") var love_user_id_details: LoveUser = LoveUser(),
     @SerializedName("relationship") var relationship: Relationship? = Relationship(),
     @SerializedName("is_selected") var isSelected: Boolean = false,
-    @SerializedName("is_pending_invite") var isPendingInvite: Boolean = false
+    @SerializedName("is_pending_invite") var isPendingInvite: Boolean = false,
+    @SerializedName("status") var status: Boolean? = null,
+    @SerializedName("is_invited") var isInvited: Boolean? = null,   // isInvited is true if the member is invited to join the careTeam
 ) : Parcelable
