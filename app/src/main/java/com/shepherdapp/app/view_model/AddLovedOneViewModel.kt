@@ -197,4 +197,8 @@ class AddLovedOneViewModel @Inject constructor(
         userRepository.saveLovedOneProfilePic(lovedOnePic)
     }
 
+    fun isSubscriptionPurchased(): Boolean? {
+        return userRepository.isSubscriptionPurchased()
+    }
+
 }

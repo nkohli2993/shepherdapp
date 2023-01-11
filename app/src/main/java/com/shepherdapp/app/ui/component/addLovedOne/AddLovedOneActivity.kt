@@ -28,6 +28,7 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.addLovedOne.adapter.RelationshipsAdapter
 import com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
+import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
 import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.utils.loadImageCentreCrop
 import com.shepherdapp.app.utils.observe
@@ -769,29 +770,33 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun onBackPressed() {
-        if (isEditLovedOne) {
-            val builder = android.app.AlertDialog.Builder(this)
-            val dialog = builder.apply {
-                setTitle("Edit LovedOne")
-                setMessage("Do you want to save your changes?")
-                setPositiveButton("Yes") { _, _ ->
-                    saveChanges()
-                }
-                setNegativeButton("No") { _, _ ->
-                    super.onBackPressed()
-                }
-            }.create()
-            dialog.show()
-            dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(Color.BLACK)
-            dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(Color.BLACK)
-        } else {
-            super.onBackPressed()
+        when {
+            isEditLovedOne -> {
+                val builder = android.app.AlertDialog.Builder(this)
+                val dialog = builder.apply {
+                    setTitle("Edit LovedOne")
+                    setMessage("Do you want to save your changes?")
+                    setPositiveButton("Yes") { _, _ ->
+                        saveChanges()
+                    }
+                    setNegativeButton("No") { _, _ ->
+                        super.onBackPressed()
+                    }
+                }.create()
+                dialog.show()
+                dialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(Color.BLACK)
+                dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(Color.BLACK)
+            }
+            addLovedOneViewModel.isSubscriptionPurchased() == true -> {
+                // Navigate to Welcome User Screen
+                startActivity<WelcomeUserActivity>()
+            }
+            else -> {
+                super.onBackPressed()
+            }
         }
-
-        // super.onBackPressed()
-
     }
 
     private fun saveChanges() {

@@ -248,4 +248,9 @@ class WelcomeUserViewModel @Inject constructor(
                 .update("firebase_token", firebaseToken)
         }
     }
+
+
+    fun isSubscriptionPurchased(): Boolean? {
+        return userRepository.isSubscriptionPurchased()
+    }
 }

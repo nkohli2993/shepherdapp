@@ -220,11 +220,18 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkNavigation() {
-        // If user is attached to Enterprise, navigate to Add LovedOne Screen
-        if (welcomeViewModel.isUserAttachedToEnterprise() == true) {
-            navigateToAddLovedOneScreen()
-        } else {
-            navigateToSubscriptionScreen()
+        when {
+            // If user is attached to Enterprise, navigate to Add LovedOne Screen
+            welcomeViewModel.isUserAttachedToEnterprise() == true -> {
+                navigateToAddLovedOneScreen()
+            }
+            // If user has purchased subscription, navigate to Add LovedOne Screen
+            welcomeViewModel.isSubscriptionPurchased() == true -> {
+                navigateToAddLovedOneScreen()
+            }
+            else -> {
+                navigateToSubscriptionScreen()
+            }
         }
     }
 
