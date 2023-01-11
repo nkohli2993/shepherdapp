@@ -159,7 +159,6 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         billingClient?.queryProductDetailsAsync(params) { billingResult, prodDetailsList ->
             Log.d(TAG, "showProducts: prodDetailsList:${prodDetailsList}")
             productDetailsList?.clear()
-//            productDetailsList?.addAll(prodDetailsList)
             Handler(Looper.getMainLooper()).postDelayed({
                 productDetailsList?.addAll(prodDetailsList)
                 setAdapter()

@@ -68,17 +68,18 @@
                     android:lineSpacingExtra="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_30sdp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+              <!--  <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtLovedOne"
                     style="@style/TextViewGothamMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/_15sdp" />
+                    android:layout_marginTop="@dimen/_15sdp" />-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/_30sdp"
                     android:layout_marginTop="@dimen/_15sdp">
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -86,8 +87,8 @@
                         style="@style/TextViewGothamBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_5sdp"
                         android:textColor="@color/colorWhite"
+                        android:text="500"
                         android:textSize="@dimen/_20ssp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -97,9 +98,22 @@
                         style="@style/TextViewGothamLight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginStart="@dimen/_1sdp"
                         android:textColor="@color/colorWhite"
+                        android:text="INR"
                         app:layout_constraintStart_toEndOf="@id/txtPrice"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtDuration"
+                        style="@style/TextViewGothamLight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_1sdp"
+                        android:textColor="@color/colorWhite"
+                        android:text="/month"
+                        app:layout_constraintStart_toEndOf="@id/txtPriceUnit"
                         app:layout_constraintTop_toTopOf="@+id/txtPrice" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

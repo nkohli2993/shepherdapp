@@ -10,6 +10,7 @@ import com.android.billingclient.api.ProductDetails
 import com.shepherdapp.app.R
 import com.shepherdapp.app.databinding.AdapterSubscriptionBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.view_model.SubscriptionViewModel
 
 /**
@@ -65,32 +66,58 @@ class SubscriptionAdapter constructor(
             recyclerItemListener: RecyclerItemListener
         ) {
 
-//            itemBinding.data = subscriptionModel
+            var nameOfPlan: String? = null
+            var duration: String? = null
+
             if (position % 2 == 0) {
-                /* itemBinding.layoutCard.setBackgroundColor(
-                     ContextCompat.getColor(
-                         context,
-                         R.color._FF9AA6
-                     )
-                 )*/
-                itemBinding.cvSubscription.setBackgroundResource(R.drawable.bg_subscription_orange)
+                itemBinding.cvSubscription.setBackgroundResource(R.drawable.bg_subscription_red)
             } else {
-                /* itemBinding.layoutCard.setBackgroundColor(
-                     ContextCompat.getColor(
-                         context,
-                         R.color._7ECEFF
-                     )
-                 )*/
-                itemBinding.cvSubscription.setBackgroundResource(R.drawable.bg_subscription_blue)
-
+                itemBinding.cvSubscription.setBackgroundResource(R.drawable.bg_subscription_orange)
             }
+//            itemBinding.txtTitle.text = productDetails?.name
+            when (productDetails?.name) {
+                Const.SubscriptionPlan.ONE_MONTH -> {
+                    nameOfPlan = "Monthly"
+                    duration = "month"
+                }
+                Const.SubscriptionPlan.ONE_YEAR -> {
+                    nameOfPlan = "Yearly"
+                    duration = "year"
+                }
+            }
+            // Set Title
+            itemBinding.txtTitle.text = nameOfPlan
 
-            itemBinding.txtTitle.text = productDetails?.name
+            // Set Plan Description
             itemBinding.txtDesc.text = context.getString(R.string.max_3_loved_one_can_be_added)
-            itemBinding.txtPrice.text =
+            /* itemBinding.txtPrice.text =
+                 productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                     0
+                 )?.formattedPrice*/
+
+            val formattedPrice =
                 productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                     0
-                )?.formattedPrice
+                )?.formattedPrice?.substring(1) // remove currency symbol which is at index 0 and get the remaining amount
+            // Set Price
+            itemBinding.txtPrice.text = formattedPrice
+
+            val currencyCode =
+                productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                    0
+                )?.priceCurrencyCode
+
+            val currencySymbol =
+                productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                    0
+                )?.formattedPrice?.substring(0, 1) // Get first character which is currency symbol
+
+            // Set Currency code
+            itemBinding.txtPriceUnit.text = currencySymbol
+
+            // Set Duration of plan
+            itemBinding.txtDuration.text = "/${duration}"
+
 
             // Handle click of Buy Plan Button
             itemBinding.btnBuyPlan.setOnClickListener {
