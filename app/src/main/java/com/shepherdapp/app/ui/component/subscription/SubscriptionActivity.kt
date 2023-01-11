@@ -129,10 +129,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     // Step 4: Show products available to buy
     fun showProducts() {
         val productList = ImmutableList.of( //Product 1
-            Product.newBuilder()
+           /* Product.newBuilder()
                 .setProductId("one_week")
                 .setProductType(BillingClient.ProductType.SUBS)
-                .build(),  //Product 2
+                .build(),*/  //Product 2
             Product.newBuilder()
                 .setProductId("one_month")
                 .setProductType(BillingClient.ProductType.SUBS)
@@ -189,10 +189,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 orderID = purchases.orderId
 //                var nameOfPlan: String? = null
                 when (planName) {
-                    Const.SubscriptionPlan.ONE_WEEK -> {
+                   /* Const.SubscriptionPlan.ONE_WEEK -> {
                         nameOfPlan = "Weekly"
 //                        expiryDate =
-                    }
+                    }*/
                     Const.SubscriptionPlan.ONE_MONTH -> {
                         nameOfPlan = "Monthly"
                     }

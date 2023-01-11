@@ -381,7 +381,7 @@
         <entry key="app/src/main/res/layout/adapter_restriction_modules.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_selected_day_medicine.xml" value="0.29243266353142366" />
         <entry key="app/src/main/res/layout/adapter_sub_menu_item.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/adapter_subscription.xml" value="0.4019138755980861" />
+        <entry key="app/src/main/res/layout/adapter_subscription.xml" value="0.165" />
         <entry key="app/src/main/res/layout/adapter_topics.xml" value="0.28020833333333334" />
         <entry key="app/src/main/res/layout/adapter_uploaded_file_lockbox.xml" value="0.2359375" />
         <entry key="app/src/main/res/layout/adapter_uploaded_files.xml" value="0.2765625" />

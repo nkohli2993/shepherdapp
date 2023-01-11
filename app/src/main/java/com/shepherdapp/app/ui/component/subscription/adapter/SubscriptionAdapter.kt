@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.ProductDetails
 import com.shepherdapp.app.R
@@ -37,10 +36,10 @@ class SubscriptionAdapter constructor(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubscriptionViewHolder {
 //        context = parent.context
         binding = AdapterSubscriptionBinding.inflate(
-                LayoutInflater.from(context),
-                parent,
-                false
-            )
+            LayoutInflater.from(context),
+            parent,
+            false
+        )
         return SubscriptionViewHolder(binding, context)
     }
 
@@ -68,19 +67,21 @@ class SubscriptionAdapter constructor(
 
 //            itemBinding.data = subscriptionModel
             if (position % 2 == 0) {
-                itemBinding.layoutCard.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color._FF9AA6
-                    )
-                )
+                /* itemBinding.layoutCard.setBackgroundColor(
+                     ContextCompat.getColor(
+                         context,
+                         R.color._FF9AA6
+                     )
+                 )*/
+                itemBinding.cvSubscription.setBackgroundResource(R.drawable.bg_subscription_orange)
             } else {
-                itemBinding.layoutCard.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color._7ECEFF
-                    )
-                )
+                /* itemBinding.layoutCard.setBackgroundColor(
+                     ContextCompat.getColor(
+                         context,
+                         R.color._7ECEFF
+                     )
+                 )*/
+                itemBinding.cvSubscription.setBackgroundResource(R.drawable.bg_subscription_blue)
 
             }
 
