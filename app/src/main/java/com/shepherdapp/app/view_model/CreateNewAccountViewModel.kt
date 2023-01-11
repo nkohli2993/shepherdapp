@@ -178,6 +178,10 @@ class CreateNewAccountViewModel @Inject constructor(
         userRepository.saveUserAttachedToEnterprise(isUserAttachedToEnterprise)
     }
 
+    fun saveSignUp(isSignup: Boolean) {
+        userRepository.saveSignUp(isSignup)
+    }
+
 
     // Save User's Info in Firestore
     fun saveUserInfoInFirestore(user: User) {

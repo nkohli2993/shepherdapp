@@ -225,7 +225,14 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                         "onClick: User has neither purchased subscription nor attached to enterprise"
                     )
                     // Redirect to Subscription Screen
-                    requireContext().startActivity<SubscriptionActivity>()
+                    val intent = Intent(requireContext(), SubscriptionActivity::class.java)
+                    intent.putExtra("source", "LovedOne Screen")
+                    startActivity(intent)
+                    requireActivity().overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
+//                    requireContext().startActivity<SubscriptionActivity>()
                 } else {
                     Log.d(TAG, "onClick:${careTeams.size} ")
 

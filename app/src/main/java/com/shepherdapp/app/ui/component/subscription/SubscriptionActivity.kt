@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.subscription
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
@@ -57,6 +58,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     private var amount: Double? = null
     private var orderID: String? = null
     private var expiryDate: String? = null
+    private var source: String? = "SubscriptionActivity"
 
 
     private val TAG = "SubscriptionActivity"
@@ -65,6 +67,12 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         binding = ActivitySubscriptionBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        if (intent.getStringExtra("source") != null) {
+            if (intent.getStringExtra("source") == "LovedOne Screen") {
+                source = intent.getStringExtra("source")
+            }
+        }
 
         binding.listener = this
         showLoading("")
@@ -129,10 +137,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     // Step 4: Show products available to buy
     fun showProducts() {
         val productList = ImmutableList.of( //Product 1
-           /* Product.newBuilder()
-                .setProductId("one_week")
-                .setProductType(BillingClient.ProductType.SUBS)
-                .build(),*/  //Product 2
+            /* Product.newBuilder()
+                 .setProductId("one_week")
+                 .setProductType(BillingClient.ProductType.SUBS)
+                 .build(),*/  //Product 2
             Product.newBuilder()
                 .setProductId("one_month")
                 .setProductType(BillingClient.ProductType.SUBS)
@@ -189,10 +197,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 orderID = purchases.orderId
 //                var nameOfPlan: String? = null
                 when (planName) {
-                   /* Const.SubscriptionPlan.ONE_WEEK -> {
-                        nameOfPlan = "Weekly"
-//                        expiryDate =
-                    }*/
+                    /* Const.SubscriptionPlan.ONE_WEEK -> {
+                         nameOfPlan = "Weekly"
+ //                        expiryDate =
+                     }*/
                     Const.SubscriptionPlan.ONE_MONTH -> {
                         nameOfPlan = "Monthly"
                     }
@@ -265,7 +273,14 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                         setTitle("Hi, $fullName")
                         setMessage("You have successfully bought your $nameOfPlan plan")
                         setPositiveButton("OK") { _, _ ->
-                            startActivity<AddLovedOneActivity>()
+                            val intent =
+                                Intent(this@SubscriptionActivity, AddLovedOneActivity::class.java)
+                            intent.putExtra("source", source)
+                            startActivity(intent)
+                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+
+
+//                            startActivity<AddLovedOneActivity>()
                         }
                     }.create()
                     dialog.show()

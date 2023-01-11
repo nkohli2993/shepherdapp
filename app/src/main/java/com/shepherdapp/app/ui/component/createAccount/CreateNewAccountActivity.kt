@@ -222,6 +222,8 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
                          )
                      }*/
 
+                    createNewAccountViewModel.saveSignUp(true)
+
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
 

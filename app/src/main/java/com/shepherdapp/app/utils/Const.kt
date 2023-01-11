@@ -9,6 +9,7 @@ object Const {
     const val USER_ID = "USER ID"
     const val UUID = "UUID"
     const val CARE_TEAM_LEADER_UUID = "CARE TEAM LEADER UUID"
+    const val IS_SIGN_UP = "IS SIGN UP"
     const val Is_LOGGED_IN_USER_TEAM_LEAD = "Is_LOGGED_IN_USER_TEAM_LEAD"
     const val Is_LOGGED_IN_USER_LOVED_ONE = "Is_LOGGED_IN_USER_LOVED_ONE"
     const val Is_USER_ATTACHED_TO_ENTERPRISE = "Is USER ATTACHED TO ENTERPRISE"

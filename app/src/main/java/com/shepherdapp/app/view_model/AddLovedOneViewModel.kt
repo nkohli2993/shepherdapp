@@ -201,4 +201,12 @@ class AddLovedOneViewModel @Inject constructor(
         return userRepository.isSubscriptionPurchased()
     }
 
+    fun isSignUp(): Boolean? {
+        return userRepository.isSignUp()
+    }
+
+    fun saveSignUp(isSignUp: Boolean) {
+        userRepository.saveSignUp(isSignUp)
+    }
+
 }

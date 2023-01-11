@@ -28,6 +28,7 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.addLovedOne.adapter.RelationshipsAdapter
 import com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
 import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.utils.loadImageCentreCrop
@@ -90,6 +91,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     private var lovedOneID: String? = null
     private var customAddress: String? = null
     private var lastName: String? = null
+    private var source: String? = null
     private var alMonths = arrayListOf(
         "Month",
         "Jan",
@@ -165,7 +167,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 Log.d(TAG, "initViewBinding: $payload")
                 isEditLovedOne = true
                 if (payload?.userLocation != null) {
-                    placeId = payload?.userLocation?.placeId
+                    placeId = payload.userLocation?.placeId
                 }
                 binding.txtLovedOne.text = getString(R.string.edit_loved_one_profile)
                 binding.txtLittleBit.visibility = View.GONE
@@ -231,6 +233,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                     binding.chkLovedOne.visibility = View.VISIBLE
                     binding.chkSendInvitation.visibility = View.VISIBLE
                 }
+            } else if (data.equals("LovedOne Screen")) {
+                source = "LovedOne Screen"
             }
         }
         binding.ccp.setOnCountryChangeListener { this.phoneCode = it.phoneCode }
@@ -486,6 +490,7 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    addLovedOneViewModel.saveSignUp(false)
                     it.data.let { it1 ->
                         it1.message?.let { it2 -> showSuccess(this, it2) }
                         lovedOneID = it1.payload.id
@@ -516,6 +521,8 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    addLovedOneViewModel.saveSignUp(false)
+
                     val payload = it.data.payload
                     Log.d(TAG, "observeViewModel: $payload")
 
@@ -789,9 +796,19 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 dialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
                     .setTextColor(Color.BLACK)
             }
-            addLovedOneViewModel.isSubscriptionPurchased() == true -> {
+            (addLovedOneViewModel.isSubscriptionPurchased() == true) && (addLovedOneViewModel.isSignUp() == true) -> {
                 // Navigate to Welcome User Screen
                 startActivity<WelcomeUserActivity>()
+            }
+            source == "LovedOne Screen" -> {
+                // Navigate to Home Screen
+                val intent = Intent(this, HomeActivity::class.java)
+                intent.putExtra("source", source)
+                startActivity(intent)
+                overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
             }
             else -> {
                 super.onBackPressed()

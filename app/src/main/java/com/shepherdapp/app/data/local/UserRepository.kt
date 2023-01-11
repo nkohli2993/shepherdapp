@@ -93,6 +93,14 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
         Prefs.with(ShepherdApp.appContext)!!.save(Const.UUID, uuid)
     }
 
+    fun saveSignUp(isSignUp: Boolean) {
+        Prefs.with(ShepherdApp.appContext)?.save(Const.IS_SIGN_UP, isSignUp)
+    }
+
+    fun isSignUp(): Boolean? {
+        return Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.IS_SIGN_UP, false)
+    }
+
     fun saveLoggedInUserTeamLead(isLoggedInUserTeamLead: Boolean) {
         Prefs.with(ShepherdApp.appContext)!!
             .save(Const.Is_LOGGED_IN_USER_TEAM_LEAD, isLoggedInUserTeamLead)

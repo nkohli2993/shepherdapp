@@ -100,4 +100,8 @@ class CareTeamsViewModel @Inject constructor(
         userRepository.saveLovedOneUUId(lovedOneUUID)
     }
 
+    fun saveSignUp(isSignUp: Boolean) {
+        userRepository.saveSignUp(isSignUp)
+    }
+
 }

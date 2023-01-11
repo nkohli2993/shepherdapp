@@ -138,6 +138,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    careTeamsViewModel.saveSignUp(false)
                     results = it.data.payload?.results
                     if (results.isNullOrEmpty()) return@observeEvent
                     joinCareTeamAdapter?.updateCareTeams(results!!)
@@ -159,6 +160,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    careTeamsViewModel.saveSignUp(false)
                     showSuccess(this, "Invitation Accepted Successfully...")
                     // Save LovedOne UUID
                     val lovedOneUUID = it.data.payload?.loveoneUserId

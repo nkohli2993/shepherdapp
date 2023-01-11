@@ -77,6 +77,12 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
              checkNotificationAction(intent.getBundleExtra("detail"))
          }*/
 
+        if (intent != null && intent.hasExtra("source")) {
+            if (intent.getStringExtra("source") == "LovedOne Screen") {
+                // Redirect to LovedOnes Fragment
+                findNavController(R.id.nav_host_fragment_content_dashboard).navigate(R.id.nav_loved_one)
+            }
+        }
         showLoading("")
         viewModel.getHomeData()
         viewModel.getUserDetailByUUID()
