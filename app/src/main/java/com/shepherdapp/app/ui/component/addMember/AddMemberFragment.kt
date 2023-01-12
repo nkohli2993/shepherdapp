@@ -103,7 +103,12 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careRoles = it.data.payload.careRoles
+                    val careRoleList = it.data.payload.careRoles
+
+                    careRoles = careRoleList.filter { careTeamRole ->
+                        careTeamRole.slug != CareRole.CareTeamLead.slug
+                    } as ArrayList
+
                     if (careRoles.isNullOrEmpty()) return@observeEvent
                     val careRole =
                         CareTeamRoles(null, "Select Role", null, null, null, null, null, null)
