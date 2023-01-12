@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -555,11 +556,22 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 onBackPressed()
             }
             R.id.imageViewLovedOne -> {
-                if (!checkPermission()) {
-                    requestPermission()
-                } else {
+                // For Android 13 or above
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     openImagePicker()
+                } else {
+                    if (!checkPermission()) {
+                        requestPermission()
+                    } else {
+                        openImagePicker()
+                    }
                 }
+
+                /* if (!checkPermission()) {
+                     requestPermission()
+                 } else {
+                     openImagePicker()
+                 }*/
             }
             R.id.edtDay -> {
                 initDatePicker()
@@ -667,11 +679,22 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
                 binding.relationshipSpinner.performClick()
             }
             R.id.imgUploadLovedOnePic, R.id.imgLoveOne -> {
-                if (!checkPermission()) {
-                    requestPermission()
-                } else {
+                // For Android 13 or above
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     openImagePicker()
+                } else {
+                    if (!checkPermission()) {
+                        requestPermission()
+                    } else {
+                        openImagePicker()
+                    }
                 }
+
+                /* if (!checkPermission()) {
+                     requestPermission()
+                 } else {
+                     openImagePicker()
+                 }*/
             }
             R.id.ivInfo -> {
                 showPopUp()

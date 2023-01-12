@@ -1,6 +1,7 @@
 package com.shepherdapp.app.ui.component.edit_profile
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
             homeActivity = context
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -108,7 +110,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
         fragmentEditProfileBinding.userDetail = editProfileViewModel.getUserDetail()
         fragmentEditProfileBinding.etEmailId.setText(editProfileViewModel.getUserEmail())
         profilePicCompleteUrl = editProfileViewModel.getUserDetail()?.profilePhoto
-        if(editProfileViewModel.getUserDetail()?.profilePhoto!=null && editProfileViewModel.getUserDetail()?.profilePhoto !="") {
+        if (editProfileViewModel.getUserDetail()?.profilePhoto != null && editProfileViewModel.getUserDetail()?.profilePhoto != "") {
             Picasso.get().load(editProfileViewModel.getUserDetail()?.profilePhoto)
                 .placeholder(R.drawable.ic_defalut_profile_pic)
                 .into(fragmentEditProfileBinding.imageViewUser)
@@ -128,31 +130,42 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
                 findNavController().popBackStack()
             }
             R.id.imageViewUser, R.id.imgUploadLovedOnePic -> {
-                if (!checkPermission()) {
-                    requestPermission(200)
-                } else {
+                // For Android 13 or above
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     openImagePicker()
+                } else {
+                    if (!checkPermission()) {
+                        requestPermission(200)
+                    } else {
+                        openImagePicker()
+                    }
                 }
+
+                /* if (!checkPermission()) {
+                     requestPermission(200)
+                 } else {
+                     openImagePicker()
+                 }*/
             }
             R.id.btnContinue -> {
                 if (isValid) {
-                     profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
-                         null
-                     } else {
-                         when {
-                             !profilePicUrl!!.startsWith(BuildConfig.BASE_URL_USER) -> {
-                                 BuildConfig.BASE_URL_USER + profilePicUrl
-                             }
+                    profilePicCompleteUrl = if (profilePicUrl.isNullOrEmpty()) {
+                        null
+                    } else {
+                        when {
+                            !profilePicUrl!!.startsWith(BuildConfig.BASE_URL_USER) -> {
+                                BuildConfig.BASE_URL_USER + profilePicUrl
+                            }
 /*
                              !profilePicUrl!!.startsWith(ApiConstants.BASE_URL_USER) -> {
                                  ApiConstants.BASE_URL_USER + profilePicUrl
                              }
 */
-                             else -> {
-                                 profilePicUrl
-                             }
-                         }
-                     }
+                            else -> {
+                                profilePicUrl
+                            }
+                        }
+                    }
                     editProfileViewModel.updateAccount(
                         ccp.selectedCountryCode,
                         profilePicCompleteUrl,

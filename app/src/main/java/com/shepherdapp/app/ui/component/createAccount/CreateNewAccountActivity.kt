@@ -3,6 +3,7 @@ package com.shepherdapp.app.ui.component.createAccount
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -367,11 +368,23 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
             }
             // Upload Profile Pic
             R.id.imgUploadProfilePic, R.id.imgProfile -> {
-                if (!checkPermission()) {
-                    requestPermission()
-                } else {
+                // For Android 13 or above
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     openImagePicker()
+                } else {
+                    if (!checkPermission()) {
+                        requestPermission()
+                    } else {
+                        openImagePicker()
+                    }
                 }
+
+
+                /* if (!checkPermission()) {
+                     requestPermission()
+                 } else {
+                     openImagePicker()
+                 }*/
 
             }
             // Create Account

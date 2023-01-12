@@ -8,6 +8,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -722,12 +723,24 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
 
         // Click Local Storage
         cvLocalStorage.setOnClickListener {
-            //call back after permission granted
-            if (!checkPermission()) {
-                requestPermission(300)
-            } else {
+            // For Android 13 or above
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 openMultipleDocPicker()
+            } else {
+                //call back after permission granted
+                if (!checkPermission()) {
+                    requestPermission(300)
+                } else {
+                    openMultipleDocPicker()
+                }
             }
+
+            //call back after permission granted
+            /* if (!checkPermission()) {
+                 requestPermission(300)
+             } else {
+                 openMultipleDocPicker()
+             }*/
         }
 
         // Click Cancel
