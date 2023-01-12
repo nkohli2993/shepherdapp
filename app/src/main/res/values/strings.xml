@@ -607,4 +607,5 @@
     <string name="user_account_deleted_successfully">User account deleted successfully</string>
     <string name="coming_soon">Coming soon.</string>
     <string name="care_points_before_current_date_are_not_available">CarePoints before current date are not available</string>
+    <string name="not_active_subscription_found">No Active Subscription Found</string>
 </resources>

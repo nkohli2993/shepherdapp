@@ -15,7 +15,6 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
 import com.shepherdapp.app.utils.extensions.changeDatesFormat
-import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.toKotlinObject
 import com.shepherdapp.app.view_model.MySubscriptionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,13 +37,32 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-                    showError(requireContext(), it.message.toString())
+//                    showError(requireContext(), it.message.toString())
+                    fragmentMySubscriptionBinding?.txtPlan?.visibility = View.GONE
+                    fragmentMySubscriptionBinding?.cv?.visibility = View.GONE
+                    fragmentMySubscriptionBinding?.txtExpirePlan?.visibility = View.GONE
+                    fragmentMySubscriptionBinding?.txtPlanExpireDate?.visibility = View.GONE
+                    fragmentMySubscriptionBinding?.txtRenew?.visibility = View.GONE
+                    fragmentMySubscriptionBinding?.btnChangePlan?.visibility = View.GONE
+
+                    // Show No Subscription found
+                    fragmentMySubscriptionBinding?.txtNoSubscriptionFound?.visibility = View.VISIBLE
                 }
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    fragmentMySubscriptionBinding?.txtPlan?.visibility = View.VISIBLE
+                    fragmentMySubscriptionBinding?.cv?.visibility = View.VISIBLE
+                    fragmentMySubscriptionBinding?.txtExpirePlan?.visibility = View.VISIBLE
+                    fragmentMySubscriptionBinding?.txtPlanExpireDate?.visibility = View.VISIBLE
+                    fragmentMySubscriptionBinding?.txtRenew?.visibility = View.VISIBLE
+                    fragmentMySubscriptionBinding?.btnChangePlan?.visibility = View.VISIBLE
+
+                    // Hide No Subscription found
+                    fragmentMySubscriptionBinding?.txtNoSubscriptionFound?.visibility = View.GONE
+
                     it.data.payload.let { payload ->
                         fragmentMySubscriptionBinding?.txtPlanExpireDate?.text =
                             payload?.expiryDate.changeDatesFormat(
@@ -79,6 +97,7 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
 
     override fun initViewBinding() {
         fragmentMySubscriptionBinding?.listener = this
+
         mySubscriptionViewModel.getActiveSubscriptions()
 
         //Step 2. Initialize a BillingClient with PurchasesUpdatedListener

@@ -59,22 +59,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_5sdp"
-            app:cardCornerRadius="@dimen/_12sdp"
-            app:cardElevation="@dimen/_3sdp"
+            app:cardCornerRadius="@dimen/_24sdp"
             app:cardUseCompatPadding="true"
+            app:cardBackgroundColor="@color/transparent"
             android:layout_marginTop="@dimen/_15sdp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPlan">
+            app:layout_constraintTop_toBottomOf="@+id/txtPlan"
+            app:layout_constraintBottom_toTopOf="@id/txtExpirePlan">
 
             <LinearLayout
                 android:id="@+id/layoutCard"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/_220sdp"
+                android:background="@drawable/bg_subscription_red"
                 android:orientation="vertical"
                 android:paddingVertical="@dimen/_30sdp"
-                android:paddingHorizontal="@dimen/_20sdp"
-                android:background="#FF9AA6">
+                android:paddingHorizontal="@dimen/_20sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtTitle"
@@ -197,6 +198,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txtNoSubscriptionFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/gotham_book"
+            android:textColor="@color/_192032"
+            android:textSize="@dimen/_16ssp"
+            android:text="@string/not_active_subscription_found"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtMySubscriptionPlan"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
