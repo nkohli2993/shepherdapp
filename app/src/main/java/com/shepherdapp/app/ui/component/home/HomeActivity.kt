@@ -27,6 +27,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.carePoints.CarePointsFragment
 import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragment
 import com.shepherdapp.app.ui.component.dashboard.DashboardFragment
@@ -52,7 +53,7 @@ import kotlinx.android.synthetic.main.content_dashboard.*
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
-    View.OnClickListener {
+    View.OnClickListener, UpdateViewOfParentListener {
 
     private lateinit var navController: NavController
     private var drawerLayout: DrawerLayout? = null
@@ -548,6 +549,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         }
 
                         tvNew.apply {
+//                            isVisible = viewModel.isLoggedInUserCareTeamLead() == true
                             isVisible = true
                             setOnClickListener {
                                 navController.navigate(R.id.nav_add_care_team_member)
@@ -778,5 +780,15 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         viewModel.getHomeData()
         viewModel.getUserDetailByUUID()
         super.onResume()
+    }
+
+    override fun updateViewVisibility(isVisible: Boolean) {
+        // Update New Button Visibility
+        if (isVisible) {
+            binding.appBarDashboard.tvNew.visibility = View.VISIBLE
+        } else {
+            binding.appBarDashboard.tvNew.visibility = View.INVISIBLE
+        }
+
     }
 }

@@ -267,4 +267,8 @@ class HomeViewModel @Inject constructor(
     fun getLovedOnePic(): String? {
         return userRepository.getLovedOneProfilePic()
     }
+
+    fun isLoggedInUserCareTeamLead(): Boolean? {
+        return userRepository.isLoggedInUserTeamLead()
+    }
 }

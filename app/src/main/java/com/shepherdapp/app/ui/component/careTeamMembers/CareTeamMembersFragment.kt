@@ -19,6 +19,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.careTeamMembers.adapter.CareTeamMembersAdapter
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.CareRole
@@ -53,6 +54,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private var TAG = "CareTeamMembersFragment"
 
     private var parentActivityListener: ChildFragmentToActivityListener? = null
+    private var updateViewOfParentListenerListener: UpdateViewOfParentListener? = null
 
     private lateinit var homeActivity: HomeActivity
 
@@ -62,6 +64,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
             homeActivity = context
         }
         if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        if (context is UpdateViewOfParentListener) updateViewOfParentListenerListener = context
         else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
     }
 
@@ -178,63 +181,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         observe(careTeamViewModel.openMemberDetails, ::openMemberDetails)
         observe(careTeamViewModel.deletePendingInviteLiveData, ::deletePendingInvite)
 
-        /* careTeamViewModel.userDetailByUUIDLiveData.observeEvent(this) {
-             when (it) {
-                 is DataResult.Failure -> {
-                     hideLoading()
-                 }
-                 is DataResult.Loading -> {
-                     showLoading("")
-                 }
-                 is DataResult.Success -> {
-                     hideLoading()
-                     val userProfile = it.data.payload?.userProfiles
-                     val lovedOneFirstName = userProfile?.firstname
-                     val lovedOneLastName = userProfile?.lastname
-                     var lovedOneFullName: String? = null
-                     lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
-                         lovedOneFirstName
-                     } else {
-                         "$lovedOneFirstName $lovedOneLastName"
-                     }
-
-                     val lovedOneProfilePic = userProfile?.profilePhoto
-                     if (!lovedOneProfilePic.isNullOrEmpty()) {
-                         Picasso.get().load(lovedOneProfilePic)
-                             .placeholder(R.drawable.ic_defalut_profile_pic)
-                             .into(imgLovedOne)
-                     }
-                     txtLoved.text = lovedOneFullName
-
-                 }
-             }
-         }*/
-
-        /*  careTeamViewModel.homeResponseLiveData.observeEvent(this) {
-              when (it) {
-                  is DataResult.Failure -> {
-                      hideLoading()
-                  }
-                  is DataResult.Loading -> {
-                      showLoading("")
-                  }
-                  is DataResult.Success -> {
-                      hideLoading()
-                      val payload = it.data.payload
-                      if (it.data.payload?.lovedOneUserProfile != null || it.data.payload?.lovedOneUserProfile != "") {
-                          val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
-                          Picasso.get().load(lovedOneProfilePic)
-                              .placeholder(R.drawable.ic_defalut_profile_pic)
-                              .into(fragmentCareTeamMembersBinding.imgLovedOne)
-                      }
-
-                      //set loved one name
-                      fragmentCareTeamMembersBinding.txtLoved.text =
-                          it.data.payload?.firstname + " " + it.data.payload?.firstname
-                  }
-              }
-          }*/
-
         careTeamViewModel.pendingInviteResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -260,6 +206,14 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Move CareTeam Leader to first position
                     val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
                     careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+
+                    // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
+                    if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
+                        updateViewOfParentListenerListener?.updateViewVisibility(true)
+                    } else {
+                        updateViewOfParentListenerListener?.updateViewVisibility(false)
+                    }
+
 
                     /* careTeams?.clear()
                      careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
@@ -316,6 +270,13 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Move CareTeam Leader to first position
                     val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
                     careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+
+                    // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
+                    if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
+                        updateViewOfParentListenerListener?.updateViewVisibility(true)
+                    } else {
+                        updateViewOfParentListenerListener?.updateViewVisibility(false)
+                    }
                 }
             }
         }
