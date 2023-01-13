@@ -216,7 +216,16 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
             }
 
             R.id.btnChangePlan -> {
-                requireContext().startActivity<SubscriptionActivity>()
+//                requireContext().startActivity<SubscriptionActivity>()
+
+                // Redirect to Subscription Screen
+                val intent = Intent(requireContext(), SubscriptionActivity::class.java)
+                intent.putExtra("source", "My Subscription")
+                startActivity(intent)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
             }
         }
     }

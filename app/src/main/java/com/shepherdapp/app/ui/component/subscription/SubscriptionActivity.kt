@@ -71,6 +71,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         if (intent.getStringExtra("source") != null) {
             if (intent.getStringExtra("source") == "LovedOne Screen") {
                 source = intent.getStringExtra("source")
+            } else if (intent.getStringExtra("source") == "My Subscription") {
+                source = intent.getStringExtra("source")
             }
         }
 
@@ -272,11 +274,27 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                         setTitle("Hi, $fullName")
                         setMessage("You have successfully bought your $nameOfPlan plan")
                         setPositiveButton("OK") { _, _ ->
-                            val intent =
-                                Intent(this@SubscriptionActivity, AddLovedOneActivity::class.java)
-                            intent.putExtra("source", source)
-                            startActivity(intent)
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            if (source == "My Subscription") {
+                                onBackPressedDispatcher.onBackPressed()
+                            } else {
+                                val intent =
+                                    Intent(
+                                        this@SubscriptionActivity,
+                                        AddLovedOneActivity::class.java
+                                    )
+                                intent.putExtra("source", source)
+                                startActivity(intent)
+                                overridePendingTransition(
+                                    R.anim.slide_in_right,
+                                    R.anim.slide_out_left
+                                )
+                            }
+
+                            /*  val intent =
+                                  Intent(this@SubscriptionActivity, AddLovedOneActivity::class.java)
+                              intent.putExtra("source", source)
+                              startActivity(intent)
+                              overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)*/
 
 
 //                            startActivity<AddLovedOneActivity>()
