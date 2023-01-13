@@ -206,6 +206,7 @@
             android:fontFamily="@font/gotham_book"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_16ssp"
+            android:visibility="gone"
             android:text="@string/not_active_subscription_found"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtMySubscriptionPlan"

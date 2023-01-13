@@ -38,6 +38,10 @@ object Const {
     const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
     const val LOVED_ONE_PIC = "LOVED_ONE_PIC"
 
+    const val PLAY_STORE_SUBSCRIPTION_URL = "https://play.google.com/store/account/subscriptions"
+    const val PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL =
+        "https://play.google.com/store/account/subscriptions?sku=%s&package=%s"
+
 
     object NotificationAction {
         const val ADD_COMMENT = "post_comment"

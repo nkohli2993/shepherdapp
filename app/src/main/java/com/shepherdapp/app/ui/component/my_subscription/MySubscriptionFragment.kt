@@ -1,5 +1,7 @@
 package com.shepherdapp.app.ui.component.my_subscription
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,15 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.android.billingclient.api.*
+import com.google.gson.Gson
 import com.shepherdapp.app.R
-import com.shepherdapp.app.data.dto.subscription.purchase.PurchaseJson
 import com.shepherdapp.app.databinding.FragmentMySubscriptionBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
+import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.changeDatesFormat
-import com.shepherdapp.app.utils.toKotlinObject
 import com.shepherdapp.app.view_model.MySubscriptionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +32,8 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
     private val TAG = "MySubscriptionFragment"
     private var transactionId: String? = null
     private var isActive: Boolean = false
+    private var productId: String? = null
+    private var url: String? = null
 
 
     override fun observeViewModel() {
@@ -98,7 +102,7 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
     override fun initViewBinding() {
         fragmentMySubscriptionBinding?.listener = this
 
-        mySubscriptionViewModel.getActiveSubscriptions()
+//        mySubscriptionViewModel.getActiveSubscriptions()
 
         //Step 2. Initialize a BillingClient with PurchasesUpdatedListener
         billingClient = BillingClient.newBuilder(requireContext())
@@ -134,25 +138,20 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
                                 isActive = true
                                 for (purchase in list) {
                                     if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged) {
-                                        val json = purchase.originalJson
+                                        val originalJson = purchase.originalJson
+                                        Log.d(TAG, "json : $originalJson")
+                                        // Parse Json
+                                        var map: Map<String, Any> = HashMap()
+                                        map = Gson().fromJson(originalJson, map.javaClass)
 
-                                        Log.d(TAG, "json : $json")
-                                        // Convert JSON to model class
-                                        val purchaseJson = json.toKotlinObject<PurchaseJson>()
-                                        Log.d(
-                                            TAG,
-                                            "Subscription is ACTIVE for orderId : ${purchaseJson.orderId} "
-                                        )
-                                        /*  if (transactionId == purchaseJson.orderId) {
-
-                                          } else {
-
-                                          }*/
+                                        Log.d(TAG, "onBillingSetupFinished: map is $map")
+                                        productId = map["productId"] as String?
+                                        Log.d(TAG, "onBillingSetupFinished: productId : $productId")
 
                                         // Disable the renew button
                                         activity?.runOnUiThread {
-                                            fragmentMySubscriptionBinding?.txtRenew?.visibility =
-                                                View.GONE
+                                            fragmentMySubscriptionBinding?.txtRenew?.text =
+                                                getString(R.string.cancel)
                                         }
                                     }
                                 }
@@ -185,7 +184,7 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
         // Enable the renew button
         activity?.runOnUiThread {
             fragmentMySubscriptionBinding?.txtRenew?.visibility = View.VISIBLE
-            fragmentMySubscriptionBinding?.txtPlanExpireDate?.text = "Expired"
+            fragmentMySubscriptionBinding?.txtPlanExpireDate?.text = getString(R.string.expired)
         }
     }
 
@@ -200,29 +199,36 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
                 backPress()
             }
             R.id.txtRenew -> {
-
+                url = if (productId == null) {
+                    // If the SKU is not specified, just open the Google Play subscriptions URL.
+                    Const.PLAY_STORE_SUBSCRIPTION_URL
+                } else {
+                    // If the SKU is specified, open the deeplink for this SKU on Google Play.
+                    String.format(
+                        Const.PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL,
+                        productId,
+                        requireContext().applicationContext.packageName
+                    )
+                }
+                val intent = Intent(Intent.ACTION_VIEW);
+                intent.data = Uri.parse(url)
+                startActivity(intent)
             }
+
             R.id.btnChangePlan -> {
                 requireContext().startActivity<SubscriptionActivity>()
             }
         }
     }
 
-    /* override fun onResume() {
-         super.onResume()
-         Log.d(TAG, "onResume: isActive : $isActive")
-         if (isActive) {
-
-         } else {
-             fragmentMySubscriptionBinding.txtRenew.visibility = View.VISIBLE
-             fragmentMySubscriptionBinding.txtPlanExpireDate.text = "Expired"
-         }
-     }*/
-
-
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy: ")
         billingClient?.endConnection()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mySubscriptionViewModel.getActiveSubscriptions()
     }
 }
