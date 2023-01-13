@@ -148,7 +148,7 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
                                         productId = map["productId"] as String?
                                         Log.d(TAG, "onBillingSetupFinished: productId : $productId")
 
-                                        // Disable the renew button
+                                        // Button text changes to Cancel
                                         activity?.runOnUiThread {
                                             fragmentMySubscriptionBinding?.txtRenew?.text =
                                                 getString(R.string.cancel)
@@ -183,8 +183,14 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
     fun enableRenewButton() {
         // Enable the renew button
         activity?.runOnUiThread {
-            fragmentMySubscriptionBinding?.txtRenew?.visibility = View.VISIBLE
-            fragmentMySubscriptionBinding?.txtPlanExpireDate?.text = getString(R.string.expired)
+            if (isActive) {
+                fragmentMySubscriptionBinding?.txtRenew?.visibility = View.VISIBLE
+                fragmentMySubscriptionBinding?.txtRenew?.text = getString(R.string.cancel)
+            } else {
+                fragmentMySubscriptionBinding?.txtRenew?.visibility = View.VISIBLE
+                fragmentMySubscriptionBinding?.txtRenew?.text = getString(R.string.renew)
+                fragmentMySubscriptionBinding?.txtPlanExpireDate?.text = getString(R.string.expired)
+            }
         }
     }
 
