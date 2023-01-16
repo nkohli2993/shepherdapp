@@ -68,19 +68,18 @@
                     android:lineSpacingExtra="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_30sdp" />
 
-              <!--  <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtLovedOne"
-                    style="@style/TextViewGothamMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:layout_marginTop="@dimen/_15sdp" />-->
+                <!--  <androidx.appcompat.widget.AppCompatTextView
+                      android:id="@+id/txtLovedOne"
+                      style="@style/TextViewGothamMedium"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="@color/colorWhite"
+                      android:layout_marginTop="@dimen/_15sdp" />-->
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingVertical="@dimen/_30sdp"
-                    android:layout_marginTop="@dimen/_15sdp">
+                    android:paddingVertical="@dimen/_30sdp">
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:id="@+id/txtPrice"
@@ -116,6 +115,18 @@
                         app:layout_constraintStart_toEndOf="@id/txtPriceUnit"
                         app:layout_constraintTop_toTopOf="@+id/txtPrice" />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtFreeTrial"
+                        style="@style/TextViewGothamBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:textColor="@color/colorWhite"
+                        android:text="30 days free trial"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtDuration" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
@@ -123,7 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/button_transparent"
                     android:fontFamily="@font/gotham_medium"
                     android:layout_marginHorizontal="@dimen/_10sdp"

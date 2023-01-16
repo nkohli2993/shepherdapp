@@ -76,6 +76,8 @@ object Const {
         const val ONE_WEEK = "One Week"
         const val ONE_MONTH = "One Month"
         const val ONE_YEAR = "One Year"
+        const val Monthly = "Monthly"
+        const val Yearly = "Yearly"
     }
 }
 

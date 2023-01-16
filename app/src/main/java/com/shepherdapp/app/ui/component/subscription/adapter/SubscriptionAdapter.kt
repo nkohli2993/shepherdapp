@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.billingclient.api.ProductDetails
@@ -84,6 +85,14 @@ class SubscriptionAdapter constructor(
                     nameOfPlan = "Yearly"
                     duration = "year"
                 }
+                Const.SubscriptionPlan.Monthly -> {
+                    nameOfPlan = "Monthly"
+                    duration = "month"
+                }
+                Const.SubscriptionPlan.Yearly -> {
+                    nameOfPlan = "Yearly"
+                    duration = "year"
+                }
             }
             // Set Title
             itemBinding.txtTitle.text = nameOfPlan
@@ -95,28 +104,76 @@ class SubscriptionAdapter constructor(
                      0
                  )?.formattedPrice*/
 
-            val formattedPrice =
+            /*val formattedPrice =
                 productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                     0
-                )?.formattedPrice?.substring(1) // remove currency symbol which is at index 0 and get the remaining amount
+                )?.formattedPrice?.substring(1)*/ // remove currency symbol which is at index 0 and get the remaining amount
+
             // Set Price
-            itemBinding.txtPrice.text = formattedPrice
+//            itemBinding.txtPrice.text = formattedPrice
 
             val currencyCode =
                 productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                     0
                 )?.priceCurrencyCode
 
-            val currencySymbol =
-                productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
-                    0
-                )?.formattedPrice?.substring(0, 1) // Get first character which is currency symbol
+            /* val currencySymbol =
+                 productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                     0
+                 )?.formattedPrice?.substring(0, 1)*/ // Get first character which is currency symbol
 
             // Set Currency code
-            itemBinding.txtPriceUnit.text = currencySymbol
+//            itemBinding.txtPriceUnit.text = currencySymbol
 
             // Set Duration of plan
             itemBinding.txtDuration.text = "/${duration}"
+
+            if (productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                    0
+                )?.formattedPrice == "Free"
+            ) {
+                itemBinding.txtFreeTrial.visibility = View.VISIBLE
+                val formattedPrice =
+                    productDetails.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                        1
+                    )?.formattedPrice?.substring(1) // remove currency symbol which is at index 0 and get the remaining amount
+
+                // Set Price
+                itemBinding.txtPrice.text = formattedPrice
+
+                val currencySymbol =
+                    productDetails.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                        1
+                    )?.formattedPrice?.substring(
+                        0,
+                        1
+                    ) // Get first character which is currency symbol
+
+                // Set Currency code
+                itemBinding.txtPriceUnit.text = currencySymbol
+
+            } else {
+                itemBinding.txtFreeTrial.visibility = View.GONE
+
+                val formattedPrice =
+                    productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                        0
+                    )?.formattedPrice?.substring(1) // remove currency symbol which is at index 0 and get the remaining amount
+
+                // Set Price
+                itemBinding.txtPrice.text = formattedPrice
+
+                val currencySymbol =
+                    productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                        0
+                    )?.formattedPrice?.substring(
+                        0,
+                        1
+                    ) // Get first character which is currency symbol
+
+                // Set Currency code
+                itemBinding.txtPriceUnit.text = currencySymbol
+            }
 
 
             // Handle click of Buy Plan Button

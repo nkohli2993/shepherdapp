@@ -138,19 +138,24 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
     // Step 4: Show products available to buy
     fun showProducts() {
-        val productList = ImmutableList.of( //Product 1
-            /* Product.newBuilder()
-                 .setProductId("one_week")
-                 .setProductType(BillingClient.ProductType.SUBS)
-                 .build(),*/  //Product 2
+        val productList = ImmutableList.of(
+            //Product 1
             Product.newBuilder()
-                .setProductId("one_month")
+                .setProductId("monthly")
                 .setProductType(BillingClient.ProductType.SUBS)
-                .build(),  //Product 3
+                .build(),
             Product.newBuilder()
-                .setProductId("one_year")
+                .setProductId("yearly")
                 .setProductType(BillingClient.ProductType.SUBS)
-                .build()
+                .build(),
+            /*  Product.newBuilder()
+                  .setProductId("one_month")
+                  .setProductType(BillingClient.ProductType.SUBS)
+                  .build(),
+              Product.newBuilder()
+                  .setProductId("one_year")
+                  .setProductType(BillingClient.ProductType.SUBS)
+                  .build()*/
         )
 
         val params = QueryProductDetailsParams.newBuilder()
@@ -202,11 +207,17 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                          nameOfPlan = "Weekly"
  //                        expiryDate =
                      }*/
-                    Const.SubscriptionPlan.ONE_MONTH -> {
-                        nameOfPlan = "Monthly"
-                    }
-                    Const.SubscriptionPlan.ONE_YEAR -> {
+                    /*  Const.SubscriptionPlan.ONE_MONTH -> {
+                          nameOfPlan = "Monthly"
+                      }
+                      Const.SubscriptionPlan.ONE_YEAR -> {
+                          nameOfPlan = "Yearly"
+                      }*/
+                    Const.SubscriptionPlan.Yearly -> {
                         nameOfPlan = "Yearly"
+                    }
+                    Const.SubscriptionPlan.Monthly -> {
+                        nameOfPlan = "Monthly"
                     }
                 }
                 expiryDate = planName?.let { getDate(it) }
@@ -348,13 +359,37 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                   0
               )?.formattedPrice*/
 
-            val priceMicros =
-                it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceAmountMicros
+            if (it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
+                    0
+                )?.formattedPrice == "Free"
+            ) {
+                // Free Trial
+                val priceMicros =
+                    it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(1)?.priceAmountMicros
+                // 1,000,000 micro-units equal one unit of the currency
+                val price = priceMicros?.div(1000000)
+                amount = price?.toDouble()
+
+                Log.d(TAG, "priceMicros : $priceMicros")
+                Log.d(TAG, "amount : $amount")
+
+            } else {
+                val priceMicros =
+                    it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceAmountMicros
+                // 1,000,000 micro-units equal one unit of the currency
+                val price = priceMicros?.div(1000000)
+                amount = price?.toDouble()
+                Log.d(TAG, "priceMicros : $priceMicros")
+                Log.d(TAG, "amount : $amount")
+            }
+
+            /*val priceMicros =
+                it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceAmountMicros*/
             // 1,000,000 micro-units equal one unit of the currency
-            val price = priceMicros?.div(1000000)
-            amount = price?.toDouble()
-            Log.d(TAG, "priceMicros : $priceMicros")
-            Log.d(TAG, "amount : $amount")
+//            val price = priceMicros?.div(1000000)
+//            amount = price?.toDouble()
+//            Log.d(TAG, "priceMicros : $priceMicros")
+//            Log.d(TAG, "amount : $amount")
 
             launchPurchaseFlow(it)
 
