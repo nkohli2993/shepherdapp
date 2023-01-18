@@ -171,6 +171,8 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun saveSubscriptionPurchased(isSubscriptionPurchased: Boolean) {
         Prefs.with(ShepherdApp.appContext)
             ?.save(Const.IS_SUBSCRIPTION_PURCHASED, isSubscriptionPurchased)
+        Log.d("UserRepository", "Subscription Status saved to Preferences Successfully")
+
     }
 
     fun isSubscriptionPurchased(): Boolean? {

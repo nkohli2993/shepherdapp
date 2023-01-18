@@ -50,6 +50,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     private var subscriptionAdapter: SubscriptionAdapter? = null
     private val subscriptionViewModel: SubscriptionViewModel by viewModels()
     private var billingClient: BillingClient? = null
+    private var purchasesUpdatedListener: PurchasesUpdatedListener? = null
     private var productDetailsList: ArrayList<ProductDetails?>? = ArrayList()
     var handler: Handler? = null
     private var planName: String? = null
@@ -78,49 +79,43 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
         binding.listener = this
         showLoading("")
+
+        purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
+            // Google Play delivers the result of the purchase operation here
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
+                for (purchase in purchases) {
+                    verifySubPurchase(purchase)
+                }
+            } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
+                // Handle an error caused by a user cancelling the purchase flow.
+            } else {
+                // Handle any other error codes.
+            }
+        }
+
         //Step 2. Initialize a BillingClient with PurchasesUpdatedListener onCreate method
+        // BillingClient is the main interface for communication between the Google Play Billing Library and the rest of the app
+        // BillingClient provides convenience methods, both synchronous and asynchronous, for many common billing operations.
         billingClient = BillingClient.newBuilder(this)
             .enablePendingPurchases()
-            .setListener { billingResult, list ->
+            /*.setListener { billingResult, list ->
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && list != null) {
                     for (purchase in list) {
                         verifySubPurchase(purchase)
                     }
                 }
-            }.build()
+            }*/
+            .setListener(purchasesUpdatedListener!!)
+            .build()
 
         // start the connection after initializing the billing client
         establishConnection()
-
-
-    }
-
-    private fun setAdapter() {
-        hideLoading()
-        subscriptionAdapter = SubscriptionAdapter(this, subscriptionViewModel, productDetailsList)
-        binding.viewPagerSubscription.adapter = subscriptionAdapter
-//        binding.viewPagerSubscription.setCurrentItem((productDetailsList?.get(0) ?: 0) as Int, false)
-
-        //For multiple page
-        binding.viewPagerSubscription.clipToPadding = false
-        binding.viewPagerSubscription.clipChildren = false
-        binding.viewPagerSubscription.offscreenPageLimit = 3
-        binding.viewPagerSubscription.getChildAt(0).overScrollMode =
-            OVER_SCROLL_NEVER
-
-        val compositeTransformer = CompositePageTransformer()
-        compositeTransformer.addTransformer(MarginPageTransformer(40))
-        compositeTransformer.addTransformer { page, position ->
-            val r = 1 - abs(position)
-            page.scaleY = (0.95f + r * 0.05f)
-        }
-        binding.viewPagerSubscription.setPageTransformer(compositeTransformer)
-
     }
 
     //Step 3. Establish a connection to Google Play
     fun establishConnection() {
         billingClient?.startConnection(object : BillingClientStateListener {
+
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                     // The BillingClient is ready. You can query purchases here.
@@ -234,6 +229,9 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 Log.d(TAG, "Product ID: $productID")
                 Log.d(TAG, "Plan Name : $planName")
 
+                // A successful purchase generates a purchase token, which is a unique identifier that
+                // represents the user and the product ID for the in-app product they purchased.
+
                 //Validate Subscription
                 subscriptionViewModel.validateSubscription(
                     ValidateSubscriptionRequestModel(
@@ -247,6 +245,28 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun setAdapter() {
+        hideLoading()
+        subscriptionAdapter = SubscriptionAdapter(this, subscriptionViewModel, productDetailsList)
+        binding.viewPagerSubscription.adapter = subscriptionAdapter
+//        binding.viewPagerSubscription.setCurrentItem((productDetailsList?.get(0) ?: 0) as Int, false)
+
+        //For multiple page
+        binding.viewPagerSubscription.clipToPadding = false
+        binding.viewPagerSubscription.clipChildren = false
+        binding.viewPagerSubscription.offscreenPageLimit = 3
+        binding.viewPagerSubscription.getChildAt(0).overScrollMode =
+            OVER_SCROLL_NEVER
+
+        val compositeTransformer = CompositePageTransformer()
+        compositeTransformer.addTransformer(MarginPageTransformer(40))
+        compositeTransformer.addTransformer { page, position ->
+            val r = 1 - abs(position)
+            page.scaleY = (0.95f + r * 0.05f)
+        }
+        binding.viewPagerSubscription.setPageTransformer(compositeTransformer)
+
+    }
 
     override fun observeViewModel() {
         // Observe open subscription plan live data
