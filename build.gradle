@@ -87,6 +87,10 @@ ext {
     base_url_user_dev = "\"https://usersherperd.itechnolabs.tech/\""
 //    base_url_dev = "\"https://sheperdstagging.itechnolabs.tech:3055/\""
     base_url_dev = "\"https://sheperdstagging.itechnolabs.tech/\""
+
+    // Live urls
+    base_url_user_live = "\"https://shepherduser-uat.shepherdcares.com:6001/\""
+    base_url_live = "\"https://shepherdapp.shepherdcares.com/\""
 }
 
 //ext.base_url_local = "\"https://shepherdapp.itechnolabs.tech/\""
