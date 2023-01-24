@@ -42,6 +42,9 @@ object Const {
     const val PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL =
         "https://play.google.com/store/account/subscriptions?sku=%s&package=%s"
 
+    const val BASE_URL_LIVE = "https://shepherdapp.shepherdcares.com/"
+    const val BASE_URL_DEV = "https://sheperdstagging.itechnolabs.tech/"
+
 
     object NotificationAction {
         const val ADD_COMMENT = "post_comment"
