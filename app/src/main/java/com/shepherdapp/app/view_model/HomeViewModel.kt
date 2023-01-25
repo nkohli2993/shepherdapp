@@ -247,9 +247,9 @@ class HomeViewModel @Inject constructor(
     fun clearFirebaseToken() {
         usersTableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.USERS_DEV
-            } else {
                 TableName.USERS
+            } else {
+                TableName.USERS_DEV
             }
         val uuid = userRepository.getUUID()
         Log.d(TAG, "uuid : $uuid")

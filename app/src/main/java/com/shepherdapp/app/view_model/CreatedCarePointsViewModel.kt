@@ -226,9 +226,9 @@ class CreatedCarePointsViewModel @Inject constructor(
 
         tableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CHATS_DEV
-            } else {
                 TableName.CHATS
+            } else {
+                TableName.CHATS_DEV
             }
 
         db.collection(tableName!!)
@@ -298,9 +298,9 @@ class CreatedCarePointsViewModel @Inject constructor(
         Log.d(TAG, "initChatListener: ${chatListData?.id}")
         tableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CHATS_DEV
-            } else {
                 TableName.CHATS
+            } else {
+                TableName.CHATS_DEV
             }
         val chatDocReference =
             chatListData?.id?.let { ShepherdApp.db.collection(tableName!!).document(it) }
@@ -366,9 +366,9 @@ class CreatedCarePointsViewModel @Inject constructor(
     private fun listenUnreadUpdates() {
         tableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CHATS_DEV
-            } else {
                 TableName.CHATS
+            } else {
+                TableName.CHATS_DEV
             }
         val chatRef =
             chatListData?.id?.let { ShepherdApp.db.collection(tableName!!).document(it) }
@@ -394,9 +394,9 @@ class CreatedCarePointsViewModel @Inject constructor(
     private fun updateReadByData() {
         tableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CHATS_DEV
-            } else {
                 TableName.CHATS
+            } else {
+                TableName.CHATS_DEV
             }
 
         ShepherdApp.db.runTransaction { transaction ->
@@ -511,9 +511,9 @@ class CreatedCarePointsViewModel @Inject constructor(
     private fun createNewChat(onChatCreated: (created: Boolean) -> Unit) {
         tableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CHATS_DEV
-            } else {
                 TableName.CHATS
+            } else {
+                TableName.CHATS_DEV
             }
         if (chatListData?.id.isNullOrEmpty()) {
 
@@ -544,9 +544,9 @@ class CreatedCarePointsViewModel @Inject constructor(
         var userIDs: ArrayList<String>? = ArrayList()
         tableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CHATS_DEV
-            } else {
                 TableName.CHATS
+            } else {
+                TableName.CHATS_DEV
             }
         val chatReference = db.collection(tableName!!).document(chatListData?.id ?: "")
         //Get group name, event_id and userIds
@@ -604,9 +604,9 @@ class CreatedCarePointsViewModel @Inject constructor(
 //        Log.d(TAG, "firebase Tokens are: $firebaseTokensList")
         usersTableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE /*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.USERS_DEV
-            } else {
                 TableName.USERS
+            } else {
+                TableName.USERS_DEV
             }
         db.collection(usersTableName!!)
             .get()
@@ -729,9 +729,9 @@ class CreatedCarePointsViewModel @Inject constructor(
         chatResponseData.postValue(Event(DataResult.Loading()))
         tableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CHATS_DEV
-            } else {
                 TableName.CHATS
+            } else {
+                TableName.CHATS_DEV
             }
 
         //get message list

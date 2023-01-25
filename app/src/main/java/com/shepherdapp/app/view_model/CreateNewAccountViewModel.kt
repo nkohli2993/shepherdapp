@@ -197,9 +197,9 @@ class CreateNewAccountViewModel @Inject constructor(
         val fToken = userRepository.getFirebaseToken()
         usersTableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.USERS_DEV
-            } else {
                 TableName.USERS
+            } else {
+                TableName.USERS_DEV
             }
         ShepherdApp.db.collection(usersTableName!!)
             .whereEqualTo("firebase_token", fToken)
@@ -221,9 +221,9 @@ class CreateNewAccountViewModel @Inject constructor(
     private fun checkIfUserAlreadyExists(user: User) {
         usersTableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE /*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.USERS_DEV
-            } else {
                 TableName.USERS
+            } else {
+                TableName.USERS_DEV
             }
         ShepherdApp.db.collection(usersTableName!!)
             .whereEqualTo("uuid", user.uuid)

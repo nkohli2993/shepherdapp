@@ -161,9 +161,9 @@ class LoginViewModel @Inject constructor(
         val fToken = userRepository.getFirebaseToken()
         usersTableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE /*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.USERS_DEV
-            } else {
                 TableName.USERS
+            } else {
+                TableName.USERS_DEV
             }
         db.collection(usersTableName!!)
             .whereEqualTo("firebase_token", fToken)
@@ -185,9 +185,9 @@ class LoginViewModel @Inject constructor(
     private fun checkIfUserAlreadyExists(user: User) {
         usersTableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE /*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.USERS_DEV
-            } else {
                 TableName.USERS
+            } else {
+                TableName.USERS_DEV
             }
         db.collection(usersTableName!!)
             .whereEqualTo("uuid", user.uuid)
@@ -222,9 +222,9 @@ class LoginViewModel @Inject constructor(
     private fun clearFirebaseToken() {
         usersTableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE /*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.USERS_DEV
-            } else {
                 TableName.USERS
+            } else {
+                TableName.USERS_DEV
             }
 
         userRepository.getUUID()
