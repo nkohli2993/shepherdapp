@@ -220,7 +220,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         //set data on dash board
 
                         //Heart Rate
-                        if (vitalStats!!.data?.heartRate.isNullOrEmpty() || (vitalStats?.data?.heartRate?.toDouble() == 0.0)) {
+                        if (vitalStats!!.data?.heartRate.isNullOrEmpty() || (vitalStats!!.data?.heartRate == "null") || (vitalStats?.data?.heartRate?.toDouble() == 0.0)) {
                             fragmentVitalStatsBinding.tvHeartRateValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvHeartRateUnit.visibility = View.GONE
                         } else {
@@ -230,7 +230,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Body temperature
-                        if (vitalStats!!.data?.bodyTemp.isNullOrEmpty() || (vitalStats?.data?.bodyTemp?.toDouble() == 0.0)) {
+                        if (vitalStats!!.data?.bodyTemp.isNullOrEmpty() || (vitalStats!!.data?.bodyTemp == "null") || (vitalStats?.data?.bodyTemp?.toDouble() == 0.0)) {
                             fragmentVitalStatsBinding.tvBodyTempValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvBodyTempUnit.visibility = View.GONE
                         } else {
@@ -242,7 +242,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Blood Pressure
-                        if (vitalStats!!.data?.bloodPressure?.sbp.isNullOrEmpty() || (vitalStats?.data?.bloodPressure?.sbp?.toDouble() == 0.0)) {
+                        if (vitalStats!!.data?.bloodPressure?.sbp.isNullOrEmpty() || (vitalStats!!.data?.bloodPressure?.sbp == "null") || (vitalStats?.data?.bloodPressure?.sbp?.toDouble() == 0.0)) {
                             fragmentVitalStatsBinding.tvBloodPressureValue.text = "Not Available"
                         } else {
                             fragmentVitalStatsBinding.tvBloodPressureValue.text =
@@ -250,7 +250,7 @@ class VitalStatsFragment : BaseFragment<FragmentVitalStatsBinding>(),
                         }
 
                         // Oxygen Level
-                        if (vitalStats!!.data?.oxygen.isNullOrEmpty() || (vitalStats?.data?.oxygen?.toDouble() == 0.0)) {
+                        if (vitalStats!!.data?.oxygen.isNullOrEmpty() || (vitalStats!!.data?.oxygen == "null") || (vitalStats?.data?.oxygen?.toDouble() == 0.0)) {
                             fragmentVitalStatsBinding.tvOxygenValue.text = "Not Available"
                             fragmentVitalStatsBinding.tvOxygenUnit.visibility = View.GONE
 
