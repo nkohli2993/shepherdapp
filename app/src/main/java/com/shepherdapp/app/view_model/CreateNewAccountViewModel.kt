@@ -19,6 +19,7 @@ import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.TableName
 import com.shepherdapp.app.utils.serializeToMap
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -194,11 +195,12 @@ class CreateNewAccountViewModel @Inject constructor(
 
     fun checkIfFirebaseTokenMatchesWithOtherUser(user: User) {
         val fToken = userRepository.getFirebaseToken()
-        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
-            TableName.USERS_DEV
-        } else {
-            TableName.USERS
-        }
+        usersTableName =
+            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
+                TableName.USERS_DEV
+            } else {
+                TableName.USERS
+            }
         ShepherdApp.db.collection(usersTableName!!)
             .whereEqualTo("firebase_token", fToken)
             .get()
@@ -217,11 +219,12 @@ class CreateNewAccountViewModel @Inject constructor(
 
     // Check if user's info already saved in Firestore
     private fun checkIfUserAlreadyExists(user: User) {
-        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
-            TableName.USERS_DEV
-        } else {
-            TableName.USERS
-        }
+        usersTableName =
+            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE /*"https://sheperdstagging.itechnolabs.tech/"*/) {
+                TableName.USERS_DEV
+            } else {
+                TableName.USERS
+            }
         ShepherdApp.db.collection(usersTableName!!)
             .whereEqualTo("uuid", user.uuid)
             .get()

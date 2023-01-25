@@ -18,6 +18,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseResponseModel
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.TableName
 import com.shepherdapp.app.utils.serializeToMap
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -149,11 +150,12 @@ class WelcomeUserViewModel @Inject constructor(
 
     // Clear Firebase Token on logout
     fun clearFirebaseToken() {
-        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
-            TableName.USERS_DEV
-        } else {
-            TableName.USERS
-        }
+        usersTableName =
+            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE /*"https://sheperdstagging.itechnolabs.tech/"*/) {
+                TableName.USERS_DEV
+            } else {
+                TableName.USERS
+            }
         val uuid = userRepository.getUUID()
         Log.d(TAG, "uuid : $uuid")
         ShepherdApp.db.collection(usersTableName!!).whereEqualTo("uuid", userRepository.getUUID())

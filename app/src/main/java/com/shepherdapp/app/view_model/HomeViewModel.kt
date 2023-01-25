@@ -245,11 +245,12 @@ class HomeViewModel @Inject constructor(
 
     // Clear Firebase Token on logout
     fun clearFirebaseToken() {
-        usersTableName = if (BuildConfig.BASE_URL == "https://sheperdstagging.itechnolabs.tech/") {
-            TableName.USERS_DEV
-        } else {
-            TableName.USERS
-        }
+        usersTableName =
+            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
+                TableName.USERS_DEV
+            } else {
+                TableName.USERS
+            }
         val uuid = userRepository.getUUID()
         Log.d(TAG, "uuid : $uuid")
         ShepherdApp.db.collection(usersTableName!!).whereEqualTo("uuid", userRepository.getUUID())
