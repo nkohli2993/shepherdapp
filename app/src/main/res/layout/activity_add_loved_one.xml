@@ -371,7 +371,7 @@
                             android:background="@drawable/shape_rectangle_circular_corner_border_grey"
                             android:fontFamily="@font/gotham_medium"
                             android:hint="@string/year"
-                            android:onClick="@{listener.onClick}"
+                            android:onClick="@{listener::onClick}"
                             android:paddingHorizontal="@dimen/_10sdp"
                             android:paddingVertical="@dimen/_10sdp"
                             android:textSize="@dimen/_12ssp"
