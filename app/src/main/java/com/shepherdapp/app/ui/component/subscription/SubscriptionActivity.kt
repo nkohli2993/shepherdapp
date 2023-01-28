@@ -16,6 +16,7 @@ import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.QueryProductDetailsParams.Product
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
+import com.google.gson.Gson
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.login.UserProfile
@@ -31,11 +32,14 @@ import com.shepherdapp.app.ui.component.subscription.adapter.SubscriptionAdapter
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.extensions.getCurrentDate
+import com.shepherdapp.app.utils.extensions.getDateAfter30Days
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.SubscriptionViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_add_vitals.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.abs
@@ -60,6 +64,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     private var orderID: String? = null
     private var expiryDate: String? = null
     private var source: String? = "SubscriptionActivity"
+    private var isFreeTrial: Boolean = false
+    private var isItemAlreadyPurchased: Boolean = false
 
 
     private val TAG = "SubscriptionActivity"
@@ -351,16 +357,58 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(this, "Subscription Validated Successfully")
-
-                    // Create Subscription
-                    subscriptionViewModel.createSubscription(
-                        SubscriptionRequestModel(
-                            transactionId = orderID,
-                            plan = nameOfPlan,
-                            amount = amount,
-                            expiryDate = expiryDate
+                    if (isItemAlreadyPurchased) {
+                        // Redirect to AddLovedOneActivity
+                        val intent =
+                            Intent(
+                                this@SubscriptionActivity,
+                                AddLovedOneActivity::class.java
+                            )
+                        intent.putExtra("source", source)
+                        startActivity(intent)
+                        overridePendingTransition(
+                            R.anim.slide_in_right,
+                            R.anim.slide_out_left
                         )
-                    )
+                    } else {
+                        // Create Subscription
+                        if (isFreeTrial) {
+                            subscriptionViewModel.createSubscription(
+                                SubscriptionRequestModel(
+                                    transactionId = orderID,
+                                    plan = nameOfPlan,
+                                    amount = amount,
+                                    expiryDate = expiryDate,
+                                    trialStartAt = getCurrentDate(),
+                                    trialEndAt = getDateAfter30Days()
+                                )
+                            )
+                        } else {
+                            subscriptionViewModel.createSubscription(
+                                SubscriptionRequestModel(
+                                    transactionId = orderID,
+                                    plan = nameOfPlan,
+                                    amount = amount,
+                                    expiryDate = expiryDate,
+                                    trialStartAt = null,
+                                    trialEndAt = null,
+                                )
+                            )
+                        }
+
+                        /*  subscriptionViewModel.createSubscription(
+                              SubscriptionRequestModel(
+                                  transactionId = orderID,
+                                  plan = nameOfPlan,
+                                  amount = amount,
+                                  expiryDate = expiryDate,
+                                  trialStartAt = getCurrentDate(),
+                                  trialEndAt = getDateAfter30Days()
+                              )
+                          )*/
+                    }
+
+
                 }
             }
         }
@@ -393,6 +441,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 Log.d(TAG, "priceMicros : $priceMicros")
                 Log.d(TAG, "amount : $amount")
 
+                isFreeTrial = true
+
             } else {
                 val priceMicros =
                     it.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(0)?.priceAmountMicros
@@ -401,6 +451,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 amount = price?.toDouble()
                 Log.d(TAG, "priceMicros : $priceMicros")
                 Log.d(TAG, "amount : $amount")
+
+                isFreeTrial = false
             }
 
             /*val priceMicros =
@@ -411,42 +463,79 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 //            Log.d(TAG, "priceMicros : $priceMicros")
 //            Log.d(TAG, "amount : $amount")
 
-            launchPurchaseFlow(it)
+            // Check if product is already purchased or not
+            checkIfProductAlreadyPurchased(it)
+
+
+//            launchPurchaseFlow(it)
 
         }
     }
 
-    // Get Subscription Items
-    private fun getSubscriptionItems(): ArrayList<SubscriptionModel> {
-        val subscriptionItems = ArrayList<SubscriptionModel>()
-        subscriptionItems.add(
-            SubscriptionModel(
-                planName = "Basic",
-                planDesc = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-                lovedOneCount = "Max 1 loved one can added",
-                planPrice = "50"
-            )
-        )
+    private fun checkIfProductAlreadyPurchased(clickedProduct: ProductDetails) {
+        billingClient?.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder()
+                .setProductType(BillingClient.ProductType.SUBS).build()
+        ) { billingResult1: BillingResult, list: List<Purchase> ->
 
-        subscriptionItems.add(
-            SubscriptionModel(
-                planName = "Premium",
-                planDesc = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-                lovedOneCount = "Max 10 loved one can added",
-                planPrice = "500"
-            )
-        )
+            if (billingResult1.responseCode == BillingClient.BillingResponseCode.OK) {
+                Log.d(TAG, "List Size :${list.size} ")
 
-        subscriptionItems.add(
-            SubscriptionModel(
-                planName = "Basic",
-                planDesc = "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
-                lovedOneCount = "Max 1 loved one can added",
-                planPrice = "50"
-            )
-        )
+                // We will get active subscriptions if list id not empty
+                if (list.isNotEmpty()) {
+                    for (purchase in list) {
+                        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED && purchase.isAcknowledged) {
+                            val originalJson = purchase.originalJson
+                            Log.d(TAG, "json : $originalJson")
+                            // Parse Json
+                            var map: Map<String, Any> = HashMap()
+                            map = Gson().fromJson(originalJson, map.javaClass)
 
-        return subscriptionItems
+                            Log.d(TAG, "onBillingSetupFinished: map is $map")
+                            val productId = map["productId"] as String?
+                            Log.d(TAG, "onBillingSetupFinished: productId : $productId")
+                            val orderId = map["orderId"] as String?
+                            Log.d(TAG, "onBillingSetupFinished: orderId : $orderId")
+
+                            val packageName = map["packageName"] as String?
+                            Log.d(TAG, "onBillingSetupFinished: packageName : $packageName")
+
+                            val purchaseToken = map["purchaseToken"] as String?
+                            Log.d(TAG, "onBillingSetupFinished: purchaseToken : $purchaseToken")
+
+
+                            // If product ID of clicked item matches with the id of subscription item
+                            if (clickedProduct.productId == productId) {
+                                Log.d(
+                                    TAG,
+                                    "checkIfProductAlreadyPurchased: Subscription already purchased"
+                                )
+                                isItemAlreadyPurchased = true
+                                //Validate Subscription
+                                subscriptionViewModel.validateSubscription(
+                                    ValidateSubscriptionRequestModel(
+                                        purchaseToken = purchaseToken,
+                                        packageName = packageName,
+                                        productId = productId
+                                    )
+                                )
+                            } else {
+                                Log.d(
+                                    TAG,
+                                    "checkIfProductAlreadyPurchased: productId doesn't match with the id of subscribed item, means clicked item not subscribed"
+                                )
+                                isItemAlreadyPurchased = false
+                                launchPurchaseFlow(clickedProduct)
+                            }
+                        }
+                    }
+                } else {
+                    Log.d(TAG, "checkIfProductAlreadyPurchased: No active subscription found")
+                    launchPurchaseFlow(clickedProduct)
+                }
+            } else {
+            }
+        }
     }
 
     override fun onResume() {

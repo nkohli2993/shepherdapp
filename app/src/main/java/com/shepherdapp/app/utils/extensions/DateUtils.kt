@@ -321,3 +321,18 @@ fun String?.changeDatesFormat(sourceFormat: String?, targetFormat: String?): Str
 
     return desiredFormat
 }
+
+// Get Current Date
+fun getCurrentDate(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val currentCal: Calendar = Calendar.getInstance()
+    return dateFormat.format(currentCal.time)
+}
+
+// Get date after 30 days of current date
+fun getDateAfter30Days(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val currentCal: Calendar = Calendar.getInstance()
+    currentCal.add(Calendar.DATE, 30)
+    return dateFormat.format(currentCal.time)
+}
