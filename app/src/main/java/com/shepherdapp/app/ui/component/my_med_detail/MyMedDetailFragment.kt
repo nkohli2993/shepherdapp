@@ -123,7 +123,7 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                                 ResourcesCompat.getFont(requireContext(), R.font.gotham_book)
                             ),
                             firstWord.length,
-                            firstWord.length + secondWord?.length,
+                            firstWord.length + secondWord?.length!!,
                             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                         )
 
