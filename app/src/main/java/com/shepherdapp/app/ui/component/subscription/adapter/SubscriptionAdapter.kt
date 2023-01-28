@@ -132,7 +132,7 @@ class SubscriptionAdapter constructor(
                     0
                 )?.formattedPrice == "Free"
             ) {
-                itemBinding.txtFreeTrial.visibility = View.VISIBLE
+//                itemBinding.txtFreeTrial.visibility = View.VISIBLE
                 val formattedPrice =
                     productDetails.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                         1
@@ -153,7 +153,7 @@ class SubscriptionAdapter constructor(
                 itemBinding.txtPriceUnit.text = currencySymbol
 
             } else {
-                itemBinding.txtFreeTrial.visibility = View.GONE
+//                itemBinding.txtFreeTrial.visibility = View.GONE
 
                 val formattedPrice =
                     productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
