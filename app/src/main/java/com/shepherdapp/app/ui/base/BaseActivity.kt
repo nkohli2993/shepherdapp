@@ -48,6 +48,7 @@ abstract class BaseActivity : AppCompatActivity() {
     protected abstract fun initViewBinding()
     var selectedFile: MutableLiveData<File> = MutableLiveData()
     private val PERMISSION_REQUEST_CODE = 200
+    private val PERMISSION_REQUEST_CODE_POST_NOTIFICATIONS = 700
     private val PERMISSION_REQUEST_CODE_GOOGLE_FIT = 500
     private var fragment: Fragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -188,6 +189,15 @@ abstract class BaseActivity : AppCompatActivity() {
         return readStorageresult == PackageManager.PERMISSION_GRANTED && writeStorageresult == PackageManager.PERMISSION_GRANTED && cameraResult == PackageManager.PERMISSION_GRANTED
     }
 
+    // Check Notification Permission for Android 13 or above
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun checkNotificationPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            applicationContext,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
     // Check Google Fit Permissions
     @RequiresApi(Build.VERSION_CODES.Q)
     fun checkGoogleFitPermission(): Boolean {
@@ -208,6 +218,17 @@ abstract class BaseActivity : AppCompatActivity() {
                 Manifest.permission.CAMERA
             ),
             PERMISSION_REQUEST_CODE
+        )
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    fun requestPostNotificationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.POST_NOTIFICATIONS,
+            ),
+            PERMISSION_REQUEST_CODE_POST_NOTIFICATIONS
         )
     }
 
@@ -275,42 +296,83 @@ abstract class BaseActivity : AppCompatActivity() {
 //                val activityRecognitionAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
                 val bodySensorsAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
                 if (/*activityRecognitionAccepted &&*/ bodySensorsAccepted)
-                if (fragment is VitalStatsFragment) {
-                    (fragment as VitalStatsFragment).fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
-                    return
-                } else {
-                    // showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        val builder = AlertDialog.Builder(this)
-                        val dialog = builder.apply {
-                            setMessage("Permission Denied, You need to allow Body Sensors Permissions")
-                            setPositiveButton("OK") { _, _ ->
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                    //open app setting to access
-                                    val intent = Intent()
-                                    intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                                    val uri: Uri =
-                                        Uri.fromParts(
-                                            "package",
-                                            applicationContext.packageName,
-                                            null
-                                        )
-                                    intent.data = uri
-                                    context.startActivity(intent)
-                                }
-
-                            }
-                            setNegativeButton("Cancel") { _, _ ->
-
-                            }
-                        }.create()
-                        dialog.show()
-                        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                    if (fragment is VitalStatsFragment) {
+                        (fragment as VitalStatsFragment).fitSignIn(FitActionRequestCode.INSERT_AND_READ_DATA)
                         return
-                    }
-                }
+                    } else {
+                        // showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            val builder = AlertDialog.Builder(this)
+                            val dialog = builder.apply {
+                                setMessage("Permission Denied, You need to allow Body Sensors Permissions")
+                                setPositiveButton("OK") { _, _ ->
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        //open app setting to access
+                                        val intent = Intent()
+                                        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                                        val uri: Uri =
+                                            Uri.fromParts(
+                                                "package",
+                                                applicationContext.packageName,
+                                                null
+                                            )
+                                        intent.data = uri
+                                        context.startActivity(intent)
+                                    }
 
+                                }
+                                setNegativeButton("Cancel") { _, _ ->
+
+                                }
+                            }.create()
+                            dialog.show()
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                            return
+                        }
+                    }
+
+
+            }
+
+            PERMISSION_REQUEST_CODE_POST_NOTIFICATIONS -> {
+                if (grantResults.isNotEmpty()) {
+                    val postNotificationPermissionAccepted =
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    if (postNotificationPermissionAccepted) {
+                        return
+                    } /*else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            val builder = AlertDialog.Builder(this)
+                            val dialog = builder.apply {
+                                setMessage("Permission Denied, You need to allow Notification Permissions")
+                                setPositiveButton("OK") { _, _ ->
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                        //open app setting to access
+                                        val intent = Intent()
+                                        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                                        val uri: Uri =
+                                            Uri.fromParts(
+                                                "package",
+                                                applicationContext.packageName,
+                                                null
+                                            )
+                                        intent.data = uri
+                                        context.startActivity(intent)
+                                    }
+
+                                }
+                                setNegativeButton("Cancel") { _, _ ->
+
+                                }
+                            }.create()
+                            dialog.show()
+                            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
+                            return
+                        }
+                    }*/
+                }
 
             }
         }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -71,6 +72,13 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Check fro POST Notification permission in Android 13 or above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (!checkNotificationPermission()) {
+                requestPostNotificationPermission()
+            }
+        }
 
         // Handle Push Notification Data
         /* if (intent != null && intent.hasExtra("isNotification")) {
