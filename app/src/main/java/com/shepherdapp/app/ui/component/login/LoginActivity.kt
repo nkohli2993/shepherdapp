@@ -123,8 +123,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //        loginViewModel.loginData.value!!.email = "reo@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
 
-//        loginViewModel.loginData.value!!.email = "sweet@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "1234"
+        loginViewModel.loginData.value!!.email = "sweet@yopmail.com"
+        loginViewModel.loginData.value!!.password = "1234"
 
         binding.viewModel = loginViewModel
 
@@ -264,7 +264,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                 if (/*userRoleSlug.equals("user-loved-one")*/lovedOneSlug >= 1) {
 
                                     // Save Loved One Role
-                                    payload?.userRoles?.first()?.role?.name?.let { it1 ->
+                                    payload.userRoles.first().role?.name?.let { it1 ->
                                         loginViewModel.saveUserRole(
                                             it1
                                         )
@@ -275,13 +275,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                                         "LoggedIn user is loved one . Status saved to shared pref..."
                                     )
                                     // save id
-                                    loginViewModel.saveLovedOneId(payload?.id.toString())
+                                    loginViewModel.saveLovedOneId(payload.id.toString())
 
                                     // save uuid
-                                    loginViewModel.saveLovedOneUUID(payload?.uuid.toString())
+                                    loginViewModel.saveLovedOneUUID(payload.uuid.toString())
 
                                 } else {
-                                    payload?.userLovedOne?.let {
+                                    payload.userLovedOne.let {
                                         if (it.isNotEmpty()) {
                                             // Save Loved One UUID
                                             it[0].let {

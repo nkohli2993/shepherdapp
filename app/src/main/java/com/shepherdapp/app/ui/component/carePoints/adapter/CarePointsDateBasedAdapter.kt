@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.added_events.AddedEventModel
 import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
 import com.shepherdapp.app.databinding.AdapterCarePointsDayBinding
 import com.shepherdapp.app.utils.ClickType
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import java.text.SimpleDateFormat
 
@@ -57,6 +60,19 @@ class CarePointsDateBasedAdapter(
         fun bind(position: Int) {
             val carePoints = carePointList[position]
             itemBinding.data = carePoints
+
+            // Disable edit icon if the loggedIn User is not the creator of the event
+            val uuidEventCreator = carePoints.createdByDetails?.uid
+
+            // Get UUID of loggedInUser
+            val loggedInUserUUID = Prefs.with(ShepherdApp.appContext)?.getString(Const.UUID, "")
+            if (loggedInUserUUID == uuidEventCreator) {
+                itemBinding.imgEditCarePoint.visibility = View.VISIBLE
+            } else {
+                itemBinding.imgEditCarePoint.visibility = View.GONE
+            }
+
+
             if (carePoints.time != null) {
                 val carePointDate = SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
                     carePoints.date.plus(" ").plus(carePoints.time?.replace(" ", ""))

@@ -28,6 +28,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.base.listeners.ChildSourceToActivityListener
 import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.carePoints.CarePointsFragment
 import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragment
@@ -41,6 +42,7 @@ import com.shepherdapp.app.ui.component.profile.ProfileFragment
 import com.shepherdapp.app.ui.component.resources.ResourcesFragment
 import com.shepherdapp.app.ui.component.settings.SettingFragment
 import com.shepherdapp.app.ui.component.vital_stats.VitalStatsFragment
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Modules
 import com.shepherdapp.app.utils.Prefs
@@ -54,7 +56,7 @@ import kotlinx.android.synthetic.main.content_dashboard.*
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
-    View.OnClickListener, UpdateViewOfParentListener {
+    View.OnClickListener, UpdateViewOfParentListener, ChildSourceToActivityListener {
 
     private lateinit var navController: NavController
     private var drawerLayout: DrawerLayout? = null
@@ -798,5 +800,22 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             binding.appBarDashboard.tvNew.visibility = View.INVISIBLE
         }
 
+    }
+
+    override fun childSource(source: String) {
+        val lovedOneDetail = viewModel.getLovedUserDetail()
+        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+            CareRole.CareTeamLead.slug -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+        when (source) {
+            Const.Screen.CARE_POINT -> {
+                tvNew.isVisible = isNewVisible
+            }
+        }
     }
 }

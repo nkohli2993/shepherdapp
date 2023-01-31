@@ -63,6 +63,10 @@ object Const {
         const val CARE_TEAM_INVITE = "care_team_invite"
     }
 
+    object Screen{
+        const val CARE_POINT="CarePoint"
+    }
+
     object VitalStat {
         const val BLOOD_PRESSURE = "blood_pressure"
         const val HEART_RATE = "heart_rate"
