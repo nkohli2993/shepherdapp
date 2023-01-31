@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.lockBox.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.appcompat.widget.AppCompatImageView
@@ -10,6 +11,7 @@ import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherdapp.app.databinding.AdapterOtherDocumentsBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.ClickType
 import com.shepherdapp.app.utils.extensions.toTextFormat
 import com.shepherdapp.app.view_model.LockBoxViewModel
@@ -52,13 +54,27 @@ class OtherDocumentsAdapter(
     }
 
 
-    class OtherDocumentsViewHolder(
+    inner class OtherDocumentsViewHolder(
         private val itemBinding: AdapterOtherDocumentsBinding,
         val context: Context
     ) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(lockBox: LockBox, recyclerItemListener: RecyclerItemListener) {
+            // Check if loggedIn User is CareTeam Leader for the selected lovedOne
+            val lovedOneDetail = viewModel.getLovedOneDetail()
+            val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+                CareRole.CareTeamLead.slug -> {
+                    itemBinding.imgMore.visibility = View.VISIBLE
+                    true
+                }
+                else -> {
+                    itemBinding.imgMore.visibility = View.INVISIBLE
+                    false
+                }
+            }
+
+
             val createdAt = lockBox.createdAt
             val formattedString = createdAt?.toTextFormat(
                 createdAt,
