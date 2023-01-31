@@ -9,6 +9,7 @@ import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.UploadedLockBoxDocumentsResponseModel
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
+import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -164,5 +165,9 @@ class LockBoxViewModel @Inject constructor(
 
     fun viewRecommendedLockBoxDOc(lockBoxTypes: LockBoxTypes) {
         _viewRecommendedLockBoxDocLiveData.value = SingleEvent(lockBoxTypes)
+    }
+
+    fun getLovedOneDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
     }
 }

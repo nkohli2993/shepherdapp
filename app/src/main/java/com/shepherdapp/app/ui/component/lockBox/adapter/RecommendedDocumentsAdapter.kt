@@ -2,11 +2,13 @@ package com.shepherdapp.app.ui.component.lockBox.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.shepherdapp.app.databinding.AdapterRecommendedDocumentsBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.view_model.LockBoxViewModel
 
 
@@ -55,11 +57,24 @@ class RecommendedDocumentsAdapter(
     }
 
 
-    class RecommendedDocumentsViewHolder(private val itemBinding: AdapterRecommendedDocumentsBinding) :
+    inner class RecommendedDocumentsViewHolder(private val itemBinding: AdapterRecommendedDocumentsBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(lockBoxTypes: LockBoxTypes, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = lockBoxTypes
+            // Check if loggedIn User is CareTeam Leader for the selected lovedOne
+            val lovedOneDetail = viewModel.getLovedOneDetail()
+            val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+                CareRole.CareTeamLead.slug -> {
+                    itemBinding.root.isClickable = true
+                    true
+                }
+                else -> {
+                    itemBinding.root.isClickable = false
+                    false
+                }
+            }
+
 //            itemBinding.ivStatus.setImageResource(R.drawable.ic_dot)
             /* if(lockBoxTypes.isAdded){
                  itemBinding.ivStatus.setImageResource(R.drawable.ic_check)
@@ -72,9 +87,12 @@ class RecommendedDocumentsAdapter(
             }
 
             itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    lockBoxTypes
-                )
+                if (isNewVisible) {
+                    recyclerItemListener.onItemSelected(
+                        lockBoxTypes
+                    )
+                }
+
             }
         }
     }

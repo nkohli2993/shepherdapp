@@ -25,9 +25,11 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.lockBox.adapter.OtherDocumentsAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.RecommendedDocumentsAdapter
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.ClickType
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.hideKeyboard
@@ -64,6 +66,8 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
 
 
     private var parentActivityListener: ChildFragmentToActivityListener? = null
+    private var updateViewOfParentListenerListener: UpdateViewOfParentListener? = null
+
 
     private lateinit var homeActivity: HomeActivity
 
@@ -73,6 +77,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             homeActivity = context
         }
         if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        if (context is UpdateViewOfParentListener) updateViewOfParentListenerListener = context
         else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
     }
 
@@ -437,9 +442,19 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     }
 
     override fun onResume() {
-        parentActivityListener?.msgFromChildFragmentToActivity()
         super.onResume()
-
+        parentActivityListener?.msgFromChildFragmentToActivity()
+        // Check if loggedIn User is CareTeam Leader for the selected lovedOne
+        val lovedOneDetail = lockBoxViewModel.getLovedOneDetail()
+        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+            CareRole.CareTeamLead.slug -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+        updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
     }
 }
 
