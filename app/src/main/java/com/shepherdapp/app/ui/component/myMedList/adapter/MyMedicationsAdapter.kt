@@ -9,11 +9,13 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.UserMedicationData
 import com.shepherdapp.app.databinding.AdapterMyMedicationsListBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.FrequencyType
 import com.shepherdapp.app.utils.MedListAction
 import com.shepherdapp.app.view_model.MyMedListViewModel
@@ -62,6 +64,20 @@ class MyMedicationsAdapter(
 
         fun bind(medList: UserMedicationData, recyclerItemListener: RecyclerItemListener) {
             itemBinding.data = medList.medlist
+            // Check if loggedIn User is CareTeam Leader for the selected lovedOne
+            val lovedOneDetail = viewModel.getLovedOneDetail()
+            val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+                CareRole.CareTeamLead.slug -> {
+                    itemBinding.imgMore.visibility = View.VISIBLE
+                    true
+                }
+                else -> {
+                    itemBinding.imgMore.visibility = View.INVISIBLE
+                    false
+                }
+            }
+
+
             itemBinding.medViewCL.setOnClickListener {
                 medList.let { it1 ->
                     medList.actionType = MedListAction.View.value
@@ -79,26 +95,26 @@ class MyMedicationsAdapter(
                 )
             }
 
-           /* when (medList.frequency) {
-                FrequencyType.ONCE.value -> {
-                    itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
-                }
-                FrequencyType.TWICE.value -> {
-                    itemBinding.tvFrequency.text = context.getString(R.string.twice_a_day)
-                }
-                FrequencyType.THRICE.value -> {
-                    itemBinding.tvFrequency.text = context.getString(R.string.three_times_a_day)
-                }
-                FrequencyType.FOUR.value -> {
-                    itemBinding.tvFrequency.text = context.getString(R.string.four_times_a_day)
-                }
-                FrequencyType.FIVE.value -> {
-                    itemBinding.tvFrequency.text = context.getString(R.string.as_needed)
-                }
-                else -> {
-                    itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
-                }
-            }*/
+            /* when (medList.frequency) {
+                 FrequencyType.ONCE.value -> {
+                     itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
+                 }
+                 FrequencyType.TWICE.value -> {
+                     itemBinding.tvFrequency.text = context.getString(R.string.twice_a_day)
+                 }
+                 FrequencyType.THRICE.value -> {
+                     itemBinding.tvFrequency.text = context.getString(R.string.three_times_a_day)
+                 }
+                 FrequencyType.FOUR.value -> {
+                     itemBinding.tvFrequency.text = context.getString(R.string.four_times_a_day)
+                 }
+                 FrequencyType.FIVE.value -> {
+                     itemBinding.tvFrequency.text = context.getString(R.string.as_needed)
+                 }
+                 else -> {
+                     itemBinding.tvFrequency.text = context.getString(R.string.once_a_day)
+                 }
+             }*/
 
 //            itemBinding.tvDosage.text = medList.dosage?.name.plus(" ${medList.dosageType?.name}")
             itemBinding.tvDosage.text = medList.dosage?.name
