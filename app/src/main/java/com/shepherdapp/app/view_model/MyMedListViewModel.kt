@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.DataRepository
+import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.med_list.GetAllMedListResponseModel
 import com.shepherdapp.app.data.dto.med_list.GetMedicationRecordResponse
 import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.*
@@ -186,5 +187,9 @@ class MyMedListViewModel @Inject constructor(
             }
         }
         return userDetailByUUIDLiveData
+    }
+
+    fun getLovedOneDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
     }
 }

@@ -25,10 +25,12 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
+import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.addNewMedication.AddNewMedicationFragmentDirections
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.myMedList.adapter.MyMedicationsAdapter
 import com.shepherdapp.app.ui.component.myMedList.adapter.SelectedDayMedicineAdapter
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.MedListAction
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
@@ -64,6 +66,8 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     private var medicationRecordPayload: ArrayList<MedicationRecordData> = arrayListOf()
 
     private var parentActivityListener: ChildFragmentToActivityListener? = null
+    private var updateViewOfParentListenerListener: UpdateViewOfParentListener? = null
+
 
     private lateinit var homeActivity: HomeActivity
 
@@ -73,6 +77,7 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
             homeActivity = context
         }
         if (context is ChildFragmentToActivityListener) parentActivityListener = context
+        if (context is UpdateViewOfParentListener) updateViewOfParentListenerListener = context
         else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
     }
 
@@ -178,37 +183,37 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         observeEvent(medListViewModel.medDetailItems, ::selectedMedication)
         observeEvent(medListViewModel.selectedMedicationLiveData, ::recordMedication)
 
-      /*  medListViewModel.userDetailByUUIDLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    val userProfile = it.data.payload?.userProfiles
-                    val lovedOneFirstName = userProfile?.firstname
-                    val lovedOneLastName = userProfile?.lastname
-                    var lovedOneFullName: String? = null
-                    lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
-                        lovedOneFirstName
-                    } else {
-                        "$lovedOneFirstName $lovedOneLastName"
-                    }
+        /*  medListViewModel.userDetailByUUIDLiveData.observeEvent(this) {
+              when (it) {
+                  is DataResult.Failure -> {
+                      hideLoading()
+                  }
+                  is DataResult.Loading -> {
+                      showLoading("")
+                  }
+                  is DataResult.Success -> {
+                      hideLoading()
+                      val userProfile = it.data.payload?.userProfiles
+                      val lovedOneFirstName = userProfile?.firstname
+                      val lovedOneLastName = userProfile?.lastname
+                      var lovedOneFullName: String? = null
+                      lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
+                          lovedOneFirstName
+                      } else {
+                          "$lovedOneFirstName $lovedOneLastName"
+                      }
 
-                    val lovedOneProfilePic = userProfile?.profilePhoto
+                      val lovedOneProfilePic = userProfile?.profilePhoto
 
-                    Picasso.get().load(lovedOneProfilePic)
-                        .placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(myMedlistBinding.imgLovedOne)
+                      Picasso.get().load(lovedOneProfilePic)
+                          .placeholder(R.drawable.ic_defalut_profile_pic)
+                          .into(myMedlistBinding.imgLovedOne)
 
-                    myMedlistBinding.txtLoved.text = lovedOneFullName
+                      myMedlistBinding.txtLoved.text = lovedOneFullName
 
-                }
-            }
-        }*/
+                  }
+              }
+          }*/
 
 
         // Observe get loved one med lists response
@@ -572,7 +577,18 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
     }
 
     override fun onResume() {
-        parentActivityListener?.msgFromChildFragmentToActivity()
         super.onResume()
+        parentActivityListener?.msgFromChildFragmentToActivity()
+        // Check if loggedIn User is CareTeam Leader for the selected lovedOne
+        val lovedOneDetail = medListViewModel.getLovedOneDetail()
+        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+            CareRole.CareTeamLead.slug -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+        updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
     }
 }
