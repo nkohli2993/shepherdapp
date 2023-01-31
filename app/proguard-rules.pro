@@ -44,17 +44,24 @@
      public <methods>;
 }
 
--keepclassmembers class * extends android.app.Activity {
+-keepclassmembers class * extends androidx.appcompat.app.AppCompatActivity {
      public void *(android.view.View);
  }
 
- -keepclassmembers class * extends android.app.Fragment {
+ -keepclassmembers class * extends androidx.fragment.app.Fragment {
       public void *(android.view.View);
   }
 
   -keepclasseswithmembers class * {
       void listener_*(...);
   }
+
+  -keepclassmembers class * extends android.app.Activity {
+     public void *On*Click(android.view.View); 
+     public void *on*Click(android.view.View);
+  }
+
+
 
  # -keep class * {
   #    public void * (android.view.View);

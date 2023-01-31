@@ -38,8 +38,8 @@ android {
         applicationId "com.shepherdapp.app"
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 4
+        versionName "1.0.4"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        signingConfig signingConfigs.debug
@@ -76,6 +76,8 @@ android {
         release {
             debuggable false
             minifyEnabled false
+            shrinkResources false
+
             signingConfig signingConfigs.release
 //            buildConfigField("String", "BASE_URL", base_url_live)
 //            buildConfigField("String", "BASE_URL", base_url_local)

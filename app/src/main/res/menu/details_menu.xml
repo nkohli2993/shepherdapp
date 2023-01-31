@@ -5,7 +5,6 @@
     <item
         android:id="@+id/add_to_favorite"
         android:icon="@drawable/ic_outline_star_border_24"
-        android:onClick="onClickFavorite"
         android:title="@string/add_to_favorite"
         app:showAsAction="always" />
 </menu>
