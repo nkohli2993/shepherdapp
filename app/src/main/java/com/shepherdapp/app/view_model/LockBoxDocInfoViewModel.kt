@@ -9,6 +9,8 @@ import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxRespon
 import com.shepherdapp.app.data.dto.lock_box.share_lock_box.ShareLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
+import com.shepherdapp.app.data.dto.login.UserLovedOne
+import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
@@ -25,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LockBoxDocInfoViewModel @Inject constructor(
     private val dataRepository: DataRepository,
-    private val lockBoxRepository: LockBoxRepository
+    private val lockBoxRepository: LockBoxRepository,
+    private val userRepository: UserRepository
 ) :
     BaseViewModel() {
 
@@ -90,5 +93,9 @@ class LockBoxDocInfoViewModel @Inject constructor(
             }
         }
         return shareLockBoxDocResponseLiveData
+    }
+
+    fun getLovedOneDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
     }
 }

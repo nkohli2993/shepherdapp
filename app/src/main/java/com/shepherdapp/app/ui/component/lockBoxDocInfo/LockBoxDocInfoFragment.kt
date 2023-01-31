@@ -21,6 +21,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.lockBoxDocInfo.adapter.UploadedDocumentImagesAdapter
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.LockBoxDocInfoViewModel
@@ -71,6 +72,17 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
             false
         }
 
+        val lovedOneDetail = lockBoxDocInfoViewModel.getLovedOneDetail()
+        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+            CareRole.CareTeamLead.slug -> {
+                fragmentUploadedLockBoxDocDetailBinding.imgEditLockBox.visibility = View.VISIBLE
+                true
+            }
+            else -> {
+                fragmentUploadedLockBoxDocDetailBinding.imgEditLockBox.visibility = View.INVISIBLE
+                false
+            }
+        }
 
     }
 
