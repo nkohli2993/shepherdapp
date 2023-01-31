@@ -13,6 +13,7 @@ import com.shepherdapp.app.ShepherdApp.Companion.db
 import com.shepherdapp.app.data.dto.added_events.*
 import com.shepherdapp.app.data.dto.chat.*
 import com.shepherdapp.app.data.dto.dashboard.LoveUser
+import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.data.local.UserRepository
@@ -180,6 +181,10 @@ class CreatedCarePointsViewModel @Inject constructor(
     //get userinfo from Shared Pref
     fun getLovedUserDetail(): LoveUser? {
         return userRepository.getLovedUser()
+    }
+
+    fun getLovedOneDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
     }
 
     //get userinfo from Shared Pref

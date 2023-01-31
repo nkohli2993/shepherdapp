@@ -56,7 +56,7 @@ import kotlinx.android.synthetic.main.content_dashboard.*
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
-    View.OnClickListener, UpdateViewOfParentListener, ChildSourceToActivityListener {
+    View.OnClickListener, UpdateViewOfParentListener {
 
     private lateinit var navController: NavController
     private var drawerLayout: DrawerLayout? = null
@@ -802,7 +802,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     }
 
-    override fun childSource(source: String) {
+   /* override fun childSource(source: String) {
         val lovedOneDetail = viewModel.getLovedUserDetail()
         val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
             CareRole.CareTeamLead.slug -> {
@@ -817,5 +817,5 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 tvNew.isVisible = isNewVisible
             }
         }
-    }
+    }*/
 }

@@ -27,7 +27,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
-import com.shepherdapp.app.ui.base.listeners.ChildSourceToActivityListener
+import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.carePoints.adapter.CarePointsDayAdapter
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.*
@@ -63,7 +63,10 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private val TAG = "CarePointsFragment"
 
     private var parentActivityListener: ChildFragmentToActivityListener? = null
-    private var childSourceToActivityListener: ChildSourceToActivityListener? = null
+
+    //    private var childSourceToActivityListener: ChildSourceToActivityListener? = null
+    private var updateViewOfParentListenerListener: UpdateViewOfParentListener? = null
+
 
     private lateinit var homeActivity: HomeActivity
 
@@ -73,7 +76,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             homeActivity = context
         }
         if (context is ChildFragmentToActivityListener) parentActivityListener = context
-        if (context is ChildSourceToActivityListener) childSourceToActivityListener = context
+        if (context is UpdateViewOfParentListener) updateViewOfParentListenerListener = context
         else throw RuntimeException("$context must implement ChildFragmentToActivityListener")
     }
 
@@ -93,7 +96,19 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         Log.d(TAG, "onResume: ")
         // Update the home activity so that updated lovedOne is shown on the screen
         parentActivityListener?.msgFromChildFragmentToActivity()
-        childSourceToActivityListener?.childSource(Const.Screen.CARE_POINT)
+//        childSourceToActivityListener?.childSource(Const.Screen.CARE_POINT)
+
+        // Check if loggedIn User is CareTeam Leader for selected lovedOne
+        val lovedOneDetail = carePointsViewModel.getLovedOneDetail()
+        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+            CareRole.CareTeamLead.slug -> {
+                true
+            }
+            else -> {
+                false
+            }
+        }
+        updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
         fragmentCarePointsBinding.calendarPView.clearSelection()
         clickType = CalendarState.Today.value
         fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBold
