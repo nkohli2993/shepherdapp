@@ -92,6 +92,16 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
         addMemberViewModel.getCareTeamRoles(pageNumber, limit, status)
 
         setRestrictionModuleAdapter()
+
+        fragmentAddMemberBinding.switchLockBox.setOnCheckedChangeListener { compoundButton, isChecked ->
+            if (isChecked) {
+                fragmentAddMemberBinding.line.visibility = View.VISIBLE
+                fragmentAddMemberBinding.layoutUploadFiles.visibility = View.VISIBLE
+            } else {
+                fragmentAddMemberBinding.line.visibility = View.GONE
+                fragmentAddMemberBinding.layoutUploadFiles.visibility = View.GONE
+            }
+        }
     }
 
     override fun observeViewModel() {

@@ -133,8 +133,8 @@
                             android:layout_height="match_parent"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/_6sdp"
-                            android:onClick="@{listener::onClick}"
                             android:contentDescription="@string/app_name"
+                            android:onClick="@{listener::onClick}"
                             android:padding="@dimen/_4sdp"
                             app:srcCompat="@drawable/ic_arrow_spinner"
                             app:tint="@color/colorGreyDark" />
@@ -212,46 +212,96 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:background="@color/colorWhite"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_7sdp"
-                        android:paddingHorizontal="@dimen/_5sdp">
+                        android:orientation="vertical">
 
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="@dimen/_20sdp"
-                            android:layout_height="@dimen/_20sdp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:src="@drawable/ic_lock_box" />
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:background="@color/colorWhite"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_7sdp"
+                            android:paddingHorizontal="@dimen/_5sdp">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                android:src="@drawable/ic_lock_box" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                android:text="@string/lockbox"
+                                android:textColor="@color/_192032"
+                                android:textSize="@dimen/_12ssp"
+                                app:fontFamily="@font/gotham_medium"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/switchLockBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="false"
+                                android:thumb="@drawable/switch_thumb_selector"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:track="@drawable/switch_track_selector" />
+
+
+                        </LinearLayout>
+
+                        <View
+                            android:id="@+id/line"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_1sdp"
+                            android:layout_marginHorizontal="@dimen/_13sdp"
+                            android:background="@color/_E7E8EA"
+                            android:visibility="gone" />
+
+                        <LinearLayout
+                            android:id="@+id/layoutUploadFiles"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_5sdp"
+                            android:background="@color/colorWhite"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_7sdp"
                             android:paddingHorizontal="@dimen/_5sdp"
-                            android:text="@string/lockbox"
-                            android:textColor="@color/_192032"
-                            android:textSize="@dimen/_12ssp"
-                            app:fontFamily="@font/gotham_medium"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
+                            android:visibility="gone">
 
-                        <androidx.appcompat.widget.SwitchCompat
-                            android:id="@+id/switchLockBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:checked="false"
-                            android:thumb="@drawable/switch_thumb_selector"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:track="@drawable/switch_track_selector" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:paddingHorizontal="@dimen/_5sdp"
+                                android:text="@string/upload_files"
+                                android:textColor="@color/_192032"
+                                android:textSize="@dimen/_12ssp"
+                                app:fontFamily="@font/gotham_book"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/imgCareTeamMember" />
+
+                            <androidx.appcompat.widget.AppCompatCheckBox
+                                android:id="@+id/chkUploadFiles"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/checkbox_selector"
+                                android:clickable="false" />
+
+
+                        </LinearLayout>
 
 
                     </LinearLayout>
+
 
                 </androidx.cardview.widget.CardView>
 
