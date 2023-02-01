@@ -18,9 +18,12 @@ import com.shepherdapp.app.databinding.FragmentLovedOneProfileBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity
 import com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.loved_one.adapter.LovedOneMedicalConditionAdapter
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.convertISOTimeToDate
 import com.shepherdapp.app.utils.extensions.showError
@@ -180,16 +183,22 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                         }
                     }
 
-                    Collections.sort(payloadList, object : Comparator<com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?> {
-                        var df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
-                        override fun compare(o1: com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?, o2: com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?): Int {
-                            return try {
-                                o1!!.conditions?.name!!.compareTo(o2!!.conditions?.name!!)
-                            } catch (e: Exception) {
-                                throw IllegalArgumentException(e)
+                    Collections.sort(
+                        payloadList,
+                        object :
+                            Comparator<com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?> {
+                            var df: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+                            override fun compare(
+                                o1: com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?,
+                                o2: com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.Payload?
+                            ): Int {
+                                return try {
+                                    o1!!.conditions?.name!!.compareTo(o2!!.conditions?.name!!)
+                                } catch (e: Exception) {
+                                    throw IllegalArgumentException(e)
+                                }
                             }
-                        }
-                    })
+                        })
 
                     if (payloadList.isEmpty()) {
                         // No medical conditions found
@@ -235,6 +244,21 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
             lovedOneMedicalConditionViewModel.getLovedOneDetailsWithRelation(
                 it
             )
+        }
+
+        // Check if loggedIn User is CareTeam Leader for selected lovedOne
+        val lovedOneDetail = lovedOneMedicalConditionViewModel.getLovedOneDetail()
+        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+            CareRole.CareTeamLead.slug -> {
+                fragmentLovedOneProfileBinding.ivEdit.visibility = View.VISIBLE
+                fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.VISIBLE
+                true
+            }
+            else -> {
+                fragmentLovedOneProfileBinding.ivEdit.visibility = View.INVISIBLE
+                fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.INVISIBLE
+                false
+            }
         }
 
     }

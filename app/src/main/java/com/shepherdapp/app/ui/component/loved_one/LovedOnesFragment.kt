@@ -24,6 +24,7 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.shepherdapp.app.ui.component.loved_one.adapter.LovedOneAdapter
 import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.Status
@@ -70,6 +71,19 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
             lovedOneViewModel.getCareTeamsByLovedOneId(page, limit, status)
         } else {
             lovedOneViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+        }
+
+        // Check if loggedIn User is CareTeam Leader for selected lovedOne
+        val lovedOneDetail = lovedOneViewModel.getLovedOneDetail()
+        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+            CareRole.CareTeamLead.slug -> {
+                fragmentLovedOnesBinding.tvNew.visibility = View.VISIBLE
+                true
+            }
+            else -> {
+                fragmentLovedOnesBinding.tvNew.visibility = View.INVISIBLE
+                false
+            }
         }
     }
 

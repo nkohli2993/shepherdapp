@@ -131,4 +131,8 @@ class LovedOneViewModel @Inject constructor(
         return userRepository.isUserAttachedToEnterprise()
     }
 
+    fun getLovedOneDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
+    }
+
 }

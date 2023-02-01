@@ -3,10 +3,12 @@ package com.shepherdapp.app.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.medical_conditions.MedicalConditionResponseModel
 import com.shepherdapp.app.data.dto.medical_conditions.UserConditionsResponseModel
 import com.shepherdapp.app.data.dto.medical_conditions.get_loved_one_medical_conditions.GetLovedOneMedicalConditionsResponseModel
 import com.shepherdapp.app.data.dto.user.UserDetailsResponseModel
+import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.data.remote.medical_conditions.MedicalConditionRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -25,7 +27,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LovedOneMedicalConditionViewModel @Inject constructor(
     private val medicalConditionRepository: MedicalConditionRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
 
@@ -118,5 +121,7 @@ class LovedOneMedicalConditionViewModel @Inject constructor(
         return lovedOneDetailsLiveData
     }
 
-
+    fun getLovedOneDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
+    }
 }
