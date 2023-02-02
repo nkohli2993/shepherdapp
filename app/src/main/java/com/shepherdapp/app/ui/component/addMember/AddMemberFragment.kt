@@ -50,6 +50,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
     private var addMemberRoleAdapter: AddMemberRoleAdapter? = null
     private var TAG = "AddMemberFragment"
     private var selectedModule: String = ""
+    private val uploadLockBoxFilesPermission = "2.1"
 
     private val isValid: Boolean
         get() {
@@ -255,6 +256,9 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
 
                 // Checked the selected state of Care Team
                 val isResourcesEnabled = fragmentAddMemberBinding.switchResources.isChecked
+
+                val isUploadFilesSelected = fragmentAddMemberBinding.chkUploadFiles.isChecked
+
                 selectedModule = ""
                 if (isCarePointsEnabled) {
                     selectedModule += Modules.CarePoints.value.toString() + ","
@@ -262,12 +266,16 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 if (isLockBoxEnabled) {
                     selectedModule += Modules.LockBox.value.toString() + ","
                 }
+                if (isUploadFilesSelected) {
+                    selectedModule += "$uploadLockBoxFilesPermission,"
+                }
                 if (isMyMedListEnabled) {
                     selectedModule += Modules.MedList.value.toString() + ","
                 }
                 if (isResourcesEnabled) {
                     selectedModule += Modules.Resources.value.toString() + ","
                 }
+
 
                 Log.d(TAG, "onClick: selectedModule : $selectedModule")
                 if (selectedModule.endsWith(",")) {
