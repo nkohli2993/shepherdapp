@@ -338,7 +338,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private fun setCareTeamAdapters() {
         careTeamAdapter = CareTeamMembersAdapter(careTeamViewModel)
         fragmentCareTeamMembersBinding.recyclerViewCareTeam.adapter = careTeamAdapter
-
     }
 
     private fun openMemberDetails(navigateEvent: SingleEvent<CareTeamModel>) {

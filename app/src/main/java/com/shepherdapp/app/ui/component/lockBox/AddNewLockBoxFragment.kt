@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -30,12 +31,14 @@ import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.shepherdapp.app.databinding.FragmentAddNewLockBoxBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.lockBox.adapter.DocumentAdapter
+import com.shepherdapp.app.ui.component.lockBox.adapter.LockBoxUsersAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.UploadedLockBoxFilesAdapter
 import com.shepherdapp.app.utils.FileValidator
 import com.shepherdapp.app.utils.extensions.showError
@@ -66,9 +69,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var uploadedFilesAdapter: UploadedLockBoxFilesAdapter? = null
     private var selectedFileList: ArrayList<File>? = arrayListOf()
     private var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
+    private var usersList: ArrayList<CareTeamModel>? = arrayListOf()
     private var mDriveServiceHelper: DriveServiceHelper? = null
     private var lockBoxTypes: ArrayList<LockBoxTypes> = arrayListOf()
     private var documentAdapter: DocumentAdapter? = null
+    private var lockBoxUsersAdapter: LockBoxUsersAdapter? = null
     private var selectedDocumentId: String? = null
 
     private val args: AddNewLockBoxFragmentArgs by navArgs()
@@ -142,6 +147,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
             }
 
+        if (!args.userList.isNullOrEmpty()) {
+            usersList = args.userList!!.toList() as ArrayList<CareTeamModel>
+            Log.d(TAG, "initViewBinding: userList : $usersList")
+            Log.d(TAG, "initViewBinding: userList size  : ${usersList?.size}")
+
+            setLockBoxUsersAdapter()
+        }
         /* val lBType = args.lockBoxType
          Log.d(TAG, "lockBoxType : $lBType ")
 
@@ -298,6 +310,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
         dialog?.dismiss()
         val uploadSelectedFiles = selectedFiles
@@ -323,6 +340,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         fragmentAddNewLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
         uploadedFilesAdapter?.setClickListener(this)
 
+    }
+
+    private fun setLockBoxUsersAdapter() {
+        lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it) }
+        fragmentAddNewLockBoxBinding.rvUsers.adapter = lockBoxUsersAdapter
     }
 
 
@@ -380,6 +402,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
             R.id.imgSelectUsers -> {
                 Log.d(TAG, "Select Users : clicked")
+                findNavController().navigate(R.id.action_addNewLockBoxFragment_to_selectUsersFragment)
             }
         }
     }

@@ -278,7 +278,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="@dimen/_12sdp"
-                    android:paddingVertical="@dimen/_15sdp">
+                    android:paddingVertical="@dimen/_5sdp">
 
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -304,8 +304,20 @@
                         android:onClick="@{listener::onClick}"
                         android:padding="@dimen/_5sdp"
                         android:src="@drawable/ic_plus"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtSelectUsers"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="@+id/txtSelectUsers" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvUsers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="@+id/txtSelectUsers"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSelectUsers"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/adapter_users_lockbox" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
