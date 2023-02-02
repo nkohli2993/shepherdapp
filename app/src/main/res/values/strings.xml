@@ -611,4 +611,5 @@
     <string name="not_active_subscription_found">No Active Subscription Found</string>
     <string name="expired">Expired</string>
     <string name="upload_files">Upload Files</string>
+    <string name="select_users">Select Users</string>
 </resources>

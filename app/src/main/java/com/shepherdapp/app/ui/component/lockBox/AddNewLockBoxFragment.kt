@@ -378,6 +378,9 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             R.id.ivBack -> {
                 backPress()
             }
+            R.id.imgSelectUsers -> {
+                Log.d(TAG, "Select Users : clicked")
+            }
         }
     }
 
