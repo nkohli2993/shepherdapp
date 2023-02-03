@@ -141,11 +141,11 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         //get permissions
         val permission = careTeam?.permission
         if (permission?.length == 1) {
-            checkPermission(permission.toInt())
+            checkPermission(permission)
         } else {
             val perList = permission?.split(',')?.map { it.trim() }
             for (i in perList?.indices!!) {
-                checkPermission(perList[i].toInt())
+                checkPermission(perList[i])
             }
         }
     }
@@ -181,7 +181,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         return resultant
     }
 
-    private fun checkPermission(s: Int) {
+    private fun checkPermission(s: String) {
         when {
             Modules.CarePoints.value == s -> {
                 fragmentMemberDetailsBinding.switchCarePoints.isChecked = true

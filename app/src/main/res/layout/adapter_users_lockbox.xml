@@ -6,13 +6,13 @@
         android:id="@+id/layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/_4sdp"
+        android:layout_marginVertical="@dimen/_6sdp"
         android:layout_marginEnd="@dimen/_minus3sdp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageView"
-            android:layout_width="@dimen/_18sdp"
-            android:layout_height="@dimen/_18sdp"
+            android:layout_width="@dimen/_25sdp"
+            android:layout_height="@dimen/_25sdp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_defalut_profile_pic"
             app:layout_constraintStart_toStartOf="parent"

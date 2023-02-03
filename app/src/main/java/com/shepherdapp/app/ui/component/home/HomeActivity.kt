@@ -356,7 +356,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         ?.map { it.trim() }
                     permissionCards(View.GONE)
                     for (i in perList?.indices!!) {
-                        checkPermission(perList[i].toInt())
+                        checkPermission(perList[i])
                     }
                     hideLoading()
                 }
@@ -768,7 +768,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         }
     }
 
-    private fun checkPermission(permission: Int?) {
+    private fun checkPermission(permission: String?) {
         when {
             Modules.CarePoints.value == permission -> {
                 binding.llCarePoint.visibility = View.VISIBLE

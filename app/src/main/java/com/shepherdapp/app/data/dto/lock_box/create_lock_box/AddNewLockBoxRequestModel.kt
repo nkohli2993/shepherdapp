@@ -12,5 +12,6 @@ data class AddNewLockBoxRequestModel(
     @SerializedName("lbt_id") var lbtId: Int? = null,
     @SerializedName("love_user_id") var loveUserId: String? = null,
 //    @SerializedName("document_url") var documentUrl: String? = null
-    @SerializedName("documents") var documents: ArrayList<Documents>? = arrayListOf()
+    @SerializedName("documents") var documents: ArrayList<Documents>? = arrayListOf(),
+    @SerializedName("allowed_user_ids") var allowedUserIds: ArrayList<String>? = arrayListOf()
 )

@@ -182,7 +182,14 @@ class SelectUsersFragment : BaseFragment<FragmentSelectUsersBinding>(), View.OnC
                     SelectUsersFragmentDirections.actionSelectUsersFragmentToAddNewLockBoxFragment(
                         userList = selectedUser.toTypedArray()
                     )
-                findNavController().navigate(action)
+//                findNavController().navigate(action)
+
+                // Pass Data Back to Previous Fragment
+                findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                    "userList",
+                    selectedUser
+                )
+                findNavController().popBackStack()
             }
 
             R.id.ivBack -> {

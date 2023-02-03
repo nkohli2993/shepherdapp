@@ -151,7 +151,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
             ?.map { it.trim() }
         permissionCards(View.GONE)
         for (i in perList?.indices!!) {
-            checkPermission(perList[i].toInt())
+            checkPermission(perList[i])
         }
     }
 
@@ -178,7 +178,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
          fragmentDashboardBinding.cvDiscussion.visibility = View.GONE
      }*/
 
-    private fun checkPermission(permission: Int?) {
+    private fun checkPermission(permission: String?) {
         when {
             Modules.CarePoints.value == permission -> {
                 fragmentDashboardBinding.cvCarePoints.visibility = View.VISIBLE

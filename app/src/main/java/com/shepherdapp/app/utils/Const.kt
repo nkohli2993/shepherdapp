@@ -63,8 +63,8 @@ object Const {
         const val CARE_TEAM_INVITE = "care_team_invite"
     }
 
-    object Screen{
-        const val CARE_POINT="CarePoint"
+    object Screen {
+        const val CARE_POINT = "CarePoint"
     }
 
     object VitalStat {
@@ -96,11 +96,12 @@ object Drawable {
 }
 
 
-enum class Modules(val value: Int) {
-    CarePoints(1),
-    LockBox(2),
-    MedList(3),
-    Resources(4)
+enum class Modules(val value: String) {
+    CarePoints("1"),
+    LockBox("2"),
+    UploadLockBoxFiles("2.1"),
+    MedList("3"),
+    Resources("4")
 }
 
 enum class Role(val id: String) {

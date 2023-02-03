@@ -44,13 +44,12 @@ class LockBoxUsersAdapter(
     }
 
     override fun getItemCount(): Int {
-        //  return requestList.size
         return when {
-            usersList.size <= 3 -> {
+            usersList.size <= 5 -> {
                 usersList.size
             }
             else -> {
-                3
+                5
             }
         }
 

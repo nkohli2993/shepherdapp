@@ -70,6 +70,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var selectedFileList: ArrayList<File>? = arrayListOf()
     private var uploadedDocumentsUrl: ArrayList<String>? = arrayListOf()
     private var usersList: ArrayList<CareTeamModel>? = arrayListOf()
+    private var usersUUID: ArrayList<String>? = arrayListOf()
     private var mDriveServiceHelper: DriveServiceHelper? = null
     private var lockBoxTypes: ArrayList<LockBoxTypes> = arrayListOf()
     private var documentAdapter: DocumentAdapter? = null
@@ -147,13 +148,33 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
             }
 
-        if (!args.userList.isNullOrEmpty()) {
-            usersList = args.userList!!.toList() as ArrayList<CareTeamModel>
-            Log.d(TAG, "initViewBinding: userList : $usersList")
-            Log.d(TAG, "initViewBinding: userList size  : ${usersList?.size}")
+        // Get data from SelectUser Screen
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<CareTeamModel>>(
+            "userList"
+        )?.observe(viewLifecycleOwner) { users ->
+            usersList = users
+            Log.d(TAG, "initViewBinding: userList is $usersList")
+            Log.d(TAG, "initViewBinding: userList size is ${usersList?.size}")
+
+            usersUUID = usersList?.map {
+                it.user_id
+            } as ArrayList<String>
 
             setLockBoxUsersAdapter()
         }
+
+
+        /* if (!args.userList.isNullOrEmpty()) {
+             usersList = args.userList!!.toList() as ArrayList<CareTeamModel>
+             Log.d(TAG, "initViewBinding: userList : $usersList")
+             Log.d(TAG, "initViewBinding: userList size  : ${usersList?.size}")
+
+             usersUUID = usersList?.map {
+                 it.user_id
+             } as ArrayList<String>
+
+             setLockBoxUsersAdapter()
+         }*/
         /* val lBType = args.lockBoxType
          Log.d(TAG, "lockBoxType : $lBType ")
 
@@ -198,7 +219,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             fileName,
                             fileNote,
                             list,
-                            selectedDocumentId?.toInt()
+                            selectedDocumentId?.toInt(),
+                            usersUUID
                         )
                     }
                 }
@@ -345,6 +367,14 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private fun setLockBoxUsersAdapter() {
         lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it) }
         fragmentAddNewLockBoxBinding.rvUsers.adapter = lockBoxUsersAdapter
+
+        if (usersList?.size!! > 5) {
+            fragmentAddNewLockBoxBinding.txtMore.visibility = View.VISIBLE
+            val moreUser = usersList?.size!! - 5
+            fragmentAddNewLockBoxBinding.txtMore.text = "+ $moreUser More"
+        } else {
+            fragmentAddNewLockBoxBinding.txtMore.visibility = View.GONE
+        }
     }
 
 
@@ -366,7 +396,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                             fileName,
                             fileNote,
                             null,
-                            selectedDocumentId?.toInt()
+                            selectedDocumentId?.toInt(),
+                            usersUUID
                         )
 
                     } else {
