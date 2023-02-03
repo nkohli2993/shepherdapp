@@ -41,17 +41,17 @@ class AssigneAdapter(
         fun bind(position: Int) {
 
             itemBinding.textViewCareTeamName.text =
-                memberList[position].user_id_details.firstname.plus(" ")
-                    .plus(if (memberList[position].user_id_details.lastname == null) "" else memberList[position].user_id_details.lastname)
-            itemBinding.textViewCareTeamRole.text = memberList[position].careRoles.name
+                memberList[position].user_id_details?.firstname.plus(" ")
+                    .plus(if (memberList[position].user_id_details?.lastname == null) "" else memberList[position].user_id_details?.lastname)
+            itemBinding.textViewCareTeamRole.text = memberList[position].careRoles?.name
 
-            if (!memberList[position].user_id_details.profilePhoto.isNullOrEmpty()) {
-                Picasso.get().load(memberList[position].user_id_details.profilePhoto)
+            if (!memberList[position].user_id_details?.profilePhoto.isNullOrEmpty()) {
+                Picasso.get().load(memberList[position].user_id_details?.profilePhoto)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(itemBinding.imageViewCareTeam)
             }
             itemBinding.checkbox.isChecked = false
-            if (memberList[position].isSelected) {
+            if (memberList[position].isSelected == true) {
                 itemBinding.checkbox.isChecked = true
             }
             itemBinding.clEventWrapper.setOnClickListener {

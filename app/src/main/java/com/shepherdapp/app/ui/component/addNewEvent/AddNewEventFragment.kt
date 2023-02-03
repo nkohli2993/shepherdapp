@@ -265,8 +265,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             R.id.btnAdd -> {
                 assignTo.clear()
                 for (i in careteams) {
-                    if (i.isSelected) {
-                        assignTo.add(i.user_id_details.uid!!)
+                    if (i?.isSelected == true) {
+                        assignTo.add(i.user_id_details?.uid!!)
                     }
 
                 }
@@ -435,17 +435,17 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
     override fun onSelected(position: Int) {
-        careteams[position].isSelected = !careteams[position].isSelected
+        careteams[position].isSelected = !careteams[position].isSelected!!
         fragmentAddNewEventBinding.assigneRV.postDelayed({
             assigneeAdapter!!.notifyDataSetChanged()
         }, 100)
         val assignee: ArrayList<String> = arrayListOf()
         assignee.clear()
         for (i in careteams) {
-            if (i.isSelected) {
+            if (i.isSelected == true) {
                 assignee.add(
-                    i.user_id_details.firstname!!.plus(" ")
-                        .plus(i.user_id_details.lastname?.ifEmpty { null })
+                    i.user_id_details?.firstname!!.plus(" ")
+                        .plus(i.user_id_details?.lastname?.ifEmpty { null })
                 )
             }
         }

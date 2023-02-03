@@ -64,24 +64,24 @@ class LovedOneAdapter(
             careTeam.let {
                 // Set full name
                 val fullName =
-                    it.love_user_id_details.firstname + " " + if (it.love_user_id_details.lastname == null) "" else it.love_user_id_details.lastname
+                    it.love_user_id_details?.firstname + " " + if (it.love_user_id_details?.lastname == null) "" else it.love_user_id_details?.lastname
                 itemBinding.textViewCareTeamName.text = fullName
 
                 //Set Image
-                Picasso.get().load(it.love_user_id_details.profilePhoto)
+                Picasso.get().load(it.love_user_id_details?.profilePhoto)
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(itemBinding.imageViewCareTeam)
 
                 // Set Role
-                itemBinding.txtRole.text = "As " + it.careRoles.name
+                itemBinding.txtRole.text = "As " + it.careRoles?.name
                 itemBinding.txtRole.visibility = View.GONE
                 // Get lovedOneID from Shared Pref
                 val lovedOneIDInPrefs =
                     Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
                 itemBinding.checkbox.isChecked =
-                    lovedOneIDInPrefs.equals(it.love_user_id_details.uid)
+                    lovedOneIDInPrefs.equals(it.love_user_id_details?.uid)
 
-                if (lovedOneIDInPrefs.equals(it.love_user_id_details.uid)) {
+                if (lovedOneIDInPrefs.equals(it.love_user_id_details?.uid)) {
                     dismissLastSelectedCareTeam(itemBinding, bindingAdapterPosition)
                     lastSelectedPosition = bindingAdapterPosition
                     itemBinding.checkbox.isChecked = true

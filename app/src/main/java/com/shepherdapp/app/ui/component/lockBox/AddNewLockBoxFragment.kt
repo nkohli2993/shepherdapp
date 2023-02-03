@@ -332,11 +332,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     }
 
-    override fun onResume() {
-        super.onResume()
-
-    }
-
     private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
         dialog?.dismiss()
         val uploadSelectedFiles = selectedFiles

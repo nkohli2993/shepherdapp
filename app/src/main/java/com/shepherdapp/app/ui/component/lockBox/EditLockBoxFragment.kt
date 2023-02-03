@@ -30,9 +30,10 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
+import com.google.gson.annotations.SerializedName
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
-import com.shepherdapp.app.data.dto.care_team.CareTeamModel
+import com.shepherdapp.app.data.dto.care_team.*
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.Documents
 import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.DocumentData
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
@@ -87,6 +88,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private var isLoading = false
     private var lockBoxTypeId: Int? = null
     private var usersList: ArrayList<CareTeamModel>? = arrayListOf()
+    private var usersListFromSelectUser: ArrayList<CareTeamModel>? = arrayListOf()
     private var usersUUID: ArrayList<String>? = arrayListOf()
     private var lockBoxUsersAdapter: LockBoxUsersAdapter? = null
 
@@ -144,7 +146,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 fileName,
                                 fileNote,
                                 selectedDocumentId?.toInt(), lockBoxId!!,
-                                list, it1,usersUUID
+                                list, it1, usersUUID
                             )
                         }
                     }
@@ -268,6 +270,42 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                             } else {
                                 setFileViewInvisible()
                             }
+                            val allowedUsers = payload?.allowedUsers
+                            // Check if select user data is received from Selected User Screen
+                            if (!usersListFromSelectUser.isNullOrEmpty()) {
+                                usersList = usersListFromSelectUser
+                            } else {
+                                usersList?.clear()
+                                if (!allowedUsers.isNullOrEmpty()) {
+                                    allowedUsers.forEach { user ->
+                                        val careTeamModel = CareTeamModel(
+                                            id = user.id,
+                                            user_id = user.uniqueUuid,
+                                            user_id_details = LoveUser(
+                                                id = user.userProfiles?.id,
+                                                firstname = user.userProfiles?.firstname,
+                                                lastname = user.userProfiles?.lastname,
+                                                profilePhoto = user.userProfiles?.profilePhoto
+                                            )
+                                        )
+                                        usersList?.add(careTeamModel)
+                                    }
+                                }
+                            }
+
+                            usersUUID = usersList?.map {
+                                it.user_id
+                            } as ArrayList<String>
+                            if (!usersList.isNullOrEmpty()) {
+                                lockBoxUsersAdapter?.addData(usersList!!)
+                                if (usersList?.size!! > 5) {
+                                    fragmentEditLockBoxBinding.txtMore.visibility = View.VISIBLE
+                                    val moreUser = usersList?.size!! - 5
+                                    fragmentEditLockBoxBinding.txtMore.text = "+ $moreUser More"
+                                } else {
+                                    fragmentEditLockBoxBinding.txtMore.visibility = View.GONE
+                                }
+                            }
                         }
                     }
                 }
@@ -330,33 +368,37 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
 
             }
 
+        setLockBoxUsersAdapter()
+
+
         // Get data back from the launched fragment
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<CareTeamModel>>(
             "userList"
         )?.observe(viewLifecycleOwner) { users ->
-            usersList = users
+            usersListFromSelectUser = users
             Log.d(TAG, "initViewBinding: userList is $usersList")
             Log.d(TAG, "initViewBinding: userList size is ${usersList?.size}")
 
-            usersUUID = usersList?.map {
+            usersUUID = usersListFromSelectUser?.map {
                 it.user_id
             } as ArrayList<String>
 
-            setLockBoxUsersAdapter()
+//             setLockBoxUsersAdapter()
         }
+
     }
 
     private fun setLockBoxUsersAdapter() {
         lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it) }
         fragmentEditLockBoxBinding.rvUsers.adapter = lockBoxUsersAdapter
 
-        if (usersList?.size!! > 5) {
-            fragmentEditLockBoxBinding.txtMore.visibility = View.VISIBLE
-            val moreUser = usersList?.size!! - 5
-            fragmentEditLockBoxBinding.txtMore.text = "+ $moreUser More"
-        } else {
-            fragmentEditLockBoxBinding.txtMore.visibility = View.GONE
-        }
+        /* if (usersList?.size!! > 5) {
+             fragmentEditLockBoxBinding.txtMore.visibility = View.VISIBLE
+             val moreUser = usersList?.size!! - 5
+             fragmentEditLockBoxBinding.txtMore.text = "+ $moreUser More"
+         } else {
+             fragmentEditLockBoxBinding.txtMore.visibility = View.GONE
+         }*/
     }
 
     override fun getLayoutRes(): Int {
@@ -813,5 +855,31 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Get data back from the launched fragment
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<CareTeamModel>>(
+            "userList"
+        )?.observe(viewLifecycleOwner) { users ->
+            usersList = users
+            Log.d(TAG, "initViewBinding: userList is $usersList")
+            Log.d(TAG, "initViewBinding: userList size is ${usersList?.size}")
 
+            usersUUID = usersList?.map {
+                it.user_id
+            } as ArrayList<String>
+            if (!usersList.isNullOrEmpty()) {
+                lockBoxUsersAdapter?.addData(usersList!!)
+                if (usersList?.size!! > 5) {
+                    fragmentEditLockBoxBinding.txtMore.visibility = View.VISIBLE
+                    val moreUser = usersList?.size!! - 5
+                    fragmentEditLockBoxBinding.txtMore.text = "+ $moreUser More"
+                } else {
+                    fragmentEditLockBoxBinding.txtMore.visibility = View.GONE
+                }
+            }
+
+//            setLockBoxUsersAdapter()
+        }
+    }
 }

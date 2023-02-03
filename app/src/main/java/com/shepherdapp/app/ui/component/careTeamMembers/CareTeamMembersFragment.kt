@@ -142,7 +142,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         fragmentCareTeamMembersBinding.imgCancel.visibility = View.VISIBLE
                         searchedCareTeams?.clear()
                         searchedCareTeams = careTeams?.filter {
-                            it.user_id_details.firstname?.contains(
+                            it.user_id_details?.firstname?.contains(
                                 s,
                                 true
                             ) == true
@@ -189,7 +189,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Get the uuid of Care Team Leader
                     try {
                         val uuidTeamLead = careTeams?.filter {
-                            it.careRoles.slug == CareRole.CareTeamLead.slug
+                            it.careRoles?.slug == CareRole.CareTeamLead.slug
                         }?.map {
                             it.user_id
                         }?.get(0)
@@ -253,7 +253,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Get the uuid of Care Team Leader
                     try {
                         val uuidTeamLead = careTeams?.filter {
-                            it.careRoles.slug == CareRole.CareTeamLead.slug
+                            it.careRoles?.slug == CareRole.CareTeamLead.slug
                         }?.map {
                             it.user_id
                         }?.get(0)
@@ -396,7 +396,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private fun moveCareTeamLeaderToFirstPosition(careTeams: ArrayList<CareTeamModel>?): ArrayList<CareTeamModel>? {
         // Get List of CareTeam Leader
         val careTeamLeadList = careTeams?.filter {
-            it.careRoles.slug == CareRole.CareTeamLead.slug
+            it.careRoles?.slug == CareRole.CareTeamLead.slug
         } as ArrayList
 
         Log.d(TAG, "CareTeam Leader List : $careTeamLeadList")

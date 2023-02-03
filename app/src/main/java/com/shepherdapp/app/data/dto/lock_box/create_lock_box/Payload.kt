@@ -20,5 +20,6 @@ data class Payload(
     @SerializedName("documents") var documents: ArrayList<Documents>? = arrayListOf(),
     @SerializedName("allowed_user_ids") var allowedUserIds: ArrayList<String>? = arrayListOf(),
     @SerializedName("user_id") var userId: String? = null,
-    @SerializedName("lockbox_types") var lockbox_types: LockBoxTypes = LockBoxTypes()
+    @SerializedName("lockbox_types") var lockbox_types: LockBoxTypes = LockBoxTypes(),
+    @SerializedName("allowed_users") var allowedUsers: ArrayList<AllowedUsers> = arrayListOf()
 ) : Parcelable

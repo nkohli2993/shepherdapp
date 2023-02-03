@@ -363,8 +363,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 // Adds old assignees to list
 //                list.addAll(oldAssigneeUUIDList)
                 for (i in careteams) {
-                    if (i.isSelected) {
-                        assignTo.add(i.user_id_details.uid!!)
+                    if (i.isSelected == true) {
+                        assignTo.add(i.user_id_details?.uid!!)
                     }
                 }
                 // Here newAssigneesUUIDList contains list of total assignees
@@ -599,7 +599,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     }
 
     override fun onSelected(position: Int) {
-        careteams[position].isSelected = !careteams[position].isSelected
+        careteams[position].isSelected = !careteams[position].isSelected!!
         fragmentEditCarePointBinding.assigneRV.postDelayed({
             assigneeAdapter!!.notifyDataSetChanged()
         }, 100)
@@ -607,12 +607,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         assignee.clear()
         selectedAssigneeUUIDList.clear()
         for (i in careteams) {
-            if (i.isSelected) {
-                val uuid = i.user_id_details.uid
+            if (i.isSelected == true) {
+                val uuid = i.user_id_details?.uid
                 uuid?.let { selectedAssigneeUUIDList.add(it) }
                 assignee.add(
-                    i.user_id_details.firstname!!.plus(" ")
-                        .plus(i.user_id_details.lastname?.ifEmpty { null })
+                    i.user_id_details?.firstname!!.plus(" ")
+                        .plus(i.user_id_details?.lastname?.ifEmpty { null })
                 )
             }
         }

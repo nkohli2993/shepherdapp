@@ -61,10 +61,10 @@ class SelectUsersAdapter(
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             val careTeam = careTeams[position]
-            val firstName = careTeam.user_id_details.firstname
-            val lastName = careTeam.user_id_details.lastname
+            val firstName = careTeam.user_id_details?.firstname
+            val lastName = careTeam.user_id_details?.lastname
             val fullName = "$firstName $lastName"
-            val imageUrl = careTeam.user_id_details.profilePhoto
+            val imageUrl = careTeam.user_id_details?.profilePhoto
 
             itemBinding.let {
                 it.txtUser.text = fullName

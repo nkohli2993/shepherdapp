@@ -64,7 +64,7 @@ class UsersAdapter(
             recyclerViewItemCheckedListener: RecyclerItemListener
         ) {
             itemBinding.data = careTeam
-            if (careTeam.isSelected) {
+            if (careTeam.isSelected == true) {
                 itemBinding.chkUser.visibility = View.VISIBLE
             } else {
                 itemBinding.chkUser.visibility = View.GONE

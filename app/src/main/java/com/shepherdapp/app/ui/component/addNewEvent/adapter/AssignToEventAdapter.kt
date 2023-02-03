@@ -51,21 +51,21 @@ class AssignToEventAdapter(
         Log.e(
             "catch_exception",
             "log: ${memberList.size} ${
-                memberList[position].user_id_details.firstname.plus(" ")
-                    .plus(if(memberList[position].user_id_details.lastname == null) "" else memberList[position].user_id_details.lastname)
+                memberList[position].user_id_details?.firstname.plus(" ")
+                    .plus(if(memberList[position].user_id_details?.lastname == null) "" else memberList[position].user_id_details?.lastname)
             }"
         )
 
         vh.tvSelect.isVisible = false
         vh.clEventWrapper.isVisible = true
-        vh.textViewCareTeamName.text = memberList[position].user_id_details.firstname.plus(" ")
-            .plus(if(memberList[position].user_id_details.lastname == null) "" else memberList[position].user_id_details.lastname)
-        vh.textViewCareTeamRole.text = memberList[position].careRoles.name
-        Picasso.get().load(memberList[position].user_id_details.profilePhoto)
+        vh.textViewCareTeamName.text = memberList[position].user_id_details?.firstname.plus(" ")
+            .plus(if(memberList[position].user_id_details?.lastname == null) "" else memberList[position].user_id_details?.lastname)
+        vh.textViewCareTeamRole.text = memberList[position].careRoles?.name
+        Picasso.get().load(memberList[position].user_id_details?.profilePhoto)
             .placeholder(R.drawable.ic_defalut_profile_pic)
             .into(vh.imageViewCareTeam)
         vh.checkbox.isChecked = false
-        if (memberList[position].isSelected) {
+        if (memberList[position]?.isSelected == true) {
             vh.checkbox.isChecked = true
         }
         vh.checkbox.setOnCheckedChangeListener { compoundButton, b ->

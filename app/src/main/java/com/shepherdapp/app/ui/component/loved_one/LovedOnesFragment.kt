@@ -162,7 +162,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                     val lovedOneIDInPrefs =
                         Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
                     for (i in careTeams) {
-                        if (lovedOneIDInPrefs.equals(i.love_user_id_details.uid)) {
+                        if (lovedOneIDInPrefs.equals(i.love_user_id_details?.uid)) {
                             selectedCare = i
                             break
                         }
@@ -303,7 +303,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
             R.id.btnDone -> {
                 selectedCare?.let { careTeams ->
                     careTeams.love_user_id_details.let {
-                        lovedOneViewModel.saveLovedOneUUID(it.uid!!)
+                        lovedOneViewModel.saveLovedOneUUID(it?.uid!!)
                         val lovedOneDetail = UserLovedOne(
                             id = it.id,
                             userId = it.uid,
@@ -317,7 +317,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                         lovedOneViewModel.saveLovedOneUserDetail(lovedOneDetail)
 
                         // Get the care role name and saved into shared preferences
-                        val roleName = careTeams.careRoles.name
+                        val roleName = careTeams.careRoles?.name
                         roleName?.let { it1 -> lovedOneViewModel.saveUserRole(it1) }
                     }
                 }

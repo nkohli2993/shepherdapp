@@ -129,7 +129,7 @@ class SelectUsersFragment : BaseFragment<FragmentSelectUsersBinding>(), View.OnC
                         fragmentSelectUsersBinding.imgCancel.visibility = View.VISIBLE
                         searchedCareTeams?.clear()
                         searchedCareTeams = careTeams?.filter {
-                            it.user_id_details.firstname?.contains(
+                            it.user_id_details?.firstname?.contains(
                                 s,
                                 true
                             ) == true
@@ -172,7 +172,7 @@ class SelectUsersFragment : BaseFragment<FragmentSelectUsersBinding>(), View.OnC
         when (view?.id) {
             R.id.btnDone -> {
                 val selectedUser = careTeams?.filter {
-                    it.isSelected
+                    it.isSelected == true
                 } as ArrayList<CareTeamModel>
 
                 Log.d(TAG, "selectedUsers count is  : ${selectedUser.size}")

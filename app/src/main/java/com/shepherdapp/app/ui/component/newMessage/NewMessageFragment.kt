@@ -155,7 +155,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                         Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
                     // User list should not contain loggedIn User
                     val careTeamList = careTeams?.filterNot { careTeamModel ->
-                        careTeamModel.user_id_details.uid == loggedInUserUUID
+                        careTeamModel.user_id_details?.uid == loggedInUserUUID
                     } as ArrayList
                     usersAdapter?.addData(careTeamList)
                 }
@@ -192,7 +192,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                         Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
                     // User list should not contain loggedIn User
                     val careTeamList = careTeams?.filterNot { careTeamModel ->
-                        careTeamModel.user_id_details.uid == loggedInUserUUID
+                        careTeamModel.user_id_details?.uid == loggedInUserUUID
                     } as ArrayList
                     usersAdapter?.addData(careTeamList)
                 }
@@ -241,9 +241,9 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         val loggedInUserId = loggedInUser?.id
 
         singleEvent.getContentIfNotHandled()?.let {
-            val receiverName = it.user_id_details.firstname + " " + it.user_id_details.lastname
-            val receiverID = it.user_id_details.id
-            val receiverPicUrl = it.user_id_details.profilePhoto
+            val receiverName = it.user_id_details?.firstname + " " + it.user_id_details?.lastname
+            val receiverID = it.user_id_details?.id
+            val receiverPicUrl = it.user_id_details?.profilePhoto
             // Create Chat Model
             val chatModel = ChatModel(
                 null,
@@ -337,9 +337,9 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                 for (i in selectedCareTeams?.indices!!) {
                     val selectedCareTeam = selectedCareTeams!![i]
                     val receiverName =
-                        selectedCareTeam.user_id_details.firstname + " " + selectedCareTeam.user_id_details.lastname
-                    val receiverID = selectedCareTeam.user_id_details.id
-                    val receiverPicUrl = selectedCareTeam.user_id_details.profilePhoto
+                        selectedCareTeam.user_id_details?.firstname + " " + selectedCareTeam.user_id_details?.lastname
+                    val receiverID = selectedCareTeam.user_id_details?.id
+                    val receiverPicUrl = selectedCareTeam.user_id_details?.profilePhoto
                     // Create Chat Model
                     val chatModel = ChatModel(
                         null,
@@ -388,9 +388,9 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                 for (i in selectedCareTeams?.indices!!) {
                     val selectedCareTeam = selectedCareTeams!![i]
                     val receiverName =
-                        selectedCareTeam.user_id_details.firstname + " " + selectedCareTeam.user_id_details.lastname
-                    val receiverID = selectedCareTeam.user_id_details.id
-                    val receiverPicUrl = selectedCareTeam.user_id_details.profilePhoto
+                        selectedCareTeam.user_id_details?.firstname + " " + selectedCareTeam.user_id_details?.lastname
+                    val receiverID = selectedCareTeam.user_id_details?.id
+                    val receiverPicUrl = selectedCareTeam.user_id_details?.profilePhoto
                     // Create Chat Model
                     val chatModel = ChatModel(
                         null,

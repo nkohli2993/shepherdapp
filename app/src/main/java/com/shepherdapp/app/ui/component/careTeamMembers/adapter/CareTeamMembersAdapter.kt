@@ -60,7 +60,7 @@ class CareTeamMembersAdapter(
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             val careTeam = careTeams[position]
-            if (careTeam.isPendingInvite) {
+            if (careTeam.isPendingInvite == true) {
                 val isLoggedInUserCareTeamLead = Prefs.with(ShepherdApp.appContext)
                     ?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
 
@@ -86,7 +86,7 @@ class CareTeamMembersAdapter(
                             .placeholder(R.drawable.ic_defalut_profile_pic)
                             .into(it.imageViewCareTeam)
                     }
-                    it.textViewCareTeamRole.text = "As ${careTeam.careRoles.name}"
+                    it.textViewCareTeamRole.text = "As ${careTeam.careRoles?.name}"
                 }
 
                 // Delete button is clickable for CareTeam Lead Only
@@ -141,10 +141,10 @@ class CareTeamMembersAdapter(
                 itemBinding.imageViewInfo.visibility = View.GONE
                 itemBinding.imageViewDelete.isClickable = false
 
-                val firstName = careTeam.user_id_details.firstname
-                val lastName = careTeam.user_id_details.lastname
+                val firstName = careTeam.user_id_details?.firstname
+                val lastName = careTeam.user_id_details?.lastname
                 val fullName = "$firstName $lastName"
-                val imageUrl = careTeam.user_id_details.profilePhoto
+                val imageUrl = careTeam.user_id_details?.profilePhoto
                 itemBinding.imageViewDelete.setBackgroundResource(R.drawable.ic_arrow)
 
                 itemBinding.let {
@@ -153,7 +153,7 @@ class CareTeamMembersAdapter(
                     Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
                         .into(it.imageViewCareTeam)
 
-                    it.textViewCareTeamRole.text = careTeam.careRoles.name
+                    it.textViewCareTeamRole.text = careTeam.careRoles?.name
                 }
 
                 itemBinding.root.setOnClickListener {

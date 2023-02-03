@@ -257,7 +257,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
     override fun onItemClick(careTeam: CareTeamModel) {
         // Save the selected lovedOne UUID in shared prefs
         careTeam.love_user_id_details.let {
-            profileViewModel.saveLovedOneUUID(it.uid!!)
+            profileViewModel.saveLovedOneUUID(it?.uid!!)
             val lovedOneDetail = UserLovedOne(
                 it.id,
                 it.uid,
@@ -268,7 +268,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
             profileViewModel.saveLovedOneUserDetail(lovedOneDetail)
 
             // Get the care role name and saved into shared preferences
-            val roleName = careTeam.careRoles.name
+            val roleName = careTeam.careRoles?.name
             roleName?.let { it1 -> profileViewModel.saveUserRole(it1) }
 
             // Set User's Role

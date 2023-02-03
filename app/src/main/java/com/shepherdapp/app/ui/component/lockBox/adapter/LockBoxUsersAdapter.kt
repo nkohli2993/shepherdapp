@@ -11,6 +11,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
+import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherdapp.app.databinding.AdapterEventsMembersBinding
 import com.shepherdapp.app.databinding.AdapterUsersLockboxBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
@@ -71,9 +72,9 @@ class LockBoxUsersAdapter(
                 }
             }
 
-            val imageUrl = usersList[position].user_id_details.profilePhoto ?: ""
-            val firstName = usersList[position].user_id_details.firstname
-            val lastName = usersList[position].user_id_details.lastname
+            val imageUrl = usersList[position].user_id_details?.profilePhoto ?: ""
+            val firstName = usersList[position].user_id_details?.firstname
+            val lastName = usersList[position].user_id_details?.lastname
             val first = firstName?.first().toString()
             var last: String? = null
             var fullName: String? = null
@@ -113,6 +114,11 @@ class LockBoxUsersAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return position
+    }
+
+    fun addData(usersList: ArrayList<CareTeamModel>) {
+        this.usersList = usersList
+        notifyDataSetChanged()
     }
 
 }
