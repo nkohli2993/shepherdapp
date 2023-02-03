@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -31,6 +32,7 @@ import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.Documents
 import com.shepherdapp.app.data.dto.lock_box.edit_lock_box.DocumentData
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
@@ -39,6 +41,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.lockBox.adapter.DocumentAdapter
+import com.shepherdapp.app.ui.component.lockBox.adapter.LockBoxUsersAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.UploadedDocumentAdapter
 import com.shepherdapp.app.utils.FileValidator
 import com.shepherdapp.app.utils.extensions.showError
@@ -83,6 +86,10 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private var dateFormat = SimpleDateFormat("MMM dd, yyyy")
     private var isLoading = false
     private var lockBoxTypeId: Int? = null
+    private var usersList: ArrayList<CareTeamModel>? = arrayListOf()
+    private var usersUUID: ArrayList<String>? = arrayListOf()
+    private var lockBoxUsersAdapter: LockBoxUsersAdapter? = null
+
 
     companion object {
         private const val REQUEST_CODE_SIGN_IN = 1
@@ -137,7 +144,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 fileName,
                                 fileNote,
                                 selectedDocumentId?.toInt(), lockBoxId!!,
-                                list, it1
+                                list, it1,usersUUID
                             )
                         }
                     }
@@ -226,6 +233,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    uploadedFiles.clear()
                     fragmentEditLockBoxBinding.let {
                         result.data.payload.let { payload ->
                             it.edtFileName.setText(payload?.name)
@@ -261,9 +269,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 setFileViewInvisible()
                             }
                         }
-
                     }
-
                 }
             }
         }
@@ -323,6 +329,34 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                 }
 
             }
+
+        // Get data back from the launched fragment
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<CareTeamModel>>(
+            "userList"
+        )?.observe(viewLifecycleOwner) { users ->
+            usersList = users
+            Log.d(TAG, "initViewBinding: userList is $usersList")
+            Log.d(TAG, "initViewBinding: userList size is ${usersList?.size}")
+
+            usersUUID = usersList?.map {
+                it.user_id
+            } as ArrayList<String>
+
+            setLockBoxUsersAdapter()
+        }
+    }
+
+    private fun setLockBoxUsersAdapter() {
+        lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it) }
+        fragmentEditLockBoxBinding.rvUsers.adapter = lockBoxUsersAdapter
+
+        if (usersList?.size!! > 5) {
+            fragmentEditLockBoxBinding.txtMore.visibility = View.VISIBLE
+            val moreUser = usersList?.size!! - 5
+            fragmentEditLockBoxBinding.txtMore.text = "+ $moreUser More"
+        } else {
+            fragmentEditLockBoxBinding.txtMore.visibility = View.GONE
+        }
     }
 
     override fun getLayoutRes(): Int {
@@ -356,7 +390,8 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 selectedDocumentId?.toInt(),
                                 lockBoxId!!,
                                 null,
-                                null
+                                null,
+                                usersUUID
                             )
                         } else {
                             addNewLockBoxViewModel.editNewLockBox(
@@ -365,7 +400,8 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 selectedDocumentId?.toInt(),
                                 lockBoxId!!,
                                 null,
-                                deletedSelectedDocs
+                                deletedSelectedDocs,
+                                usersUUID
                             )
                         }
 
@@ -431,7 +467,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                             fileName,
                                             fileNote,
                                             selectedDocumentId?.toInt(), lockBoxId!!,
-                                            addNewDocument, it
+                                            addNewDocument, it, usersUUID
                                         )
                                     }
                                 }
@@ -444,6 +480,10 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             }
             R.id.ivBack -> {
                 backPress()
+            }
+            R.id.imgSelectUsers -> {
+                Log.d(TAG, "Select Users : clicked")
+                findNavController().navigate(R.id.action_nav_edit_lockbox_to_selectUsersFragment)
             }
         }
     }

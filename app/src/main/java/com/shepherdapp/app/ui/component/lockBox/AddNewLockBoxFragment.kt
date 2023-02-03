@@ -148,7 +148,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
             }
 
-        // Get data from SelectUser Screen
+        // Get data back from the launched fragment
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<CareTeamModel>>(
             "userList"
         )?.observe(viewLifecycleOwner) { users ->

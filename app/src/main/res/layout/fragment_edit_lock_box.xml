@@ -239,8 +239,86 @@
                 app:layout_constraintEnd_toEndOf="@id/cardView"
                 app:layout_constraintStart_toStartOf="@+id/cardView"
                 app:layout_constraintTop_toBottomOf="@+id/txtUploadedFiles"
-                tools:itemCount="5"
+                tools:itemCount="3"
                 tools:listitem="@layout/adapter_uploaded_files" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvSelectUsers"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="@dimen/_6sdp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rvUploadedFiles">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutSelectUsers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_15sdp">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtSelectUsers"
+                        style="@style/TextViewGothamBold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:ellipsize="end"
+                        android:includeFontPadding="false"
+                        android:maxLines="5"
+                        android:text="@string/select_users"
+                        android:textSize="@dimen/_13ssp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgSelectUsers"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:onClick="@{listener::onClick}"
+                        android:padding="@dimen/_5sdp"
+                        android:src="@drawable/ic_plus"
+                        app:layout_constraintBottom_toBottomOf="@+id/txtSelectUsers"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/txtSelectUsers" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvUsers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintStart_toStartOf="@+id/txtSelectUsers"
+                        app:layout_constraintTop_toBottomOf="@+id/txtSelectUsers"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/adapter_users_lockbox" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtMore"
+                        style="@style/TextViewGothamBook"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:text="+3 More"
+                        android:textColor="@color/_192032"
+                        android:visibility="gone"
+                        app:layout_constraintBottom_toBottomOf="@+id/rvUsers"
+                        app:layout_constraintStart_toEndOf="@+id/rvUsers"
+                        app:layout_constraintTop_toTopOf="@+id/rvUsers" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/txtNoUploadedLockBoxFile"
@@ -265,7 +343,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="@+id/edtNote"
                 app:layout_constraintStart_toStartOf="@+id/edtNote"
-                app:layout_constraintTop_toBottomOf="@+id/txtNoUploadedLockBoxFile">
+                app:layout_constraintTop_toBottomOf="@+id/cvSelectUsers">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnCancel"
