@@ -1,14 +1,19 @@
 package com.shepherdapp.app.ui.component.lockBox.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
 import com.shepherdapp.app.databinding.AdapterRecommendedDocumentsBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.utils.CareRole
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Modules
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.view_model.LockBoxViewModel
 
 
@@ -19,6 +24,8 @@ class RecommendedDocumentsAdapter(
     RecyclerView.Adapter<RecommendedDocumentsAdapter.RecommendedDocumentsViewHolder>() {
     lateinit var binding: AdapterRecommendedDocumentsBinding
     lateinit var context: Context
+
+    private val TAG = "RecommendedDocument"
 
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
@@ -75,16 +82,21 @@ class RecommendedDocumentsAdapter(
                 }
             }
 
-//            itemBinding.ivStatus.setImageResource(R.drawable.ic_dot)
-            /* if(lockBoxTypes.isAdded){
-                 itemBinding.ivStatus.setImageResource(R.drawable.ic_check)
-             }*/
+            // Check permissions
+            val permissions = Prefs.with(ShepherdApp.appContext)?.getString(Const.PERMISSIONS, "")
+            Log.d(TAG, "bind: Permissions ->$permissions")
+            val lockBoxPermission = permissions?.split(",")?.filter {
+                it == Modules.LockBox.value
+            }
+            Log.d(TAG, "bind: permissions -> $lockBoxPermission")
 
-            // "lockbox" key represents array. If it is not empty, means document has been uploaded
+            // "lockBox" key represents array. If it is not empty, means document has been uploaded
             // So select the checkbox accordingly
             if (lockBoxTypes.lockbox.isNotEmpty()) {
-                itemBinding.checkbox.isChecked = true
+                // Check if lockBox permission is available or not
+                itemBinding.checkbox.isChecked = !lockBoxPermission.isNullOrEmpty()
             }
+
 
             itemBinding.root.setOnClickListener {
                 if (isNewVisible) {

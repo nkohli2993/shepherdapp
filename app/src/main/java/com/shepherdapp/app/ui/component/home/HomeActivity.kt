@@ -351,7 +351,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
 
                     Log.d(TAG, "initHomeViews: Permissions : $permissions")
-
+                    // Save Permissions to SharedPref
+                    permissions?.let { it1 -> viewModel.savePermissions(it1) }
                     val perList = permissions?.split(',')
                         ?.map { it.trim() }
                     permissionCards(View.GONE)
@@ -802,20 +803,20 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     }
 
-   /* override fun childSource(source: String) {
-        val lovedOneDetail = viewModel.getLovedUserDetail()
-        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
-            CareRole.CareTeamLead.slug -> {
-                true
-            }
-            else -> {
-                false
-            }
-        }
-        when (source) {
-            Const.Screen.CARE_POINT -> {
-                tvNew.isVisible = isNewVisible
-            }
-        }
-    }*/
+    /* override fun childSource(source: String) {
+         val lovedOneDetail = viewModel.getLovedUserDetail()
+         val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+             CareRole.CareTeamLead.slug -> {
+                 true
+             }
+             else -> {
+                 false
+             }
+         }
+         when (source) {
+             Const.Screen.CARE_POINT -> {
+                 tvNew.isVisible = isNewVisible
+             }
+         }
+     }*/
 }

@@ -272,4 +272,8 @@ class HomeViewModel @Inject constructor(
     fun isLoggedInUserCareTeamLead(): Boolean? {
         return userRepository.isLoggedInUserTeamLead()
     }
+
+    fun savePermissions(permissions: String) {
+        userRepository.savePermissions(permissions)
+    }
 }

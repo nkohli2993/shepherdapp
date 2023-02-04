@@ -37,6 +37,7 @@ object Const {
     const val SET_SECURITY_CODE = "SET"
     const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
     const val LOVED_ONE_PIC = "LOVED_ONE_PIC"
+    const val PERMISSIONS = "PERMISSIONS"
 
     const val PLAY_STORE_SUBSCRIPTION_URL = "https://play.google.com/store/account/subscriptions"
     const val PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL =

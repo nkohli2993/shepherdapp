@@ -16,6 +16,7 @@ import com.shepherdapp.app.utils.Const.LOVED_ONE_PIC
 import com.shepherdapp.app.utils.Const.LOVED_ONE_UUID
 import com.shepherdapp.app.utils.Const.LOVED_USER_DETAILS
 import com.shepherdapp.app.utils.Const.PAYLOAD
+import com.shepherdapp.app.utils.Const.PERMISSIONS
 import com.shepherdapp.app.utils.Const.USER_DETAILS
 import com.shepherdapp.app.utils.Const.USER_ID
 import com.shepherdapp.app.utils.Const.USER_TOKEN
@@ -117,6 +118,14 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     }
 
     fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(LOVED_ONE_ID)
+
+    fun savePermissions(permissions: String) {
+        Prefs.with(ShepherdApp.appContext)!!.save(PERMISSIONS, permissions)
+    }
+
+    fun getPermissions(): String? {
+        return Prefs.with(ShepherdApp.appContext)?.getString(PERMISSIONS, "")
+    }
 
     fun saveLovedOneUUId(uuid: String) {
         Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_UUID, uuid)
