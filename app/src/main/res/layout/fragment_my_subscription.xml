@@ -71,7 +71,7 @@
             <LinearLayout
                 android:id="@+id/layoutCard"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_220sdp"
+                android:layout_height="@dimen/_300sdp"
                 android:background="@drawable/bg_subscription_red"
                 android:orientation="vertical"
                 android:paddingVertical="@dimen/_30sdp"
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorWhite"
                     android:lineSpacingExtra="@dimen/_5sdp"
-                    android:text="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout."
+                    android:text="@string/subscription_plan_desc"
                     android:layout_marginTop="@dimen/_10sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
