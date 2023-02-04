@@ -22,8 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{listener::onClick}"
-            android:src="@drawable/ic_back"
             android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,9 +36,9 @@
             android:text="@string/my_subscription_plan"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivBack"
             app:layout_constraintStart_toEndOf="@+id/ivBack"
-            app:layout_constraintTop_toTopOf="@+id/ivBack"
-            app:layout_constraintBottom_toBottomOf="@+id/ivBack" />
+            app:layout_constraintTop_toTopOf="@+id/ivBack" />
 
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -46,64 +46,64 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/gotham_book"
             android:text="@string/you_have_choosen_plan"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_14ssp"
             app:layout_constraintStart_toStartOf="@+id/txtMySubscriptionPlan"
-            app:layout_constraintTop_toBottomOf="@+id/txtMySubscriptionPlan"
-            android:layout_marginTop="@dimen/_10sdp" />
+            app:layout_constraintTop_toBottomOf="@+id/txtMySubscriptionPlan" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            app:cardBackgroundColor="@color/transparent"
             app:cardCornerRadius="@dimen/_24sdp"
             app:cardUseCompatPadding="true"
-            app:cardBackgroundColor="@color/transparent"
-            android:layout_marginTop="@dimen/_15sdp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/txtExpirePlan"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtPlan"
-            app:layout_constraintBottom_toTopOf="@id/txtExpirePlan">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPlan">
 
             <LinearLayout
                 android:id="@+id/layoutCard"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_300sdp"
+                android:layout_height="@dimen/_200sdp"
                 android:background="@drawable/bg_subscription_red"
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/_30sdp"
-                android:paddingHorizontal="@dimen/_20sdp">
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:paddingVertical="@dimen/_30sdp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtTitle"
                     style="@style/TextViewGothamBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
                     android:text="Basic"
+                    android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_30ssp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtDesc"
-                    style="@style/TextViewGothamBook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
-                    android:lineSpacingExtra="@dimen/_5sdp"
-                    android:text="@string/subscription_plan_desc"
-                    android:layout_marginTop="@dimen/_10sdp" />
+                <!--  <androidx.appcompat.widget.AppCompatTextView
+                      android:id="@+id/txtDesc"
+                      style="@style/TextViewGothamBook"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textColor="@color/colorWhite"
+                      android:lineSpacingExtra="@dimen/_5sdp"
+                      android:text="@string/subscription_plan_desc"
+                      android:layout_marginTop="@dimen/_10sdp" />-->
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtLovedOne"
                     style="@style/TextViewGothamMedium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorWhite"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:text="@string/max_3_loved_one_can_be_added"
-                    android:layout_marginTop="@dimen/_15sdp" />
+                    android:textColor="@color/colorWhite" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="wrap_content"
@@ -116,9 +116,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_5sdp"
+                        android:text="50"
                         android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_20ssp"
-                        android:text="50"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -128,8 +128,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_3sdp"
-                        android:textColor="@color/colorWhite"
                         android:text="$/month"
+                        android:textColor="@color/colorWhite"
                         app:layout_constraintStart_toEndOf="@id/txtPrice"
                         app:layout_constraintTop_toTopOf="@+id/txtPrice" />
 
@@ -145,41 +145,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/gotham_book"
             android:text="@string/your_plan_will_expire_on"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_14ssp"
-            android:layout_marginStart="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="@+id/cv"
-            app:layout_constraintTop_toBottomOf="@+id/cv"
-            android:layout_marginTop="@dimen/_10sdp" />
+            app:layout_constraintTop_toBottomOf="@+id/cv" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtPlanExpireDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/gotham_bold"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_14ssp"
             app:layout_constraintStart_toStartOf="@+id/txtExpirePlan"
-            app:layout_constraintTop_toBottomOf="@+id/txtExpirePlan"
-            android:layout_marginTop="@dimen/_10sdp" />
+            app:layout_constraintTop_toBottomOf="@+id/txtExpirePlan" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtRenew"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
             android:fontFamily="@font/gotham_book"
+            android:onClick="@{listener::onClick}"
+            android:text="@string/renew"
             android:textColor="@color/_D7293F"
             android:textSize="@dimen/_14ssp"
-            android:text="@string/renew"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:onClick="@{listener::onClick}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtExpirePlan"
-            android:layout_marginTop="@dimen/_10sdp" />
+            app:layout_constraintTop_toBottomOf="@+id/txtExpirePlan" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnChangePlan"
@@ -195,23 +195,43 @@
             android:textAllCaps="false"
             android:textColor="@color/_399282"
             android:textSize="@dimen/_16ssp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtNoSubscriptionFound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/gotham_book"
-            android:textColor="@color/_192032"
+            android:text="@string/not_active_subscription_found"
+            android:textColor="@color/_D7293F"
             android:textSize="@dimen/_16ssp"
             android:visibility="gone"
-            android:text="@string/not_active_subscription_found"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtMySubscriptionPlan"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtMySubscriptionPlan" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/txtRenewSubscription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:background="@drawable/button_transparent_green"
+            android:fontFamily="@font/gotham_medium"
+            android:onClick="@{listener::onClick}"
+            android:paddingHorizontal="@dimen/_50sdp"
+            android:paddingVertical="@dimen/_15sdp"
+            android:text="@string/renew"
+            android:textAllCaps="false"
+            android:textColor="@color/_399282"
+            android:textSize="@dimen/_16ssp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtNoSubscriptionFound" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

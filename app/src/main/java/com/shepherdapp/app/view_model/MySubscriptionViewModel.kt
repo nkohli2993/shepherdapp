@@ -3,6 +3,7 @@ package com.shepherdapp.app.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.data.dto.subscription.getPreviousSubscriptions.GetPreviousSubscriptionsResponseModel
 import com.shepherdapp.app.data.dto.subscription.get_active_subscriptions.GetActiveSubscriptionResponseModel
 import com.shepherdapp.app.data.remote.subscription.SubscriptionRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -28,6 +29,10 @@ class MySubscriptionViewModel @Inject constructor(
     var getActiveSubscriptionResponseLiveData: LiveData<Event<DataResult<GetActiveSubscriptionResponseModel>>> =
         _getActiveSubscriptionResponseLiveData
 
+    private var _getPreviousSubscriptionResponseLiveData =
+        MutableLiveData<Event<DataResult<GetPreviousSubscriptionsResponseModel>>>()
+    var getPreviousSubscriptionResponseLiveData: LiveData<Event<DataResult<GetPreviousSubscriptionsResponseModel>>> =
+        _getPreviousSubscriptionResponseLiveData
 
     fun getActiveSubscriptions(): LiveData<Event<DataResult<GetActiveSubscriptionResponseModel>>> {
         viewModelScope.launch {
@@ -41,6 +46,20 @@ class MySubscriptionViewModel @Inject constructor(
         return getActiveSubscriptionResponseLiveData
     }
 
+    fun getPreviousSubscriptions(
+        page: Int,
+        limit: Int
+    ): LiveData<Event<DataResult<GetPreviousSubscriptionsResponseModel>>> {
+        viewModelScope.launch {
+            val response = subscriptionRepository.getPreviousSubscriptions(page, limit)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _getPreviousSubscriptionResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return getPreviousSubscriptionResponseLiveData
+    }
 
 }
 

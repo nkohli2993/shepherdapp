@@ -18,6 +18,7 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.changeDatesFormat
+import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.MySubscriptionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,14 +35,16 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
     private var isActive: Boolean = false
     private var productId: String? = null
     private var url: String? = null
+    private var page = 1
+    private var limit = 10
 
 
     override fun observeViewModel() {
+        // Get Active Subscriptions
         mySubscriptionViewModel.getActiveSubscriptionResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
-//                    showError(requireContext(), it.message.toString())
                     fragmentMySubscriptionBinding?.txtPlan?.visibility = View.GONE
                     fragmentMySubscriptionBinding?.cv?.visibility = View.GONE
                     fragmentMySubscriptionBinding?.txtExpirePlan?.visibility = View.GONE
@@ -51,6 +54,10 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
 
                     // Show No Subscription found
                     fragmentMySubscriptionBinding?.txtNoSubscriptionFound?.visibility = View.VISIBLE
+                    fragmentMySubscriptionBinding?.txtRenewSubscription?.visibility = View.VISIBLE
+
+                    // If no subscription found, get previous subscriptions
+//                    mySubscriptionViewModel.getPreviousSubscriptions(page, limit)
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -66,6 +73,8 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
 
                     // Hide No Subscription found
                     fragmentMySubscriptionBinding?.txtNoSubscriptionFound?.visibility = View.GONE
+                    fragmentMySubscriptionBinding?.txtRenewSubscription?.visibility = View.GONE
+
 
                     it.data.payload.let { payload ->
                         fragmentMySubscriptionBinding?.txtPlanExpireDate?.text =
@@ -87,6 +96,53 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
                 }
             }
         }
+
+        // Get Previous Subscriptions
+        /* mySubscriptionViewModel.getPreviousSubscriptionResponseLiveData.observeEvent(this) {
+             when (it) {
+                 is DataResult.Failure -> {
+                     hideLoading()
+                     showError(requireContext(), it.message.toString())
+                 }
+                 is DataResult.Loading -> {
+                     showLoading("")
+                 }
+                 is DataResult.Success -> {
+                     hideLoading()
+                     val subscriptionData = it.data.payload?.users?.get(0)
+
+                     fragmentMySubscriptionBinding?.txtPlan?.visibility = View.VISIBLE
+                     fragmentMySubscriptionBinding?.cv?.visibility = View.VISIBLE
+                     fragmentMySubscriptionBinding?.txtExpirePlan?.visibility = View.VISIBLE
+                     fragmentMySubscriptionBinding?.txtPlanExpireDate?.visibility = View.VISIBLE
+                     fragmentMySubscriptionBinding?.txtRenew?.visibility = View.VISIBLE
+                     fragmentMySubscriptionBinding?.btnChangePlan?.visibility = View.VISIBLE
+
+                     // Hide No Subscription found
+                     fragmentMySubscriptionBinding?.txtNoSubscriptionFound?.visibility = View.GONE
+
+                     it.data.payload.let { payload ->
+                         fragmentMySubscriptionBinding?.txtPlanExpireDate?.text =
+                             subscriptionData?.expiryDate.changeDatesFormat(
+                                 sourceFormat = "yyyy-MM-dd",
+                                 targetFormat = "dd MMM, yyyy"
+                             )
+                         fragmentMySubscriptionBinding?.txtLovedOne?.text =
+                             "Max ${subscriptionData?.allowedLovedOnesCount} lovedOne can be added"
+                         fragmentMySubscriptionBinding?.txtPrice?.text =
+                             subscriptionData?.amount.toString()
+                         fragmentMySubscriptionBinding?.txtPriceUnit?.text =
+                             "$/${subscriptionData?.plan}"
+                         fragmentMySubscriptionBinding?.txtTitle?.text = "${subscriptionData?.plan}"
+                         fragmentMySubscriptionBinding?.txtPlan?.text =
+                             "You have chosen ${subscriptionData?.plan} plan"
+
+                         transactionId = subscriptionData?.transactionId
+                     }
+                     establishConnection()
+                 }
+             }
+         }*/
     }
 
     override fun onCreateView(
@@ -219,6 +275,16 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
                 val intent = Intent(Intent.ACTION_VIEW);
                 intent.data = Uri.parse(url)
                 startActivity(intent)
+            }
+            R.id.txtRenewSubscription -> {
+                // Redirect to Subscription Screen
+                val intent = Intent(requireContext(), SubscriptionActivity::class.java)
+                intent.putExtra("source", "My Subscription")
+                startActivity(intent)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
             }
 
             R.id.btnChangePlan -> {

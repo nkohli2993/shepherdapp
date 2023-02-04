@@ -72,6 +72,7 @@ import com.shepherdapp.app.data.dto.signup.UserSignupData
 import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
 import com.shepherdapp.app.data.dto.subscription.check_subscription_status.CheckSubscriptionStatusResponseModel
+import com.shepherdapp.app.data.dto.subscription.getPreviousSubscriptions.GetPreviousSubscriptionsResponseModel
 import com.shepherdapp.app.data.dto.subscription.get_active_subscriptions.GetActiveSubscriptionResponseModel
 import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionResponseModel
@@ -610,6 +611,12 @@ interface ApiService {
 
     @GET(ApiConstants.Subscription.GET_ACTIVE_SUBSCRIPTIONS)
     suspend fun getActiveSubscriptions(): Response<GetActiveSubscriptionResponseModel>
+
+    @GET(ApiConstants.Subscription.GET_PREVIOUS_SUBSCRIPTIONS)
+    suspend fun getPreviousSubscriptions(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+    ): Response<GetPreviousSubscriptionsResponseModel>
 
     @GET(ApiConstants.Subscription.CHECK_SUBSCRIPTION_STATUS)
     suspend fun checkSubscriptionStatus(): Response<CheckSubscriptionStatusResponseModel>

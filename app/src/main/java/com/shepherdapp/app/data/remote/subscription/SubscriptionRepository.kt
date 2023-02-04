@@ -3,6 +3,7 @@ package com.shepherdapp.app.data.remote.subscription
 import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
 import com.shepherdapp.app.data.dto.subscription.check_subscription_status.CheckSubscriptionStatusResponseModel
+import com.shepherdapp.app.data.dto.subscription.getPreviousSubscriptions.GetPreviousSubscriptionsResponseModel
 import com.shepherdapp.app.data.dto.subscription.get_active_subscriptions.GetActiveSubscriptionResponseModel
 import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionResponseModel
@@ -48,6 +49,19 @@ data class SubscriptionRepository @Inject constructor(private val apiService: Ap
             NetworkOnlineDataRepo<GetActiveSubscriptionResponseModel, GetActiveSubscriptionResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<GetActiveSubscriptionResponseModel> {
                 return apiService.getActiveSubscriptions()
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+    //get previous subscriptions
+    suspend fun getPreviousSubscriptions(
+        page: Int,
+        limit: Int
+    ): Flow<DataResult<GetPreviousSubscriptionsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<GetPreviousSubscriptionsResponseModel, GetPreviousSubscriptionsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<GetPreviousSubscriptionsResponseModel> {
+                return apiService.getPreviousSubscriptions(page, limit)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

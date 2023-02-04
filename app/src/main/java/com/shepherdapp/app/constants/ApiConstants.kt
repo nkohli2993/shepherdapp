@@ -180,6 +180,7 @@ object ApiConstants {
             "${BASE_URL_USER}${API_VERSION}enterprises/check-subscription-status"
         const val GET_ACTIVE_SUBSCRIPTIONS = "${BASE_URL_USER}${API_VERSION}subscriptions/active"
         const val GET_SUBSCRIPTIONS_PLANS = "${BASE_URL_USER}${API_VERSION}subscriptions/plans"
+        const val GET_PREVIOUS_SUBSCRIPTIONS="${BASE_URL_USER}${API_VERSION}subscriptions/user"
     }
 
     object Enterprise {
