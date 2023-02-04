@@ -35,6 +35,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_10sdp"
+                android:background="@drawable/rounded_box_new"
+                android:drawableStart="@drawable/ic_share"
+                android:drawablePadding="@dimen/_5sdp"
+                android:fontFamily="@font/gotham_medium"
+                android:onClick="@{listener::onClick}"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_5sdp"
+                android:text="@string/send"
+                android:textColor="@color/_A26DCB"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/ivBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/ivBack" />
+
             <!-- <com.google.android.material.imageview.ShapeableImageView
                  android:id="@+id/imageViewTopic"
                  android:layout_width="match_parent"

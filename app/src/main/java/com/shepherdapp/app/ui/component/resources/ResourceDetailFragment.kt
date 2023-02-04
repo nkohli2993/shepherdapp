@@ -1,6 +1,7 @@
 package com.shepherdapp.app.ui.component.resources
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.resource.AllResourceData
 import com.shepherdapp.app.databinding.FragmentResourceDetailBinding
@@ -151,6 +153,9 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
             R.id.ivBack -> {
                 backPress()
             }
+            R.id.tvShare -> {
+                shareUrl()
+            }
         }
     }
 
@@ -169,4 +174,17 @@ class ResourceDetailFragment : BaseFragment<FragmentResourceDetailBinding>(), Vi
     override fun onLongClick(text: String?) {
     }
 
+    private fun shareUrl() {
+        val resourceId = resourceDetail?.id
+        val shareResourceUrl = BuildConfig.BASE_URL_RESOURCE_SHARING + "resource/detail/" + "$resourceId"
+        try {
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "text/plain"
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Resource Document URL")
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Resource Document URL : $shareResourceUrl")
+            startActivity(Intent.createChooser(shareIntent, "choose one"))
+        } catch (e: Exception) {
+            Log.d(TAG, "shareUrl exception :$e")
+        }
+    }
 }
