@@ -11,10 +11,7 @@ import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersBinding
 import com.shepherdapp.app.databinding.AdapterSelectUsersBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
-import com.shepherdapp.app.utils.ClickType
-import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.Prefs
-import com.shepherdapp.app.utils.margin
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
 import com.shepherdapp.app.view_model.SelectUsersViewModel
 import com.squareup.picasso.Picasso
@@ -72,17 +69,25 @@ class SelectUsersAdapter(
                     .into(it.imageViewCareTeam)
             }
 
-            itemBinding.chkUsers.setOnCheckedChangeListener { compoundButton, b ->
-                recyclerItemListener.onItemSelected(position)
+            // CareTeam Leader is always selected
+            if (careTeam.careRoles?.slug == CareRole.CareTeamLead.slug) {
+                careTeam.isSelected = true
             }
 
-            /*  itemBinding.root.setOnClickListener {
-                  recyclerItemListener.onItemSelected(
-                      careTeams[position],
-                      ClickType.View.value
-                  )
+            /*itemBinding.chkUsers.setOnCheckedChangeListener { compoundButton, b ->
+                recyclerItemListener.onItemSelected(position)
+            }*/
 
-              }*/
+            itemBinding.chkUsers.isChecked = careTeam.isSelected == true
+
+            itemBinding.root.setOnClickListener {
+                // CareTeam Leader should not be able to deselect himself/herself
+                if (careTeam.careRoles?.slug != CareRole.CareTeamLead.slug) {
+                    recyclerItemListener.onItemSelected(
+                        position
+                    )
+                }
+            }
         }
     }
 

@@ -30,7 +30,6 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccoun
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
 import com.google.api.services.drive.DriveScopes
-import com.google.gson.annotations.SerializedName
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.care_team.*
@@ -525,7 +524,15 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             }
             R.id.imgSelectUsers -> {
                 Log.d(TAG, "Select Users : clicked")
-                findNavController().navigate(R.id.action_nav_edit_lockbox_to_selectUsersFragment)
+                if (!usersList.isNullOrEmpty()) {
+                    val action =
+                        EditLockBoxFragmentDirections.actionNavEditLockboxToSelectUsersFragment(
+                            users = usersList?.toTypedArray()
+                        )
+                    findNavController().navigate(action)
+                } else {
+                    findNavController().navigate(R.id.action_nav_edit_lockbox_to_selectUsersFragment)
+                }
             }
         }
     }

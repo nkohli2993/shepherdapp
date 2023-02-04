@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.FragmentCareTeamMembersBinding
@@ -33,6 +34,7 @@ class SelectUsersFragment : BaseFragment<FragmentSelectUsersBinding>(), View.OnC
     private var selectUsersAdapter: SelectUsersAdapter? = null
     private var careTeams: ArrayList<CareTeamModel>? = ArrayList()
     private var searchedCareTeams: ArrayList<CareTeamModel>? = ArrayList()
+    private val args: SelectUsersFragmentArgs by navArgs()
 
 
     private var pageNumber: Int = 1
@@ -66,6 +68,17 @@ class SelectUsersFragment : BaseFragment<FragmentSelectUsersBinding>(), View.OnC
                 is DataResult.Success -> {
                     hideLoading()
                     careTeams = it.data.payload.data
+
+                   /* if (!args.users.isNullOrEmpty()) {
+                        val userList = args.users?.toList()
+                        careTeams?.forEach { careTeam ->
+                            userList?.forEach { user ->
+                                if (careTeam.user_id == user.user_id) {
+                                    careTeam.isSelected = true
+                                }
+                            }
+                        }
+                    }*/
                     careTeams?.let { it1 -> selectUsersAdapter?.updateCareTeams(it1) }
                 }
                 is DataResult.Failure -> {

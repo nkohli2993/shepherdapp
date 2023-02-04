@@ -532,5 +532,10 @@
         <action
             android:id="@+id/action_selectUsersFragment_to_addNewLockBoxFragment"
             app:destination="@id/addNewLockBoxFragment" />
+        <argument
+            android:name="users"
+            app:argType="com.shepherdapp.app.data.dto.care_team.CareTeamModel[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>
