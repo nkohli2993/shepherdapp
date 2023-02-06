@@ -120,11 +120,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //        loginViewModel.loginData.value!!.email = "raja@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
 
-        loginViewModel.loginData.value!!.email = "rozik@yopmail.com"
-        loginViewModel.loginData.value!!.password = "1234"
-
-//        loginViewModel.loginData.value!!.email = "sweet@yopmail.com"
+//        loginViewModel.loginData.value!!.email = "rozik@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
+
+        loginViewModel.loginData.value!!.email = "sweet@yopmail.com"
+        loginViewModel.loginData.value!!.password = "1234"
 
         binding.viewModel = loginViewModel
 
@@ -150,7 +150,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         if (Prefs.with(this)?.getString(Const.FIREBASE_TOKEN, "").isNullOrEmpty()) {
             generateFirebaseToken()
         }
-
 
     }
 
