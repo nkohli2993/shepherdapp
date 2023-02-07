@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -136,13 +137,13 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtTypeTV"
-                    app:fontFamily="@font/gotham_medium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:paddingVertical="@dimen/_5sdp"
                     android:textColor="@color/_399282"
+                    app:fontFamily="@font/gotham_medium"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtLockBoxName" />
 
@@ -159,6 +160,30 @@
                     app:layout_constraintTop_toBottomOf="@+id/txtTypeTV" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtSelectedUsers"
+                style="@style/TextViewGothamMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/selected_users"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutDocDetail" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAllowedUsers"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSelectedUsers"
+                tools:itemCount="5"
+                tools:listitem="@layout/adapter_selected_users" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutEditLockBoxDocDetail"

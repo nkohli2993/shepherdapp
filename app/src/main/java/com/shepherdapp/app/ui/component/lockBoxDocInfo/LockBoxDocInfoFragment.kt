@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.viewpager.widget.ViewPager
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AllowedUsers
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.Payload
 import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
@@ -20,6 +21,8 @@ import com.shepherdapp.app.databinding.FragmentUploadedLockBoxDocDetailBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.component.lockBox.adapter.SelectUsersAdapter
+import com.shepherdapp.app.ui.component.lockBoxDocInfo.adapter.SelectedUsersAdapter
 import com.shepherdapp.app.ui.component.lockBoxDocInfo.adapter.UploadedDocumentImagesAdapter
 import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.extensions.showError
@@ -39,6 +42,9 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     private lateinit var fragmentUploadedLockBoxDocDetailBinding: FragmentUploadedLockBoxDocDetailBinding
     private val lockBoxDocInfoViewModel: LockBoxDocInfoViewModel by viewModels()
     private var documentImagesAdapter: UploadedDocumentImagesAdapter? = null
+    private var selectedUsersAdapter: SelectedUsersAdapter? = null
+    private var allowedUserList: ArrayList<AllowedUsers>? = arrayListOf()
+
     private val args: LockBoxDocInfoFragmentArgs by navArgs()
     private var lockBox: LockBox? = null
     private var lockBoxId: Int? = null
@@ -61,6 +67,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         fragmentUploadedLockBoxDocDetailBinding.listener = this
+        setUsersAdapters()
+
 //       lockBox = args.lockBox
         lockBoxId = args.lockBoxId
         lockBoxDocInfoViewModel.getDetailLockBox(lockBoxId!!)
@@ -115,6 +123,10 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
                 is DataResult.Success -> {
                     hideLoading()
                     payload = result.data.payload
+                    if (!payload?.allowedUsers.isNullOrEmpty()) {
+                        allowedUserList = payload?.allowedUsers
+                        allowedUserList?.let { selectedUsersAdapter?.updateUserList(it) }
+                    }
                     fragmentUploadedLockBoxDocDetailBinding.let {
                         it.txtLockBoxName.text = payload?.name
                         it.txtLockBoxNote.text = payload?.note
@@ -230,6 +242,11 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_uploaded_lock_box_doc_info
+    }
+
+    private fun setUsersAdapters() {
+        selectedUsersAdapter = SelectedUsersAdapter(lockBoxDocInfoViewModel)
+        fragmentUploadedLockBoxDocDetailBinding.rvAllowedUsers.adapter = selectedUsersAdapter
     }
 }
 

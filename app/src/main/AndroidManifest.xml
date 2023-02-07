@@ -82,20 +82,20 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
+              <!--  <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />-->
+
+               <!-- <data
                     android:host="uat-shepherdapp-frontend.itechnolabs.tech"
                     android:pathPrefix="/login"
                     android:scheme="https" />
                 <data
                     android:host="uat-shepherdapp-frontend.itechnolabs.tech"
                     android:pathPrefix="/signup"
-                    android:scheme="https" />
+                    android:scheme="https" />-->
             </intent-filter>
         </activity>
         <activity
