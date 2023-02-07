@@ -146,18 +146,37 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                         val data = result.data.payload.data
                         // To fix : Duplicate loved One
                         // If love_user_id at index 0 matches with the love_user_id at index, pick first object only
-                        if (data[0].love_user_id == data[1].love_user_id) {
-                            careTeams.add(result.data.payload.data.first())
+                        if (data.size == 1) {
+                            careTeams = data
                             lovedOneAdapter?.addData(careTeams)
                         } else {
-                            result.data.payload.let { payload ->
-                                careTeams = payload.data
-                                total = payload.total!!
-                                currentPage = payload.currentPage!!
-                                totalPage = payload.totalPages!!
+                            if (data[0].love_user_id == data[1].love_user_id) {
+                                careTeams.add(result.data.payload.data.first())
+                                lovedOneAdapter?.addData(careTeams)
+                            } else {
+                                result.data.payload.let { payload ->
+                                    careTeams = payload.data
+                                    total = payload.total!!
+                                    currentPage = payload.currentPage!!
+                                    totalPage = payload.totalPages!!
+                                }
+                                lovedOneAdapter?.addData(careTeams)
                             }
-                            lovedOneAdapter?.addData(careTeams)
                         }
+
+
+                        /* if (data[0].love_user_id == data[1].love_user_id) {
+                             careTeams.add(result.data.payload.data.first())
+                             lovedOneAdapter?.addData(careTeams)
+                         } else {
+                             result.data.payload.let { payload ->
+                                 careTeams = payload.data
+                                 total = payload.total!!
+                                 currentPage = payload.currentPage!!
+                                 totalPage = payload.totalPages!!
+                             }
+                             lovedOneAdapter?.addData(careTeams)
+                         }*/
                     }
                     val lovedOneIDInPrefs =
                         Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
