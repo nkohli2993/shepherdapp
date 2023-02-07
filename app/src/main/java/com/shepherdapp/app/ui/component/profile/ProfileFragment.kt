@@ -217,17 +217,22 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                         val data = it.data.payload.data
                         // To fix : Duplicate loved One Issue
                         // If love_user_id at index 0 matches with the love_user_id at index, pick first object only
-                        if (data[0].love_user_id == data[1].love_user_id) {
-                            careTeams.add(it.data.payload.data.first())
+                        if (data.size == 1) {
+                            careTeams = data
                             lovedOnesAdapter?.addData(careTeams)
                         } else {
-                            it.data.payload.let { payload ->
-                                careTeams = payload.data
-                                total = payload.total!!
-                                currentPage = payload.currentPage!!
-                                totalPage = payload.totalPages!!
+                            if (data[0].love_user_id == data[1].love_user_id) {
+                                careTeams.add(it.data.payload.data.first())
+                                lovedOnesAdapter?.addData(careTeams)
+                            } else {
+                                it.data.payload.let { payload ->
+                                    careTeams = payload.data
+                                    total = payload.total!!
+                                    currentPage = payload.currentPage!!
+                                    totalPage = payload.totalPages!!
+                                }
+                                lovedOnesAdapter?.addData(careTeams)
                             }
-                            lovedOnesAdapter?.addData(careTeams)
                         }
                     }
 
