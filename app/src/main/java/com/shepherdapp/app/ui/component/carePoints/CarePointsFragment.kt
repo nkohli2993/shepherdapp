@@ -100,14 +100,18 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
         // Check if loggedIn User is CareTeam Leader for selected lovedOne
         val lovedOneDetail = carePointsViewModel.getLovedOneDetail()
-        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
-            CareRole.CareTeamLead.slug -> {
-                true
-            }
-            else -> {
-                false
-            }
-        }
+        val isCareTeamLeader = carePointsViewModel.isLoggedInUserCareTeamLeader()
+        val isNewVisible =
+            (lovedOneDetail?.careRoles?.slug == CareRole.CareTeamLead.slug) || (isCareTeamLeader == true)
+
+        /* val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+             CareRole.CareTeamLead.slug -> {
+                 true
+             }
+             else -> {
+                 false
+             }
+         }*/
         updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
         fragmentCarePointsBinding.calendarPView.clearSelection()
         clickType = CalendarState.Today.value

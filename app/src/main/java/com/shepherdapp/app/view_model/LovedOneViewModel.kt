@@ -135,4 +135,8 @@ class LovedOneViewModel @Inject constructor(
         return userRepository.getLovedOneUserDetail()
     }
 
+    fun isLoggedInUserCareTeamLeader(): Boolean? {
+        return userRepository.isLoggedInUserTeamLead()
+    }
+
 }

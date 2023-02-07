@@ -243,6 +243,10 @@ class HomeViewModel @Inject constructor(
         return userDetailByUUIDLiveData
     }
 
+    fun saveLovedOneDetail(userLovedOne: UserLovedOne) {
+        userRepository.saveLovedOneUserDetail(userLovedOne)
+    }
+
     // Clear Firebase Token on logout
     fun clearFirebaseToken() {
         usersTableName =
@@ -271,6 +275,10 @@ class HomeViewModel @Inject constructor(
 
     fun isLoggedInUserCareTeamLead(): Boolean? {
         return userRepository.isLoggedInUserTeamLead()
+    }
+
+    fun saveLoggedInUserCareTeamLead(isCareTeamLeader: Boolean) {
+        userRepository.saveLoggedInUserTeamLead(isCareTeamLeader)
     }
 
     fun savePermissions(permissions: String) {

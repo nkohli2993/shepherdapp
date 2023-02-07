@@ -580,15 +580,19 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         super.onResume()
         parentActivityListener?.msgFromChildFragmentToActivity()
         // Check if loggedIn User is CareTeam Leader for the selected lovedOne
+        /* val lovedOneDetail = medListViewModel.getLovedOneDetail()
+         val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+             CareRole.CareTeamLead.slug -> {
+                 true
+             }
+             else -> {
+                 false
+             }
+         }*/
         val lovedOneDetail = medListViewModel.getLovedOneDetail()
-        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
-            CareRole.CareTeamLead.slug -> {
-                true
-            }
-            else -> {
-                false
-            }
-        }
+        val isCareTeamLeader = medListViewModel.isLoggedInUserCareTeamLeader()
+        val isNewVisible =
+            (lovedOneDetail?.careRoles?.slug == CareRole.CareTeamLead.slug) || (isCareTeamLeader == true)
         updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
     }
 }

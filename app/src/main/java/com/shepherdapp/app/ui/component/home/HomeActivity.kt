@@ -42,10 +42,7 @@ import com.shepherdapp.app.ui.component.profile.ProfileFragment
 import com.shepherdapp.app.ui.component.resources.ResourcesFragment
 import com.shepherdapp.app.ui.component.settings.SettingFragment
 import com.shepherdapp.app.ui.component.vital_stats.VitalStatsFragment
-import com.shepherdapp.app.utils.CareRole
-import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.Modules
-import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.HomeViewModel
@@ -319,7 +316,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     //save data
                     viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
 
-                    // Check Permissions
 
                     // Get loved one user uuid
                     val lovedOneUUID = viewModel.getLovedOneUUID()
@@ -333,6 +329,16 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                      }?.map {
                          it.permission
                      }?.first()*/
+
+                    // Check if loggedIn User is the CareTeam Lead
+                    val careTeam = payload.careTeamProfiles.filter {
+                        it.userId == loggedInUserId
+                    }
+                    if (!careTeam.isNullOrEmpty()) {
+                        if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
+                            viewModel.saveLoggedInUserCareTeamLead(true)
+                        }
+                    }
 
 
                     // find permission for loved one user

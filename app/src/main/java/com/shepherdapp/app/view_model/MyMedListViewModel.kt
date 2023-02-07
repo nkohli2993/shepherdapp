@@ -192,4 +192,9 @@ class MyMedListViewModel @Inject constructor(
     fun getLovedOneDetail(): UserLovedOne? {
         return userRepository.getLovedOneUserDetail()
     }
+
+    fun isLoggedInUserCareTeamLeader(): Boolean? {
+        return userRepository.isLoggedInUserTeamLead()
+    }
+
 }

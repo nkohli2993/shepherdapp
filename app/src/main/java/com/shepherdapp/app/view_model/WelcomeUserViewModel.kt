@@ -10,6 +10,7 @@ import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.chat.User
 import com.shepherdapp.app.data.dto.login.Enterprise
 import com.shepherdapp.app.data.dto.login.Payload
+import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.user_detail.UserDetailByUUIDResponseModel
 import com.shepherdapp.app.data.local.UserRepository
@@ -254,5 +255,9 @@ class WelcomeUserViewModel @Inject constructor(
 
     fun isSubscriptionPurchased(): Boolean? {
         return userRepository.isSubscriptionPurchased()
+    }
+
+    fun saveLovedOneDetail(userLovedOne: UserLovedOne) {
+        userRepository.saveLovedOneUserDetail(userLovedOne)
     }
 }

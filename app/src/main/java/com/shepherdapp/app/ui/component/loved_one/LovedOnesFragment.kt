@@ -75,16 +75,27 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
 
         // Check if loggedIn User is CareTeam Leader for selected lovedOne
         val lovedOneDetail = lovedOneViewModel.getLovedOneDetail()
-        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
-            CareRole.CareTeamLead.slug -> {
-                fragmentLovedOnesBinding.tvNew.visibility = View.VISIBLE
-                true
-            }
-            else -> {
-                fragmentLovedOnesBinding.tvNew.visibility = View.INVISIBLE
-                false
-            }
+        val isCareTeamLeader = lovedOneViewModel.isLoggedInUserCareTeamLeader()
+        val isNewVisible =
+            (lovedOneDetail?.careRoles?.slug == CareRole.CareTeamLead.slug) || (isCareTeamLeader == true)
+        if (isNewVisible) {
+            fragmentLovedOnesBinding.tvNew.visibility = View.VISIBLE
+        } else {
+            fragmentLovedOnesBinding.tvNew.visibility = View.INVISIBLE
         }
+
+
+        /* val lovedOneDetail = lovedOneViewModel.getLovedOneDetail()
+         val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+             CareRole.CareTeamLead.slug -> {
+                 fragmentLovedOnesBinding.tvNew.visibility = View.VISIBLE
+                 true
+             }
+             else -> {
+                 fragmentLovedOnesBinding.tvNew.visibility = View.INVISIBLE
+                 false
+             }
+         }*/
     }
 
     private fun handleAddedLovedOnePagination() {

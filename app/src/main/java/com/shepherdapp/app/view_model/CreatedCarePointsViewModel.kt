@@ -192,6 +192,10 @@ class CreatedCarePointsViewModel @Inject constructor(
         return userRepository.getCurrentUser()
     }
 
+    fun isLoggedInUserCareTeamLeader(): Boolean? {
+        return userRepository.isLoggedInUserTeamLead()
+    }
+
 
     fun setToUserDetail(
         chatType: Int?,

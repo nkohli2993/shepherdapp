@@ -444,8 +444,14 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
     override fun onResume() {
         super.onResume()
         parentActivityListener?.msgFromChildFragmentToActivity()
-        // Check if loggedIn User is CareTeam Leader for the selected lovedOne
+        // Check if loggedIn User is CareTeam Leader for selected lovedOne
         val lovedOneDetail = lockBoxViewModel.getLovedOneDetail()
+        val isCareTeamLeader = lockBoxViewModel.isLoggedInUserCareTeamLeader()
+        val isNewVisible =
+            (lovedOneDetail?.careRoles?.slug == CareRole.CareTeamLead.slug) || (isCareTeamLeader == true)
+
+
+      /*  val lovedOneDetail = lockBoxViewModel.getLovedOneDetail()
         val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
             CareRole.CareTeamLead.slug -> {
                 true
@@ -453,7 +459,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
             else -> {
                 false
             }
-        }
+        }*/
         updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
     }
 }

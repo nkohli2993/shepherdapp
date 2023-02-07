@@ -94,6 +94,12 @@ class WelcomeUserActivity : BaseActivity(), View.OnClickListener {
                         // Save Payload to shared Pref
                         welcomeViewModel.savePayload(payload)
 
+                        // Save LovedOne Detail
+                        if (!payload?.userLovedOne.isNullOrEmpty()) {
+                            payload?.userLovedOne?.get(0)
+                                ?.let { it1 -> welcomeViewModel.saveLovedOneDetail(it1) }
+                        }
+
                         // Save User Info in Firestore
                         val user = it.data.payload?.let { it2 -> signUpResponseToUser(it2) }
                         user?.let { it2 ->
