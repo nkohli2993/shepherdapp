@@ -81,6 +81,7 @@
                 android:backgroundTint="@color/_399282"
                 android:onClick="@{listener::onClick}"
                 android:paddingHorizontal="@dimen/_18sdp"
+                android:textSize="@dimen/_13sdp"
                 android:text="@string/get_started"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -95,6 +96,7 @@
                 android:onClick="@{listener::onClick}"
                 android:paddingHorizontal="@dimen/_18sdp"
                 android:text="@string/next"
+                android:textSize="@dimen/_13sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

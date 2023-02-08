@@ -9,10 +9,9 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imageViewMain"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="@dimen/_280sdp"
         android:layout_marginTop="@dimen/_20sdp"
-        android:paddingHorizontal="@dimen/_10sdp"
-        android:layout_weight="1"/>
+        android:paddingHorizontal="@dimen/_10sdp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitle"
@@ -21,7 +20,7 @@
         android:fontFamily="@font/gotham_bold"
         android:lineSpacingExtra="@dimen/_4sdp"
         android:textColor="@color/_192032"
-        android:textSize="@dimen/_20ssp"
+        android:textSize="@dimen/_20sdp"
         android:lines="2"
         android:gravity="bottom"
         android:paddingVertical="@dimen/_10sdp"
@@ -30,10 +29,10 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDescription"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_90sdp"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/gotham_book"
         android:textColor="@color/_192032"
-        android:textSize="@dimen/_13ssp"
+        android:textSize="@dimen/_13sdp"
         android:lineSpacingExtra="@dimen/_4sdp"
         android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
