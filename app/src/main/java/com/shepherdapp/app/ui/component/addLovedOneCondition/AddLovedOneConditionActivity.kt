@@ -214,6 +214,7 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             total = payload.total!!
                             currentPage = payload.currentPage!!
                             totalPage = payload.totalPages!!
+                            pageNumber = currentPage + 1
                         }
                     }
                     for (i in conditions.indices) {
@@ -314,9 +315,9 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                         (binding.recyclerViewCondition.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
                         isScrolling = false
-                        currentPage++
-                        pageNumber++
-                        isLoading = true
+//                        currentPage++
+//                        pageNumber++
+//                        isLoading = true
                         callAllMedicalCondition()
                     }
                 }
