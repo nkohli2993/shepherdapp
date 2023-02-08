@@ -55,8 +55,25 @@
         <activity
             android:name="com.shepherdapp.app.ui.component.login.LoginActivity"
             android:label="@string/title_activity_login"
+            android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                  <action android:name="android.intent.action.VIEW" />
+               <category android:name="android.intent.category.DEFAULT" />
+               <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="uat-shepherdapp-frontend.itechnolabs.tech"
+                    android:pathPrefix="/login"
+                    android:scheme="https" />
+                <data
+                    android:host="uat-shepherdapp-frontend.itechnolabs.tech"
+                    android:pathPrefix="/signup"
+                    android:scheme="https" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.component.createAccount.CreateNewAccountActivity"
             android:label="@string/create_account"
