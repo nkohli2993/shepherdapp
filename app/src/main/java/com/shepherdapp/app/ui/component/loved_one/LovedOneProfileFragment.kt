@@ -248,7 +248,19 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
 
         // Check if loggedIn User is CareTeam Leader for selected lovedOne
         val lovedOneDetail = lovedOneMedicalConditionViewModel.getLovedOneDetail()
-        val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+        val isCareTeamLeader = lovedOneMedicalConditionViewModel.isLoggedInUserCareTeamLeader()
+
+        val isNewVisible =
+            (lovedOneDetail?.careRoles?.slug == CareRole.CareTeamLead.slug) || (isCareTeamLeader == true)
+        if(isNewVisible){
+            fragmentLovedOneProfileBinding.ivEdit.visibility = View.VISIBLE
+            fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.VISIBLE
+        }else{
+            fragmentLovedOneProfileBinding.ivEdit.visibility = View.INVISIBLE
+            fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.INVISIBLE
+        }
+
+       /* val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
             CareRole.CareTeamLead.slug -> {
                 fragmentLovedOneProfileBinding.ivEdit.visibility = View.VISIBLE
                 fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.VISIBLE
@@ -259,7 +271,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                 fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.INVISIBLE
                 false
             }
-        }
+        }*/
 
     }
 
