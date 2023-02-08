@@ -120,11 +120,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 //        loginViewModel.loginData.value!!.email = "raja@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
 
-        loginViewModel.loginData.value!!.email = "jacob@yopmail.com"
-        loginViewModel.loginData.value!!.password = "1234"
-
-//        loginViewModel.loginData.value!!.email = "sweet@yopmail.com"
+//        loginViewModel.loginData.value!!.email = "jacob@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
+
+        loginViewModel.loginData.value!!.email = "sam1@yopmail.com"
+        loginViewModel.loginData.value!!.password = "1234"
 
         binding.viewModel = loginViewModel
 

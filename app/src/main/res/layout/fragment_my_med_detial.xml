@@ -23,6 +23,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{listener::onClick}"
             android:padding="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:src="@drawable/ic_back"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,9 +36,9 @@
             android:maxWidth="@dimen/_200sdp"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_20ssp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivBack"
             app:layout_constraintStart_toEndOf="@+id/ivBack"
-            app:layout_constraintTop_toTopOf="@id/ivBack" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="@dimen/_20sdp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/speakIV"
@@ -53,7 +54,7 @@
             app:layout_constraintTop_toTopOf="@id/tvMedTitle"
             tools:ignore="RtlSymmetry" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+      <!--  <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/genricNameTV"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -63,7 +64,7 @@
             android:textColor="@color/_192032"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/ivBack"
-            app:layout_constraintTop_toBottomOf="@id/ivBack" />
+            app:layout_constraintTop_toBottomOf="@id/ivBack" />-->
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/txtBrandName"
@@ -74,7 +75,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:text="Brand Name :"
             app:layout_constraintStart_toStartOf="@id/ivBack"
-            app:layout_constraintTop_toBottomOf="@id/genricNameTV" />
+            app:layout_constraintTop_toBottomOf="@id/tvMedTitle" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/brandNameTV"
@@ -85,7 +86,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:textColor="@color/_399282"
             app:layout_constraintStart_toEndOf="@+id/txtBrandName"
-            app:layout_constraintTop_toBottomOf="@id/genricNameTV"
+            app:layout_constraintTop_toBottomOf="@id/tvMedTitle"
             app:layout_constraintEnd_toEndOf="parent" />
 
 
@@ -96,7 +97,7 @@
             android:background="@drawable/bg_image_place_holder_round_new"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="@+id/tv_username"
-            app:layout_constraintStart_toStartOf="@id/genricNameTV"
+            app:layout_constraintStart_toStartOf="@id/txtBrandName"
             app:layout_constraintTop_toTopOf="@+id/tv_username">
 
             <com.google.android.material.imageview.ShapeableImageView
