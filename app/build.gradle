@@ -67,14 +67,14 @@ android {
 //            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_dev)
 
             // client urls
-            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
-            buildConfigField("String", "BASE_URL", base_url_client)
-            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_client)
+//            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
+//            buildConfigField("String", "BASE_URL", base_url_client)
+//            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_client)
 
             // Live urls
-//            buildConfigField("String", "BASE_URL_USER", base_url_user_live)
-//            buildConfigField("String", "BASE_URL", base_url_live)
-//            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_live)
+            buildConfigField("String", "BASE_URL_USER", base_url_user_live)
+            buildConfigField("String", "BASE_URL", base_url_live)
+            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_live)
         }
         release {
             debuggable false
