@@ -18,10 +18,7 @@
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="@dimen/_8sdp"
         app:cardElevation="3dp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:cardUseCompatPadding="true">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,36 +30,39 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/medViewCL"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imgMore"
+                app:layout_constraintEnd_toStartOf="@id/imgMore"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMedicineName"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_8sdp"
                     android:fontFamily="@font/gotham_medium"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:text="@{data.name}"
                     android:textColor="@color/_192032"
                     android:textSize="@dimen/_14ssp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/textViewMedicineSalt"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/textViewMedicineSalt"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_3sdp"
                     android:fontFamily="@font/gotham_book"
-                    android:textColor="@color/_192032"
                     android:text="@string/dosage_med"
+                    android:textColor="@color/_192032"
                     android:textSize="@dimen/_11ssp"
-                    app:layout_constraintStart_toStartOf="@+id/textViewMedicineName"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewMedicineName" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/tv_dosage"
+                    app:layout_constraintStart_toStartOf="@id/textViewMedicineName"
+                    app:layout_constraintTop_toBottomOf="@id/textViewMedicineName" />
 
                 <!--  <androidx.appcompat.widget.AppCompatTextView
                       android:id="@+id/tv_frequency"
@@ -88,15 +88,16 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_dosage"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_3sdp"
                     android:fontFamily="@font/gotham_book"
+                    android:text="1"
                     android:textColor="@color/_399282"
                     android:textSize="@dimen/_11ssp"
-                    android:layout_marginStart="@dimen/_3sdp"
                     app:layout_constraintBottom_toBottomOf="@id/textViewMedicineSalt"
-                    app:layout_constraintStart_toEndOf="@+id/textViewMedicineSalt"
-                    app:layout_constraintTop_toTopOf="@+id/textViewMedicineSalt" />
+                    app:layout_constraintStart_toEndOf="@id/textViewMedicineSalt"
+                    app:layout_constraintTop_toTopOf="@id/textViewMedicineSalt" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -113,6 +114,7 @@
                 android:src="@drawable/ic_dots"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/medViewCL"
                 app:layout_constraintTop_toTopOf="parent" />
 
 
