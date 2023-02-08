@@ -1,19 +1,19 @@
 package com.shepherdapp.app.ui.component.careTeamMembers.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
-import com.shepherdapp.app.utils.ClickType
-import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.Prefs
-import com.shepherdapp.app.utils.margin
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.view_model.CareTeamMembersViewModel
 import com.squareup.picasso.Picasso
 
@@ -60,6 +60,20 @@ class CareTeamMembersAdapter(
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             val careTeam = careTeams[position]
+            val firstName = careTeam.user_id_details?.firstname
+            val lastName = careTeam.user_id_details?.lastname
+            val first = firstName?.first().toString()
+            var last: String? = null
+            var fullName: String? = null
+            if (lastName != null) {
+                last = lastName.first().toString()
+                fullName = "$first$last"
+            } else {
+                fullName = first
+            }
+
+            val imageUrl = careTeam.user_id_details?.profilePhoto
+
             if (careTeam.isPendingInvite == true) {
                 val isLoggedInUserCareTeamLead = Prefs.with(ShepherdApp.appContext)
                     ?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
@@ -141,11 +155,25 @@ class CareTeamMembersAdapter(
                 itemBinding.imageViewInfo.visibility = View.GONE
                 itemBinding.imageViewDelete.isClickable = false
 
-                val firstName = careTeam.user_id_details?.firstname
-                val lastName = careTeam.user_id_details?.lastname
-                val fullName = "$firstName $lastName"
-                val imageUrl = careTeam.user_id_details?.profilePhoto
                 itemBinding.imageViewDelete.setBackgroundResource(R.drawable.ic_arrow)
+
+                /*itemBinding.let {
+                    if (!imageUrl.isNullOrEmpty()) {
+                        Picasso.get().load(imageUrl).placeholder(R.drawable.default_ic)
+                            .into(it.imageViewCareTeam)
+                    } else {
+                        val drawable = TextDrawable.builder()
+                            .beginConfig()
+                            .textColor(Color.WHITE)
+                            .useFont(Typeface.DEFAULT)
+                            .endConfig()
+                            .buildRect(fullName, ContextCompat.getColor(context, R.color._399282))
+
+                        it.imageViewCareTeam.setImageDrawable(drawable)
+                    }
+                }*/
+
+
 
                 itemBinding.let {
                     it.textViewCareTeamName.text = fullName
@@ -174,12 +202,6 @@ class CareTeamMembersAdapter(
     override fun getItemViewType(position: Int): Int {
         return position
     }
-
-    /*fun addData(dashboard: MutableList<String>) {
-        this.requestList.clear()
-        this.requestList.addAll(dashboard)
-        notifyDataSetChanged()
-    }*/
 
     fun updateCareTeams(careTeams: ArrayList<CareTeamModel>) {
         this.careTeams = careTeams

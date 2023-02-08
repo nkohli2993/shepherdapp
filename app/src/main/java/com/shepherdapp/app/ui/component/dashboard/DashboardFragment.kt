@@ -112,8 +112,12 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
                 careTeamProfiles.user?.profilePhoto
             } as ArrayList<String>
 
-            if (!careTeamMembersProfileList.isNullOrEmpty()) {
-                careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
+            /* if (!careTeamMembersProfileList.isNullOrEmpty()) {
+                 careTeamMembersDashBoardAdapter?.addData(careTeamMembersProfileList)
+             }*/
+
+            if (payload.careTeamProfiles.isNotEmpty()) {
+                careTeamMembersDashBoardAdapter?.addData(payload.careTeamProfiles)
             }
         }
 

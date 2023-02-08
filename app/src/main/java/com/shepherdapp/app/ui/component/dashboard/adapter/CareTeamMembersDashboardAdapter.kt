@@ -1,19 +1,24 @@
 package com.shepherdapp.app.ui.component.dashboard.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.dashboard.CareTeamProfiles
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersDashboardBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.TextDrawable
 import com.shepherdapp.app.view_model.DashboardViewModel
 import com.squareup.picasso.Picasso
 
 
 class CareTeamMembersDashBoardAdapter(
     private val viewModel: DashboardViewModel,
-    var careTeams: MutableList<String> = ArrayList()
+    var careTeams: MutableList<CareTeamProfiles> = ArrayList()
 ) :
     RecyclerView.Adapter<CareTeamMembersDashBoardAdapter.CareTeamViewHolder>() {
     lateinit var binding: AdapterCareTeamMembersDashboardBinding
@@ -50,17 +55,49 @@ class CareTeamMembersDashBoardAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
-            val imageUrl = careTeams[position]
+            val careTeam = careTeams[position]
             //itemBinding.data = careTeam
             //val imageUrl = careTeam.user?.userProfiles?.profilePhoto
             //val imageUrl = careTeam.user?.userProfiles?.profilePhoto
 
-            itemBinding.let {
-                if(imageUrl!=null && imageUrl!=""){
-                    Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(it.ivCare)
-                }
+            val imageUrl = careTeam.user?.profilePhoto
+
+            val firstName = careTeam.user?.firstname
+            val lastName = careTeam.user?.lastname
+            val first = firstName?.first().toString()
+            var last: String? = null
+            var fullName: String? = null
+            if (lastName != null) {
+                last = lastName.first().toString()
+                fullName = "$first$last"
+            } else {
+                fullName = first
             }
+
+           /* itemBinding.let {
+                if (!imageUrl.isNullOrEmpty()) {
+                    Picasso.get().load(imageUrl).placeholder(R.drawable.icon_default_profile_pic)
+                        .into(it.ivCare)
+                } else {
+                    val drawable = TextDrawable.builder()
+                        .beginConfig()
+                        .textColor(Color.RED)
+                        .useFont(Typeface.DEFAULT)
+                        .endConfig()
+                        .buildRect(fullName, ContextCompat.getColor(context, R.color.colorPurple))
+
+                    it.ivCare.setImageDrawable(drawable)
+                }
+            }*/
+
+
+             itemBinding.let {
+                 if (imageUrl != null && imageUrl != "") {
+                     Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
+                         .into(it.ivCare)
+                 }
+             }
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     careTeams[position]
@@ -78,7 +115,7 @@ class CareTeamMembersDashBoardAdapter(
         return position
     }
 
-    fun addData(careTeams: ArrayList<String>) {
+    fun addData(careTeams: ArrayList<CareTeamProfiles>) {
         this.careTeams.clear()
         this.careTeams = careTeams
         notifyDataSetChanged()
