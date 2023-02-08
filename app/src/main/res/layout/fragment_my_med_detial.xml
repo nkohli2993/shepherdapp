@@ -72,7 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:text="Brand Name :"
             app:layout_constraintStart_toStartOf="@id/ivBack"
             app:layout_constraintTop_toBottomOf="@id/tvMedTitle" />
@@ -83,7 +83,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:textColor="@color/_399282"
             app:layout_constraintStart_toEndOf="@+id/txtBrandName"
             app:layout_constraintTop_toBottomOf="@id/tvMedTitle"
