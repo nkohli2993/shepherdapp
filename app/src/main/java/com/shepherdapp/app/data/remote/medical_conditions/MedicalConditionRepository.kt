@@ -23,12 +23,13 @@ class MedicalConditionRepository @Inject constructor(private val apiService: Api
     // Get Medical Conditions
     suspend fun getMedicalConditions(
         pageNumber: Int,
-        limit: Int
+        limit: Int,
+        search:String
     ): Flow<DataResult<MedicalConditionResponseModel>> {
         return object :
             NetworkOnlineDataRepo<MedicalConditionResponseModel, MedicalConditionResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<MedicalConditionResponseModel> {
-                return apiService.getMedicalConditions(pageNumber, limit)
+                return apiService.getMedicalConditions(pageNumber, limit,search)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

@@ -72,7 +72,7 @@ class LovedOneMedicalConditionViewModel @Inject constructor(
         limit: Int
     ): LiveData<Event<DataResult<MedicalConditionResponseModel>>> {
         viewModelScope.launch {
-            val response = medicalConditionRepository.getMedicalConditions(pageNumber, limit)
+            val response = medicalConditionRepository.getMedicalConditions(pageNumber, limit,"")
             withContext(Dispatchers.Main) {
                 response.collect { _medicalConditionResponseLiveData.postValue(Event(it)) }
             }

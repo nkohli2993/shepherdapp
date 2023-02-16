@@ -14,6 +14,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -237,138 +238,145 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     override fun observeViewModel() {
 
-        viewModel.userDetailByUUIDLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    hideLoading()
-                    val userProfile = it.data.payload?.userProfiles
-                    val lovedOneFirstName = userProfile?.firstname
-                    val lovedOneLastName = userProfile?.lastname
-                    var lovedOneFullName: String? = null
-                    lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
-                        lovedOneFirstName
-                    } else {
-                        "$lovedOneFirstName $lovedOneLastName"
+        viewModel.userDetailByUUIDLiveData.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                when (it) {
+                    is DataResult.Failure -> {
+                        hideLoading()
                     }
+                    is DataResult.Loading -> {
+                        showLoading("")
+                    }
+                    is DataResult.Success -> {
+                        hideLoading()
+                        val userProfile = it.data.payload?.userProfiles
+                        val lovedOneFirstName = userProfile?.firstname
+                        val lovedOneLastName = userProfile?.lastname
+                        var lovedOneFullName: String? = null
+                        lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
+                            lovedOneFirstName
+                        } else {
+                            "$lovedOneFirstName $lovedOneLastName"
+                        }
 
-                    val lovedOneProfilePic = userProfile?.profilePhoto
+                        val lovedOneProfilePic = userProfile?.profilePhoto
+                        if (!lovedOneProfilePic.isNullOrEmpty())
+                            Picasso.get().load(lovedOneProfilePic)
+                                .placeholder(R.drawable.ic_defalut_profile_pic)
+                                .into(imgLovedOne)
 
-                    Picasso.get().load(lovedOneProfilePic)
-                        .placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(imgLovedOne)
+                        txtLoved.text = lovedOneFullName
 
-                    txtLoved.text = lovedOneFullName
-
+                    }
                 }
             }
-        }
+        })
 
 
         // Observe Logout Response
-        viewModel.logoutResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    it.message?.let { showError(this, it.toString()) }
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    navigateToLoginScreen("home")
+        viewModel.logoutResponseLiveData.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                when (it) {
+                    is DataResult.Failure -> {
+                        hideLoading()
+                        it.message?.let { showError(this, it.toString()) }
+                    }
+                    is DataResult.Loading -> {
+                        showLoading("")
+                    }
+                    is DataResult.Success -> {
+                        navigateToLoginScreen("home")
+                    }
                 }
             }
-        }
+        })
 
         // Observe Get Home Data Api Response
-        viewModel.homeResponseLiveData.observeEvent(this) {
-            when (it) {
-                is DataResult.Failure -> {
-                    hideLoading()
-                    showError(this, it.message.toString())
-                }
-                is DataResult.Loading -> {
-                    showLoading("")
-                }
-                is DataResult.Success -> {
-                    val payload = it.data.payload
-                    // Set the notification icon
-                    if (payload?.unreadNotificationsCount!! > 0) {
-                        binding.appBarDashboard.ivNotification.setImageResource(R.drawable.ic_home_notification)
-                    } else {
-                        binding.appBarDashboard.ivNotification.setImageResource(R.drawable.ic_home_notification_inactive)
+        viewModel.homeResponseLiveData.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                when (it) {
+                    is DataResult.Failure -> {
+                        hideLoading()
+                        showError(this, it.message.toString())
                     }
-
-                    if (it.data.payload?.lovedOneUserProfile != null || it.data.payload?.lovedOneUserProfile != "") {
-                        val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
-                        Picasso.get().load(lovedOneProfilePic)
-                            .placeholder(R.drawable.ic_defalut_profile_pic)
-                            .into(ivLovedOneProfile)
+                    is DataResult.Loading -> {
+                        showLoading("")
                     }
-                    //set name of user name
-                    txtLovedUserName.text = it.data.payload?.firstname
-                    //save data
-                    viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
-
-
-                    // Get loved one user uuid
-                    val lovedOneUUID = viewModel.getLovedOneUUID()
-                    Log.d(TAG, "initHomeViews: lovedOneUUID :$lovedOneUUID")
-                    // Get LoggedIn User uuid
-                    val loggedInUserId = viewModel.getUUID()
-                    Log.d(TAG, "initHomeViews: loggedInUserId :$loggedInUserId")
-                    // find permission for loved one user
-                    /* val permissions = payload?.careTeamProfiles?.filter {
-                         (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
-                     }?.map {
-                         it.permission
-                     }?.first()*/
-
-                    // Check if loggedIn User is the CareTeam Lead
-                    val careTeam = payload.careTeamProfiles.filter {
-                        it.userId == loggedInUserId
-                    }
-                    if (!careTeam.isNullOrEmpty()) {
-                        if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
-                            viewModel.saveLoggedInUserCareTeamLead(true)
+                    is DataResult.Success -> {
+                        val payload = it.data.payload
+                        // Set the notification icon
+                        if (payload?.unreadNotificationsCount!! > 0) {
+                            binding.appBarDashboard.ivNotification.setImageResource(R.drawable.ic_home_notification)
+                        } else {
+                            binding.appBarDashboard.ivNotification.setImageResource(R.drawable.ic_home_notification_inactive)
                         }
-                    }
+
+                        if (it.data.payload?.lovedOneUserProfile != null || it.data.payload?.lovedOneUserProfile != "") {
+                            val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
+                            if (!lovedOneProfilePic.isNullOrEmpty())
+                                Picasso.get().load(lovedOneProfilePic)
+                                    .placeholder(R.drawable.ic_defalut_profile_pic)
+                                    .into(ivLovedOneProfile)
+                        }
+                        //set name of user name
+                        txtLovedUserName.text = it.data.payload?.firstname
+                        //save data
+                        viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
 
 
-                    // find permission for loved one user
-                    permissions = if (viewModel.isLoggedInUserLovedOne() == true) {
-                        payload?.careTeamProfiles?.filter {
-                            it.loveUserId == viewModel.getLovedOneUUID()
-                        }?.map {
-                            it.permission
-                        }?.first()
-                    } else {
-                        payload?.careTeamProfiles?.filter {
-                            (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
-                        }?.map {
-                            it.permission
-                        }?.first()
-                    }
+                        // Get loved one user uuid
+                        val lovedOneUUID = viewModel.getLovedOneUUID()
+                        Log.d(TAG, "initHomeViews: lovedOneUUID :$lovedOneUUID")
+                        // Get LoggedIn User uuid
+                        val loggedInUserId = viewModel.getUUID()
+                        Log.d(TAG, "initHomeViews: loggedInUserId :$loggedInUserId")
+                        // find permission for loved one user
+                        /* val permissions = payload?.careTeamProfiles?.filter {
+                             (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+                         }?.map {
+                             it.permission
+                         }?.first()*/
 
-                    Log.d(TAG, "initHomeViews: Permissions : $permissions")
-                    // Save Permissions to SharedPref
-                    permissions?.let { it1 -> viewModel.savePermissions(it1) }
-                    val perList = permissions?.split(',')
-                        ?.map { it.trim() }
-                    permissionCards(View.GONE)
-                    for (i in perList?.indices!!) {
-                        checkPermission(perList[i])
+                        // Check if loggedIn User is the CareTeam Lead
+                        val careTeam = payload.careTeamProfiles.filter {
+                            it.userId == loggedInUserId
+                        }
+                        if (!careTeam.isNullOrEmpty()) {
+                            if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
+                                viewModel.saveLoggedInUserCareTeamLead(true)
+                            }
+                        }
+
+
+                        // find permission for loved one user
+                        permissions = if (viewModel.isLoggedInUserLovedOne() == true) {
+                            payload?.careTeamProfiles?.filter {
+                                it.loveUserId == viewModel.getLovedOneUUID()
+                            }?.map {
+                                it.permission
+                            }?.first()
+                        } else {
+                            payload?.careTeamProfiles?.filter {
+                                (it.loveUserId == lovedOneUUID) && (it.userId == loggedInUserId)
+                            }?.map {
+                                it.permission
+                            }?.first()
+                        }
+
+                        Log.d(TAG, "initHomeViews: Permissions : $permissions")
+                        // Save Permissions to SharedPref
+                        permissions?.let { it1 -> viewModel.savePermissions(it1) }
+                        val perList = permissions?.split(',')
+                            ?.map { it.trim() }
+                        permissionCards(View.GONE)
+                        for (i in perList?.indices!!) {
+                            checkPermission(perList[i])
+                        }
+                        hideLoading()
                     }
-                    hideLoading()
                 }
             }
-        }
+        })
     }
 
 
@@ -734,23 +742,30 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     }
 
-    private var backPressed: Long = 0
+    private
+    var backPressed: Long = 0
 
     override fun onBackPressed() {
         // to check navigation fragments
-        val navHostFragment = supportFragmentManager.primaryNavigationFragment as NavHostFragment?
-        val fragmentManager: FragmentManager = navHostFragment!!.childFragmentManager
+        val navHostFragment =
+            supportFragmentManager.primaryNavigationFragment as NavHostFragment?
+        val fragmentManager: FragmentManager =
+            navHostFragment!!.childFragmentManager
         when (fragmentManager.primaryNavigationFragment!!) {
             is CarePointsFragment, is MyMedListFragment, is LockBoxFragment, is CareTeamMembersFragment,
             is ResourcesFragment, is VitalStatsFragment, is MessagesFragment, is ProfileFragment -> {
-                findNavController(R.id.nav_host_fragment_content_dashboard).navigate(R.id.nav_dashboard)
+                findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
+                    R.id.nav_dashboard
+                )
                 overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
             }
             is SettingFragment -> {
-                findNavController(R.id.nav_host_fragment_content_dashboard).navigate(R.id.nav_profile)
+                findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
+                    R.id.nav_profile
+                )
             }
             is DashboardFragment -> {
                 if (backPressed + 2000 > System.currentTimeMillis()) {

@@ -144,7 +144,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             )
             val time = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             Log.d(TAG, "initViewBinding: time is $time")
-            if (time.contains("am")) {
+            if (time.contains("am")||time.contains("AM")) {
                 isAmPm = "am"
                 setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
             } else {
@@ -631,20 +631,23 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         } else {
             val mCurrentTime = Calendar.getInstance()
             if (fragmentEditCarePointBinding.tvTime.text.isNotEmpty()) {
+
                 val dateTime = fragmentEditCarePointBinding.tvDate.text.toString().trim().plus(" ")
-                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus(" $isAmPm"))
+                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus("$isAmPm"))
+
+
                 mCurrentTime.time = SimpleDateFormat("MM-dd-yyyy hh:mm a").parse(dateTime)!!
             }
-            val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
-            val minute = mCurrentTime.get(Calendar.MINUTE)
+            var hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
+            var minute = mCurrentTime.get(Calendar.MINUTE)
 
             val mTimePicker = TimePickerDialog(
                 context, R.style.datepicker,
-                { _, hourOfDay, selectedMinute ->
+                { _, hourOfDay, selectedMinutes ->
                     //check event time for future events  only
                     val selectedDateTime =
                         fragmentEditCarePointBinding.tvDate.text.toString().trim().plus(" ")
-                            .plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
+                            .plus(String.format("%02d:%02d", hourOfDay, selectedMinutes))
                     val currentDateTime =
                         SimpleDateFormat("MM-dd-yyyy HH:mm").format(Calendar.getInstance().time)
 
@@ -652,17 +655,33 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     val selDateTime = dateFormat.parse(selectedDateTime)
                     val curDateTime = dateFormat.parse(currentDateTime)
                     if (selDateTime?.after(curDateTime) == true) {
-                        if (hourOfDay < 12) {
-                            isAmPm = "am"
-                            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
-                            fragmentEditCarePointBinding.tvTime.text =
-                                String.format("%02d:%02d", hourOfDay, selectedMinute)
-                        } else {
+                        hour = hourOfDay
+                        minute = selectedMinutes
+                        isAmPm = ""
+                        if (hour > 12) {
+                            hour -= 12
                             isAmPm = "pm"
                             setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
-                            fragmentEditCarePointBinding.tvTime.text =
-                                String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                        } else if (hour == 0) {
+                            hour += 12
+                            isAmPm = "am"
+                            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                        } else if (hour == 12) {
+                            setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                            isAmPm = "pm"
+                        } else {
+                            isAmPm = "am"
+                            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
                         }
+
+                        var min: String? = ""
+                        if (minute < 10) min = "0$minute" else min =
+                            java.lang.String.valueOf(minute)
+
+                        val mTime = StringBuilder().append(hour).append(':')
+                            .append(min)
+
+                        fragmentEditCarePointBinding.tvTime.text = mTime
                     } else {
                         showError(
                             requireContext(),

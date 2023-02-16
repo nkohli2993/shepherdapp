@@ -9,6 +9,10 @@
             name="listener"
             type="android.view.View.OnClickListener" />
 
+        <variable
+            name="listenerEditText"
+            type="com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -91,7 +95,7 @@
                     android:padding="@dimen/_2sdp"
                     android:src="@drawable/ic_search_colored" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextSearch"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -103,6 +107,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="textCapSentences"
                     android:maxLines="1"
+                    android:onTextChanged="@{listenerEditText.onTextChanged}"
                     android:paddingHorizontal="@dimen/_12sdp"
                     android:textColor="@android:color/black"
                     android:textColorHint="#192032"
@@ -110,11 +115,12 @@
 
                 <ImageView
                     android:id="@+id/imgCancel"
-                    android:layout_width="@dimen/_15sdp"
-                    android:layout_height="@dimen/_15sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:padding="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:paddingHorizontal="@dimen/_2sdp"
                     android:src="@drawable/ic_cancel" />
 
             </LinearLayout>
@@ -130,50 +136,36 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:paddingVertical="@dimen/_20sdp"
-            android:text="@string/no_result_found"
+            android:text="@string/no_medical_condition_found"
             android:textSize="18dp"
+            android:elevation="@dimen/_1sdp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cardViewSearch" />
 
-        <androidx.core.widget.NestedScrollView
-            android:id="@+id/scrollView"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCondition"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:fillViewport="true"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:nestedScrollingEnabled="false"
+            android:orientation="vertical"
             android:overScrollMode="never"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.461"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/_80sdp">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewCondition"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical"
-                    android:overScrollMode="never"
-                    android:visibility="visible"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.461"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:listitem="@layout/adapter_add_loved_one_condition" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.core.widget.NestedScrollView>
+            app:layout_constraintTop_toBottomOf="@+id/cardViewSearch"
+            tools:listitem="@layout/adapter_add_loved_one_condition" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout2"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_70sdp"
             android:background="#E6FFFFFF"

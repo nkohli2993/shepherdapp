@@ -60,13 +60,20 @@ class AddLovedOneConditionViewModel @Inject constructor(
     var userIDLiveData: LiveData<Event<DataResult<Int>>> = _userIDLiveData
 
 
+    var limit = 10
+    var currentPage = 1
+    var isLastPage: Boolean = false
+    var isPagingLoading: Boolean = false
+
+
     // Get Medical Conditions
     fun getMedicalConditions(
         pageNumber: Int,
-        limit: Int
+        limit: Int,
+        search:String
     ): LiveData<Event<DataResult<MedicalConditionResponseModel>>> {
         viewModelScope.launch {
-            val response = medicalConditionRepository.getMedicalConditions(pageNumber, limit)
+            val response = medicalConditionRepository.getMedicalConditions(pageNumber, limit,search)
             withContext(Dispatchers.Main) {
                 response.collect { _medicalConditionResponseLiveData.postValue(Event(it)) }
             }

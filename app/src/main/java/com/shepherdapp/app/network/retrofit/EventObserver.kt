@@ -23,7 +23,10 @@ inline fun <T> LiveData<Event<T>>.observeEvent(
     owner: LifecycleOwner,
     crossinline onEventUnhandledContent: (T) -> Unit
 ) {
-
-    observe(owner, Observer { it?.getContentIfNotHandled()?.let(onEventUnhandledContent) })
+    try {
+        observe(owner, Observer { it?.getContentIfNotHandled()?.let(onEventUnhandledContent) })
+    }catch (e:Exception){
+        e.printStackTrace()
+    }
 }
 

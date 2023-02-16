@@ -534,6 +534,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                     launchPurchaseFlow(clickedProduct)
                 }
             } else {
+                Log.d(TAG, "checkIfProductAlreadyPurchased: No active subscription found")
+
             }
         }
     }

@@ -32,6 +32,7 @@ object Const {
     const val ADD_LOVE_ONE = "ADD_LOVE_ONE"
     const val LOVED_USER_DETAILS = "LOVED USER DETAILS"
     const val MEDICAL_CONDITION = "MEDICAL CONDITION"
+    const val SUBSCRIPTION_CLASS = "SubscriptionActivity"
     const val LOVED_ONE_DETAIL = "LOVED ONE DETAIL"
     const val RESET_SECURITY_CODE = "RESET"
     const val SET_SECURITY_CODE = "SET"

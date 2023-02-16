@@ -24,9 +24,8 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.addLovedOneCondition.adapter.AddLovedOneConditionAdapter
 import com.shepherdapp.app.ui.component.home.HomeActivity
-import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.Prefs
-import com.shepherdapp.app.utils.Type
+import com.shepherdapp.app.ui.component.login.LoginActivity
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.AddLovedOneConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,13 +35,11 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
-    AddLovedOneConditionAdapter.ItemSelectedListener,
+    AddLovedOneConditionAdapter.ItemSelectedListener, SearchListener,
     AddLovedOneConditionAdapter.ItemEditClickListener {
 
     private lateinit var binding: ActivityAddLovedOneConditionBinding
     private val addLovedOneConditionViewModel: AddLovedOneConditionViewModel by viewModels()
-    private var pageNumber: Int = 1
-    private var limit: Int = 20
     private var conditions: ArrayList<Conditions> = ArrayList()
     private var selectedConditions: ArrayList<Conditions> = ArrayList()
     private var searchedConditions: ArrayList<Conditions> = ArrayList()
@@ -54,15 +51,15 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     private var conditionIDs: List<Int?>? = null
     private var isLoading = false
     private var isSearched = false
-    private var currentPage: Int = 0
-    private var totalPage: Int = 0
-    private var total: Int = 0
+
+
     private val TAG = "AddLovedOneCondition"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
+        binding.listenerEditText = this
 
         if (!intent.getStringExtra("source").isNullOrEmpty()) {
             val source = intent.getStringExtra("source")
@@ -86,38 +83,51 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             binding.txtNoResultFound.visibility = View.GONE
             binding.recyclerViewCondition.visibility = View.VISIBLE
             hideLoading()
+            addLovedOneConditionViewModel.currentPage = 1
+            addLovedOneConditionViewModel.isLastPage = false
+            callAllMedicalCondition()
         }
 
-        binding.editTextSearch.doAfterTextChanged { search ->
-            if (search != null) {
-                if (search.isEmpty()) {
-                    isSearched = false
-                    conditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
-                    binding.imgCancel.visibility = View.GONE
-                    binding.txtNoResultFound.visibility = View.GONE
-                    binding.recyclerViewCondition.visibility = View.VISIBLE
-                    hideLoading()
-                }
-                if (search.isNotEmpty()) {
-                    binding.imgCancel.visibility = View.VISIBLE
-                    searchedConditions.clear()
-                    isSearched = true
-                    pageNumber = 1
-                    conditions.forEach {
-                        if (it.name?.contains(search.toString(), true) == true) {
-                            searchedConditions.add(it)
-                        }
-                    }
-                    binding.txtNoResultFound.visibility = View.GONE
-                    binding.recyclerViewCondition.visibility = View.VISIBLE
-                    if (searchedConditions.isEmpty()) {
-                        binding.txtNoResultFound.visibility = View.VISIBLE
-                        binding.recyclerViewCondition.visibility = View.GONE
-                    }
-                    searchedConditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
-                }
-            }
-        }
+        /*       binding.editTextSearch.doAfterTextChanged { search ->
+                   if (!isLoading) {
+                      // isLoading = true
+                       pageNumber = 1
+                       addLovedOneConditionViewModel.getMedicalConditions(
+                           pageNumber,
+                           limit,
+                           search.toString()
+                       )
+                   }
+
+       //            if (search != null) {
+       //                if (search.isEmpty()) {
+       //                    isSearched = false
+       //                    conditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
+       //                    binding.imgCancel.visibility = View.GONE
+       //                    binding.txtNoResultFound.visibility = View.GONE
+       //                    binding.recyclerViewCondition.visibility = View.VISIBLE
+       //                    hideLoading()
+       //                }
+       //                if (search.isNotEmpty()) {
+       //                    binding.imgCancel.visibility = View.VISIBLE
+       //                    searchedConditions.clear()
+       //                    isSearched = true
+       //                    pageNumber = 1
+       //                    conditions.forEach {
+       //                        if (it.name?.contains(search.toString(), true) == true) {
+       //                            searchedConditions.add(it)
+       //                        }
+       //                    }
+       //                    binding.txtNoResultFound.visibility = View.GONE
+       //                    binding.recyclerViewCondition.visibility = View.VISIBLE
+       //                    if (searchedConditions.isEmpty()) {
+       //                        binding.txtNoResultFound.visibility = View.VISIBLE
+       //                        binding.recyclerViewCondition.visibility = View.GONE
+       //                    }
+       //                    searchedConditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
+       //                }
+       //            }
+               }*/
     }
 
 
@@ -125,16 +135,18 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         super.onResume()
         conditions.clear()
         addLovedOneConditionAdapter = null
-        pageNumber = 1
-        binding.editTextSearch.setText("")
+        addLovedOneConditionViewModel.currentPage = 1
         //check if intent has loved used uuid
         if (intent.hasExtra("love_one_id")) {
             loveOneId = intent.getStringExtra("love_one_id")
             isLoading = false
             loveOneId?.let { addLovedOneConditionViewModel.getLovedOneMedicalConditions(it) }
         } else {
-            isLoading = true
-            callAllMedicalCondition()
+            if (!isLoading) {
+                binding.editTextSearch.setText("")
+                isLoading = true
+                callAllMedicalCondition()
+            }
         }
     }
 
@@ -201,7 +213,8 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     hideLoading()
                     isLoading = false
                     var medicalConditions: ArrayList<Conditions> = ArrayList()
-                    if (pageNumber == 1) {
+
+                    if (addLovedOneConditionViewModel.currentPage == 1) {
                         conditions.clear()
                         addLovedOneConditionAdapter = null
                         setConditionAdapter()
@@ -209,12 +222,13 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                     medicalConditions.clear()
                     if (it.data.payload?.conditions != null) {
                         it.data.payload!!.let { payload ->
+                            // conditions.clear()
                             conditions.addAll(payload.conditions)
                             medicalConditions = payload.conditions
-                            total = payload.total!!
-                            currentPage = payload.currentPage!!
-                            totalPage = payload.totalPages!!
-                            pageNumber = currentPage + 1
+                            addLovedOneConditionViewModel.isPagingLoading = false
+
+                            addLovedOneConditionViewModel.isLastPage =
+                                payload.currentPage!! == payload.totalPages
                         }
                     }
                     for (i in conditions.indices) {
@@ -226,12 +240,25 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                             }
                         }
                     }
+                    if (conditions.isNotEmpty()) {
+                        binding.txtNoResultFound.visibility = View.GONE
+                        binding.recyclerViewCondition.visibility = View.VISIBLE
+                    } else {
+                        binding.txtNoResultFound.visibility = View.VISIBLE
+                        binding.recyclerViewCondition.visibility = View.GONE
+                    }
                     conditions.let { it1 -> addLovedOneConditionAdapter?.updateConditions(it1) }
                 }
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    it.message?.let { showError(this, it) }
+                    // conditions.clear()
+                    binding.txtNoResultFound.visibility = View.VISIBLE
+                    binding.recyclerViewCondition.visibility = View.GONE
+                    addLovedOneConditionAdapter?.conditionList!!.clear()
+                    addLovedOneConditionAdapter?.notifyDataSetChanged()
+
+                    //   it.message?.let { showError(this, it) }
 
                 }
             }
@@ -294,36 +321,35 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun callAllMedicalCondition() {
-        addLovedOneConditionViewModel.getMedicalConditions(pageNumber, limit)
+        addLovedOneConditionViewModel.getMedicalConditions(
+            addLovedOneConditionViewModel.currentPage,
+            addLovedOneConditionViewModel.limit,
+            ""
+        )
     }
 
     private fun handleAddedLovedOneConditionPagination() {
-        var isScrolling: Boolean
-        var visibleItemCount: Int
-        var totalItemCount: Int
-        var pastVisiblesItems: Int
+        val mLayoutManager = binding.recyclerViewCondition.layoutManager as LinearLayoutManager
+        binding.recyclerViewCondition?.addOnScrollListener(object :
+            PaginationScrollListener(mLayoutManager) {
+            override fun isLastPage(): Boolean {
+                return addLovedOneConditionViewModel.isLastPage
+            }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                if (scrollY > oldScrollY) {
-                    isScrolling = true
-                    visibleItemCount =
-                        binding.recyclerViewCondition.layoutManager!!.childCount
-                    totalItemCount =
-                        binding.recyclerViewCondition.layoutManager!!.itemCount
-                    pastVisiblesItems =
-                        (binding.recyclerViewCondition.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                    if (isScrolling && visibleItemCount + pastVisiblesItems >= totalItemCount && (currentPage < totalPage)) {
-                        isScrolling = false
-//                        currentPage++
-//                        pageNumber++
-//                        isLoading = true
-                        callAllMedicalCondition()
-                    }
-                }
-            })
+            override fun isLoading(): Boolean {
+                return addLovedOneConditionViewModel.isPagingLoading
+            }
 
-        }
+            override fun loadMoreItems() {
+                addLovedOneConditionViewModel.isPagingLoading = true
+                addLovedOneConditionViewModel.currentPage =
+                    addLovedOneConditionViewModel.currentPage + 1
+                callAllMedicalCondition()
+                showLoading("")
+
+            }
+        })
+
     }
 
     override fun onClick(p0: View?) {
@@ -335,7 +361,20 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
             R.id.ivBack -> {
-                finishActivity()
+                if (intent.hasExtra("source") && !intent.getStringExtra("source").isNullOrEmpty()) {
+                    Log.d(TAG, "source: " + intent.getStringExtra("source"))
+                    val source = intent.getStringExtra("source")
+                    // Check if Screen is launched from LovedOne Profile Screen to edit medical conditions
+                    if (source == Const.SUBSCRIPTION_CLASS) {
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finishAffinity()
+                    } else
+                        finishAffinity()
+                    
+                } else {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finishAffinity()
+                }
             }
             R.id.buttonFinish -> {
                 // Get LovedOne UUID from shared Pref
@@ -513,5 +552,22 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
+
+    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        if (!isLoading) {
+            // isLoading = true
+            addLovedOneConditionViewModel.currentPage = 1
+            addLovedOneConditionViewModel.getMedicalConditions(
+                addLovedOneConditionViewModel.currentPage,
+                addLovedOneConditionViewModel.limit,
+                s.toString()
+            )
+        }
+    }
+
+}
+
+interface SearchListener {
+    fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int)
 }
 

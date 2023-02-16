@@ -468,16 +468,16 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     .plus(fragmentAddNewEventBinding.tvTime.text.toString().plus(" $isAmPm"))
                 mCurrentTime.time = SimpleDateFormat("dd-MM-yyyy hh:mm a").parse(dateTime)!!
             }
-            val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
-            val minute = mCurrentTime.get(Calendar.MINUTE)
+            var hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
+            var minute = mCurrentTime.get(Calendar.MINUTE)
 
             val mTimePicker = TimePickerDialog(
                 context, R.style.datepicker,
-                { _, hourOfDay, selectedMinute ->
+                { _, hourOfDay, selectedMinutes ->
                     //check event time for future events  only
                     val selectedDateTime =
                         fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ")
-                            .plus(String.format("%02d:%02d", hourOfDay, selectedMinute))
+                            .plus(String.format("%02d:%02d", hourOfDay, selectedMinutes))
                     val currentDateTime =
                         SimpleDateFormat("MM-dd-yyyy HH:mm").format(Calendar.getInstance().time)
 
@@ -485,17 +485,33 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     if (dateFormat.parse(selectedDateTime)!!
                             .after(dateFormat.parse(currentDateTime))
                     ) {
-                        if (hourOfDay < 12) {
-                            isAmPm = "am"
-                            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
-                            fragmentAddNewEventBinding.tvTime.text =
-                                String.format("%02d:%02d", hourOfDay, selectedMinute)
-                        } else {
+                        hour = hourOfDay
+                        minute = selectedMinutes
+                        isAmPm = ""
+                        if (hour > 12) {
+                            hour -= 12
                             isAmPm = "pm"
                             setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
-                            fragmentAddNewEventBinding.tvTime.text =
-                                String.format("%02d:%02d", hourOfDay - 12, selectedMinute)
+                        } else if (hour == 0) {
+                            hour += 12
+                            isAmPm = "am"
+                            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+                        } else if (hour == 12) {
+                            setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+                            isAmPm = "pm"
+                        } else {
+                            isAmPm = "am"
+                            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
                         }
+
+                        var min: String? = ""
+                        if (minute < 10) min = "0$minute" else min =
+                            java.lang.String.valueOf(minute)
+
+                        val mTime = StringBuilder().append(hour).append(':')
+                            .append(min)
+
+                        fragmentAddNewEventBinding.tvTime.text = mTime
                     } else {
                         showError(requireContext(), getString(R.string.please_select_future_time))
                     }
@@ -534,4 +550,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
 }
+
+
 

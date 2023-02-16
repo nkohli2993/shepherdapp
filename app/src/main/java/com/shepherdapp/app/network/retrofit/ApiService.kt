@@ -145,7 +145,8 @@ interface ApiService {
     @GET(ApiConstants.MedicalConditions.GET_MEDICAL_CONDITIONS)
     suspend fun getMedicalConditions(
         @Query("page") page: Int,
-        @Query("limit") limit: Int
+        @Query("limit") limit: Int,
+        @Query("search") search: String
     ): Response<MedicalConditionResponseModel>
 
     @GET(ApiConstants.MedicalConditions.GET_LOVED_ONE_MEDICAL_CONDITION)

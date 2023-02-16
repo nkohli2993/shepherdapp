@@ -139,6 +139,7 @@
         <activity
             android:name="com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity"
             android:label="@string/title_activity_add_loved_one_condition"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity"
