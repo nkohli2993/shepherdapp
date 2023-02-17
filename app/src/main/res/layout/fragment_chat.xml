@@ -53,7 +53,6 @@
                 android:padding="@dimen/_2sdp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_defalut_profile_pic"
-                app:imageUrl="@{data.receiverPicUrl}"
                 app:shapeAppearanceOverlay="@style/roundedCornersImageView10" />
         </LinearLayout>
 

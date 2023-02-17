@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.AdapterUsersBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.NewMessageViewModel
 
 
@@ -85,6 +86,9 @@ class UsersAdapter(
                     careTeam
                 )
             }
+
+            itemBinding.imgChatUser.setImageFromUrl(careTeam.user_id_details?.profilePhoto!!,
+                careTeam.user_id_details?.firstname, careTeam.user_id_details?.lastname)
         }
     }
 

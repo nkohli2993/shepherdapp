@@ -12,6 +12,7 @@ import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.RvLoveOnesBinding
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.LovedOneViewModel
 import com.squareup.picasso.Picasso
 
@@ -68,9 +69,11 @@ class LovedOneAdapter(
                 itemBinding.textViewCareTeamName.text = fullName
 
                 //Set Image
-                Picasso.get().load(it.love_user_id_details?.profilePhoto)
-                    .placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(itemBinding.imageViewCareTeam)
+                itemBinding.imageViewCareTeam.setImageFromUrl(
+                    it.love_user_id_details?.profilePhoto,
+                    it.love_user_id_details?.firstname,
+                    it.love_user_id_details?.lastname,
+                )
 
                 // Set Role
                 itemBinding.txtRole.text = "As " + it.careRoles?.name

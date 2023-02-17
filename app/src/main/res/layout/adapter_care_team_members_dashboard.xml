@@ -18,13 +18,15 @@
         android:layout_marginEnd="@dimen/_minus10sdp"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivCare"
             android:layout_width="@dimen/_30ssp"
             android:layout_height="@dimen/_30ssp"
             android:src="@drawable/ic_defalut_profile_pic"
-            app:civ_border_color="@color/colorWhite"
-            app:civ_border_width="@dimen/_1sdp"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            app:strokeColor="@color/_71C8B7"
+            app:strokeWidth="0.5dp"
+            android:padding="1dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

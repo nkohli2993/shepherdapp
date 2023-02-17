@@ -16,5 +16,6 @@ data class Payload(
     @SerializedName("unreadNotificationsCount") var unreadNotificationsCount: Int? = null,
     @SerializedName("lovedOneUserProfile") var lovedOneUserProfile: String? = null,
     @SerializedName("firstname") var firstname: String? = null,
+    @SerializedName("lastname") var lastname: String? = null,
     @SerializedName("careTeamProfiles") var careTeamProfiles: ArrayList<CareTeamProfiles> = arrayListOf()
 ) : Parcelable

@@ -24,6 +24,7 @@ import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.Status
 import com.shepherdapp.app.utils.extensions.getStringWithHyphen
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.ProfileViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -130,12 +131,11 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         fragmentProfileBinding.tvName.text = fullName
 
         // Get loggedIn User's Profile Pic
-        if (payload?.userProfiles?.profilePhoto != null && payload?.userProfiles?.profilePhoto != "") {
-            val profilePicLoggedInUser = payload?.userProfiles?.profilePhoto
-            Picasso.get().load(profilePicLoggedInUser)
-                .placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(fragmentProfileBinding.imageViewUser)
-        }
+        fragmentProfileBinding.imageViewUser.setImageFromUrl(
+            payload?.userProfiles?.profilePhoto,
+            payload?.userProfiles?.firstname,
+            payload?.userProfiles?.lastname
+        )
 
 
         //Set Email

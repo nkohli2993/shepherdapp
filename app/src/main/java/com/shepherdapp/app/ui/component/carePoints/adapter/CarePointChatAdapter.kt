@@ -13,6 +13,7 @@ import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.changeDateFormat
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import com.squareup.picasso.Picasso
 
@@ -80,18 +81,22 @@ class CarePointChatAdapter(
                 targetDateFormat = "hh:mm a"
             )
 
-            if (messageData.senderProfilePic != null) {
+          //  if (messageData.senderProfilePic != null) {
                 if (messageData.senderID == loggedInUserId.toString()) {
                     itemBinding.let {
-                        Picasso.get().load(messageData.senderProfilePic)
-                            .placeholder(R.drawable.ic_defalut_profile_pic)
-                            .into(it.imageViewUserSender)
+                        it.imageViewUserSender.setImageFromUrl(
+                            messageData.senderProfilePic,
+                            messageData.senderName,""
+                        )
+
                     }
                 } else {
                     itemBinding.let {
-                        Picasso.get().load(messageData.senderProfilePic)
-                            .placeholder(R.drawable.ic_defalut_profile_pic)
-                            .into(it.imageViewUserReceiver)
+                        it.imageViewUserReceiver.setImageFromUrl(
+                            messageData.senderProfilePic,
+                            messageData.senderName,""
+                        )
+
                     }
                 }
 
@@ -101,7 +106,7 @@ class CarePointChatAdapter(
                          .placeholder(R.drawable.ic_defalut_profile_pic)
                          .into(it.imageViewUserSender)
                  }*/
-            }
+        //    }
 
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(

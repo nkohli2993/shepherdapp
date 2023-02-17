@@ -24,6 +24,7 @@ import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.getStringWithHyphen
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.MemberDetailsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -69,9 +70,11 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     private fun initView() {
         careTeam?.user_id_details.let {
             // Set profile pic
-            Picasso.get().load(it?.profilePhoto)
-                .placeholder(R.drawable.ic_defalut_profile_pic)
-                .into(fragmentMemberDetailsBinding.imgCareTeamMember)
+            fragmentMemberDetailsBinding.imgCareTeamMember.setImageFromUrl(
+                it?.profilePhoto,
+                it?.firstname, it?.lastname
+            )
+
 
             // Set Name
             fragmentMemberDetailsBinding.txtCareTeamMemberName.text =

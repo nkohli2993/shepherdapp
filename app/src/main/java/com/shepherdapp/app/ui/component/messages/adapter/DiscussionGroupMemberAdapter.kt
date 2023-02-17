@@ -8,6 +8,7 @@ import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.chat.ChatUserDetail
 import com.shepherdapp.app.databinding.AdapterDiscussionGroupsMembersBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.MessagesViewModel
 import com.squareup.picasso.Picasso
 
@@ -56,10 +57,11 @@ class DiscussionGroupMemberAdapter(
 
         fun bind(chatListData: ChatUserDetail?, recyclerItemListener: RecyclerItemListener) {
             // itemBinding.data = dashboard
-            if (!chatListData?.imageUrl.isNullOrEmpty()) {
-                Picasso.get().load(chatListData?.imageUrl)
-                    .placeholder(R.drawable.ic_defalut_profile_pic).into(itemBinding.ivMember)
-            }
+            itemBinding.ivMember.setImageFromUrl(
+                chatListData?.imageUrl,
+                chatListData?.name, ""
+            )
+
 
             itemBinding.root.setOnClickListener {
                 chatListData?.let { it1 ->

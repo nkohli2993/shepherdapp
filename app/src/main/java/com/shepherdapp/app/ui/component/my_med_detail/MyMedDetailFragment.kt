@@ -19,6 +19,7 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.utils.CustomTypefaceSpan
 import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.MyMedDetailVM
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -140,11 +141,11 @@ class MyMedDetailFragment : BaseFragment<FragmentMyMedDetialBinding>(), View.OnC
                             "${assignedByDetail.firstname} ${assignedByDetail.lastname}"
 
                     }
-                    if (it.data.payload.assigned_by_details.profile_photo != null && it.data.payload.assigned_by_details.profile_photo != "") {
-                        Picasso.get().load(it.data.payload.assigned_by_details.profile_photo)
-                            .placeholder(R.drawable.ic_defalut_profile_pic)
-                            .into(fragmentMyMedDetailBinding.imageViewUser)
-                    }
+                    fragmentMyMedDetailBinding.imageViewUser.setImageFromUrl(
+                        it.data.payload.assigned_by_details.profile_photo,
+                        it.data.payload.assigned_by_details.firstname,
+                        it.data.payload.assigned_by_details.lastname
+                    )
 
                 }
             }

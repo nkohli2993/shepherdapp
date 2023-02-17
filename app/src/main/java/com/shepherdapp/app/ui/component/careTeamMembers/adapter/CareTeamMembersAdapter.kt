@@ -95,11 +95,11 @@ class CareTeamMembersAdapter(
 
                 itemBinding.let {
                     it.textViewCareTeamName.text = careTeam.email
-                    if (!careTeam.image.isNullOrEmpty()) {
-                        Picasso.get().load(careTeam.image)
-                            .placeholder(R.drawable.ic_defalut_profile_pic)
-                            .into(it.imageViewCareTeam)
-                    }
+                    it.imageViewCareTeam.setImageFromUrl(
+                        careTeam.image,
+                        careTeam.email, ""
+                    )
+
                     it.textViewCareTeamRole.text = "As ${careTeam.careRoles?.name}"
                 }
 
@@ -176,10 +176,14 @@ class CareTeamMembersAdapter(
 
 
                 itemBinding.let {
-                    it.textViewCareTeamName.text = fullName
+                    //it.textViewCareTeamName.text = fullName
+                    it.textViewCareTeamName.text = firstName + " " + lastName
 
-                    Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(it.imageViewCareTeam)
+                    it.imageViewCareTeam.setImageFromUrl(
+                        imageUrl,
+                        firstName, lastName
+                    )
+
 
                     it.textViewCareTeamRole.text = careTeam.careRoles?.name
                 }

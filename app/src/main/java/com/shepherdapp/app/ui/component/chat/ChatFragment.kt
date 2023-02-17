@@ -27,6 +27,7 @@ import com.shepherdapp.app.ui.component.chat.adapter.ChatGroupAdapter
 import com.shepherdapp.app.utils.Chat
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.ChatViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,11 +86,13 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(),
             // Set Name of the Chat User
             fragmentChatBinding.txtName.text = chatModelList?.get(0)?.receiverName
             // Set Profile Pic
-            if (!chatModelList?.get(0)?.receiverPicUrl.isNullOrEmpty()) {
-                Picasso.get().load(chatModelList?.get(0)?.receiverPicUrl)
-                    .placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(fragmentChatBinding.imgChatUser)
-            }
+            fragmentChatBinding.imgChatUser.setImageFromUrl(chatModelList?.get(0)?.receiverPicUrl,
+                chatModelList?.get(0)?.receiverName,"")
+//            if (!chatModelList?.get(0)?.receiverPicUrl.isNullOrEmpty()) {
+//                Picasso.get().load(chatModelList?.get(0)?.receiverPicUrl)
+//                    .placeholder(R.drawable.ic_defalut_profile_pic)
+//                    .into(fragmentChatBinding.imgChatUser)
+//            }
 
         } else if (chatType == Chat.CHAT_GROUP) {
             fragmentChatBinding.txtName.text = chatModelList?.get(0)?.groupName

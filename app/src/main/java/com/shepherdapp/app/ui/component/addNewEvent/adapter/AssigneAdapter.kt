@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.AdapterAssignToEventBinding
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.squareup.picasso.Picasso
 
 class AssigneAdapter(
@@ -45,11 +46,12 @@ class AssigneAdapter(
                     .plus(if (memberList[position].user_id_details?.lastname == null) "" else memberList[position].user_id_details?.lastname)
             itemBinding.textViewCareTeamRole.text = memberList[position].careRoles?.name
 
-            if (!memberList[position].user_id_details?.profilePhoto.isNullOrEmpty()) {
-                Picasso.get().load(memberList[position].user_id_details?.profilePhoto)
-                    .placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(itemBinding.imageViewCareTeam)
-            }
+
+            itemBinding.imageViewCareTeam.setImageFromUrl(
+                memberList[position].user_id_details?.profilePhoto,
+                memberList[position].user_id_details?.firstname,memberList[position].user_id_details?.lastname
+            )
+
             itemBinding.checkbox.isChecked = false
             if (memberList[position].isSelected == true) {
                 itemBinding.checkbox.isChecked = true

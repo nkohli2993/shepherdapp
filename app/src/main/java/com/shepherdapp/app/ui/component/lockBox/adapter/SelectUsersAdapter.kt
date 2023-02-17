@@ -65,8 +65,9 @@ class SelectUsersAdapter(
 
             itemBinding.let {
                 it.txtUser.text = fullName
-                Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(it.imageViewCareTeam)
+
+                it.imageViewCareTeam.setImageFromUrl(imageUrl,firstName,lastName)
+
             }
 
             // CareTeam Leader is always selected

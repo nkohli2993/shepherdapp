@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.invitation.Results
 import com.shepherdapp.app.databinding.AdapterInvitationsBinding
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.InvitationViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.app_bar_dashboard.*
 
 
 class InvitationAdapter(
@@ -65,9 +67,11 @@ class InvitationAdapter(
                 it.txtLovedOneName.text = result.name
 
                 // Set Profile Pic of loved One
-                Picasso.get().load(result.image)
-                    .placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(it.imgLovedOne)
+                it.imgLovedOne.setImageFromUrl(
+                    result.image,
+                    result?.name,""
+                )
+
 
                 // Set Role of Care Team
                 it.textViewCareTeamRole.text = "As " + result.careRoles?.name

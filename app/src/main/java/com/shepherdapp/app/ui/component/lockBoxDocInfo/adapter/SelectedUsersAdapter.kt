@@ -67,8 +67,13 @@ class SelectedUsersAdapter(
 
             itemBinding.let {
                 it.txtUser.text = fullName
-                Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(it.imageViewCareTeam)
+
+                it.imageViewCareTeam.setImageFromUrl(
+                    imageUrl,
+                    allowedUser.userProfiles?.firstname,
+                    allowedUser.userProfiles?.lastname
+                )
+
             }
         }
     }

@@ -12,6 +12,7 @@ import com.shepherdapp.app.data.dto.dashboard.CareTeamProfiles
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersDashboardBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.utils.TextDrawable
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.DashboardViewModel
 import com.squareup.picasso.Picasso
 
@@ -64,38 +65,14 @@ class CareTeamMembersDashBoardAdapter(
 
             val firstName = careTeam.user?.firstname
             val lastName = careTeam.user?.lastname
-            val first = firstName?.first().toString()
-            var last: String? = null
-            var fullName: String? = null
-            if (lastName != null) {
-                last = lastName.first().toString()
-                fullName = "$first$last"
-            } else {
-                fullName = first
-            }
-
-           /* itemBinding.let {
-                if (!imageUrl.isNullOrEmpty()) {
-                    Picasso.get().load(imageUrl).placeholder(R.drawable.icon_default_profile_pic)
-                        .into(it.ivCare)
-                } else {
-                    val drawable = TextDrawable.builder()
-                        .beginConfig()
-                        .textColor(Color.RED)
-                        .useFont(Typeface.DEFAULT)
-                        .endConfig()
-                        .buildRect(fullName, ContextCompat.getColor(context, R.color.colorPurple))
-
-                    it.ivCare.setImageDrawable(drawable)
-                }
-            }*/
 
 
              itemBinding.let {
-                 if (imageUrl != null && imageUrl != "") {
-                     Picasso.get().load(imageUrl).placeholder(R.drawable.ic_defalut_profile_pic)
-                         .into(it.ivCare)
-                 }
+                 it.ivCare.setImageFromUrl(
+                     imageUrl,
+                     firstName, lastName
+                 )
+
              }
 
             itemBinding.root.setOnClickListener {

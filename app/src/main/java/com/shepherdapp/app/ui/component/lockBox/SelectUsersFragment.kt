@@ -69,16 +69,19 @@ class SelectUsersFragment : BaseFragment<FragmentSelectUsersBinding>(), View.OnC
                     hideLoading()
                     careTeams = it.data.payload.data
 
-                   /* if (!args.users.isNullOrEmpty()) {
+                    if (!args.users.isNullOrEmpty()) {
                         val userList = args.users?.toList()
-                        careTeams?.forEach { careTeam ->
-                            userList?.forEach { user ->
-                                if (careTeam.user_id == user.user_id) {
-                                    careTeam.isSelected = true
-                                }
-                            }
+
+                        val allowedUsersId : ArrayList<String> = ArrayList()
+
+                        userList?.forEach {
+                            allowedUsersId.add(it.user_id!!)
                         }
-                    }*/
+
+                        careTeams?.forEach { careTeam ->
+                            careTeam.isSelected = allowedUsersId.contains(careTeam.user_id)
+                        }
+                    }
                     careTeams?.let { it1 -> selectUsersAdapter?.updateCareTeams(it1) }
                 }
                 is DataResult.Failure -> {

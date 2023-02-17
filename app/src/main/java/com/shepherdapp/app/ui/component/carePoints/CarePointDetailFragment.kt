@@ -39,6 +39,7 @@ import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.hideKeyboard
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -598,11 +599,12 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             fragmentCarePointDetailBinding.recyclerViewEventAssigne.adapter = carePointsEventAdapter
 
             //set user detail
-            if (!payload.createdByDetails?.profilePhoto.isNullOrEmpty()) {
-                Picasso.get().load(payload.createdByDetails?.profilePhoto)
-                    .placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(fragmentCarePointDetailBinding.imageViewUser)
-            }
+            fragmentCarePointDetailBinding.imageViewUser.setImageFromUrl(
+                payload.createdByDetails?.profilePhoto,
+                payload.createdByDetails?.firstname,
+                payload.createdByDetails?.lastname,
+            )
+
 
             // Set Name
             var name: String? = null

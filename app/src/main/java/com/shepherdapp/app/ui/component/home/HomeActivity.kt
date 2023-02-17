@@ -260,10 +260,17 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         }
 
                         val lovedOneProfilePic = userProfile?.profilePhoto
-                        if (!lovedOneProfilePic.isNullOrEmpty())
-                            Picasso.get().load(lovedOneProfilePic)
-                                .placeholder(R.drawable.ic_defalut_profile_pic)
-                                .into(imgLovedOne)
+
+                        ivLovedOneProfile.setImageFromUrl(
+                            lovedOneProfilePic,
+                            userProfile?.firstname,
+                            userProfile?.lastname
+                        )
+                        imgLovedOne.setImageFromUrl(
+                            lovedOneProfilePic,
+                            userProfile?.firstname,
+                            userProfile?.lastname
+                        )
 
                         txtLoved.text = lovedOneFullName
 
@@ -311,13 +318,13 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                             binding.appBarDashboard.ivNotification.setImageResource(R.drawable.ic_home_notification_inactive)
                         }
 
-                        if (it.data.payload?.lovedOneUserProfile != null || it.data.payload?.lovedOneUserProfile != "") {
-                            val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
-                            if (!lovedOneProfilePic.isNullOrEmpty())
-                                Picasso.get().load(lovedOneProfilePic)
-                                    .placeholder(R.drawable.ic_defalut_profile_pic)
-                                    .into(ivLovedOneProfile)
-                        }
+                        val lovedOneProfilePic = it.data.payload?.lovedOneUserProfile
+                        ivLovedOneProfile.setImageFromUrl(
+                            lovedOneProfilePic,
+                            it.data.payload?.firstname,
+                            it.data.payload?.lastname
+                        )
+
                         //set name of user name
                         txtLovedUserName.text = it.data.payload?.firstname
                         //save data
@@ -629,18 +636,10 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(binding.ivLoggedInUserProfile)
             } else {
-                if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {
-                    Picasso.get().load(profilePicLoggedInUser)
-                        .placeholder(R.drawable.ic_defalut_profile_pic)
-                        .into(binding.ivLoggedInUserProfile)
-                }
+                binding.ivLoggedInUserProfile.setImageFromUrlWhiteBackground(profilePicLoggedInUser,firstName,lastName)
             }
         } else {
-            if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {
-                Picasso.get().load(profilePicLoggedInUser)
-                    .placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(binding.ivLoggedInUserProfile)
-            }
+            binding.ivLoggedInUserProfile.setImageFromUrlWhiteBackground(profilePicLoggedInUser,firstName,lastName)
         }
 
         /* if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {

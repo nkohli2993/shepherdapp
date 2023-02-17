@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.invitation.Results
 import com.shepherdapp.app.databinding.AdapterJoinCareTeamBinding
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.CareTeamsViewModel
 import com.squareup.picasso.Picasso
 
@@ -64,9 +65,12 @@ class JoinCareTeamAdapter(
                 it.textViewCareTeamName.text = result.name
 
                 // Set Profile Pic of loved One
-                Picasso.get().load(result.image)
-                    .placeholder(R.drawable.ic_defalut_profile_pic)
-                    .into(it.imageViewCareTeam)
+                it.imageViewCareTeam.setImageFromUrl(
+                    result.image,
+                    result.name,
+                    ""
+                )
+
 
                 // Set Role of Care Team
                 it.textViewCareTeamRole.text = "As " + result.careRoles?.name

@@ -54,7 +54,9 @@ class UploadedDocumentImagesAdapter(
 
         val imageView = itemView.findViewById<View>(R.id.imgDoc) as ShapeableImageView
 
-        if(list!![position].url!!.lowercase().endsWith(".png") ||list!![position].url!!.lowercase().endsWith(".jpg")  ||list!![position].url!!.lowercase().endsWith("jpeg") ) {
+        if(list!![position].url!!.lowercase().endsWith(".png") || list!![position].url!!.lowercase().endsWith(".jpg")
+            ||list!![position].url!!.lowercase().endsWith("jpeg") ) {
+
             imageView.loadImageCentreCrop(
                 R.drawable.ic_defalut_profile_pic,
                 list!![position].url!!.plus("?thumbnail=100")

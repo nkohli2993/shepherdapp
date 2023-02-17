@@ -13,6 +13,7 @@ import com.shepherdapp.app.databinding.AdapterDirectMessagesBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.MessagesViewModel
 import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
@@ -72,11 +73,12 @@ class DirectMessagesAdapter(
                 it.value
             }
 
-            if (!data?.get(0)?.imageUrl.isNullOrEmpty()) {
-                //Load Image
-                Picasso.get().load(data?.get(0)?.imageUrl ?: "")
-                    .placeholder(R.drawable.ic_defalut_profile_pic).into(itemBinding.imgChatUser)
-            }
+            //Load Image
+            itemBinding.imgChatUser.setImageFromUrl(
+                data?.get(0)?.imageUrl,
+                data?.get(0)?.name, ""
+            )
+
 
             // Set Name
             itemBinding.txtName.text = data?.get(0)?.name

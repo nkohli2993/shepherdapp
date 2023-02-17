@@ -27,6 +27,7 @@ import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.convertISOTimeToDate
 import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.LovedOneMedicalConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
@@ -152,6 +153,9 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                     } else {
                         getString(R.string.loved_one_not_available)
                     }
+
+                    fragmentLovedOneProfileBinding.imageViewUser.setImageFromUrl(payload?.userProfiles?.profilePhoto,
+                    payload?.userProfiles?.firstname,payload?.userProfiles?.lastname)
 
                     fragmentLovedOneProfileBinding.tvName.text = name
                     val place = payload?.userLocation?.formattedAddress

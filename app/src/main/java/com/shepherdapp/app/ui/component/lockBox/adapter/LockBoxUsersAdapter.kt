@@ -16,6 +16,7 @@ import com.shepherdapp.app.databinding.AdapterEventsMembersBinding
 import com.shepherdapp.app.databinding.AdapterUsersLockboxBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.utils.TextDrawable
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.squareup.picasso.Picasso
 
 
@@ -75,34 +76,14 @@ class LockBoxUsersAdapter(
             val imageUrl = usersList[position].user_id_details?.profilePhoto ?: ""
             val firstName = usersList[position].user_id_details?.firstname
             val lastName = usersList[position].user_id_details?.lastname
-            val first = firstName?.first().toString()
-            var last: String? = null
-            var fullName: String? = null
-            if (lastName != null) {
-                last = lastName.first().toString()
-                fullName = "$first$last"
-            } else {
-                fullName = first
-            }
+
 
             Log.d(TAG, "FirstName : $firstName")
             Log.d(TAG, "lastName : $lastName")
-            Log.d(TAG, "FullName : $fullName")
 
             itemBinding.let {
-                if (!imageUrl.isNullOrEmpty()) {
-                    Picasso.get().load(imageUrl).placeholder(R.drawable.default_ic)
-                        .into(it.imageView)
-                } else {
-                    val drawable = TextDrawable.builder()
-                        .beginConfig()
-                        .textColor(Color.WHITE)
-                        .useFont(Typeface.DEFAULT)
-                        .endConfig()
-                        .buildRect(fullName, ContextCompat.getColor(context, R.color._399282))
+                itemBinding.imageView.setImageFromUrl(imageUrl, firstName, lastName)
 
-                    it.imageView.setImageDrawable(drawable)
-                }
             }
         }
     }

@@ -1,11 +1,18 @@
 package com.shepherdapp.app.customBinding
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
+import com.shepherdapp.app.R
+import com.shepherdapp.app.utils.TextDrawable
+import com.squareup.picasso.Picasso
 
 /*
   Created by "Sumit Kumar"
@@ -27,11 +34,11 @@ fun setVisibility(view: View, value: Boolean) {
 }
 
 
-
-
 @BindingAdapter("app:tint")
 fun ImageView.setImageTint(@ColorInt color: Int) {
     setColorFilter(color)
 }
+
+
 
 

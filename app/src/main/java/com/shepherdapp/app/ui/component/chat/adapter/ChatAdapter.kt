@@ -11,6 +11,7 @@ import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.changeDateFormat
+import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.ChatViewModel
 
 
@@ -76,6 +77,12 @@ class ChatAdapter(
                 sourceDateFormat = "yyyy-MM-dd HH:mm:ss",
                 targetDateFormat = "hh:mm a"
             )
+
+            itemBinding.imageViewUserSender.setImageFromUrl(
+                "",
+                messageData.senderName, ""
+            )
+
             itemBinding.root.setOnClickListener {
                 recyclerItemListener.onItemSelected(
                     messageData
