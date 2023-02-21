@@ -22,7 +22,7 @@ class UploadedLockBoxFilesAdapter(
     private var onItemClickListener: OnItemClickListener? = null
 
     interface OnItemClickListener {
-        fun onItemClick(file: File)
+        fun onItemClick(file: File,position: Int)
     }
 
     fun setClickListener(clickListener: OnItemClickListener) {
@@ -64,7 +64,7 @@ class UploadedLockBoxFilesAdapter(
             }
 
             itemBinding.imgDelete.setOnClickListener {
-                onItemClickListener?.onItemClick(file)
+                onItemClickListener?.onItemClick(file,bindingAdapterPosition)
             }
         }
     }
@@ -86,6 +86,10 @@ class UploadedLockBoxFilesAdapter(
 
     fun removeData(file: File) {
         selectedFiles.remove(file)
+        notifyDataSetChanged()
+    }
+    fun removeData(file: Int) {
+        selectedFiles.removeAt(file)
         notifyDataSetChanged()
     }
 

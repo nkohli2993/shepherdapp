@@ -9,5 +9,6 @@ import com.google.gson.annotations.SerializedName
 data class ValidateSubscriptionRequestModel(
     @SerializedName("purchaseToken") var purchaseToken: String? = null,
     @SerializedName("packageName") var packageName: String? = null,
-    @SerializedName("productId") var productId: String? = null
+    @SerializedName("productId") var productId: String? = null,
+    @SerializedName("transaction_id") var transactionId: String? = null
 )

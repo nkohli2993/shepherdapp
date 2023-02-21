@@ -184,6 +184,13 @@ class SubscriptionAdapter constructor(
                     )
                 }
             }
+            itemBinding.layoutCard.setOnClickListener {
+                if (productDetails != null) {
+                    recyclerItemListener.onItemSelected(
+                        productDetails
+                    )
+                }
+            }
         }
     }
 

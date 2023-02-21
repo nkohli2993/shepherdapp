@@ -54,6 +54,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorWhite"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
                         android:textSize="@dimen/_20ssp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -63,6 +66,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:lineSpacingExtra="@dimen/_5sdp"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
                         android:text="@string/subscription_plan_desc"
                         android:textColor="@color/colorWhite" />
 
@@ -73,6 +79,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_30sdp"
                         android:lineSpacingExtra="@dimen/_5sdp"
+                        android:focusable="false"
+                        android:clickable="false"
+                        android:focusableInTouchMode="false"
                         android:textColor="@color/colorWhite" />
 
                     <!--  <androidx.appcompat.widget.AppCompatTextView
@@ -95,6 +104,9 @@
                             android:layout_height="wrap_content"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
+                            android:focusable="false"
+                            android:clickable="false"
+                            android:focusableInTouchMode="false"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -105,6 +117,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_1sdp"
                             android:textColor="@color/colorWhite"
+                            android:focusable="false"
+                            android:clickable="false"
+                            android:focusableInTouchMode="false"
                             app:layout_constraintStart_toEndOf="@id/txtPrice"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,6 +131,9 @@
                             android:layout_marginStart="@dimen/_3sdp"
                             android:layout_marginTop="@dimen/_1sdp"
                             android:textColor="@color/colorWhite"
+                            android:focusable="false"
+                            android:clickable="false"
+                            android:focusableInTouchMode="false"
                             app:layout_constraintStart_toEndOf="@id/txtPriceUnit"
                             app:layout_constraintTop_toTopOf="@+id/txtPrice" />
 

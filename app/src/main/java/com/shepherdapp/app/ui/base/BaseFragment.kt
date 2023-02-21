@@ -37,6 +37,7 @@ import com.lassi.domain.media.LassiOption
 import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
 import com.shepherdapp.app.R
+import com.shepherdapp.app.utils.SingleEvent
 import java.io.File
 
 
@@ -44,8 +45,8 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
 
     abstract fun observeViewModel()
     protected abstract fun initViewBinding()
-    var selectedFile: MutableLiveData<File> = MutableLiveData()
-    var selectedFiles: MutableLiveData<ArrayList<File>> = MutableLiveData()
+    var selectedFile: MutableLiveData<SingleEvent<File>> = MutableLiveData()
+    var selectedFiles: MutableLiveData<SingleEvent<ArrayList<File>>> = MutableLiveData()
 
     private var PERMISSION_REQUEST_CODE = 200
     private var PERMISSION_REQUEST_CODE_MUTLIPLE = 300
@@ -206,7 +207,7 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
                     } else {
                         File(selectedMedia[0].path!!)
                     }
-                    selectedFile.value = file!!
+                    selectedFile.value = SingleEvent(file!!)
                 }
             }
         }
@@ -253,7 +254,7 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
                     }
                     Log.d("Base Fragment", "selected files :$files ")
                     Log.d("Base Fragment", "selected files size :${files.size} ")
-                    selectedFiles.value = files
+                    selectedFiles.value = SingleEvent(files)
                 }
             }
         }

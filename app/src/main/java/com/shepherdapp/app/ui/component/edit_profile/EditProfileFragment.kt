@@ -15,6 +15,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.home.HomeActivity
+import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.isValidEmail
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
@@ -216,13 +217,16 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>(), View.OnC
         }
 
 
-    private fun handleSelectedImage(file: File?) {
-        if (file != null && file.exists()) {
-            //imgUploadProfilePic.visibility = View.GONE
+    private fun handleSelectedImage(singleEvent: SingleEvent<File>) {
+        singleEvent.getContentIfNotHandled().let {
 
-            editProfileViewModel.imageFile = file
-            editProfileViewModel.uploadImage(file)
+            if (it != null && it.exists()) {
+                //imgUploadProfilePic.visibility = View.GONE
 
+                editProfileViewModel.imageFile = it
+                editProfileViewModel.uploadImage(it)
+
+            }
         }
     }
 }

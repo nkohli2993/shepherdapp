@@ -30,7 +30,9 @@ import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.addLovedOne.adapter.RelationshipsAdapter
 import com.shepherdapp.app.ui.component.addLovedOneCondition.AddLovedOneConditionActivity
 import com.shepherdapp.app.ui.component.home.HomeActivity
+import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
+import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.utils.loadImageCentreCrop
 import com.shepherdapp.app.utils.observe
@@ -553,7 +555,13 @@ class AddLovedOneActivity : BaseActivity(), View.OnClickListener,
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.ivBack -> {
-                onBackPressed()
+                if (intent.hasExtra("source") && intent.getStringExtra("source") != null &&
+                    intent.getStringExtra("source") == Const.SUBSCRIPTION_CLASS
+                ) {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finishAffinity()
+                } else
+                    onBackPressed()
             }
             R.id.imageViewLovedOne -> {
                 // For Android 13 or above

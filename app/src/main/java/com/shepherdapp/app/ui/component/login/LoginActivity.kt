@@ -103,6 +103,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
 
+        Prefs.with(this)?.removeAll()
         terminateApp()
 
         /* if (intent.getStringExtra("source") != null) {

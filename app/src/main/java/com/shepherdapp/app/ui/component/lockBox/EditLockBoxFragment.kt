@@ -44,6 +44,7 @@ import com.shepherdapp.app.ui.component.lockBox.adapter.DocumentAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.LockBoxUsersAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.UploadedDocumentAdapter
 import com.shepherdapp.app.utils.FileValidator
+import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
@@ -314,30 +315,37 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     }
 
     // uploaded files from local storage
-    private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
-        dialog?.dismiss()
-        val uploadSelectedFiles: ArrayList<DocumentData> = arrayListOf()
-        for (i in selectedFiles!!) {
-            uploadSelectedFiles.add(
-                DocumentData(
-                    -1,
-                    i.toString(),
-                    dateFormat.format(Calendar.getInstance().time), true
-                )
-            )
+        private fun handleSelectedFiles(selectedFiles: SingleEvent<ArrayList<File>?>) {
+        selectedFiles.getContentIfNotHandled().let {
+            if (it != null) {
+                dialog?.dismiss()
+                val uploadSelectedFiles: ArrayList<DocumentData> = arrayListOf()
+                for (i in it) {
+                    uploadSelectedFiles.add(
+                        DocumentData(
+                            -1,
+                            i.toString(),
+                            dateFormat.format(Calendar.getInstance().time), true
+                        )
+                    )
 
+                }
+                selectedFileList!!.addAll(
+                    uploadSelectedFiles
+                )
+                uploadedFiles.addAll(uploadSelectedFiles)
+                if (it.isNotEmpty()) {
+                    setFileViewVisible()
+                    uploadedFilesAdapter?.addData(uploadSelectedFiles)
+                } else {
+                    setFileViewInvisible()
+                }
+            }
         }
-        selectedFileList!!.addAll(
-            uploadSelectedFiles
-        )
-        uploadedFiles.addAll(uploadSelectedFiles)
-        if (!selectedFiles.isNullOrEmpty()) {
-            setFileViewVisible()
-            uploadedFilesAdapter?.addData(uploadSelectedFiles)
-        } else {
-            setFileViewInvisible()
-        }
+
     }
+
+
 
 
     override fun initViewBinding() {
@@ -571,10 +579,14 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
         }
 
 
-    private fun handleSelectedImage(file: File?) {
-        if (file != null && file.exists()) {
-            addNewLockBoxViewModel.imageFile = file
-            addNewLockBoxViewModel.uploadLockBoxDoc(file)
+
+    private fun handleSelectedImage(singleEvent : SingleEvent<File>) {
+        singleEvent.getContentIfNotHandled().let {
+            if (it != null && it.exists()) {
+                addNewLockBoxViewModel.imageFile = it
+                addNewLockBoxViewModel.uploadLockBoxDoc(it)
+            }
+
         }
     }
 

@@ -41,10 +41,12 @@ import com.shepherdapp.app.ui.component.lockBox.adapter.DocumentAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.LockBoxUsersAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.UploadedLockBoxFilesAdapter
 import com.shepherdapp.app.utils.FileValidator
+import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.utils.observe
+import com.shepherdapp.app.utils.observeEvent
 import com.shepherdapp.app.view_model.AddNewLockBoxViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -188,8 +190,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     }
 
     override fun observeViewModel() {
-        observe(selectedFile, ::handleSelectedImage)
-        observe(selectedFiles, ::handleSelectedFiles)
+        observeEvent(selectedFile, ::handleSelectedImage)
+        observeEvent(selectedFiles, ::handleSelectedFiles)
 
         // Observe the response of upload multiple images api
         addNewLockBoxViewModel.uploadMultipleLockBoxDocResponseLiveData.observeEvent(this) {
@@ -332,22 +334,29 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     }
 
-    private fun handleSelectedFiles(selectedFiles: ArrayList<File>?) {
-        dialog?.dismiss()
-        val uploadSelectedFiles = selectedFiles
-        selectedFileList!!.addAll(uploadSelectedFiles!!)
-        if (!selectedFiles.isNullOrEmpty()) {
-            setFileViewVisible()
-            uploadedFilesAdapter?.addData(uploadSelectedFiles)
-        } else {
-            setFileViewUnvisible()
+    private fun handleSelectedFiles(selectedFiles: SingleEvent<ArrayList<File>>) {
+        selectedFiles.getContentIfNotHandled().let {
+            dialog?.dismiss()
+            if (it!=null) {
+                if (!it?.isEmpty()!!) {
+                    selectedFileList!!.addAll(it)
+                    setFileViewVisible()
+                    uploadedFilesAdapter?.addData(it)
+                } else {
+                    setFileViewUnvisible()
+                }
+            }
         }
+
     }
 
-    private fun handleSelectedImage(file: File?) {
-        if (file != null && file.exists()) {
-            addNewLockBoxViewModel.imageFile = file
-            addNewLockBoxViewModel.uploadLockBoxDoc(file)
+    private fun handleSelectedImage(singleEvent :SingleEvent<File>) {
+        singleEvent.getContentIfNotHandled().let {
+            if (it != null && it.exists()) {
+                addNewLockBoxViewModel.imageFile = it
+                addNewLockBoxViewModel.uploadLockBoxDoc(it)
+            }
+
         }
     }
 
@@ -482,15 +491,14 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         return R.layout.fragment_lockbox
     }
 
-    override fun onItemClick(file: File) {
+    override fun onItemClick(file: File,position:Int) {
         val builder = AlertDialog.Builder(requireContext())
         val dialog = builder.apply {
             setTitle(getString(R.string.delete_upload_document))
             setMessage(getString(R.string.are_you_sure_u_want_to_delete_uploaded_document))
             setPositiveButton(getString(R.string.yes)) { _, _ ->
-                selectedFileList!!.remove(file)
-                uploadedFilesAdapter?.removeData(file)
-                selectedFileList?.remove(file)
+                selectedFileList?.removeAt(position)
+                uploadedFilesAdapter?.removeData(position)
                 selectedFileShow()
             }
             setNegativeButton(getString(R.string.no)) { _, _ ->
@@ -689,5 +697,8 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             View.GONE
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+    }
 }
 

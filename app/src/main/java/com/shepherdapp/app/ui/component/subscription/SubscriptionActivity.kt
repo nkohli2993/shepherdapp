@@ -20,7 +20,6 @@ import com.google.gson.Gson
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.login.UserProfile
-import com.shepherdapp.app.data.dto.subscription.SubscriptionModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
 import com.shepherdapp.app.databinding.ActivitySubscriptionBinding
@@ -50,6 +49,7 @@ import kotlin.math.abs
  */
 @AndroidEntryPoint
 class SubscriptionActivity : BaseActivity(), View.OnClickListener {
+    private var alertDialog: AlertDialog? = null
     private lateinit var binding: ActivitySubscriptionBinding
     private var subscriptionAdapter: SubscriptionAdapter? = null
     private val subscriptionViewModel: SubscriptionViewModel by viewModels()
@@ -66,6 +66,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
     private var source: String? = "SubscriptionActivity"
     private var isFreeTrial: Boolean = false
     private var isItemAlreadyPurchased: Boolean = false
+    private var verifyingPurchase: Boolean = false
 
 
     private val TAG = "SubscriptionActivity"
@@ -90,12 +91,23 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
             // Google Play delivers the result of the purchase operation here
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
                 for (purchase in purchases) {
-                    verifySubPurchase(purchase)
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                        Log.d(TAG, "verifySubPurchase: " + "93")
+                        verifySubPurchase(purchase)
+                    }
                 }
             } else if (billingResult.responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
                 // Handle an error caused by a user cancelling the purchase flow.
+                Log.d(
+                    TAG,
+                    "PurchasesUpdatedListener: USER_CANCELED  " + billingResult.responseCode + "   " + billingResult.debugMessage
+                )
             } else {
                 // Handle any other error codes.
+                Log.d(
+                    TAG,
+                    "PurchasesUpdatedListener: " + billingResult.responseCode + "   " + billingResult.debugMessage
+                )
             }
         }
 
@@ -117,6 +129,26 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         // start the connection after initializing the billing client
         establishConnection()
     }
+
+    override fun onResume() {
+        super.onResume()
+        // Step 7: Handling pending transactions
+        billingClient?.queryPurchasesAsync(
+            QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS)
+                .build()
+        ) { billingResult: BillingResult, list: List<Purchase> ->
+            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                for (purchase in list) {
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged()) {
+                        Log.d(TAG, "verifySubPurchase: " + "554")
+                        verifySubPurchase(purchase)
+                    }
+
+                }
+            }
+        }
+    }
+
 
     //Step 3. Establish a connection to Google Play
     fun establishConnection() {
@@ -183,15 +215,17 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 .setOfferToken(productDetails.subscriptionOfferDetails!![0].offerToken)
                 .build()
         )
+
         val billingFlowParams = BillingFlowParams.newBuilder()
             .setProductDetailsParamsList(productDetailsParamsList)
             .build()
-        val billingResult = billingClient!!.launchBillingFlow(this, billingFlowParams)
 
+        val billingResult = billingClient!!.launchBillingFlow(this, billingFlowParams)
     }
 
     // Step 6: Processing purchases / Verify Payment
     private fun verifySubPurchase(purchases: Purchase) {
+        verifyingPurchase = true
         val acknowledgePurchaseParams = AcknowledgePurchaseParams
             .newBuilder()
             .setPurchaseToken(purchases.purchaseToken)
@@ -205,15 +239,15 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 //                var nameOfPlan: String? = null
                 when (planName) {
                     /* Const.SubscriptionPlan.ONE_WEEK -> {
-                         nameOfPlan = "Weekly"
- //                        expiryDate =
-                     }*/
+                     nameOfPlan = "Weekly"
+//                        expiryDate =
+                 }*/
                     /*  Const.SubscriptionPlan.ONE_MONTH -> {
-                          nameOfPlan = "Monthly"
-                      }
-                      Const.SubscriptionPlan.ONE_YEAR -> {
-                          nameOfPlan = "Yearly"
-                      }*/
+                      nameOfPlan = "Monthly"
+                  }
+                  Const.SubscriptionPlan.ONE_YEAR -> {
+                      nameOfPlan = "Yearly"
+                  }*/
                     Const.SubscriptionPlan.Yearly -> {
                         nameOfPlan = "Yearly"
                     }
@@ -235,6 +269,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 Log.d(TAG, "Product ID: $productID")
                 Log.d(TAG, "Plan Name : $planName")
 
+                Log.d(TAG, "verifySubPurchase: " + "240")
+
                 // A successful purchase generates a purchase token, which is a unique identifier that
                 // represents the user and the product ID for the in-app product they purchased.
 
@@ -243,9 +279,15 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                     ValidateSubscriptionRequestModel(
                         purchaseToken = purchases.purchaseToken,
                         packageName = purchases.packageName,
-                        productId = productID
+                        productId = productID,
+                        transactionId = orderID
 
                     )
+                )
+            } else {
+                Log.d(
+                    TAG,
+                    "verifySubPurchase: " + "253" + billingResult.responseCode + "    " + billingResult.debugMessage
                 )
             }
         }
@@ -253,7 +295,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
     private fun setAdapter() {
         hideLoading()
-        subscriptionAdapter = SubscriptionAdapter(this, subscriptionViewModel, productDetailsList)
+        subscriptionAdapter =
+            SubscriptionAdapter(this, subscriptionViewModel, productDetailsList)
         binding.viewPagerSubscription.adapter = subscriptionAdapter
 //        binding.viewPagerSubscription.setCurrentItem((productDetailsList?.get(0) ?: 0) as Int, false)
 
@@ -307,27 +350,28 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                     }
 
                     val builder = AlertDialog.Builder(this)
-                    val dialog = builder.apply {
-                        setTitle("Hi, $fullName")
-                        setMessage("You have successfully bought your $nameOfPlan plan")
-                        setPositiveButton("OK") { _, _ ->
-                            if (source == "My Subscription") {
-                                onBackPressedDispatcher.onBackPressed()
-                            } else {
-                                val intent =
-                                    Intent(
-                                        this@SubscriptionActivity,
-                                        AddLovedOneActivity::class.java
+                    if (alertDialog == null) {
+                        alertDialog = builder.apply {
+                            setTitle("Hi, $fullName")
+                            setMessage("You have successfully bought your $nameOfPlan plan")
+                            setPositiveButton("OK") { _, _ ->
+                                if (source == "My Subscription") {
+                                    onBackPressedDispatcher.onBackPressed()
+                                } else {
+                                    val intent =
+                                        Intent(
+                                            this@SubscriptionActivity,
+                                            AddLovedOneActivity::class.java
+                                        )
+                                    intent.putExtra("source", source)
+                                    startActivity(intent)
+                                    overridePendingTransition(
+                                        R.anim.slide_in_right,
+                                        R.anim.slide_out_left
                                     )
-                                intent.putExtra("source", source)
-                                startActivity(intent)
-                                overridePendingTransition(
-                                    R.anim.slide_in_right,
-                                    R.anim.slide_out_left
-                                )
-                            }
+                                }
 
-                            /*  val intent =
+                                /*  val intent =
                                   Intent(this@SubscriptionActivity, AddLovedOneActivity::class.java)
                               intent.putExtra("source", source)
                               startActivity(intent)
@@ -335,11 +379,12 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
 
 //                            startActivity<AddLovedOneActivity>()
-                        }
-                    }.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-
+                            }
+                        }.create()
+                        alertDialog?.show()
+                        alertDialog?.getButton(AlertDialog.BUTTON_POSITIVE)
+                            ?.setTextColor(Color.BLACK)
+                    }
                 }
             }
         }
@@ -516,7 +561,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                                     ValidateSubscriptionRequestModel(
                                         purchaseToken = purchaseToken,
                                         packageName = packageName,
-                                        productId = productId
+                                        productId = productId,
+                                        transactionId = orderId
                                     )
                                 )
                             } else {
@@ -540,21 +586,6 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        // Step 7: Handling pending transactions
-        billingClient?.queryPurchasesAsync(
-            QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build()
-        ) { billingResult: BillingResult, list: List<Purchase> ->
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                for (purchase in list) {
-                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged) {
-                        verifySubPurchase(purchase)
-                    }
-                }
-            }
-        }
-    }
 
     @SuppressLint("SimpleDateFormat")
     fun getDate(planName: String): String {
