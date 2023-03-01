@@ -100,6 +100,13 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
         setRecommendedDocumentsAdapter()
         setOtherDocumentsAdapter()
 
+        if (lockBoxViewModel.isLoggedInUserCareTeamLeader() == true) {
+            updateViewOfParentListenerListener?.updateViewVisibility(true)
+        } else {
+            updateViewOfParentListenerListener?.updateViewVisibility(false)
+        }
+
+
         fragmentLockboxBinding.imgCancel.setOnClickListener {
             fragmentLockboxBinding.editTextSearch.setText("")
             fragmentLockboxBinding.layoutRecommendedDoc.visibility = View.VISIBLE
@@ -460,7 +467,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                 false
             }
         }*/
-        updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
+       //updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
     }
 }
 

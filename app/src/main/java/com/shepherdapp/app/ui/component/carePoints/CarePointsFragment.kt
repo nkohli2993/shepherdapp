@@ -35,6 +35,8 @@ import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.Year
 import java.util.*
 
 /**
@@ -112,7 +114,13 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                  false
              }
          }*/
-        updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
+        if (carePointsViewModel.isLoggedInUserCareTeamLeader() == true) {
+            updateViewOfParentListenerListener?.updateViewVisibility(true)
+        } else {
+            updateViewOfParentListenerListener?.updateViewVisibility(false)
+        }
+
+        // updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
         fragmentCarePointsBinding.calendarPView.clearSelection()
         clickType = CalendarState.Today.value
         fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBold
@@ -166,11 +174,13 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                   )
               }*/
 
-            fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
+            // fragmentCarePointsBinding.calendarPView.setCurrentDate(selDate?.time!!)
 
             getDateSelectedOnTypeBased(
                 date.date
             )
+
+
         }
 
 
@@ -178,105 +188,17 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
             // Show care point data as per month change from calendar
             selDate = date.date
-            Log.d(TAG, "onMonthChangeListener :  date is $selDate")
-            Log.d(TAG, "onMonthChangeListener1 :  date is ${date.date}")
-
-            // Get Current date
-            val currentDate = Date()
-            Log.d(TAG, "onMonthChangeListener : current date is :$currentDate ")
-
-            val selectedDateMonth = SimpleDateFormat("MM").format(date.date)
-            val currentDateMonth = SimpleDateFormat("MM").format(currentDate)
-
-            Log.d(TAG, "onMonthChangeListener : current date month  is :$currentDateMonth ")
-            Log.d(TAG, "onMonthChangeListener : selected date month  is :$selectedDateMonth ")
-
-
-            if ((selDate?.before(currentDate) == true) && (selectedDateMonth != currentDateMonth)) {
-                Log.d(TAG, "Selected Date is before current date")
-                //                showWarning(requireContext(), "You can not view the events before current date...")
-                fragmentCarePointsBinding.noCareFoundTV.let {
-                    it.visibility = View.VISIBLE
-                    it.text = getString(R.string.care_points_before_current_date_are_not_available)
-                }
-
-                fragmentCarePointsBinding.recyclerViewEventDays.visibility = View.GONE
-                fragmentCarePointsBinding.textViewSelectGroup.text =
-                    SimpleDateFormat("MMM yyyy").format(date.date)
-            } else {
-                fragmentCarePointsBinding.recyclerViewEventDays.visibility = View.VISIBLE
-                fragmentCarePointsBinding.noCareFoundTV.visibility = View.GONE
-                Log.d(TAG, "Selected Date is after current date")
-                val month = SimpleDateFormat("MM").format(date.date)
-                val year = SimpleDateFormat("yyyy").format(date.date)
-                fragmentCarePointsBinding.textViewSelectGroup.text =
-                    SimpleDateFormat("MMM yyyy").format(date.date)
-                fragmentCarePointsBinding.calendarPView.clearSelection()
-                val calendar = Calendar.getInstance()
-                calendar.time = date.date
-                startDate = sdf!!.format(calendar.time)
-                calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
-                endDate = sdf!!.format(calendar.time)
-                getCarePointList(startDate, endDate)
-
-                when (clickType) {
-                    CalendarState.Month.value -> {
-                        fragmentCarePointsBinding.calendarPView.selectionMode =
-                            MaterialCalendarView.SELECTION_MODE_NONE
-                        val month = SimpleDateFormat("MM").format(date.date)
-                        val year = SimpleDateFormat("yyyy").format(date.date)
-                        fragmentCarePointsBinding.textViewSelectGroup.text =
-                            SimpleDateFormat("MMM yyyy").format(date.date)
-                        fragmentCarePointsBinding.calendarPView.clearSelection()
-                        val calendar = Calendar.getInstance()
-                        calendar.time = date.date
-                        startDate = sdf!!.format(calendar.time)
-                        calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
-                        endDate = sdf!!.format(calendar.time)
-                        getCarePointList(startDate, endDate)
-                    }
-                    else -> {
-                        fragmentCarePointsBinding.calendarPView.selectionMode =
-                            MaterialCalendarView.SELECTION_MODE_SINGLE
-                    }
-                }
-            }
-
-            /*  val month = SimpleDateFormat("MM").format(date.date)
-              val year = SimpleDateFormat("yyyy").format(date.date)
-              fragmentCarePointsBinding.textViewSelectGroup.text =
-                  SimpleDateFormat("MMM yyyy").format(date.date)
-              fragmentCarePointsBinding.calendarPView.clearSelection()
-              val calendar = Calendar.getInstance()
-              calendar.time = date.date
-              startDate = sdf!!.format(calendar.time)
-              calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
-              endDate = sdf!!.format(calendar.time)
-              getCarePointList(startDate, endDate)
-
-              when (clickType) {
-                  CalendarState.Month.value -> {
-                      fragmentCarePointsBinding.calendarPView.selectionMode =
-                          MaterialCalendarView.SELECTION_MODE_NONE
-                      val month = SimpleDateFormat("MM").format(date.date)
-                      val year = SimpleDateFormat("yyyy").format(date.date)
-                      fragmentCarePointsBinding.textViewSelectGroup.text =
-                          SimpleDateFormat("MMM yyyy").format(date.date)
-                      fragmentCarePointsBinding.calendarPView.clearSelection()
-                      val calendar = Calendar.getInstance()
-                      calendar.time = date.date
-                      startDate = sdf!!.format(calendar.time)
-                      calendar.add(Calendar.DATE, getDayCount(month = month, year = year))
-                      endDate = sdf!!.format(calendar.time)
-                      getCarePointList(startDate, endDate)
-                  }
-                  else -> {
-                      fragmentCarePointsBinding.calendarPView.selectionMode =
-                          MaterialCalendarView.SELECTION_MODE_SINGLE
-                  }
-              }*/
+            val lastDayOfMonth = lastDayOfMonth(date.year, date.month + 1)
+            startDate = SimpleDateFormat("yyyy-MM-dd").format(selDate!!)
+            endDate = SimpleDateFormat("yyyy-MM-dd").format(selDate!!).dropLast(2) + lastDayOfMonth
+            fragmentCarePointsBinding.calendarPView.clearSelection()
+            monthSelected()
 
         }
+    }
+
+    private fun lastDayOfMonth(Y: Int, M: Int): Int {
+        return LocalDate.of(Y, M, 1).month.length(Year.of(Y).isLeap)
     }
 
     @SuppressLint("SimpleDateFormat")
@@ -562,20 +484,6 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
             }
             R.id.tv_month -> {
-                fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBook
-                fragmentCarePointsBinding.tvWeek.typeface = typeFaceGothamBook
-                fragmentCarePointsBinding.tvMonth.typeface = typeFaceGothamBold
-                clickType = CalendarState.Month.value
-                fragmentCarePointsBinding.textViewSelectGroup.text =
-                    SimpleDateFormat("MMM yyyy").format(Calendar.getInstance().time)
-                setColorBasedOnCarePOintsType(
-                    fragmentCarePointsBinding.tvMonth,
-                    fragmentCarePointsBinding.tvWeek,
-                    fragmentCarePointsBinding.tvToday
-
-                )
-
-                fragmentCarePointsBinding.calendarPView.clearSelection()
                 val calendar = Calendar.getInstance()
                 val month = SimpleDateFormat("MM").format(calendar.time)
                 val year = SimpleDateFormat("yyyy").format(calendar.time)
@@ -584,10 +492,28 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.calendarPView.setCurrentDate(calendar.timeInMillis)
                 startDate = sdf!!.format(calendar.time)
                 calendar.add(Calendar.DATE, getDayCount(month, year))
-                endDate = sdf!!.format(calendar.time)
-                getCarePointList(startDate, endDate)
+                endDate = startDate.dropLast(2)+lastDayOfMonth(year.toInt(),month.toInt())
+                fragmentCarePointsBinding.calendarPView.clearSelection()
+                monthSelected()
             }
         }
+    }
+
+    private fun monthSelected() {
+        fragmentCarePointsBinding.tvToday.typeface = typeFaceGothamBook
+        fragmentCarePointsBinding.tvWeek.typeface = typeFaceGothamBook
+        fragmentCarePointsBinding.tvMonth.typeface = typeFaceGothamBold
+        clickType = CalendarState.Month.value
+        fragmentCarePointsBinding.textViewSelectGroup.text =
+            sdf?.parse(startDate)?.let { SimpleDateFormat("MMM yyyy").format(it) }
+        setColorBasedOnCarePOintsType(
+            fragmentCarePointsBinding.tvMonth,
+            fragmentCarePointsBinding.tvWeek,
+            fragmentCarePointsBinding.tvToday
+
+        )
+
+        getCarePointList(startDate, endDate)
     }
 
     private fun setColorBasedOnCarePOintsType(

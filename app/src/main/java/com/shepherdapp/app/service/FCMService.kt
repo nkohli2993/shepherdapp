@@ -166,7 +166,7 @@ class FCMService : FirebaseMessagingService() {
             mBuilder.setStyle(
                 NotificationCompat.BigPictureStyle()
                     .bigPicture(bitmap)
-                    .bigLargeIcon(null)
+                   // .bigLargeIcon(null)
             ).setLargeIcon(bitmap)
         }
 

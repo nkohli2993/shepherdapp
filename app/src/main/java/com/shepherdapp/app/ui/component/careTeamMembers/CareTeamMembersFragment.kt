@@ -48,7 +48,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private var status: Int = 1
 
     private var careTeams: ArrayList<CareTeamModel>? = ArrayList()
-    private var selectedCareTeams: ArrayList<CareTeamModel>? = ArrayList()
     private var searchedCareTeams: ArrayList<CareTeamModel>? = ArrayList()
     private var careTeamAdapter: CareTeamMembersAdapter? = null
     private var TAG = "CareTeamMembersFragment"

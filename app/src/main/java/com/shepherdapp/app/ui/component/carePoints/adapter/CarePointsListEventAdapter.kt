@@ -73,20 +73,12 @@ class CarePointsListEventAdapter(
             }
 
             val imageUrl = commentList[position].user_details.profilePhoto ?: ""
-            val firstName = commentList[position].user_details.firstname
-            val lastName = commentList[position].user_details.lastname
 
-
-            Log.d(TAG, "FirstName : $firstName")
-            Log.d(TAG, "lastName : $lastName")
-
-            itemBinding.let {
-                it.imageView.setImageFromUrl(
-                    imageUrl,
-                    commentList[position].user_details.firstname,
-                    commentList[position].user_details.lastname
-                )
-            }
+            itemBinding.imageView.setImageFromUrl(
+                imageUrl,
+                commentList[position].user_details.firstname,
+                commentList[position].user_details.lastname
+            )
         }
     }
 

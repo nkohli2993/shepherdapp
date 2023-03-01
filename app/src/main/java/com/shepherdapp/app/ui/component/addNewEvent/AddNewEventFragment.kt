@@ -505,10 +505,13 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         }
 
                         var min: String? = ""
-                        if (minute < 10) min = "0$minute" else min =
-                            java.lang.String.valueOf(minute)
+                        var hours: String? = ""
 
-                        val mTime = StringBuilder().append(hour).append(':')
+                        min = if (minute.toString().length < 2) "0$minute" else java.lang.String.valueOf(minute)
+
+                        hours = if (hour.toString().length < 2) "0$hour" else java.lang.String.valueOf(hour)
+
+                        val mTime = StringBuilder().append(hours).append(':')
                             .append(min)
 
                         fragmentAddNewEventBinding.tvTime.text = mTime

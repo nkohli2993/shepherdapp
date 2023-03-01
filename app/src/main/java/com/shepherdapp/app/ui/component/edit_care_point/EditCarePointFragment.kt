@@ -144,14 +144,14 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             )
             val time = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             Log.d(TAG, "initViewBinding: time is $time")
-            if (time.contains("am")||time.contains("AM")) {
+            if (time.contains("am") || time.contains("AM")) {
                 isAmPm = "am"
                 setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
             } else {
                 isAmPm = "pm"
                 setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
             }
-            fragmentEditCarePointBinding.tvTime.text = time.dropLast(2)
+            fragmentEditCarePointBinding.tvTime.text = time.dropLast(3)
         } else {
             setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50)
         }
@@ -503,6 +503,23 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
     private val isValid: Boolean
         get() {
+            var eventDate: Date? = null
+            var currentDate: Date? = null
+            if (fragmentEditCarePointBinding.tvDate.text.toString().trim()
+                    .isNotEmpty() && fragmentEditCarePointBinding.tvTime.text.toString().trim()
+                    .isNotEmpty()
+            ) {
+                val df = SimpleDateFormat("MM-dd-yyyy hh:mm a", Locale.getDefault()) // pass the format pattern that you like and done.
+                eventDate =df.parse(
+                    fragmentEditCarePointBinding.tvDate.text.toString().trim() + " " +
+                            fragmentEditCarePointBinding.tvTime.text.toString()
+                                .trim() + " " + isAmPm
+                )
+                currentDate = df.parse(df.format(Date()))
+
+
+            }
+
             when {
                 fragmentEditCarePointBinding.etEventName.text.toString().trim().isEmpty() -> {
                     fragmentEditCarePointBinding.etEventName.error =
@@ -531,6 +548,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
                     fragmentEditCarePointBinding.tvTime.requestFocus()
                 }
+
+                eventDate?.before(currentDate)!! -> {
+                    showInfo(requireContext(), getString(R.string.please_select_fututre_date))
+                    fragmentEditCarePointBinding.tvDate.requestFocus()
+                }
+
                 /* fragmentAddNewEventBinding.etNote.text.toString().trim().isEmpty() -> {
                      showInfo(
                          requireContext(),
@@ -633,7 +656,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             if (fragmentEditCarePointBinding.tvTime.text.isNotEmpty()) {
 
                 val dateTime = fragmentEditCarePointBinding.tvDate.text.toString().trim().plus(" ")
-                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus("$isAmPm"))
+                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus(" ").plus("$isAmPm"))
 
 
                 mCurrentTime.time = SimpleDateFormat("MM-dd-yyyy hh:mm a").parse(dateTime)!!
@@ -675,10 +698,14 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         }
 
                         var min: String? = ""
-                        if (minute < 10) min = "0$minute" else min =
-                            java.lang.String.valueOf(minute)
+                        var hours: String? = ""
 
-                        val mTime = StringBuilder().append(hour).append(':')
+                        min = if (minute.toString().length < 2) "0$minute" else java.lang.String.valueOf(minute)
+
+                        hours = if (hour.toString().length < 2) "0$hour" else java.lang.String.valueOf(hour)
+
+
+                        val mTime = StringBuilder().append(hours).append(':')
                             .append(min)
 
                         fragmentEditCarePointBinding.tvTime.text = mTime

@@ -58,6 +58,7 @@
                 android:paddingHorizontal="@dimen/_12sdp"
                 android:paddingVertical="@dimen/_5sdp"
                 android:text="@string/plus_new"
+                android:visibility="gone"
                 android:textColor="@color/_A26DCB"
                 android:textSize="@dimen/_15ssp"
                 app:layout_constraintEnd_toEndOf="parent"

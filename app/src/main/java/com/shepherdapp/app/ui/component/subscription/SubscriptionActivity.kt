@@ -281,7 +281,6 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                         packageName = purchases.packageName,
                         productId = productID,
                         transactionId = orderID
-
                     )
                 )
             } else {

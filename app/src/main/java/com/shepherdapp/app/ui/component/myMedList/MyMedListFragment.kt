@@ -101,6 +101,13 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         medListViewModel.getLovedOneMedLists(selectedDate)
 
 //        medListViewModel.getUserDetailByUUID()
+
+        if (medListViewModel.isLoggedInUserCareTeamLeader() == true) {
+            updateViewOfParentListenerListener?.updateViewVisibility(true)
+        } else {
+            updateViewOfParentListenerListener?.updateViewVisibility(false)
+        }
+
     }
 
     private fun setCalender() {
@@ -593,6 +600,6 @@ class MyMedListFragment : BaseFragment<FragmentMyMedlistBinding>() {
         val isCareTeamLeader = medListViewModel.isLoggedInUserCareTeamLeader()
         val isNewVisible =
             (lovedOneDetail?.careRoles?.slug == CareRole.CareTeamLead.slug) || (isCareTeamLeader == true)
-        updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
+       // updateViewOfParentListenerListener?.updateViewVisibility(isNewVisible)
     }
 }

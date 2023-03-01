@@ -23,6 +23,8 @@ import androidx.navigation.ui.NavigationUI
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.login.CareRoles
+import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.user.UserProfiles
 import com.shepherdapp.app.databinding.ActivityHomeBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -327,9 +329,36 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
                         //set name of user name
                         txtLovedUserName.text = it.data.payload?.firstname
+
+
+
                         //save data
                         viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
-
+                        viewModel.saveLovedOneDetail(
+                            UserLovedOne(
+                                it.data.payload!!.careTeamProfiles[0].id,
+                                it.data.payload!!.careTeamProfiles[0].userId,
+                                it.data.payload!!.careTeamProfiles[0].loveUserId,
+                                it.data.payload!!.careTeamProfiles[0].roleId,
+                                it.data.payload!!.careTeamProfiles[0].permission,
+                                it.data.payload!!.careTeamProfiles[0].status,
+                                "",
+                                "", "",
+                                CareRoles(
+                                    it.data.payload!!.careTeamProfiles[0].careRoles!!.id,
+                                    it.data.payload!!.careTeamProfiles[0].careRoles!!.name,
+                                    it.data.payload!!.careTeamProfiles[0].careRoles!!.slug,
+                                    it.data.payload!!.careTeamProfiles[0].careRoles!!.description,
+                                    it.data.payload!!.careTeamProfiles[0].careRoles!!.isActive,
+                                    it.data.payload!!.careTeamProfiles[0].careRoles!!.createdAt,
+                                    it.data.payload!!.careTeamProfiles[0].careRoles!!.updatedAt,
+                                    it.data.payload!!.careTeamProfiles[0].careRoles!!.deletedAt,
+                                ),
+                                it.data.payload!!.careTeamProfiles[0].user?.firstname,
+                                it.data.payload!!.careTeamProfiles[0].user?.lastname,
+                                it.data.payload!!.careTeamProfiles[0].user?.profilePhoto
+                                )
+                        )
 
                         // Get loved one user uuid
                         val lovedOneUUID = viewModel.getLovedOneUUID()
@@ -348,10 +377,24 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         val careTeam = payload.careTeamProfiles.filter {
                             it.userId == loggedInUserId
                         }
-                        if (!careTeam.isNullOrEmpty()) {
-                            if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
-                                viewModel.saveLoggedInUserCareTeamLead(true)
-                            }
+//                        if (!careTeam.isNullOrEmpty()) {
+//                            if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
+//                                viewModel.saveLoggedInUserCareTeamLead(true)
+//                            }
+//                        }
+
+                        if (!careTeam.isNullOrEmpty()){
+                               careTeam.forEach {
+                                   if (it.loveUserId==viewModel.getLovedOneUUID()){
+                                       if (it.careRoles?.slug == CareRole.CareTeamLead.slug) {
+                                           viewModel.saveLoggedInUserCareTeamLead(true)
+                                           return@forEach
+                                       }else{
+                                           viewModel.saveLoggedInUserCareTeamLead(false)
+
+                                       }
+                                   }
+                               }
                         }
 
 
@@ -582,7 +625,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
                         tvNew.apply {
 //                            isVisible = viewModel.isLoggedInUserCareTeamLead() == true
-                            isVisible = true
+                          //  isVisible = true
                             setOnClickListener {
                                 navController.navigate(R.id.nav_add_care_team_member)
                                 lockUnlockDrawer(true)
@@ -636,10 +679,18 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     .placeholder(R.drawable.ic_defalut_profile_pic)
                     .into(binding.ivLoggedInUserProfile)
             } else {
-                binding.ivLoggedInUserProfile.setImageFromUrlWhiteBackground(profilePicLoggedInUser,firstName,lastName)
+                binding.ivLoggedInUserProfile.setImageFromUrlWhiteBackground(
+                    profilePicLoggedInUser,
+                    firstName,
+                    lastName
+                )
             }
         } else {
-            binding.ivLoggedInUserProfile.setImageFromUrlWhiteBackground(profilePicLoggedInUser,firstName,lastName)
+            binding.ivLoggedInUserProfile.setImageFromUrlWhiteBackground(
+                profilePicLoggedInUser,
+                firstName,
+                lastName
+            )
         }
 
         /* if (profilePicLoggedInUser != null && profilePicLoggedInUser != "") {

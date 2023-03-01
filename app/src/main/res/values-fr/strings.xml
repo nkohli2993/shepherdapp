@@ -382,6 +382,8 @@
     <string name="please_enter_notes_for_care_point">Veuillez entrer une note d\'événement</string>
     <string name="choose_time">Choisissez l\'heure</string>
     <string name="please_enter_date_of_event">Veuillez entrer la date de l\'événement</string>
+    <string name="please_select_fututre_date">Veuillez sélectionner une date et une heure futures</string>
+
     <string name="please_enter_time_of_birth">"Veuillez entrer l'heure de l'événement"</string>
     <string name="please_select_whome_to_assign_event">Veuillez sélectionner au moins un destinataire pour créer un événement</string>
     <string name="write__">Écrire…</string>

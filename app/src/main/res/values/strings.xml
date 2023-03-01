@@ -263,6 +263,7 @@
     <string name="enter_phone_number">Enter phone number</string>
     <string name="enter_address">Please enter address</string>
     <string name="please_enter_date_of_birth">Please enter date of birth</string>
+    <string name="please_select_fututre_date">Please select future date and time</string>
     <string name="should_be_minimum_5_digits">Length Should Be of 5 to 15 Digits</string>
     <string name="should_be_minimum_3_characters">should be minimum of 3 characters</string>
     <string name="or_login_with_biometric">Or login with biometrics</string>
