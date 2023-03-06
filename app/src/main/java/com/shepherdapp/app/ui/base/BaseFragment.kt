@@ -37,11 +37,14 @@ import com.lassi.domain.media.LassiOption
 import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
 import com.shepherdapp.app.R
+import com.shepherdapp.app.utils.CalendarState
 import com.shepherdapp.app.utils.SingleEvent
 import java.io.File
 
 
 abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
+
+     var eventClickType = CalendarState.Today.value
 
     abstract fun observeViewModel()
     protected abstract fun initViewBinding()
@@ -61,6 +64,7 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
     var reportCustomerId = ""
     private lateinit var baseActivity: BaseActivity
 
+
     @LayoutRes
     abstract fun getLayoutRes(): Int
 
@@ -68,7 +72,9 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?
     ) {
-        binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
+        //if (!::binding.isInitialized) {
+            binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
+      //  }
 
     }
 
@@ -262,20 +268,23 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
 
     fun checkPermission(): Boolean {
         val readStorageresult =
-            ContextCompat.checkSelfPermission(baseActivity,
+            ContextCompat.checkSelfPermission(
+                baseActivity,
                 Manifest.permission.READ_EXTERNAL_STORAGE
             )
         val writeStorageresult =
-            ContextCompat.checkSelfPermission(baseActivity,
+            ContextCompat.checkSelfPermission(
+                baseActivity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             )
-        val cameraResult = ContextCompat.checkSelfPermission(baseActivity,
+        val cameraResult = ContextCompat.checkSelfPermission(
+            baseActivity,
             Manifest.permission.CAMERA
         )
         return readStorageresult == PackageManager.PERMISSION_GRANTED && writeStorageresult == PackageManager.PERMISSION_GRANTED && cameraResult == PackageManager.PERMISSION_GRANTED
     }
 
-    fun requestPermission(permissionCode:Int) {
+    fun requestPermission(permissionCode: Int) {
         ActivityCompat.requestPermissions(
             baseActivity,
             arrayOf(
@@ -299,16 +308,13 @@ abstract class BaseFragment<DB : ViewDataBinding> : Fragment() {
                 val readAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED
                 val writeAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED
                 val cameraAccepted = grantResults[2] == PackageManager.PERMISSION_GRANTED
-                if (readAccepted && writeAccepted  && cameraAccepted){
-                    if(requestCode == 200){
+                if (readAccepted && writeAccepted && cameraAccepted) {
+                    if (requestCode == 200) {
                         openImagePicker()
-                    }
-                    else if(requestCode == 300){
+                    } else if (requestCode == 300) {
                         openMultipleDocPicker()
                     }
-                }
-
-                else {
+                } else {
                     // showError(this,"Permission Denied, You cannot access Gallery data and Camera.")
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         val builder = AlertDialog.Builder(baseActivity)

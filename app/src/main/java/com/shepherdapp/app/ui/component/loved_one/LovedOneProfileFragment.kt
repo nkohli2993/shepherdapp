@@ -26,6 +26,7 @@ import com.shepherdapp.app.ui.component.loved_one.adapter.LovedOneMedicalConditi
 import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.extensions.convertISOTimeToDate
+import com.shepherdapp.app.utils.extensions.getStringWithHyphen
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.LovedOneMedicalConditionViewModel
@@ -135,11 +136,20 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                     if (payload?.userProfiles?.phoneCode.isNullOrEmpty() && payload?.userProfiles?.phoneNumber.isNullOrEmpty()) {
                         fragmentLovedOneProfileBinding.txtPhone.text = "No Phone Number Available"
                     } else {
-                        fragmentLovedOneProfileBinding.txtPhone.text =
-                            if ((payload?.userProfiles?.phoneCode
-                                    ?: "").startsWith("+")
-                            ) payload?.userProfiles?.phoneCode
-                                ?: "" else "+${payload?.userProfiles?.phoneCode}" + " " + payload?.userProfiles?.phoneNumber
+                        var phoneCode = payload?.userProfiles?.phoneCode
+                        val phoneNumber = payload?.userProfiles?.phoneNumber
+
+                        if (phoneCode != null && phoneCode.startsWith("+") )
+                            phoneCode = phoneCode.drop(1)
+
+                        val phone = if (phoneCode.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) {
+                            "Phone number not available"
+                        } else {
+                            val phoneNo = phoneNumber?.getStringWithHyphen(phoneNumber)
+                            "+$phoneCode $phoneNo"
+                        }
+                        fragmentLovedOneProfileBinding.txtPhone.text = phone
+
                     }
 
                     // Set Name

@@ -45,7 +45,7 @@ object Const {
         "https://play.google.com/store/account/subscriptions?sku=%s&package=%s"
 
     const val BASE_URL_LIVE = "https://shepherdapp.shepherdcares.com/"
-    const val BASE_URL_DEV = "https://sheperdstagging.itechnolabs.tech/"
+    const val BASE_URL_DEV = "https://shepherdapp.itechnolabs.tech/"
 
 
     object NotificationAction {
@@ -168,5 +168,4 @@ enum class Type(val value: String) {
     EDIT("Edit"),
     DELETE("Delete")
 }
-
 

@@ -144,8 +144,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         // Set Phone Number
         // Check if Phone Code and Phone Number are null
 
-        val phoneCode = payload?.userProfiles?.phoneCode
+        var phoneCode = payload?.userProfiles?.phoneCode
         val phoneNumber = payload?.userProfiles?.phoneNo
+
+        if (phoneCode != null && phoneCode.startsWith("+") )
+            phoneCode = phoneCode.drop(1)
+
         val phone = if (phoneCode.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) {
             "Phone number not available"
         } else {

@@ -744,11 +744,12 @@ class CreatedCarePointsViewModel @Inject constructor(
             }
 
         //get message list
-        val chatDocReference = db.collection(tableName!!).document(chatListData?.id ?: "")
+
+        val chatDocReference = db.collection(tableName!!).document(chatListData?.id!!)
         var query = chatDocReference.collection(TableName.MESSAGES)
             .orderBy("created", Query.Direction.DESCENDING)
 
-        if (lastDocument != null)
+        if (lastDocument != null && lastDocument?.contains("created")!!)
             query = query.startAfter(lastDocument!!)
 
         query = query.limit(10)

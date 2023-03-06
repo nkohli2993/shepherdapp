@@ -109,22 +109,14 @@ class FCMService : FirebaseMessagingService() {
         resultIntent.putExtra("detail", extra)
         resultIntent.putExtra("isNotification", true)
         // Handled the notification crash issue of Android 12 OS
-        val resultPendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val resultPendingIntent =
             PendingIntent.getActivity(
                 this,
                 notificationId ?: 1,
                 resultIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
-        } else {
 
-            PendingIntent.getActivity(
-                this,
-                notificationId ?: 1,
-                resultIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-            )
-        }
         /* val resultPendingIntent = PendingIntent.getActivity(
              this,
              noti_id ?: 1,
@@ -148,7 +140,7 @@ class FCMService : FirebaseMessagingService() {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             @SuppressLint("WrongConstant") val chan1 = NotificationChannel(
                 primaryChannel,
-                "notification_channel_default", NotificationManager.IMPORTANCE_DEFAULT
+                "notification_channel_default", NotificationManager.IMPORTANCE_HIGH
             )
             chan1.lightColor = Color.GREEN
             chan1.lockscreenVisibility = Notification.VISIBILITY_PRIVATE

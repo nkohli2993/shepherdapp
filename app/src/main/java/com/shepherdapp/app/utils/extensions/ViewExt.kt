@@ -329,7 +329,7 @@ fun ShapeableImageView.setImageFromUrl(imageUrl: String?, firstName: String?, la
             .textColor(Color.WHITE)
             .useFont(Typeface.DEFAULT)
             .endConfig()
-            .buildRect(fullName, ContextCompat.getColor(context, R.color._399282))
+            .buildRect(fullName.uppercase(), ContextCompat.getColor(context, R.color._399282))
 
         this.setImageDrawable(drawable)
     }
