@@ -3,10 +3,12 @@ package com.shepherdapp.app.ui.component.memberDetails
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Spannable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.shepherdapp.app.R
@@ -21,9 +23,7 @@ import com.shepherdapp.app.ui.component.memberDetails.adapter.MemberModulesAdapt
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Modules
 import com.shepherdapp.app.utils.Prefs
-import com.shepherdapp.app.utils.extensions.getStringWithHyphen
-import com.shepherdapp.app.utils.extensions.showError
-import com.shepherdapp.app.utils.extensions.showSuccess
+import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.MemberDetailsViewModel
 import com.squareup.picasso.Picasso
@@ -87,7 +87,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             fragmentMemberDetailsBinding.txtAddressCare.text =
                 it?.address ?: "No address available"
             // Set Phone Number
-            val phone = "+" + it?.phone
+            var phone = "+" + it?.phone
             val phoneArr = it?.phone?.split("-")
             val phoneCode = phoneArr?.get(0)
             val phoneNumber = phoneArr?.get(1)
@@ -106,7 +106,41 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                     "+" + phoneNo ?: "Phone Number Not Available"
 
             }
+
+
+
+            phone = fragmentMemberDetailsBinding.txtPhoneCare.text.toString()
+
+            if (phone != "Phone Number Not Available") {
+                fragmentMemberDetailsBinding.txtPhoneCare.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color._399282
+                    )
+                )
+
+
+            } else {
+                fragmentMemberDetailsBinding.txtPhoneCare.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color._192032
+                    )
+                )
+                fragmentMemberDetailsBinding.txtPhoneCare.setLinkTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color._192032
+                    )
+                )
+
+
+            }
+
         }
+
+        (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
+        (fragmentMemberDetailsBinding.txtPhoneCare.text as Spannable).stripUnderlines()
 
         // if the loggedIn user is the Care Team Leader, then only show the Remove and Save Changes button
         val isLoggedInUserTeamLead =

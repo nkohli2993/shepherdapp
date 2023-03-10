@@ -27,6 +27,8 @@
             app:strokeColor="@color/_71C8B7"
             app:strokeWidth="0.5dp"
             android:padding="1dp"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

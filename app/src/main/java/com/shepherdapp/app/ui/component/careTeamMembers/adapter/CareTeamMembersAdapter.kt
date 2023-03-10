@@ -154,7 +154,9 @@ class CareTeamMembersAdapter(
                 itemBinding.cardView.visibility = View.VISIBLE
                 itemBinding.imageViewInfo.visibility = View.GONE
                 itemBinding.imageViewDelete.isClickable = false
-
+                itemBinding.llImageWrapper.alpha = 1f
+                itemBinding.textViewCareTeamName.alpha = 1f
+                itemBinding.textViewCareTeamRole.alpha = 1f
                 itemBinding.imageViewDelete.setBackgroundResource(R.drawable.ic_arrow)
 
                 /*itemBinding.let {

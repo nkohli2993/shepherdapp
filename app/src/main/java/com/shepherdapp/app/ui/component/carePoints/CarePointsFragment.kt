@@ -1,9 +1,11 @@
 package com.shepherdapp.app.ui.component.carePoints
 
 
+import CommonFunctions.getLastDayOf
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -57,7 +59,6 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private var limit: Int = 10
     private var startDate: String = ""
     private var endDate: String = ""
-    private var isCalendarInitialized = false
     private var sdf = SimpleDateFormat("yyyy-MM-dd")
     private var chatModelList: ArrayList<ChatModel>? = ArrayList()
     private var selDate: Date? = null
@@ -104,7 +105,11 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
 
     private fun lastDayOfMonth(Y: Int, M: Int): Int {
-        return LocalDate.of(Y, M, 1).month.length(Year.of(Y).isLeap)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            LocalDate.of(Y, M, 1).month.length(Year.of(Y).isLeap)
+        } else {
+            getLastDayOf(M,Y)
+        }
     }
 
     override fun initViewBinding() {
@@ -135,21 +140,6 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
         }
 
-        fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
-            if (isCalendarInitialized) {
-                // Show care point data as per month change from calendar
-                selDate = date.date
-                val lastDayOfMonth = lastDayOfMonth(date.year, date.month + 1)
-                startDate = SimpleDateFormat("yyyy-MM-dd").format(selDate!!)
-                endDate =
-                    SimpleDateFormat("yyyy-MM-dd").format(selDate!!).dropLast(2) + lastDayOfMonth
-                fragmentCarePointsBinding.calendarPView.clearSelection()
-                monthSelected()
-
-                isCalendarInitialized = true
-            }
-
-        }
 
     }
 
@@ -168,6 +158,20 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.tvMonth.performClick()
             }
             else -> fragmentCarePointsBinding.tvToday.performClick()
+        }
+        monthChangeListener()
+    }
+
+    private fun monthChangeListener() {
+        fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
+            // Show care point data as per month change from calendar
+            selDate = date.date
+            val lastDayOfMonth = lastDayOfMonth(date.year, date.month + 1)
+            startDate = SimpleDateFormat("yyyy-MM-dd").format(selDate!!)
+            endDate =
+                SimpleDateFormat("yyyy-MM-dd").format(selDate!!).dropLast(2) + lastDayOfMonth
+            fragmentCarePointsBinding.calendarPView.clearSelection()
+            monthSelected()
         }
 
     }

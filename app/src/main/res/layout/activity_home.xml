@@ -24,10 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
+            android:background="@color/_399282"
             android:clickable="true"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:background="@color/_399282">
+            android:focusableInTouchMode="true">
 
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedScrollView"
@@ -53,8 +53,8 @@
 
                         <LinearLayout
                             android:id="@+id/llImageWrapper"
-                            android:layout_width="@dimen/_65sdp"
-                            android:layout_height="@dimen/_65sdp"
+                            android:layout_width="@dimen/_85sdp"
+                            android:layout_height="@dimen/_85sdp"
                             android:layout_marginStart="@dimen/_20ssp"
                             android:background="@drawable/profile_image_bg"
                             android:orientation="vertical"
@@ -74,13 +74,15 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/ivName"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_16ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvRole"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintVertical_chainStyle="packed" />
@@ -380,62 +382,62 @@
 
                         </LinearLayout>
 
-                       <!-- <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_13sdp"
-                            android:orientation="horizontal"
-                            android:paddingVertical="@dimen/_5sdp">
+                        <!-- <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="@dimen/_13sdp"
+                             android:orientation="horizontal"
+                             android:paddingVertical="@dimen/_5sdp">
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5" />
+                             <View
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight=".5" />
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_weight="2"
-                                android:fontFamily="@font/gotham_book"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_16ssp" />
+                             <androidx.appcompat.widget.AppCompatTextView
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_gravity="center"
+                                 android:layout_marginStart="@dimen/_10sdp"
+                                 android:layout_weight="2"
+                                 android:fontFamily="@font/gotham_book"
+                                 android:textColor="@color/colorWhite"
+                                 android:textSize="@dimen/_16ssp" />
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                             <View
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1" />
 
-                        </LinearLayout>
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_13sdp"
-                            android:orientation="horizontal"
-                            android:paddingVertical="@dimen/_5sdp">
+                         </LinearLayout>
+                         <LinearLayout
+                             android:layout_width="match_parent"
+                             android:layout_height="wrap_content"
+                             android:layout_marginTop="@dimen/_13sdp"
+                             android:orientation="horizontal"
+                             android:paddingVertical="@dimen/_5sdp">
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight=".5" />
+                             <View
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight=".5" />
 
-                            <androidx.appcompat.widget.AppCompatTextView
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_weight="2"
-                                android:fontFamily="@font/gotham_book"
-                                android:textColor="@color/colorWhite"
-                                android:textSize="@dimen/_16ssp" />
+                             <androidx.appcompat.widget.AppCompatTextView
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_gravity="center"
+                                 android:layout_marginStart="@dimen/_10sdp"
+                                 android:layout_weight="2"
+                                 android:fontFamily="@font/gotham_book"
+                                 android:textColor="@color/colorWhite"
+                                 android:textSize="@dimen/_16ssp" />
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1" />
+                             <View
+                                 android:layout_width="0dp"
+                                 android:layout_height="wrap_content"
+                                 android:layout_weight="1" />
 
-                        </LinearLayout>-->
+                         </LinearLayout>-->
 
                         <LinearLayout
                             android:id="@+id/tvLogout"
@@ -478,24 +480,23 @@
             </androidx.core.widget.NestedScrollView>
 
 
-
-           <!-- <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvLogout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:drawableStart="@drawable/ic_logout"
-                android:drawablePadding="@dimen/_10sdp"
-                android:fontFamily="@font/gotham_bold"
-                android:onClick="@{listener::onClick}"
-                android:text="@string/log_out"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_16ssp"
-                app:layout_constraintBottom_toTopOf="@+id/tvVersion"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />-->
+            <!-- <androidx.appcompat.widget.AppCompatTextView
+                 android:id="@+id/tvLogout"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginTop="@dimen/_10sdp"
+                 android:layout_marginBottom="@dimen/_10sdp"
+                 android:drawableStart="@drawable/ic_logout"
+                 android:drawablePadding="@dimen/_10sdp"
+                 android:fontFamily="@font/gotham_bold"
+                 android:onClick="@{listener::onClick}"
+                 android:text="@string/log_out"
+                 android:textColor="@color/colorWhite"
+                 android:textSize="@dimen/_16ssp"
+                 app:layout_constraintBottom_toTopOf="@+id/tvVersion"
+                 app:layout_constraintEnd_toEndOf="parent"
+                 app:layout_constraintStart_toStartOf="parent"
+                 app:layout_constraintTop_toBottomOf="@+id/nestedScrollView" />-->
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvVersion"
@@ -516,11 +517,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:fontFamily="@font/gotham_light"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/_5sdp"
                 android:text="@string/_2022_the_shepherd_company_llc_all_rights_reserved"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_11ssp"
-                android:gravity="center"
-                android:lineSpacingExtra="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

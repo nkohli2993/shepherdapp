@@ -12,6 +12,7 @@ import com.shepherdapp.app.data.dto.dashboard.CareTeamProfiles
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersDashboardBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
 import com.shepherdapp.app.utils.TextDrawable
+import com.shepherdapp.app.utils.loadImageFromURL
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.DashboardViewModel
 import com.squareup.picasso.Picasso

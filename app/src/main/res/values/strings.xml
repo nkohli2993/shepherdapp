@@ -230,7 +230,7 @@
     <string name="create">Create</string>
     <string name="welcome">Welcome</string>
     <string name="login_or_create_new_account">Please log in or create a new account.</string>
-    <string name="desc_text">We’re happy you’re joining us.\n\nPlease email <a herf="info@shepherd.systems">info@shepherd.systems</a> with any questions you may have.</string>
+    <string name="desc_text">We’re happy you’re joining us.\n\nPlease email\n<a herf="getwithshepherd@gmail.com">getwithsheperd@gmail.com</a> with any questions you may have.</string>
     <string name="hello">Hello!</string>
     <string name="log_in_to_access_your_account">Log in to access your \naccount</string>
     <string name="please_log_in">Please Log In</string>
@@ -368,6 +368,8 @@
     <string name="terms_of_use">Terms &amp; Conditions</string>
     <string name="term_of_use">Terms of Use</string>
     <string name="term_and_conditions">Terms and Conditions</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="no_email_address">No Email Available</string>
     <string name="login_with_biometric">Login with Biometrics</string>
     <string name="add_vitals">Add VitalStats</string>
     <string name="date">Date</string>
@@ -615,4 +617,8 @@
     <string name="select_users">Select Users</string>
     <string name="selected_users">Selected Users</string>
     <string name="select_users_below">Select users below</string>
+    <string name="we_are_here_to_help">We\'re here to help! Tell us what you\'re looking for and we\'ll get you connected to the right people.</string>
+    <string name="contact_us_phone">(844) 244–0050</string>
+    <string name="contact_us_email">getwithsheperd@gmail.com</string>
+    <string name="assigned_by">Assigned By</string>
 </resources>

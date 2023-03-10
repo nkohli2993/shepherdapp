@@ -23,7 +23,8 @@ android {
         implementation.exclude module: 'httpclient'
     }
 
-    compileSdkVersion rootProject.compileSdkVersion
+ //   compileSdkVersion rootProject.compileSdkVersion
+    compileSdkPreview = "UpsideDownCake"
 
     signingConfigs {
         release {
@@ -36,10 +37,12 @@ android {
 
     defaultConfig {
         applicationId "com.shepherdapp.app"
+        targetSdkPreview = "UpsideDownCake"
+
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 5
-        versionName "1.0.4"
+        versionCode 6
+        versionName "1.0.5"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        signingConfig signingConfigs.debug
@@ -67,14 +70,14 @@ android {
 //            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_dev)
 
             // client urls
-//            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
-//            buildConfigField("String", "BASE_URL", base_url_client)
-//            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_client)
+            buildConfigField("String", "BASE_URL_USER", base_url_user_client)
+            buildConfigField("String", "BASE_URL", base_url_client)
+            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_client)
 
 //            // Live urls
-            buildConfigField("String", "BASE_URL_USER", base_url_user_live)
-            buildConfigField("String", "BASE_URL", base_url_live)
-            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_live)
+//            buildConfigField("String", "BASE_URL_USER", base_url_user_live)
+//            buildConfigField("String", "BASE_URL", base_url_live)
+//            buildConfigField("String", "BASE_URL_RESOURCE_SHARING", base_url_resource_sharing_live)
         }
         release {
             debuggable false
@@ -196,11 +199,10 @@ dependencies {
     implementation "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.activity:activity-ktx:$activityKtxVersion"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.2'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.2'
-    implementation 'androidx.test:core-ktx:1.4.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     // Firebase
@@ -280,7 +282,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 //    implementation "com.github.wRorsjakz:Android-NumPad:$numberpadVersion"
     implementation "androidx.biometric:biometric:$biometric_version"
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.1'
 

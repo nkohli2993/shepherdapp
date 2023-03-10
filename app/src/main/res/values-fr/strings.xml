@@ -26,6 +26,7 @@
     <string name="title_activity_add_loved_one_condition">Ajouter une condition d\'être aimé</string>
     <string name="title_activity_join_care_team">Rejoindre l\'équipe de soins</string>
     <string name="title_activity_dashboard">Tableau de bord</string>
+    <string name="title_activity_subscription">Abonnement</string>
 
     <string name="prompt_email">E-mail</string>
     <string name="prompt_password">Mot de passe</string>
@@ -155,6 +156,7 @@
     <string name="select_time">Sélectionnez l\'heure</string>
     <string name="notes">Remarques</string>
     <string name="note">Noter</string>
+    <string name="note_with_colon">Note : </string>
     <string name="today">Aujourd\'hui</string>
     <string name="month">Mois</string>
     <string name="week">La semaine</string>
@@ -227,16 +229,21 @@
     <string name="create">Créer</string>
     <string name="welcome">Bienvenu</string>
     <string name="login_or_create_new_account">Veuillez vous connecter ou créer un nouveau compte.</string>
-    <string name="desc_text">"C'est un fait établi depuis longtemps qu'un lecteur sera distrait par le contenu lisible d'une page lorsqu'il regarde sa mise en page."</string>
+    <string name="desc_text">Nous sommes heureux que vous nous rejoigniez.\n\nVeuillez envoyer un e-mail à\n<a herf="getwithshepherd@gmail.com">getwithshepherd@gmail.com</a> pour toute question que vous pourriez avoir.</string>
     <string name="hello">Bonjour!</string>
     <string name="log_in_to_access_your_account">Connectez-vous pour accéder à votre \nCompte</string>
     <string name="please_log_in">Veuillez vous connecter</string>
+    <string name="contact_us">Contactez-nous</string>
+    <string name="term_of_use">Conditions d\'utilisation</string>
+    <string name="term_and_conditions">Termes et conditions</string>
+
     <string name="login_description">Bienvenue sur Shepherd, veuillez mettre vos identifiants de connexion ci-dessous pour commencer à utiliser l\'application.</string>
     <string name="forgot_passwd_description">Entrez votre email et nous vous enverrons des instructions sur la façon de réinitialiser votre mot de passe.</string>
     <string name="please_enter_email_id">Veuillez saisir votre identifiant e-mail</string>
     <string name="please_enter">Entrez s\'il vous plait</string>
     <string name="please_enter_valid_email_id">Veuillez saisir un identifiant de messagerie valide</string>
     <string name="enter_your_password">Tapez votre mot de passe</string>
+    <string name="password_should_be_min_4_character">Le mot de passe doit contenir au moins 4 caractères</string>
     <string name="please_enter_your_password">s\'il vous plait entrez votre mot de passe</string>
     <string name="please_enter_first_name">Veuillez entrer le prénom</string>
     <string name="please_enter_last_name">Veuillez entrer le nom de famille</string>
@@ -295,6 +302,7 @@
     <string name="create_discussion_with">Créer une discussion avec :</string>
     <string name="start_discussion">Démarrer la discussion</string>
     <string name="write">Écrire</string>
+    <string name="_write">Écrire…</string>
     <string name="change">Changer</string>
     <string name="your_loved_ones">Vos proches</string>
     <string name="old_password">ancien mot de passe</string>
@@ -315,6 +323,7 @@
     <string name="_2022_the_shepherd_company_llc_all_rights_reserved">©2022 La société Shepherd LLC. Tous les droits sont réservés.</string>
     <string name="reminders">Rappels</string>
     <string name="schedule_medication_reminders_set_refill_alerts_research">Planifier des médicaments, définir des alertes de renouvellement, effectuer des recherches.</string>
+    <string name="create_and_maintain_a_list_of_loved_one_medication">Créez et maintenez une liste des médicaments de votre proche et des informations connexes.</string>
     <string name="medications">Médicaments</string>
     <string name="create_and_join_conversations_among_careteam_members">Créez et rejoignez des conversations entre les membres de CareTeam.</string>
     <string name="create_care_team">Créer une équipe de soins de soutien composée de membres de la famille, d\'amis et de professionnels.</string>
@@ -365,6 +374,7 @@
     <string name="dd_mm_yy">DD/MM/YY</string>
     <string name="select">Sélectionner</string>
     <string name="add_new_care_point">Ajouter un nouveau CarePoint</string>
+    <string name="edit_care_point">Modifier CarePoint</string>
     <string name="add_new_lock_box">Ajoute un nouvel objet</string>
     <string name="assign_to_">Affecter à</string>
     <string name="wed_18_jul">wed, 18 jul</string>
@@ -383,6 +393,7 @@
     <string name="choose_time">Choisissez l\'heure</string>
     <string name="please_enter_date_of_event">Veuillez entrer la date de l\'événement</string>
     <string name="please_select_fututre_date">Veuillez sélectionner une date et une heure futures</string>
+    <string name="please_select_date_first">Veuillez d\'abord sélectionner la date</string>
 
     <string name="please_enter_time_of_birth">"Veuillez entrer l'heure de l'événement"</string>
     <string name="please_select_whome_to_assign_event">Veuillez sélectionner au moins un destinataire pour créer un événement</string>
@@ -468,6 +479,8 @@
     <string name="please_enter_valid_sbp_bp">Veuillez entrer un SBP valide.</string>
     <string name="please_enter_valid_dbp_bp">Veuillez entrer un DBP valide.</string>
     <string name="sbp">SBP</string>
+    <string name="sbp_with_colon">SBP:</string>
+    <string name="dbp_with_colon">DBP:</string>
     <string name="dbp">DBP</string>
     <string name="reset_security_code">Réinitialiser le code de sécurité</string>
     <string name="set_security_code">Définir le code de sécurité</string>
@@ -482,6 +495,7 @@
     <string name="no_medical_condition_added_for_loved_one">Aucune condition médicale ajoutée, veuillez ajouter une condition médicale pour un être cher.</string>
     <string name="please_select_at_least_one_condition">Veuillez sélectionner au moins une condition médicale…</string>
     <string name="no_result_found">Aucun résultat trouvé…</string>
+    <string name="no_notification_found">Aucune notification trouvée…</string>
     <string name="slash">/</string>
     <string name="unable_to_add_future_time_data_vital_stats">Impossible d\'ajouter une date future &amp; données temporelles pour les statistiques vitales.</string>
     <string name="please_enter_the_loved_one_address">Veuillez saisir l\'adresse du proche</string>
@@ -525,9 +539,11 @@
     <string name="no_resource_post_found">Aucune publication de ressource trouvée</string>
     <string name="created_on">Créé sur</string>
     <string name="add_medicine">Ajouter un médicament</string>
+    <string name="edit_medicine">Modifier le médicament</string>
     <string name="description">Description</string>
     <string name="medicine_name">Nom du médicament</string>
     <string name="add_medical_condition">Ajouter une condition médicale</string>
+    <string name="edit_medical_condition">Modifier Médical\nCondition</string>
     <string name="medical_condition">Condition médicale</string>
     <string name="please_enter_medical_condition">Veuillez saisir le nom de la condition médicale.</string>
     <string name="document_added_successfully">Document ajouté avec succès!</string>
@@ -541,9 +557,66 @@
     <string name="edit_loved_one_profile">Modifier les détails d\'un être cher</string>
     <string name="selected_recommended_document_type">Sélectionnez le type de document recommandé</string>
     <string name="select_document_type">Sélectionnez le type de document</string>
-<!--    <string name="are_you_an_enterprise_user">Êtes-vous un \n Utilisateur d'entreprise?</string>-->
+    <!--    <string name="are_you_an_enterprise_user">Êtes-vous un \n Utilisateur d'entreprise?</string>-->
     <string name="enter_enterprise_code">Entrer dans l\'entreprise \n Code</string>
-<!--    <string name="enterprise_code">Code d\'entreprise</string>-->
-<!--    <string name="are_you_enterprise_user">Êtes-vous un utilisateur d\'entreprise?</string>-->
+    <!--    <string name="enterprise_code">Code d\'entreprise</string>-->
+    <!--    <string name="are_you_enterprise_user">Êtes-vous un utilisateur d\'entreprise?</string>-->
+    <string name="enter_enterprise_cod">Entrez le code d\'entreprise</string>
+    <string name="enter_code">Entrez le code</string>
+    <string name="enter_enterprise_code_optional">Entrez le code d\'entreprise (facultatif)</string>
+    <string name="enterprise_code">Code d\'entreprise</string>
+    <string name="are_you_enterprise_user">Êtes-vous un utilisateur d\'entreprise?</string>
+    <string name="do_you_want_to_login_with_biometric">Voulez-vous vous connecter avec vos données biométriques pour la prochaine fois?</string>
+
+
+    <string name="buy_plan">Acheter un forfait</string>
+    <string name="select_access">Sélectionnez l\'accès</string>
+    <string name="enter_email">Entrez l\'e-mail</string>
+    <string name="send_invitation_to_loved_one">Send an Invitation to the \nloved one.</string>
+    <string name="current_medications">Médicaments actuels</string>
+    <string name="did_not_received_mail_yet">Je n\'ai pas encore reçu d\'e-mail? <font color="#A26DCB">Renvoyer</font></string>
+    <string name="recent_content">Contenu récent</string>
+    <string name="join_our_family">Rejoignez notre communauté d\'aidants familiaux</string>
+    <string name="join_commmunity_conversation">Rejoignez la conversation communautaire</string>
+    <string name="no_invitation_found">Aucune invitation trouvée</string>
+    <string name="dosage_med">Posologie :</string>
+    <string name="please_enter_medicine_name">Veuillez entrer le nom du médicament</string>
+    <string name="no_description_available">Pas de description disponible</string>
+    <string name="format_notes"><![CDATA[<b>Note:</b> %1s]]></string>
+    <string name="no_note_available">Aucune note disponible</string>
+    <string name="choose_your_subscription">Choisissez un plan d\'abonnement pour ajouter votre bien-aimé.</string>
+    <string name="buy_subscription_plan">Acheter un plan d\'abonnement</string>
+    <string name="user_limit_exceeded">Limite d\'utilisateurs dépassée</string>
+    <string name="your_subscription_has_been_expired">Votre abonnement a expiré</string>
+    <string name="ok">D\'accord</string>
+    <string name="max_3_loved_one_can_be_added">Max 3 proches peuvent être ajoutés</string>
+    <string name="you_can_add_up_to_3_loved_one">Vous pouvez ajouter jusqu\'à 3 aimés!</string>
+    <string name="become_an_enterprise_User">Devenez un utilisateur d\'entreprise</string>
+    <string name="enterprise_detail">Détail de l\'entreprise:</string>
+    <string name="you_have_choosen_plan">Vous avez choisi le plan de base</string>
+    <string name="your_plan_will_expire_on">Votre plan expirera le : </string>
+    <string name="renew">Renouveler</string>
+    <string name="change_plan">Changer de forfait</string>
+    <string name="create_a_password">Créer un mot de passe</string>
+    <string name="new_and_confirm_password_not_match">Le nouveau et le mot de passe de confirmation ne correspondent pas</string>
+    <string name="loved_one_needs_to_log_in_to_sync_vitalStats_data">Le proche doit se connecter pour synchroniser les données VitalStats.</string>
+    <string name="the_loved_one_will_log_in_using_the_same_credentials_to_sync_vitalStats_data">L\'être cher se connectera en utilisant les mêmes informations d\'identification pour synchroniser les données VitalStats.</string>
+    <string name="delete_account">Supprimer le compte</string>
+    <string name="please_let_us_know_why_you_want_to_delete_your_account">Veuillez nous indiquer pourquoi vous souhaitez supprimer votre compte.</string>
+    <string name="give_a_reason">Donne une raison</string>
+    <string name="please_enter_reason">Veuillez entrer la raison.</string>
+    <string name="user_account_deleted_successfully">Compte utilisateur supprimé avec succès</string>
+    <string name="coming_soon">À venir.</string>
+    <string name="care_points_before_current_date_are_not_available">Les CarePoints antérieurs à la date actuelle ne sont pas disponibles</string>
+    <string name="not_active_subscription_found">Aucun abonnement actif trouvé</string>
+    <string name="expired">Expiré</string>
+    <string name="upload_files">Télécharger des fichiers</string>
+    <string name="select_users">Sélectionnez les utilisateurs</string>
+    <string name="selected_users">Utilisateurs sélectionnés</string>
+    <string name="select_users_below">Sélectionnez les utilisateurs ci-dessous</string>
+    <string name="we_are_here_to_help">Nous sommes là pour vous aider ! Dites-nous ce que vous recherchez et nous vous mettrons en contact avec les bonnes personnes.</string>
+    <string name="contact_us_phone">(844) 244–0050</string>
+    <string name="contact_us_email">getwithsheperd@gmail.com</string>
+    <string name="assigned_by">Assigned By</string>
 
 </resources>

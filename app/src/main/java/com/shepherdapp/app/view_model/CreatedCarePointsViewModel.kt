@@ -749,40 +749,45 @@ class CreatedCarePointsViewModel @Inject constructor(
         var query = chatDocReference.collection(TableName.MESSAGES)
             .orderBy("created", Query.Direction.DESCENDING)
 
-        if (lastDocument != null && lastDocument?.contains("created")!!)
-            query = query.startAfter(lastDocument!!)
+        try{
+            if (lastDocument != null && lastDocument?.contains("created")!!)
+                query = query.startAfter(lastDocument!!)
 
-        query = query.limit(10)
+            query = query.limit(10)
 
-        query.get().addOnSuccessListener { querySnapshot ->
+            query.get().addOnSuccessListener { querySnapshot ->
 
-            if (!querySnapshot?.documents.isNullOrEmpty()) {
-                lastDocument = querySnapshot.documents[querySnapshot.documents.size - 1]
-            }
-            for (document in querySnapshot.documentChanges) {
-                try {
-                    val messageModel = document.document.getMessageModelFromDoc()
-                    showLog("MSG_TIME", "previous message $messageModel")
-                    if (allMsgList.singleOrNull { it.id.equals(messageModel.id) } == null) {
-                        allMsgList.add(messageModel)
-                    } else {
-                        val index =
-                            allMsgList.indexOfFirst { it.id.equals(messageModel.id) }
-                        if (index >= 0) {
-                            allMsgList[index] = messageModel
-                        }
-                    }
-                } catch (e: JSONException) {
-                    showException(e)
+                if (!querySnapshot?.documents.isNullOrEmpty()) {
+                    lastDocument = querySnapshot.documents[querySnapshot.documents.size - 1]
                 }
+                for (document in querySnapshot.documentChanges) {
+                    try {
+                        val messageModel = document.document.getMessageModelFromDoc()
+                        showLog("MSG_TIME", "previous message $messageModel")
+                        if (allMsgList.singleOrNull { it.id.equals(messageModel.id) } == null) {
+                            allMsgList.add(messageModel)
+                        } else {
+                            val index =
+                                allMsgList.indexOfFirst { it.id.equals(messageModel.id) }
+                            if (index >= 0) {
+                                allMsgList[index] = messageModel
+                            }
+                        }
+                    } catch (e: JSONException) {
+                        showException(e)
+                    }
+                }
+                val groupList = allMsgList.sortMessages()
+                val groupResponse = MessageGroupResponse(false, groupList)
+                chatResponseData.postValue(Event(DataResult.Success(groupResponse)))
             }
-            val groupList = allMsgList.sortMessages()
-            val groupResponse = MessageGroupResponse(false, groupList)
-            chatResponseData.postValue(Event(DataResult.Success(groupResponse)))
+                .addOnFailureListener {
+                    chatResponseData.postValue(Event(DataResult.Failure(exception = it)))
+                }
+        }catch (e:Exception){
+            Log.e("catch_exception","cath: ${e.message}")
         }
-            .addOnFailureListener {
-                chatResponseData.postValue(Event(DataResult.Failure(exception = it)))
-            }
+
     }
 
 

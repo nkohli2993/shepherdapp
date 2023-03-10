@@ -245,6 +245,11 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>(), View.OnClickList
                     )
                 )
             }
+            R.id.clContactUs -> {
+                findNavController().navigate(
+                    SettingFragmentDirections.actionNavSettingToContactUsFragment()
+                )
+            }
             R.id.tvLogout -> {
                 homeActivity.viewModel.logOut()
             }

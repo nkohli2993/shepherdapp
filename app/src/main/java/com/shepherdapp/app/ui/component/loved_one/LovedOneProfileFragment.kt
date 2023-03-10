@@ -3,10 +3,12 @@ package com.shepherdapp.app.ui.component.loved_one
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Spannable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,9 +27,7 @@ import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.loved_one.adapter.LovedOneMedicalConditionAdapter
 import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.extensions.convertISOTimeToDate
-import com.shepherdapp.app.utils.extensions.getStringWithHyphen
-import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.LovedOneMedicalConditionViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -123,7 +123,8 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                     payload = result.data.payload
                     fragmentLovedOneProfileBinding.data = payload
                     Log.d(TAG, "LovedOneDetailWithRelation: $payload")
-
+                    (fragmentLovedOneProfileBinding.txtEmail.text).stripUnderlines()
+                    (fragmentLovedOneProfileBinding.txtPhone.text).stripUnderlines()
                     // Set DOB
                     if (payload?.userProfiles?.dob.isNullOrEmpty()) {
                         fragmentLovedOneProfileBinding.txtDOB.text = "No Date Of Birth Available"
@@ -135,22 +136,57 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                     // Set Phone Number
                     if (payload?.userProfiles?.phoneCode.isNullOrEmpty() && payload?.userProfiles?.phoneNumber.isNullOrEmpty()) {
                         fragmentLovedOneProfileBinding.txtPhone.text = "No Phone Number Available"
+                        fragmentLovedOneProfileBinding.txtPhone.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color._192032
+                            )
+                        )
+
                     } else {
                         var phoneCode = payload?.userProfiles?.phoneCode
                         val phoneNumber = payload?.userProfiles?.phoneNumber
 
-                        if (phoneCode != null && phoneCode.startsWith("+") )
+                        if (phoneCode != null && phoneCode.startsWith("+"))
                             phoneCode = phoneCode.drop(1)
 
-                        val phone = if (phoneCode.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) {
-                            "Phone number not available"
+                        var phone = ""
+
+                        if (phoneCode.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) {
+                            fragmentLovedOneProfileBinding.txtPhone.setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color._192032
+                                ))
+
+                            phone = "Phone number not available"
                         } else {
+
+                            fragmentLovedOneProfileBinding.txtPhone.setTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color._399282
+                                )
+                            )
+                            fragmentLovedOneProfileBinding.txtPhone.setLinkTextColor(
+                                ContextCompat.getColor(
+                                    requireContext(),
+                                    R.color._399282
+                                )
+                            )
+
                             val phoneNo = phoneNumber?.getStringWithHyphen(phoneNumber)
-                            "+$phoneCode $phoneNo"
+                            phone = "+$phoneCode $phoneNo"
+
                         }
                         fragmentLovedOneProfileBinding.txtPhone.text = phone
 
+
+
+
                     }
+
+
 
                     // Set Name
                     var name: String? = null
@@ -164,8 +200,10 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                         getString(R.string.loved_one_not_available)
                     }
 
-                    fragmentLovedOneProfileBinding.imageViewUser.setImageFromUrl(payload?.userProfiles?.profilePhoto,
-                    payload?.userProfiles?.firstname,payload?.userProfiles?.lastname)
+                    fragmentLovedOneProfileBinding.imageViewUser.setImageFromUrl(
+                        payload?.userProfiles?.profilePhoto,
+                        payload?.userProfiles?.firstname, payload?.userProfiles?.lastname
+                    )
 
                     fragmentLovedOneProfileBinding.tvName.text = name
                     val place = payload?.userLocation?.formattedAddress
@@ -266,26 +304,26 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
 
         val isNewVisible =
             (lovedOneDetail?.careRoles?.slug == CareRole.CareTeamLead.slug) || (isCareTeamLeader == true)
-        if(isNewVisible){
+        if (isNewVisible) {
             fragmentLovedOneProfileBinding.ivEdit.visibility = View.VISIBLE
             fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.VISIBLE
-        }else{
+        } else {
             fragmentLovedOneProfileBinding.ivEdit.visibility = View.INVISIBLE
             fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.INVISIBLE
         }
 
-       /* val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
-            CareRole.CareTeamLead.slug -> {
-                fragmentLovedOneProfileBinding.ivEdit.visibility = View.VISIBLE
-                fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.VISIBLE
-                true
-            }
-            else -> {
-                fragmentLovedOneProfileBinding.ivEdit.visibility = View.INVISIBLE
-                fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.INVISIBLE
-                false
-            }
-        }*/
+        /* val isNewVisible = when (lovedOneDetail?.careRoles?.slug) {
+             CareRole.CareTeamLead.slug -> {
+                 fragmentLovedOneProfileBinding.ivEdit.visibility = View.VISIBLE
+                 fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.VISIBLE
+                 true
+             }
+             else -> {
+                 fragmentLovedOneProfileBinding.ivEdit.visibility = View.INVISIBLE
+                 fragmentLovedOneProfileBinding.editMedicalConditionIV.visibility = View.INVISIBLE
+                 false
+             }
+         }*/
 
     }
 
@@ -331,6 +369,7 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
 
     override fun onResume() {
         super.onResume()
+        observeViewModel()
         // Get user profile
 //        lovedOneMedicalConditionViewModel.getUserDetails(careTeamModel?.love_user_id_details?.userProfileId)
 

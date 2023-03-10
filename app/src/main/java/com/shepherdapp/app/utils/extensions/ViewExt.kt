@@ -1,5 +1,6 @@
 package com.shepherdapp.app.utils
 
+import android.R.attr.radius
 import android.app.Service
 import android.app.TimePickerDialog
 import android.content.Context
@@ -30,15 +31,19 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.shepherdapp.app.R
 import com.squareup.picasso.Picasso
-import de.hdodenhof.circleimageview.CircleImageView
 import java.io.File
 import java.util.*
+
 
 fun View.showKeyboard() {
     (this.context.getSystemService(Service.INPUT_METHOD_SERVICE) as? InputMethodManager)
@@ -299,10 +304,47 @@ fun Context.dpToPx(dp: Float): Int =
     TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, resources.displayMetrics).toInt()
 
 
+fun ShapeableImageView.loadImageFromURL(imageUrl: String?, firstName: String?, lastName: String?) {
+    if (!imageUrl.isNullOrEmpty()) {
+        Glide.with(context).load(imageUrl).apply(RequestOptions.circleCropTransform()).into(this)
+    } else {
+        var fullName: String? = null
+        var firstNameString = firstName
+        var lastNameString = lastName
+
+        if (firstName != null && firstName.contains(" ")) {
+            val fullNameArray = firstName.split(" ")
+            firstNameString = fullNameArray[0]
+            lastNameString = fullNameArray[1]
+        }
+
+        val first = firstNameString?.first().toString()
+        var last: String? = null
+        if (!lastNameString.isNullOrEmpty()) {
+            last = lastNameString.first().toString()
+            fullName = "$first$last"
+        } else {
+            fullName = first
+        }
+
+
+
+
+        val drawable = TextDrawable.builder()
+            .beginConfig()
+            .textColor(Color.WHITE)
+            .useFont(Typeface.DEFAULT)
+            .endConfig()
+            .buildRect(fullName.uppercase(), ContextCompat.getColor(context, R.color._399282))
+
+        this.setImageDrawable(drawable)
+    }
+}
 fun ShapeableImageView.setImageFromUrl(imageUrl: String?, firstName: String?, lastName: String?) {
     if (!imageUrl.isNullOrEmpty()) {
         Picasso.get().load(imageUrl).placeholder(R.drawable.default_ic)
             .into(this)
+
     } else {
         var fullName: String? = null
         var firstNameString = firstName

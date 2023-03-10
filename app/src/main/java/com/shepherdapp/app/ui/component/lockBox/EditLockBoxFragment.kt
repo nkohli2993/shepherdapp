@@ -54,6 +54,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -65,7 +66,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     View.OnClickListener, UploadedDocumentAdapter.OnItemClickListener {
 
     private val addNewLockBoxViewModel: AddNewLockBoxViewModel by viewModels()
-    private lateinit var fragmentEditLockBoxBinding: FragmentEditLockBoxBinding
+    private var fragmentEditLockBoxBinding: FragmentEditLockBoxBinding? = null
     private var fileName: String? = null
     private var fileNote: String? = null
     private val TAG = "EditNewLockBoxFragment"
@@ -80,12 +81,14 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private var lockBoxTypes: ArrayList<LockBoxTypes> = arrayListOf()
     private var documentAdapter: DocumentAdapter? = null
     private var selectedDocumentId: String? = null
+    private var selectedPosition :Int? = null
     private var lockBoxId: Int? = null
     private val args: EditLockBoxFragmentArgs by navArgs()
     private var uploadedFiles: ArrayList<DocumentData> = arrayListOf()
     private var deletedSelectedDocs: ArrayList<Documents>? = arrayListOf()
     private var dateFormat = SimpleDateFormat("MMM dd, yyyy")
     private var isLoading = false
+    private var isBinded = false
     private var lockBoxTypeId: Int? = null
     private var usersList: ArrayList<CareTeamModel>? = arrayListOf()
     private var usersListFromSelectUser: ArrayList<CareTeamModel>? = arrayListOf()
@@ -102,12 +105,64 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentEditLockBoxBinding = FragmentEditLockBoxBinding.inflate(inflater, container, false)
-        return fragmentEditLockBoxBinding.root
+        if (fragmentEditLockBoxBinding == null) {
+            fragmentEditLockBoxBinding =
+                FragmentEditLockBoxBinding.inflate(inflater, container, false)
+            isBinded = true
+        }
+        return fragmentEditLockBoxBinding?.root!!
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (isBinded) {
+            observeLifecycle()
+            initBinding()
+        }else{
+            // Get data back from the launched fragment
+            findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<CareTeamModel>>(
+                "userList"
+            )?.observe(viewLifecycleOwner) { users ->
+                usersListFromSelectUser = users
+                Log.d(TAG, "initViewBinding: userList is $usersList")
+                Log.d(TAG, "initViewBinding: userList size is ${usersList?.size}")
+
+                usersUUID = usersListFromSelectUser?.map {
+                    it.user_id
+                } as ArrayList<String>
+
+                Log.e("uploadedFiles","uploadedFiles: ${uploadedFiles.size}")
+                if(uploadedFilesAdapter!=null && uploadedFiles.size>0){
+                    uploadedFilesAdapter = null
+                    setUploadedFilesAdapter()
+                    uploadedFilesAdapter!!.addData(uploadedFiles)
+                }
+                if(selectedPosition!=null){
+                    fragmentEditLockBoxBinding?.documentSpinner?.setSelection(selectedPosition!!)
+                }
+
+                if (!usersListFromSelectUser.isNullOrEmpty()) {
+                    lockBoxUsersAdapter?.addData(usersListFromSelectUser!!)
+                    if (usersList?.size!! > 5) {
+                        fragmentEditLockBoxBinding?.txtMore?.visibility = View.VISIBLE
+                        val moreUser = usersList?.size!! - 5
+                        fragmentEditLockBoxBinding?.txtMore?.text = "+ $moreUser More"
+                    } else {
+                        fragmentEditLockBoxBinding?.txtMore?.visibility = View.GONE
+                    }
+                }
+            }
+
+        }
     }
 
     @SuppressLint("SimpleDateFormat")
-    override fun observeViewModel() {
+    override fun observeViewModel() {}
+
+
+
+
+    fun observeLifecycle() {
         observe(selectedFile, ::handleSelectedImage)
         observe(selectedFiles, ::handleSelectedFiles)
 
@@ -128,12 +183,12 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                     showSuccess(requireContext(), "Files uploaded successfully...")
                     uploadedDocumentsUrl = it.data.payload?.document
                     Log.d(TAG, "Uploaded lockbox docs url: $uploadedDocumentsUrl")
-                    fileName = fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
+                    fileName = fragmentEditLockBoxBinding?.edtFileName?.text.toString().trim()
                     fileNote =
-                        if (fragmentEditLockBoxBinding.edtNote.text.toString().isNullOrEmpty()) {
+                        if (fragmentEditLockBoxBinding?.edtNote?.text.toString().isNullOrEmpty()) {
                             null
                         } else {
-                            fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                            fragmentEditLockBoxBinding?.edtNote?.text.toString().trim()
                         }
                     uploadedDocumentsUrl?.addAll(alreadyAdded)
                     val addNewDocument: ArrayList<Documents> = arrayListOf()
@@ -218,7 +273,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                             R.layout.vehicle_spinner_drop_view_item,
                             lockBoxTypes
                         )
-                    fragmentEditLockBoxBinding.documentSpinner.adapter = documentAdapter
+                    fragmentEditLockBoxBinding?.documentSpinner?.adapter = documentAdapter
                     addNewLockBoxViewModel.getDetailLockBox(lockBoxId!!)
                 }
             }
@@ -238,8 +293,8 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                     uploadedFiles.clear()
                     fragmentEditLockBoxBinding.let {
                         result.data.payload.let { payload ->
-                            it.edtFileName.setText(payload?.name)
-                            it.edtNote.setText(payload?.note)
+                            it?.edtFileName?.setText(payload?.name)
+                            it?.edtNote?.setText(payload?.note)
                             // set document type selection for added document type
                             var position = 0
                             for (i in lockBoxTypes.indices) {
@@ -247,7 +302,10 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                     position = i
                                 }
                             }
-                            it.documentSpinner.setSelection(position)
+                            it?.documentSpinner?.setSelection(position)
+//                            if(selectedPosition!=null){
+//                                it.documentSpinner.setSelection(selectedPosition!!)
+//                            }
                             //set file added adapter
 
                             if (payload?.documents != null) {
@@ -299,11 +357,11 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                             if (!usersList.isNullOrEmpty()) {
                                 lockBoxUsersAdapter?.addData(usersList!!)
                                 if (usersList?.size!! > 5) {
-                                    fragmentEditLockBoxBinding.txtMore.visibility = View.VISIBLE
+                                    fragmentEditLockBoxBinding?.txtMore?.visibility = View.VISIBLE
                                     val moreUser = usersList?.size!! - 5
-                                    fragmentEditLockBoxBinding.txtMore.text = "+ $moreUser More"
+                                    fragmentEditLockBoxBinding?.txtMore?.text = "+ $moreUser More"
                                 } else {
-                                    fragmentEditLockBoxBinding.txtMore.visibility = View.GONE
+                                    fragmentEditLockBoxBinding?.txtMore?.visibility = View.GONE
                                 }
                             }
                         }
@@ -348,26 +406,22 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
 
 
 
-    override fun initViewBinding() {
+    override fun initViewBinding() {}
+
+     fun initBinding() {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
         addNewLockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
-        fragmentEditLockBoxBinding.listener = this
+        fragmentEditLockBoxBinding?.listener = this
         lockBoxId = args.id!!.toInt()
         lockBoxTypeId = args.documentId?.toInt()
         addNewLockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
         setUploadedFilesAdapter()
-        fragmentEditLockBoxBinding.edtNote.setOnTouchListener { view, event ->
-            view.parent.requestDisallowInterceptTouchEvent(true)
-            when (event.action and MotionEvent.ACTION_MASK) {
-                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
-            }
-            false
-        }
-        fragmentEditLockBoxBinding.documentSpinner.onItemSelectedListener =
+        fragmentEditLockBoxBinding?.documentSpinner?.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     selectedDocumentId = lockBoxTypes[p2].id.toString()
+                    selectedPosition= p2
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -378,26 +432,12 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
         setLockBoxUsersAdapter()
 
 
-        // Get data back from the launched fragment
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<CareTeamModel>>(
-            "userList"
-        )?.observe(viewLifecycleOwner) { users ->
-            usersListFromSelectUser = users
-            Log.d(TAG, "initViewBinding: userList is $usersList")
-            Log.d(TAG, "initViewBinding: userList size is ${usersList?.size}")
-
-            usersUUID = usersListFromSelectUser?.map {
-                it.user_id
-            } as ArrayList<String>
-
-//             setLockBoxUsersAdapter()
-        }
 
     }
 
     private fun setLockBoxUsersAdapter() {
         lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it) }
-        fragmentEditLockBoxBinding.rvUsers.adapter = lockBoxUsersAdapter
+        fragmentEditLockBoxBinding?.rvUsers?.adapter = lockBoxUsersAdapter
 
         /* if (usersList?.size!! > 5) {
              fragmentEditLockBoxBinding.txtMore.visibility = View.VISIBLE
@@ -422,13 +462,13 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
             }
             R.id.btnSaveChanges -> {
                 if (isValid) {
-                    fileName = fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
+                    fileName = fragmentEditLockBoxBinding?.edtFileName?.text.toString().trim()
 
                     fileNote =
-                        if (fragmentEditLockBoxBinding.edtNote.text.toString().isNullOrEmpty()) {
+                        if (fragmentEditLockBoxBinding?.edtNote?.text.toString().isNullOrEmpty()) {
                             null
                         } else {
-                            fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                            fragmentEditLockBoxBinding?.edtNote?.text.toString().trim()
                         }
 
                     if (uploadedFiles.isNullOrEmpty()) {
@@ -494,14 +534,14 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
                                 isLoading = true
                                 //call update api direct
                                 fileName =
-                                    fragmentEditLockBoxBinding.edtFileName.text.toString().trim()
+                                    fragmentEditLockBoxBinding?.edtFileName?.text.toString().trim()
                                 fileNote =
-                                    if (fragmentEditLockBoxBinding.edtNote.text.toString()
+                                    if (fragmentEditLockBoxBinding?.edtNote?.text.toString()
                                             .isNullOrEmpty()
                                     ) {
                                         null
                                     } else {
-                                        fragmentEditLockBoxBinding.edtNote.text.toString().trim()
+                                        fragmentEditLockBoxBinding?.edtNote?.text.toString().trim()
                                     }
 
                                 uploadedDocumentsUrl?.clear()
@@ -556,10 +596,10 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     private val isValid: Boolean
         get() {
             when {
-                fragmentEditLockBoxBinding.edtFileName.text.toString().trim().isEmpty() -> {
-                    fragmentEditLockBoxBinding.edtFileName.error =
+                fragmentEditLockBoxBinding?.edtFileName?.text.toString().trim().isEmpty() -> {
+                    fragmentEditLockBoxBinding?.edtFileName?.error =
                         getString(R.string.enter_file_name)
-                    fragmentEditLockBoxBinding.edtFileName.requestFocus()
+                    fragmentEditLockBoxBinding?.edtFileName?.requestFocus()
                 }
                 selectedDocumentId == null || selectedDocumentId == "-1" -> {
                     showInfo(requireContext(), getString(R.string.please_select_document_type))
@@ -593,7 +633,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
 
     private fun setUploadedFilesAdapter() {
         uploadedFilesAdapter = UploadedDocumentAdapter()
-        fragmentEditLockBoxBinding.rvUploadedFiles.adapter = uploadedFilesAdapter
+        fragmentEditLockBoxBinding?.rvUploadedFiles?.adapter = uploadedFilesAdapter
         uploadedFilesAdapter?.setClickListener(this)
 
     }
@@ -795,17 +835,17 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
         }
 
     private fun setFileViewInvisible() {
-        fragmentEditLockBoxBinding.txtUploadedFiles.visibility = View.GONE
-        fragmentEditLockBoxBinding.rvUploadedFiles.visibility = View.GONE
-        fragmentEditLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+        fragmentEditLockBoxBinding?.txtUploadedFiles?.visibility = View.GONE
+        fragmentEditLockBoxBinding?.rvUploadedFiles?.visibility = View.GONE
+        fragmentEditLockBoxBinding?.txtNoUploadedLockBoxFile?.visibility =
             View.GONE
     }
 
     private fun setFileViewVisible() {
-        fragmentEditLockBoxBinding.txtUploadedFiles.visibility = View.VISIBLE
-        fragmentEditLockBoxBinding.rvUploadedFiles.visibility =
+        fragmentEditLockBoxBinding?.txtUploadedFiles?.visibility = View.VISIBLE
+        fragmentEditLockBoxBinding?.rvUploadedFiles?.visibility =
             View.VISIBLE
-        fragmentEditLockBoxBinding.txtNoUploadedLockBoxFile.visibility =
+        fragmentEditLockBoxBinding?.txtNoUploadedLockBoxFile?.visibility =
             View.GONE
     }
 
@@ -877,28 +917,10 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     override fun onResume() {
         super.onResume()
         // Get data back from the launched fragment
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<ArrayList<CareTeamModel>>(
-            "userList"
-        )?.observe(viewLifecycleOwner) { users ->
-            usersList = users
-            Log.d(TAG, "initViewBinding: userList is $usersList")
-            Log.d(TAG, "initViewBinding: userList size is ${usersList?.size}")
+    }
 
-            usersUUID = usersList?.map {
-                it.user_id
-            } as ArrayList<String>
-            if (!usersList.isNullOrEmpty()) {
-                lockBoxUsersAdapter?.addData(usersList!!)
-                if (usersList?.size!! > 5) {
-                    fragmentEditLockBoxBinding.txtMore.visibility = View.VISIBLE
-                    val moreUser = usersList?.size!! - 5
-                    fragmentEditLockBoxBinding.txtMore.text = "+ $moreUser More"
-                } else {
-                    fragmentEditLockBoxBinding.txtMore.visibility = View.GONE
-                }
-            }
-
-//            setLockBoxUsersAdapter()
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        isBinded = false
     }
 }

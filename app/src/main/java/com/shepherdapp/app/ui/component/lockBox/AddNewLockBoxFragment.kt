@@ -78,6 +78,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var documentAdapter: DocumentAdapter? = null
     private var lockBoxUsersAdapter: LockBoxUsersAdapter? = null
     private var selectedDocumentId: String? = null
+    private var selectedPosition :Int? = null
 
     private val args: AddNewLockBoxFragmentArgs by navArgs()
 
@@ -97,13 +98,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 selectedDocumentId == null || selectedDocumentId == "-1" -> {
                     showInfo(requireContext(), getString(R.string.please_select_document_type))
                 }
-                /* fragmentAddNewLockBoxBinding.edtNote.text.toString().trim().isEmpty() -> {
-                     fragmentAddNewLockBoxBinding.edtNote.error = getString(R.string.enter_note)
-                 }*/
 
-                /*selectedFileList.isNullOrEmpty() -> {
-                    showInfo(requireContext(), getString(R.string.please_upload_file))
-                }*/
                 else -> {
                     return true
                 }
@@ -124,6 +119,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         return fragmentAddNewLockBoxBinding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        if( selectedFileList!=null && selectedFileList!!.size>0){
+            setFileViewVisible()
+        }
+
+    }
     @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
@@ -131,18 +133,20 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         fragmentAddNewLockBoxBinding.listener = this
         addNewLockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
         setUploadedFilesAdapter()
-        fragmentAddNewLockBoxBinding.edtNote.setOnTouchListener { view, event ->
-            view.parent.requestDisallowInterceptTouchEvent(true)
-            when (event.action and MotionEvent.ACTION_MASK) {
-                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
-            }
-            false
-        }
+
+//        fragmentAddNewLockBoxBinding.edtNote.setOnTouchListener { view, event ->
+//            view.parent.requestDisallowInterceptTouchEvent(true)
+//            when (event.action and MotionEvent.ACTION_MASK) {
+//                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
+//            }
+//            false
+//        }
 
         fragmentAddNewLockBoxBinding.documentSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     selectedDocumentId = lockBoxTypes[p2].id.toString()
+                    selectedPosition = p2
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -163,6 +167,14 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             } as ArrayList<String>
 
             setLockBoxUsersAdapter()
+            if( selectedFileList!=null && selectedFileList!!.size>0){
+                setFileViewVisible()
+            }
+            uploadedFilesAdapter?.addData(selectedFileList!!)
+
+            if(lockBoxTypes.size>0 && selectedPosition!=null){
+                fragmentAddNewLockBoxBinding.documentSpinner.setSelection(selectedPosition!!)
+            }
         }
 
 
@@ -324,6 +336,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     }
 
                     fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
+
+                    if(lockBoxTypes.size>0 && selectedPosition!=null){
+                        fragmentAddNewLockBoxBinding.documentSpinner.setSelection(selectedPosition!!)
+                    }
+
                     // Set Document name if lockBox slug is not other
                     /*if (!lBType?.slug.equals("other"))
                         fragmentAddNewLockBoxBinding.edtFileName.setText(lBType?.name)

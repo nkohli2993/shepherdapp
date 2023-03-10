@@ -107,6 +107,8 @@
                         android:gravity="center_vertical"
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
+                        android:textColorLink="@color/_192032"
+                        android:autoLink="email"
                         android:textSize="@dimen/_12ssp"
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
@@ -122,8 +124,12 @@
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="@dimen/_5sdp"
+
                         android:textColor="@color/_192032"
+                        android:textColorLink="@color/_399282"
+                        android:autoLink="phone"
                         android:textSize="@dimen/_12ssp"
+
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtEmailCare" />
@@ -137,6 +143,7 @@
                         android:drawableStart="@drawable/ic_address_care"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
+                        android:visibility="gone"
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"

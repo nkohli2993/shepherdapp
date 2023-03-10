@@ -142,9 +142,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10ssp"
                         android:fontFamily="@font/gotham_book"
-                        android:text="@{data.email ?? `No Email Available`}"
+                        android:text="@{data.email==null ? @string/no_email_address : data.email}"
                         android:textColor="@color/_192032"
+                        android:textColorLink="@color/_192032"
                         android:textSize="@dimen/_14ssp"
+                        android:autoLink="email"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivEmail"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -173,6 +175,10 @@
                         android:fontFamily="@font/gotham_book"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_14ssp"
+                        android:autoLink="phone"
+
+
+
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivPhone"
                         app:layout_constraintTop_toTopOf="parent" />

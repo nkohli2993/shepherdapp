@@ -2,9 +2,11 @@ package com.shepherdapp.app.ui.component.profile
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Spannable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,9 +26,9 @@ import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.Status
 import com.shepherdapp.app.utils.extensions.getStringWithHyphen
+import com.shepherdapp.app.utils.extensions.stripUnderlines
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.ProfileViewModel
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -149,14 +151,39 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
         if (phoneCode != null && phoneCode.startsWith("+") )
             phoneCode = phoneCode.drop(1)
+        var phone = ""
 
-        val phone = if (phoneCode.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) {
-            "Phone number not available"
+         if (phoneCode.isNullOrEmpty() && phoneNumber.isNullOrEmpty()) {
+             phone = "Phone number not available"
+             ContextCompat.getColor(
+                 requireContext(),
+                 R.color._192032
+             )
+
         } else {
             val phoneNo = phoneNumber?.getStringWithHyphen(phoneNumber)
-            "+$phoneCode $phoneNo"
+             phone = "+$phoneCode $phoneNo"
+
+             fragmentProfileBinding.txtPhone.setTextColor(
+                 ContextCompat.getColor(
+                     requireContext(),
+                     R.color._399282
+                 )
+             )
+             fragmentProfileBinding.txtPhone.setLinkTextColor(
+                 ContextCompat.getColor(
+                     requireContext(),
+                     R.color._399282
+                 )
+             )
         }
+
+
         fragmentProfileBinding.txtPhone.text = phone
+
+        (fragmentProfileBinding.txtEmail.text as Spannable).stripUnderlines()
+        (fragmentProfileBinding.txtPhone.text as Spannable).stripUnderlines()
+
 
         //Get user's role
         // fragmentProfileBinding.tvProfessional.text = payload?.userLovedOne?.get(0)?.careRoles?.name
