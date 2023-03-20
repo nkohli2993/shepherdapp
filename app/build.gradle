@@ -23,8 +23,8 @@ android {
         implementation.exclude module: 'httpclient'
     }
 
- //   compileSdkVersion rootProject.compileSdkVersion
-    compileSdkPreview = "UpsideDownCake"
+    compileSdkVersion rootProject.compileSdkVersion
+ //   compileSdkPreview = "UpsideDownCake"
 
     signingConfigs {
         release {
@@ -37,12 +37,11 @@ android {
 
     defaultConfig {
         applicationId "com.shepherdapp.app"
-        targetSdkPreview = "UpsideDownCake"
 
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        versionCode 6
-        versionName "1.0.5"
+        versionCode 8
+        versionName "1.0.7"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 //        signingConfig signingConfigs.debug
@@ -199,9 +198,9 @@ dependencies {
     implementation "androidx.annotation:annotation:$annotationVersion"
     implementation "androidx.activity:activity-ktx:$activityKtxVersion"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
 
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
@@ -283,7 +282,10 @@ dependencies {
 //    implementation "com.github.wRorsjakz:Android-NumPad:$numberpadVersion"
     implementation "androidx.biometric:biometric:$biometric_version"
     implementation 'com.google.android.material:material:1.8.0'
-    implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
+    implementation ("com.applandeo:material-calendar-view:1.9.0-rc03"){
+        exclude group: 'androidx.core'
+
+    }
     implementation 'com.github.prolificinteractive:material-calendarview:1.6.1'
 
     // google drive libs
