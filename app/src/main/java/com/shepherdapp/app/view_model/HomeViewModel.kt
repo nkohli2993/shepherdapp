@@ -52,6 +52,11 @@ class HomeViewModel @Inject constructor(
     var logoutResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _logoutResponseLiveData
 
+  private var _pauseAppLogoutResponseLiveData = MutableLiveData<DataResult<BaseResponseModel>>()
+
+    var pauseAppLogoutResponseLiveData: LiveData<DataResult<BaseResponseModel>> =
+        _pauseAppLogoutResponseLiveData
+
     private var _lovedOneDetailsLiveData =
         MutableLiveData<Event<DataResult<UserDetailsResponseModel>>>()
     var lovedOneDetailsLiveData: LiveData<Event<DataResult<UserDetailsResponseModel>>> =
@@ -176,6 +181,17 @@ class HomeViewModel @Inject constructor(
         }
         return logoutResponseLiveData
     }
+    fun pauseAppLogOut(): LiveData<DataResult<BaseResponseModel>> {
+        viewModelScope.launch {
+            val response = authRepository.logout()
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _pauseAppLogoutResponseLiveData.postValue(it)
+                }
+            }
+        }
+        return pauseAppLogoutResponseLiveData
+    }
 
     fun saveLovedUser(user: LoveUser?) {
         Prefs.with(ShepherdApp.appContext)!!.save(Const.LOVED_USER_DETAILS, user)
@@ -271,6 +287,9 @@ class HomeViewModel @Inject constructor(
 
     fun getLovedOnePic(): String? {
         return userRepository.getLovedOneProfilePic()
+    }
+    fun getUserToken(): String? {
+        return userRepository.getToken()
     }
 
     fun isLoggedInUserCareTeamLead(): Boolean? {

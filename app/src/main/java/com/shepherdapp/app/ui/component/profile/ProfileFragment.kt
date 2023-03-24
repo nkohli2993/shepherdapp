@@ -181,8 +181,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
 
         fragmentProfileBinding.txtPhone.text = phone
 
-        (fragmentProfileBinding.txtEmail.text as Spannable).stripUnderlines()
-        (fragmentProfileBinding.txtPhone.text as Spannable).stripUnderlines()
+        try {
+            (fragmentProfileBinding.txtEmail.text as Spannable).stripUnderlines()
+            (fragmentProfileBinding.txtPhone.text as Spannable).stripUnderlines()
+        }catch (e:Exception){ e.printStackTrace() }
 
 
         //Get user's role

@@ -17,6 +17,7 @@ import android.provider.Settings
 import android.view.MenuItem
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -24,16 +25,25 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
 import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
 import com.shepherdapp.app.R
+import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.network.retrofit.DataResult
+import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.ui.component.vital_stats.FitActionRequestCode
 import com.shepherdapp.app.ui.component.vital_stats.VitalStatsFragment
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.ProgressBarDialog
 import com.shepherdapp.app.utils.extensions.checkString
+import com.shepherdapp.app.utils.extensions.showError
+import com.shepherdapp.app.utils.observe
+import com.shepherdapp.app.view_model.HomeViewModel
 import java.io.File
 import java.util.regex.Pattern
 
@@ -50,11 +60,23 @@ abstract class BaseActivity : AppCompatActivity() {
     private val PERMISSION_REQUEST_CODE = 200
     private val PERMISSION_REQUEST_CODE_POST_NOTIFICATIONS = 700
     private val PERMISSION_REQUEST_CODE_GOOGLE_FIT = 500
+    private val viewModel: HomeViewModel by viewModels()
     private var fragment: Fragment? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewBinding()
         observeViewModel()
+        initObserver()
+    }
+
+    private fun initObserver() {
+        ShepherdApp.pauseAppLiveData.observe(this, Observer {
+            if (it != null && it) {
+                if (!Prefs.with(applicationContext)?.getString(Const.USER_TOKEN).isNullOrEmpty())
+                    viewModel.pauseAppLogOut()
+            }
+        })
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -378,6 +400,7 @@ abstract class BaseActivity : AppCompatActivity() {
         }
 
     }
+
 
     fun EditText.isValidPassword(): Boolean {
         return Pattern

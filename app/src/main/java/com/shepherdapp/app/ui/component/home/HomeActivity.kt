@@ -859,6 +859,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     }
 
     override fun onResume() {
+
         viewModel.getHomeData()
         viewModel.getUserDetailByUUID()
         super.onResume()
@@ -890,4 +891,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
              }
          }
      }*/
+    override fun onPause() {
+        super.onPause()
+
+    }
 }

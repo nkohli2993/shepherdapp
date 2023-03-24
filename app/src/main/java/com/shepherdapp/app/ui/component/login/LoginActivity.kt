@@ -604,12 +604,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     // Navigate to Home Screen with loved one array
     private fun navigateToHomeScreen() {
-        if (!userLovedOneArrayList.isNullOrEmpty()) {
-            Log.d(TAG, "LovedOneArrayList Size :${userLovedOneArrayList?.size} ")
-        } else {
-            Log.d(TAG, "LovedOneArrayList is null")
-        }
-
         val intent = Intent(this, HomeActivity::class.java)
 //        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
         startActivity(intent)
