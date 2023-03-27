@@ -58,7 +58,7 @@ class SplashActivity : BaseActivity() {
             generateFirebaseToken()
         }
 
-        if (token.isNullOrEmpty()) {
+        if (Prefs.with(this)?.getBoolean(Const.ON_BOARD) == false) {
             navigateToOnBoardingScreen()
         } else {
             navigateToLoginScreen()

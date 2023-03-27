@@ -102,9 +102,6 @@ class LoginViewModel @Inject constructor(
         userRepository.saveToken(token)
     }
 
-    fun clearToken() {
-        userRepository.clearToken()
-    }
 
 
     // Get LoggedIn User Detail

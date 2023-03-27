@@ -9,6 +9,8 @@ import com.shepherdapp.app.databinding.ActivityWalkThroughBinding
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.onBoarding.adapter.OnBoardingImagesAdapter
 import com.shepherdapp.app.ui.welcome.WelcomeActivity
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_onboarding.*
 
@@ -30,7 +32,7 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-
+        Prefs.with(this)?.save(Const.ON_BOARD,true)
         setImagesAdapter()
     }
 

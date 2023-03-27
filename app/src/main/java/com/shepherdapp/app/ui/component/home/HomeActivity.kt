@@ -786,8 +786,14 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     }
 
     override fun msgFromChildFragmentToActivity() {
-        viewModel.getHomeData()
-        viewModel.getUserDetailByUUID()
+
+        if (Prefs.with(ShepherdApp.appContext)?.getString(Const.USER_TOKEN, "").isNullOrEmpty()){
+            navigateToLogout()
+        }else {
+            viewModel.getHomeData()
+            viewModel.getUserDetailByUUID()
+        }
+
 //        setDrawerInfo()
 
     }
@@ -860,8 +866,12 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     override fun onResume() {
 
-        viewModel.getHomeData()
-        viewModel.getUserDetailByUUID()
+        if (Prefs.with(ShepherdApp.appContext)?.getString(Const.USER_TOKEN, "").isNullOrEmpty()){
+            navigateToLogout()
+        }else {
+            viewModel.getHomeData()
+            viewModel.getUserDetailByUUID()
+        }
         super.onResume()
     }
 

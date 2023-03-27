@@ -113,6 +113,12 @@ abstract class BaseActivity : AppCompatActivity() {
         ProgressBarDialog.showProgressBar(this, message)
     }
 
+    fun navigateToLogout(){
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.putExtra("source", "base")
+        startActivity(intent)
+    }
 
     fun hideLoading() {
         Looper.myLooper()?.let {

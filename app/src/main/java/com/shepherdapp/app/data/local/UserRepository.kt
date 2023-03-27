@@ -133,18 +133,8 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
 
     fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(LOVED_ONE_UUID, "")
 
-    fun clearToken() {
-        Prefs.with(ShepherdApp.appContext)!!.remove(USER_TOKEN)
-    }
 
-    fun clearData() {
-        saveUser(null)
-        saveToken(null)
-    }
 
-    fun clearSharedPref() {
-        Prefs.with(ShepherdApp.appContext)?.removeAll()
-    }
 
     fun saveLovedOneUserDetail(userLovedOne: UserLovedOne) {
         Prefs.with(ShepherdApp.appContext)!!.save(LOVED_ONE_DETAIL, userLovedOne)

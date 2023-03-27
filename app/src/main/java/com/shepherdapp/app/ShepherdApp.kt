@@ -2,7 +2,10 @@ package com.shepherdapp.app
 
 import android.app.Application
 import android.content.Intent
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
@@ -25,8 +28,10 @@ open class ShepherdApp : Application() {
     companion object {
         var appContext: Application? = null
         lateinit var db: FirebaseFirestore
-        var pauseAppLiveData : MutableLiveData<Boolean> = MutableLiveData()
+        var pauseAppLiveData: MutableLiveData<Boolean> = MutableLiveData()
     }
+
+    var countDownTimer: CountDownTimer? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -36,31 +41,60 @@ open class ShepherdApp : Application() {
 
         ProcessLifecycleOwner.get()
             .lifecycle
-            .addObserver(ProcessLifecycleObserver())
+            .addObserver(lifecycleEventObserver)
     }
 
-    private class ProcessLifecycleObserver : LifecycleObserver {
-
-        @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-        fun onApplicationPaused() {
-            if (!Prefs.with(appContext)?.getString(USER_TOKEN,"").isNullOrEmpty()) {
-                pauseAppLiveData.postValue(true)
-                Prefs.with(appContext)?.removeAll()
-                val intent = Intent(appContext, LoginActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.putExtra("source", "base")
-                appContext?.startActivity(intent)
+    private val lifecycleEventObserver = LifecycleEventObserver { source, event ->
+        when (event) {
+            Lifecycle.Event.ON_RESUME -> {
+                if (countDownTimer != null) {
+                    countDownTimer?.cancel()
+                    countDownTimer = null
+                }
             }
+            Lifecycle.Event.ON_PAUSE -> {
+                if (!Prefs.with(appContext)?.getString(USER_TOKEN, "").isNullOrEmpty())
+                    startTimer()
+            }
+            Lifecycle.Event.ON_DESTROY -> {
+                if (!Prefs.with(appContext)?.getString(USER_TOKEN, "").isNullOrEmpty())
+                    logoutApp()
+            }
+            Lifecycle.Event.ON_CREATE -> {}
+            Lifecycle.Event.ON_START -> {}
+            Lifecycle.Event.ON_STOP -> {}
+            Lifecycle.Event.ON_ANY -> {}
         }
-        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        fun onApplicationResumed() {
-            pauseAppLiveData.value = false
+    }
+
+    private fun startTimer() {
+        if (countDownTimer == null) {
+            // 10 min timer
+            countDownTimer = object : CountDownTimer(10 * 60 * 1000, 1000) {
+                override fun onTick(p0: Long) {
+                    Log.d("TAG", "onTick: $p0")
+                }
+
+                override fun onFinish() {
+                    logoutApp()
+                    countDownTimer = null
+                }
+            }.start()
         }
 
-        @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        fun onApplicationDestroyed() {
-            pauseAppLiveData.value = false
+    }
+
+    private fun logoutApp() {
+        if (!Prefs.with(appContext)?.getString(USER_TOKEN, "").isNullOrEmpty()) {
+            pauseAppLiveData.postValue(true)
+            Prefs.with(appContext)?.remove(USER_TOKEN)
+            Log.d("TAG", "logoutApp: "+"clearToken")
+//                val intent = Intent(appContext, LoginActivity::class.java)
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+//                intent.putExtra("source", "base")
+//                appContext?.startActivity(intent)
         }
+
     }
 
 

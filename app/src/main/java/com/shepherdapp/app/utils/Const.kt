@@ -6,6 +6,7 @@ package com.shepherdapp.app.utils
 object Const {
     const val USER_DETAILS = "USER DETAILS"
     const val USER_TOKEN = "USER Token"
+    const val ON_BOARD = "on_board"
     const val USER_ID = "USER ID"
     const val UUID = "UUID"
     const val CARE_TEAM_LEADER_UUID = "CARE TEAM LEADER UUID"
