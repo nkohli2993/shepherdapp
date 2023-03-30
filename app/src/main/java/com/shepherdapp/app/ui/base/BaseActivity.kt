@@ -7,6 +7,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -15,6 +16,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -26,6 +28,7 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.test.internal.util.LogUtil
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
@@ -33,7 +36,6 @@ import com.lassi.domain.media.MediaType
 import com.lassi.presentation.builder.Lassi
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
-import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.ui.component.login.LoginActivity
 import com.shepherdapp.app.ui.component.vital_stats.FitActionRequestCode
 import com.shepherdapp.app.ui.component.vital_stats.VitalStatsFragment
@@ -41,11 +43,10 @@ import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.ProgressBarDialog
 import com.shepherdapp.app.utils.extensions.checkString
-import com.shepherdapp.app.utils.extensions.showError
-import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.HomeViewModel
 import java.io.File
 import java.util.regex.Pattern
+
 
 /**
  * Created by Sumit Kumar
@@ -66,14 +67,24 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         initViewBinding()
         observeViewModel()
-        initObserver()
+        //initObserver()
+    }
+
+    override fun attachBaseContext(newBase: Context?) {
+        val newOverride = Configuration(newBase?.resources?.configuration)
+        newOverride.fontScale = 1.0f
+        applyOverrideConfiguration(newOverride)
+        super.attachBaseContext(newBase)
+
     }
 
     private fun initObserver() {
         ShepherdApp.pauseAppLiveData.observe(this, Observer {
             if (it != null && it) {
-                if (!Prefs.with(applicationContext)?.getString(Const.USER_TOKEN).isNullOrEmpty())
+                if (!Prefs.with(applicationContext)?.getString(Const.USER_TOKEN).isNullOrEmpty()) {
+                    Prefs.with(applicationContext)?.remove(Const.USER_TOKEN)
                     viewModel.pauseAppLogOut()
+                }
             }
         })
 

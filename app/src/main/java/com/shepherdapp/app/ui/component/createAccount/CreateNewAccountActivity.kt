@@ -39,7 +39,6 @@ import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
 import com.shepherdapp.app.view_model.CreateNewAccountViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_create_account.*
 import kotlinx.android.synthetic.main.activity_create_new_account.*
 import kotlinx.android.synthetic.main.activity_create_new_account.editTextEmail
 import kotlinx.android.synthetic.main.activity_create_new_account.editTextPassword
@@ -461,16 +460,6 @@ class CreateNewAccountActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
-    private fun setPhoneNumberFormat() {
-        editTextPhoneNumber.addTextChangedListener(
-            PhoneTextFormatter(
-                editTextPhoneNumber, getString(
-                    R.string.us_phone_pattern
-                )
-            )
-        )
-
-    }
 
 
     private fun navigateToWelcomeScreen() {

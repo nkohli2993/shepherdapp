@@ -139,8 +139,13 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
         }
 
-        (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
-        (fragmentMemberDetailsBinding.txtPhoneCare.text as Spannable).stripUnderlines()
+        try {
+            (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
+            (fragmentMemberDetailsBinding.txtPhoneCare.text as Spannable).stripUnderlines()
+        }catch (e:Exception){ e.printStackTrace() }
+
+
+
 
         // if the loggedIn user is the Care Team Leader, then only show the Remove and Save Changes button
         val isLoggedInUserTeamLead =

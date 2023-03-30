@@ -413,7 +413,7 @@
     <string name="select_dose">Type de dose</string>
     <string name="select_dose_qty">Quantité de dose</string>
     <string name="selected_files">Fichiers sélectionnés</string>
-    <string name="uploaded_documents">Documents téléchargés</string>
+    <string name="uploaded_documents">Documents téléchargés les plus récents</string>
     <string name="upload_five_documents">Vous ne pouvez télécharger que cinq documents à la fois</string>
     <string name="view">Voir</string>
     <string name="lockbox_deleted_successfully">LockBox Document supprimé avec succès…</string>

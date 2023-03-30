@@ -75,7 +75,7 @@ class OtherDocumentsAdapter(
             }
 
 
-            val createdAt = lockBox.createdAt
+            val createdAt = lockBox.updatedAt
             val formattedString = createdAt?.toTextFormat(
                 createdAt,
                 "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",

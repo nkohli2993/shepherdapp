@@ -51,11 +51,12 @@
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/llImageWrapper"
+                app:layout_constraintEnd_toStartOf="@+id/imageViewInfo"
                 app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                 app:layout_constraintTop_toTopOf="@id/llImageWrapper">
 

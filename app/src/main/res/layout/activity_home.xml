@@ -76,7 +76,7 @@
                             android:id="@+id/ivName"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:lineSpacingExtra="@dimen/_5sdp"
                             android:textColor="@color/colorWhite"
@@ -89,12 +89,13 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvRole"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
                             android:fontFamily="@font/gotham_book"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_14ssp"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
                             app:layout_constraintTop_toBottomOf="@+id/ivName" />

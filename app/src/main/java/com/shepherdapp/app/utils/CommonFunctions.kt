@@ -335,7 +335,7 @@ object CommonFunctions {
     }
 
     fun getLastDayOf(month: Int, year: Int): Int {
-        return when (month) {
+        return when (month-1) {
             Calendar.APRIL, Calendar.JUNE, Calendar.SEPTEMBER, Calendar.NOVEMBER -> 30
             Calendar.FEBRUARY -> {
                 if (year % 4 == 0) {

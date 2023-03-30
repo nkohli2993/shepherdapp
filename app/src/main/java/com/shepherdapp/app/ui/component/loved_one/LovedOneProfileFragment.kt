@@ -123,8 +123,13 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                     payload = result.data.payload
                     fragmentLovedOneProfileBinding.data = payload
                     Log.d(TAG, "LovedOneDetailWithRelation: $payload")
-                    (fragmentLovedOneProfileBinding.txtEmail.text).stripUnderlines()
-                    (fragmentLovedOneProfileBinding.txtPhone.text).stripUnderlines()
+
+                    try {
+                        (fragmentLovedOneProfileBinding.txtEmail.text).stripUnderlines()
+                        (fragmentLovedOneProfileBinding.txtPhone.text).stripUnderlines()
+                    }catch (e:Exception){e.printStackTrace()}
+
+
                     // Set DOB
                     if (payload?.userProfiles?.dob.isNullOrEmpty()) {
                         fragmentLovedOneProfileBinding.txtDOB.text = "No Date Of Birth Available"

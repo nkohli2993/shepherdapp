@@ -7,12 +7,8 @@ import androidx.viewpager.widget.ViewPager
 import com.shepherdapp.app.R
 import com.shepherdapp.app.databinding.ActivityWalkThroughBinding
 import com.shepherdapp.app.ui.base.BaseActivity
-import com.shepherdapp.app.ui.component.onBoarding.adapter.OnBoardingImagesAdapter
 import com.shepherdapp.app.ui.welcome.WelcomeActivity
-import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.Prefs
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.activity_onboarding.*
 
 
 @AndroidEntryPoint
@@ -32,7 +28,6 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-        Prefs.with(this)?.save(Const.ON_BOARD,true)
         setImagesAdapter()
     }
 
@@ -70,8 +65,8 @@ class WalkThroughActivity : BaseActivity(), View.OnClickListener {
          )*/
         mOnBoardingImagesAdapter =
             OnBoardingImagesAdapter(this, list)
-        viewPager.adapter = mOnBoardingImagesAdapter
-        binding.viewPagerIndicators.setupWithViewPager(viewPager)
+        binding.viewPager.adapter = mOnBoardingImagesAdapter
+        binding.viewPagerIndicators.setupWithViewPager( binding.viewPager)
         binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,

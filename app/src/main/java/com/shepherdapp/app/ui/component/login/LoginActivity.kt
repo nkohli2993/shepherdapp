@@ -43,7 +43,6 @@ import com.shepherdapp.app.ui.component.createAccount.CreateNewAccountActivity
 import com.shepherdapp.app.ui.component.forgot_password.ForgotPasswordActivity
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity
-import com.shepherdapp.app.ui.component.resetPassword.ResetPasswordActivity
 import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
 import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.Const.BIOMETRIC_ENABLE
@@ -597,12 +596,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun navigateToResetPasswordScreen() {
-        startActivity<ResetPasswordActivity>()
-    }
 
     // Navigate to Home Screen with loved one array
     private fun navigateToHomeScreen() {
+        Prefs.with(this)?.save(Const.ON_BOARD,true)
+        Prefs.with(ShepherdApp.appContext)?.save(Const.USER_INACTIVE_LOGOUT,false)
         val intent = Intent(this, HomeActivity::class.java)
 //        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
         startActivity(intent)

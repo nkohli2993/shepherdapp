@@ -1,4 +1,4 @@
-package com.shepherdapp.app.ui.component.onBoarding.adapter
+package com.shepherdapp.app.ui.component.walk_through
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ScrollView
 import android.widget.TextView
 import androidx.viewpager.widget.PagerAdapter
 import com.shepherdapp.app.R
@@ -25,7 +26,7 @@ class OnBoardingImagesAdapter(
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object` as LinearLayout
+        return view == `object` as ScrollView
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -46,7 +47,7 @@ class OnBoardingImagesAdapter(
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as LinearLayout)
+        container.removeView(`object` as ScrollView)
     }
 
 }

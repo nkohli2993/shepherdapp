@@ -48,8 +48,11 @@ class ContactUsFragment : BaseFragment<FragmentContactUsBinding>(), View.OnClick
     override fun initViewBinding() {
         fragmentContactUsBinding.listener = this
 
-        (fragmentContactUsBinding.txtEmail.text as Spannable).stripUnderlines()
-        (fragmentContactUsBinding.txtPhone.text as Spannable).stripUnderlines()
+
+        try {
+            (fragmentContactUsBinding.txtEmail.text as Spannable).stripUnderlines()
+            (fragmentContactUsBinding.txtPhone.text as Spannable).stripUnderlines()
+        }catch (e:Exception){ e.printStackTrace() }
 
     }
 

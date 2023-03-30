@@ -108,7 +108,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             LocalDate.of(Y, M, 1).month.length(Year.of(Y).isLeap)
         } else {
-            getLastDayOf(M,Y)
+            getLastDayOf(M, Y)
         }
     }
 
@@ -165,11 +165,11 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private fun monthChangeListener() {
         fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
             // Show care point data as per month change from calendar
+
             selDate = date.date
             val lastDayOfMonth = lastDayOfMonth(date.year, date.month + 1)
             startDate = SimpleDateFormat("yyyy-MM-dd").format(selDate!!)
-            endDate =
-                SimpleDateFormat("yyyy-MM-dd").format(selDate!!).dropLast(2) + lastDayOfMonth
+            endDate = SimpleDateFormat("yyyy-MM-dd").format(selDate!!).dropLast(2) + lastDayOfMonth
             fragmentCarePointsBinding.calendarPView.clearSelection()
             monthSelected()
         }
@@ -278,7 +278,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 eventClickType = CalendarState.Today.value
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.today)
                 fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
-                setColorBasedOnCarePOintsType(
+                setColorBasedOnCarePointsType(
                     fragmentCarePointsBinding.tvToday,
                     fragmentCarePointsBinding.tvWeek,
                     fragmentCarePointsBinding.tvMonth
@@ -300,7 +300,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
                 fragmentCarePointsBinding.calendarPView.selectionMode =
                     MaterialCalendarView.SELECTION_MODE_SINGLE
-                setColorBasedOnCarePOintsType(
+                setColorBasedOnCarePointsType(
                     fragmentCarePointsBinding.tvWeek,
                     fragmentCarePointsBinding.tvToday,
                     fragmentCarePointsBinding.tvMonth
@@ -308,10 +308,10 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance().timeInMillis)
                 fragmentCarePointsBinding.calendarPView.clearSelection()
                 val calendar = Calendar.getInstance()
-                startDate = sdf!!.format(calendar.time)
+                startDate = sdf?.format(calendar.time)!!
                 val startDay = SimpleDateFormat("MMM dd").format(calendar.time)
                 calendar.add(Calendar.DATE, 6)
-                endDate = sdf!!.format(calendar.time)
+                endDate = sdf?.format(calendar.time)!!
                 val endDay = SimpleDateFormat("MMM dd").format(calendar.time)
                 fragmentCarePointsBinding.textViewSelectGroup.text =
                     getString(R.string.week).plus(", ").plus(startDay).plus(" to ").plus(endDay)
@@ -349,8 +349,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         fragmentCarePointsBinding.tvWeek.typeface = typeFaceGothamBook
         fragmentCarePointsBinding.tvMonth.typeface = typeFaceGothamBold
         fragmentCarePointsBinding.textViewSelectGroup.text =
-            sdf?.parse(startDate)?.let { SimpleDateFormat("MMM yyyy").format(it) }
-        setColorBasedOnCarePOintsType(
+            sdf.parse(startDate)?.let { SimpleDateFormat("MMM yyyy").format(it) }
+        setColorBasedOnCarePointsType(
             fragmentCarePointsBinding.tvMonth,
             fragmentCarePointsBinding.tvWeek,
             fragmentCarePointsBinding.tvToday
@@ -360,7 +360,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
         getCarePointList(startDate, endDate)
     }
 
-    private fun setColorBasedOnCarePOintsType(
+    private fun setColorBasedOnCarePointsType(
         selected: AppCompatTextView,
         unSelected: AppCompatTextView,
         unSelectedSecond: AppCompatTextView

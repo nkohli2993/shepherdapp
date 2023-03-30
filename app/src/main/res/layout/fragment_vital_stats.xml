@@ -103,7 +103,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/heart_rate"
                             android:textColor="@color/_8A569C"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/dimen_15"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/ivHeart" />
 
@@ -169,7 +169,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/body_temp"
                             android:textColor="@color/_192032"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/dimen_15"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/ivBodyTemp" />
 
@@ -242,7 +242,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/blood_pressure"
                             android:textColor="@color/_192032"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/dimen_15"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/ivBloodPressure" />
 
@@ -295,7 +295,7 @@
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/oxygen"
                             android:textColor="@color/_192032"
-                            android:textSize="@dimen/_14ssp"
+                            android:textSize="@dimen/dimen_15"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/ivOxygen" />
 

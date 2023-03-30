@@ -1,21 +1,17 @@
 package com.shepherdapp.app
 
 import android.app.Application
-import android.content.Intent
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.shepherdapp.app.ui.component.login.LoginActivity
-import com.shepherdapp.app.utils.Const.USER_TOKEN
+import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import dagger.hilt.android.HiltAndroidApp
 
@@ -53,11 +49,11 @@ open class ShepherdApp : Application() {
                 }
             }
             Lifecycle.Event.ON_PAUSE -> {
-                if (!Prefs.with(appContext)?.getString(USER_TOKEN, "").isNullOrEmpty())
+                if (!Prefs.with(appContext)?.getString(Const.USER_TOKEN, "").isNullOrEmpty())
                     startTimer()
             }
             Lifecycle.Event.ON_DESTROY -> {
-                if (!Prefs.with(appContext)?.getString(USER_TOKEN, "").isNullOrEmpty())
+                if (!Prefs.with(appContext)?.getString(Const.USER_TOKEN, "").isNullOrEmpty())
                     logoutApp()
             }
             Lifecycle.Event.ON_CREATE -> {}
@@ -70,7 +66,7 @@ open class ShepherdApp : Application() {
     private fun startTimer() {
         if (countDownTimer == null) {
             // 10 min timer
-            countDownTimer = object : CountDownTimer(10 * 60 * 1000, 1000) {
+            countDownTimer = object : CountDownTimer(1 * 60 * 1000, 1000) {
                 override fun onTick(p0: Long) {
                     Log.d("TAG", "onTick: $p0")
                 }
@@ -85,9 +81,9 @@ open class ShepherdApp : Application() {
     }
 
     private fun logoutApp() {
-        if (!Prefs.with(appContext)?.getString(USER_TOKEN, "").isNullOrEmpty()) {
+        if (!Prefs.with(appContext)?.getString(Const.USER_TOKEN, "").isNullOrEmpty()) {
             pauseAppLiveData.postValue(true)
-            Prefs.with(appContext)?.remove(USER_TOKEN)
+            Prefs.with(appContext)?.save(Const.USER_INACTIVE_LOGOUT,true)
             Log.d("TAG", "logoutApp: "+"clearToken")
 //                val intent = Intent(appContext, LoginActivity::class.java)
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)

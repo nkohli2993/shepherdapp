@@ -28,10 +28,8 @@ import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.user.UserProfiles
 import com.shepherdapp.app.databinding.ActivityHomeBinding
 import com.shepherdapp.app.network.retrofit.DataResult
-import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
-import com.shepherdapp.app.ui.base.listeners.ChildSourceToActivityListener
 import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.carePoints.CarePointsFragment
 import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragment
@@ -294,6 +292,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         showLoading("")
                     }
                     is DataResult.Success -> {
+                        Prefs.with(applicationContext)?.save(Const.USER_TOKEN,"")
                         navigateToLoginScreen("home")
                     }
                 }
@@ -331,7 +330,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         txtLovedUserName.text = it.data.payload?.firstname
 
 
-
                         //save data
                         viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
                         viewModel.saveLovedOneDetail(
@@ -357,7 +355,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                                 it.data.payload!!.careTeamProfiles[0].user?.firstname,
                                 it.data.payload!!.careTeamProfiles[0].user?.lastname,
                                 it.data.payload!!.careTeamProfiles[0].user?.profilePhoto
-                                )
+                            )
                         )
 
                         // Get loved one user uuid
@@ -383,18 +381,18 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 //                            }
 //                        }
 
-                        if (!careTeam.isNullOrEmpty()){
-                               careTeam.forEach {
-                                   if (it.loveUserId==viewModel.getLovedOneUUID()){
-                                       if (it.careRoles?.slug == CareRole.CareTeamLead.slug) {
-                                           viewModel.saveLoggedInUserCareTeamLead(true)
-                                           return@forEach
-                                       }else{
-                                           viewModel.saveLoggedInUserCareTeamLead(false)
+                        if (!careTeam.isNullOrEmpty()) {
+                            careTeam.forEach {
+                                if (it.loveUserId == viewModel.getLovedOneUUID()) {
+                                    if (it.careRoles?.slug == CareRole.CareTeamLead.slug) {
+                                        viewModel.saveLoggedInUserCareTeamLead(true)
+                                        return@forEach
+                                    } else {
+                                        viewModel.saveLoggedInUserCareTeamLead(false)
 
-                                       }
-                                   }
-                               }
+                                    }
+                                }
+                            }
                         }
 
 
@@ -625,7 +623,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
                         tvNew.apply {
 //                            isVisible = viewModel.isLoggedInUserCareTeamLead() == true
-                          //  isVisible = true
+                            //  isVisible = true
                             setOnClickListener {
                                 navController.navigate(R.id.nav_add_care_team_member)
                                 lockUnlockDrawer(true)
@@ -769,14 +767,14 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
     }
 
     fun navigateToLoginScreen(source: String) {
-        //startActivityWithFinish<LoginActivity>()
-        showSuccess(this, "User logged out successfully")
-//        viewModel.clearFirebaseToken()
+        if (Prefs.with(applicationContext)?.getBoolean(Const.USER_INACTIVE_LOGOUT, false) == false)
+            showSuccess(this, "User logged out successfully")
         gotoLogin(source)
     }
 
     fun gotoLogin(source: String) {
-        Prefs.with(ShepherdApp.appContext)?.removeAll()
+        if (Prefs.with(applicationContext)?.getBoolean(Const.USER_INACTIVE_LOGOUT, false) == false)
+            Prefs.with(ShepherdApp.appContext)?.removeAll()
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("source", source)
@@ -787,9 +785,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     override fun msgFromChildFragmentToActivity() {
 
-        if (Prefs.with(ShepherdApp.appContext)?.getString(Const.USER_TOKEN, "").isNullOrEmpty()){
-            navigateToLogout()
-        }else {
+        if (Prefs.with(ShepherdApp.appContext)
+                ?.getBoolean(Const.USER_INACTIVE_LOGOUT, false) == true
+        ) {
+            viewModel.logOut()
+        } else {
             viewModel.getHomeData()
             viewModel.getUserDetailByUUID()
         }
@@ -866,9 +866,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
     override fun onResume() {
 
-        if (Prefs.with(ShepherdApp.appContext)?.getString(Const.USER_TOKEN, "").isNullOrEmpty()){
-            navigateToLogout()
-        }else {
+        if (Prefs.with(ShepherdApp.appContext)
+                ?.getBoolean(Const.USER_INACTIVE_LOGOUT, false) == true
+        ) {
+            viewModel.logOut()
+        } else {
             viewModel.getHomeData()
             viewModel.getUserDetailByUUID()
         }

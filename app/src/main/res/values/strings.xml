@@ -417,7 +417,7 @@
     <string name="select_dose">Dose Type</string>
     <string name="select_dose_qty">Dose Qty</string>
     <string name="selected_files">Selected Files</string>
-    <string name="uploaded_documents">Uploaded Documents</string>
+    <string name="uploaded_documents">Most Recent Uploaded Documents</string>
     <string name="upload_five_documents">You can upload only five documents at a time</string>
     <string name="view">View</string>
     <string name="lockbox_deleted_successfully">LockBox Document deleted successfully…</string>
