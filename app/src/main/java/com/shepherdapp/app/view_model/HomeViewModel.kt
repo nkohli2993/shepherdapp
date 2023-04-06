@@ -52,7 +52,7 @@ class HomeViewModel @Inject constructor(
     var logoutResponseLiveData: LiveData<Event<DataResult<BaseResponseModel>>> =
         _logoutResponseLiveData
 
-  private var _pauseAppLogoutResponseLiveData = MutableLiveData<DataResult<BaseResponseModel>>()
+    private var _pauseAppLogoutResponseLiveData = MutableLiveData<DataResult<BaseResponseModel>>()
 
     var pauseAppLogoutResponseLiveData: LiveData<DataResult<BaseResponseModel>> =
         _pauseAppLogoutResponseLiveData
@@ -66,6 +66,11 @@ class HomeViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<HomeResponseModel>>>()
     var homeResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
         _homeResponseLiveData
+
+  private var _loginUserResponseLiveData =
+        MutableLiveData<Event<DataResult<HomeResponseModel>>>()
+    var loginUserResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
+        _loginUserResponseLiveData
 
     private var _userDetailByUUIDLiveData =
         MutableLiveData<Event<DataResult<UserDetailByUUIDResponseModel>>>()
@@ -181,6 +186,7 @@ class HomeViewModel @Inject constructor(
         }
         return logoutResponseLiveData
     }
+
     fun pauseAppLogOut(): LiveData<DataResult<BaseResponseModel>> {
         viewModelScope.launch {
             val response = authRepository.logout()
@@ -230,6 +236,20 @@ class HomeViewModel @Inject constructor(
             }
         }
         return homeResponseLiveData
+    }
+    fun getLoginUserData(): LiveData<Event<DataResult<HomeResponseModel>>> {
+        val lovedOneUUID = getUUID()
+        val status = 1
+        // Log.d(TAG, "LovedOneID :$lovedOneId ")
+        viewModelScope.launch {
+            val response = lovedOneUUID?.let { homeRepository.getHomeData(it, status) }
+            withContext(Dispatchers.Main) {
+                response?.collect {
+                    _loginUserResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return loginUserResponseLiveData
     }
 
     //get userinfo from Shared Pref
@@ -288,12 +308,40 @@ class HomeViewModel @Inject constructor(
     fun getLovedOnePic(): String? {
         return userRepository.getLovedOneProfilePic()
     }
+
     fun getUserToken(): String? {
         return userRepository.getToken()
     }
 
-    fun isLoggedInUserCareTeamLead(): Boolean? {
-        return userRepository.isLoggedInUserTeamLead()
+
+    fun saveCarePointPermission(permission: Int) {
+        if (permission == 0)
+            userRepository.saveCarePointPermission(false)
+        else
+            userRepository.saveCarePointPermission(true)
+    }
+
+
+    fun saveMedListPermission(permission: Int) {
+        if (permission == 0)
+            userRepository.saveMedListPermission(false)
+        else
+            userRepository.saveMedListPermission(true)
+    }
+
+    fun saveLockBoxPermission(permission: Int) {
+        if (permission == 0)
+            userRepository.saveLockBoxPermission(false)
+        else
+            userRepository.saveLockBoxPermission(true)
+    }
+
+    fun saveCareTeamPermission(permission: Int) {
+        if (permission == 0)
+            userRepository.saveCarePointPermission(false)
+        else
+            userRepository.saveCarePointPermission(true)
+
     }
 
     fun saveLoggedInUserCareTeamLead(isCareTeamLeader: Boolean) {

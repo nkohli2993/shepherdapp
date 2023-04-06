@@ -196,5 +196,8 @@ class MyMedListViewModel @Inject constructor(
     fun isLoggedInUserCareTeamLeader(): Boolean? {
         return userRepository.isLoggedInUserTeamLead()
     }
+    fun isMedListPermission(): Boolean? {
+        return userRepository.isMedListPermission()
+    }
 
 }

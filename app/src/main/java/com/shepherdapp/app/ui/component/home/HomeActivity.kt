@@ -292,7 +292,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         showLoading("")
                     }
                     is DataResult.Success -> {
-                        Prefs.with(applicationContext)?.save(Const.USER_TOKEN,"")
+                        Prefs.with(applicationContext)?.save(Const.USER_TOKEN, "")
                         navigateToLoginScreen("home")
                     }
                 }
@@ -300,6 +300,30 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         })
 
         // Observe Get Home Data Api Response
+        viewModel.loginUserResponseLiveData.observe(this, Observer {
+            it?.getContentIfNotHandled()?.let {
+                when (it) {
+                    is DataResult.Failure -> {
+                        hideLoading()
+                        showError(this, it.message.toString())
+                    }
+                    is DataResult.Loading -> {
+                        showLoading("")
+                    }
+                    is DataResult.Success -> {
+                        val payload = it.data.payload
+                        Log.d(TAG, "datas: " + payload)
+                        viewModel.saveCareTeamPermission(payload?.careTeams!!)
+                        viewModel.saveLockBoxPermission(payload.lockBoxs!!)
+                        viewModel.saveMedListPermission(payload.medLists!!)
+                        viewModel.saveCarePointPermission(payload.carePoints!!)
+
+                    }
+                }
+            }
+        })
+
+
         viewModel.homeResponseLiveData.observe(this, Observer {
             it?.getContentIfNotHandled()?.let {
                 when (it) {
@@ -312,6 +336,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     is DataResult.Success -> {
                         val payload = it.data.payload
+
+
                         // Set the notification icon
                         if (payload?.unreadNotificationsCount!! > 0) {
                             binding.appBarDashboard.ivNotification.setImageResource(R.drawable.ic_home_notification)
@@ -328,6 +354,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
                         //set name of user name
                         txtLovedUserName.text = it.data.payload?.firstname
+
+                        viewModel.saveCareTeamPermission(it.data.payload?.careTeams!!)
+                        viewModel.saveLockBoxPermission(it.data.payload?.lockBoxs!!)
+                        viewModel.saveMedListPermission(it.data.payload?.medLists!!)
+                        viewModel.saveCarePointPermission(it.data.payload?.carePoints!!)
 
 
                         //save data
@@ -381,6 +412,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 //                            }
 //                        }
 
+
                         if (!careTeam.isNullOrEmpty()) {
                             careTeam.forEach {
                                 if (it.loveUserId == viewModel.getLovedOneUUID()) {
@@ -393,8 +425,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                                     }
                                 }
                             }
+                        } else {
+                            if (!payload.careTeamProfiles.isNullOrEmpty() && payload.careTeamProfiles[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
+                                viewModel.saveLoggedInUserCareTeamLead(true)
+                            }
                         }
-
 
                         // find permission for loved one user
                         permissions = if (viewModel.isLoggedInUserLovedOne() == true) {
@@ -421,6 +456,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                             checkPermission(perList[i])
                         }
                         hideLoading()
+
+                        //  viewModel.getLoginUserData()
+
                     }
                 }
             }

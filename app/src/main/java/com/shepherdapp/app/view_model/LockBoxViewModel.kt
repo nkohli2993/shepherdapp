@@ -174,4 +174,8 @@ class LockBoxViewModel @Inject constructor(
     fun isLoggedInUserCareTeamLeader(): Boolean? {
         return userRepository.isLoggedInUserTeamLead()
     }
+
+    fun isLockBoxPermission(): Boolean? {
+        return userRepository.isLockBoxPermission()
+    }
 }

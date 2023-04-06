@@ -15,8 +15,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
+import android.util.Log
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.EditText
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -28,7 +28,6 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.test.internal.util.LogUtil
 import com.lassi.common.utils.KeyUtils
 import com.lassi.data.media.MiMedia
 import com.lassi.domain.media.LassiOption
@@ -68,6 +67,9 @@ abstract class BaseActivity : AppCompatActivity() {
         initViewBinding()
         observeViewModel()
         //initObserver()
+
+
+
     }
 
     override fun attachBaseContext(newBase: Context?) {
@@ -124,7 +126,7 @@ abstract class BaseActivity : AppCompatActivity() {
         ProgressBarDialog.showProgressBar(this, message)
     }
 
-    fun navigateToLogout(){
+    fun navigateToLogout() {
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("source", "base")

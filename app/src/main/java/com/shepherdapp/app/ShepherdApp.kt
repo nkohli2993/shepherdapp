@@ -66,7 +66,7 @@ open class ShepherdApp : Application() {
     private fun startTimer() {
         if (countDownTimer == null) {
             // 10 min timer
-            countDownTimer = object : CountDownTimer(1 * 60 * 1000, 1000) {
+            countDownTimer = object : CountDownTimer(10 * 60 * 1000, 1000) {
                 override fun onTick(p0: Long) {
                     Log.d("TAG", "onTick: $p0")
                 }

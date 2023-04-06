@@ -41,6 +41,10 @@ object Const {
     const val FIREBASE_TOKEN = "FIREBASE_TOKEN"
     const val LOVED_ONE_PIC = "LOVED_ONE_PIC"
     const val PERMISSIONS = "PERMISSIONS"
+    const val CARE_POINTS_PERMISSION = "carePoints"
+    const val MED_LIST_PERMISSION = "medLists"
+    const val LOCKBOX_PERMISSION = "lockBoxs"
+    const val CARE_TEAM_PERMISSION = "careTeams"
 
     const val PLAY_STORE_SUBSCRIPTION_URL = "https://play.google.com/store/account/subscriptions"
     const val PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL =

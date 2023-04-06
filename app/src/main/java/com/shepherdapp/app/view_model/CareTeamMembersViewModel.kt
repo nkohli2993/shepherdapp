@@ -182,4 +182,7 @@ class CareTeamMembersViewModel @Inject constructor(
     fun isLoggedInUserCareTeamLead(): Boolean? {
         return userRepository.isLoggedInUserTeamLead()
     }
+    fun isCareTeamPermission(): Boolean? {
+        return userRepository.isCareTeamPermission()
+    }
 }
