@@ -174,6 +174,13 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         })
 
 
+        // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
+        if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
+            updateViewOfParentListenerListener?.updateViewVisibility(true)
+        } else {
+            updateViewOfParentListenerListener?.updateViewVisibility(false)
+        }
+
     }
 
     override fun observeViewModel() {
@@ -206,12 +213,12 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
                     careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
 
-                    // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
-                    if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
-                        updateViewOfParentListenerListener?.updateViewVisibility(true)
-                    } else {
-                        updateViewOfParentListenerListener?.updateViewVisibility(false)
-                    }
+//                    // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
+//                    if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
+//                        updateViewOfParentListenerListener?.updateViewVisibility(true)
+//                    } else {
+//                        updateViewOfParentListenerListener?.updateViewVisibility(false)
+//                    }
 
 
                     /* careTeams?.clear()
