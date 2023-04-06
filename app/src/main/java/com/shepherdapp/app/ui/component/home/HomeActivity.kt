@@ -406,12 +406,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         val careTeam = payload.careTeamProfiles.filter {
                             it.userId == loggedInUserId
                         }
-//                        if (!careTeam.isNullOrEmpty()) {
-//                            if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
-//                                viewModel.saveLoggedInUserCareTeamLead(true)
-//                            }
-//                        }
-
 
                         if (!careTeam.isNullOrEmpty()) {
                             careTeam.forEach {
@@ -430,6 +424,16 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                                 viewModel.saveLoggedInUserCareTeamLead(true)
                             }
                         }
+
+
+/*
+                        if (!careTeam.isNullOrEmpty()) {
+                            if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
+                                viewModel.saveLoggedInUserCareTeamLead(true)
+                            }
+                        }
+*/
+
 
                         // find permission for loved one user
                         permissions = if (viewModel.isLoggedInUserLovedOne() == true) {
