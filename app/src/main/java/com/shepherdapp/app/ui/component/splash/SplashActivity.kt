@@ -41,6 +41,7 @@ class SplashActivity : BaseActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +65,8 @@ class SplashActivity : BaseActivity() {
             navigateToLoginScreen()
         }
 //        navigateToSubscriptionScreen()
+
+
     }
 
     override fun observeViewModel() {

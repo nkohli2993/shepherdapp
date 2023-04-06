@@ -305,6 +305,13 @@ object CommonFunctions {
         else context.let { ResourcesCompat.getFont(it, R.font.poppins_medium) }!!
     }
 
+    fun isToday(date: Date?): Boolean {
+        val today = Calendar.getInstance()
+        val specifiedDate = Calendar.getInstance()
+        specifiedDate.time = date
+        return today[Calendar.DAY_OF_MONTH] == specifiedDate[Calendar.DAY_OF_MONTH] && today[Calendar.MONTH] == specifiedDate[Calendar.MONTH] && today[Calendar.YEAR] == specifiedDate[Calendar.YEAR]
+    }
+
     inline fun SpannableStringBuilder.font(
         typeface: Typeface? = null,
         builderAction: SpannableStringBuilder.() -> Unit

@@ -217,18 +217,20 @@ class LovedOneProfileFragment : BaseFragment<FragmentLovedOneProfileBinding>(),
                         fragmentLovedOneProfileBinding.txtAddress.text = place
                     } else {
                         fragmentLovedOneProfileBinding.txtAddress.text =
-                            getString(R.string.no_address_avaialble)
+                            getString(R.string.no_custom_address_avaialble)
                     }
 
                     // Get address
                     val address = payload?.userProfiles?.address
                     if (!address.isNullOrEmpty()) {
                         fragmentLovedOneProfileBinding.txtCustomAddress.text = address
-                    } else if (!place.isNullOrEmpty()) {
-                        fragmentLovedOneProfileBinding.txtCustomAddress.text = place
-                    } else {
+                    }
+//                    else if (!place.isNullOrEmpty()) {
+//                        fragmentLovedOneProfileBinding.txtCustomAddress.text = place
+//                    }
+                    else {
                         fragmentLovedOneProfileBinding.txtCustomAddress.text =
-                            getString(R.string.no_address_avaialble)
+                            getString(R.string.no_custom_address_avaialble)
                     }
 
                     // to get user conditions

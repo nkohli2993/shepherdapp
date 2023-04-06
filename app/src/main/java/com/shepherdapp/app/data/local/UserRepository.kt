@@ -10,11 +10,15 @@ import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.resource.CategoryData
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Const.CARE_POINTS_PERMISSION
+import com.shepherdapp.app.utils.Const.CARE_TEAM_PERMISSION
+import com.shepherdapp.app.utils.Const.LOCKBOX_PERMISSION
 import com.shepherdapp.app.utils.Const.LOVED_ONE_DETAIL
 import com.shepherdapp.app.utils.Const.LOVED_ONE_ID
 import com.shepherdapp.app.utils.Const.LOVED_ONE_PIC
 import com.shepherdapp.app.utils.Const.LOVED_ONE_UUID
 import com.shepherdapp.app.utils.Const.LOVED_USER_DETAILS
+import com.shepherdapp.app.utils.Const.MED_LIST_PERMISSION
 import com.shepherdapp.app.utils.Const.PAYLOAD
 import com.shepherdapp.app.utils.Const.PERMISSIONS
 import com.shepherdapp.app.utils.Const.USER_DETAILS
@@ -134,6 +138,30 @@ class UserRepository @Inject constructor(private val apiService: ApiService) {
     fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(LOVED_ONE_UUID, "")
 
 
+    fun isCarePointPermission() =
+        Prefs.with(ShepherdApp.appContext)!!.getBoolean(CARE_POINTS_PERMISSION, false)
+
+    fun isMedListPermission() =
+        Prefs.with(ShepherdApp.appContext)!!.getBoolean(MED_LIST_PERMISSION, false)
+
+    fun isLockBoxPermission() =
+        Prefs.with(ShepherdApp.appContext)!!.getBoolean(LOCKBOX_PERMISSION, false)
+
+    fun isCareTeamPermission() =
+        Prefs.with(ShepherdApp.appContext)!!.getBoolean(CARE_TEAM_PERMISSION, false)
+
+
+    fun saveCarePointPermission(permission:Boolean) =
+        Prefs.with(ShepherdApp.appContext)!!.save(CARE_POINTS_PERMISSION, permission)
+
+    fun saveMedListPermission(permission:Boolean) =
+        Prefs.with(ShepherdApp.appContext)!!.save(MED_LIST_PERMISSION, permission)
+
+    fun saveLockBoxPermission(permission:Boolean) =
+        Prefs.with(ShepherdApp.appContext)!!.save(LOCKBOX_PERMISSION, permission)
+
+    fun saveCareTeamPermission(permission:Boolean) =
+        Prefs.with(ShepherdApp.appContext)!!.save(CARE_TEAM_PERMISSION, permission)
 
 
     fun saveLovedOneUserDetail(userLovedOne: UserLovedOne) {

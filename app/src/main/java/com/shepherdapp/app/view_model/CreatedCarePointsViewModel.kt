@@ -197,6 +197,11 @@ class CreatedCarePointsViewModel @Inject constructor(
     }
 
 
+    fun isCarePointPermission(): Boolean? {
+        return userRepository.isCarePointPermission()
+    }
+
+
     fun setToUserDetail(
         chatType: Int?,
         toUsers: ArrayList<ChatUserDetail>?,
