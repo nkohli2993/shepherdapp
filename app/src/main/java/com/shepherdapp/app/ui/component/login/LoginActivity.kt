@@ -47,9 +47,7 @@ import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
 import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.Const.BIOMETRIC_ENABLE
 import com.shepherdapp.app.utils.Const.SECOND_TIME_LOGIN
-import com.shepherdapp.app.utils.extensions.isValidEmail
-import com.shepherdapp.app.utils.extensions.showError
-import com.shepherdapp.app.utils.extensions.showSuccess
+import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.view_model.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.Executor
@@ -101,32 +99,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.listener = this
-
-
         terminateApp()
-
-        /* if (intent.getStringExtra("source") != null) {
-             if (intent.getStringExtra("source") == "WelcomeActivity") {
-                 binding.ivBack.visibility = View.VISIBLE
-             }
-         }*/
-
-//        loginViewModel.loginData.value!!.email = "adam@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "Test123@"
-
-//        loginViewModel.loginData.value!!.email = "jb123@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "1234"
-
-//        loginViewModel.loginData.value!!.email = "raja@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "1234"
-
 //        loginViewModel.loginData.value!!.email = "jacob@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
 
 
         binding.viewModel = loginViewModel
-
-
         // Handle the click of Show or Hide Password Icon
         binding.imageViewPasswordToggle.setOnClickListener {
             if (isPasswordShown) {
@@ -516,6 +494,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 if (isValid) {
                     doLogin(false)
                 }
+                validate(binding.edtEmail.text.toString(), binding.edtPasswd.text.toString())
             }
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()
@@ -599,8 +578,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
     // Navigate to Home Screen with loved one array
     private fun navigateToHomeScreen() {
-        Prefs.with(this)?.save(Const.ON_BOARD,true)
-        Prefs.with(ShepherdApp.appContext)?.save(Const.USER_INACTIVE_LOGOUT,false)
+        Prefs.with(this)?.save(Const.ON_BOARD, true)
+        Prefs.with(ShepherdApp.appContext)?.save(Const.USER_INACTIVE_LOGOUT, false)
         val intent = Intent(this, HomeActivity::class.java)
 //        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
         startActivity(intent)
@@ -639,4 +618,30 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+
+    fun validate(userName: String, password: String): String {
+        return if (userName == "user" && password == "user") "Login was successful" else "Invalid login!"
+    }
+
+    fun getEmailValid(): Boolean {
+        val result = true
+        binding.edtEmail.onTextChanged {
+            if (binding.edtEmail.isBlank()) {
+                false
+            } else binding.edtEmail.checkString().isValidEmail()
+        }
+        return result
+    }
+
+    fun getPasswordValid(): Boolean {
+        val result = true
+        binding.edtPasswd.onTextChanged {
+            if (binding.edtEmail.isBlank()) {
+                false
+            } else if (binding.edtEmail.getLength() < 4) {
+                false
+            }
+        }
+        return result
+    }
 }
