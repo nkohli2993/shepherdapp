@@ -315,6 +315,9 @@ dependencies {
 //    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
 //    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
+
+    testImplementation 'org.mockito:mockito-core:3.10.0'
+    androidTestImplementation 'org.mockito:mockito-android:3.10.0'
 }
 kapt {
     correctErrorTypes true
