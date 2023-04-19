@@ -176,8 +176,6 @@
                         android:fontFamily="@font/gotham_book"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_14ssp"
-
-
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/ivPhone"
                         app:layout_constraintTop_toTopOf="parent" />

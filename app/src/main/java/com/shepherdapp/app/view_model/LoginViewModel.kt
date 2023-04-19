@@ -1,8 +1,10 @@
 package com.shepherdapp.app.view_model
 
 import android.util.Log
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.BuildConfig
@@ -21,12 +23,16 @@ import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.TableName
+import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.utils.serializeToMap
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * Created by Deepak Rattan on 27/05/22
@@ -53,8 +59,12 @@ class LoginViewModel @Inject constructor(
 
     private var _loginResponseLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
 
+    var loginResponseLiveDataTest = MutableLiveData<DataResult<LoginResponseModel>>()
+
     var loginResponseLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
         _loginResponseLiveData
+
+
 
     private var _loggedInUserLiveData = MutableLiveData<Event<UserProfile?>>()
     var loggedInUserLiveData: LiveData<Event<UserProfile?>> = _loggedInUserLiveData
@@ -63,16 +73,23 @@ class LoginViewModel @Inject constructor(
     var bioMetricLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
         _bioMetricLiveData
 
-    fun login(isBioMetric: Boolean): LiveData<Event<DataResult<LoginResponseModel>>> {
+
+    fun login(loginData:UserSignupData,isBioMetric: Boolean): LiveData<Event<DataResult<LoginResponseModel>>> {
         viewModelScope.launch {
-            val response = loginData.value?.let { authRepository.login(it, isBioMetric) }
+                val response = loginData.let { authRepository.login(it, isBioMetric) }
             withContext(Dispatchers.Main) {
-                response?.collect { _loginResponseLiveData.postValue(Event(it)) }
+                response?.collect {
+                    _loginResponseLiveData.postValue(Event(it))
+                    loginResponseLiveDataTest.postValue(it)
+                }
             }
         }
 
         return loginResponseLiveData
     }
+
+
+
 
     fun registerBioMetric(
         isBioMetricEnable: Boolean
@@ -283,5 +300,12 @@ class LoginViewModel @Inject constructor(
 
     fun isSubscriptionPurchased(): Boolean? {
         return userRepository.isSubscriptionPurchased()
+    }
+
+
+    fun getPasswordValid(signupData: UserSignupData): Boolean {
+            if (signupData.password?.isBlank()!!) {
+              return  false
+            } else return signupData.password?.getLength()!! >= 4
     }
 }

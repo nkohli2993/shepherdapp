@@ -212,9 +212,7 @@ object CommonFunctions {
 */
 
     private fun getInvitationLink(): String? {
-        val playStoreLink =
-            "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&referrer=utm_source="
-        return playStoreLink;
+        return "https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&referrer=utm_source=";
     }
 
 

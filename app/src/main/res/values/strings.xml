@@ -69,7 +69,7 @@
     <string name="phone_no">Phone No.</string>
     <string name="address">Address</string>
     <string name="address_optional">Address (Optional)</string>
-    <string name="custom_address">Custom Address</string>
+    <string name="custom_address">Alternate Address</string>
     <string name="date_of_birth">Date of Birth<font color="#D7293F">*</font></string>
     <string name="str_continue">Continue</string>
     <string name="select_date">Select Date</string>
@@ -556,7 +556,7 @@
     <string name="about_us">About Us</string>
     <string name="loved_one_not_available">LovedOne\'s Name Not Available</string>
     <string name="no_address_avaialble">No Address Available</string>
-    <string name="no_custom_address_avaialble">No Custom Address Available</string>
+    <string name="no_custom_address_avaialble">No Alternate Address Available</string>
     <string name="edit_medical_conditions">Edit Medical Conditions</string>
     <string name="no_medical_condition_found">No medical condition found!</string>
     <string name="everyday">Everyday</string>
@@ -622,4 +622,5 @@
     <string name="contact_us_phone">(844) 244–0050</string>
     <string name="contact_us_email">getwithsheperd@gmail.com</string>
     <string name="assigned_by">Assigned By</string>
+    <string name="please_select_at_least_one_user">Please select atleast one user</string>
 </resources>

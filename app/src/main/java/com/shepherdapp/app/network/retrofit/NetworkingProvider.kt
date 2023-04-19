@@ -16,7 +16,7 @@ fun provideLoggingInterceptor(): HttpLoggingInterceptor {
 }
 
 var appInterceptor: Interceptor? = null
-fun provideHttpClient(logging: HttpLoggingInterceptor): OkHttpClient {
+/*fun provideHttpClient(logging: HttpLoggingInterceptor): OkHttpClient {
     val httpClient = OkHttpClient.Builder()
     if (appInterceptor == null)
         appInterceptor = MyAppInterceptor()
@@ -24,7 +24,7 @@ fun provideHttpClient(logging: HttpLoggingInterceptor): OkHttpClient {
     httpClient.addInterceptor(appInterceptor!!)
     httpClient.addInterceptor(logging)
     return httpClient.build()
-}
+}*/
 
 fun provideApiProvider(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()

@@ -618,5 +618,6 @@
     <string name="contact_us_phone">(844) 244–0050</string>
     <string name="contact_us_email">getwithsheperd@gmail.com</string>
     <string name="assigned_by">Assigned By</string>
+    <string name="please_select_at_least_one_user">Please select atleast one user</string>
 
 </resources>

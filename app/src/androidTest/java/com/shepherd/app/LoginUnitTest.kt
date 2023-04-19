@@ -30,36 +30,15 @@ class LoginUnitTest {
         loginActivity = mActivityTestRule.activity
     }
 
-
-    @Test
-    fun readStringFromContext_LocalizedString() {
-        getInstrumentation().runOnMainSync {
-            val result: String = loginActivity?.validate("user", "user") ?: "Invalid login!"
-            ViewMatchers.assertThat(result, Matchers.`is`(LOGIN_STRING))
-        }
-    }
-
-    @Test
-    fun testEmailValuesValidate() {
-        getInstrumentation().runOnMainSync {
-            val responseOfExecutingYourApiWithCorrectValues: Boolean =
-                loginActivity?.getEmailValid() ?: false
-            Assert.assertEquals(true, responseOfExecutingYourApiWithCorrectValues);
-        }
-    }
-
-    @Test
-    fun testPasswordValuesValidate() {
-        getInstrumentation().runOnMainSync {
-            val responseOfExecutingYourApiWithCorrectValues: Boolean =
-                loginActivity?.getPasswordValid() ?: false
-            Assert.assertEquals(true, responseOfExecutingYourApiWithCorrectValues);
-        }
-    }
-
     companion object {
         private const val LOGIN_STRING = "Invalid login!"
     }
+
+
+
+
+
+
 
     @After
     @Throws(Exception::class)

@@ -1,0 +1,78 @@
+{
+  "api_ver": "1.0.0",
+  "msg": "Login successfully.",
+  "payload": {
+    "id": 469,
+    "is_active": true,
+    "email": "car@yopmail.com",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0NjksInV1aWQiOiIzNmU5MWYzYi1jNGE0LTQwZDMtOWQ3MC01ODY1NGQyZGY1NTMiLCJlbWFpbCI6ImNhckB5b3BtYWlsLmNvbSIsImlhdCI6MTY4MTcxODUxMn0.lNeMsYUj7B_ETBrcV1P6zzb9CcnxDh5gXN6e-CejMHE",
+    "uuid": "36e91f3b-c4a4-40d3-9d70-58654d2df553",
+    "active_subscription": {},
+    "user_profiles": {
+      "id": 469,
+      "user_id": 469,
+      "stripe_id": "cus_NM36iWnCmm6EhD",
+      "enterprise_id": 16,
+      "firstname": "Fhggj",
+      "lastname": "Hrthrt",
+      "dob": null,
+      "address": null,
+      "security_code": false,
+      "otp": null,
+      "is_verified": false,
+      "phone_code": "+1",
+      "phone_no": "554646464666",
+      "profile_photo": "https://shepherduser-uat.itechnolabs.tech:6001/uploads/users/profile/profile-d84dfcb3-8fbf-48eb-82fd-e21815c5eb35.png",
+      "is_biometric": true,
+      "is_email_verified": false,
+      "trial_period_status": false,
+      "settings": null,
+      "created_at": "2023-02-14T04:47:59.000Z",
+      "updated_at": "2023-04-04T06:53:01.000Z",
+      "deleted_at": null,
+      "enterprise": {
+        "id": 16,
+        "name": "Dev Enterprises"
+      }
+    },
+    "user_loved_one": [
+      {
+        "id": 240,
+        "user_id": "36e91f3b-c4a4-40d3-9d70-58654d2df553",
+        "love_user_id": "cc502713-0443-4bdb-bab6-92fd1a28c82c",
+        "role_id": 2,
+        "permission": "1,2,2.1,3,4",
+        "status": true,
+        "is_invited": false,
+        "created_at": "2023-02-14T07:36:27.000Z",
+        "updated_at": "2023-02-14T07:36:27.000Z",
+        "deleted_at": null,
+        "care_roles": {
+          "id": 2,
+          "name": "CareTeam Leader",
+          "slug": "care_team_lead",
+          "description": "Default Care team Lead",
+          "is_active": true,
+          "created_at": "2022-10-13T11:26:25.000Z",
+          "updated_at": "2022-10-13T11:26:25.000Z",
+          "deleted_at": null
+        }
+      }
+    ],
+    "user_roles": [
+      {
+        "role_id": 2,
+        "role": {
+          "id": 2,
+          "name": "User",
+          "slug": "user",
+          "description": "This is user role for future use",
+          "is_active": true,
+          "created_at": "2022-12-19T05:50:58.000Z",
+          "updated_at": "2022-12-19T05:50:58.000Z",
+          "deleted_at": null
+        }
+      }
+    ]
+  }
+}

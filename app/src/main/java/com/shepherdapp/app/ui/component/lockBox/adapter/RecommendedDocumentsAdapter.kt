@@ -124,4 +124,10 @@ class RecommendedDocumentsAdapter(
         notifyDataSetChanged()
     }
 
+    fun clearData(){
+        this.lockBoxTypes.clear()
+        notifyDataSetChanged()
+
+    }
+
 }

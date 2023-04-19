@@ -233,7 +233,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     hideLoading()
                     showInfo(requireContext(), getString(R.string.lockbox_deleted_successfully))
                     //remove from list
-                    lockBoxList!!.removeAt(deletePostion)
+                   /* lockBoxList!!.removeAt(deletePostion)
                     otherDocumentsAdapter!!.setList(lockBoxList!!)
                     otherDocumentsAdapter!!.notifyDataSetChanged()
                     if (lockBoxList.isNullOrEmpty()) {
@@ -244,7 +244,12 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                         fragmentLockboxBinding.rvOtherDocuments.visibility = View.VISIBLE
                         fragmentLockboxBinding.txtNoUploadedLockBoxFile.visibility = View.GONE
                     }
-
+*/
+                    resetPageNumber()
+                    recommendedDocumentsAdapter = null
+                    setRecommendedDocumentsAdapter()
+                    lockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
+                    lockBoxViewModel.getAllLockBoxUploadedDocumentsByLovedOneUUID(pageNumber, limit)
                 }
             }
         }

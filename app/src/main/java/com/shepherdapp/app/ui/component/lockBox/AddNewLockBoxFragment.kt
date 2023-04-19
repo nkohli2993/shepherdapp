@@ -78,7 +78,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private var documentAdapter: DocumentAdapter? = null
     private var lockBoxUsersAdapter: LockBoxUsersAdapter? = null
     private var selectedDocumentId: String? = null
-    private var selectedPosition :Int? = null
+    private var selectedPosition: Int? = null
 
     private val args: AddNewLockBoxFragmentArgs by navArgs()
 
@@ -121,11 +121,12 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     override fun onResume() {
         super.onResume()
-        if( selectedFileList!=null && selectedFileList!!.size>0){
+        if (selectedFileList != null && selectedFileList!!.size > 0) {
             setFileViewVisible()
         }
 
     }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun initViewBinding() {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
@@ -167,12 +168,12 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             } as ArrayList<String>
 
             setLockBoxUsersAdapter()
-            if( selectedFileList!=null && selectedFileList!!.size>0){
+            if (selectedFileList != null && selectedFileList!!.size > 0) {
                 setFileViewVisible()
             }
             uploadedFilesAdapter?.addData(selectedFileList!!)
 
-            if(lockBoxTypes.size>0 && selectedPosition!=null){
+            if (lockBoxTypes.size > 0 && selectedPosition != null) {
                 fragmentAddNewLockBoxBinding.documentSpinner.setSelection(selectedPosition!!)
             }
         }
@@ -337,7 +338,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
                     fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
 
-                    if(lockBoxTypes.size>0 && selectedPosition!=null){
+                    if (lockBoxTypes.size > 0 && selectedPosition != null) {
                         fragmentAddNewLockBoxBinding.documentSpinner.setSelection(selectedPosition!!)
                     }
 
@@ -354,7 +355,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     private fun handleSelectedFiles(selectedFiles: SingleEvent<ArrayList<File>>) {
         selectedFiles.getContentIfNotHandled().let {
             dialog?.dismiss()
-            if (it!=null) {
+            if (it != null) {
                 if (!it?.isEmpty()!!) {
                     selectedFileList!!.addAll(it)
                     setFileViewVisible()
@@ -367,7 +368,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
     }
 
-    private fun handleSelectedImage(singleEvent :SingleEvent<File>) {
+    private fun handleSelectedImage(singleEvent: SingleEvent<File>) {
         singleEvent.getContentIfNotHandled().let {
             if (it != null && it.exists()) {
                 addNewLockBoxViewModel.imageFile = it
@@ -413,13 +414,20 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         fragmentAddNewLockBoxBinding.edtNote.text.toString().trim()
                     }
                     if (selectedFileList.isNullOrEmpty()) {
-                        addNewLockBoxViewModel.addNewLockBox(
-                            fileName,
-                            fileNote,
-                            null,
-                            selectedDocumentId?.toInt(),
-                            usersUUID
-                        )
+                        if (usersList.isNullOrEmpty()) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.please_select_at_least_one_user)
+                            )
+
+                        } else
+                            addNewLockBoxViewModel.addNewLockBox(
+                                fileName,
+                                fileNote,
+                                null,
+                                selectedDocumentId?.toInt(),
+                                usersUUID
+                            )
 
                     } else {
                         var isFileFormatValid = false
@@ -439,6 +447,13 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                                 requireContext(),
                                 getString(R.string.you_can_upload_at_max_five_file)
                             )
+                        } else if (usersList.isNullOrEmpty()) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.please_select_at_least_one_user)
+                            )
+
+                            
                         } else {
                             selectedFileList?.let {
                                 addNewLockBoxViewModel.uploadMultipleLockBoxDoc(
@@ -508,7 +523,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         return R.layout.fragment_lockbox
     }
 
-    override fun onItemClick(file: File,position:Int) {
+    override fun onItemClick(file: File, position: Int) {
         val builder = AlertDialog.Builder(requireContext())
         val dialog = builder.apply {
             setTitle(getString(R.string.delete_upload_document))

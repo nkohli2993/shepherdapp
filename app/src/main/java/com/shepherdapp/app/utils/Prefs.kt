@@ -9,10 +9,13 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.shepherdapp.app.data.dto.resource.CategoryData
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.lang.reflect.Type
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class Prefs @SuppressLint("CommitPrefEdits") internal constructor(context: Context) {
+@Singleton
+class Prefs @Inject constructor(@ApplicationContext private val context: Context){
     fun save(key: String?, value: Boolean) {
         editor.putBoolean(key, value).apply()
     }

@@ -11,9 +11,9 @@
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 9,
-      "versionName": "1.0.8",
-      "outputFile": "shepherd_v1.0.8_9_release_05_04_2023.apk"
+      "versionCode": 12,
+      "versionName": "1.0.11",
+      "outputFile": "shepherd_v1.0.11_12_release_19_04_2023.apk"
     }
   ],
   "elementType": "File"

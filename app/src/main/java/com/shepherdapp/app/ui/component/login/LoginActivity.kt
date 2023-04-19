@@ -72,7 +72,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     private var TAG = "LoginActivity"
 
     // Handle Validation
-    private val isValid: Boolean
+    public val isValid: Boolean
         get() {
             when {
                 loginViewModel.loginData.value?.email.isNullOrEmpty() -> {
@@ -571,7 +571,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.device = null
                 }
             }
-            login(isBioMetric)
+            login(loginData.value!!,isBioMetric)
         }
     }
 
@@ -623,25 +623,5 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         return if (userName == "user" && password == "user") "Login was successful" else "Invalid login!"
     }
 
-    fun getEmailValid(): Boolean {
-        val result = true
-        binding.edtEmail.onTextChanged {
-            if (binding.edtEmail.isBlank()) {
-                false
-            } else binding.edtEmail.checkString().isValidEmail()
-        }
-        return result
-    }
 
-    fun getPasswordValid(): Boolean {
-        val result = true
-        binding.edtPasswd.onTextChanged {
-            if (binding.edtEmail.isBlank()) {
-                false
-            } else if (binding.edtEmail.getLength() < 4) {
-                false
-            }
-        }
-        return result
-    }
 }

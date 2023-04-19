@@ -1,24 +1,22 @@
 package com.shepherdapp.app.utils.extensions
 
+import android.telephony.PhoneNumberUtils
+import android.util.Log
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 /**
  * Created by Deepak Rattan on 13/07/22
  */
 // Insert hyphen after every 3 characters in the string
-fun String.getStringWithHyphen(str: String): String {
-    var resultant = ""
-    resultant = if (str.length <= 3) str else "" + str[0] + str[1] + str[1]
-    for (i in 3 until str.length) {
-        if (i % 3 == 0) {
-            resultant += "-" + str[i]
-        } else {
-            resultant += str[i]
-        }
-    }
-    return resultant
+fun String.getStringWithHyphen(phoneNumber: String): String {
+    return  PhoneNumberUtils.formatNumber(phoneNumber, Locale.getDefault().country)
+
+
+    //  Log.d("CountryLocale", "getStringWithHyphen: "+str)
+    // return PhoneNumberUtils.formatNumber(str, Locale.getDefault().country)
 }
 
 // Convert Timestamp String into date string
