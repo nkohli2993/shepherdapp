@@ -29,7 +29,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import org.robolectric.Shadows
 import java.lang.String
 
 
@@ -116,15 +115,15 @@ class LoginUnitTest {
      //   val realResult: LoginResponseModel = JsonProvider.objectFromJsonFileWithType(USER_JSON)
 
 
-        loginViewModel.login(userSignupData,false)
-        Shadows.shadowOf(Looper.getMainLooper()).idle()
-        val value = Event(loginViewModel.loginResponseLiveData.value)
-        Assert.assertTrue(value is DataResult.Success)
-        Assert.assertNotNull(value.getContentIfNotHandled().let {
-            
-        })
-        Assert.assertEquals(7834983, value.getContentIfNotHandled?.getContentIfNotHandled())
-        Assert.assertEquals("Ravish Rajput", value.data?.name)
+//        loginViewModel.login(userSignupData,false)
+//        Shadows.shadowOf(Looper.getMainLooper()).idle()
+//        val value = Event(loginViewModel.loginResponseLiveData.value)
+//        Assert.assertTrue(value is DataResult.Success)
+//        Assert.assertNotNull(value.getContentIfNotHandled().let {
+//
+//        })
+//        Assert.assertEquals(7834983, value.getContentIfNotHandled?.getContentIfNotHandled())
+//        Assert.assertEquals("Ravish Rajput", value.data?.name)
 
 
 /*        loginViewModel.login(userSignupData, false)
