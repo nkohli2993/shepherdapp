@@ -383,7 +383,7 @@ class LockBoxFragment : BaseFragment<FragmentLockboxBinding>(),
                     setMessage("Sure you want to delete this LockBox document")
                     setPositiveButton("Yes") { _, _ ->
                         deletePostion = it.deletePosition!!
-                        lockBoxViewModel.deleteAddedLockBoxDocumentBYID(it.id!!)
+                        lockBoxViewModel.deleteAddedLockBoxDocumentBYID(it.id!!,lockBoxViewModel.getLovedOneId())
                     }
                     setNegativeButton("Cancel") { _, _ ->
 

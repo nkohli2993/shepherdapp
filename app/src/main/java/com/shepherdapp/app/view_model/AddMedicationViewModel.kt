@@ -30,7 +30,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AddMedicationViewModel @Inject constructor(
-    private val dataRepository: DataRepository,
     private val medListRepository: MedListRepository,
     private val userRepository: UserRepository
 ) :

@@ -118,8 +118,12 @@ class AddLovedOneViewModel @Inject constructor(
         }
 
 
+        return createLovedOneApi(createLovedOneData.value!!)
+    }
+
+    fun createLovedOneApi(createLovedOneData: CreateLovedOneModel): LiveData<Event<DataResult<CreateLovedOneResponseModel>>> {
         viewModelScope.launch {
-            val response = createLovedOneData.value?.let { relationRepository.createLovedOne(it) }
+            val response = createLovedOneData.let { relationRepository.createLovedOne(it) }
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _createLovedOneLiveData.postValue(Event(it))

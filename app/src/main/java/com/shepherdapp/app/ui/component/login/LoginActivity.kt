@@ -494,7 +494,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 if (isValid) {
                     doLogin(false)
                 }
-                validate(binding.edtEmail.text.toString(), binding.edtPasswd.text.toString())
+
             }
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()
