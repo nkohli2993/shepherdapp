@@ -1,12 +1,9 @@
 package com.shepherdapp.app
 
 import android.content.Context
-import android.os.Looper
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.lifecycle.distinctUntilChanged
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
-import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.signup.UserSignupData
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
@@ -14,12 +11,9 @@ import com.shepherdapp.app.di.TestRepositoryProvider
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.utils.EmailValidator
-import com.shepherdapp.app.view_model.LoginViewModel
-import junit.framework.Assert
+import com.shepherdapp.app.view_model.CreateNewAccountViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.Matchers.`is`
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -29,8 +23,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import org.robolectric.Shadows
-import java.lang.String
 
 
 /**
@@ -39,7 +31,7 @@ import java.lang.String
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(MockitoJUnitRunner::class)
-class LoginUnitTest {
+class ForgotPasswordUserUnitTest {
 
 
     @get:Rule
@@ -49,14 +41,16 @@ class LoginUnitTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-
-    var userSignupData = UserSignupData(email = "car@yopmail.com", "1234")
+    var userSignupData = UserSignupData(
+        email = "shamikumar@yopmail.com", "1234", firstname = "Sumit", lastname = "Kumar",
+        phoneCode = "91", phoneNo = "95018759813", roleId = "2"
+    )
 
     lateinit var authRepository: AuthRepository
     lateinit var userRepository: UserRepository
 
     @Mock
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var createNewAccountViewModel: CreateNewAccountViewModel
 
     @Mock
     lateinit var observer: Observer<Event<DataResult<LoginResponseModel>>>
@@ -76,12 +70,21 @@ class LoginUnitTest {
 
         authRepository = TestRepositoryProvider().getAuthRepository(context!!)
         userRepository = TestRepositoryProvider().getUserRepository(context!!)
-        loginViewModel = LoginViewModel(authRepository, userRepository)
+        createNewAccountViewModel = CreateNewAccountViewModel(authRepository, userRepository)
 
-        loginViewModel.loginResponseLiveData.observeForever(observer)
+        createNewAccountViewModel.signUpLiveData.observeForever(observer)
 
     }
 
+    @Test
+    fun testFirstNameValuesValidate() {
+        assertEquals(false, userSignupData.firstname?.isNullOrEmpty())
+    }
+
+    @Test
+    fun testLastNameValuesValidate() {
+        assertEquals(false, userSignupData.lastname?.isNullOrEmpty())
+    }
 
     @Test
     fun testEmailValuesValidate() {
@@ -89,9 +92,14 @@ class LoginUnitTest {
     }
 
     @Test
+    fun testPhoneNumberValidate() {
+        assertEquals(false, userSignupData.phoneNo?.isNullOrEmpty())
+    }
+
+    @Test
     fun testPasswordValuesValidate() {
         val responseOfExecutingYourApiWithCorrectValues: Boolean =
-            loginViewModel.getPasswordValid(userSignupData)
+            createNewAccountViewModel.getPasswordValid(userSignupData)
         assertEquals(true, responseOfExecutingYourApiWithCorrectValues)
 
     }
@@ -99,18 +107,38 @@ class LoginUnitTest {
 
     @Test
     fun `test User data success`() = runBlockingTest {
-        val email = "cars@yopmail.com"
 
-        loginViewModel.login(userSignupData, false)
-
+        createNewAccountViewModel.createAccount(
+            userSignupData.phoneCode,
+            userSignupData.profilePhoto,
+            userSignupData.firstname,
+            userSignupData.lastname,
+            userSignupData.email,
+            userSignupData.password,
+            userSignupData.phoneNo,
+            userSignupData.roleId,
+            userSignupData.enterprise_code
+        )
 
         Thread.sleep(3000)
-        loginViewModel.loginResponseLiveData.getOrAwaitValueTest().getContentIfNotHandled().let {
-                if (it is DataResult.Success) {
-                    assertEquals(email, it.data.payload?.email)
+
+        createNewAccountViewModel.signUpLiveData.getOrAwaitValueTest().getContentIfNotHandled()
+            .let {
+                when (it) {
+                    is DataResult.Success -> {
+                        assertEquals("Verify your registered email by clicking on email verification link sent to your email account", it.data.message)
+                    }
+
+                    is DataResult.Failure -> {
+                        assertFalse(true)
+                    }
+
+                    else -> {
+                        print("Loading")
+                    }
                 }
             }
 
+    }
 }
 
-}

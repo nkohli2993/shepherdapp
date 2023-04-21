@@ -59,8 +59,6 @@ class LoginViewModel @Inject constructor(
 
     private var _loginResponseLiveData = MutableLiveData<Event<DataResult<LoginResponseModel>>>()
 
-    var loginResponseLiveDataTest = MutableLiveData<DataResult<LoginResponseModel>>()
-
     var loginResponseLiveData: LiveData<Event<DataResult<LoginResponseModel>>> =
         _loginResponseLiveData
 
@@ -80,7 +78,6 @@ class LoginViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 response?.collect {
                     _loginResponseLiveData.postValue(Event(it))
-                    loginResponseLiveDataTest.postValue(it)
                 }
             }
         }
@@ -304,8 +301,8 @@ class LoginViewModel @Inject constructor(
 
 
     fun getPasswordValid(signupData: UserSignupData): Boolean {
-            if (signupData.password?.isBlank()!!) {
-              return  false
-            } else return signupData.password?.getLength()!! >= 4
+        return if (signupData.password?.isBlank()!!) {
+            false
+        } else signupData.password?.getLength()!! >= 4
     }
 }
