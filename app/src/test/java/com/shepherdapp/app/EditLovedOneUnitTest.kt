@@ -39,15 +39,15 @@ class EditLovedOneUnitTest {
 
     var editLovedOneData = CreateLovedOneModel(
         email = "nikki@yopmail.com",
-        firstname = "Nikita",
-        lastname = "Kumar1",
+        firstname = "Reena",
+        lastname = "Kumari",
         relationId = 4,
         phoneCode = "91",
         phoneNo = "95018759813",
         dob = "2010-06-14",
         placeId = "ChIJH_imbZDuDzkR2AjlbPGYKVE",
         sendInvitation = true,
-        customAddress = "Phase 5, Mohali"
+        customAddress = "Phase 11, Mohali"
     )
 
     lateinit var authRepository: AuthRepository

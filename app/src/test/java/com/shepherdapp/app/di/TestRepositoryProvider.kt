@@ -7,6 +7,7 @@ import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
 import com.shepherdapp.app.data.remote.med_list.MedListRepository
 import com.shepherdapp.app.data.remote.medical_conditions.MedicalConditionRepository
 import com.shepherdapp.app.data.remote.relation_repository.RelationRepository
+import com.shepherdapp.app.data.remote.vital_stats.VitalStatsRepository
 
 class TestRepositoryProvider {
 
@@ -27,6 +28,9 @@ class TestRepositoryProvider {
     }
     fun getMedListRepository(context: Context): MedListRepository {
         return MedListRepository(TestNetworkDependencyProvider().getApiService(context))
+    }
+    fun getVitalStatsRepository(context: Context): VitalStatsRepository {
+        return VitalStatsRepository(TestNetworkDependencyProvider().getApiService(context))
     }
 
 

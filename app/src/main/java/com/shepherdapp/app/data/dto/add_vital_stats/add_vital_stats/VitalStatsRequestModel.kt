@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName
 
 data class VitalStatsRequestModel(
     @SerializedName("loveone_user_id") var loveone_user_id: String? = null,
-    @SerializedName("date") var heart_rate: String? = null,
+    @SerializedName("date") var date: String? = null,
     @SerializedName("time") var time: String? = null,
     @SerializedName("data") var data: AddVitalData? = null
 )

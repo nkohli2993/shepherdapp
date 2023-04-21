@@ -92,12 +92,8 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
     }
 
     override fun observeViewModel() {
-
-//        observe(medicationViewModel.timeSelectedlist, ::selectedTime)
         observe(medicationViewModel.doseListData, ::selectedDoseData)
-//        observe(medicationViewModel.dayListSelectedData, ::selectedDay)
         getDostQtyListObserver()
-//        getDoseTypeListObserver()
         scheduledMedicationObserver()
         getScheduledMedicationRecord()
     }
@@ -123,27 +119,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                         doseTypeID = payLoad!!.dosage_type_id.toString()
                         selectedDoseId = payLoad!!.dosage_id.toString()
                         selectedDoseTypeId = payLoad!!.dosage_type_id.toString()
-//                        setFrequency(payLoad!!.frequency.toString())
-                        /* if (payLoad!!.end_date != null) {
-                             setEndDate(payLoad!!.end_date!!)
-                         }*/
-//                        timeList.clear()
-//                        addedTimeList.clear()
-                        /* if (payLoad?.frequency != null) {
-                             if (payLoad?.frequency!! < 5) {
- //                                showAddedTime()
-                             } else {
- //                                fragmentScheduleMedicineBinding.recycleviewTime.visibility =
- //                                    View.GONE
- //                                fragmentScheduleMedicineBinding.tvTime.visibility = View.GONE
-                                 setTimeAdapter()
-                             }
-                         } else {
-                             showAddedTime()
-                         }*/
-
-//                        addDays(isEdit = true, payLoad!!.days)
-//                        setDayAdapter()
                         fragmentScheduleMedicineBinding.etNote.setText(payLoad!!.note)
 
                         // set dose QTY
@@ -161,7 +136,6 @@ class ScheduleMedicineFragment : BaseFragment<FragmentSchedulweMedicineBinding>(
                                 typePosition = i
                             }
                         }
-//                        fragmentScheduleMedicineBinding.typeSpinner.setSelection(typePosition)
                     }
                 }
             }
