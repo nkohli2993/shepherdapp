@@ -11,3 +11,4 @@ sealed class DataResult<out T> {
     ) :
         DataResult<Nothing>()
 }
+

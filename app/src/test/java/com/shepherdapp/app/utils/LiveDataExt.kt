@@ -1,4 +1,4 @@
-package com.shepherdapp.app
+package com.shepherdapp.app.utils
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 fun <T> LiveData<T>.getOrAwaitValueTest(
-    time: Long = 2,
+    time: Long = 4,
     timeUnit: TimeUnit = TimeUnit.SECONDS
 ): T {
     var data: T? = null

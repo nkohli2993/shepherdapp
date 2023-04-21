@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
-import com.shepherdapp.app.data.dto.signup.UserSignupData
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
 import com.shepherdapp.app.di.TestRepositoryProvider
@@ -13,7 +12,7 @@ import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.utils.EmailValidator
 import com.shepherdapp.app.utils.MainDispatcherRule
 import com.shepherdapp.app.utils.getOrAwaitValueTest
-import com.shepherdapp.app.view_model.LoginViewModel
+import com.shepherdapp.app.view_model.ForgotPasswordViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert.*
@@ -33,7 +32,7 @@ import org.mockito.junit.MockitoJUnitRunner
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 @RunWith(MockitoJUnitRunner::class)
-class LoginUnitTest {
+class ForgotPasswordUserUnitTest {
 
 
     @get:Rule
@@ -43,14 +42,13 @@ class LoginUnitTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-
-    var userSignupData = UserSignupData(email = "car@yopmail.com", "1234")
+    var email = "shamikumar@yopmail.com"
 
     lateinit var authRepository: AuthRepository
     lateinit var userRepository: UserRepository
 
     @Mock
-    private lateinit var loginViewModel: LoginViewModel
+    private lateinit var forgotPasswordViewModel: ForgotPasswordViewModel
 
     @Mock
     lateinit var observer: Observer<Event<DataResult<LoginResponseModel>>>
@@ -70,41 +68,46 @@ class LoginUnitTest {
 
         authRepository = TestRepositoryProvider().getAuthRepository(context!!)
         userRepository = TestRepositoryProvider().getUserRepository(context!!)
-        loginViewModel = LoginViewModel(authRepository, userRepository)
+        forgotPasswordViewModel = ForgotPasswordViewModel(authRepository)
 
-        loginViewModel.loginResponseLiveData.observeForever(observer)
+        forgotPasswordViewModel.forgotPasswordResponseLiveData.observeForever(observer)
 
     }
 
 
     @Test
     fun testEmailValuesValidate() {
-        assertEquals(true, EmailValidator.get().isValidEmail(userSignupData.email))
-    }
-
-    @Test
-    fun testPasswordValuesValidate() {
-        val responseOfExecutingYourApiWithCorrectValues: Boolean =
-            loginViewModel.getPasswordValid(userSignupData)
-        assertEquals(true, responseOfExecutingYourApiWithCorrectValues)
-
+        assertEquals(true, EmailValidator.get().isValidEmail(email))
     }
 
 
     @Test
     fun `test User data success`() = runBlockingTest {
-        val email = "cars@yopmail.com"
 
-        loginViewModel.login(userSignupData, false)
-
+        forgotPasswordViewModel.forgotPassword(email)
 
         Thread.sleep(3000)
-        loginViewModel.loginResponseLiveData.getOrAwaitValueTest().getContentIfNotHandled().let {
-            if (it is DataResult.Success) {
-                assertEquals(email, it.data.payload?.email)
+
+        forgotPasswordViewModel.forgotPasswordResponseLiveData.getOrAwaitValueTest().getContentIfNotHandled()
+            .let {
+                when (it) {
+                    is DataResult.Success -> {
+                        assertEquals(
+                            "Reset Password link has been sent to your email",
+                            it.data.message
+                        )
+                    }
+
+                    is DataResult.Failure -> {
+                        assertFalse(true)
+                    }
+
+                    else -> {
+                        print("Loading")
+                    }
+                }
             }
-        }
 
     }
-
 }
+

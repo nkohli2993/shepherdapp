@@ -21,6 +21,8 @@ import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.TableName
+import com.shepherdapp.app.utils.extensions.getLength
+import com.shepherdapp.app.utils.extensions.isBlank
 import com.shepherdapp.app.utils.serializeToMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -272,6 +274,7 @@ class CreateNewAccountViewModel @Inject constructor(
     }
 
 
+
     // Save Enterprise Detail
     fun saveEnterpriseDetail(enterprise: Enterprise) {
         userRepository.saveEnterpriseDetail(enterprise)
@@ -281,4 +284,11 @@ class CreateNewAccountViewModel @Inject constructor(
     fun getEnterpriseDetail(): Enterprise? {
         return userRepository.getEnterpriseDetail()
     }
+
+    fun getPasswordValid(signupData: UserSignupData): Boolean {
+        return if (signupData.password?.isBlank()!!) {
+            false
+        } else signupData.password?.getLength()!! >= 4
+    }
+
 }

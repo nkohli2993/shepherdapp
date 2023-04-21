@@ -189,6 +189,39 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             }
 
         }*/
+
+        selectAllAssigneeCheckBoxListener()
+    }
+
+    private fun selectAllAssigneeCheckBoxListener() {
+        fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener { buttonView, isChecked ->
+            careteams.forEachIndexed { position, careTeamModel ->
+                careteams[position].isSelected = isChecked
+                val assignee: ArrayList<String> = arrayListOf()
+                assignee.clear()
+                selectedAssigneeUUIDList.clear()
+                for (i in careteams) {
+                    if (i.isSelected == true) {
+                        val uuid = i.user_id_details?.uid
+                        uuid?.let { selectedAssigneeUUIDList.add(it) }
+                        assignee.add(
+                            i.user_id_details?.firstname!!.plus(" ")
+                                .plus(i.user_id_details?.lastname?.ifEmpty { null })
+                        )
+                    }
+                }
+                if (assignee.size > 0) {
+                    fragmentEditCarePointBinding.assigneET.setText(assignee.joinToString())
+                } else {
+                    fragmentEditCarePointBinding.assigneET.setText("")
+                }
+            }
+            fragmentEditCarePointBinding.assigneRV.postDelayed({
+                assigneeAdapter!!.notifyDataSetChanged()
+            }, 100)
+
+
+        }
     }
 
     private fun getAssignedToMembers() {
@@ -218,6 +251,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener(null)
+
                     val payload = result.data.payload
                     careteams.addAll(payload.data)
                     assigneeAdapter = AssigneAdapter(
@@ -236,6 +271,17 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     }
 
                     assigneeAdapter!!.setData(careteams)
+
+
+                    var isAllChecked = true
+                    careteams.forEach {
+                        if (it.isSelected == false) {
+                            isAllChecked = false
+                            return@forEach
+                        }
+                    }
+
+                    fragmentEditCarePointBinding.tvSelect.isChecked = isAllChecked
                 }
 
                 is DataResult.Failure -> {
@@ -348,9 +394,11 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             R.id.assigneET -> {
                 if (fragmentEditCarePointBinding.assigneRV.visibility == View.VISIBLE) {
                     fragmentEditCarePointBinding.assigneRV.visibility = View.GONE
+                    fragmentEditCarePointBinding.tvSelect.visibility = View.GONE
                     rotate(0f)
                 } else {
                     fragmentEditCarePointBinding.assigneRV.visibility = View.VISIBLE
+                    fragmentEditCarePointBinding.tvSelect.visibility = View.VISIBLE
                     rotate(180f)
                 }
             }
@@ -622,6 +670,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     }
 
     override fun onSelected(position: Int) {
+        fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener(null)
+
         careteams[position].isSelected = !careteams[position].isSelected!!
         fragmentEditCarePointBinding.assigneRV.postDelayed({
             assigneeAdapter!!.notifyDataSetChanged()
@@ -645,6 +695,16 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             fragmentEditCarePointBinding.assigneET.setText("")
         }
 
+        var isAllChecked = true
+        careteams.forEach {
+            if (it.isSelected == false) {
+                isAllChecked = false
+                return@forEach
+            }
+        }
+
+        fragmentEditCarePointBinding.tvSelect.isChecked = isAllChecked
+        selectAllAssigneeCheckBoxListener()
     }
 
     private fun timePicker() {

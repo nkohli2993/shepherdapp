@@ -1,4 +1,4 @@
-package com.shepherdapp.app
+package com.shepherdapp.app.utils
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

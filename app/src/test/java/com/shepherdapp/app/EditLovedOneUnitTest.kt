@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.shepherdapp.app.data.dto.add_loved_one.CreateLovedOneModel
-import com.shepherdapp.app.data.dto.add_loved_one.CreateLovedOneResponseModel
 import com.shepherdapp.app.data.dto.edit_loved_one.EditLovedOneResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
