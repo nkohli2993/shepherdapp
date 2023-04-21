@@ -98,6 +98,39 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
 
         }*/
+
+        selectAllAssigneeCheckBoxListener()
+
+    }
+
+    private fun selectAllAssigneeCheckBoxListener() {
+        fragmentAddNewEventBinding.tvSelect.setOnCheckedChangeListener { buttonView, isChecked ->
+            careteams.forEachIndexed { position, careTeamModel ->
+
+                careteams[position].isSelected = isChecked
+                val assignee: ArrayList<String> = arrayListOf()
+                assignee.clear()
+                for (i in careteams) {
+                    if (i.isSelected == true) {
+                        assignee.add(
+                            i.user_id_details?.firstname!!.plus(" ")
+                                .plus(i.user_id_details?.lastname?.ifEmpty { null })
+                        )
+                    }
+                }
+                if (assignee.size > 0) {
+                    fragmentAddNewEventBinding.assigneET.setText(assignee.joinToString())
+                } else {
+                    fragmentAddNewEventBinding.assigneET.setText("")
+                }
+
+            }
+            fragmentAddNewEventBinding.assigneRV.postDelayed({
+                assigneeAdapter!!.notifyDataSetChanged()
+            }, 100)
+
+        }
+
     }
 
     private fun getAssignedToMembers() {
@@ -256,9 +289,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             R.id.assigneET -> {
                 if (fragmentAddNewEventBinding.assigneRV.visibility == View.VISIBLE) {
                     fragmentAddNewEventBinding.assigneRV.visibility = View.GONE
+                    fragmentAddNewEventBinding.tvSelect.visibility = View.GONE
                     rotate(0f)
                 } else {
                     fragmentAddNewEventBinding.assigneRV.visibility = View.VISIBLE
+                    fragmentAddNewEventBinding.tvSelect.visibility = View.VISIBLE
                     rotate(180f)
                 }
             }
@@ -435,10 +470,12 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
     override fun onSelected(position: Int) {
+        fragmentAddNewEventBinding.tvSelect.setOnCheckedChangeListener(null)
         careteams[position].isSelected = !careteams[position].isSelected!!
         fragmentAddNewEventBinding.assigneRV.postDelayed({
             assigneeAdapter!!.notifyDataSetChanged()
         }, 100)
+
         val assignee: ArrayList<String> = arrayListOf()
         assignee.clear()
         for (i in careteams) {
@@ -449,12 +486,24 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 )
             }
         }
+
         if (assignee.size > 0) {
             fragmentAddNewEventBinding.assigneET.setText(assignee.joinToString())
         } else {
             fragmentAddNewEventBinding.assigneET.setText("")
         }
 
+        var isAllChecked = true
+        careteams.forEach {
+            if (it.isSelected == false) {
+                isAllChecked = false
+                return@forEach
+            }
+        }
+
+        fragmentAddNewEventBinding.tvSelect.isChecked = isAllChecked
+
+        selectAllAssigneeCheckBoxListener()
     }
 
     private fun timePicker() {
@@ -507,9 +556,15 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         var min: String? = ""
                         var hours: String? = ""
 
-                        min = if (minute.toString().length < 2) "0$minute" else java.lang.String.valueOf(minute)
+                        min =
+                            if (minute.toString().length < 2) "0$minute" else java.lang.String.valueOf(
+                                minute
+                            )
 
-                        hours = if (hour.toString().length < 2) "0$hour" else java.lang.String.valueOf(hour)
+                        hours =
+                            if (hour.toString().length < 2) "0$hour" else java.lang.String.valueOf(
+                                hour
+                            )
 
                         val mTime = StringBuilder().append(hours).append(':')
                             .append(min)

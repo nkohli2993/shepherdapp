@@ -1,4 +1,4 @@
-package com.shepherdapp.app
+package com.shepherdapp.app.utils
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken

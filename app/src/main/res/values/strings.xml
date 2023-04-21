@@ -380,6 +380,7 @@
     <string name="send_invite">Send Invite</string>
     <string name="dd_mm_yy">DD/MM/YY</string>
     <string name="select">Select</string>
+    <string name="select_all">Select All</string>
     <string name="add_new_care_point">Add New CarePoint</string>
     <string name="edit_care_point">Edit CarePoint</string>
     <string name="add_new_lock_box">Add New Item</string>

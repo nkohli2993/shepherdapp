@@ -1,4 +1,4 @@
-package com.shepherdapp.app
+package com.shepherdapp.app.utils
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer

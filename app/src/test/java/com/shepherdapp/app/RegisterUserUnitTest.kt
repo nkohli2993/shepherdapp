@@ -11,6 +11,8 @@ import com.shepherdapp.app.di.TestRepositoryProvider
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.utils.EmailValidator
+import com.shepherdapp.app.utils.MainDispatcherRule
+import com.shepherdapp.app.utils.getOrAwaitValueTest
 import com.shepherdapp.app.view_model.CreateNewAccountViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest

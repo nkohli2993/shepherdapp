@@ -1,12 +1,9 @@
 package com.shepherdapp.app
 
 import android.content.Context
-import android.os.Looper
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import androidx.lifecycle.distinctUntilChanged
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
-import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.signup.UserSignupData
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
@@ -14,12 +11,11 @@ import com.shepherdapp.app.di.TestRepositoryProvider
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.utils.EmailValidator
+import com.shepherdapp.app.utils.MainDispatcherRule
+import com.shepherdapp.app.utils.getOrAwaitValueTest
 import com.shepherdapp.app.view_model.LoginViewModel
-import junit.framework.Assert
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runBlockingTest
-import org.hamcrest.Matchers.`is`
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -29,8 +25,6 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
-import org.robolectric.Shadows
-import java.lang.String
 
 
 /**

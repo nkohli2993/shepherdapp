@@ -206,6 +206,22 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/tvSelect"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham_bold"
+                    android:text="@string/select_all"
+                    android:paddingHorizontal="@dimen/_16sdp"
+                    android:layout_marginHorizontal="@dimen/_12sdp"
+                    android:button="@drawable/checkbox_selector"
+                    android:textColor="@color/_192032"
+                    android:layout_marginTop="@dimen/_12sdp"
+                    android:textSize="@dimen/_13ssp"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/assigneRV"
                     android:layout_width="match_parent"
