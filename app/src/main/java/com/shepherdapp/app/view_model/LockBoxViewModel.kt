@@ -27,7 +27,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class LockBoxViewModel @Inject constructor(
-    private val dataRepository: DataRepository,
     private val lockBoxRepository: LockBoxRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
@@ -135,12 +134,16 @@ class LockBoxViewModel @Inject constructor(
         return getSearchedUploadedLockBoxDocResponseLiveData
     }
 
+    fun getLovedOneId():String {
+        return userRepository.getLovedOneUUId().toString()
+    }
+
     // Delete upload lockBox by ID
     fun deleteAddedLockBoxDocumentBYID(
-        id: Int
+        id: Int,lovedOneUUId:String
     ): LiveData<Event<DataResult<DeleteUploadedLockBoxDocResponseModel>>> {
         //get lovedOne UUID from shared Pref
-        val lovedOneUUId = userRepository.getLovedOneUUId()
+//        val lovedOneUUId = userRepository.getLovedOneUUId()
         viewModelScope.launch {
             val response = lovedOneUUId?.let {
                 lockBoxRepository.deleteUploadedLockBoxDoc(id)

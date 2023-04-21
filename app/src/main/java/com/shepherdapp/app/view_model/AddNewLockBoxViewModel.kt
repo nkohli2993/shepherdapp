@@ -32,7 +32,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class AddNewLockBoxViewModel @Inject constructor(
-    private val dataRepository: DataRepository,
     private val lockBoxRepository: LockBoxRepository,
     private val userRepository: UserRepository
 ) : BaseViewModel() {
@@ -137,6 +136,10 @@ class AddNewLockBoxViewModel @Inject constructor(
             fileName, fileNote, lbtId, lovedOneUUId,
             documents, userIds
         )
+        return addNewLockBoxApi(addNewLockBoxRequestModel)
+    }
+
+    fun addNewLockBoxApi(addNewLockBoxRequestModel : AddNewLockBoxRequestModel): LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> {
 
         viewModelScope.launch {
             val response = addNewLockBoxRequestModel?.let { lockBoxRepository.addNewLockBox(it) }
@@ -176,6 +179,13 @@ class AddNewLockBoxViewModel @Inject constructor(
                 userIds
             )
 
+        return callEditLockBoxApi(addNewLockBoxRequestModel, id)
+    }
+
+     fun callEditLockBoxApi(
+        addNewLockBoxRequestModel: EditLockBoxRequestModel,
+        id: Int
+    ): LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> {
         viewModelScope.launch {
             val response = lockBoxRepository.editNewLockBox(addNewLockBoxRequestModel, id)
             withContext(Dispatchers.Main) {

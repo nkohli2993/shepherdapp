@@ -106,11 +106,11 @@ class LoginUnitTest {
 
         Thread.sleep(3000)
         loginViewModel.loginResponseLiveData.getOrAwaitValueTest().getContentIfNotHandled().let {
-                if (it is DataResult.Success) {
-                    assertEquals(email, it.data.payload?.email)
-                }
+            if (it is DataResult.Success) {
+                assertEquals(email, it.data.payload?.email)
             }
+        }
 
-}
+    }
 
 }

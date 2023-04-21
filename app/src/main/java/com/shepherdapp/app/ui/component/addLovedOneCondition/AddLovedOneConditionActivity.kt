@@ -88,46 +88,6 @@ class AddLovedOneConditionActivity : BaseActivity(), View.OnClickListener,
             callAllMedicalCondition()
         }
 
-        /*       binding.editTextSearch.doAfterTextChanged { search ->
-                   if (!isLoading) {
-                      // isLoading = true
-                       pageNumber = 1
-                       addLovedOneConditionViewModel.getMedicalConditions(
-                           pageNumber,
-                           limit,
-                           search.toString()
-                       )
-                   }
-
-       //            if (search != null) {
-       //                if (search.isEmpty()) {
-       //                    isSearched = false
-       //                    conditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
-       //                    binding.imgCancel.visibility = View.GONE
-       //                    binding.txtNoResultFound.visibility = View.GONE
-       //                    binding.recyclerViewCondition.visibility = View.VISIBLE
-       //                    hideLoading()
-       //                }
-       //                if (search.isNotEmpty()) {
-       //                    binding.imgCancel.visibility = View.VISIBLE
-       //                    searchedConditions.clear()
-       //                    isSearched = true
-       //                    pageNumber = 1
-       //                    conditions.forEach {
-       //                        if (it.name?.contains(search.toString(), true) == true) {
-       //                            searchedConditions.add(it)
-       //                        }
-       //                    }
-       //                    binding.txtNoResultFound.visibility = View.GONE
-       //                    binding.recyclerViewCondition.visibility = View.VISIBLE
-       //                    if (searchedConditions.isEmpty()) {
-       //                        binding.txtNoResultFound.visibility = View.VISIBLE
-       //                        binding.recyclerViewCondition.visibility = View.GONE
-       //                    }
-       //                    searchedConditions.let { addLovedOneConditionAdapter?.updateConditions(it) }
-       //                }
-       //            }
-               }*/
     }
 
 
