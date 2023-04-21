@@ -1,9 +1,9 @@
 package com.shepherdapp.app.ui.component.carePoints
 
 
-import CommonFunctions
 import CommonFunctions.getLastDayOf
 import CommonFunctions.isToday
+import CommonFunctions.stringCarePointDateToDate
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
@@ -20,7 +20,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.added_events.AddedEventModel
@@ -66,6 +65,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private var sdf = SimpleDateFormat("yyyy-MM-dd")
     private var chatModelList: ArrayList<ChatModel>? = ArrayList()
     private var selDate: Date? = null
+    private var isInitialized = false
 
     private val TAG = CarePointsFragment::class.java.simpleName
 
@@ -87,23 +87,60 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     }
 
     override fun onCreateView(
-         inflater: LayoutInflater,
+        inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentCarePointsBinding =
-            FragmentCarePointsBinding.inflate(inflater, container, false)
-        fragmentCarePointsBinding.calendarPView.clearSelection()
+        if (::fragmentCarePointsBinding.isInitialized && !Prefs.with(context)
+                ?.getString(Const.START_DATE_EVENT).isNullOrEmpty()
+        ) {
+            isInitialized = true
+            startDate = Prefs.with(context)?.getString(Const.START_DATE_EVENT)!!
+            endDate = Prefs.with(context)?.getString(Const.END_DATE_EVENT)!!
+
+
+            getCarePointList(
+                Prefs.with(context)?.getString(Const.START_DATE_EVENT)!!,
+                Prefs.with(context)?.getString(Const.END_DATE_EVENT)!!,
+            )
+        } else {
+
+            fragmentCarePointsBinding =
+                FragmentCarePointsBinding.inflate(inflater, container, false)
+            fragmentCarePointsBinding.calendarPView.clearSelection()
+
+        }
+
+
         return fragmentCarePointsBinding.root
     }
 
     override fun onResume() {
         super.onResume()
+
+        // Check if loggedIn User is CareTeam Leader for selected lovedOne
+        if (!isInitialized) {
+            checkForEventClickType()
+        } else {
+            if (eventClickType == CalendarState.Week.value) {
+                val calendar = Calendar.getInstance()
+                calendar.time = stringCarePointDateToDate(
+                    Prefs.with(requireContext())?.getString(Const.START_DATE_EVENT)
+                )
+                onWeekSelected(calendar)
+            } else if (eventClickType == CalendarState.Today.value) {
+                setTodayData(
+                    stringCarePointDateToDate(
+                        Prefs.with(requireContext())?.getString(Const.START_DATE_EVENT)
+                    )
+                )
+            }
+        }
+
+
         // Update the home activity so that updated lovedOne is shown on the screen
         parentActivityListener?.msgFromChildFragmentToActivity()
 
-        // Check if loggedIn User is CareTeam Leader for selected lovedOne
-        checkForEventClickType()
 
     }
 
@@ -155,21 +192,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
     private fun calendarChangeListener() {
         fragmentCarePointsBinding.calendarPView.setOnDateChangedListener { widget, date, selected ->
             if (eventClickType == CalendarState.Today.value) {
-                val calendar = Calendar.getInstance()
-                calendar.time = date.date
-                fragmentCarePointsBinding.calendarPView.setDateSelected(calendar, true)
-                startDate = sdf.format(calendar.time)
-                endDate = sdf.format(calendar.time)
-                getCarePointList(startDate, endDate)
-
-                if (!isToday(date.date)) {
-                    val startDate = SimpleDateFormat("MMM dd,yyyy").format(date.date)
-                    fragmentCarePointsBinding.textViewSelectGroup.text = startDate
-                } else {
-                    fragmentCarePointsBinding.textViewSelectGroup.text =
-                        resources.getString(R.string.today)
-
-                }
+                setTodayData(date.date)
             } else if (eventClickType == CalendarState.Week.value) {
                 val calendar = Calendar.getInstance()
                 calendar.time = date.date
@@ -179,6 +202,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
         fragmentCarePointsBinding.calendarPView.setOnMonthChangedListener { _, date ->
             // Show care point data as per month change from calendar
+            Log.d("TAG", "calendarChangeListener: " + eventClickType)
             if (eventClickType == CalendarState.Month.value) {
                 selDate = date.date
                 val lastDayOfMonth = lastDayOfMonth(date.year, date.month + 1)
@@ -191,12 +215,30 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 if (!isToday(date.date)) {
                     val startDate = SimpleDateFormat("MMM yyyy").format(date.date)
                     fragmentCarePointsBinding.textViewSelectGroup.text = startDate
-                }else{
+                } else {
                     fragmentCarePointsBinding.textViewSelectGroup.text =
                         resources.getString(R.string.today)
 
                 }
             }
+
+        }
+    }
+
+    private fun setTodayData(date: Date) {
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        fragmentCarePointsBinding.calendarPView.setDateSelected(calendar, true)
+        startDate = sdf.format(calendar.time)
+        endDate = sdf.format(calendar.time)
+        getCarePointList(startDate, endDate)
+
+        if (!isToday(date)) {
+            val startDate = SimpleDateFormat("MMM dd,yyyy").format(date)
+            fragmentCarePointsBinding.textViewSelectGroup.text = startDate
+        } else {
+            fragmentCarePointsBinding.textViewSelectGroup.text =
+                resources.getString(R.string.today)
 
         }
     }
@@ -446,6 +488,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             endDate,
             carePointsViewModel.getLovedOneUUId()!!
         )
+        Prefs.with(context)?.save(Const.START_DATE_EVENT, startDate)
+        Prefs.with(context)?.save(Const.END_DATE_EVENT, endDate)
     }
 
     override fun onEventSelected(detail: AddedEventModel) {

@@ -33,6 +33,8 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.*
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -309,6 +311,12 @@ object CommonFunctions {
         specifiedDate.time = date
         return today[Calendar.DAY_OF_MONTH] == specifiedDate[Calendar.DAY_OF_MONTH] && today[Calendar.MONTH] == specifiedDate[Calendar.MONTH] && today[Calendar.YEAR] == specifiedDate[Calendar.YEAR]
     }
+
+    fun stringCarePointDateToDate(strDate: String?): Date {
+        val formatter: DateFormat = SimpleDateFormat("yyyy-MM-dd")
+        return formatter.parse(strDate)
+    }
+
 
     inline fun SpannableStringBuilder.font(
         typeface: Typeface? = null,

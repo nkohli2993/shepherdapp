@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.animation.RotateAnimation
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,6 +36,7 @@ import com.shepherdapp.app.view_model.AddNewEventViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.log
 
 
 /**
@@ -52,7 +54,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private var limit: Int = 10
     private var status: Int = 1
     private var assignTo = ArrayList<String>()
-    private var careteams = ArrayList<CareTeamModel>()
+    private var careteams:MutableList<CareTeamModel> = ArrayList<CareTeamModel>()
     private var isAmPm: String? = null
     private var placeAddress: String? = null
     private var placeId: String? = null
@@ -188,6 +190,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     hideLoading()
                     val payload = result.data.payload
                     careteams.addAll(payload.data)
+                    careteams =   careteams.filter {
+                        it.permission?.contains("1")!!
+                    }.toMutableList()
                     assigneeAdapter = AssigneAdapter(
                         this,
                         requireContext(),

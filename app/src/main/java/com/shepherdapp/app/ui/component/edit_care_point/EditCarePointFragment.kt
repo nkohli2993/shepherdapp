@@ -27,18 +27,16 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
-import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.changeDatesFormat
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
-import com.shepherdapp.app.utils.observe
-import com.shepherdapp.app.utils.setupSnackbar
-import com.shepherdapp.app.utils.showToast
 import com.shepherdapp.app.view_model.EditEventViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -56,7 +54,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     private var limit: Int = 10
     private var status: Int = 1
     private var assignTo = ArrayList<String>()
-    private var careteams = ArrayList<CareTeamModel>()
+    private var careteams : MutableList<CareTeamModel> = ArrayList()
     private var isAmPm: String? = null
     private var placeAddress: String? = null
     private var placeId: String? = null
@@ -255,6 +253,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
                     val payload = result.data.payload
                     careteams.addAll(payload.data)
+
+                    careteams =   careteams.filter {
+                        it.permission?.contains(Modules.CarePoints.value)!!
+                    }.toMutableList()
+
+
                     assigneeAdapter = AssigneAdapter(
                         this,
                         requireContext(),
