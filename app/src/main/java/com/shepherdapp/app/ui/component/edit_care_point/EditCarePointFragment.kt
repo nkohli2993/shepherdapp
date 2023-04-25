@@ -54,7 +54,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     private var limit: Int = 10
     private var status: Int = 1
     private var assignTo = ArrayList<String>()
-    private var careteams : MutableList<CareTeamModel> = ArrayList()
+    private var careteams: MutableList<CareTeamModel> = ArrayList()
     private var isAmPm: String? = null
     private var placeAddress: String? = null
     private var placeId: String? = null
@@ -193,33 +193,35 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
     private fun selectAllAssigneeCheckBoxListener() {
         fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener { buttonView, isChecked ->
-            careteams.forEachIndexed { position, careTeamModel ->
-                careteams[position].isSelected = isChecked
-                val assignee: ArrayList<String> = arrayListOf()
-                assignee.clear()
-                selectedAssigneeUUIDList.clear()
-                for (i in careteams) {
-                    if (i.isSelected == true) {
-                        val uuid = i.user_id_details?.uid
-                        uuid?.let { selectedAssigneeUUIDList.add(it) }
-                        assignee.add(
-                            i.user_id_details?.firstname!!.plus(" ")
-                                .plus(i.user_id_details?.lastname?.ifEmpty { null })
-                        )
+            if (buttonView.isPressed) {
+                careteams.forEachIndexed { position, careTeamModel ->
+                    careteams[position].isSelected = isChecked
+                    val assignee: ArrayList<String> = arrayListOf()
+                    assignee.clear()
+                    selectedAssigneeUUIDList.clear()
+                    for (i in careteams) {
+                        if (i.isSelected == true) {
+                            val uuid = i.user_id_details?.uid
+                            uuid?.let { selectedAssigneeUUIDList.add(it) }
+                            assignee.add(
+                                i.user_id_details?.firstname!!.plus(" ")
+                                    .plus(i.user_id_details?.lastname?.ifEmpty { null })
+                            )
+                        }
+                    }
+                    if (assignee.size > 0) {
+                        fragmentEditCarePointBinding.assigneET.setText(assignee.joinToString())
+                    } else {
+                        fragmentEditCarePointBinding.assigneET.setText("")
                     }
                 }
-                if (assignee.size > 0) {
-                    fragmentEditCarePointBinding.assigneET.setText(assignee.joinToString())
-                } else {
-                    fragmentEditCarePointBinding.assigneET.setText("")
-                }
+                fragmentEditCarePointBinding.assigneRV.postDelayed({
+                    assigneeAdapter!!.notifyDataSetChanged()
+                }, 100)
             }
-            fragmentEditCarePointBinding.assigneRV.postDelayed({
-                assigneeAdapter!!.notifyDataSetChanged()
-            }, 100)
-
-
         }
+
+
     }
 
     private fun getAssignedToMembers() {
@@ -249,12 +251,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener(null)
+//                    fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener(null)
 
                     val payload = result.data.payload
                     careteams.addAll(payload.data)
 
-                    careteams =   careteams.filter {
+                    careteams = careteams.filter {
                         it.permission?.contains(Modules.CarePoints.value)!!
                     }.toMutableList()
 
@@ -561,8 +563,11 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     .isNotEmpty() && fragmentEditCarePointBinding.tvTime.text.toString().trim()
                     .isNotEmpty()
             ) {
-                val df = SimpleDateFormat("MM-dd-yyyy hh:mm a", Locale.getDefault()) // pass the format pattern that you like and done.
-                eventDate =df.parse(
+                val df = SimpleDateFormat(
+                    "MM-dd-yyyy hh:mm a",
+                    Locale.getDefault()
+                ) // pass the format pattern that you like and done.
+                eventDate = df.parse(
                     fragmentEditCarePointBinding.tvDate.text.toString().trim() + " " +
                             fragmentEditCarePointBinding.tvTime.text.toString()
                                 .trim() + " " + isAmPm
@@ -720,7 +725,10 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             if (fragmentEditCarePointBinding.tvTime.text.isNotEmpty()) {
 
                 val dateTime = fragmentEditCarePointBinding.tvDate.text.toString().trim().plus(" ")
-                    .plus(fragmentEditCarePointBinding.tvTime.text.toString().plus(" ").plus("$isAmPm"))
+                    .plus(
+                        fragmentEditCarePointBinding.tvTime.text.toString().plus(" ")
+                            .plus("$isAmPm")
+                    )
 
 
                 mCurrentTime.time = SimpleDateFormat("MM-dd-yyyy hh:mm a").parse(dateTime)!!
@@ -764,9 +772,15 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         var min: String? = ""
                         var hours: String? = ""
 
-                        min = if (minute.toString().length < 2) "0$minute" else java.lang.String.valueOf(minute)
+                        min =
+                            if (minute.toString().length < 2) "0$minute" else java.lang.String.valueOf(
+                                minute
+                            )
 
-                        hours = if (hour.toString().length < 2) "0$hour" else java.lang.String.valueOf(hour)
+                        hours =
+                            if (hour.toString().length < 2) "0$hour" else java.lang.String.valueOf(
+                                hour
+                            )
 
 
                         val mTime = StringBuilder().append(hours).append(':')

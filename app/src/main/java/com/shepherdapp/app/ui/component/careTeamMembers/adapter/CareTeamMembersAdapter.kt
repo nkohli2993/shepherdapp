@@ -100,7 +100,7 @@ class CareTeamMembersAdapter(
                         careTeam.email, ""
                     )
 
-                    it.textViewCareTeamRole.text = "As ${careTeam.careRoles?.name}"
+                    it.textViewCareTeamRole.text = careTeam.careRoles?.name
                 }
 
                 // Delete button is clickable for CareTeam Lead Only

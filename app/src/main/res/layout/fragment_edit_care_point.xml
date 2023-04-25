@@ -176,6 +176,7 @@
                         android:focusableInTouchMode="false"
                         android:fontFamily="@font/gotham_medium"
                         android:hint="@string/select"
+                        android:layout_marginEnd="@dimen/_10sdp"
                         android:inputType="textMultiLine"
                         android:maxLines="10"
                         android:onClick="@{listener::onClick}"
@@ -185,7 +186,7 @@
                         android:textColorHint="@color/_192032"
                         android:textSize="@dimen/_12ssp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/spinner_down_arrow_image"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:ignore="RtlSymmetry" />

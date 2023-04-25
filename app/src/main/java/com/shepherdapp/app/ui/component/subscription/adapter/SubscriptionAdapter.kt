@@ -98,7 +98,7 @@ class SubscriptionAdapter constructor(
             itemBinding.txtTitle.text = nameOfPlan
 
             // Set Plan Description
-            itemBinding.txtDesc.text = context.getString(R.string.max_3_loved_one_can_be_added)
+//            itemBinding.txtDesc.text = context.getString(R.string.max_3_loved_one_can_be_added)
             /* itemBinding.txtPrice.text =
                  productDetails?.subscriptionOfferDetails?.get(0)?.pricingPhases?.pricingPhaseList?.get(
                      0

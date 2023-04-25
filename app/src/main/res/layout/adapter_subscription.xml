@@ -4,19 +4,17 @@
 
     <data>
 
-        <!-- <variable
-             name="data"
-             type="com.shepherdapp.app.data.dto.subscription.SubscriptionModel" />-->
-
         <variable
             name="listener"
             type="android.view.View.OnClickListener" />
     </data>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
@@ -33,12 +31,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.core.widget.NestedScrollView
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbarStyle="insideInset"
-                android:scrollbars="vertical"
-                android:scrollbarThumbVertical="@android:color/white">
+                android:scrollbarThumbVertical="@android:color/white"
+                android:scrollbars="vertical">
 
                 <LinearLayout
                     android:id="@+id/layoutCard"
@@ -53,10 +51,10 @@
                         style="@style/TextViewGothamBold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/colorWhite"
-                        android:focusable="false"
                         android:clickable="false"
+                        android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:textColor="@color/colorWhite"
                         android:textSize="@dimen/_20ssp" />
 
                     <androidx.appcompat.widget.AppCompatTextView
@@ -65,10 +63,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:lineSpacingExtra="@dimen/_5sdp"
-                        android:focusable="false"
                         android:clickable="false"
+                        android:focusable="false"
                         android:focusableInTouchMode="false"
+                        android:lineSpacingExtra="@dimen/_5sdp"
                         android:text="@string/subscription_plan_desc"
                         android:textColor="@color/colorWhite" />
 
@@ -78,19 +76,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_30sdp"
-                        android:lineSpacingExtra="@dimen/_5sdp"
-                        android:focusable="false"
                         android:clickable="false"
+                        android:focusable="false"
                         android:focusableInTouchMode="false"
-                        android:textColor="@color/colorWhite" />
-
-                    <!--  <androidx.appcompat.widget.AppCompatTextView
-                          android:id="@+id/txtLovedOne"
-                          style="@style/TextViewGothamMedium"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:textColor="@color/colorWhite"
-                          android:layout_marginTop="@dimen/_15sdp" />-->
+                        android:lineSpacingExtra="@dimen/_5sdp"
+                        android:textColor="@color/colorWhite"
+                        android:visibility="gone" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -102,11 +93,11 @@
                             style="@style/TextViewGothamBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:clickable="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
-                            android:focusable="false"
-                            android:clickable="false"
-                            android:focusableInTouchMode="false"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,10 +107,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_1sdp"
-                            android:textColor="@color/colorWhite"
-                            android:focusable="false"
                             android:clickable="false"
+                            android:focusable="false"
                             android:focusableInTouchMode="false"
+                            android:textColor="@color/colorWhite"
                             app:layout_constraintStart_toEndOf="@id/txtPrice"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -130,10 +121,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_3sdp"
                             android:layout_marginTop="@dimen/_1sdp"
-                            android:textColor="@color/colorWhite"
-                            android:focusable="false"
                             android:clickable="false"
+                            android:focusable="false"
                             android:focusableInTouchMode="false"
+                            android:textColor="@color/colorWhite"
                             app:layout_constraintStart_toEndOf="@id/txtPriceUnit"
                             app:layout_constraintTop_toTopOf="@+id/txtPrice" />
 
@@ -167,9 +158,9 @@
 
                 </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
+            </ScrollView>
         </androidx.cardview.widget.CardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </layout>
