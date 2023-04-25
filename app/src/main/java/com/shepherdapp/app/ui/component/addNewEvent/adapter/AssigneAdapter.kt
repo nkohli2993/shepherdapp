@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 class AssigneAdapter(
     val onListener: AssignToEventAdapter.selectedTeamMember,
     val context: Context,
-    var memberList: ArrayList<CareTeamModel> = ArrayList()
+    var memberList: MutableList<CareTeamModel> = ArrayList()
 ) :
     RecyclerView.Adapter<AssigneAdapter.AddAssigneListViewHolder>() {
     lateinit var binding: AdapterAssignToEventBinding
@@ -75,7 +75,7 @@ class AssigneAdapter(
         fun onSelected(position: Int)
     }
 
-    fun setData(careTeam: ArrayList<CareTeamModel>) {
+    fun setData(careTeam: MutableList<CareTeamModel>) {
         this.memberList = careTeam
         notifyDataSetChanged()
     }
