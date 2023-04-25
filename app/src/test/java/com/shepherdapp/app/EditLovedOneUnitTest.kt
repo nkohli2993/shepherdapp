@@ -129,7 +129,7 @@ class EditLovedOneUnitTest {
                     }
 
                     is DataResult.Failure -> {
-                        Assert.assertEquals(false, false)
+                        Assert.assertEquals(true, false)
                     }
 
                     else -> {

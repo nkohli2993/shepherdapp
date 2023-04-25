@@ -31,7 +31,7 @@ class MyAppInterceptor @Inject constructor(
                     if (sharedPrefUtils != null) sharedPrefUtils?.getString(
                         Const.USER_TOKEN,
                         ""
-                    ) else "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0NjksInV1aWQiOiIzNmU5MWYzYi1jNGE0LTQwZDMtOWQ3MC01ODY1NGQyZGY1NTMiLCJlbWFpbCI6ImNhckB5b3BtYWlsLmNvbSIsImlhdCI6MTY4MTkwODc3M30.f3K-ZQ7CH8Ydejm3urhcqDCSb3rpAtM7W99h4bRsp-E"
+                    ) else "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozNzcsInV1aWQiOiJkMmQyZTQ1OC1lNzI2LTQxMzQtOWI0OC1jZGNkN2I2YTZmYjAiLCJlbWFpbCI6ImRtQHlvcG1haWwuY29tIiwiaWF0IjoxNjgyNDIxNTEzfQ.m69PSUI_Zfeku5MCtZpR9Y0hld3G6nXK5ekGBl-Q5cQ"
                 }"
             )
             .add(

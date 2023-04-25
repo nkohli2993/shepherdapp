@@ -32,7 +32,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class CareTeamMembersViewModel @Inject constructor(
-    private val dataRepository: DataRepository,
     private val careTeamsRepository: CareTeamsRepository,
     private val userRepository: UserRepository,
     private val homeRepository: HomeRepository,

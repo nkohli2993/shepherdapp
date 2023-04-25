@@ -16,6 +16,7 @@ import com.shepherdapp.app.utils.getOrAwaitValueTest
 import com.shepherdapp.app.view_model.LoginViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -93,15 +94,23 @@ class LoginUnitTest {
 
     @Test
     fun `test User data success`() = runBlockingTest {
-        val email = "cars@yopmail.com"
+        val email = "car@yopmail.com"
 
         loginViewModel.login(userSignupData, false)
 
 
         Thread.sleep(3000)
         loginViewModel.loginResponseLiveData.getOrAwaitValueTest().getContentIfNotHandled().let {
-            if (it is DataResult.Success) {
-                assertEquals(email, it.data.payload?.email)
+            when (it) {
+                is DataResult.Success -> {
+                    assertEquals(email, it.data.payload?.email)
+                }
+                is DataResult.Failure -> {
+                    assertEquals(true, false)
+                }
+                else -> {
+                    print("Loading")
+                }
             }
         }
 

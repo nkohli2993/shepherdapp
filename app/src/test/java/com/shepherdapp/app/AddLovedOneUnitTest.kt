@@ -27,6 +27,7 @@ import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.utils.EmailValidator
 import com.shepherdapp.app.utils.MainDispatcherRule
 import com.shepherdapp.app.utils.getOrAwaitValueTest
+import org.junit.Assert
 import org.junit.Assert.assertEquals
 
 @RunWith(MockitoJUnitRunner::class)
@@ -119,9 +120,8 @@ class AddLovedOneUnitTest {
                     }
 
                     is DataResult.Failure -> {
-                        assertEquals(false, false)
+                        Assert.assertEquals(true, false)
                     }
-
                     else -> {
                         print("Loading")
                     }

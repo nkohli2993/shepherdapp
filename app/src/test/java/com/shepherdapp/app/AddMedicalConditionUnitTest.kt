@@ -82,9 +82,17 @@ class AddMedicalConditionUnitTest {
         Thread.sleep(3000)
         medicalConditionViewModel.addedConditionsResponseLiveData.getOrAwaitValueTest()
             .getContentIfNotHandled().let {
-            if (it is DataResult.Success) {
-                Assert.assertEquals("Created successfully", it.data.message)
-            }
+                when (it) {
+                    is DataResult.Success -> {
+                        Assert.assertEquals("Created successfully", it.data.message)
+                    }
+                    is DataResult.Failure -> {
+                        Assert.assertEquals(true, false)
+                    }
+                    else -> {
+                        print("Loading")
+                    }
+                }
         }
 
     }

@@ -5,7 +5,6 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.animation.RotateAnimation
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,7 +35,6 @@ import com.shepherdapp.app.view_model.AddNewEventViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.log
 
 
 /**
@@ -54,7 +52,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private var limit: Int = 10
     private var status: Int = 1
     private var assignTo = ArrayList<String>()
-    private var careteams:MutableList<CareTeamModel> = ArrayList<CareTeamModel>()
+    private var careTeams:MutableList<CareTeamModel> = ArrayList<CareTeamModel>()
     private var isAmPm: String? = null
     private var placeAddress: String? = null
     private var placeId: String? = null
@@ -84,35 +82,18 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             false
         }
         assigneeAdapter?.setHasStableIds(true)
-
-        /*fragmentAddNewEventBinding.etNote.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus) {
-                fragmentAddNewEventBinding.scrollView.postDelayed(Runnable {
-                    val lastChild: View =
-                        fragmentAddNewEventBinding.scrollView.getChildAt(fragmentAddNewEventBinding.scrollView.getChildCount() - 1)
-                    val bottom: Int =
-                        lastChild.bottom + fragmentAddNewEventBinding.scrollView.getPaddingBottom()
-                    val sy: Int = fragmentAddNewEventBinding.scrollView.getScrollY()
-                    val sh: Int = fragmentAddNewEventBinding.scrollView.getHeight()
-                    val delta = bottom - (sy + sh)
-                    fragmentAddNewEventBinding.scrollView.smoothScrollBy(0, delta)
-                }, 200)
-            }
-
-        }*/
-
         selectAllAssigneeCheckBoxListener()
 
     }
 
     private fun selectAllAssigneeCheckBoxListener() {
-        fragmentAddNewEventBinding.tvSelect.setOnCheckedChangeListener { buttonView, isChecked ->
-            careteams.forEachIndexed { position, careTeamModel ->
+        fragmentAddNewEventBinding.tvSelect.setOnCheckedChangeListener { _, isChecked ->
+            careTeams.forEachIndexed { position, _ ->
 
-                careteams[position].isSelected = isChecked
+                careTeams[position].isSelected = isChecked
                 val assignee: ArrayList<String> = arrayListOf()
                 assignee.clear()
-                for (i in careteams) {
+                for (i in careTeams) {
                     if (i.isSelected == true) {
                         assignee.add(
                             i.user_id_details?.firstname!!.plus(" ")
@@ -189,14 +170,14 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = result.data.payload
-                    careteams.addAll(payload.data)
-                    careteams =   careteams.filter {
+                    careTeams.addAll(payload.data)
+                    careTeams =   careTeams.filter {
                         it.permission?.contains("1")!!
                     }.toMutableList()
                     assigneeAdapter = AssigneAdapter(
                         this,
                         requireContext(),
-                        careteams
+                        careTeams
                     )
                     fragmentAddNewEventBinding.assigneRV.adapter = assigneeAdapter
 
@@ -204,11 +185,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 }
 
                 is DataResult.Failure -> {
-                    careteams.add(CareTeamModel())
+                    careTeams.add(CareTeamModel())
                     assigneeAdapter = AssigneAdapter(
                         this,
                         requireContext(),
-                        careteams
+                        careTeams
                     )
                     fragmentAddNewEventBinding.assigneRV.adapter = assigneeAdapter
                     hideLoading()
@@ -304,8 +285,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
             R.id.btnAdd -> {
                 assignTo.clear()
-                for (i in careteams) {
-                    if (i?.isSelected == true) {
+                for (i in careTeams) {
+                    if (i.isSelected == true) {
                         assignTo.add(i.user_id_details?.uid!!)
                     }
 
@@ -424,13 +405,6 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
                     fragmentAddNewEventBinding.tvTime.requestFocus()
                 }
-                /* fragmentAddNewEventBinding.etNote.text.toString().trim().isEmpty() -> {
-                     showInfo(
-                         requireContext(),
-                         getString(R.string.please_enter_notes_for_care_point)
-                     )
-                     fragmentAddNewEventBinding.etNote.requestFocus()
-                 }*/
                 else -> {
                     return true
                 }
@@ -453,7 +427,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         dateFormat = SimpleDateFormat("HH:mm")
         val selectedTime = dateFormat.format(formattedDate)
 
-        val note = if (fragmentAddNewEventBinding.etNote.text.toString().isNullOrEmpty()) {
+        val note = if (fragmentAddNewEventBinding.etNote.text.toString().isEmpty()) {
             null
         } else {
             fragmentAddNewEventBinding.etNote.text.toString().trim()
@@ -476,14 +450,14 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     override fun onSelected(position: Int) {
         fragmentAddNewEventBinding.tvSelect.setOnCheckedChangeListener(null)
-        careteams[position].isSelected = !careteams[position].isSelected!!
+        careTeams[position].isSelected = !careTeams[position].isSelected!!
         fragmentAddNewEventBinding.assigneRV.postDelayed({
             assigneeAdapter!!.notifyDataSetChanged()
         }, 100)
 
         val assignee: ArrayList<String> = arrayListOf()
         assignee.clear()
-        for (i in careteams) {
+        for (i in careTeams) {
             if (i.isSelected == true) {
                 assignee.add(
                     i.user_id_details?.firstname!!.plus(" ")
@@ -499,7 +473,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         }
 
         var isAllChecked = true
-        careteams.forEach {
+        careTeams.forEach {
             if (it.isSelected == false) {
                 isAllChecked = false
                 return@forEach
@@ -558,15 +532,12 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                             setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
                         }
 
-                        var min: String? = ""
-                        var hours: String? = ""
-
-                        min =
+                        val min =
                             if (minute.toString().length < 2) "0$minute" else java.lang.String.valueOf(
                                 minute
                             )
 
-                        hours =
+                        val hours =
                             if (hour.toString().length < 2) "0$hour" else java.lang.String.valueOf(
                                 hour
                             )

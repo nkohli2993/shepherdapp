@@ -28,27 +28,23 @@ import kotlin.coroutines.CoroutineContext
  */
 
 class DataRepository @Inject constructor(
-    private val remoteRepository: RemoteData,
+    //private val remoteRepository: RemoteData,
     private val localRepository: LocalData,
     private val ioDispatcher: CoroutineContext,
     private val apiService: ApiService
 ) : DataRepositorySource {
 
-    override suspend fun requestRecipes(): Flow<Resource<Recipes>> {
+ /*   override suspend fun requestRecipes(): Flow<Resource<Recipes>> {
         return flow {
             emit(remoteRepository.requestRecipes())
         }.flowOn(ioDispatcher)
     }
 
+*/
+
     override suspend fun doLogin(loginRequest: LoginRequestModel): Flow<Resource<LoginResponseModel>> {
         TODO("Not yet implemented")
     }
-
-    /* override suspend fun doLogin(loginRequest: LoginRequestModel): Flow<Resource<LoginResponseModel>> {
-         return flow {
-             emit(localRepository.doLogin(loginRequest))
-         }.flowOn(ioDispatcher)
-     }*/
 
     override suspend fun addToFavourite(id: String): Flow<Resource<Boolean>> {
         return flow {

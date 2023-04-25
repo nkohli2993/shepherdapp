@@ -3,20 +3,25 @@ package com.shepherdapp.app
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.shepherdapp.app.data.dto.login.LoginResponseModel
+import com.shepherdapp.app.data.DataRepository
+import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
+import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
+import com.shepherdapp.app.data.dto.invitation.delete_pending_invitee.DeletePendingInviteeByIdResponseModel
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.auth_repository.AuthRepository
+import com.shepherdapp.app.data.remote.care_teams.CareTeamsRepository
+import com.shepherdapp.app.data.remote.home_repository.HomeRepository
 import com.shepherdapp.app.di.TestRepositoryProvider
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
-import com.shepherdapp.app.utils.EmailValidator
 import com.shepherdapp.app.utils.MainDispatcherRule
 import com.shepherdapp.app.utils.getOrAwaitValueTest
-import com.shepherdapp.app.view_model.ForgotPasswordViewModel
+import com.shepherdapp.app.view_model.AddMemberViewModel
+import com.shepherdapp.app.view_model.CareTeamMembersViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,14 +31,8 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
-
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 @RunWith(MockitoJUnitRunner::class)
-class ForgotPasswordUserUnitTest {
+class DeletePendingInviteUnitTest {
 
 
     @get:Rule
@@ -43,22 +42,16 @@ class ForgotPasswordUserUnitTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    var email = "shamikumar@yopmail.com"
-
     lateinit var authRepository: AuthRepository
     lateinit var userRepository: UserRepository
+    lateinit var careTeamRepository: CareTeamsRepository
+    lateinit var homeRepository: HomeRepository
 
     @Mock
-    private lateinit var forgotPasswordViewModel: ForgotPasswordViewModel
+    private lateinit var careTeamMemberViewModel: CareTeamMembersViewModel
 
     @Mock
-    lateinit var observer: Observer<Event<DataResult<LoginResponseModel>>>
-
-
-    companion object {
-        private const val USER_JSON = "/json/user.json"
-    }
-
+    lateinit var observer: Observer<Event<DataResult<DeletePendingInviteeByIdResponseModel>>>
 
     @Before
     fun onSetUp() {
@@ -68,40 +61,35 @@ class ForgotPasswordUserUnitTest {
         val context = Mockito.mock(Context::class.java)
 
         authRepository = TestRepositoryProvider().getAuthRepository(context!!)
-        userRepository = TestRepositoryProvider().getUserRepository(context!!)
-        forgotPasswordViewModel = ForgotPasswordViewModel(authRepository)
+        userRepository = TestRepositoryProvider().getUserRepository(context)
+        careTeamRepository = TestRepositoryProvider().getCareTeamRepository(context)
+        homeRepository = TestRepositoryProvider().getHomeRepository(context)
+        careTeamMemberViewModel = CareTeamMembersViewModel(careTeamRepository,userRepository,homeRepository,authRepository)
 
-        forgotPasswordViewModel.forgotPasswordResponseLiveData.observeForever(observer)
+        careTeamMemberViewModel.deletePendingInviteeByIdResponseLiveData.observeForever(observer)
 
     }
 
-
     @Test
-    fun testEmailValuesValidate() {
-        assertEquals(true, EmailValidator.get().isValidEmail(email))
-    }
+    fun `test delete care team member data success`() = runBlockingTest {
 
-
-    @Test
-    fun `test User data success`() = runBlockingTest {
-
-        forgotPasswordViewModel.forgotPassword(email)
+        careTeamMemberViewModel.deletePendingInviteeById(240)
 
         Thread.sleep(3000)
 
-        forgotPasswordViewModel.forgotPasswordResponseLiveData.getOrAwaitValueTest().getContentIfNotHandled()
+        careTeamMemberViewModel.deletePendingInviteeByIdResponseLiveData.getOrAwaitValueTest().getContentIfNotHandled()
             .let {
                 when (it) {
                     is DataResult.Success -> {
-                        assertEquals(
-                            "Reset Password link has been sent to your email",
+                        Assert.assertEquals(
+                            "Pending invite delete successfully.",
                             it.data.message
                         )
                     }
-
                     is DataResult.Failure -> {
-                        assertEquals(true, false)
+                        Assert.assertEquals(true, false)
                     }
+
                     else -> {
                         print("Loading")
                     }
@@ -110,4 +98,3 @@ class ForgotPasswordUserUnitTest {
 
     }
 }
-

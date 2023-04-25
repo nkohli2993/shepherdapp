@@ -83,8 +83,16 @@ class EditMedicineUnitTest  {
         Thread.sleep(3000)
         medicalConditionViewModel.editMedicineResponseLiveData.getOrAwaitValueTest()
             .getContentIfNotHandled().let {
-                if (it is DataResult.Success) {
-                    Assert.assertEquals("Medlist updated!", it.data.message)
+                when (it) {
+                    is DataResult.Success -> {
+                        Assert.assertEquals("Medlist updated!", it.data.message)
+                    }
+                    is DataResult.Failure -> {
+                        Assert.assertEquals(true, false)
+                    }
+                    else -> {
+                        print("Loading")
+                    }
                 }
             }
 

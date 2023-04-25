@@ -26,7 +26,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class EditScheduledMedicationUnitTest  {
+class EditScheduledMedicationUnitTest {
 
 
     private var context: Context? = null
@@ -49,6 +49,7 @@ class EditScheduledMedicationUnitTest  {
 
     lateinit var medListRepository: MedListRepository
     lateinit var userRepository: UserRepository
+
     @Mock
     private lateinit var scheduledMedicationViewModel: AddMedicationViewModel
 
@@ -67,7 +68,7 @@ class EditScheduledMedicationUnitTest  {
         userRepository =
             TestRepositoryProvider().getUserRepository(context!!)
 
-        scheduledMedicationViewModel = AddMedicationViewModel(medListRepository,userRepository)
+        scheduledMedicationViewModel = AddMedicationViewModel(medListRepository, userRepository)
 
         scheduledMedicationViewModel.addScheduledMedicationResponseLiveData.observeForever(observer)
 
@@ -86,8 +87,16 @@ class EditScheduledMedicationUnitTest  {
         Thread.sleep(3000)
         scheduledMedicationViewModel.addScheduledMedicationResponseLiveData.getOrAwaitValueTest()
             .getContentIfNotHandled().let {
-                if (it is DataResult.Success) {
-                    Assert.assertEquals("Created successfully", it.data.message)
+                when (it) {
+                    is DataResult.Success -> {
+                        Assert.assertEquals("Created successfully", it.data.message)
+                    }
+                    is DataResult.Failure -> {
+                        Assert.assertEquals(true, false)
+                    }
+                    else -> {
+                        print("Loading")
+                    }
                 }
             }
 

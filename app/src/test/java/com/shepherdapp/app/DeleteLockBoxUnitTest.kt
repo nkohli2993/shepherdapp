@@ -64,8 +64,16 @@ class DeleteLockBoxUnitTest {
         Thread.sleep(3000)
         deleteLockBoxViewModel.deleteLockBoxDocResponseLiveData.getOrAwaitValueTest()
             .getContentIfNotHandled().let {
-                if (it is DataResult.Success) {
-                    Assert.assertEquals("Document deleted!", it.data.message)
+                when (it) {
+                    is DataResult.Success -> {
+                        Assert.assertEquals("Document deleted!", it.data.message)
+                    }
+                    is DataResult.Failure -> {
+                        Assert.assertEquals(true, false)
+                    }
+                    else -> {
+                        print("Loading")
+                    }
                 }
             }
     }

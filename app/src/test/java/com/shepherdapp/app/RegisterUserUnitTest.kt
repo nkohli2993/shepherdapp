@@ -16,6 +16,7 @@ import com.shepherdapp.app.utils.getOrAwaitValueTest
 import com.shepherdapp.app.view_model.CreateNewAccountViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Assert
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -132,9 +133,8 @@ class RegisterUserUnitTest {
                     }
 
                     is DataResult.Failure -> {
-                        assertFalse(true)
+                        Assert.assertEquals(true, false)
                     }
-
                     else -> {
                         print("Loading")
                     }
