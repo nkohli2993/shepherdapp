@@ -267,7 +267,7 @@
     <string name="enter_address">Veuillez entrer l\'adresse</string>
     <string name="please_enter_date_of_birth">Veuillez entrer la date de naissance</string>
     <string name="should_be_minimum_5_digits">La longueur doit être de 5 à 15 chiffres</string>
-    <string name="should_be_minimum_3_characters">doit comporter au moins 3 caractères</string>
+    <string name="should_be_minimum_3_characters">doit comporter au moins 1 caractères</string>
     <string name="or_login_with_biometric">Ou connectez-vous avec la biométrie</string>
     <string name="welcome_user_desc">"Ajoutez maintenant le nom de l'être cher dont vous prendrez soin ou, si vous avez reçu une invitation de quelqu'un d'autre, rejoignez une CareTeam existante."</string>
     <string name="add_your">Ajoutez votre</string>
@@ -570,7 +570,7 @@
 
 
     <string name="buy_plan">Acheter un forfait</string>
-    <string name="select_access">Sélectionnez l\'accès</string>
+    <string name="select_access">Accès</string>
     <string name="enter_email">Entrez l\'e-mail</string>
     <string name="send_invitation_to_loved_one">Send an Invitation to the \nloved one.</string>
     <string name="current_medications">Médicaments actuels</string>

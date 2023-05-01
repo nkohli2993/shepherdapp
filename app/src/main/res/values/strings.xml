@@ -265,7 +265,7 @@
     <string name="please_enter_date_of_birth">Please enter date of birth</string>
     <string name="please_select_fututre_date">Please select future date and time</string>
     <string name="should_be_minimum_5_digits">Length Should Be of 5 to 15 Digits</string>
-    <string name="should_be_minimum_3_characters">should be minimum of 3 characters</string>
+    <string name="should_be_minimum_3_characters">should be minimum of 1 characters</string>
     <string name="or_login_with_biometric">Or login with biometrics</string>
     <string name="welcome_user_desc">Now either add the name of the Loved One for whom you will be caring, or, if you received an invitation from someone else, join an existing CareTeam.</string>
     <string name="add_your">Add Your</string>
@@ -573,7 +573,7 @@
     <string name="are_you_enterprise_user">Are you an Enterprise User?</string>
     <string name="do_you_want_to_login_with_biometric">Do you want to login with your biometrics for next time?</string>
     <string name="buy_plan">Buy Plan</string>
-    <string name="select_access">Select Access</string>
+    <string name="select_access">Access</string>
     <string name="enter_email">Enter email</string>
     <string name="send_invitation_to_loved_one">Send an Invitation to the \nloved one.</string>
     <string name="current_medications">Current Medications</string>

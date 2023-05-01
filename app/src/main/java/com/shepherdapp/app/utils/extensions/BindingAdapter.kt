@@ -15,7 +15,7 @@ fun getNameError(view: EditText, data: String) {
         if (view.isBlank()) {
             view.error = "${view.context.getString(R.string.please_enter)} $data"
             view.requestFocus()
-        } else if (view.getLength() < 3) {
+        } else if (view.getLength() < 1) {
             view.error = "$data ${view.context.getString(R.string.should_be_minimum_3_characters)}"
             view.requestFocus()
         }
