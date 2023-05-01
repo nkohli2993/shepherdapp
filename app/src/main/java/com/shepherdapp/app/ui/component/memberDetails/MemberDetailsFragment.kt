@@ -142,9 +142,9 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         try {
             (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
             (fragmentMemberDetailsBinding.txtPhoneCare.text as Spannable).stripUnderlines()
-        }catch (e:Exception){ e.printStackTrace() }
-
-
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
 
         // if the loggedIn user is the Care Team Leader, then only show the Remove and Save Changes button
@@ -203,6 +203,12 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     private fun hideButtons() {
         fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
         fragmentMemberDetailsBinding.btnUpdate.visibility = View.GONE
+
+//         hide cards according to permission
+        fragmentMemberDetailsBinding.carPointCD.visibility = View.GONE
+        fragmentMemberDetailsBinding.lockBoxCD.visibility = View.GONE
+        fragmentMemberDetailsBinding.medlistCD.visibility = View.GONE
+        fragmentMemberDetailsBinding.resourcesCD.visibility = View.GONE
     }
 
     private fun showButtons() {
@@ -227,15 +233,19 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         when {
             Modules.CarePoints.value == s -> {
                 fragmentMemberDetailsBinding.switchCarePoints.isChecked = true
+                fragmentMemberDetailsBinding.carPointCD.visibility = View.VISIBLE
             }
             Modules.LockBox.value == s -> {
                 fragmentMemberDetailsBinding.switchLockBox.isChecked = true
+                fragmentMemberDetailsBinding.lockBoxCD.visibility = View.VISIBLE
             }
             Modules.MedList.value == s -> {
                 fragmentMemberDetailsBinding.switchMyMedList.isChecked = true
+                fragmentMemberDetailsBinding.medlistCD.visibility = View.VISIBLE
             }
             Modules.Resources.value == s -> {
                 fragmentMemberDetailsBinding.switchResources.isChecked = true
+                fragmentMemberDetailsBinding.resourcesCD.visibility = View.VISIBLE
             }
         }
 

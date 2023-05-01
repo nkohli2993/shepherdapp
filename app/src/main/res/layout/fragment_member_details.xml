@@ -102,13 +102,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:autoLink="email"
                         android:drawableStart="@drawable/ic_email_care"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
                         android:textColorLink="@color/_192032"
-                        android:autoLink="email"
                         android:textSize="@dimen/_12ssp"
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
@@ -120,14 +120,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_10sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:autoLink="phone"
                         android:drawableStart="@drawable/ic_phone_care"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
-                        android:paddingHorizontal="@dimen/_5sdp"
 
+                        android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
                         android:textColorLink="@color/_399282"
-                        android:autoLink="phone"
                         android:textSize="@dimen/_12ssp"
 
                         app:fontFamily="@font/gotham_book"
@@ -143,10 +143,10 @@
                         android:drawableStart="@drawable/ic_address_care"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center_vertical"
-                        android:visibility="gone"
                         android:paddingHorizontal="@dimen/_5sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12ssp"
+                        android:visibility="gone"
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtPhoneCare" />
@@ -160,12 +160,22 @@
                     android:background="@color/_FCFCFC"
                     android:orientation="vertical"
                     android:paddingHorizontal="@dimen/_10sdp">
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:fontFamily="@font/gotham_bold"
+                        android:text="@string/select_access"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_15ssp" />
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/carPointCD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_16sdp"
                         android:background="@color/colorWhite"
                         app:cardCornerRadius="@dimen/_16sdp">
 
@@ -205,6 +215,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/lockBoxCD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
@@ -250,6 +261,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/medlistCD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
@@ -295,6 +307,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/resourcesCD"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_5sdp"
