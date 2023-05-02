@@ -127,7 +127,7 @@
                             android:layout_height="@dimen/_34sdp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:drawableStart="@drawable/ic_profile"
                             android:drawablePadding="@dimen/_5sdp"
                             android:hint="@string/first_name"
@@ -161,7 +161,7 @@
                             android:layout_height="@dimen/_34sdp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:drawableStart="@drawable/ic_profile"
                             android:drawablePadding="@dimen/_5sdp"
                             android:hint="@string/last_name"
@@ -188,6 +188,7 @@
                         android:layout_height="@dimen/_34sdp"
                         android:layout_marginTop="@dimen/_4sdp"
                         android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0987654321,.-!@#$%^&amp;*()"
                         android:drawableStart="@drawable/ic_email"
                         android:drawablePadding="@dimen/_5sdp"
                         android:hint="@string/enter_email"
@@ -557,26 +558,26 @@
                         android:id="@+id/img"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:padding="@dimen/_10sdp"
                         android:src="@drawable/ic_info_vital_stat"
-                        android:layout_marginTop="@dimen/_10sdp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/chkSendInvitation" />
 
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/gotham_book"
+                        android:lineSpacingExtra="@dimen/_5sdp"
                         android:text="@string/the_loved_one_will_log_in_using_the_same_credentials_to_sync_vitalStats_data"
                         android:textColor="@color/_D7293F"
                         android:textSize="@dimen/_12ssp"
-                        android:lineSpacingExtra="@dimen/_5sdp"
-                        android:layout_marginStart="@dimen/_5sdp"
-                        app:layout_constraintStart_toEndOf="@id/img"
-                        app:layout_constraintTop_toTopOf="@id/img"
                         app:layout_constraintBottom_toBottomOf="@id/img"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/img"
+                        app:layout_constraintTop_toTopOf="@id/img" />
 
 
                     <androidx.appcompat.widget.AppCompatButton
