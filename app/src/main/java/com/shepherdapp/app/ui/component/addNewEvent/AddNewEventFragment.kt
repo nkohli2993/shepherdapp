@@ -424,7 +424,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         )!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         selectedDate = dateFormat.format(formattedDate)
-        dateFormat = SimpleDateFormat("HH:mm")
+        dateFormat = SimpleDateFormat("hh:mm a")
         val selectedTime = dateFormat.format(formattedDate)
 
         val note = if (fragmentAddNewEventBinding.etNote.text.toString().isEmpty()) {

@@ -74,10 +74,11 @@ class CarePointsDateBasedAdapter(
 
 
             if (carePoints.time != null) {
-                val carePointDate = SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
-                    carePoints.date.plus(" ").plus(carePoints.time?.replace(" ", ""))
-                )
-                itemBinding.timeTV.text = SimpleDateFormat("hh:mm a").format(carePointDate!!)
+//                val carePointDate = SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
+//                    carePoints.date.plus(" ").plus(carePoints.time?.replace(" ", ""))
+//                )
+//                itemBinding.timeTV.text = SimpleDateFormat("hh:mm a").format(carePointDate!!)
+                itemBinding.timeTV.text = carePoints.time
             }
             // View CarePoint
             itemBinding.root.setOnClickListener {

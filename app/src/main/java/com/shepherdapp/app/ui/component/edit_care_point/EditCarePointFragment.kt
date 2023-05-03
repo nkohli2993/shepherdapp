@@ -137,8 +137,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
         // Set Time
         if (carePoint?.time != null) {
-            val carePointDate = SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
-                carePoint.date.plus(" ").plus(carePoint.time?.replace(" ", ""))
+            val carePointDate = SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(
+                carePoint.date.plus(" ").plus(carePoint.time)
             )
             val time = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             Log.d(TAG, "initViewBinding: time is $time")
@@ -637,7 +637,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         )!!
         dateFormat = SimpleDateFormat("yyyy-MM-dd")
         selectedDate = dateFormat.format(formattedDate)
-        dateFormat = SimpleDateFormat("HH:mm a")
+        dateFormat = SimpleDateFormat("hh:mm a")
         val selectedTime = dateFormat.format(formattedDate)
 
         val note = if (fragmentEditCarePointBinding.etNote.text.toString().isNullOrEmpty()) {

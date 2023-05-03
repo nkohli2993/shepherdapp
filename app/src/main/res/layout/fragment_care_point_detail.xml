@@ -75,6 +75,7 @@
             android:gravity="end"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/_399282"
+            android:textAllCaps="true"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_date"
             app:layout_constraintEnd_toEndOf="parent"
