@@ -415,11 +415,20 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             val carePointDate = SimpleDateFormat("yyyy-MM-dd").parse(payload.date!!)!!
             it.tvDate.text = SimpleDateFormat("EEE, MMM dd, yyyy").format(carePointDate)
             if (payload.time != null) {
-//                val carePointTime = SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
-//                    payload.date.plus(" ").plus(payload.time?.replace(" ", ""))
-//                )
-//                it.tvTime.text = SimpleDateFormat("hh:mm a").format(carePointTime!!)
-                it.tvTime.text = payload.time
+                val carePointDate =
+                    if (payload?.time!!.contains("am") || payload?.time!!.contains("AM") || payload?.time!!.contains(
+                            "pm"
+                        ) || payload?.time!!.contains("PM")
+                    ) {
+                        SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(
+                            payload.date.plus(" ").plus(payload.time)
+                        )
+                    } else {
+                        SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
+                            payload.date.plus(" ").plus(payload.time)
+                        )
+                    }
+                it.tvTime.text = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             }
 
 

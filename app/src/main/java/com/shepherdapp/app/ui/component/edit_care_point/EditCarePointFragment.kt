@@ -137,9 +137,17 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
         // Set Time
         if (carePoint?.time != null) {
-            val carePointDate = SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(
-                carePoint.date.plus(" ").plus(carePoint.time)
-            )
+            val carePointDate = if(carePoint?.time!!.contains("am") || carePoint?.time!!.contains("AM") || carePoint?.time!!.contains("pm") || carePoint?.time!!.contains("PM")){
+                SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(
+                    carePoint.date.plus(" ").plus(carePoint.time)
+                )
+            }
+            else{
+                SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
+                    carePoint.date.plus(" ").plus(carePoint.time)
+                )
+            }
+
             val time = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             Log.d(TAG, "initViewBinding: time is $time")
             if (time.contains("am") || time.contains("AM")) {
