@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
@@ -19,14 +20,13 @@ import com.shepherdapp.app.databinding.FragmentMemberDetailsBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
-import com.shepherdapp.app.ui.component.memberDetails.adapter.MemberModulesAdapter
+import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragmentDirections
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Modules
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.MemberDetailsViewModel
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -38,13 +38,11 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     View.OnClickListener {
 
     private val memberDetailsViewModel: MemberDetailsViewModel by viewModels()
-
     private lateinit var fragmentMemberDetailsBinding: FragmentMemberDetailsBinding
-
     private val args: MemberDetailsFragmentArgs by navArgs()
     private var careTeam: CareTeamModel? = null
     private var selectedModule: String = ""
-    private val TAG = "MemberDetailsFragment"
+    private val logTag = "MemberDetailsFragment"
 
 
     override fun onCreateView(
@@ -60,8 +58,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
     override fun initViewBinding() {
         fragmentMemberDetailsBinding.listener = this
-
-        setRestrictionModuleAdapter()
         careTeam = args.careTeam
         initView()
 
@@ -74,7 +70,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 it?.profilePhoto,
                 it?.firstname, it?.lastname
             )
-
 
             // Set Name
             fragmentMemberDetailsBinding.txtCareTeamMemberName.text =
@@ -94,7 +89,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             //val phoneWithHyphen = phoneNumber?.let { it1 -> getStringWithHyphen(it1) }
             val phoneWithHyphen = phoneNumber?.getStringWithHyphen(phoneNumber)
             val phoneNo = "$phoneCode $phoneWithHyphen"
-            Log.d(TAG, "initView: $phoneNo")
+            Log.d(logTag, "initView: $phoneNo")
 
 
             if (phoneNo.toString().contains("+")) {
@@ -152,15 +147,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
                 ?: false
         if (isLoggedInUserTeamLead) {
-            /*val loggedInUserUUID =
-                Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")*/
-
-            /*  if (loggedInUserUUID == careTeam?.user_id_details!!.uid){
-                  fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
-              }
-              else{
-                  fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
-              }*/
 
             val loggedInUserUUID = memberDetailsViewModel.getLoggedInUserUUID()
             // Check if the uuiD of loggedIn user matches the uuid of care team member
@@ -203,7 +189,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     private fun hideButtons() {
         fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
         fragmentMemberDetailsBinding.btnUpdate.visibility = View.GONE
-
+        fragmentMemberDetailsBinding.chatG.visibility = View.GONE
 //         hide cards according to permission
         fragmentMemberDetailsBinding.carPointCD.visibility = View.GONE
         fragmentMemberDetailsBinding.lockBoxCD.visibility = View.GONE
@@ -214,6 +200,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     private fun showButtons() {
         fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
         fragmentMemberDetailsBinding.btnUpdate.visibility = View.VISIBLE
+        fragmentMemberDetailsBinding.chatG.visibility = View.VISIBLE
     }
 
     fun getStringWithHyphen(str: String): String {
@@ -286,18 +273,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 }
             }
         }
-
-
-    }
-
-    private fun setRestrictionModuleAdapter() {
-        val memberModulesAdapter = MemberModulesAdapter(memberDetailsViewModel)
-//        fragmentMemberDetailsBinding.recyclerViewModules.adapter = memberModulesAdapter
-
-        /* fragmentMemberDetailsBinding.recyclerViewModules.addItemDecoration(
-             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-         )*/
-
     }
 
 
@@ -305,6 +280,14 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         when (p0?.id) {
             R.id.ivBack -> {
                 backPress()
+            }
+            R.id.ivEdit -> {
+                val action =
+                    MemberDetailsFragmentDirections.actionNavEditTeamMemberDetails(careTeam!!)
+                findNavController().navigate(action)
+            }
+            R.id.ivChat -> {
+                findNavController().navigate(R.id.action_new_message_to_chat)
             }
             R.id.btnDelete -> {
                 val builder = AlertDialog.Builder(requireContext())
@@ -358,11 +341,11 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 if (isResourcesEnabled) {
                     selectedModule += Modules.Resources.value.toString() + ","
                 }
-                Log.d(TAG, "onClick: selectedModule : $selectedModule")
+                Log.d(logTag, "onClick: selectedModule : $selectedModule")
                 if (selectedModule.endsWith(",")) {
                     selectedModule = selectedModule.substring(0, selectedModule.length - 1)
                 }
-                Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
+                Log.d(logTag, "onClick: selectedModule after removing last comma: $selectedModule")
 
                 // Update Care Team Member Detail
                 if (selectedModule.isEmpty()) {

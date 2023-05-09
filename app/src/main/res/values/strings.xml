@@ -624,4 +624,9 @@
     <string name="contact_us_email">getwithsheperd@gmail.com</string>
     <string name="assigned_by">Assigned By</string>
     <string name="please_select_at_least_one_user">Please select atleast one user</string>
+    <string name="relationship_member">Relationship</string>
+    <string name="enter_relationship">Enter Relationship</string>
+    <string name="edit_member_details">Edit Member Details</string>
+    <string name="more">More</string>
+    <string name="assignees">Assignees</string>
 </resources>

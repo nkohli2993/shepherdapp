@@ -15,6 +15,7 @@ data class LoveUser(
     @SerializedName("lastname") var lastname: String? = null,
     @SerializedName("profile_photo") var profilePhoto: String? = null,
     @SerializedName("email") var email: String? = null,
+    @SerializedName("relation") var relation: String? = null,
     @SerializedName("address") var address: String? = null,
     @SerializedName("phone") var phone: String? = null,
     @SerializedName("dob") var dob: String? = null,

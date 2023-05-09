@@ -7,5 +7,6 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 class LockBoxAddedData(
     @SerializedName("id") var id: Int? = null,
+    @SerializedName("name") var name: String? = null,
     @SerializedName("user_id") var user_id: String? = null,
 ):Parcelable

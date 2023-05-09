@@ -66,6 +66,11 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 selectedModule.isEmpty() -> {
                     showError(requireContext(), "Please select atleast one permission")
                 }
+                fragmentAddMemberBinding.edtRelationShip.text.toString().isEmpty() ->{
+                    fragmentAddMemberBinding.edtRelationShip.error =
+                        getString(R.string.enter_relationship)
+                    fragmentAddMemberBinding.edtRelationShip.requestFocus()
+                }
                 else -> {
                     return true
                 }
@@ -92,9 +97,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
         fragmentAddMemberBinding.spRoles.onItemSelectedListener = this
         addMemberViewModel.getCareTeamRoles(pageNumber, limit, status)
 
-        setRestrictionModuleAdapter()
-
-        fragmentAddMemberBinding.switchLockBox.setOnCheckedChangeListener { compoundButton, isChecked ->
+        fragmentAddMemberBinding.switchLockBox.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 fragmentAddMemberBinding.line.visibility = View.VISIBLE
                 fragmentAddMemberBinding.layoutUploadFiles.visibility = View.VISIBLE
@@ -129,9 +132,6 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
 
                 is DataResult.Failure -> {
                     hideLoading()
-                    // it.message?.let { showError(this, it.toString()) }
-                    //binding.layoutCareTeam.visibility = View.GONE
-                    //binding.txtNoCareTeamFound.visibility = View.VISIBLE
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
                         setTitle("CareTeam")
@@ -157,14 +157,6 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    //it.data.message?.let { it1 -> showSuccess(requireContext(), it1) }
-                    /* showSuccess(
-                         requireContext(),
-                         "Request sent to the member for joining careTeam successfully..."
-                     )
-                     backPress()*/
-
-
                     val builder = AlertDialog.Builder(requireContext())
                     val dialog = builder.apply {
                         setTitle("Shepherd")
@@ -181,20 +173,6 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
 
     }
 
-
-    private fun handleLoginResult(status: Resource<LoginResponseModel>) {
-
-    }
-
-    private fun observeSnackBarMessages(event: LiveData<SingleEvent<Any>>) {
-        fragmentAddMemberBinding.root.setupSnackbar(this, event, Snackbar.LENGTH_LONG)
-    }
-
-    private fun observeToast(event: LiveData<SingleEvent<Any>>) {
-        fragmentAddMemberBinding.root.showToast(this, event, Snackbar.LENGTH_LONG)
-    }
-
-
     private fun setRoleAdapter() {
         addMemberRoleAdapter = context?.let {
             careRoles?.let { it1 ->
@@ -205,18 +183,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
 
         val careRole = addMemberRoleAdapter?.getItem(0)
         if (careRole != null) selectedCareRole = careRole
-        // fragmentAddMemberBinding.recyclerViewMemberRole.adapter = addMemberRoleAdapter
     }
 
-    private fun setRestrictionModuleAdapter() {
-        val restrictionsModuleAdapter = RestrictionsModuleAdapter(addMemberViewModel)
-//        fragmentAddMemberBinding.recyclerViewModules.adapter = restrictionsModuleAdapter
-
-/*       fragmentAddMemberBinding.recyclerViewModules.addItemDecoration(
-            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        )*/
-
-    }
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
@@ -275,15 +243,9 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 if (isResourcesEnabled) {
                     selectedModule += Modules.Resources.value.toString() + ","
                 }
-
-
-                Log.d(TAG, "onClick: selectedModule : $selectedModule")
                 if (selectedModule.endsWith(",")) {
                     selectedModule = selectedModule.substring(0, selectedModule.length - 1)
                 }
-                Log.d(TAG, "onClick: selectedModule after removing last comma: $selectedModule")
-
-
                 if (isValid) {
                     val addNewMemberRequestModel = AddNewMemberCareTeamRequestModel(
                         loggedInUserID,
@@ -297,37 +259,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     addMemberViewModel.addNewMemberCareTeam(addNewMemberRequestModel)
                 }
             }
-            /*  R.id.buttonInvite -> {
-                  //backPress()
-                  startActivity(Intent(requireContext(), HomeActivity::class.java))
-              }*/
-            /* R.id.textViewRole -> {
-                 manageRoleViewVisibility()
-             }*/
         }
     }
-
-    private fun manageRoleViewVisibility() {
-        /* if (recyclerViewMemberRole.visibility == View.VISIBLE) {
-             recyclerViewMemberRole.toGone()
-             textViewRole.setCompoundDrawablesWithIntrinsicBounds(
-                 0,
-                 0,
-                 R.drawable.ic_arrow_drop_down,
-                 0
-             );
-         } else {
-             recyclerViewMemberRole.toVisible()
-             textViewRole.setCompoundDrawablesWithIntrinsicBounds(
-                 0,
-                 0,
-                 R.drawable.ic_arrow_drop_up,
-                 0
-             );
-         }*/
-
-    }
-
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_add_member
@@ -349,7 +282,5 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
         val careRole = addMemberRoleAdapter?.getItem(position)
         if (careRole != null) selectedCareRole = careRole
     }
-
-
 }
 

@@ -617,7 +617,11 @@
     <string name="we_are_here_to_help">Nous sommes là pour vous aider ! Dites-nous ce que vous recherchez et nous vous mettrons en contact avec les bonnes personnes.</string>
     <string name="contact_us_phone">(844) 244–0050</string>
     <string name="contact_us_email">getwithsheperd@gmail.com</string>
-    <string name="assigned_by">Assigned By</string>
-    <string name="please_select_at_least_one_user">Please select atleast one user</string>
-
+    <string name="assigned_by">Attribué par</string>
+    <string name="please_select_at_least_one_user">Veuillez sélectionner au moins un utilisateur</string>
+    <string name="relationship_member">Relation</string>
+    <string name="enter_relationship">Entrer la relation</string>
+    <string name="edit_member_details">Modifier les détails du membre</string>
+    <string name="more">More</string>
+    <string name="assignees">Assignees</string>
 </resources>

@@ -529,6 +529,9 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             R.id.ivBack -> {
                 backPress()
             }
+            R.id.txtMoreAssignee ->{
+
+            }
             R.id.sendCommentIV -> {
                 /* when {
                      fragmentCarePointDetailBinding.editTextMessage.isBlank() || fragmentCarePointDetailBinding.editTextMessage.text.toString()

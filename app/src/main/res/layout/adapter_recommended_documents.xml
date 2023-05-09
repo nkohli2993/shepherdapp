@@ -13,9 +13,9 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="@dimen/_6sdp"
-        app:cardUseCompatPadding="true"
-        app:cardBackgroundColor="@color/colorWhite">
+        app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,33 +32,33 @@
                 android:padding="@dimen/_5sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                style="@style/TextViewGothamMedium"
-                android:id="@+id/txtTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="@{data.name}"
-                android:includeFontPadding="false"
-                android:textSize="@dimen/_13ssp"
-                android:layout_marginStart="10dp"
-                android:layout_marginHorizontal="10dp"
-                app:layout_constraintStart_toEndOf="@id/checkbox"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtTitle"
+                style="@style/TextViewGothamMedium"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{data.description}"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginStart="10dp"
+                android:includeFontPadding="false"
+                android:text="@{data.name}"
+                android:textSize="@dimen/_13ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/checkbox"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 style="@style/TextViewGothamBook"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="4dp"
-                app:layout_constraintTop_toBottomOf="@id/txtTitle"
+                android:text="@{data.lockbox.size()>0?data.lockbox.get(0).name:data.description}"
                 android:textSize="@dimen/_11ssp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/checkbox"/>
+                app:layout_constraintStart_toEndOf="@id/checkbox"
+                app:layout_constraintTop_toBottomOf="@id/txtTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>

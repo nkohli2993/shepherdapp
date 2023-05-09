@@ -35,6 +35,16 @@ fun getEmailError(view: EditText, data: String) {
     }
 }
 
+@BindingAdapter("bind:getEmailError")
+fun getRelationError(view: EditText, data: String) {
+    view.onTextChanged {
+        if (view.isBlank()) {
+            view.error = view.context.getString(R.string.enter_relationship)
+            view.requestFocus()
+        }
+    }
+}
+
 @BindingAdapter("bind:getValidBodyTemperature")
 fun getValidBodyTemperature(view: EditText, data: String) {
     view.onTextChanged {

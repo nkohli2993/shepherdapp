@@ -142,6 +142,33 @@
 
                     </LinearLayout>
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/gotham_book"
+                        android:text="@string/relationship_member"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_11ssp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/edtRelationShip"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                        android:drawableStart="@drawable/ic_profile"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:hint="@string/enter_relationship"
+                        android:inputType="textEmailAddress"
+                        android:padding="@dimen/_12ssp"
+                        android:textColor="@color/_192032"
+                        android:textSize="14sp"
+                        bind:getRelationError="@{@string/relationship_member}" />
+
                 </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatTextView
