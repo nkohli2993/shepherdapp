@@ -98,6 +98,16 @@ class CarePointsDateBasedAdapter(
                 carePoint.clickType = ClickType.Edit.value
                 listener.selectedCarePoint(carePoint)
             }
+            itemBinding.txtMoreAssignee.setOnClickListener {
+                val carePoint = carePointList[position]
+                carePoint.clickType = ClickType.ASSIGNEE.value
+                listener.selectedCarePoint(carePoint)
+            }
+            itemBinding.recyclerViewEvents.setOnClickListener {
+                val carePoint = carePointList[position]
+                carePoint.clickType = ClickType.ASSIGNEE.value
+                listener.selectedCarePoint(carePoint)
+            }
 
             itemBinding.view.visibility = View.VISIBLE
             if (position + 1 == carePointList.size) {

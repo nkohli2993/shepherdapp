@@ -146,6 +146,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
                 }
             }
+            else{
+                hideLoading()
+                showError(this, getString(R.string.unable_to_suvcription))
+            }
         }
     }
 

@@ -13,7 +13,9 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -530,24 +532,9 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 backPress()
             }
             R.id.txtMoreAssignee ->{
-
+                findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user" to eventDetail?.user_assignes))
             }
             R.id.sendCommentIV -> {
-                /* when {
-                     fragmentCarePointDetailBinding.editTextMessage.isBlank() || fragmentCarePointDetailBinding.editTextMessage.text.toString()
-                         .isEmpty() -> {
-                         // do nothing for empty comment field
-                     }
-                     else -> {
-                         val addEventComment = EventCommentModel(
-                             event_id = eventDetail?.id ?: 0,
-                             comment = fragmentCarePointDetailBinding.editTextMessage.text.toString()
-                                 .trim()
-                         )
-                         carePointsViewModel.addEventCommentCarePoint(addEventComment)
-                     }
-                 }*/
-
                 val message = fragmentCarePointDetailBinding.editTextMessage.text.toString().trim()
                 if (message.isNullOrEmpty()) {
                     showInfo(requireContext(), "Please enter message...")

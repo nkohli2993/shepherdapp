@@ -20,7 +20,6 @@ import com.shepherdapp.app.databinding.FragmentMemberDetailsBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
-import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragmentDirections
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Modules
 import com.shepherdapp.app.utils.Prefs

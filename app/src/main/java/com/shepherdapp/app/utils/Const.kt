@@ -150,7 +150,8 @@ enum class CalendarState(val value: Int) {
 enum class ClickType(val value: Int) {
     View(1),
     Delete(2),
-    Edit(3)
+    Edit(3),
+    ASSIGNEE(4)
 }
 
 enum class MedListAction(val value: Int) {

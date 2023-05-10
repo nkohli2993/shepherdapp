@@ -233,6 +233,9 @@
         <action
             android:id="@+id/action_nav_care_points_to_editCarePointFragment"
             app:destination="@id/editCarePointFragment" />
+        <action
+            android:id="@+id/action_to_assigneeUsersFragment"
+            app:destination="@+id/assigneeUsersFragment" />
 
     </fragment>
     <fragment
@@ -408,6 +411,11 @@
         <argument
             android:name="event_id"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_to_assigneeUsersFragment"
+            app:destination="@+id/assigneeUsersFragment" />
+
+
     </fragment>
     <fragment
         android:id="@+id/nav_chat"
@@ -563,5 +571,11 @@
             android:defaultValue="@null"
             app:argType="com.shepherdapp.app.data.dto.care_team.CareTeamModel[]"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/assigneeUsersFragment"
+        android:name="com.shepherdapp.app.ui.component.carePoints.CareAssigneeListFragment"
+        android:label="AssigneeUsers"
+        tools:layout="@layout/fragment_care_assignee_list">
     </fragment>
 </navigation>

@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.prolificinteractive.materialcalendarview.CalendarDay
@@ -546,6 +547,10 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                         carePoint = detail
                     )
                 findNavController().navigate(action)
+            }
+            ClickType.ASSIGNEE.value -> {
+
+                findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user" to detail.user_assignes))
             }
         }
     }

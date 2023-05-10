@@ -108,7 +108,6 @@
                 android:id="@+id/txtMoreAssignee"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_7sdp"
                 android:fontFamily="@font/gotham_mediumitalic"
                 android:gravity="center_vertical"

@@ -200,6 +200,10 @@
         <item name="cornerSize">@dimen/_22sdp</item>
         <item name="cornerFamily">rounded</item>
     </style>
+ <style name="ShapeAppearanceOverlay.App.CornerSize2Percent" parent="">
+        <item name="cornerSize">@dimen/_15sdp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
 
 
     <style name="CustomCheckbox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">

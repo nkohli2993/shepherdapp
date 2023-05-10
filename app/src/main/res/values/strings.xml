@@ -629,4 +629,5 @@
     <string name="edit_member_details">Edit Member Details</string>
     <string name="more">More</string>
     <string name="assignees">Assignees</string>
+    <string name="unable_to_suvcription">Unable to show subcription packages, Please try again later.</string>
 </resources>

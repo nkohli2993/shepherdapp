@@ -35,7 +35,7 @@ fun getEmailError(view: EditText, data: String) {
     }
 }
 
-@BindingAdapter("bind:getEmailError")
+@BindingAdapter("bind:getRelationError")
 fun getRelationError(view: EditText, data: String) {
     view.onTextChanged {
         if (view.isBlank()) {

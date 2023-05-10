@@ -87,20 +87,46 @@
                 android:src="@drawable/ic_care_point_message"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/recyclerViewEvents"
+                app:layout_constraintEnd_toStartOf="@id/assigneeCLL"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerViewEvents"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/assigneeCLL"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toEndOf="@+id/ivMessage"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:itemCount="2"
-                tools:listitem="@layout/adapter_events_members" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewEvents"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/adapter_events_members" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtMoreAssignee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/_7sdp"
+                    android:fontFamily="@font/gotham_mediumitalic"
+                    android:gravity="center_vertical"
+                    android:text="@string/more"
+                    android:textColor="@color/_A26DCB"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/recyclerViewEvents"
+                    app:layout_constraintStart_toEndOf="@+id/recyclerViewEvents"
+                    app:layout_constraintTop_toTopOf="@+id/recyclerViewEvents" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/assigneCountTV"
@@ -111,7 +137,7 @@
                 android:textColor="@color/_A26DCB"
                 android:textSize="@dimen/_8ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/recyclerViewEvents"
+                app:layout_constraintStart_toEndOf="@+id/assigneeCLL"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:elevation="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        android:layout_margin="@dimen/_3sdp"
+        android:layout_height="wrap_content">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/rootCL"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="@dimen/_5sdp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/llImageWrapper"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:background="@drawable/bg_image_place_holder_new"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageViewCareTeam"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/_1sdp"
+                    android:padding="@dimen/_2sdp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_defalut_profile_pic"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/textViewCareTeamName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="@dimen/_8sdp"
+                android:fontFamily="@font/gotham_medium"
+                android:textColor="@color/_192032"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
