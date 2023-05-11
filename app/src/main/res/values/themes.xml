@@ -219,7 +219,7 @@
 
     <style name="roundedCornersImageView10" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">@dimen/_10sdp</item>
+        <item name="cornerSize">@dimen/_8sdp</item>
     </style>
 
     <style name="roundedCornersImageView12" parent="">

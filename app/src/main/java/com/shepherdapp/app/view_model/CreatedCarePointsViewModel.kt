@@ -244,10 +244,8 @@ class CreatedCarePointsViewModel @Inject constructor(
             } else {
                 TableName.CHATS_DEV
             }
-
+        Log.e("catch_exception","finding event: "+eventId)
         db.collection(tableName!!)
-//            .whereEqualTo("userIDs", userIDs)
-//            .whereEqualTo("group_name", groupName)
             .whereEqualTo("event_id", eventId)
             .get()
             .addOnSuccessListener {
@@ -275,14 +273,6 @@ class CreatedCarePointsViewModel @Inject constructor(
                     initChatListener()
 
                 } else {
-                    /* if (isFirstTime) {
-                         findChatId(isFirstTime = false) { isFounded ->
-                             onFound(isFounded)
-                         }
-                     } else {
-                         onFound(false)
- //                        _noChatDataFoundLiveData.postValue(Event(true))
-                     }*/
 
                     // Enter the event id and data
                     db.collection(tableName!!).add(chatListData.serializeToMap())

@@ -257,12 +257,14 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
             )
             chatModelList?.add(chatModel)
             Log.d(TAG, "ChatModel : $chatModel ")
+/*
             findNavController().navigate(
                 NewMessageFragmentDirections.actionNewMessageToChat(
                     "NewMessageFragment",
                     chatModelList?.toTypedArray()
                 )
             )
+*/
         }
     }
 
@@ -354,12 +356,14 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                     chatModelList?.add(chatModel)
                 }
                 Log.d(TAG, "GroupChatData :$chatModelList ")
+/*
                 findNavController().navigate(
                     NewMessageFragmentDirections.actionNewMessageToChat(
                         "NewMessageFragment",
                         chatModelList?.toTypedArray()
                     )
                 )
+*/
             }
             R.id.ivBack -> {
                 findNavController().popBackStack()
@@ -406,12 +410,18 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
                     chatModelList?.add(chatModel)
                 }
                 Log.d(TAG, "GroupChatData :$chatModelList ")
+/*
                 findNavController().navigate(
+*/
+/*
                     NewMessageFragmentDirections.actionNewMessageToChat(
                         "NewMessageFragment",
                         chatModelList?.toTypedArray()
                     )
+*//*
+
                 )
+*/
                 dialog.dismiss()
             }
         }

@@ -422,13 +422,7 @@
         android:name="com.shepherdapp.app.ui.component.chat.ChatFragment"
         android:label="@string/menu_chat"
         tools:layout="@layout/fragment_chat">
-        <argument
-            android:name="source"
-            app:argType="string" />
-        <argument
-            android:name="chatModel"
-            app:argType="com.shepherdapp.app.data.dto.chat.ChatModel[]"
-            app:nullable="true" />
+
     </fragment>
 
 
@@ -577,5 +571,8 @@
         android:name="com.shepherdapp.app.ui.component.carePoints.CareAssigneeListFragment"
         android:label="AssigneeUsers"
         tools:layout="@layout/fragment_care_assignee_list">
+        <action
+            android:id="@+id/action_nav_assignee_to_nav_chat"
+            app:destination="@id/nav_chat" />
     </fragment>
 </navigation>

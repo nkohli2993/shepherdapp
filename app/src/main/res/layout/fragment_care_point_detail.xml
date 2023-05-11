@@ -219,6 +219,54 @@
             app:stackFromEnd="true"
             tools:listitem="@layout/adapter_comment" />
 
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/eventButtonsG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="btnYesCanDo,btnNoCant" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnYesCanDo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_5sdp"
+            android:background="@drawable/shape_black_border"
+            android:fontFamily="@font/gotham_medium"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_10sdp"
+            android:text="@string/yes_i_can_do_this"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/btnNoCant"
+            app:layout_constraintEnd_toStartOf="@+id/btnNoCant"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnNoCant"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNoCant"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/shape_black_border"
+            android:fontFamily="@font/gotham_medium"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_10sdp"
+            android:text="@string/no_i_cannot_do_this"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/_11ssp"
+            app:layout_constraintBottom_toTopOf="@+id/editTextMessage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnYesCanDo" />
+
+
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/editTextMessage"
             android:layout_width="0dp"

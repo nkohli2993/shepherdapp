@@ -17,6 +17,7 @@ import com.android.billingclient.api.BillingFlowParams.ProductDetailsParams
 import com.android.billingclient.api.QueryProductDetailsParams.Product
 import com.google.firebase.crashlytics.buildtools.reloc.com.google.common.collect.ImmutableList
 import com.google.gson.Gson
+import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.login.UserProfile
@@ -27,6 +28,7 @@ import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseActivity
 import com.shepherdapp.app.ui.component.addLovedOne.AddLovedOneActivity
+import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.subscription.adapter.SubscriptionAdapter
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
@@ -77,11 +79,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         setContentView(view)
 
         if (intent.getStringExtra("source") != null) {
-            if (intent.getStringExtra("source") == "LovedOne Screen") {
-                source = intent.getStringExtra("source")
-            } else if (intent.getStringExtra("source") == "My Subscription") {
-                source = intent.getStringExtra("source")
-            }
+            source = intent.getStringExtra("source")
         }
 
         binding.listener = this
@@ -116,13 +114,6 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         // BillingClient provides convenience methods, both synchronous and asynchronous, for many common billing operations.
         billingClient = BillingClient.newBuilder(this)
             .enablePendingPurchases()
-            /*.setListener { billingResult, list ->
-                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && list != null) {
-                    for (purchase in list) {
-                        verifySubPurchase(purchase)
-                    }
-                }
-            }*/
             .setListener(purchasesUpdatedListener!!)
             .build()
 
@@ -146,10 +137,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
                 }
             }
-            else{
+            /*else{
                 hideLoading()
                 showError(this, getString(R.string.unable_to_suvcription))
-            }
+            }*/
         }
     }
 
@@ -240,18 +231,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         ) { billingResult: BillingResult ->
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
                 orderID = purchases.orderId
-//                var nameOfPlan: String? = null
                 when (planName) {
-                    /* Const.SubscriptionPlan.ONE_WEEK -> {
-                     nameOfPlan = "Weekly"
-//                        expiryDate =
-                 }*/
-                    /*  Const.SubscriptionPlan.ONE_MONTH -> {
-                      nameOfPlan = "Monthly"
-                  }
-                  Const.SubscriptionPlan.ONE_YEAR -> {
-                      nameOfPlan = "Yearly"
-                  }*/
                     Const.SubscriptionPlan.Yearly -> {
                         nameOfPlan = "Yearly"
                     }
@@ -261,19 +241,20 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 }
                 expiryDate = planName?.let { getDate(it) }
 
-                Log.d(TAG, "transactionId : $orderID")
-                Log.d(TAG, "plan : $nameOfPlan")
-                Log.d(TAG, "amount : $amount")
-                Log.d(TAG, "expiryDate : $expiryDate")
+                if(BuildConfig.DEBUG){
+                    Log.d(TAG, "transactionId : $orderID")
+                    Log.d(TAG, "plan : $nameOfPlan")
+                    Log.d(TAG, "amount : $amount")
+                    Log.d(TAG, "expiryDate : $expiryDate")
+                    Log.d(TAG, "Purchase Token: " + purchases.purchaseToken)
+                    Log.d(TAG, "Purchase Time: " + purchases.purchaseTime)
+                    Log.d(TAG, "Package Name: " + purchases.packageName)
+                    Log.d(TAG, "Purchase OrderID: " + purchases.orderId)
+                    Log.d(TAG, "Product ID: $productID")
+                    Log.d(TAG, "Plan Name : $planName")
+                    Log.d(TAG, "verifySubPurchase: " + "240")
+                }
 
-                Log.d(TAG, "Purchase Token: " + purchases.purchaseToken)
-                Log.d(TAG, "Purchase Time: " + purchases.purchaseTime)
-                Log.d(TAG, "Package Name: " + purchases.packageName)
-                Log.d(TAG, "Purchase OrderID: " + purchases.orderId)
-                Log.d(TAG, "Product ID: $productID")
-                Log.d(TAG, "Plan Name : $planName")
-
-                Log.d(TAG, "verifySubPurchase: " + "240")
 
                 // A successful purchase generates a purchase token, which is a unique identifier that
                 // represents the user and the product ID for the in-app product they purchased.
@@ -361,27 +342,24 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                                 if (source == "My Subscription") {
                                     onBackPressedDispatcher.onBackPressed()
                                 } else {
-                                    val intent =
-                                        Intent(
-                                            this@SubscriptionActivity,
-                                            AddLovedOneActivity::class.java
+                                    if(source == "Login Screen"){
+                                        navigateToHomeScreen()
+                                    }
+                                    else{
+                                        val intent =
+                                            Intent(
+                                                this@SubscriptionActivity,
+                                                AddLovedOneActivity::class.java
+                                            )
+                                        intent.putExtra("source", source)
+                                        startActivity(intent)
+                                        overridePendingTransition(
+                                            R.anim.slide_in_right,
+                                            R.anim.slide_out_left
                                         )
-                                    intent.putExtra("source", source)
-                                    startActivity(intent)
-                                    overridePendingTransition(
-                                        R.anim.slide_in_right,
-                                        R.anim.slide_out_left
-                                    )
+                                    }
+
                                 }
-
-                                /*  val intent =
-                                  Intent(this@SubscriptionActivity, AddLovedOneActivity::class.java)
-                              intent.putExtra("source", source)
-                              startActivity(intent)
-                              overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)*/
-
-
-//                            startActivity<AddLovedOneActivity>()
                             }
                         }.create()
                         alertDialog?.show()
@@ -407,17 +385,23 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                     showSuccess(this, "Subscription Validated Successfully")
                     if (isItemAlreadyPurchased) {
                         // Redirect to AddLovedOneActivity
-                        val intent =
-                            Intent(
-                                this@SubscriptionActivity,
-                                AddLovedOneActivity::class.java
+                        if(source == "Login Screen"){
+                            navigateToHomeScreen()
+                        }
+                        else{
+                            val intent =
+                                Intent(
+                                    this@SubscriptionActivity,
+                                    AddLovedOneActivity::class.java
+                                )
+                            intent.putExtra("source", source)
+                            startActivity(intent)
+                            overridePendingTransition(
+                                R.anim.slide_in_right,
+                                R.anim.slide_out_left
                             )
-                        intent.putExtra("source", source)
-                        startActivity(intent)
-                        overridePendingTransition(
-                            R.anim.slide_in_right,
-                            R.anim.slide_out_left
-                        )
+                        }
+
                     } else {
                         // Create Subscription
                         if (isFreeTrial) {
@@ -443,24 +427,21 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                                 )
                             )
                         }
-
-                        /*  subscriptionViewModel.createSubscription(
-                              SubscriptionRequestModel(
-                                  transactionId = orderID,
-                                  plan = nameOfPlan,
-                                  amount = amount,
-                                  expiryDate = expiryDate,
-                                  trialStartAt = getCurrentDate(),
-                                  trialEndAt = getDateAfter30Days()
-                              )
-                          )*/
                     }
-
-
                 }
             }
         }
 
+    }
+    // Navigate to Home Screen with loved one array
+    private fun navigateToHomeScreen() {
+        Prefs.with(this)?.save(Const.ON_BOARD, true)
+        Prefs.with(ShepherdApp.appContext)?.save(Const.USER_INACTIVE_LOGOUT, false)
+        val intent = Intent(this, HomeActivity::class.java)
+//        intent.putExtra(Const.LOVED_ONE_ARRAY, userLovedOneArrayList)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
 

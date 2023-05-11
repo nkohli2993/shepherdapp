@@ -18,6 +18,7 @@ import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.change_password.ChangePasswordModel
+import com.shepherdapp.app.data.dto.chat.CareTeamChatNotificationModel
 import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
 import com.shepherdapp.app.data.dto.dashboard.HomeResponseModel
 import com.shepherdapp.app.data.dto.delete_account.DeleteAccountModel
@@ -600,8 +601,11 @@ interface ApiService {
     )
     @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)
     suspend fun sendPushNotification(
-//        @Header ("Authorization") "AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg"
         @Body chatNotificationModel: ChatNotificationModel
+    ): Response<FCMResponseModel>
+  @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)
+    suspend fun sendPushCareTeamNotification(
+        @Body chatNotificationModel: CareTeamChatNotificationModel
     ): Response<FCMResponseModel>
 
     @POST(ApiConstants.Subscription.VALIDATE_SUBSCRIPTION)

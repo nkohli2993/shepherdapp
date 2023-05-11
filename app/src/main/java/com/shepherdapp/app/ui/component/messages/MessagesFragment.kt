@@ -239,12 +239,14 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
                   Chat.CHAT_SINGLE
               )
               chatModelList?.add(chatModel)*/
+/*
             findNavController().navigate(
                 MessagesFragmentDirections.actionMessagesToChat(
                     "Discussions",
                     chatModelList?.toTypedArray()
                 )
             )
+*/
         } /*else {
                 // Group Chat
                 val data = chatListData.usersDataMap.filter {

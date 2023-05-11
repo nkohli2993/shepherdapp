@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherdapp.app.data.dto.added_events.AddedEventModel
 import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
 import com.shepherdapp.app.databinding.AdapterAssigneeUsersBinding
 import com.shepherdapp.app.utils.setImageFromUrl
@@ -12,6 +13,7 @@ import java.util.ArrayList
 
 class AssigneeUserAdapter(
     var userList: ArrayList<UserAssigneeModel> = ArrayList(),
+    val listener: AssigneeSelected,
 ) :
     RecyclerView.Adapter<AssigneeUserAdapter.CarePointsAssigneeViewHolder>() {
     lateinit var binding: AdapterAssigneeUsersBinding
@@ -54,6 +56,7 @@ class AssigneeUserAdapter(
                 userDetail.user_details.lastname
             )
             itemBinding.textViewCareTeamName.text = userDetail.user_details.firstname+ " "+userDetail.user_details.lastname
+            itemBinding.root.setOnClickListener { listener.onAssigneeSelected(userDetail) }
         }
     }
 
@@ -65,4 +68,9 @@ class AssigneeUserAdapter(
     override fun getItemViewType(position: Int): Int {
         return position
     }
+
+    interface  AssigneeSelected{
+        fun onAssigneeSelected(detail: UserAssigneeModel)
+    }
+
 }

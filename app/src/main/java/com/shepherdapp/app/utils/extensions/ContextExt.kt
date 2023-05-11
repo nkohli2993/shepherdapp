@@ -3,12 +3,20 @@ package com.shepherdapp.app.utils
 import android.app.Activity
 import android.content.Context
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.shepherdapp.app.BuildConfig
 
 fun Context.toast(message: () -> String) {
     Toast.makeText(this, message(), Toast.LENGTH_LONG).show()
+}
+
+fun Context.log(message:String,log_text:String) {
+    if(BuildConfig.DEBUG){
+        Log.e(log_text,message)
+    }
 }
 
 fun Context.colorList(id: Int): ColorStateList {

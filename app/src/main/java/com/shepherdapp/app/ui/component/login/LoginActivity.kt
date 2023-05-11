@@ -14,6 +14,7 @@ import android.os.Handler
 import android.os.Looper
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -24,6 +25,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
@@ -32,6 +34,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.chat.User
+import com.shepherdapp.app.data.dto.delete_account.DeleteAccountModel
+import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.login.Payload
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.databinding.ActivityLoginNewBinding
@@ -43,6 +47,7 @@ import com.shepherdapp.app.ui.component.createAccount.CreateNewAccountActivity
 import com.shepherdapp.app.ui.component.forgot_password.ForgotPasswordActivity
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.ui.component.joinCareTeam.JoinCareTeamActivity
+import com.shepherdapp.app.ui.component.subscription.SubscriptionActivity
 import com.shepherdapp.app.ui.component.welcome.WelcomeUserActivity
 import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.Const.BIOMETRIC_ENABLE
@@ -100,8 +105,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
         terminateApp()
-//        loginViewModel.loginData.value!!.email = "nikita@yopmail.com"
-//        loginViewModel.loginData.value!!.password = "1234"
+        loginViewModel.loginData.value!!.email = "nikita@yopmail.com"
+        loginViewModel.loginData.value!!.password = "1234"
 
 
         binding.viewModel = loginViewModel
@@ -207,132 +212,25 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     hideLoading()
 //                    loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser()
                     it.data.let { it ->
-                        it.message?.let { it1 -> showSuccess(this, it1) }
-                        it.payload.let { payload ->
-                            payload?.userProfiles?.let { it1 ->
-                                // Save UserProfiles
-                                loginViewModel.saveUser(it1)
+                        saveUserInfo(it)
+                        if (it.payload?.activeSubscription?.id == null) {
+                            showSubscriptionDialog()
+                        } else {
+                            it.message?.let { it1 -> showSuccess(this, it1) }
+                            if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
+                                    this
+                                ) && BiometricUtils.isFingerprintAvailable(
+                                    this
+                                ) && !isBioMetricLogin && !Prefs.with(this)!!
+                                    .getBoolean(SECOND_TIME_LOGIN)
 
-                                // Save UserID
-                                it1.userId?.let { userID ->
-                                    loginViewModel.saveUserId(userID)
+                            ) {
+                                showBioMetricDialog()
+                            } else {
+                                navigateToScreen()
 
-                                }
-                            }
-//                            generateFirebaseToken()
-                            // Save UUID
-                            payload?.uuid.let { uuid ->
-                                uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
-                            }
-
-                            // Save token
-                            payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
-
-                            val lovedOneSlug = payload?.userRoles?.filter {
-                                it.role?.slug?.equals("user-loved-one") == true
-                            }?.size
-
-                            // Check if the loggedIn user is loved one on the basis of role slug
-                            val userRoleSlug = payload?.userRoles?.first()?.role?.slug
-                            if (lovedOneSlug != null) {
-                                if (/*userRoleSlug.equals("user-loved-one")*/lovedOneSlug >= 1) {
-
-                                    // Save Loved One Role
-                                    payload.userRoles.first().role?.name?.let { it1 ->
-                                        loginViewModel.saveUserRole(
-                                            it1
-                                        )
-                                    }
-                                    loginViewModel.saveLoggedInUserAsLovedOne(true)
-                                    Log.d(
-                                        TAG,
-                                        "LoggedIn user is loved one . Status saved to shared pref..."
-                                    )
-                                    // save id
-                                    loginViewModel.saveLovedOneId(payload.id.toString())
-
-                                    // save uuid
-                                    loginViewModel.saveLovedOneUUID(payload.uuid.toString())
-
-                                } else {
-                                    payload.userLovedOne.let {
-                                        if (it.isNotEmpty()) {
-                                            // Save Loved One UUID
-                                            it[0].let {
-                                                loginViewModel.saveLovedOneDetail(it)
-                                            }
-                                            it[0].loveUserId?.let { it1 ->
-                                                loginViewModel.saveLovedOneUUID(
-                                                    it1
-                                                )
-                                            }
-                                            // Save LovedOne ID
-                                            it[0].id?.let { it1 ->
-                                                loginViewModel.saveLovedOneId(
-                                                    it1.toString()
-                                                )
-                                            }
-
-                                            // Save Role
-                                            it[0].careRoles?.name.let {
-                                                it?.let { it1 -> loginViewModel.saveUserRole(it1) }
-                                            }
-                                        }
-                                    }
-
-                                }
-                            }
-
-                            payload?.email?.let { email ->
-                                loginViewModel.saveEmail(
-                                    email
-                                )
                             }
                         }
-                        userLovedOneArrayList = it.payload?.userLovedOne
-
-                        // Save User Info in Firestore
-                        val user = it.payload?.let { it1 -> loginResponseToUser(it1) }
-                        // user?.let { it1 -> loginViewModel.saveUserInfoInFirestore(it1) }
-                        user?.let { it1 ->
-                            loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
-                                it1
-                            )
-                        }
-                        // If login response contains enterprise code, then the loggedIn user is the enterprise user
-                        if (!it.payload?.userProfiles?.enterpriseId.isNullOrEmpty()) {
-                            // Save status in SharedPrefs
-                            loginViewModel.saveUSerAttachedToEnterprise(true)
-                            // Save enterprise detail in SharedPrefs
-                            val enterprise = it.payload?.userProfiles?.enterprise
-                            if (enterprise != null) {
-                                loginViewModel.saveEnterpriseDetail(enterprise)
-                            }
-                        } else if (it.payload?.activeSubscription?.id != null) {
-                            //If subscription object in Login response contains data, then user has taken subscription
-                            loginViewModel.saveUSerAttachedToEnterprise(false)
-
-                            // Save subscription purchased status
-                            loginViewModel.saveSubscriptionPurchased(
-                                isSubscriptionPurchased = true
-                            )
-                        }
-
-                        // val lovedOneUserID = it.payload?.userLovedOne?.get(0)?.loveUserId
-                        // Save lovedOneID to sharedPref
-                        // lovedOneUserID?.let { it1 -> loginViewModel.saveLovedOneId(it1) }
-                    }
-                    if (BiometricUtils.isSdkVersionSupported && BiometricUtils.isHardwareSupported(
-                            this
-                        ) && BiometricUtils.isFingerprintAvailable(
-                            this
-                        ) && !isBioMetricLogin && !Prefs.with(this)!!.getBoolean(SECOND_TIME_LOGIN)
-
-                    ) {
-                        showBioMetricDialog()
-                    } else {
-                        navigateToScreen()
-
                     }
                 }
 
@@ -372,6 +270,153 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
+        }
+    }
+
+    private fun showSubscriptionDialog() {
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_subcription_error)
+        val btnYes = dialog.findViewById(R.id.btnYes) as TextView
+        val btnNo = dialog.findViewById(R.id.btnNo) as TextView
+
+        btnYes.setOnClickListener {
+            val intent = Intent(this, SubscriptionActivity::class.java)
+            intent.putExtra("source", "Login Screen")
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)  // for open
+            dialog.dismiss()
+        }
+        btnNo.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.setCancelable(true)
+        dialog.window?.setBackgroundDrawable(
+            InsetDrawable(
+                ColorDrawable(Color.TRANSPARENT),
+                20
+            )
+        )
+        dialog.show()
+
+        val metrics = DisplayMetrics() //get metrics of screen
+        windowManager?.defaultDisplay?.getMetrics(metrics)
+        val height = (metrics.heightPixels * 0.8).toInt() //set height to 80% of total
+        val width = (metrics.widthPixels * 0.95).toInt() //set width to 95% of total
+        dialog.window?.setLayout(width, height) //set layout
+
+
+    }
+
+    private fun saveUserInfo(it: LoginResponseModel) {
+        it.payload.let { payload ->
+            payload?.userProfiles?.let { it1 ->
+                // Save UserProfiles
+                loginViewModel.saveUser(it1)
+
+                // Save UserID
+                it1.userId?.let { userID ->
+                    loginViewModel.saveUserId(userID)
+
+                }
+            }
+            //                            generateFirebaseToken()
+            // Save UUID
+            payload?.uuid.let { uuid ->
+                uuid?.let { it1 -> loginViewModel.saveUUID(it1) }
+            }
+
+            // Save token
+            payload?.token?.let { it1 -> loginViewModel.saveToken(it1) }
+
+            val lovedOneSlug = payload?.userRoles?.filter {
+                it.role?.slug?.equals("user-loved-one") == true
+            }?.size
+
+            // Check if the loggedIn user is loved one on the basis of role slug
+            val userRoleSlug = payload?.userRoles?.first()?.role?.slug
+            if (lovedOneSlug != null) {
+                if (/*userRoleSlug.equals("user-loved-one")*/lovedOneSlug >= 1) {
+
+                    // Save Loved One Role
+                    payload.userRoles.first().role?.name?.let { it1 ->
+                        loginViewModel.saveUserRole(
+                            it1
+                        )
+                    }
+                    loginViewModel.saveLoggedInUserAsLovedOne(true)
+                    Log.d(
+                        TAG,
+                        "LoggedIn user is loved one . Status saved to shared pref..."
+                    )
+                    // save id
+                    loginViewModel.saveLovedOneId(payload.id.toString())
+
+                    // save uuid
+                    loginViewModel.saveLovedOneUUID(payload.uuid.toString())
+
+                } else {
+                    payload.userLovedOne.let {
+                        if (it.isNotEmpty()) {
+                            // Save Loved One UUID
+                            it[0].let {
+                                loginViewModel.saveLovedOneDetail(it)
+                            }
+                            it[0].loveUserId?.let { it1 ->
+                                loginViewModel.saveLovedOneUUID(
+                                    it1
+                                )
+                            }
+                            // Save LovedOne ID
+                            it[0].id?.let { it1 ->
+                                loginViewModel.saveLovedOneId(
+                                    it1.toString()
+                                )
+                            }
+
+                            // Save Role
+                            it[0].careRoles?.name.let {
+                                it?.let { it1 -> loginViewModel.saveUserRole(it1) }
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            payload?.email?.let { email ->
+                loginViewModel.saveEmail(
+                    email
+                )
+            }
+        }
+        userLovedOneArrayList = it.payload?.userLovedOne
+
+        // Save User Info in Firestore
+        val user = it.payload?.let { it1 -> loginResponseToUser(it1) }
+        // user?.let { it1 -> loginViewModel.saveUserInfoInFirestore(it1) }
+        user?.let { it1 ->
+            loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser(
+                it1
+            )
+        }
+        // If login response contains enterprise code, then the loggedIn user is the enterprise user
+        if (!it.payload?.userProfiles?.enterpriseId.isNullOrEmpty()) {
+            // Save status in SharedPrefs
+            loginViewModel.saveUSerAttachedToEnterprise(true)
+            // Save enterprise detail in SharedPrefs
+            val enterprise = it.payload?.userProfiles?.enterprise
+            if (enterprise != null) {
+                loginViewModel.saveEnterpriseDetail(enterprise)
+            }
+        } else if (it.payload?.activeSubscription?.id != null) {
+            //If subscription object in Login response contains data, then user has taken subscription
+            loginViewModel.saveUSerAttachedToEnterprise(false)
+
+            // Save subscription purchased status
+            loginViewModel.saveSubscriptionPurchased(
+                isSubscriptionPurchased = true
+            )
         }
     }
 
@@ -571,7 +616,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.device = null
                 }
             }
-            login(loginData.value!!,isBioMetric)
+            login(loginData.value!!, isBioMetric)
         }
     }
 

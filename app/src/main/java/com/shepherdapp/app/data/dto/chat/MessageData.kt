@@ -71,6 +71,22 @@ data class ChatNotificationModel(
     var registrationIDs: ArrayList<String>? = null
 ) : Parcelable
 
+@Parcelize
+data class CareTeamChatNotificationModel(
+    @SerializedName("data")
+    var data: ChatNotificationData? = null,
+    @SerializedName("user_id")
+    var userId: String? = null,
+    @SerializedName("chat_type")
+    var chatType: Int? = null,
+    @SerializedName("notification")
+    var notification: ChatNotificationData?,
+    @SerializedName("to")
+    var to: String? = null,
+    @SerializedName("registration_ids")
+    var registrationIDs: ArrayList<String>? = null
+) : Parcelable
+
 @SuppressLint("ParcelCreator")
 @Parcelize
 data class ChatNotificationData(

@@ -25,6 +25,9 @@ object TableName {
     const val MESSAGES = "messages"
     const val USERS = "users"
     const val USERS_DEV = "usersDev"
+
+    const val CARE_TEAM_CHATS = "careTeamChats"
+    const val CARE_TEAM_CHATS_DEV = "careTeamChatsDev"
 }
 
 object Chat {

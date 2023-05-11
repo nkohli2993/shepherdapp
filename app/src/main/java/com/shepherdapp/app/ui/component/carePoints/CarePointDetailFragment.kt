@@ -89,11 +89,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
     override fun initViewBinding() {
         fragmentCarePointDetailBinding.listener = this
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
-
-        // Get event Detail from Care Point Fragment
-        //eventDetail = args.eventDetail
-
         eventId = args.eventId
         Log.d(TAG, "EventId : $eventId")
         val source = args.source
@@ -109,11 +104,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             Const.USER_DETAILS,
             UserProfile::class.java
         )
-
         val loggedInUserId = loggedInUser?.userId
         val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
-
-        Log.d(TAG, "onEventSelected: $eventDetail ")
 
         when (eventDetail?.user_assignes?.size) {
             1 -> {
@@ -125,8 +117,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                         chatOn()
                         isAssignerDetailRequired = true
                     }
-//                    chatOn()
-//                    isAssignerDetailRequired = true
                 } else if (loggedInUserId == eventDetail?.createdByDetails?.id) {
                     // Check if the loggedIn user is the assigner
                     // It means two user are there for the care point(event) ,one is assignee and other is the assigner,

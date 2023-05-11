@@ -47,7 +47,8 @@ object Const {
     const val CARE_TEAM_PERMISSION = "careTeams"
     const val START_DATE_EVENT = "start_date"
     const val END_DATE_EVENT = "end_date"
-
+    const val LOGIN = "login"
+    const val LOVED_ONE ="loved_one"
 
     const val PLAY_STORE_SUBSCRIPTION_URL = "https://play.google.com/store/account/subscriptions"
     const val PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL =

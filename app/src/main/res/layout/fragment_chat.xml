@@ -52,7 +52,7 @@
                 android:layout_margin="@dimen/_1sdp"
                 android:padding="@dimen/_2sdp"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_defalut_profile_pic"
+                android:src="@drawable/background_splash"
                 app:shapeAppearanceOverlay="@style/roundedCornersImageView10" />
         </LinearLayout>
 
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/_10sdp"
             android:gravity="end"
-            android:text="@{data.receiverName}"
+            android:textColor="@color/_192032"
             app:layout_constraintBottom_toBottomOf="@+id/ivBack"
             app:layout_constraintEnd_toStartOf="@+id/llImageWrapper"
             app:layout_constraintStart_toEndOf="@+id/ivBack"
@@ -90,7 +90,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/edtMessage"
+                android:id="@+id/editTextMessage"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_box_6"

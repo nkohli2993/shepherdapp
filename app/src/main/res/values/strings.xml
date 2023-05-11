@@ -630,4 +630,8 @@
     <string name="more">More</string>
     <string name="assignees">Assignees</string>
     <string name="unable_to_suvcription">Unable to show subcription packages, Please try again later.</string>
+    <string name="continue_">Continue</string>
+    <string name="please_choose_your_subscription_plan_to_continue">Please choose your subscription plan to continue.</string>
+    <string name="yes_i_can_do_this">Yes, I can do this.</string>
+    <string name="no_i_cannot_do_this">No, I cannot do this.</string>
 </resources>
