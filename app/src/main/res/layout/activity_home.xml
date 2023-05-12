@@ -382,6 +382,39 @@
                                 android:layout_weight="1" />
 
                         </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/llMessage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_14sdp"
+                            android:onClick="@{listener::onClick}"
+                            android:orientation="horizontal"
+                            android:paddingVertical="@dimen/_5sdp">
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:layout_weight="2"
+                                android:drawableStart="@drawable/ic_messages"
+                                android:drawablePadding="@dimen/_10sdp"
+                                android:fontFamily="@font/gotham_book"
+                                android:text="@string/messages"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/_16ssp" />
+
+                            <View
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+
+                        </LinearLayout>
 
                         <!-- <LinearLayout
                              android:layout_width="match_parent"

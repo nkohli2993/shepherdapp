@@ -58,7 +58,7 @@ class ChatGroupAdapter(
             binding.dateTV.text = chatData.date.getChatDate("yyyy-MM-dd")
             val adapter = ChatAdapter(viewModel)
             itemBinding.messageRV.adapter = adapter
-            adapter.addData(chatData.messageList)
+           // adapter.addData(chatData.messageList)
 
 
             /* itemBinding.root.setOnClickListener {

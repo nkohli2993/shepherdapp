@@ -3,17 +3,22 @@ package com.shepherdapp.app.ui.component.memberDetails
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Spannable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.gson.annotations.SerializedName
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
+import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.databinding.FragmentMemberDetailsBinding
@@ -27,6 +32,7 @@ import com.shepherdapp.app.utils.extensions.*
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.MemberDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.parcel.Parcelize
 
 
 /**
@@ -286,7 +292,29 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 findNavController().navigate(action)
             }
             R.id.ivChat -> {
-                findNavController().navigate(R.id.action_new_message_to_chat)
+                val detail = UserAssigneeModel(
+                    careTeam!!.id,
+                    careTeam!!.user_id,
+                    null,
+                    "",
+                    "", "",
+                    UserAssigneDetail(
+                        careTeam!!.user_id_details!!.id,
+                        careTeam!!.user_id_details!!.id,
+                        careTeam!!.user_id_details!!.firstname,
+                        careTeam!!.user_id_details!!.lastname,
+                        careTeam!!.user_id_details!!.dob,
+                        careTeam!!.user_id_details!!.address,
+                        careTeam!!.user_id_details!!.phone,
+                        careTeam!!.user_id_details!!.phone,
+                        careTeam!!.user_id_details!!.profilePhoto,
+                        null, null, "", "", ""
+                    )
+                )
+                findNavController().navigate(
+                    R.id.action_new_message_to_chat,
+                    bundleOf("assignee_user" to detail)
+                )
             }
             R.id.btnDelete -> {
                 val builder = AlertDialog.Builder(requireContext())

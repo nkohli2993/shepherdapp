@@ -478,6 +478,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         // Care Teams and VitalStats Module are always visible
         binding.llCareTeam.visibility = View.VISIBLE
         binding.llVitalStats.visibility = View.VISIBLE
+        binding.llMessage.visibility = View.VISIBLE
 
         // Other Cards are shown according to the permission
         binding.llLockBox.visibility = value
@@ -513,6 +514,27 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         cardViewUser.isVisible = false
 
 
+                    }
+                    lockUnlockDrawer(false)
+                }
+                R.id.messageFragment -> {
+                    binding.appBarDashboard.apply {
+                        tvTitle.text = getString(R.string.messages)
+                        clTopWrapper.isVisible = true
+                        clEndWrapper.isVisible = true
+                        clHomeWrapper.isVisible = false
+                        cardViewUser.isVisible = true
+
+                        imgClose.setOnClickListener {
+                            cardViewUser.isVisible = false
+                        }
+
+                        tvNew.apply {
+                            isVisible = true
+                            setOnClickListener {
+                                //add new page
+                            }
+                        }
                     }
                     lockUnlockDrawer(false)
                 }
@@ -800,6 +822,9 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             }
             R.id.llCareTeam -> {
                 navController.navigate(R.id.nav_care_team)
+            }
+            R.id.llMessage -> {
+                navController.navigate(R.id.messageFragment)
             }
             R.id.tvLogout -> {
                 viewModel.logOut()

@@ -10,11 +10,7 @@ import com.google.gson.Gson
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.ShepherdApp.Companion.db
-import com.shepherdapp.app.data.DataRepository
-import com.shepherdapp.app.data.dto.added_events.*
 import com.shepherdapp.app.data.dto.chat.*
-import com.shepherdapp.app.data.dto.dashboard.LoveUser
-import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.data.local.UserRepository
@@ -52,7 +48,7 @@ class ChatViewModel @Inject constructor(
     var chatListener: ListenerRegistration? = null
     var tableName: String? = null
     var usersTableName: String? = null
-
+    var roomId: String? = null
     private var chatResponseData = MutableLiveData<Event<DataResult<MessageGroupResponse>>>()
     fun getChatMessages(): LiveData<Event<DataResult<MessageGroupResponse>>> = chatResponseData
 
@@ -88,29 +84,9 @@ class ChatViewModel @Inject constructor(
     fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
     fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID, "")
 
-    //get userinfo from Shared Pref
-    fun getLovedUserDetail(): LoveUser? {
-        return userRepository.getLovedUser()
-    }
-
-    fun getLovedOneDetail(): UserLovedOne? {
-        return userRepository.getLovedOneUserDetail()
-    }
-
-    //get userinfo from Shared Pref
-    fun getUserDetail(): UserProfile? {
+    fun getCurrentUser(): UserProfile? {
         return userRepository.getCurrentUser()
     }
-
-    fun isLoggedInUserCareTeamLeader(): Boolean? {
-        return userRepository.isLoggedInUserTeamLead()
-    }
-
-
-    fun isCarePointPermission(): Boolean? {
-        return userRepository.isCarePointPermission()
-    }
-
 
     fun setToUserDetail(
         chatType: Int?,
@@ -152,7 +128,7 @@ class ChatViewModel @Inject constructor(
             }
 
         db.collection(tableName!!)
-            .whereArrayContains("users_data", userRepository.getUserId())
+            .whereEqualTo("room_id", roomId)
             .get()
             .addOnSuccessListener {
                 if (!it.documents.isNullOrEmpty()) {
@@ -283,9 +259,9 @@ class ChatViewModel @Inject constructor(
                 if (value.data != null) {
                     val chatData = Gson().fromJson(
                         JSONObject(value.data!!).toString(),
-                        ChatListData::class.java
+                        CareTeamChatListData::class.java
                     )
-                    val loggedInUserID = userRepository.getCurrentUser()?.id.toString()
+                    val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
                     if (chatData.usersDataMap[loggedInUserID]?.unreadCount ?: 0 > 0) {
                         chatData.usersDataMap[loggedInUserID]?.unreadCount = 0
                         chatRef.update("users_data", chatData.usersDataMap.serializeToMap())
@@ -305,7 +281,7 @@ class ChatViewModel @Inject constructor(
 
         ShepherdApp.db.runTransaction { transaction ->
             allMsgList.forEach { message ->
-                if (!message.readIds.contains(userRepository.getCurrentUser()?.id.toString())) {
+                if (!message.readIds.contains(userRepository.getCurrentUser()?.userId.toString())) {
                     val docRef =
                         db.collection(tableName!!).document(chatListData?.id ?: "")
                             .collection(TableName.MESSAGES).document(message.id ?: "")
@@ -314,7 +290,7 @@ class ChatViewModel @Inject constructor(
                             JSONObject(it).toString(),
                             MessageData::class.java
                         )
-                        val loggedInUserID = userRepository.getCurrentUser()?.id.toString()
+                        val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
                         messageModel.readIds.add(loggedInUserID)
                         transaction.update(docRef, "readIds", messageModel.readIds)
                         if (messageModel.readIds.size >= chatListData?.userIDs?.size ?: 0) {
@@ -377,7 +353,12 @@ class ChatViewModel @Inject constructor(
     }
 
 
-    fun getAndSaveMessageData(msgType: Int, imageFile: String = "", message: String? = "") {
+    fun getAndSaveMessageData(
+        roomId: String,
+        msgType: Int,
+        imageFile: String = "",
+        message: String? = ""
+    ) {
         val data = MessageData().apply {
             content = message
             isRead = false
@@ -393,16 +374,16 @@ class ChatViewModel @Inject constructor(
                 attachment = imageFile
             }
         }
-        sendMessage(data)
+        sendMessage(data, roomId)
     }
 
-    private fun sendMessage(messageData: MessageData) {
+    private fun sendMessage(messageData: MessageData, roomId: String) {
         if (isListenerInitialized) {
-            addMessageInDb(messageData)
+            addMessageInDb(messageData, roomId)
         } else {
             createNewChat {
                 if (it) {
-                    addMessageInDb(messageData)
+                    addMessageInDb(messageData, roomId)
                 }
             }
         }
@@ -439,7 +420,7 @@ class ChatViewModel @Inject constructor(
 
     }
 
-    private fun addMessageInDb(messageData: MessageData) {
+    private fun addMessageInDb(messageData: MessageData, roomId: String) {
         var userIDs: ArrayList<String>? = ArrayList()
         tableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
@@ -452,7 +433,7 @@ class ChatViewModel @Inject constructor(
         chatReference.get().addOnSuccessListener {
             val chatData = Gson().fromJson(
                 it.data?.let { it1 -> JSONObject(it1).toString() },
-                ChatListData::class.java
+                CareTeamChatListData::class.java
             )
             userIDs = chatData.userIDs
             Log.d(TAG, "userIDs:$userIDs")
@@ -466,7 +447,7 @@ class ChatViewModel @Inject constructor(
                         "id" to it.id, "created" to FieldValue.serverTimestamp()
                     ) as Map<String, Any>
                 )
-                updateUnreadCount(chatReference, messageData, false)
+                updateUnreadCount(roomId, chatReference, messageData, false)
                 // Send Notification
                 sendNotification(messageData, userIDs)
             }
@@ -562,6 +543,7 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun updateUnreadCount(
+        roomId: String,
         chatReference: DocumentReference,
         messageData: MessageData,
         isRead: Boolean
@@ -572,17 +554,17 @@ class ChatViewModel @Inject constructor(
                 if (documentSnapshot != null && documentSnapshot.data != null) {
                     val chatData = Gson().fromJson(
                         JSONObject(documentSnapshot.data!!).toString(),
-                        ChatListData::class.java
+                        CareTeamChatListData::class.java
                     )
 
 
                     if (isRead) {
-                        if (!chatData.senderId?.equals(userRepository.getCurrentUser()?.id.toString())!!) {
+                        if (!chatData.senderId?.equals(userRepository.getCurrentUser()?.userId.toString())!!) {
 //                            chatDence.update("unread_count", chatData.unread_count)
                         }
                     } else {
                         chatData.usersDataMap.keys.forEach {
-                            if (it != userRepository.getCurrentUser()?.id.toString()) {
+                            if (it != userRepository.getCurrentUser()?.userId.toString()) {
                                 var count = chatData.usersDataMap[it]?.unreadCount ?: 0
                                 count += 1
                                 chatData.usersDataMap[it]?.unreadCount = count
@@ -590,6 +572,7 @@ class ChatViewModel @Inject constructor(
                         }
                         chatReference.update(
                             hashMapOf(
+                                "room_id" to roomId,
                                 "latest_message" to messageData.content,
                                 "last_message_type" to messageData.messageType,
                                 "updated_at" to FieldValue.serverTimestamp(),
@@ -621,7 +604,7 @@ class ChatViewModel @Inject constructor(
         var query = chatDocReference.collection(TableName.MESSAGES)
             .orderBy("created", Query.Direction.DESCENDING)
 
-        try{
+        try {
             if (lastDocument != null && lastDocument?.contains("created")!!)
                 query = query.startAfter(lastDocument!!)
 
@@ -656,8 +639,8 @@ class ChatViewModel @Inject constructor(
                 .addOnFailureListener {
                     chatResponseData.postValue(Event(DataResult.Failure(exception = it)))
                 }
-        }catch (e:Exception){
-            Log.e("catch_exception","cath: ${e.message}")
+        } catch (e: Exception) {
+            Log.e("catch_exception", "cath: ${e.message}")
         }
 
     }

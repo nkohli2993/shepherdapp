@@ -1,93 +1,57 @@
 package com.shepherdapp.app.ui.component.chat.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherdapp.app.ShepherdApp
-import com.shepherdapp.app.data.dto.chat.MessageData
-import com.shepherdapp.app.databinding.AdapterChatBinding
-import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
-import com.shepherdapp.app.utils.Const
-import com.shepherdapp.app.utils.Prefs
-import com.shepherdapp.app.utils.extensions.changeDateFormat
-import com.shepherdapp.app.utils.setImageFromUrl
+import com.shepherdapp.app.data.dto.chat.MessageGroupData
+import com.shepherdapp.app.databinding.AdapterCommentBinding
+import com.shepherdapp.app.utils.extensions.getChatDate
 import com.shepherdapp.app.view_model.ChatViewModel
+import java.util.ArrayList
 
 
 class ChatAdapter(
     private val viewModel: ChatViewModel,
-    var requestList: MutableList<MessageData> = ArrayList()
-) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
-    lateinit var binding: AdapterChatBinding
+    var commentList: ArrayList<MessageGroupData> = ArrayList(),
+) : RecyclerView.Adapter<ChatAdapter.CarePointsEventsViewHolder>() {
+    lateinit var binding: AdapterCommentBinding
     lateinit var context: Context
 
-
-    private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
-        override fun onItemSelected(vararg itemData: Any) {
-            // viewModel.openDashboardItems(itemData[0] as DashboardModel)
-        }
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ChatViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsEventsViewHolder {
         context = parent.context
         binding =
-            AdapterChatBinding.inflate(
+            AdapterCommentBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
-        return ChatViewHolder(binding)
+        return CarePointsEventsViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
-        return requestList.size
+        //  return requestList.size
+        return commentList.size
+
     }
 
-    override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
-        holder.bind(requestList[position], onItemClickListener)
+    override fun onBindViewHolder(holder: CarePointsEventsViewHolder, position: Int) {
+        holder.bind(position)
     }
 
 
-    class ChatViewHolder(private val itemBinding: AdapterChatBinding) :
+    inner class CarePointsEventsViewHolder(private val itemBinding: AdapterCommentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
-        fun bind(messageData: MessageData, recyclerItemListener: RecyclerItemListener) {
-            itemBinding.messageData = messageData
-            // Get loggedIn User Id
-            val loggedInUserId = Prefs.with(ShepherdApp.appContext)!!.getInt(Const.USER_ID)
-            itemBinding.userId = loggedInUserId.toString()
-            // Check if loggedIn User is the sender of the message
-            /* if (messageData.senderID == loggedInUserId.toString()) {
-                 itemBinding.cvSender.visibility = View.VISIBLE
-             } else {
-                 itemBinding.cvReceiver.visibility = View.VISIBLE
-             }*/
+        @SuppressLint("SimpleDateFormat", "SetTextI18n")
+        fun bind(position: Int) {
+            val chatData = commentList[position]
 
-            itemBinding.executePendingBindings()
-
-            itemBinding.tvReceivedTime.text = messageData.date?.changeDateFormat(
-                sourceDateFormat = "yyyy-MM-dd HH:mm:ss",
-                targetDateFormat = "hh:mm a"
-            )
-            itemBinding.tvSendTime.text = messageData.date?.changeDateFormat(
-                sourceDateFormat = "yyyy-MM-dd HH:mm:ss",
-                targetDateFormat = "hh:mm a"
-            )
-
-            itemBinding.imageViewUserSender.setImageFromUrl(
-                "",
-                messageData.senderName, ""
-            )
-
-            itemBinding.root.setOnClickListener {
-                recyclerItemListener.onItemSelected(
-                    messageData
-                )
-            }
+            binding.dateTV.text = chatData.date.getChatDate("yyyy-MM-dd")
+            val adapter = CareTeamChatAdapter()
+            itemBinding.messageRV.adapter = adapter
+            adapter.addData(chatData.messageList)
         }
     }
 
@@ -100,10 +64,11 @@ class ChatAdapter(
         return position
     }
 
-    fun addData(messageData: MutableList<MessageData>) {
-        this.requestList.clear()
-        this.requestList.addAll(messageData)
+    fun addData(chatData: MutableList<MessageGroupData>) {
+        this.commentList.clear()
+        this.commentList.addAll(chatData)
         notifyDataSetChanged()
     }
+
 
 }

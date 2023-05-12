@@ -1,6 +1,7 @@
 package com.shepherdapp.app.ui.component.carePoints
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.carePoints.adapter.AssigneeUserAdapter
 import com.shepherdapp.app.ui.component.carePoints.adapter.CarePointEventCommentAdapter
 import com.shepherdapp.app.utils.CareRole
+import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +38,9 @@ class CareAssigneeListFragment : BaseFragment<FragmentCareAssigneeListBinding>()
             if (arguments?.containsKey("assignee_user") == true) {
                 userAssignees.clear()
                 val list =
-                    @Suppress("DEPRECATION") requireArguments().getParcelableArrayList<UserAssigneeModel>("assignee_user") as ArrayList<UserAssigneeModel>
+                    @Suppress("DEPRECATION") requireArguments().getParcelableArrayList<UserAssigneeModel>(
+                        "assignee_user"
+                    ) as ArrayList<UserAssigneeModel>
                 userAssignees.addAll(list)
             }
             setUserAdapter()
@@ -56,7 +60,7 @@ class CareAssigneeListFragment : BaseFragment<FragmentCareAssigneeListBinding>()
     private fun setUserAdapter() {
         //set comment adapter added in list
         userAssignees.filter { listAssinee ->
-            listAssinee.user_details.id != carePointsViewModel.getUserDetail()!!.id
+            listAssinee.user_details.id != carePointsViewModel.getUserDetail()!!.userId
         } as ArrayList
         val commentAdapter = AssigneeUserAdapter(userAssignees, this)
         fragmentCareAssigneeListBinding.recyclerViewCareTeam.adapter = commentAdapter
@@ -76,9 +80,15 @@ class CareAssigneeListFragment : BaseFragment<FragmentCareAssigneeListBinding>()
     }
 
     override fun onAssigneeSelected(detail: UserAssigneeModel) {
-        findNavController().navigate(
-            R.id.action_nav_assignee_to_nav_chat,
-            bundleOf("assignee_user" to detail)
-        )
+        Log.e("catch_exception", "assignee: $detail")
+        if (carePointsViewModel.getUserDetail()?.userId == detail.user_details.id) {
+            showError(requireContext(), "Cannot chat with your own.")
+        } else {
+            findNavController().navigate(
+                R.id.action_nav_assignee_to_nav_chat,
+                bundleOf("assignee_user" to detail)
+            )
+
+        }
     }
 }

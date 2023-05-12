@@ -270,10 +270,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                             msgGroupList.clear()
                             msgGroupList.addAll(it.data.groupList)
                             Log.d(TAG, "loadChat: $msgGroupList")
-                            /* chatAdapter?.addData(
-                                 msgGroupList,
-                                 chatViewModel.loggedInUser.id.toString()
-                             )*/
                             setAdapter(it.data.scrollToBottom ?: false)
                         }
                     }
@@ -293,14 +289,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             }, 200)
         }
-
-        /* fragmentCarePointDetailBinding.recyclerViewChat.postDelayed({
-             fragmentCarePointDetailBinding.recyclerViewChat.adapter?.itemCount?.minus(1)?.let {
-                 fragmentCarePointDetailBinding.recyclerViewChat.scrollToPosition(
-                     it
-                 )
-             }
-         }, 1000)*/
     }
 
     private fun ChatModel.toChatUserDetail(): ChatUserDetail {

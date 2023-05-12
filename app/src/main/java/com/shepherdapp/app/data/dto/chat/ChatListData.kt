@@ -65,6 +65,8 @@ data class ChatListData(
 
 @Parcelize
 data class CareTeamChatListData(
+    @SerializedName("room_id")
+    var roomId: String? = "",
     @SerializedName("sender_id")
     var senderId: String? = "",
     @SerializedName("latest_message")

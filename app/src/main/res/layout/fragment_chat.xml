@@ -73,12 +73,13 @@
             android:id="@+id/rvMsg"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:padding="@dimen/_5sdp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@+id/messageCL"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivBack"
+            app:stackFromEnd="true"
             tools:listitem="@layout/adapter_chat_group" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -96,6 +97,7 @@
                 android:background="@drawable/rounded_box_6"
                 android:backgroundTint="@color/_E7E8EA"
                 android:hint="@string/write"
+                android:inputType="textMultiLine|textCapSentences"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_15sdp"
                 android:textColorHint="@color/_192032"

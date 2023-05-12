@@ -1,0 +1,6 @@
+package com.shepherdapp.app.data.dto
+
+data class DeleteChat(
+    val userId: Long? = 0L,
+    val deletedAt: Long? = 0L
+)

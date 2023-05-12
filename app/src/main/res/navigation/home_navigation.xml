@@ -575,4 +575,15 @@
             android:id="@+id/action_nav_assignee_to_nav_chat"
             app:destination="@id/nav_chat" />
     </fragment>
+
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.shepherdapp.app.ui.component.chat.MessageFragment"
+        android:label="@string/messages"
+        tools:layout="@layout/fragment_message">
+        <action
+            android:id="@+id/action_nav_chat_fragment"
+            app:destination="@id/nav_chat" />
+    </fragment>
+
 </navigation>

@@ -11,14 +11,15 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.Query
 import com.google.gson.Gson
-import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.ShepherdApp.Companion.db
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.Resource
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.chat.ChatListData
 import com.shepherdapp.app.data.dto.chat.ChatListResponse
+import com.shepherdapp.app.data.dto.chat.ChatUserListing
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
+import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.care_teams.CareTeamsRepository
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -43,7 +44,6 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class MessagesViewModel @Inject constructor(
-    private val dataRepository: DataRepository,
     private val careTeamsRepository: CareTeamsRepository,
     private val userRepository: UserRepository
 ) :
@@ -74,36 +74,17 @@ class MessagesViewModel @Inject constructor(
 
     var chatListener: ListenerRegistration? = null
     private var lastDocument: DocumentSnapshot? = null
-    private val messageList = ArrayList<ChatListData?>()
+    private val messageList = ArrayList<ChatUserListing?>()
     var oldMsgList = ArrayList<ChatListData>()
     var scrollType: Boolean = false
 
 
-    private var _responseLiveData = MutableLiveData<Event<DataResult<ChatListResponse>>>()
-    fun getChatList(): LiveData<Event<DataResult<ChatListResponse>>> = _responseLiveData
+    private var _responseLiveData = MutableLiveData<Event<DataResult<ChatUserListing>>>()
+    fun getChatList(): LiveData<Event<DataResult<ChatUserListing>>> = _responseLiveData
 
-
-    fun getCareTeamsByLovedOneId(
-        pageNumber: Int,
-        limit: Int,
-        status: Int
-    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
-        val lovedOneUUID = userRepository.getLovedOneUUId()
-        viewModelScope.launch {
-            val response =
-                lovedOneUUID?.let {
-                    careTeamsRepository.getCareTeamsByLovedOneId(
-                        pageNumber, limit, status,
-                        it
-                    )
-                }
-            withContext(Dispatchers.Main) {
-                response?.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
-            }
-        }
-        return careTeamsResponseLiveData
+    fun getCurrentUser(): UserProfile? {
+        return userRepository.getCurrentUser()
     }
-
 
     fun openChat(item: ChatListData) {
         _openChatMessage.value = SingleEvent(item)
@@ -121,9 +102,7 @@ class MessagesViewModel @Inject constructor(
 
 
     private fun showLog(msg: String) {
-        if (BuildConfig.DEBUG) {
-            Log.e("CHAT_DATA", msg)
-        }
+        Log.e("CHAT_DATA", msg)
     }
 
     // Search Chat
@@ -146,13 +125,13 @@ class MessagesViewModel @Inject constructor(
                 }
             }
             messageList.clear()
-            if (!textToSearch.isNullOrEmpty()) {
-                if (!list.isNullOrEmpty()) {
-                    messageList.addAll(list.clone() as ArrayList<ChatListData>)
-                }
-            } else messageList.addAll(oldMsgList)
-            val chatResponse = ChatListResponse(messageList, false)
-            _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
+//            if (!textToSearch.isNullOrEmpty()) {
+//                if (!list.isNullOrEmpty()) {
+//                    messageList.addAll(list.clone() as ArrayList<ChatListData>)
+//                }
+//            } else messageList.addAll(oldMsgList)
+//            val chatResponse = ChatListResponse(messageList, false)
+//            _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
 
         } else {
             // Searching in Group Chat based on group name
@@ -164,24 +143,50 @@ class MessagesViewModel @Inject constructor(
                 }
             }
             messageList.clear()
-            if (!textToSearch.isNullOrEmpty()) {
-                if (!list.isNullOrEmpty()) {
-                    messageList.addAll(list.clone() as ArrayList<ChatListData>)
-                }
-            } else messageList.addAll(oldMsgList)
-            val chatResponse = ChatListResponse(messageList, false)
-            _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
+//            if (!textToSearch.isNullOrEmpty()) {
+//                if (!list.isNullOrEmpty()) {
+//                    messageList.addAll(list.clone() as ArrayList<ChatListData>)
+//                }
+//            } else messageList.addAll(oldMsgList)
+//            val chatResponse = ChatListResponse(messageList, false)
+//            _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
 
         }
+    }
+
+
+
+
+    fun getChatRooms() {
+        var opponentUserIdList: ArrayList<ChatUserListing> = ArrayList()
+        val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
+        val query = db.collection(TableName.CARE_TEAM_CHATS_DEV)
+            .whereArrayContains("userIDs", loggedInUserID ?: "")
+//            .whereEqualTo("chat_type", Chat.CHAT_SINGLE)
+            .orderBy("updated_at", Query.Direction.DESCENDING)
+         query.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                if (firebaseFirestoreException != null) {
+                    Log.e("FIRESTORE", "Users listener error.", firebaseFirestoreException)
+                    return@addSnapshotListener
+                }
+                    opponentUserIdList = ArrayList()
+                querySnapshot?.documents?.forEach {
+                    val users = it.toObject(ChatUserListing::class.java)
+                    opponentUserIdList.add(users!!)
+
+                }
+//             val chatResponse = ChatListResponse(opponentUserIdList, type)
+//             _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
+            }
     }
 
     // Get One to One Chat messages
     fun getChats() {
         messageList.clear()
         Log.d(TAG, "Message List :${messageList.size} ")
-        val loggedInUserID = userRepository.getCurrentUser()?.id.toString()
+        val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
 
-        val query = db.collection(TableName.CHATS)
+        val query = db.collection(TableName.CARE_TEAM_CHATS_DEV)
             .whereArrayContains("userIDs", loggedInUserID ?: "")
 //            .whereEqualTo("chat_type", Chat.CHAT_SINGLE)
             .orderBy("updated_at", Query.Direction.DESCENDING)
@@ -234,11 +239,11 @@ class MessagesViewModel @Inject constructor(
 
                             val messageModel = getMessageModel(document)
 
-                            val position =
-                                messageList.indexOfFirst { it?.id == messageModel?.id }
-                            if (position >= 0) {
-                                messageList.removeAt(position)
-                            }
+//                            val position =
+//                                messageList.indexOfFirst { it?.id == messageModel?.id }
+//                            if (position >= 0) {
+//                                messageList.removeAt(position)
+//                            }
                             messageModel?.let {
                                 messageList.add(0, it)
                             }
@@ -256,15 +261,16 @@ class MessagesViewModel @Inject constructor(
                  userIdList.clear()
              }*/
 
-            sortMessages(true)
-
+          //  sortMessages(true)
+//
         }
 
     }
 
+/*
     private fun sortMessages(type: Boolean) {
 
-        messageList.sortByDescending { it?.date?.createDate("yyyy-MM-dd HH:mm:ss")?.time }
+        messageList.sortByDescending { it?.updated_at?.createDate("yyyy-MM-dd HH:mm:ss")?.time }
         oldMsgList.clear()
         if (!messageList.isNullOrEmpty()) {
 //            oldMsgList.addAll(messageList.toList() as ArrayList<ChatListData>)
@@ -277,59 +283,36 @@ class MessagesViewModel @Inject constructor(
         val chatResponse = ChatListResponse(messageList, type)
         _responseLiveData.postValue(Event(DataResult.Success(chatResponse)))
     }
+*/
 
-    private fun getMessageModel(document: DocumentChange): ChatListData? {
+    private fun getMessageModel(document: DocumentChange): ChatUserListing? {
         val messageModel = Gson().fromJson(
-            JSONObject(document.document.data).toString(),
-            ChatListData::class.java
+            document.document.toString(),
+            ChatUserListing::class.java
         )
-        messageModel.updated_at =
-            (document.document.data["updated_at"] as Timestamp?)
-        val cal = Calendar.getInstance().apply {
-            if (messageModel.updated_at != null)
-                time = messageModel.updated_at?.toDate()
-        }
-        messageModel.date = cal.time.getStringDate("yyyy-MM-dd HH:mm:ss")
-
-
-//        if (messageModel.senderId?.equals(userData?._id) == true) {
-//            messageModel.unread_count = 0
+//        messageModel.updated_at =
+//            (document.document.data["updated_at"] as Timestamp?)
+//        val cal = Calendar.getInstance().apply {
+//            if (messageModel.updated_at != null)
+//                time = messageModel.updated_at?.toDate()
 //        }
+//        messageModel.date = cal.time.getStringDate("yyyy-MM-dd HH:mm:ss")
 //
-
-        messageModel.usersDataMap.entries.forEach {
-            /* if (!it.key.equals(
-                     userRepository.getCurrentUser()?.id
-                 ) && messageModel.chatType == Chat.CHAT_SINGLE
-             ) {
-                 val existingData =
-                     userList.find { listData -> listData.getLoggedInUserId().equals(it.key) }
-                 if (existingData == null) {
-                     userIdList.add(it.key)
-                     messageModel.toUser = it.value
-                 } else {
-                     messageModel.toUser = existingData.getChatUser()
-                 }
-
-
-             }*/
-
-            if (it.key.equals(userRepository.getCurrentUser()?.id)) {
-                messageModel.unreadCount = it.value?.unreadCount
-
-            }
-            //            messageModel.userIDs?.find { !it.equals(userData?.user_id) }?.let { userId ->
-            //                if (userList.filter { it.user_id.equals(userId) }.isNullOrEmpty()) {
-            //
-            //                    userIdList.add(userId)
-            //                }
-            //
-            //            }
-        }
-        /* if (userIdList.size == 10) {
-             getUsers(userIdList.clone() as ArrayList<String>)
-             userIdList.clear()
-         }*/
+//
+////        if (messageModel.senderId?.equals(userData?._id) == true) {
+////            messageModel.unread_count = 0
+////        }
+////
+//
+//        messageModel.usersDataMap.entries.forEach {
+//
+//
+//            if (it.key.equals(userRepository.getCurrentUser()?.id)) {
+//                messageModel.unreadCount = it.value?.unreadCount
+//
+//            }
+//
+//        }
         return messageModel
     }
 
