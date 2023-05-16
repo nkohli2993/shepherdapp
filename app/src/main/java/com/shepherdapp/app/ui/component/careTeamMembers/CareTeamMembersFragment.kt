@@ -187,7 +187,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         observe(careTeamViewModel.openMemberDetails, ::openMemberDetails)
         observe(careTeamViewModel.deletePendingInviteLiveData, ::deletePendingInvite)
 
-        careTeamViewModel.pendingInviteResponseLiveData.observeEvent(this) {
+        careTeamViewModel.pendingInviteResponseLiveData.observeEvent(this) { it ->
             when (it) {
                 is DataResult.Failure -> {
                     hideLoading()
@@ -213,31 +213,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
                     careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
 
-//                    // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
-//                    if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
-//                        updateViewOfParentListenerListener?.updateViewVisibility(true)
-//                    } else {
-//                        updateViewOfParentListenerListener?.updateViewVisibility(false)
-//                    }
-
-
-                    /* careTeams?.clear()
-                     careTeams?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
-                     fragmentCareTeamMembersBinding.let {
-                         it.recyclerViewCareTeam.visibility = View.GONE
-                         it.txtNoCareTeamFound.visibility = View.VISIBLE
-                     }*/
-
-                    /*  val builder = AlertDialog.Builder(requireContext())
-                      val dialog = builder.apply {
-                          setTitle("CareTeams")
-                          setMessage("No CareTeam Found")
-                          setPositiveButton("OK") { _, _ ->
-                              // navigateToDashboardScreen()
-                          }
-                      }.create()
-                      dialog.show()
-                      dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)*/
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -307,16 +282,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                         it.txtNoCareTeamFound.visibility = View.VISIBLE
                     }
 
-                    /* val builder = AlertDialog.Builder(requireContext())
-                     val dialog = builder.apply {
-                         setTitle("CareTeams")
-                         setMessage("No CareTeam Found")
-                         setPositiveButton("OK") { _, _ ->
-                             // navigateToDashboardScreen()
-                         }
-                     }.create()
-                     dialog.show()
-                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)*/
                 }
             }
         }

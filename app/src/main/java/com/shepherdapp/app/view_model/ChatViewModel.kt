@@ -5,11 +5,15 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.ShepherdApp.Companion.db
+import com.shepherdapp.app.data.dto.DeleteChat
+import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
+import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
 import com.shepherdapp.app.data.dto.chat.*
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
@@ -40,7 +44,8 @@ class ChatViewModel @Inject constructor(
 
     private val TAG = "CarePointsViewModel"
     var chatModel: ChatModel? = null
-    var chatListData: CareTeamChatListData? = null
+
+    //    var chatListData: CareTeamChatListData? = null
     var isListenerInitialized: Boolean = false
     private var lastDocument: DocumentSnapshot? = null
     private var allMsgList: ArrayList<MessageData> = ArrayList()
@@ -49,11 +54,10 @@ class ChatViewModel @Inject constructor(
     var tableName: String? = null
     var usersTableName: String? = null
     var roomId: String? = null
+
+    var userAssignes: UserAssigneDetail? = null
     private var chatResponseData = MutableLiveData<Event<DataResult<MessageGroupResponse>>>()
     fun getChatMessages(): LiveData<Event<DataResult<MessageGroupResponse>>> = chatResponseData
-
-    private var _groupNameLiveData = MutableLiveData<Event<String>>()
-    var groupNameLiveData: LiveData<Event<String>> = _groupNameLiveData
 
     private var _noChatDataFoundLiveData = MutableLiveData<Event<Boolean>>()
     var noChatDataFoundLiveData: LiveData<Event<Boolean>> = _noChatDataFoundLiveData
@@ -88,106 +92,37 @@ class ChatViewModel @Inject constructor(
         return userRepository.getCurrentUser()
     }
 
-    fun setToUserDetail(
-        chatType: Int?,
-        toUsers: ArrayList<ChatUserDetail>?,
-    ) {
-        val loggedInUser = userRepository.getCurrentUser()
-        val memberList = ArrayList<ChatUserDetail?>()
-        toUsers?.let { memberList.addAll(it) }
-        val loggedInChatUser = loggedInUser?.toChatUser()
-        Log.d(TAG, "loggedIn User id:${loggedInChatUser?.id} ")
-        val membersId = memberList.map {
-            it?.id
-        }
-        if (!membersId.contains(loggedInChatUser?.id.toString())) {
-            memberList.add(loggedInChatUser)
-        }
-        chatListData = createChatListData(chatType, memberList)
-        Log.d(TAG, "setToUserDetail: ChatListData : $chatListData")
 
-        findChatId()
+    fun getRoomDetails(
+        roomId: String,
+        onListen: (RoomDetailsResponse) -> Unit
+    ): Task<DocumentSnapshot> {
+        val docRef: DocumentReference = db.collection(tableName!!).document(roomId)
+        var chatMessageDetails = RoomDetailsResponse()
+        return docRef.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val document = task.result
+                if (document?.toObject(RoomDetailsResponse::class.java) != null) {
+                    chatMessageDetails = document.toObject(RoomDetailsResponse::class.java)!!
+                }
+
+            }
+            return@addOnCompleteListener onListen(chatMessageDetails)
+        }
+
     }
 
-    private fun findChatId(
-        isFirstTime: Boolean = true,
-        onFound: (isFounded: Boolean) -> Unit = {}
-    ) {
-        val userIDs: ArrayList<String>? = if (isFirstTime) {
-            chatListData?.userIDs
-        } else {
-            chatListData?.userIDs?.reversed() as ArrayList<String>
-        }
-        userIDs?.sort()
-
-        tableName =
-            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CARE_TEAM_CHATS
-            } else {
-                TableName.CARE_TEAM_CHATS_DEV
-            }
-
-        db.collection(tableName!!)
-            .whereEqualTo("room_id", roomId)
-            .get()
-            .addOnSuccessListener {
-                if (!it.documents.isNullOrEmpty()) {
-
-                    // Get the document id of the messages
-                    chatListData?.id = it.documents[0].id
-                    Log.d(TAG, "findChatId:DocumentID is ${chatListData?.id} ")
-
-                    if (it.documents[0] != null) {
-                        chatListData = Gson().fromJson(
-                            JSONObject(it.documents[0].data).toString(),
-                            CareTeamChatListData::class.java
-                        )
-                        // Get the document id of the messages
-                        chatListData?.id = it.documents[0].id
-                    }
-                    onFound(true)
-                    initChatListener()
-
-                } else {
-
-                    // Enter the event id and data
-                    db.collection(tableName!!).add(chatListData.serializeToMap())
-                        .addOnSuccessListener {
-
-                            db.collection(tableName!!).document(it.id)
-                                .update("id", it.id)
-                            chatListData?.id = it.id
-
-                            initChatListener()
-                        }
-
-                }
-            }.addOnFailureListener {
-                if (BuildConfig.DEBUG) {
-                    it.printStackTrace()
-                    Log.d(TAG, "findChatId: Document id not found")
-                }
-                onFound(false)
-            }
-    }
-
-
-    private fun initChatListener() {
+    fun initChatListener() {
         isListenerInitialized = true
         chatResponseData.postValue(Event(DataResult.Loading()))
-        Log.d(TAG, "initChatListener: ${chatListData?.id}")
-        tableName =
-            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CARE_TEAM_CHATS
-            } else {
-                TableName.CARE_TEAM_CHATS_DEV
-            }
+        Log.d(TAG, "initChatListener: ${roomId}")
+
         val chatDocReference =
-            chatListData?.id?.let { ShepherdApp.db.collection(tableName!!).document(it) }
+            roomId?.let { ShepherdApp.db.collection(tableName!!).document(it) }
 
         var query = chatDocReference?.collection(TableName.MESSAGES)
-            ?.orderBy("created", Query.Direction.DESCENDING)
-        query = query?.limit(10)
+            ?.orderBy("created", Query.Direction.ASCENDING)
+//        query = query?.limit(30)
 
         messageListener?.remove()
         messageListener = null
@@ -244,14 +179,9 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun listenUnreadUpdates() {
-        tableName =
-            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CARE_TEAM_CHATS
-            } else {
-                TableName.CARE_TEAM_CHATS_DEV
-            }
+
         val chatRef =
-            chatListData?.id?.let { ShepherdApp.db.collection(tableName!!).document(it) }
+            roomId?.let { ShepherdApp.db.collection(tableName!!).document(it) }
         chatListener?.remove()
         chatListener = null
         chatListener = chatRef?.addSnapshotListener { value, error ->
@@ -272,18 +202,11 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun updateReadByData() {
-        tableName =
-            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CARE_TEAM_CHATS
-            } else {
-                TableName.CARE_TEAM_CHATS_DEV
-            }
-
         ShepherdApp.db.runTransaction { transaction ->
             allMsgList.forEach { message ->
                 if (!message.readIds.contains(userRepository.getCurrentUser()?.userId.toString())) {
                     val docRef =
-                        db.collection(tableName!!).document(chatListData?.id ?: "")
+                        db.collection(tableName!!).document(roomId ?: "")
                             .collection(TableName.MESSAGES).document(message.id ?: "")
                     transaction.get(docRef).data?.let {
                         val messageModel = Gson().fromJson(
@@ -293,9 +216,9 @@ class ChatViewModel @Inject constructor(
                         val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
                         messageModel.readIds.add(loggedInUserID)
                         transaction.update(docRef, "readIds", messageModel.readIds)
-                        if (messageModel.readIds.size >= chatListData?.userIDs?.size ?: 0) {
-                            transaction.update(docRef, "isRead", true)
-                        }
+                        /*  if (messageModel.readIds.size >= chatListData?.userIDs?.size ?: 0) {
+                              transaction.update(docRef, "isRead", true)
+                          }*/
                     }
 
                 }
@@ -365,7 +288,7 @@ class ChatViewModel @Inject constructor(
             senderID = userRepository.getCurrentUser()?.userId.toString()
             messageType = msgType
             readIds = ArrayList<String>().apply {
-                add(userRepository.getCurrentUser()?.userId.toString() ?: "")
+                add(userRepository.getCurrentUser()?.userId.toString())
             }
             senderName =
                 userRepository.getCurrentUser()?.firstname + " " + userRepository.getCurrentUser()?.lastname
@@ -378,66 +301,13 @@ class ChatViewModel @Inject constructor(
     }
 
     private fun sendMessage(messageData: MessageData, roomId: String) {
-        if (isListenerInitialized) {
-            addMessageInDb(messageData, roomId)
-        } else {
-            createNewChat {
-                if (it) {
-                    addMessageInDb(messageData, roomId)
-                }
-            }
-        }
-    }
-
-    private fun createNewChat(onChatCreated: (created: Boolean) -> Unit) {
-        tableName =
-            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CARE_TEAM_CHATS
-            } else {
-                TableName.CARE_TEAM_CHATS_DEV
-            }
-        if (chatListData?.id.isNullOrEmpty()) {
-
-            ShepherdApp.db.collection(tableName!!).add(chatListData.serializeToMap())
-                .addOnSuccessListener {
-
-                    ShepherdApp.db.collection(tableName!!).document(it.id).update("id", it.id)
-                    chatListData?.id = it.id
-
-                    initChatListener()
-                    onChatCreated(true)
-                }
-        } else {
-            chatListData?.id?.let {
-                ShepherdApp.db.collection(tableName!!).document(it)
-                    .set(chatListData.serializeToMap())
-                    .addOnSuccessListener {
-                        initChatListener()
-                        onChatCreated(true)
-                    }
-            }
-        }
-
+        addMessageInDb(messageData, roomId)
     }
 
     private fun addMessageInDb(messageData: MessageData, roomId: String) {
         var userIDs: ArrayList<String>? = ArrayList()
-        tableName =
-            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CARE_TEAM_CHATS
-            } else {
-                TableName.CARE_TEAM_CHATS_DEV
-            }
-        val chatReference = db.collection(tableName!!).document(chatListData?.id ?: "")
-        //Get group name, event_id and userIds
-        chatReference.get().addOnSuccessListener {
-            val chatData = Gson().fromJson(
-                it.data?.let { it1 -> JSONObject(it1).toString() },
-                CareTeamChatListData::class.java
-            )
-            userIDs = chatData.userIDs
-            Log.d(TAG, "userIDs:$userIDs")
-        }
+
+        val chatReference = db.collection(tableName!!).document(roomId)
 
         chatReference.collection(TableName.MESSAGES)
             .add(messageData.serializeToMap())
@@ -447,8 +317,8 @@ class ChatViewModel @Inject constructor(
                         "id" to it.id, "created" to FieldValue.serverTimestamp()
                     ) as Map<String, Any>
                 )
-                updateUnreadCount(roomId, chatReference, messageData, false)
-                // Send Notification
+
+                addLastMessage(roomId, messageData)
                 sendNotification(messageData, userIDs)
             }
     }
@@ -510,7 +380,7 @@ class ChatViewModel @Inject constructor(
                     put("from_name", messageData.senderName)
                     put("from_image", loggedInUser?.profilePhoto ?: "")
                     put("user_id", messageData.senderID)
-                    put("chat_id", chatListData?.id)
+                    put("room_id", roomId)
                     put("chat_type", Chat.CHAT_SINGLE)
                     put("sound", "default")
                     put("type", Const.NotificationAction.MESSAGE)
@@ -521,7 +391,7 @@ class ChatViewModel @Inject constructor(
                 val msgObject = JSONObject().apply {
                     put("data", notificationObject)
                     put("notification", notificationObject)
-                    put("chat_type", chatListData?.chatType)
+                    put("chat_type", Chat.CHAT_SINGLE)
                     put("user_id", loggedInUser?.userId)
                     put("registration_ids", jsArray)
                 }
@@ -542,65 +412,47 @@ class ChatViewModel @Inject constructor(
 //        Log.d(TAG, "firebase Tokens are: $firebaseTokensList")
     }
 
-    private fun updateUnreadCount(
-        roomId: String,
-        chatReference: DocumentReference,
-        messageData: MessageData,
-        isRead: Boolean
-    ) {
-        chatReference.get().addOnSuccessListener { documentSnapshot ->
-            try {
+    var deleteChatUserIdListing: java.util.ArrayList<DeleteChat> = java.util.ArrayList()
 
-                if (documentSnapshot != null && documentSnapshot.data != null) {
-                    val chatData = Gson().fromJson(
-                        JSONObject(documentSnapshot.data!!).toString(),
-                        CareTeamChatListData::class.java
-                    )
+    private fun addLastMessage(id: String?, messageData: MessageData) {
+        val roomArray = roomId!!.split("-")
+        //  Add LAST CHAT MESSAGE AND TIME
 
 
-                    if (isRead) {
-                        if (!chatData.senderId?.equals(userRepository.getCurrentUser()?.userId.toString())!!) {
-//                            chatDence.update("unread_count", chatData.unread_count)
-                        }
-                    } else {
-                        chatData.usersDataMap.keys.forEach {
-                            if (it != userRepository.getCurrentUser()?.userId.toString()) {
-                                var count = chatData.usersDataMap[it]?.unreadCount ?: 0
-                                count += 1
-                                chatData.usersDataMap[it]?.unreadCount = count
-                            }
-                        }
-                        chatReference.update(
-                            hashMapOf(
-                                "room_id" to roomId,
-                                "latest_message" to messageData.content,
-                                "last_message_type" to messageData.messageType,
-                                "updated_at" to FieldValue.serverTimestamp(),
-                                "users_data" to chatData.usersDataMap.serializeToMap(),
-                                "sender_id" to messageData.senderID
-                            ) as Map<String, Any?>
-                        )
-                    }
-                }
-            } catch (e: JSONException) {
-                showException(e)
-            }
-        }
+        val chatMessageDetails = ChatMessageDetails(
+            deleteChatUserIdListing,
+            messageData.content!!,
+            roomId!!,
+            UserDataMessages(
+                getCurrentUser()?.id,
+                getCurrentUser()?.userId,
+                getCurrentUser()?.firstname!!,
+                getCurrentUser()?.lastname,
+                getCurrentUser()?.profilePhoto!!
+            ),
+            UserDataMessages(
+                userAssignes!!.id,
+                userAssignes!!.userId,
+                userAssignes!!.firstname,
+                userAssignes!!.lastname,
+                userAssignes!!.profilePhoto,
+            ),
+            arrayListOf(roomArray[0].toLong(), roomArray[1].toLong()),
+            System.currentTimeMillis() / 1000
+        )
+
+        db.collection(tableName!!).document(id!!)
+            .set(chatMessageDetails)
     }
 
 
     fun getPreviousMessages() {
         chatResponseData.postValue(Event(DataResult.Loading()))
-        tableName =
-            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
-                TableName.CARE_TEAM_CHATS
-            } else {
-                TableName.CARE_TEAM_CHATS_DEV
-            }
+
 
         //get message list
 
-        val chatDocReference = db.collection(tableName!!).document(chatListData?.id!!)
+        val chatDocReference = db.collection(tableName!!).document(roomId!!)
         var query = chatDocReference.collection(TableName.MESSAGES)
             .orderBy("created", Query.Direction.DESCENDING)
 

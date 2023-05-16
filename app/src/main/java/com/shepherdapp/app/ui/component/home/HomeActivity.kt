@@ -33,11 +33,11 @@ import com.shepherdapp.app.ui.base.listeners.ChildFragmentToActivityListener
 import com.shepherdapp.app.ui.base.listeners.UpdateViewOfParentListener
 import com.shepherdapp.app.ui.component.carePoints.CarePointsFragment
 import com.shepherdapp.app.ui.component.careTeamMembers.CareTeamMembersFragment
+import com.shepherdapp.app.ui.component.chat.MessageFragment
 import com.shepherdapp.app.ui.component.dashboard.DashboardFragment
 import com.shepherdapp.app.ui.component.dashboard.DashboardFragmentDirections
 import com.shepherdapp.app.ui.component.lockBox.LockBoxFragment
 import com.shepherdapp.app.ui.component.login.LoginActivity
-import com.shepherdapp.app.ui.component.messages.MessagesFragment
 import com.shepherdapp.app.ui.component.myMedList.MyMedListFragment
 import com.shepherdapp.app.ui.component.profile.ProfileFragment
 import com.shepherdapp.app.ui.component.resources.ResourcesFragment
@@ -876,7 +876,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             navHostFragment!!.childFragmentManager
         when (fragmentManager.primaryNavigationFragment!!) {
             is CarePointsFragment, is MyMedListFragment, is LockBoxFragment, is CareTeamMembersFragment,
-            is ResourcesFragment, is VitalStatsFragment, is MessagesFragment, is ProfileFragment -> {
+            is ResourcesFragment, is VitalStatsFragment, is MessageFragment, is ProfileFragment -> {
                 findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
                     R.id.nav_dashboard
                 )

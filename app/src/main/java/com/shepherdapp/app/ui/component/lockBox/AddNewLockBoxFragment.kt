@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -33,20 +34,20 @@ import com.google.api.services.drive.DriveScopes
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypes
+import com.shepherdapp.app.data.dto.med_list.MedListData
+import com.shepherdapp.app.data.dto.med_list.Medlist
 import com.shepherdapp.app.databinding.FragmentAddNewLockBoxBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.ui.component.addNewMedication.AddNewMedicationFragmentDirections
 import com.shepherdapp.app.ui.component.lockBox.adapter.DocumentAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.LockBoxUsersAdapter
 import com.shepherdapp.app.ui.component.lockBox.adapter.UploadedLockBoxFilesAdapter
-import com.shepherdapp.app.utils.FileValidator
-import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
-import com.shepherdapp.app.utils.observe
-import com.shepherdapp.app.utils.observeEvent
 import com.shepherdapp.app.view_model.AddNewLockBoxViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -135,14 +136,6 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
         addNewLockBoxViewModel.getAllLockBoxTypes(pageNumber, limit, true)
         setUploadedFilesAdapter()
 
-//        fragmentAddNewLockBoxBinding.edtNote.setOnTouchListener { view, event ->
-//            view.parent.requestDisallowInterceptTouchEvent(true)
-//            when (event.action and MotionEvent.ACTION_MASK) {
-//                MotionEvent.ACTION_UP -> view.parent.requestDisallowInterceptTouchEvent(false)
-//            }
-//            false
-//        }
-
         fragmentAddNewLockBoxBinding.documentSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
@@ -177,35 +170,18 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                 fragmentAddNewLockBoxBinding.documentSpinner.setSelection(selectedPosition!!)
             }
         }
-
-
-        /* if (!args.userList.isNullOrEmpty()) {
-             usersList = args.userList!!.toList() as ArrayList<CareTeamModel>
-             Log.d(TAG, "initViewBinding: userList : $usersList")
-             Log.d(TAG, "initViewBinding: userList size  : ${usersList?.size}")
-
-             usersUUID = usersList?.map {
-                 it.user_id
-             } as ArrayList<String>
-
-             setLockBoxUsersAdapter()
-         }*/
-        /* val lBType = args.lockBoxType
-         Log.d(TAG, "lockBoxType : $lBType ")
-
-
-         val index = lockBoxTypes.indexOfFirst {
-             it.id == lBType?.id
-         }
-
-         fragmentAddNewLockBoxBinding.documentSpinner.setSelection(index)
- */
     }
+    private fun openMemberDetails(navigateEvent: SingleEvent<String>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user_lockBox" to usersList))
+        }
+    }
+
 
     override fun observeViewModel() {
         observeEvent(selectedFile, ::handleSelectedImage)
-        observeEvent(selectedFiles, ::handleSelectedFiles)
 
+        observe(addNewLockBoxViewModel.selectedUserLiveData, ::openMemberDetails)
         // Observe the response of upload multiple images api
         addNewLockBoxViewModel.uploadMultipleLockBoxDocResponseLiveData.observeEvent(this) {
             when (it) {
@@ -387,7 +363,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     }
 
     private fun setLockBoxUsersAdapter() {
-        lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it) }
+        lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it,addNewLockBoxViewModel) }
         fragmentAddNewLockBoxBinding.rvUsers.adapter = lockBoxUsersAdapter
 
         if (usersList?.size!! > 5) {
@@ -405,6 +381,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             R.id.btnChooseFile -> {
                 showChooseFileDialog()
             }
+
             R.id.btnDone -> {
                 if (isValid) {
                     fileName = fragmentAddNewLockBoxBinding.edtFileName.text.toString().trim()

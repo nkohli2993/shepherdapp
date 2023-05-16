@@ -436,7 +436,7 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     }
 
     private fun setLockBoxUsersAdapter() {
-        lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it) }
+        lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it, addNewLockBoxViewModel) }
         fragmentEditLockBoxBinding?.rvUsers?.adapter = lockBoxUsersAdapter
 
         /* if (usersList?.size!! > 5) {

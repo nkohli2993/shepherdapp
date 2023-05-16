@@ -2,17 +2,22 @@ package com.shepherdapp.app.data.dto.chat
 
 import com.shepherdapp.app.data.dto.ChatUsers
 import com.shepherdapp.app.data.dto.DeleteChat
-import com.shepherdapp.app.data.dto.LastMessageUser
 
-class ChatUserListing//Add this
-    () : java.io.Serializable {
-    val user_id_leave_group: ArrayList<DeleteChat>? = null
-    val last_message: LastMessageUser? = null
+class ChatUserListing : java.io.Serializable {
+    val deletedChatUserIds: ArrayList<DeleteChat>? = null
+    val lastMessages: String? = null
     val room_id: String? = null
-    val updated_at: String? = null
-//    val unseenMessageCount: Long? = null
+    val unseenMessageCount: Long? = null
     val user1: ChatUsers? = null
     val user2: ChatUsers? = null
     val users: ArrayList<Long>? = null
+    val createdAt :Long? =null
 
+    fun manageCreatedAt(): Long {
+        return if (createdAt.toString().length == 10)
+            createdAt!! * 1000
+        else
+            createdAt!!
     }
+
+}

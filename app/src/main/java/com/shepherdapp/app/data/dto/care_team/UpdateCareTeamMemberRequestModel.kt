@@ -9,5 +9,6 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class UpdateCareTeamMemberRequestModel(
-    @SerializedName("permission") var permission: String? = null
+    @SerializedName("permission") var permission: String? = null,
+    @SerializedName("relation_name") var relation_name: String? = null
 ):Parcelable

@@ -100,6 +100,8 @@
                 android:inputType="textMultiLine|textCapSentences"
                 android:paddingHorizontal="@dimen/_10sdp"
                 android:paddingVertical="@dimen/_15sdp"
+                android:paddingStart="@dimen/_5sdp"
+                android:paddingEnd="@dimen/_50sdp"
                 android:textColorHint="@color/_192032"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

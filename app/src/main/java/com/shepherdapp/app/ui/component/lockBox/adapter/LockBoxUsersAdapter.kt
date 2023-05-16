@@ -1,27 +1,21 @@
 package com.shepherdapp.app.ui.component.lockBox.adapter
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
-import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.LockBox
-import com.shepherdapp.app.databinding.AdapterEventsMembersBinding
 import com.shepherdapp.app.databinding.AdapterUsersLockboxBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
-import com.shepherdapp.app.utils.TextDrawable
 import com.shepherdapp.app.utils.setImageFromUrl
-import com.squareup.picasso.Picasso
+import com.shepherdapp.app.view_model.AddNewLockBoxViewModel
 
 
 class LockBoxUsersAdapter(
-    var usersList: ArrayList<CareTeamModel> = ArrayList()
+    var usersList: ArrayList<CareTeamModel> = ArrayList(),
+    val addNewLockBoxViewModel: AddNewLockBoxViewModel
 ) :
     RecyclerView.Adapter<LockBoxUsersAdapter.CarePointsEventsViewHolder>() {
     lateinit var binding: AdapterUsersLockboxBinding
@@ -30,7 +24,7 @@ class LockBoxUsersAdapter(
 
     private val onItemClickListener: RecyclerItemListener = object : RecyclerItemListener {
         override fun onItemSelected(vararg itemData: Any) {
-
+            addNewLockBoxViewModel.openUserListMedication("show")
         }
     }
 
@@ -84,6 +78,9 @@ class LockBoxUsersAdapter(
             itemBinding.let {
                 itemBinding.imageView.setImageFromUrl(imageUrl, firstName, lastName)
 
+            }
+            itemBinding.root.setOnClickListener {
+                onItemClickListener.onItemSelected()
             }
         }
     }

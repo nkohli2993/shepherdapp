@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.data.dto.chat.MessageGroupData
-import com.shepherdapp.app.databinding.AdapterCommentBinding
+import com.shepherdapp.app.databinding.AdapterCareChatDayBinding
 import com.shepherdapp.app.utils.extensions.getChatDate
 import com.shepherdapp.app.view_model.ChatViewModel
 import java.util.ArrayList
@@ -16,13 +16,13 @@ class ChatAdapter(
     private val viewModel: ChatViewModel,
     var commentList: ArrayList<MessageGroupData> = ArrayList(),
 ) : RecyclerView.Adapter<ChatAdapter.CarePointsEventsViewHolder>() {
-    lateinit var binding: AdapterCommentBinding
+    lateinit var binding: AdapterCareChatDayBinding
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CarePointsEventsViewHolder {
         context = parent.context
         binding =
-            AdapterCommentBinding.inflate(
+            AdapterCareChatDayBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -41,7 +41,7 @@ class ChatAdapter(
     }
 
 
-    inner class CarePointsEventsViewHolder(private val itemBinding: AdapterCommentBinding) :
+    inner class CarePointsEventsViewHolder(private val itemBinding: AdapterCareChatDayBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
 
         @SuppressLint("SimpleDateFormat", "SetTextI18n")

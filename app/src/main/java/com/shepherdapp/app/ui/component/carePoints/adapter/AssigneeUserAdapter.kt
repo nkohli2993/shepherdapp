@@ -5,14 +5,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherdapp.app.data.dto.added_events.AddedEventModel
 import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
+import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.AdapterAssigneeUsersBinding
 import com.shepherdapp.app.utils.setImageFromUrl
-import java.util.ArrayList
+import kotlin.collections.ArrayList
 
 class AssigneeUserAdapter(
-    var userList: ArrayList<UserAssigneeModel> = ArrayList(),
+    var assigneeList: ArrayList<UserAssigneeModel> = ArrayList(),
+    var usersList: ArrayList<CareTeamModel>,
     val listener: AssigneeSelected,
 ) :
     RecyclerView.Adapter<AssigneeUserAdapter.CarePointsAssigneeViewHolder>() {
@@ -35,7 +36,12 @@ class AssigneeUserAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return userList.size
+        return if(assigneeList.size>0){
+            assigneeList.size
+        }
+        else{
+            usersList.size
+        }
 
     }
 
@@ -49,14 +55,34 @@ class AssigneeUserAdapter(
 
         @SuppressLint("SimpleDateFormat", "SetTextI18n")
         fun bind(position: Int) {
-            val userDetail = userList[position]
-            itemBinding.imageViewCareTeam.setImageFromUrl(
-                userDetail.user_details.profilePhoto,
-                userDetail.user_details.firstname,
-                userDetail.user_details.lastname
-            )
-            itemBinding.textViewCareTeamName.text = userDetail.user_details.firstname+ " "+userDetail.user_details.lastname
-            itemBinding.root.setOnClickListener { listener.onAssigneeSelected(userDetail) }
+            if(assigneeList.size>0)
+            {
+                val userDetail = assigneeList[position]
+                itemBinding.imageViewCareTeam.setImageFromUrl(
+                    userDetail.user_details.profilePhoto,
+                    userDetail.user_details.firstname,
+                    userDetail.user_details.lastname
+                )
+                itemBinding.textViewCareTeamName.text = userDetail.user_details.firstname+ " "+userDetail.user_details.lastname
+                itemBinding.root.setOnClickListener { listener.onAssigneeSelected(userDetail) }
+            }
+            else{
+                val userDetail = usersList[position]
+
+                val imageUrl = usersList[position].user_id_details?.profilePhoto ?: ""
+                val firstName = usersList[position].user_id_details?.firstname
+                val lastName = usersList[position].user_id_details?.lastname
+
+
+                itemBinding.imageViewCareTeam.setImageFromUrl(
+                    userDetail.user_id_details?.profilePhoto ?: "",
+                    userDetail.user_id_details?.firstname,
+                    userDetail.user_id_details?.lastname
+                )
+                itemBinding.textViewCareTeamName.text = userDetail.user_id_details?.firstname+ " "+userDetail.user_id_details?.lastname
+                itemBinding.root.setOnClickListener { listener.onAssigneeLockBoxSelected(userDetail) }
+            }
+
         }
     }
 
@@ -71,6 +97,7 @@ class AssigneeUserAdapter(
 
     interface  AssigneeSelected{
         fun onAssigneeSelected(detail: UserAssigneeModel)
+        fun onAssigneeLockBoxSelected(detail: CareTeamModel)
     }
 
 }

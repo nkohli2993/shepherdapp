@@ -11,9 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
-import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
-import com.shepherdapp.app.data.dto.chat.ChatUserDetail
+import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
 import com.shepherdapp.app.data.dto.chat.MessageGroupData
 import com.shepherdapp.app.databinding.FragmentChatBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -37,8 +37,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
     private val chatViewModel: ChatViewModel by viewModels()
     private lateinit var fragmentChatBinding: FragmentChatBinding
     private val TAG = "ChatFragment"
-    private var userAssignes: UserAssigneeModel? = null
-    private var chatUserDetailList: ArrayList<ChatUserDetail>? = ArrayList()
+    private var userAssignes: UserAssigneDetail? = null
     private var roomId = ""
     private var allMsgLoaded: Boolean = false
     private var msgGroupList: ArrayList<MessageGroupData> = ArrayList()
@@ -54,52 +53,48 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             userAssignes =
                 @Suppress("DEPRECATION") requireArguments().getParcelable("assignee_user")
         }
-
         return fragmentChatBinding.root
     }
 
     override fun initViewBinding() {
         fragmentChatBinding.listener = this
-        roomId = if (chatViewModel.getCurrentUser()?.userId!! > userAssignes!!.user_details.id!!)
-            chatViewModel.getCurrentUser()?.userId.toString() + "-" + userAssignes!!.user_details.id!!
+        roomId = if (chatViewModel.getCurrentUser()?.userId!! > userAssignes!!.id!!)
+            chatViewModel.getCurrentUser()?.userId.toString() + "-" + userAssignes!!.id!!
         else
-            userAssignes!!.user_details.id!!.toString() + "-" + chatViewModel.getCurrentUser()?.userId.toString()
+            userAssignes!!.id!!.toString() + "-" + chatViewModel.getCurrentUser()?.userId.toString()
         chatViewModel.roomId = roomId
+
+        chatViewModel.tableName =
+            if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE/*"https://sheperdstagging.itechnolabs.tech/"*/) {
+                TableName.CARE_TEAM_CHATS
+            } else {
+                TableName.CARE_TEAM_CHATS_DEV
+            }
         if (userAssignes != null) {
             fragmentChatBinding.imgChatUser.loadImageFromURL(
-                userAssignes!!.user_details.profilePhoto,
-                userAssignes!!.user_details.firstname,
-                userAssignes!!.user_details.lastname
+                userAssignes!!.profilePhoto,
+                userAssignes!!.firstname,
+                userAssignes!!.lastname
             )
             fragmentChatBinding.txtName.text =
-                userAssignes!!.user_details.firstname.plus(" ${userAssignes!!.user_details.lastname}")
+                userAssignes!!.firstname.plus(" ${userAssignes!!.lastname}")
         }
-        setCommentAdapter()
-        chatUserDetailList!!.add(
-            ChatUserDetail(
-                id = userAssignes!!.user_details.id.toString(),
-                imageUrl = userAssignes!!.user_details.profilePhoto ?: "",
-                0,
-                userAssignes!!.user_details.firstname.plus(" ${userAssignes!!.user_details.lastname}")
-            )
-        )
-        chatViewModel.setToUserDetail(
-            Chat.CHAT_SINGLE,
-            chatUserDetailList
-        )
+        setMessageAdapter()
         // Load Chat
+        chatViewModel.initChatListener()
         loadChat()
         initScrollListener()
     }
 
     private fun loadChat() {
+        showLoading("")
         chatViewModel.getChatMessages()
             .observe(viewLifecycleOwner) { event ->
                 event.getContentIfNotHandled()?.let {
 
                     when (it) {
                         is DataResult.Loading -> {
-                            showLoading("")
+//                            showLoading("")
                         }
                         is DataResult.Failure -> {
                             hideLoading()
@@ -110,6 +105,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                             hideLoading()
                             msgGroupList.clear()
                             msgGroupList.addAll(it.data.groupList)
+                            msgGroupList.reverse()
                             Log.d(TAG, "loadChat: $msgGroupList")
                             setAdapter(it.data.scrollToBottom ?: false)
                         }
@@ -118,15 +114,18 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             }
     }
 
-    private fun setCommentAdapter() {
+    private fun setMessageAdapter() {
         //set comment adapter added in list
+        fragmentChatBinding.rvMsg.setItemViewCacheSize(200)
         commentAdapter = ChatAdapter(chatViewModel)
+        commentAdapter!!.setHasStableIds(true)
         fragmentChatBinding.rvMsg.adapter = commentAdapter
     }
 
     private fun setAdapter(scrollToBottom: Boolean) {
         commentAdapter?.addData(msgGroupList)
 
+/*
         if (scrollToBottom) {
             Handler(Looper.getMainLooper()).postDelayed({
                 (fragmentChatBinding.rvMsg.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
@@ -136,6 +135,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
 
             }, 200)
         }
+*/
     }
 
 
@@ -184,17 +184,18 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             }
             R.id.ivSend -> {
                 val message = fragmentChatBinding.editTextMessage.text.toString().trim()
-                if (message.isNullOrEmpty()) {
+                if (message.isEmpty()) {
                     showInfo(requireContext(), "Please enter message...")
                 } else {
-
+                    chatViewModel.userAssignes = userAssignes
                     chatViewModel.getAndSaveMessageData(
                         roomId,
                         Chat.MESSAGE_TEXT,
                         message = message
                     )
                     fragmentChatBinding.editTextMessage.text?.clear()
-                    hideKeyboard()
+                    fragmentChatBinding.rvMsg.scrollToPosition(msgGroupList.size-1)
+//                    hideKeyboard()
                 }
             }
         }

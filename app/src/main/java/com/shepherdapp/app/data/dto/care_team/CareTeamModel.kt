@@ -12,6 +12,7 @@ data class CareTeamModel(
     @SerializedName("image") var image: String? = null,
     @SerializedName("role_id") var role_id: Int? = null,
     @SerializedName("user_id") var user_id: String? = null,
+    @SerializedName("relation_name") var relation_name: String? = null,
     @SerializedName("love_user_id") var love_user_id: String? = null,
     @SerializedName("permission") var permission: String? = null,
     @SerializedName("created_at") var created_at: String? = null,

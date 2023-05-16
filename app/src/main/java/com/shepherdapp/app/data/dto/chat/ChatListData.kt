@@ -142,3 +142,13 @@ data class User(
     @SerializedName("firebase_token") var firebaseToken: String? = null,
     @SerializedName("document_id") var documentID: String? = null,
 ) : Parcelable
+
+
+@Parcelize
+data class UserDataMessages(
+    @SerializedName("id") var id: Int? = null,
+    @SerializedName("user_id") var userId: Int? = null,
+    @SerializedName("firstname") var firstname: String? = null,
+    @SerializedName("lastname") var lastname: String? = null,
+    @SerializedName("profile_photo") var profilePhoto: String? = null,
+) : Parcelable

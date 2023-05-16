@@ -158,8 +158,9 @@
                     android:drawableStart="@drawable/ic_profile"
                     android:drawablePadding="@dimen/_5sdp"
                     android:hint="@string/enter_relationship"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textCapSentences"
                     android:padding="@dimen/_12ssp"
+                    android:maxLines="1"
                     android:textColor="@color/_192032"
                     android:textSize="14sp"
                     bind:getRelationError="@{@string/relationship_member}" />

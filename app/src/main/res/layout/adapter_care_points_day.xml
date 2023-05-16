@@ -95,6 +95,7 @@
                 android:id="@+id/assigneeCLL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="-15sp"
                 app:layout_constraintStart_toEndOf="@+id/ivMessage"
                 app:layout_constraintTop_toTopOf="parent">
 

@@ -635,4 +635,6 @@
     <string name="yes_i_can_do_this">Yes, I can do this.</string>
     <string name="no_i_cannot_do_this">No, I cannot do this.</string>
     <string name="no_messages_found">No Messages Found</string>
+    <string name="please_enter_relation_with_user">Please enter relationship with user.</string>
+    <string name="_3_more">+3 More</string>
 </resources>

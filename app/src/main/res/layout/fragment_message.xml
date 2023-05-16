@@ -60,12 +60,14 @@
                     android:textColorHint="#192032"
                     android:textSize="@dimen/_15ssp" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgCancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="@dimen/_8sdp"
+                    android:visibility="gone"
+                    android:onClick="@{listener::onClick}"
                     android:paddingHorizontal="@dimen/_2sdp"
                     android:paddingVertical="@dimen/_8sdp"
                     android:src="@drawable/ic_cancel" />

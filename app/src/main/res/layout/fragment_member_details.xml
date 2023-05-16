@@ -58,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/_FCFCFC"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivBack">
 
@@ -177,6 +178,21 @@
                         app:fontFamily="@font/gotham_book"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/txtPhoneCare" />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtRelationCare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:drawableStart="@drawable/ic_relation_care"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="@dimen/_5sdp"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_12ssp"
+                        app:fontFamily="@font/gotham_book"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/txtAddressCare" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>

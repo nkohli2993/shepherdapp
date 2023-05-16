@@ -38,11 +38,13 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cvReceiver"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_10sdp"
             android:visibility="@{messageData.senderID.equals(userId)?View.GONE:View.VISIBLE}"
             app:cardBackgroundColor="@color/_F2F2F2"
             app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvReceivedTime"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardViewReceiver">
@@ -70,49 +72,60 @@
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize37Percent." />
             </LinearLayout>
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/receiverMessageC"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                app:cardBackgroundColor="@color/_F2F2F2"
-                app:cardUseCompatPadding="true"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/llImageWrapperReceiver"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardViewReceiver">
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    app:cardBackgroundColor="@color/_F2F2F2"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardViewReceiver">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txtReceiverName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:fontFamily="@font/gotham_medium"
-                        android:paddingHorizontal="@dimen/_10sdp"
-                        android:text="@{messageData.senderName}"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_12ssp"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/txtReceiverName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:text="@{messageData.senderName}"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_12ssp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txtReceiverMessage"
-                        style="@style/TextViewGothamBook"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_10sdp"
-                        android:text="@{messageData.content}"
-                        android:visibility="@{!messageData.content.empty &amp;&amp; !messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/txtReceiverMessage"
+                            style="@style/TextViewGothamBook"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10sdp"
+                            android:text="@{messageData.content}"
+                            android:textSize="@dimen/_11sdp"
+                            android:visibility="@{!messageData.content.empty &amp;&amp; !messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -131,56 +144,68 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cvSender"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:visibility="@{messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSendTime">
 
-            <com.google.android.material.card.MaterialCardView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/messageCL"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_10sdp"
-                app:cardBackgroundColor="#EAF1EF"
-                app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toStartOf="@+id/llImageWrapperSender"
-                app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardViewSender">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="#EAF1EF">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#EAF1EF"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.CardViewSender">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txtSenderName"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:fontFamily="@font/gotham_medium"
-                        android:paddingHorizontal="@dimen/_10sdp"
-                        android:text="@string/me"
-                        android:textColor="@color/_192032"
-                        android:textSize="@dimen/_12ssp"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/txtSenderMessage"
-                        style="@style/TextViewGothamBook"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_10sdp"
-                        android:text="@{messageData.content}"
-                        android:visibility="@{!messageData.content.empty &amp;&amp; messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_height="match_parent">
 
-            </com.google.android.material.card.MaterialCardView>
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/txtSenderName"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_15sdp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:paddingHorizontal="@dimen/_10sdp"
+                            android:text="@string/me"
+                            android:textColor="@color/_192032"
+                            android:textSize="@dimen/_12ssp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/txtSenderMessage"
+                            style="@style/TextViewGothamBook"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10sdp"
+                            android:text="@{messageData.content}"
+                            android:textSize="@dimen/_11sdp"
+                            android:visibility="@{!messageData.content.empty &amp;&amp; messageData.senderID.equals(userId)?View.VISIBLE:View.GONE}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <LinearLayout
                 android:id="@+id/llImageWrapperSender"

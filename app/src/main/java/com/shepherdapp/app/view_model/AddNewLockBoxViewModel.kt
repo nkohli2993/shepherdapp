@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 
 import com.shepherdapp.app.data.DataRepository
+import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.Documents
@@ -15,11 +16,14 @@ import com.shepherdapp.app.data.dto.lock_box.get_all_uploaded_documents.Uploaded
 import com.shepherdapp.app.data.dto.lock_box.lock_box_type.LockBoxTypeResponseModel
 import com.shepherdapp.app.data.dto.lock_box.upload_lock_box_doc.UploadLockBoxDocResponseModel
 import com.shepherdapp.app.data.dto.lock_box.upload_multiple_lock_box_doc.UploadMultipleLockBoxDoxResponseModel
+import com.shepherdapp.app.data.dto.med_list.MedListData
+import com.shepherdapp.app.data.dto.med_list.loved_one_med_list.UserMedicationRemiderData
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -77,6 +81,14 @@ class AddNewLockBoxViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<LockBoxTypeResponseModel>>>()
     var lockBoxTypeResponseLiveData: LiveData<Event<DataResult<LockBoxTypeResponseModel>>> =
         _lockBoxTypeResponseLiveData
+
+    private val _selectedUserLiveData =
+        MutableLiveData<SingleEvent<String>>()
+    val selectedUserLiveData: LiveData<SingleEvent<String>> get() = _selectedUserLiveData
+
+    fun openUserListMedication(value:String) {
+        _selectedUserLiveData.value = SingleEvent(value)
+    }
 
 
     // Upload lock box document

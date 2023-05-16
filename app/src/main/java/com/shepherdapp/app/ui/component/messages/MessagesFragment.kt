@@ -65,7 +65,7 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
     override fun initViewBinding() {
         fragmentMessagesBinding.listener = this
         //Get One to One Chat Data
-        messagesViewModel.getChats()
+       // messagesViewModel.getChats()
         fragmentMessagesBinding.rvDiscussionGroupMessages.visibility = View.GONE
         fragmentMessagesBinding.recyclerViewDirectMessages.visibility = View.VISIBLE
         setDirectMessagesAdapter()
@@ -127,41 +127,41 @@ class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickLi
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    val data = it.data.list
-                    if (data.isNullOrEmpty()) {
-                        hideKeyboard()
-                        fragmentMessagesBinding.txtNoChat.visibility = View.VISIBLE
-                        fragmentMessagesBinding.rvDiscussionGroupMessages.visibility = View.GONE
-                        fragmentMessagesBinding.recyclerViewDirectMessages.visibility = View.GONE
-                    } else {
-                        fragmentMessagesBinding.txtNoChat.visibility = View.GONE
-                        Log.d(TAG, "Chat Data :$data ")
-                        val oneToOneChatData = data.filter {
-                            it?.chatType == Chat.CHAT_SINGLE
-                        } as ArrayList
-                        Log.d(TAG, "One to One Chat Data :$oneToOneChatData ")
-
-                        if (!oneToOneChatData.isNullOrEmpty())
-                            directMessagesAdapter?.addData(oneToOneChatData)
-
-                        val groupChatData = data.filter {
-                            it?.chatType == Chat.CHAT_GROUP
-                        } as ArrayList
-                        Log.d(TAG, "Group Chat Data :$groupChatData ")
-
-                        if (!groupChatData.isNullOrEmpty())
-                            discussionsGroupAdapter?.addData(groupChatData)
-                        if (isDirectMessage == true) {
-                            fragmentMessagesBinding.rvDiscussionGroupMessages.visibility = View.GONE
-                            fragmentMessagesBinding.recyclerViewDirectMessages.visibility =
-                                View.VISIBLE
-                        } else {
-                            fragmentMessagesBinding.rvDiscussionGroupMessages.visibility =
-                                View.VISIBLE
-                            fragmentMessagesBinding.recyclerViewDirectMessages.visibility =
-                                View.GONE
-                        }
-                    }
+//                    val data = it.data.list
+//                    if (data.isNullOrEmpty()) {
+//                        hideKeyboard()
+//                        fragmentMessagesBinding.txtNoChat.visibility = View.VISIBLE
+//                        fragmentMessagesBinding.rvDiscussionGroupMessages.visibility = View.GONE
+//                        fragmentMessagesBinding.recyclerViewDirectMessages.visibility = View.GONE
+//                    } else {
+//                        fragmentMessagesBinding.txtNoChat.visibility = View.GONE
+//                        Log.d(TAG, "Chat Data :$data ")
+//                        val oneToOneChatData = data.filter {
+//                            it?.chatType == Chat.CHAT_SINGLE
+//                        } as ArrayList
+//                        Log.d(TAG, "One to One Chat Data :$oneToOneChatData ")
+//
+//                        if (!oneToOneChatData.isNullOrEmpty())
+//                            directMessagesAdapter?.addData(oneToOneChatData)
+//
+//                        val groupChatData = data.filter {
+//                            it?.chatType == Chat.CHAT_GROUP
+//                        } as ArrayList
+//                        Log.d(TAG, "Group Chat Data :$groupChatData ")
+//
+//                        if (!groupChatData.isNullOrEmpty())
+//                            discussionsGroupAdapter?.addData(groupChatData)
+//                        if (isDirectMessage == true) {
+//                            fragmentMessagesBinding.rvDiscussionGroupMessages.visibility = View.GONE
+//                            fragmentMessagesBinding.recyclerViewDirectMessages.visibility =
+//                                View.VISIBLE
+//                        } else {
+//                            fragmentMessagesBinding.rvDiscussionGroupMessages.visibility =
+//                                View.VISIBLE
+//                            fragmentMessagesBinding.recyclerViewDirectMessages.visibility =
+//                                View.GONE
+//                        }
+//                    }
 
 
                 }

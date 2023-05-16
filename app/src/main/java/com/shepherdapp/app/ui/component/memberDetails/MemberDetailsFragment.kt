@@ -69,6 +69,8 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     }
 
     private fun initView() {
+        // Set Email ID
+        fragmentMemberDetailsBinding.txtRelationCare.text = careTeam?.relation_name ?: "N/A"
         careTeam?.user_id_details.let {
             // Set profile pic
             fragmentMemberDetailsBinding.imgCareTeamMember.setImageFromUrl(
@@ -83,15 +85,18 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             // Set Email ID
             fragmentMemberDetailsBinding.txtEmailCare.text = it?.email
 
+
             // Set Address
             fragmentMemberDetailsBinding.txtAddressCare.text =
                 it?.address ?: "No address available"
             // Set Phone Number
             var phone = "+" + it?.phone
             val phoneArr = it?.phone?.split("-")
+            Log.d(logTag, "phoneArr: $phoneArr $phone")
             val phoneCode = phoneArr?.get(0)
             val phoneNumber = phoneArr?.get(1)
             //val phoneWithHyphen = phoneNumber?.let { it1 -> getStringWithHyphen(it1) }
+
             val phoneWithHyphen = phoneNumber?.getStringWithHyphen(phoneNumber)
             val phoneNo = "$phoneCode $phoneWithHyphen"
             Log.d(logTag, "initView: $phoneNo")
@@ -118,8 +123,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                         R.color._399282
                     )
                 )
-
-
             } else {
                 fragmentMemberDetailsBinding.txtPhoneCare.setTextColor(
                     ContextCompat.getColor(
@@ -133,8 +136,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                         R.color._192032
                     )
                 )
-
-
             }
 
         }
@@ -292,24 +293,17 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 findNavController().navigate(action)
             }
             R.id.ivChat -> {
-                val detail = UserAssigneeModel(
-                    careTeam!!.id,
-                    careTeam!!.user_id,
-                    null,
-                    "",
-                    "", "",
-                    UserAssigneDetail(
-                        careTeam!!.user_id_details!!.id,
-                        careTeam!!.user_id_details!!.id,
-                        careTeam!!.user_id_details!!.firstname,
-                        careTeam!!.user_id_details!!.lastname,
-                        careTeam!!.user_id_details!!.dob,
-                        careTeam!!.user_id_details!!.address,
-                        careTeam!!.user_id_details!!.phone,
-                        careTeam!!.user_id_details!!.phone,
-                        careTeam!!.user_id_details!!.profilePhoto,
-                        null, null, "", "", ""
-                    )
+                val detail = UserAssigneDetail(
+                    careTeam!!.user_id_details!!.id,
+                    careTeam!!.user_id_details!!.id,
+                    careTeam!!.user_id_details!!.firstname,
+                    careTeam!!.user_id_details!!.lastname,
+                    careTeam!!.user_id_details!!.dob,
+                    careTeam!!.user_id_details!!.address,
+                    careTeam!!.user_id_details!!.phone,
+                    careTeam!!.user_id_details!!.phone,
+                    careTeam!!.user_id_details!!.profilePhoto,
+                    null, null, "", "", ""
                 )
                 findNavController().navigate(
                     R.id.action_new_message_to_chat,
@@ -381,7 +375,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                     careTeam?.id?.let {
                         memberDetailsViewModel.updateCareTeamMember(
                             it,
-                            UpdateCareTeamMemberRequestModel(selectedModule)
+                            UpdateCareTeamMemberRequestModel(selectedModule,careTeam?.relation_name)
                         )
                     }
                 }

@@ -44,11 +44,10 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class MessagesViewModel @Inject constructor(
-    private val careTeamsRepository: CareTeamsRepository,
     private val userRepository: UserRepository
 ) :
     BaseViewModel() {
-
+    var tableName: String? = null
     private var TAG = "MessagesViewModel"
     private val _openChatMessage = MutableLiveData<SingleEvent<ChatListData>>()
     val openChatMessageItem: LiveData<SingleEvent<ChatListData>> get() = _openChatMessage
@@ -88,10 +87,6 @@ class MessagesViewModel @Inject constructor(
 
     fun openChat(item: ChatListData) {
         _openChatMessage.value = SingleEvent(item)
-    }
-
-    fun openGroupChat(){
-
     }
 
 
@@ -160,8 +155,8 @@ class MessagesViewModel @Inject constructor(
     fun getChatRooms() {
         var opponentUserIdList: ArrayList<ChatUserListing> = ArrayList()
         val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
-        val query = db.collection(TableName.CARE_TEAM_CHATS_DEV)
-            .whereArrayContains("userIDs", loggedInUserID ?: "")
+        val query = db.collection(tableName!!)
+            .whereArrayContains("room_id", loggedInUserID ?: "")
 //            .whereEqualTo("chat_type", Chat.CHAT_SINGLE)
             .orderBy("updated_at", Query.Direction.DESCENDING)
          query.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -180,13 +175,41 @@ class MessagesViewModel @Inject constructor(
             }
     }
 
+
+    fun getChatRooms(
+        userId: Int,
+        onListen: (ArrayList<ChatUserListing>) -> Unit
+    ): ListenerRegistration {
+        var opponentUserIdList: ArrayList<ChatUserListing> = ArrayList()
+        return db.collection(tableName!!)
+            //.whereArrayContains("userIds", FirebaseAuth.getInstance().currentUser?.uid!!)
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                if (firebaseFirestoreException != null) {
+                    Log.e("FIRESTORE", "Users listener error.", firebaseFirestoreException)
+                    return@addSnapshotListener
+                }
+
+                opponentUserIdList = ArrayList()
+                querySnapshot?.documents?.forEach {
+                    val userIds = it.id.split("-")
+                    userIds.forEachIndexed { index, s ->
+                        if (s == userId.toString()) {
+                            val users = it.toObject(ChatUserListing::class.java)
+                            opponentUserIdList.add(users!!)
+                        }
+                    }
+                }
+                onListen(opponentUserIdList)
+            }
+    }
+
     // Get One to One Chat messages
     fun getChats() {
         messageList.clear()
         Log.d(TAG, "Message List :${messageList.size} ")
         val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
 
-        val query = db.collection(TableName.CARE_TEAM_CHATS_DEV)
+        val query = db.collection(tableName!!)
             .whereArrayContains("userIDs", loggedInUserID ?: "")
 //            .whereEqualTo("chat_type", Chat.CHAT_SINGLE)
             .orderBy("updated_at", Query.Direction.DESCENDING)
@@ -286,6 +309,7 @@ class MessagesViewModel @Inject constructor(
 */
 
     private fun getMessageModel(document: DocumentChange): ChatUserListing? {
+        Log.e("catch_exception","document: ${document}")
         val messageModel = Gson().fromJson(
             document.document.toString(),
             ChatUserListing::class.java

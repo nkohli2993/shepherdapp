@@ -498,6 +498,10 @@
             android:defaultValue="@null"
             app:argType="com.shepherdapp.app.data.dto.care_team.CareTeamModel[]"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_to_assigneeUsersFragment"
+            app:destination="@+id/assigneeUsersFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/lovedOneProfileFragment"
@@ -582,8 +586,8 @@
         android:label="@string/messages"
         tools:layout="@layout/fragment_message">
         <action
-            android:id="@+id/action_nav_chat_fragment"
-            app:destination="@id/nav_chat" />
+            android:id="@+id/action_new_message_to_chat"
+            app:destination="@+id/nav_chat" />
     </fragment>
 
 </navigation>

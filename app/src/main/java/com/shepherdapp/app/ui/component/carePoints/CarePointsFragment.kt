@@ -356,8 +356,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.calendarPView.clearSelection()
                 val calendar = Calendar.getInstance()
                 fragmentCarePointsBinding.calendarPView.setDateSelected(calendar, true)
-                startDate = sdf!!.format(calendar.time)
-                endDate = sdf!!.format(calendar.time)
+                startDate = sdf.format(calendar.time)
+                endDate = sdf.format(calendar.time)
                 fragmentCarePointsBinding.calendarPView.selectionMode =
                     MaterialCalendarView.SELECTION_MODE_SINGLE
                 getCarePointList(startDate, endDate)
@@ -565,8 +565,8 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 val calendar = Calendar.getInstance()
                 calendar.time = selectedDate
                 fragmentCarePointsBinding.calendarPView.setDateSelected(calendar, true)
-                startDate = sdf!!.format(selectedDate)
-                endDate = sdf!!.format(selectedDate)
+                startDate = sdf.format(selectedDate)
+                endDate = sdf.format(selectedDate)
                 getCarePointList(startDate, endDate)
             }
             CalendarState.Week.value -> {
@@ -575,10 +575,10 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 fragmentCarePointsBinding.calendarPView.clearSelection()
                 val calendar = Calendar.getInstance()
                 calendar.time = selectedDate
-                startDate = sdf!!.format(calendar.time)
+                startDate = sdf.format(calendar.time)
                 val startDay = SimpleDateFormat("MMM dd").format(calendar.time)
                 calendar.add(Calendar.DATE, 6)
-                endDate = sdf!!.format(calendar.time)
+                endDate = sdf.format(calendar.time)
                 val endDay = SimpleDateFormat("MMM dd").format(calendar.time)
                 fragmentCarePointsBinding.textViewSelectGroup.text =
                     getString(R.string.week).plus(", ").plus(startDay).plus(" to ").plus(endDay)
@@ -597,7 +597,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
 
                 val selectedCalendar: Calendar = Calendar.getInstance()
                 selectedCalendar.time = selectedDate
-                startDate = sdf!!.format(selectedDate.time)
+                startDate = sdf.format(selectedDate.time)
                 endDate = startDate.dropLast(2) + lastDayOfMonth(
                     selectedCalendar.get(Calendar.YEAR),
                     selectedCalendar.get(Calendar.MONTH) + 1

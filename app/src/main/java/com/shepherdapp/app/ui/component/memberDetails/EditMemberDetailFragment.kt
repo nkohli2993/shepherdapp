@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
+import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.databinding.FragmentEditMemberDetailBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
@@ -44,12 +45,20 @@ class EditMemberDetailFragment : BaseFragment<FragmentEditMemberDetailBinding>()
 
     private fun initView() {
         careTeam?.let { careMemberDetail ->
-            fragmentEditMemberDetailBinding.edtRole.setText(careMemberDetail.careRoles?.name)
-            careTeam?.user_id_details.let {memberUserDetail ->
-                fragmentEditMemberDetailBinding.edtEmail.setText(memberUserDetail!!.email ?: "")
-                fragmentEditMemberDetailBinding.edtRelationShip.setText(memberUserDetail.relation ?: "")
+            fragmentEditMemberDetailBinding.edtRole.text = careMemberDetail.careRoles?.name
+            fragmentEditMemberDetailBinding.edtRelationShip.setText(careMemberDetail.relation_name)
+            careTeam?.user_id_details.let { memberUserDetail ->
+                fragmentEditMemberDetailBinding.edtEmail.text = memberUserDetail!!.email ?: ""
+                fragmentEditMemberDetailBinding.edtRelationShip.setText(
+                    memberUserDetail.relation ?: ""
+                )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fragmentEditMemberDetailBinding.edtRelationShip.setText(careTeam?.relation_name ?: "N/A")
     }
 
     override fun observeViewModel() {
@@ -78,12 +87,24 @@ class EditMemberDetailFragment : BaseFragment<FragmentEditMemberDetailBinding>()
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.ivBack ->{
+        when (v?.id) {
+            R.id.ivBack -> {
                 findNavController().popBackStack()
             }
-            R.id.btnSubmit ->{
-
+            R.id.btnSubmit -> {
+                if (fragmentEditMemberDetailBinding.edtRelationShip.text.toString().isEmpty()) {
+                    showError(requireContext(), getString(R.string.please_enter_relation_with_user))
+                } else {
+                    careTeam?.id?.let {
+                        memberDetailsViewModel.updateCareTeamMember(
+                            it,
+                            UpdateCareTeamMemberRequestModel(
+                                careTeam?.permission,
+                                fragmentEditMemberDetailBinding.edtRelationShip.text.toString()
+                            )
+                        )
+                    }
+                }
             }
         }
     }

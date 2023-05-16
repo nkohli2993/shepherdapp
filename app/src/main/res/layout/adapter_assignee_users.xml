@@ -8,17 +8,17 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:elevation="@dimen/_5sdp"
-        app:cardCornerRadius="@dimen/_10sdp"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_3sdp"
-        android:layout_height="wrap_content">
+        android:elevation="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/_10sdp">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/rootCL"
             android:layout_width="match_parent"
-            android:paddingHorizontal="@dimen/_5sdp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/_5sdp">
 
             <LinearLayout
                 android:id="@+id/llImageWrapper"
@@ -39,7 +39,7 @@
                     android:padding="@dimen/_2sdp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_defalut_profile_pic"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize2Percent" />
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize1Percent" />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
