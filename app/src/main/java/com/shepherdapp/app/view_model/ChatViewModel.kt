@@ -56,6 +56,9 @@ class ChatViewModel @Inject constructor(
     var roomId: String? = null
 
     var userAssignes: UserAssigneDetail? = null
+
+    private var _lastChatDetail = MutableLiveData<Event<ChatUserListing>>()
+    var lastChatDetail: LiveData<Event<ChatUserListing>> = _lastChatDetail
     private var chatResponseData = MutableLiveData<Event<DataResult<MessageGroupResponse>>>()
     fun getChatMessages(): LiveData<Event<DataResult<MessageGroupResponse>>> = chatResponseData
 
@@ -126,7 +129,7 @@ class ChatViewModel @Inject constructor(
 
         messageListener?.remove()
         messageListener = null
-        listenUnreadUpdates()
+//        listenUnreadUpdates()
 
         messageListener = query?.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -178,27 +181,26 @@ class ChatViewModel @Inject constructor(
         }
     }
 
-    private fun listenUnreadUpdates() {
+    fun listenUnreadUpdates(): ChatUserListing? {
 
         val chatRef =
-            roomId?.let { ShepherdApp.db.collection(tableName!!).document(it) }
+            roomId?.let { db.collection(tableName!!).document(it) }
         chatListener?.remove()
         chatListener = null
+        var chatData: ChatUserListing? = null
         chatListener = chatRef?.addSnapshotListener { value, error ->
             if (value?.metadata?.hasPendingWrites() == false) {
                 if (value.data != null) {
-                    val chatData = Gson().fromJson(
+                    chatData = Gson().fromJson(
                         JSONObject(value.data!!).toString(),
-                        CareTeamChatListData::class.java
+                        ChatUserListing::class.java
                     )
-                    val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
-                    if (chatData.usersDataMap[loggedInUserID]?.unreadCount ?: 0 > 0) {
-                        chatData.usersDataMap[loggedInUserID]?.unreadCount = 0
-                        chatRef.update("users_data", chatData.usersDataMap.serializeToMap())
-                    }
+                    _lastChatDetail.postValue(Event(chatData!!))
+                    Log.e("catch_count", "count: ${chatData!!.unseenMessageCount}")
                 }
             }
         }
+        return chatData
     }
 
     private fun updateReadByData() {
@@ -280,7 +282,8 @@ class ChatViewModel @Inject constructor(
         roomId: String,
         msgType: Int,
         imageFile: String = "",
-        message: String? = ""
+        message: String? = "",
+        unReadCount: Long
     ) {
         val data = MessageData().apply {
             content = message
@@ -297,16 +300,16 @@ class ChatViewModel @Inject constructor(
                 attachment = imageFile
             }
         }
-        sendMessage(data, roomId)
+        sendMessage(data, roomId, unReadCount)
     }
 
-    private fun sendMessage(messageData: MessageData, roomId: String) {
-        addMessageInDb(messageData, roomId)
+    private fun sendMessage(messageData: MessageData, roomId: String, unReadCount: Long) {
+        addMessageInDb(messageData, roomId, unReadCount)
     }
 
-    private fun addMessageInDb(messageData: MessageData, roomId: String) {
-        var userIDs: ArrayList<String>? = ArrayList()
-
+    private fun addMessageInDb(messageData: MessageData, roomId: String, unReadCount: Long) {
+        val userIDs: ArrayList<String> = ArrayList()
+        userIDs.add(userAssignes!!.userId.toString())
         val chatReference = db.collection(tableName!!).document(roomId)
 
         chatReference.collection(TableName.MESSAGES)
@@ -318,7 +321,7 @@ class ChatViewModel @Inject constructor(
                     ) as Map<String, Any>
                 )
 
-                addLastMessage(roomId, messageData)
+                addLastMessage(roomId, messageData, unReadCount)
                 sendNotification(messageData, userIDs)
             }
     }
@@ -414,10 +417,9 @@ class ChatViewModel @Inject constructor(
 
     var deleteChatUserIdListing: java.util.ArrayList<DeleteChat> = java.util.ArrayList()
 
-    private fun addLastMessage(id: String?, messageData: MessageData) {
+    private fun addLastMessage(id: String?, messageData: MessageData, unReadCount: Long) {
         val roomArray = roomId!!.split("-")
         //  Add LAST CHAT MESSAGE AND TIME
-
 
         val chatMessageDetails = ChatMessageDetails(
             deleteChatUserIdListing,
@@ -428,21 +430,28 @@ class ChatViewModel @Inject constructor(
                 getCurrentUser()?.userId,
                 getCurrentUser()?.firstname!!,
                 getCurrentUser()?.lastname,
-                getCurrentUser()?.profilePhoto!!
+                getCurrentUser()?.profilePhoto?:""
             ),
             UserDataMessages(
                 userAssignes!!.id,
                 userAssignes!!.userId,
                 userAssignes!!.firstname,
                 userAssignes!!.lastname,
-                userAssignes!!.profilePhoto,
+                userAssignes!!.profilePhoto?:"",
             ),
             arrayListOf(roomArray[0].toLong(), roomArray[1].toLong()),
-            System.currentTimeMillis() / 1000
+            System.currentTimeMillis() / 1000,
+            unReadCount,
+            getCurrentUser()?.userId.toString()
         )
 
         db.collection(tableName!!).document(id!!)
             .set(chatMessageDetails)
+    }
+
+    fun updateUnseenCount(roomId: String, count: Long) {
+        db.collection(tableName!!).document(roomId)
+            .set(hashMapOf("unseenMessageCount" to count.toLong()), SetOptions.merge())
     }
 
 

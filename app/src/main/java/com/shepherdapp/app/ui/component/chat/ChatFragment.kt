@@ -1,15 +1,12 @@
 package com.shepherdapp.app.ui.component.chat
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
@@ -21,7 +18,6 @@ import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.chat.adapter.ChatAdapter
 import com.shepherdapp.app.utils.*
-import com.shepherdapp.app.utils.extensions.hideKeyboard
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.view_model.ChatViewModel
@@ -42,6 +38,8 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
     private var allMsgLoaded: Boolean = false
     private var msgGroupList: ArrayList<MessageGroupData> = ArrayList()
     private var commentAdapter: ChatAdapter? = null
+    private var unReadCount: Long = 0
+    private var lastMessageSenderId = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -79,11 +77,18 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             fragmentChatBinding.txtName.text =
                 userAssignes!!.firstname.plus(" ${userAssignes!!.lastname}")
         }
-        setMessageAdapter()
+
         // Load Chat
         chatViewModel.initChatListener()
+        var chatData = chatViewModel.listenUnreadUpdates()
+        if (chatData != null) {
+            unReadCount = chatData.unseenMessageCount ?: 0
+            lastMessageSenderId = chatData.lastSenderId!!
+        }
+
         loadChat()
         initScrollListener()
+        setMessageAdapter()
     }
 
     private fun loadChat() {
@@ -107,7 +112,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                             msgGroupList.addAll(it.data.groupList)
                             msgGroupList.reverse()
                             Log.d(TAG, "loadChat: $msgGroupList")
-                            setAdapter(it.data.scrollToBottom ?: false)
+                            commentAdapter?.addData(msgGroupList)
                         }
                     }
                 }
@@ -120,22 +125,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
         commentAdapter = ChatAdapter(chatViewModel)
         commentAdapter!!.setHasStableIds(true)
         fragmentChatBinding.rvMsg.adapter = commentAdapter
-    }
 
-    private fun setAdapter(scrollToBottom: Boolean) {
-        commentAdapter?.addData(msgGroupList)
-
-/*
-        if (scrollToBottom) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                (fragmentChatBinding.rvMsg.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                    0,
-                    0
-                )
-
-            }, 200)
-        }
-*/
     }
 
 
@@ -174,6 +164,11 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                 }
             }
         }
+        chatViewModel.lastChatDetail.observeEvent(this) {
+            unReadCount = it.unseenMessageCount ?: 0
+            lastMessageSenderId = it.lastSenderId!!
+            updateUnseenCount()
+        }
     }
 
     override fun onClick(p0: View?) {
@@ -187,20 +182,43 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                 if (message.isEmpty()) {
                     showInfo(requireContext(), "Please enter message...")
                 } else {
+                    unReadCount += 1
                     chatViewModel.userAssignes = userAssignes
                     chatViewModel.getAndSaveMessageData(
                         roomId,
                         Chat.MESSAGE_TEXT,
-                        message = message
+                        message = message,
+                        unReadCount = unReadCount
                     )
                     fragmentChatBinding.editTextMessage.text?.clear()
-                    fragmentChatBinding.rvMsg.scrollToPosition(msgGroupList.size-1)
+                    fragmentChatBinding.rvMsg.scrollToPosition(msgGroupList.size - 1)
+                    updateUnseenCount()
 //                    hideKeyboard()
                 }
             }
         }
     }
 
+    fun updateUnseenCount() {
+        //clear unseen count
+        if (commentAdapter != null &&
+            commentAdapter?.messageList?.size!! > 0
+        ) {
+
+            if (lastMessageSenderId.toInt() != chatViewModel.getCurrentUser()?.userId) {
+                //clear unseen count because the last message is from other user
+                chatViewModel.updateUnseenCount(roomId, 0)
+            } else {
+                chatViewModel.updateUnseenCount(roomId, unReadCount)
+
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        updateUnseenCount()
+    }
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_chat

@@ -5,6 +5,7 @@ import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -20,6 +21,7 @@ import com.shepherdapp.app.databinding.FragmentMessageBinding
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.chat.adapter.MessagesListingAdapter
 import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.RecyclerTouchListener
 import com.shepherdapp.app.utils.TableName
 import com.shepherdapp.app.view_model.MessagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,6 +38,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
     private var isActive = false
     override fun getLayoutRes() = R.layout.fragment_message
     private val messagesViewModel: MessagesViewModel by viewModels()
+    private var touchListener: RecyclerTouchListener? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,7 +58,25 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
 
     override fun initViewBinding() {
         fragmentMessageBinding.listener = this
+        touchListener = RecyclerTouchListener(activity, fragmentMessageBinding.rvChatListing)
+        touchListener!!
+            .setClickable(object : RecyclerTouchListener.OnRowClickListener {
+                override fun onRowClicked(position: Int) {
 
+                }
+
+                override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}
+            })
+            .setSwipeOptionViews(R.id.delete_task)
+            .setSwipeable(R.id.cardView ,R.id.rowBG
+            ) { viewID, _ ->
+                when (viewID) {
+                    R.id.delete_task -> {
+
+                    }
+                }
+            }
+        fragmentMessageBinding.rvChatListing.addOnItemTouchListener(touchListener!!)
     }
 
     override fun observeViewModel() {
@@ -133,11 +154,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
                     chatUserListing.user1!!.userId!!.toInt(),
                     chatUserListing.user1.userId!!.toInt(),
                     chatUserListing.user1.firstname,
-                    chatUserListing.user1.lastname,
-                    "",
-                    "",
-                    "",
-                    "",
+                    chatUserListing.user1.lastname, "", "", "", "",
                     chatUserListing.user1.profilePhoto,
                 )
 
@@ -154,10 +171,8 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
         messagesListingAdapter = null
         observeViewModel()
         try {
-            //   if (isActive) {
             showLoading("")
             messagesViewModel.getChats()
-            //   }
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         } catch (e: Exception) {

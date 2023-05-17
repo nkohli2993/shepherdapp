@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,112 +10,153 @@
             type="com.shepherdapp.app.data.dto.chat.ChatListData" />
 
     </data>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_10sdp"
-        app:cardBackgroundColor="@color/colorWhite"
-        app:cardCornerRadius="@dimen/_10sdp"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:gravity="center_vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/rowBG"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:gravity="end"
             android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/_12sdp"
-            android:paddingVertical="@dimen/_12ssp">
+            android:padding="@dimen/_3sdp"
+        >
 
-            <LinearLayout
-                android:id="@+id/llImageWrapper"
-                android:layout_width="@dimen/_58sdp"
-                android:layout_height="@dimen/_58sdp"
-                android:background="@drawable/bg_image_place_holder"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/imgChatUser"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="@dimen/_1sdp"
-                    android:padding="@dimen/_2sdp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_defalut_profile_pic"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linearLayout2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="@+id/llImageWrapper"
-                app:layout_constraintEnd_toStartOf="@+id/txtUnreadCount"
-                app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
-                app:layout_constraintTop_toTopOf="@+id/llImageWrapper">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/gotham_medium"
-                    android:singleLine="true"
-                    android:text="@string/test_name"
-                    android:textColor="@color/_192032"
-                    android:textSize="@dimen/_14ssp" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="@dimen/_4sdp"
-                    android:ellipsize="end"
-                    android:fontFamily="@font/gotham_book"
-                    android:maxLength="20"
-                    android:maxLines="1"
-                    android:text="@string/test_text_small"
-                    android:textSize="@dimen/_12ssp" />
-
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtTime"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:fontFamily="@font/gotham_medium"
-                    android:text="@string/test_time"
-                    android:textColor="@color/_399282"
-                    android:textSize="@dimen/_10ssp" />
-
-            </LinearLayout>
-
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtUnreadCount"
+            <RelativeLayout
+                android:id="@+id/delete_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/circle_white"
-                android:backgroundTint="@color/_D7293F"
-                android:fontFamily="@font/gotham_medium"
-                android:paddingHorizontal="@dimen/_4sdp"
-                android:text="3"
-                android:textColor="@color/colorWhite"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+                android:background="@drawable/delete_card_bg"
+                android:clickable="true"
+                android:elevation="@dimen/_2sdp"
+                android:focusable="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_delete_" />
+            </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/colorWhite"
+            app:cardCornerRadius="@dimen/_10sdp"
+            app:cardElevation="@dimen/_2sdp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/_8sdp"
+                android:paddingVertical="@dimen/_8ssp">
+                <LinearLayout
+                    android:id="@+id/llImageWrapper"
+                    android:layout_width="@dimen/_55sdp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:background="@drawable/bg_image_place_holder_message"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgChatUser"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="@dimen/_1sdp"
+                        android:padding="@dimen/_2sdp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/background_splash"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize4Percent" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/llImageWrapper"
+                    app:layout_constraintEnd_toStartOf="@+id/txtUnreadCount"
+                    app:layout_constraintStart_toEndOf="@+id/llImageWrapper"
+                    app:layout_constraintTop_toTopOf="@+id/llImageWrapper">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/gotham_medium"
+                        android:singleLine="true"
+                        android:text="@string/test_name"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_14ssp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtMessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/_4sdp"
+                        android:ellipsize="end"
+                        android:fontFamily="@font/gotham_book"
+                        android:maxLength="20"
+                        android:maxLines="1"
+                        android:text="@string/test_text_small"
+                        android:textSize="@dimen/_12ssp" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/txtTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/gotham_medium"
+                        android:text="@string/test_time"
+                        android:textColor="@color/_399282"
+                        android:textSize="@dimen/_10ssp" />
+
+                </LinearLayout>
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtUnreadCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/circle_white"
+                    android:backgroundTint="@color/_D7293F"
+                    android:fontFamily="@font/gotham_medium"
+                    android:gravity="center"
+                    android:minWidth="@dimen/_18sdp"
+                    android:minHeight="@dimen/_18sdp"
+                    android:paddingHorizontal="@dimen/_4sdp"
+                    android:paddingVertical="@dimen/_2sdp"
+                    android:textColor="@color/colorWhite"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayout2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
+
+
 </layout>

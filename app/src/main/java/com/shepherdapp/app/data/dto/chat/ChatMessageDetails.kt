@@ -9,5 +9,7 @@ data class ChatMessageDetails(
     val user1: UserDataMessages,
     val user2: UserDataMessages,
     val users: ArrayList<Long>,
-    val createdAt :Long
+    val createdAt :Long,
+    val unseenMessageCount :Long,
+    val lastSenderId :String? = null
 )

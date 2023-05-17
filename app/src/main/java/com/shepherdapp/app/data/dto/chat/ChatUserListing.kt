@@ -8,11 +8,11 @@ class ChatUserListing : java.io.Serializable {
     val lastMessages: String? = null
     val room_id: String? = null
     val unseenMessageCount: Long? = null
+    val createdAt: Long? = null
     val user1: ChatUsers? = null
     val user2: ChatUsers? = null
     val users: ArrayList<Long>? = null
-    val createdAt :Long? =null
-
+    val lastSenderId :String? = null
     fun manageCreatedAt(): Long {
         return if (createdAt.toString().length == 10)
             createdAt!! * 1000

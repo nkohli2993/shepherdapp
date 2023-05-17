@@ -14,7 +14,7 @@ import java.util.ArrayList
 
 class ChatAdapter(
     private val viewModel: ChatViewModel,
-    var commentList: ArrayList<MessageGroupData> = ArrayList(),
+    var messageList: ArrayList<MessageGroupData> = ArrayList(),
 ) : RecyclerView.Adapter<ChatAdapter.CarePointsEventsViewHolder>() {
     lateinit var binding: AdapterCareChatDayBinding
     lateinit var context: Context
@@ -32,7 +32,7 @@ class ChatAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return commentList.size
+        return messageList.size
 
     }
 
@@ -46,7 +46,7 @@ class ChatAdapter(
 
         @SuppressLint("SimpleDateFormat", "SetTextI18n")
         fun bind(position: Int) {
-            val chatData = commentList[position]
+            val chatData = messageList[position]
 
             binding.dateTV.text = chatData.date.getChatDate("yyyy-MM-dd")
             val adapter = CareTeamChatAdapter()
@@ -65,8 +65,8 @@ class ChatAdapter(
     }
 
     fun addData(chatData: MutableList<MessageGroupData>) {
-        this.commentList.clear()
-        this.commentList.addAll(chatData)
+        this.messageList.clear()
+        this.messageList.addAll(chatData)
         notifyDataSetChanged()
     }
 
