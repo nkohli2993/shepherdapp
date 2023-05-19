@@ -228,6 +228,13 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Move CareTeam Leader to first position
                     val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
                     careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+
+                    // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
+//                    if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
+//                        updateViewOfParentListenerListener?.updateViewVisibility(true)
+//                    } else {
+//                        updateViewOfParentListenerListener?.updateViewVisibility(false)
+//                    }
                 }
             }
         }

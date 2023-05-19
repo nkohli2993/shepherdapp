@@ -84,6 +84,10 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         assigneeAdapter?.setHasStableIds(true)
         selectAllAssigneeCheckBoxListener()
 
+        fragmentAddNewEventBinding.tvRepeat.setOnCheckedChangeListener { _, isChecked ->
+          showRepeatDialog()
+        }
+
     }
 
     private fun selectAllAssigneeCheckBoxListener() {

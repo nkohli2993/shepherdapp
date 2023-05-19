@@ -635,4 +635,10 @@
     <string name="are_you_sure_you_want_to_delete_the_chat">Are you sure you want to Delete the Chat?</string>
     <string name="delete_chat">Delete Chat</string>
     <string name="no_user_found">No Care Team found</string>
+    <string name="repeat">Repeat</string>
+    <string name="none">None</string>
+    <string name="every_day">Every Day</string>
+    <string name="every_week">Every Week</string>
+    <string name="every_month">Every Month</string>
+    <string name="end_date_">End Date</string>
 </resources>
