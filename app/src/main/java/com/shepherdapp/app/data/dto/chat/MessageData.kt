@@ -16,6 +16,7 @@ data class MessageData(
     @SerializedName("content")
     var content: String? = "",
     @ServerTimestamp() var created: Timestamp? = null,
+//    @ServerTimestamp() var created: Long? = null,
 
     @SerializedName("id")
     var id: String? = "",
@@ -41,8 +42,11 @@ data class MessageData(
 data class MessageGroupData(
     @SerializedName("date")
     var date: String? = null,
+
     @SerializedName("messages")
-    var messageList: ArrayList<MessageData> = ArrayList()
+    var messageList: ArrayList<MessageData> = ArrayList(),
+    @SerializedName("date")
+var dateMessage: Long? = null
 ) : Parcelable
 
 @Parcelize

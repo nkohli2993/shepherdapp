@@ -68,12 +68,6 @@ class AssigneeUserAdapter(
             }
             else{
                 val userDetail = usersList[position]
-
-                val imageUrl = usersList[position].user_id_details?.profilePhoto ?: ""
-                val firstName = usersList[position].user_id_details?.firstname
-                val lastName = usersList[position].user_id_details?.lastname
-
-
                 itemBinding.imageViewCareTeam.setImageFromUrl(
                     userDetail.user_id_details?.profilePhoto ?: "",
                     userDetail.user_id_details?.firstname,

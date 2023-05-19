@@ -533,6 +533,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                             isVisible = true
                             setOnClickListener {
                                 //add new page
+                                navController?.navigate(R.id.newMessageFragment)
                             }
                         }
                     }

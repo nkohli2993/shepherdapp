@@ -55,6 +55,33 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
         }.asFlow().flowOn(Dispatchers.IO)
     }
 
+    // Get Care Teams for loggedIn User
+    suspend fun getCareTeamsDetail(
+        id: String
+    ): Flow<DataResult<CareTeamsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<CareTeamsResponseModel> {
+                return apiService.getCareTeamsDetail(id)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
+ // Get Care Teams for loggedIn User
+    suspend fun getCareTeamsMember(
+        pageNumber: Int,
+        limit: Int,
+        status: Int,
+        lovedOneUUID: String
+    ): Flow<DataResult<CareTeamsResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<CareTeamsResponseModel> {
+                return apiService.getCareTeamsMember(pageNumber, limit, status)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
+
 
     // Get Pending invite
     suspend fun getPendingInvite(

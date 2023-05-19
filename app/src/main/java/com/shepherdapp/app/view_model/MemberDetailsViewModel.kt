@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.data.DataRepository
+import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
 import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
@@ -39,6 +40,10 @@ class MemberDetailsViewModel @Inject constructor(
     val updateCareTeamMemberLiveData: LiveData<Event<DataResult<UpdateCareTeamMemberResponseModel>>> =
         _updateCareTeamMemberLiveData
 
+    private var _careTeamsResponseLiveData =
+        MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
+    var careTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
+        _careTeamsResponseLiveData
 
     fun deleteCareTeamMember(id: Int): LiveData<Event<DataResult<DeleteCareTeamMemberResponseModel>>> {
         viewModelScope.launch {
@@ -68,6 +73,26 @@ class MemberDetailsViewModel @Inject constructor(
 
         return updateCareTeamMemberLiveData
     }
+
+    fun getCareTeamsDetail(
+        id: String
+    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        //val lovedOneId = userRepository.getLovedOneId()
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response =
+                lovedOneUUID?.let {
+                    careTeamsRepository.getCareTeamsDetail(
+                        id
+                    )
+                }
+            withContext(Dispatchers.Main) {
+                response?.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return careTeamsResponseLiveData
+    }
+
 
     fun getLoggedInUserUUID(): String? {
         return userRepository.getUUID()

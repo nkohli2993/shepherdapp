@@ -371,7 +371,7 @@
 
     <fragment
         android:id="@+id/nav_messages"
-        android:name="com.shepherdapp.app.ui.component.messages.MessagesFragment"
+        android:name="com.shepherdapp.app.ui.component.messages.DicussionFragment"
         android:label="@string/menu_messages"
         tools:layout="@layout/fragment_messages">
 
@@ -588,6 +588,19 @@
         <action
             android:id="@+id/action_new_message_to_chat"
             app:destination="@+id/nav_chat" />
+        <action
+            android:id="@+id/action_new_message_to_newMessage"
+            app:destination="@+id/newMessageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newMessageFragment"
+        android:name="com.shepherdapp.app.ui.component.chat.NewMessageListFragment"
+        android:label="@string/messages"
+        tools:layout="@layout/fragment_new_message_list">
+        <action
+            android:id="@+id/action_nav_assignee_to_nav_chat"
+            app:destination="@id/nav_chat" />
+
     </fragment>
 
 </navigation>

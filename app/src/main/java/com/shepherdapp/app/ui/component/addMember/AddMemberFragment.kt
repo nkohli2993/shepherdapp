@@ -9,21 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LiveData
-import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
-import com.shepherdapp.app.data.Resource
 import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamRoles
-import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.user.UserProfiles
 import com.shepherdapp.app.databinding.FragmentAddMemberBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addMember.adapter.AddMemberRoleAdapter
-import com.shepherdapp.app.ui.component.addMember.adapter.RestrictionsModuleAdapter
 import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.AddMemberViewModel
@@ -253,7 +248,8 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                         email,
                         lovedOneUUID,
                         roleID,
-                        selectedModule
+                        selectedModule,
+                        fragmentAddMemberBinding.edtRelationShip.text.toString()
                     )
 
                     addMemberViewModel.addNewMemberCareTeam(addNewMemberRequestModel)

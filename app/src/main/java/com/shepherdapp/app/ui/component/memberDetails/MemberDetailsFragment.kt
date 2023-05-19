@@ -48,7 +48,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     private var careTeam: CareTeamModel? = null
     private var selectedModule: String = ""
     private val logTag = "MemberDetailsFragment"
-
+    private var id:String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,11 +64,21 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     override fun initViewBinding() {
         fragmentMemberDetailsBinding.listener = this
         careTeam = args.careTeam
-        initView()
+        id = arguments?.getString("id")
+        try {
+            (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
+            (fragmentMemberDetailsBinding.txtPhoneCare.text as Spannable).stripUnderlines()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        // Get Care Teams by lovedOne Id
+//        memberDetailsViewModel.getCareTeamsDetail(id!!)
+        setDataValue()
 
     }
 
-    private fun initView() {
+    private fun setDataValue() {
         // Set Email ID
         fragmentMemberDetailsBinding.txtRelationCare.text = careTeam?.relation_name ?: "N/A"
         careTeam?.user_id_details.let {
@@ -140,14 +150,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
         }
 
-        try {
-            (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
-            (fragmentMemberDetailsBinding.txtPhoneCare.text as Spannable).stripUnderlines()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-
         // if the loggedIn user is the Care Team Leader, then only show the Remove and Save Changes button
         val isLoggedInUserTeamLead =
             Prefs.with(ShepherdApp.appContext)?.getBoolean(Const.Is_LOGGED_IN_USER_TEAM_LEAD, false)
@@ -209,18 +211,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         fragmentMemberDetailsBinding.chatG.visibility = View.VISIBLE
     }
 
-    fun getStringWithHyphen(str: String): String {
-        var resultant = ""
-        resultant = if (str.length <= 3) str else "" + str[0] + str[1] + str[1]
-        for (i in 3 until str.length) {
-            if (i % 3 == 0) {
-                resultant += "-" + str[i]
-            } else {
-                resultant += str[i]
-            }
-        }
-        return resultant
-    }
 
     private fun checkPermission(s: String) {
         when {
@@ -279,6 +269,24 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 }
             }
         }
+
+        memberDetailsViewModel.careTeamsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    // Get Pending Invites
+//                    careTeam =  it.data.payload
+                }
+                is DataResult.Failure -> {
+                    hideLoading()
+
+                }
+            }
+        }
+
     }
 
 

@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.chat.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,10 @@ class ChatAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
+        Log.e(
+            "catch_exception",
+            "valueADapter: ${messageList.size} "
+        )
         return messageList.size
 
     }
@@ -65,6 +70,11 @@ class ChatAdapter(
     }
 
     fun addData(chatData: MutableList<MessageGroupData>) {
+        Log.e(
+            "catch_exception",
+            "add size: ${chatData.size} "
+        )
+
         this.messageList.clear()
         this.messageList.addAll(chatData)
         notifyDataSetChanged()

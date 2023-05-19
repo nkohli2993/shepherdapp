@@ -593,18 +593,6 @@ class CreatedCarePointsViewModel @Inject constructor(
 
         Log.d(TAG, "memberIDs :$memberIDs ")
         // Get the firebase token of users using memberIds
-        /*memberIDs.forEach {
-            db.collection(TableName.USERS)
-                .whereEqualTo("id", it.toInt())
-                .get()
-                .addOnSuccessListener { qs ->
-                    if (!qs.documents.isNullOrEmpty()) {
-                        val fToken = qs.documents[0].data?.get("firebase_token") as String
-                        firebaseTokensList.add(fToken)
-                        Log.d(TAG, "fToken for id : $it is $fToken")
-                    }
-                }
-        }*/
 //        Log.d(TAG, "firebase Tokens are: $firebaseTokensList")
         usersTableName =
             if (BuildConfig.BASE_URL == Const.BASE_URL_LIVE /*"https://sheperdstagging.itechnolabs.tech/"*/) {

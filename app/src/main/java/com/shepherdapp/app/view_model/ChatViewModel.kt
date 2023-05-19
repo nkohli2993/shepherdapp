@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.Task
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
 import com.shepherdapp.app.BuildConfig
@@ -13,7 +14,6 @@ import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.ShepherdApp.Companion.db
 import com.shepherdapp.app.data.dto.DeleteChat
 import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
-import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
 import com.shepherdapp.app.data.dto.chat.*
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
@@ -30,7 +30,10 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 /**
  * Created by Nikita Kohli
@@ -191,12 +194,12 @@ class ChatViewModel @Inject constructor(
         chatListener = chatRef?.addSnapshotListener { value, error ->
             if (value?.metadata?.hasPendingWrites() == false) {
                 if (value.data != null) {
+                    Log.e("catch_count", "value: ${value.data!!}")
                     chatData = Gson().fromJson(
                         JSONObject(value.data!!).toString(),
                         ChatUserListing::class.java
                     )
                     _lastChatDetail.postValue(Event(chatData!!))
-                    Log.e("catch_count", "count: ${chatData!!.unseenMessageCount}")
                 }
             }
         }
@@ -281,10 +284,10 @@ class ChatViewModel @Inject constructor(
     fun getAndSaveMessageData(
         roomId: String,
         msgType: Int,
-        imageFile: String = "",
         message: String? = "",
-        unReadCount: Long
+        unReadCount: Long, deleteChatUserIdListing:ArrayList<DeleteChat>
     ) {
+        this.deleteChatUserIdListing = deleteChatUserIdListing
         val data = MessageData().apply {
             content = message
             isRead = false
@@ -296,9 +299,6 @@ class ChatViewModel @Inject constructor(
             senderName =
                 userRepository.getCurrentUser()?.firstname + " " + userRepository.getCurrentUser()?.lastname
             senderProfilePic = userRepository.getCurrentUser()?.profilePhoto
-            if (!imageFile.isNullOrEmpty()) {
-                attachment = imageFile
-            }
         }
         sendMessage(data, roomId, unReadCount)
     }
@@ -440,7 +440,7 @@ class ChatViewModel @Inject constructor(
                 userAssignes!!.profilePhoto?:"",
             ),
             arrayListOf(roomArray[0].toLong(), roomArray[1].toLong()),
-            System.currentTimeMillis() / 1000,
+            Timestamp(Calendar.getInstance().time),
             unReadCount,
             getCurrentUser()?.userId.toString()
         )

@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
@@ -25,7 +24,6 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.messages.adapter.DirectMessagesAdapter
 import com.shepherdapp.app.ui.component.messages.adapter.DiscussionGroupsAdapter
 import com.shepherdapp.app.utils.*
-import com.shepherdapp.app.utils.extensions.hideKeyboard
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.view_model.MessagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class MessagesFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickListener {
+class DicussionFragment : BaseFragment<FragmentMessagesBinding>(), View.OnClickListener {
 
     private val messagesViewModel: MessagesViewModel by viewModels()
     private lateinit var fragmentMessagesBinding: FragmentMessagesBinding

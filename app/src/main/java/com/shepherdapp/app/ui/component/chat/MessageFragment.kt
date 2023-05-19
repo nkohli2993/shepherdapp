@@ -17,14 +17,18 @@ import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
 import com.shepherdapp.app.data.dto.chat.ChatUserListing
+import com.shepherdapp.app.data.dto.chat.MessageGroupData
 import com.shepherdapp.app.databinding.FragmentMessageBinding
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.chat.adapter.MessagesListingAdapter
+import com.shepherdapp.app.ui.component.chat.extensions.showDeleteChatDialog
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.RecyclerTouchListener
 import com.shepherdapp.app.utils.TableName
 import com.shepherdapp.app.view_model.MessagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickListener,
@@ -36,9 +40,11 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
     private var messagesListingAdapter: MessagesListingAdapter? = null
     private var chatChannelRegistration: ListenerRegistration? = null
     private var isActive = false
-    override fun getLayoutRes() = R.layout.fragment_message
-    private val messagesViewModel: MessagesViewModel by viewModels()
+    val messagesViewModel: MessagesViewModel by viewModels()
     private var touchListener: RecyclerTouchListener? = null
+
+    override fun getLayoutRes() = R.layout.fragment_message
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,27 +74,64 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
                 override fun onIndependentViewClicked(independentViewID: Int, position: Int) {}
             })
             .setSwipeOptionViews(R.id.delete_task)
-            .setSwipeable(R.id.cardView ,R.id.rowBG
-            ) { viewID, _ ->
+            .setSwipeable(
+                R.id.cardView, R.id.rowBG
+            ) { viewID, position ->
                 when (viewID) {
                     R.id.delete_task -> {
-
+                        showDeleteChatDialog(
+                            messagesViewModel.getCurrentUser()?.userId!!.toLong(),
+                            roomChatList[position].room_id!!
+                        )
                     }
                 }
             }
         fragmentMessageBinding.rvChatListing.addOnItemTouchListener(touchListener!!)
     }
 
+
     override fun observeViewModel() {
         showLoading("")
         messagesViewModel.getChatRooms(messagesViewModel.getCurrentUser()?.userId!!) {
-            roomChatList = it
+            var isChatDeleted = false
+            var chatMessages: java.util.ArrayList<ChatUserListing> = java.util.ArrayList()
+            it.forEach { deleteChatListData ->
+                if(deleteChatListData.deletedChatUserIds.size>0){
+                    deleteChatListData.deletedChatUserIds.forEach{
+                        if (it.userId?.toInt() == messagesViewModel.getCurrentUser()?.userId) {
+                            val deletedTimeStamp = it.deletedAt
+                            isChatDeleted = true
+                            if (deletedTimeStamp != null) {
+                                val cal = Calendar.getInstance()
+                                cal.timeInMillis = deletedTimeStamp
+                                if (deleteChatListData.createdAt != null) {
+                                    val msgCal = Calendar.getInstance()
+                                    msgCal.time = deleteChatListData.createdAt.toDate()
+                                    if (msgCal.time.after(cal.time)) {
+                                        chatMessages.add(deleteChatListData)
+                                    }
+                                }
+
+                            }
+                            return@forEach
+                        }
+                    }
+
+                }else{
+                    chatMessages.add(deleteChatListData)
+                }
+            }
+
+            if(!isChatDeleted)
+                chatMessages = it
+
+            roomChatList = chatMessages
             hideLoading()
             updateRecyclerView()
         }
     }
 
-    private fun updateRecyclerView() {
+    fun updateRecyclerView() {
         try {
 
             if (roomChatList.isNotEmpty())
@@ -170,16 +213,6 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
         super.onResume()
         messagesListingAdapter = null
         observeViewModel()
-        try {
-            showLoading("")
-            messagesViewModel.getChats()
-        } catch (e: IllegalStateException) {
-            e.printStackTrace()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-
         fragmentMessageBinding.editTextSearch.doAfterTextChanged { search ->
             searchUserList(loggedInUserId, search)
         }

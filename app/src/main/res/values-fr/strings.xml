@@ -632,4 +632,7 @@
     <string name="no_messages_found">No Messages Found</string>
     <string name="please_enter_relation_with_user">Please enter relationship with user.</string>
     <string name="_3_more">+3 More</string>
+    <string name="are_you_sure_you_want_to_delete_the_chat">Are you sure you want to Delete the Chat?</string>
+    <string name="delete_chat">Delete Chat</string>
+    <string name="no_user_found">No Care Team found</string>
 </resources>

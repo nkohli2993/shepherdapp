@@ -106,6 +106,24 @@ class CareTeamMembersViewModel @Inject constructor(
         }
         return careTeamsResponseLiveData
     }
+    fun getCareTeamsDetail(
+       id: String
+    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        //val lovedOneId = userRepository.getLovedOneId()
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response =
+                lovedOneUUID?.let {
+                    careTeamsRepository.getCareTeamsDetail(
+                        id
+                    )
+                }
+            withContext(Dispatchers.Main) {
+                response?.collect { _careTeamsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return careTeamsResponseLiveData
+    }
 
     fun getPendingInvites(): LiveData<Event<DataResult<PendingInviteResponseModel>>> {
         val lovedOneUUID = userRepository.getLovedOneUUId()

@@ -65,6 +65,7 @@ fun QueryDocumentSnapshot.getMessageModelFromDoc(): MessageData {
     )
 
     messageModel.created =
+//        (data["created"] as Long?)
         (data["created"] as Timestamp?)
 
     if (messageModel.id.isNullOrBlank()) {
@@ -80,6 +81,7 @@ fun ArrayList<MessageData>.sortMessages(): ArrayList<MessageGroupData> {
             val cal = Calendar.getInstance().apply {
                 if (it.created != null) {
                     time = it.created!!.toDate()
+//                    timeInMillis = it.created!!
                 }
             }
 

@@ -4,6 +4,8 @@ package com.shepherdapp.app.utils
  * Created by Deepak Rattan on 27/05/22
  */
 object Const {
+    const val FIREBASE_SERVER_KEY = "key=AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg"
+
     const val USER_DETAILS = "USER DETAILS"
     const val USER_TOKEN = "USER Token"
     const val USER_INACTIVE_LOGOUT = "user_logout"

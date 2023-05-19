@@ -245,6 +245,18 @@ interface ApiService {
         @Query("loved_one_id") lovedOneUUID: String,
     ): Response<CareTeamsResponseModel>
 
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getCareTeamsDetail(
+        @Query("id") id: String,
+    ): Response<CareTeamsResponseModel>
+
+    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    suspend fun getCareTeamsMember(
+        @Query("page") page: Int,
+        @Query("limit") limit: Int,
+        @Query("status") status: Int,
+    ): Response<CareTeamsResponseModel>
+
     @GET(ApiConstants.Invitations.GET_PENDING_INVITATIONS)
     suspend fun getPendingInvites(
         @Path("id") lovedOneUUID: String?
@@ -595,12 +607,10 @@ interface ApiService {
     @PUT(ApiConstants.Notification.READ_NOTIFICATIONS)
     suspend fun clearNotifications(): Response<ReadNotificationsResponseModel>
 
-    @Headers(
-        "Authorization: key=AAAAOIHQQEc:APA91bHfsqzVnLwnQZt9qhU9nJVOq3utYheRYYHQl1IrBFTfb_yM5js6gPu8eNzMrYcZjAbeAV_nxm73CZKBnJEwYPZ30YYZkOrLVI82l9AtlV_4FRg0hj0p0h_GgUClE6dgpXWsVJgg",
-        "Content-Type:application/json"
-    )
+
     @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)
     suspend fun sendPushNotification(
+        @Header("Authorization") token: String,
         @Body chatNotificationModel: ChatNotificationModel
     ): Response<FCMResponseModel>
   @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)

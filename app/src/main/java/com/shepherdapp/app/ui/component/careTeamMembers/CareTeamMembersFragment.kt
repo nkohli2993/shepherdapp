@@ -44,7 +44,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private lateinit var fragmentCareTeamMembersBinding: FragmentCareTeamMembersBinding
 
     private var pageNumber: Int = 1
-    private var limit: Int = 10
+    private var limit: Int = 20
     private var status: Int = 1
 
     private var careTeams: ArrayList<CareTeamModel>? = ArrayList()
@@ -86,29 +86,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         //careTeamViewModel.getHomeData()
         val lovedOneUUID = careTeamViewModel.getLovedOneUUID()
         Log.d(TAG, "lovedOneUUID : $lovedOneUUID")
-
-//        careTeamViewModel.getUserDetailByUUID()
-
-        /*  val lovedOne = careTeamViewModel.getLovedUserDetail()
-          val lovedOneFirstName = lovedOne?.firstName
-          val lovedOneLastName = lovedOne?.lastName
-          var lovedOneFullName: String? = null
-          lovedOneFullName = if (lovedOneLastName.isNullOrEmpty()) {
-              lovedOneFirstName
-          } else {
-              "$lovedOneFirstName $lovedOneLastName"
-          }
-
-          val lovedOneProfilePic = lovedOne?.profilePic
-
-          Picasso.get().load(lovedOneProfilePic)
-              .placeholder(R.drawable.ic_defalut_profile_pic)
-              .into(fragmentCareTeamMembersBinding.imgLovedOne)
-
-          fragmentCareTeamMembersBinding.txtLoved.text = lovedOneFullName*/
-
-        // Get Pending Invites
-//        careTeamViewModel.getPendingInvites()
 
         // Get Care Teams by lovedOne Id
         careTeamViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
@@ -251,13 +228,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Move CareTeam Leader to first position
                     val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
                     careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
-
-                    // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
-//                    if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
-//                        updateViewOfParentListenerListener?.updateViewVisibility(true)
-//                    } else {
-//                        updateViewOfParentListenerListener?.updateViewVisibility(false)
-//                    }
                 }
             }
         }

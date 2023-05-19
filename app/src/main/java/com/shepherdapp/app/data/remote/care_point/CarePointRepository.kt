@@ -8,6 +8,7 @@ import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.network.retrofit.ApiService
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.NetworkOnlineDataRepo
+import com.shepherdapp.app.utils.Const
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -93,7 +94,7 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
     suspend fun sendPushNotifications(chatNotificationModel: ChatNotificationModel): Flow<DataResult<FCMResponseModel>> {
         return object : NetworkOnlineDataRepo<FCMResponseModel, FCMResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<FCMResponseModel> {
-                return apiService.sendPushNotification(chatNotificationModel)
+                return apiService.sendPushNotification(Const.FIREBASE_TOKEN,chatNotificationModel)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
