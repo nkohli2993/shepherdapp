@@ -44,7 +44,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
     private val memberDetailsViewModel: MemberDetailsViewModel by viewModels()
     private lateinit var fragmentMemberDetailsBinding: FragmentMemberDetailsBinding
-    private val args: MemberDetailsFragmentArgs by navArgs()
     private var careTeam: CareTeamModel? = null
     private var selectedModule: String = ""
     private val logTag = "MemberDetailsFragment"
@@ -63,7 +62,6 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
     override fun initViewBinding() {
         fragmentMemberDetailsBinding.listener = this
-        careTeam = args.careTeam
         id = arguments?.getString("id")
         try {
             (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
@@ -73,14 +71,14 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         }
 
         // Get Care Teams by lovedOne Id
-//        memberDetailsViewModel.getCareTeamsDetail(id!!)
-        setDataValue()
+        memberDetailsViewModel.getCareTeamsDetail(id!!)
+
 
     }
 
     private fun setDataValue() {
         // Set Email ID
-        fragmentMemberDetailsBinding.txtRelationCare.text = careTeam?.relation_name ?: "N/A"
+        fragmentMemberDetailsBinding.txtRelationCare.text = careTeam?.relation_name ?: getString(R.string.relationship_not_available)
         careTeam?.user_id_details.let {
             // Set profile pic
             fragmentMemberDetailsBinding.imgCareTeamMember.setImageFromUrl(
@@ -98,7 +96,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
 
             // Set Address
             fragmentMemberDetailsBinding.txtAddressCare.text =
-                it?.address ?: "No address available"
+                it?.address ?: getString(R.string.no_address_available)
             // Set Phone Number
             var phone = "+" + it?.phone
             val phoneArr = it?.phone?.split("-")
@@ -106,27 +104,32 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             val phoneCode = phoneArr?.get(0)
             val phoneNumber = phoneArr?.get(1)
             //val phoneWithHyphen = phoneNumber?.let { it1 -> getStringWithHyphen(it1) }
+            if(!phoneNumber.toString().lowercase().contains("null")) {
+                val phoneWithHyphen = phoneNumber?.getStringWithHyphen(phoneNumber)
+                val phoneNo = "$phoneCode $phoneWithHyphen"
+                Log.d(logTag, "initView: $phoneNo")
 
-            val phoneWithHyphen = phoneNumber?.getStringWithHyphen(phoneNumber)
-            val phoneNo = "$phoneCode $phoneWithHyphen"
-            Log.d(logTag, "initView: $phoneNo")
 
+                if (phoneNo.toString().contains("+")) {
+                    fragmentMemberDetailsBinding.txtPhoneCare.text =
+                        phoneNo ?: "Phone Number Not Available"
 
-            if (phoneNo.toString().contains("+")) {
+                } else {
+                    fragmentMemberDetailsBinding.txtPhoneCare.text =
+                        "+" + phoneNo ?: getString(R.string.phone_number_not_available)
+
+                }
+            }
+            else{
                 fragmentMemberDetailsBinding.txtPhoneCare.text =
-                    phoneNo ?: "Phone Number Not Available"
-
-            } else {
-                fragmentMemberDetailsBinding.txtPhoneCare.text =
-                    "+" + phoneNo ?: "Phone Number Not Available"
-
+                    getString(R.string.phone_number_not_available)
             }
 
 
 
             phone = fragmentMemberDetailsBinding.txtPhoneCare.text.toString()
 
-            if (phone != "Phone Number Not Available") {
+            if (phone != getString(R.string.phone_number_not_available)) {
                 fragmentMemberDetailsBinding.txtPhoneCare.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -278,7 +281,8 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     // Get Pending Invites
-//                    careTeam =  it.data.payload
+                    careTeam =  it.data.payload
+                    setDataValue()
                 }
                 is DataResult.Failure -> {
                     hideLoading()

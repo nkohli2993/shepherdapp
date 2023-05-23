@@ -137,10 +137,6 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
                 }
             }
-            /*else{
-                hideLoading()
-                showError(this, getString(R.string.unable_to_suvcription))
-            }*/
         }
     }
 
@@ -573,7 +569,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("SimpleDateFormat")
     fun getDate(planName: String): String {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+//        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm s")
         val currentCal: Calendar = Calendar.getInstance()
         val currentDate: String = dateFormat.format(currentCal.time)
         Log.d(TAG, "current date : $currentDate")

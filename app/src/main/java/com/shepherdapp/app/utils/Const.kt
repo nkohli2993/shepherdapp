@@ -118,6 +118,13 @@ enum class Modules(val value: String) {
     Resources("4")
 }
 
+enum class RecurringEvent(val value: String) {
+    None("1"),
+    Daily("2"),
+    Weekly("3"),
+    Monthly("4")
+}
+
 enum class Role(val id: String) {
     User("1"),
     UserLovedOne("2"),

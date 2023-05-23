@@ -40,7 +40,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
     private var roomId = ""
     private var allMsgLoaded: Boolean = false
     private var msgGroupList: ArrayList<MessageGroupData> = ArrayList()
-    private var commentAdapter: ChatAdapter? = null
+    private var chatAdapter: ChatAdapter? = null
     private var unReadCount: Long = 0
     private var lastMessageSenderId = ""
     var deleteChatUserIdListing: ArrayList<DeleteChat> = ArrayList()
@@ -60,10 +60,10 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
 
     override fun initViewBinding() {
         fragmentChatBinding.listener = this
-        roomId = if (chatViewModel.getCurrentUser()?.userId!! > userAssignes!!.id!!)
-            chatViewModel.getCurrentUser()?.userId.toString() + "-" + userAssignes!!.id!!
+        roomId = if (chatViewModel.getLovedOneId()!!.toInt() > userAssignes!!.id!!)
+            chatViewModel.getLovedOneId() + "-" + userAssignes!!.id!!
         else
-            userAssignes!!.id!!.toString() + "-" + chatViewModel.getCurrentUser()?.userId.toString()
+            userAssignes!!.id!!.toString() + "-" + chatViewModel.getLovedOneId()!!.toInt()
         chatViewModel.roomId = roomId
 
         chatViewModel.tableName =
@@ -73,7 +73,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                 TableName.CARE_TEAM_CHATS_DEV
             }
         if (userAssignes != null) {
-            fragmentChatBinding.imgChatUser.loadImageFromURL(
+            fragmentChatBinding.imgChatUser.setImageFromUrl(
                 userAssignes!!.profilePhoto,
                 userAssignes!!.firstname,
                 userAssignes!!.lastname
@@ -122,7 +122,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
         var chatMessages: ArrayList<MessageGroupData> = ArrayList()
         var isChatDeleted = false
         deleteChatUserIdListing.forEach { deleteChatListData ->
-            if (deleteChatListData.userId?.toInt() == chatViewModel.getCurrentUser()?.userId) {
+            if (deleteChatListData.userId?.toInt() == chatViewModel.getLovedOneId()!!.toInt()) {
                 val deletedTimeStamp = deleteChatListData.deletedAt
                 isChatDeleted = true
                 if (deletedTimeStamp != null) {
@@ -155,15 +155,15 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
         if (!isChatDeleted)
             chatMessages = msgGroupList
         hideLoading()
-        commentAdapter?.addData(chatMessages)
+        chatAdapter?.addData(chatMessages)
     }
 
     private fun setMessageAdapter() {
         //set comment adapter added in list
         fragmentChatBinding.rvMsg.setItemViewCacheSize(200)
-        commentAdapter = ChatAdapter(chatViewModel)
-        commentAdapter!!.setHasStableIds(true)
-        fragmentChatBinding.rvMsg.adapter = commentAdapter
+        chatAdapter = ChatAdapter(chatViewModel)
+        chatAdapter!!.setHasStableIds(true)
+        fragmentChatBinding.rvMsg.adapter = chatAdapter
 
     }
 
@@ -236,7 +236,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                     )
                     fragmentChatBinding.editTextMessage.text?.clear()
                     fragmentChatBinding.rvMsg.scrollToPosition(msgGroupList.size - 1)
-                    lastMessageSenderId = chatViewModel.getCurrentUser()?.userId.toString()
+                    lastMessageSenderId = chatViewModel.getLovedOneId()!!
                     updateUnseenCount()
                 }
             }
@@ -245,11 +245,11 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
 
     private fun updateUnseenCount() {
         //clear unseen count
-        if (commentAdapter != null &&
-            commentAdapter?.messageList?.size!! > 0
+        if (chatAdapter != null &&
+            chatAdapter?.messageList?.size!! > 0
         ) {
 
-            if (lastMessageSenderId.toInt() != chatViewModel.getCurrentUser()?.userId) {
+            if (lastMessageSenderId.toInt() != chatViewModel.getLovedOneId()!!.toInt()) {
                 //clear unseen count because the last message is from other user
                 chatViewModel.updateUnseenCount(roomId, 0)
             } else {

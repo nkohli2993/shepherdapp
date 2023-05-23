@@ -5,13 +5,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.chat.ChatUserListing
 import com.shepherdapp.app.databinding.AdapterDirectMessagesBinding
-import com.shepherdapp.app.utils.loadImageFromURL
+import com.shepherdapp.app.utils.setImageFromUrl
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -67,14 +66,14 @@ class MessagesListingAdapter(
         val data = requestList[holder.bindingAdapterPosition]
         if (data.user1?.userId?.toInt() == userId) {
             holder.binding.txtName.text = data.user2?.firstname.plus(" ${data.user2?.lastname}")
-            holder.binding.imgChatUser.loadImageFromURL(
+            holder.binding.imgChatUser.setImageFromUrl(
                 data.user2?.profilePhoto,
                 data.user2?.firstname,
                 data.user2?.lastname
             )
         } else {
             holder.binding.txtName.text = data.user1?.firstname.plus(" ${data.user1?.lastname}")
-            holder.binding.imgChatUser.loadImageFromURL(
+            holder.binding.imgChatUser.setImageFromUrl(
                 data.user1?.profilePhoto,
                 data.user1?.firstname,
                 data.user1?.lastname

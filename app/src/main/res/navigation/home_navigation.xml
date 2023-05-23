@@ -85,9 +85,9 @@
         android:name="com.shepherdapp.app.ui.component.memberDetails.MemberDetailsFragment"
         android:label="@string/menu_member_details"
         tools:layout="@layout/fragment_member_details">
-        <argument
-            android:name="care_team"
-            app:argType="com.shepherdapp.app.data.dto.care_team.CareTeamModel" />
+<!--        <argument-->
+<!--            android:name="care_team"-->
+<!--            app:argType="com.shepherdapp.app.data.dto.care_team.CareTeamModel" />-->
         <action
             android:id="@+id/action_new_message_to_chat"
             app:destination="@+id/nav_chat" />
@@ -578,6 +578,10 @@
         <action
             android:id="@+id/action_nav_assignee_to_nav_chat"
             app:destination="@id/nav_chat" />
+        <action
+            android:id="@+id/action_assignee_to_member_details"
+            app:destination="@+id/nav_team_member_details" />
+
     </fragment>
 
     <fragment

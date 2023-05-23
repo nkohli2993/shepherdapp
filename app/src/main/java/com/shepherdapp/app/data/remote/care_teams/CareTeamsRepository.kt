@@ -2,10 +2,7 @@ package com.shepherdapp.app.data.remote.care_teams
 
 import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamRequestModel
 import com.shepherdapp.app.data.dto.add_new_member_care_team.AddNewMemberCareTeamResponseModel
-import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
-import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
-import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
-import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
+import com.shepherdapp.app.data.dto.care_team.*
 import com.shepherdapp.app.data.dto.invitation.InvitationsResponseModel
 import com.shepherdapp.app.data.dto.invitation.accept_invitation.AcceptInvitationResponseModel
 import com.shepherdapp.app.data.dto.invitation.delete_pending_invitee.DeletePendingInviteeByIdResponseModel
@@ -58,10 +55,10 @@ class CareTeamsRepository @Inject constructor(private val apiService: ApiService
     // Get Care Teams for loggedIn User
     suspend fun getCareTeamsDetail(
         id: String
-    ): Flow<DataResult<CareTeamsResponseModel>> {
+    ): Flow<DataResult<CareMemberDetailResponseModel>> {
         return object :
-            NetworkOnlineDataRepo<CareTeamsResponseModel, CareTeamsResponseModel>() {
-            override suspend fun fetchDataFromRemoteSource(): Response<CareTeamsResponseModel> {
+            NetworkOnlineDataRepo<CareMemberDetailResponseModel, CareMemberDetailResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<CareMemberDetailResponseModel> {
                 return apiService.getCareTeamsDetail(id)
             }
         }.asFlow().flowOn(Dispatchers.IO)

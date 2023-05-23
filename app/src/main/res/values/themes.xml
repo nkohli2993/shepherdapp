@@ -204,6 +204,10 @@
         <item name="cornerSize">@dimen/_19sdp</item>
         <item name="cornerFamily">rounded</item>
     </style>
+    <style name="ShapeAppearanceOverlay.App.CornerSize5Percent" parent="">
+        <item name="cornerSize">@dimen/_18sdp</item>
+        <item name="cornerFamily">rounded</item>
+    </style>
  <style name="ShapeAppearanceOverlay.App.CornerSize2Percent" parent="">
         <item name="cornerSize">@dimen/_15sdp</item>
         <item name="cornerFamily">rounded</item>
@@ -240,7 +244,7 @@
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize37Percent." parent="">
-        <item name="cornerSize">37.5%</item>
+        <item name="cornerSize">36%</item>
     </style>
 
     <style name="ShapeAppearanceOverlay.App.CornerSize50Percent." parent="">

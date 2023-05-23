@@ -1,21 +1,14 @@
 package com.shepherdapp.app.ui.component.dashboard.adapter
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.dashboard.CareTeamProfiles
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersDashboardBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
-import com.shepherdapp.app.utils.TextDrawable
-import com.shepherdapp.app.utils.loadImageFromURL
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.DashboardViewModel
-import com.squareup.picasso.Picasso
 
 
 class CareTeamMembersDashBoardAdapter(

@@ -19,5 +19,6 @@ data class UserAssigneDetail(
     @SerializedName("is_email_verified") var isEmailVerified: Boolean? = null,
     @SerializedName("created_at") var createdAt: String? = null,
     @SerializedName("updated_at") var updatedAt: String? = null,
-    @SerializedName("deleted_at") var deletedAt: String? = null
+    @SerializedName("deleted_at") var deletedAt: String? = null,
+    @SerializedName("user_profile_id") var userProfileId: String? = null
 ):Parcelable

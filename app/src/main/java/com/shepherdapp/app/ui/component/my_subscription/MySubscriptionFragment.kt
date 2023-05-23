@@ -1,5 +1,6 @@
 package com.shepherdapp.app.ui.component.my_subscription
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -39,6 +40,7 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
     private var limit = 10
 
 
+    @SuppressLint("SetTextI18n")
     override fun observeViewModel() {
         // Get Active Subscriptions
         mySubscriptionViewModel.getActiveSubscriptionResponseLiveData.observeEvent(this) {
@@ -91,6 +93,10 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
                             "You have chosen ${payload?.plan} plan"
 
                         transactionId = payload?.transactionId
+                        fragmentMySubscriptionBinding?.layoutCard!!.setBackgroundResource(R.drawable.bg_subscription_red)
+                        if ((payload?.plan ?: "").lowercase().contains("year")) {
+                            fragmentMySubscriptionBinding?.layoutCard!!.setBackgroundResource(R.drawable.bg_subscription_orange)
+                        }
                     }
                     establishConnection()
                 }

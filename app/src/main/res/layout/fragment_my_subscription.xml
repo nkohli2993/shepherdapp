@@ -67,12 +67,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtPlan">
-
+            <!--                android:background="@drawable/bg_subscription_red"-->
             <LinearLayout
                 android:id="@+id/layoutCard"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_200sdp"
-                android:background="@drawable/bg_subscription_red"
+                android:layout_height="@dimen/_150sdp"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:paddingVertical="@dimen/_30sdp">

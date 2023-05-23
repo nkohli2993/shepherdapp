@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.R
@@ -292,9 +293,9 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         navigateEvent.getContentIfNotHandled()?.let {
             Log.d(TAG, "openMemberDetails: CareTeam :$it")
             // Sending CareTeam object through safeArgs
-            val action = CareTeamMembersFragmentDirections.actionCareTeamMembersToMemberDetails(it)
+//            val action = CareTeamMembersFragmentDirections.actionCareTeamMembersToMemberDetails(it)
             //findNavController().navigate(R.id.action_care_team_members_to_member_details)
-            findNavController().navigate(action)
+            findNavController().navigate(R.id.nav_team_member_details, bundleOf("id" to (it.id).toString()))
         }
     }
 
@@ -305,8 +306,8 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                 //show delete dialog
                 val builder = AlertDialog.Builder(requireContext())
                 val dialog = builder.apply {
-                    setTitle("Delete Pending Invitee")
-                    setMessage("Are you sure, you want to delete this pending invitee?")
+                    setTitle(getString(R.string.delete_pending_invitee))
+                    setMessage(getString(R.string.sure_you_want_to_delete_pending_invites))
                     setPositiveButton("Yes") { _, _ ->
                         it.id?.let { it1 -> careTeamViewModel.deletePendingInviteeById(it1) }
                     }
@@ -317,7 +318,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
             } else {
-                showInfo(requireContext(), "Only CareTeam Leader can delete the pending invitee")
+                showInfo(requireContext(), getString(R.string.only_care_team_leader_delete_pening_invites))
             }
         }
     }

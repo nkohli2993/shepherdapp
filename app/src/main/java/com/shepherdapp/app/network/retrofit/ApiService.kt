@@ -13,10 +13,7 @@ import com.shepherdapp.app.data.dto.add_vital_stats.bulk_create_vitals.BulkCreat
 import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncRequestModel
 import com.shepherdapp.app.data.dto.add_vital_stats.update_user_profile_last_sync.UpdateUserProfileForLastSyncResponseModel
 import com.shepherdapp.app.data.dto.added_events.*
-import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
-import com.shepherdapp.app.data.dto.care_team.DeleteCareTeamMemberResponseModel
-import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberRequestModel
-import com.shepherdapp.app.data.dto.care_team.UpdateCareTeamMemberResponseModel
+import com.shepherdapp.app.data.dto.care_team.*
 import com.shepherdapp.app.data.dto.change_password.ChangePasswordModel
 import com.shepherdapp.app.data.dto.chat.CareTeamChatNotificationModel
 import com.shepherdapp.app.data.dto.chat.ChatNotificationModel
@@ -245,10 +242,10 @@ interface ApiService {
         @Query("loved_one_id") lovedOneUUID: String,
     ): Response<CareTeamsResponseModel>
 
-    @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
+    @GET(ApiConstants.CareTeams.DETAIL_CARE_TEAM_MEMBER)
     suspend fun getCareTeamsDetail(
-        @Query("id") id: String,
-    ): Response<CareTeamsResponseModel>
+        @Path("id") id: String,
+    ): Response<CareMemberDetailResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
     suspend fun getCareTeamsMember(

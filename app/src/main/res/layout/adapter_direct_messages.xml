@@ -71,8 +71,8 @@
                 android:paddingVertical="@dimen/_8ssp">
                 <LinearLayout
                     android:id="@+id/llImageWrapper"
-                    android:layout_width="@dimen/_55sdp"
-                    android:layout_height="@dimen/_55sdp"
+                    android:layout_width="@dimen/_62sdp"
+                    android:layout_height="@dimen/_62sdp"
                     android:background="@drawable/bg_image_place_holder_message"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -87,7 +87,7 @@
                         android:padding="@dimen/_2sdp"
                         android:scaleType="fitXY"
                         android:src="@drawable/background_splash"
-                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize4Percent" />
+                        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize3Percent" />
                 </LinearLayout>
 
                 <LinearLayout

@@ -9,12 +9,14 @@ import android.view.*
 import android.view.animation.RotateAnimation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.Resource
+import com.shepherdapp.app.data.dto.added_events.EventRecurringModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.databinding.FragmentAddNewEventBinding
@@ -24,6 +26,8 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
@@ -52,7 +56,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private var limit: Int = 10
     private var status: Int = 1
     private var assignTo = ArrayList<String>()
-    private var careTeams:MutableList<CareTeamModel> = ArrayList<CareTeamModel>()
+    private var careTeams: MutableList<CareTeamModel> = ArrayList<CareTeamModel>()
     private var isAmPm: String? = null
     private var placeAddress: String? = null
     private var placeId: String? = null
@@ -84,8 +88,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         assigneeAdapter?.setHasStableIds(true)
         selectAllAssigneeCheckBoxListener()
 
-        fragmentAddNewEventBinding.tvRepeat.setOnCheckedChangeListener { _, isChecked ->
-          showRepeatDialog()
+        fragmentAddNewEventBinding.repeatCB.setOnCheckedChangeListener { _, isChecked ->
+            showRepeatDialog()
         }
 
     }
@@ -144,6 +148,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(
@@ -171,11 +176,12 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     val payload = result.data.payload
                     careTeams.addAll(payload.data)
-                    careTeams =   careTeams.filter {
+                    careTeams = careTeams.filter {
                         it.permission?.contains("1")!!
                     }.toMutableList()
                     assigneeAdapter = AssigneAdapter(
@@ -211,6 +217,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                 }
@@ -230,6 +237,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             is Resource.Success -> status.data?.let {
 
             }
+
             is Resource.DataError -> {
                 status.errorCode?.let { addNewEventViewModel.showToastMessage(it) }
             }
@@ -273,9 +281,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 intent.putExtra("search_type", "event")
                 navLauncher.launch(intent)
             }
+
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
+
             R.id.assigneET -> {
                 if (fragmentAddNewEventBinding.assigneRV.visibility == View.VISIBLE) {
                     fragmentAddNewEventBinding.assigneRV.visibility = View.GONE
@@ -287,6 +297,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     rotate(180f)
                 }
             }
+
             R.id.btnAdd -> {
                 assignTo.clear()
                 for (i in careTeams) {
@@ -299,15 +310,19 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     createEvent()
                 }
             }
+
             R.id.clTimeWrapper, R.id.tvTime -> {
                 timePicker()
             }
+
             R.id.tvam -> {
                 changeTimeAmPm("am")
             }
+
             R.id.tvpm -> {
                 changeTimeAmPm("pm")
             }
+
             R.id.tvDate -> {
                 datePicker()
             }
@@ -391,24 +406,29 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         getString(R.string.please_enter_event_name)
                     fragmentAddNewEventBinding.etEventName.requestFocus()
                 }
+
                 assignTo.size <= 0 -> {
                     showInfo(
                         requireContext(),
                         getString(R.string.please_select_whome_to_assign_event)
                     )
                 }
+
                 fragmentAddNewEventBinding.tvDate.text.toString().trim() == "DD/MM/YY" -> {
                     showInfo(requireContext(), getString(R.string.please_enter_date_of_event))
                     fragmentAddNewEventBinding.tvDate.requestFocus()
                 }
+
                 fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_enter_date_of_event))
                     fragmentAddNewEventBinding.tvDate.requestFocus()
                 }
+
                 fragmentAddNewEventBinding.tvTime.text.toString().trim().isEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
                     fragmentAddNewEventBinding.tvTime.requestFocus()
                 }
+
                 else -> {
                     return true
                 }
@@ -587,6 +607,38 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         fragmentAddNewEventBinding.tvDate.text = selectedDate
     }
 
+    fun showEventEndDate(value: EventRecurringModel) {
+        fragmentAddNewEventBinding.repeatCB.isChecked = true
+        fragmentAddNewEventBinding.txtType.isVisible = false
+        fragmentAddNewEventBinding.txtValue.isVisible = false
+        fragmentAddNewEventBinding.txtEndDate.isVisible = false
+        when (value.type) {
+            RecurringEvent.None.value -> {
+                fragmentAddNewEventBinding.repeatCB.isChecked = false
+            }
+
+            RecurringEvent.Daily.value -> {
+                visibleRecurringView(valueBoolean = false, value)
+            }
+
+            RecurringEvent.Weekly.value -> {
+                visibleRecurringView(valueBoolean = true, value)
+            }
+
+            RecurringEvent.Monthly.value -> {
+                visibleRecurringView(valueBoolean = true, value)
+            }
+        }
+    }
+
+    private fun visibleRecurringView(valueBoolean: Boolean, value: EventRecurringModel) {
+        fragmentAddNewEventBinding.txtType.isVisible = true
+        fragmentAddNewEventBinding.txtValue.isVisible = valueBoolean
+        fragmentAddNewEventBinding.txtEndDate.isVisible = true
+        fragmentAddNewEventBinding.txtEndDate.text = value.endDate
+        fragmentAddNewEventBinding.txtType.text = value.type
+        fragmentAddNewEventBinding.txtValue.text = value.value
+    }
 }
 
 

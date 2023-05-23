@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.R
@@ -89,17 +90,11 @@ class CareAssigneeListFragment : BaseFragment<FragmentCareAssigneeListBinding>()
 
     override fun onAssigneeSelected(detail: UserAssigneeModel) {
         Log.e("catch_exception", "assignee: $detail")
-/*
-        if (carePointsViewModel.getUserDetail()?.userId == detail.user_details.id) {
-            showError(requireContext(), "Cannot chat with your own.")
-        } else {
-            findNavController().navigate(
-                R.id.action_nav_assignee_to_nav_chat,
-                bundleOf("assignee_user" to detail.user_details)
-            )
+        findNavController().navigate(
+            R.id.action_assignee_to_member_details,
+            bundleOf("id" to detail.user_details.userProfileId.toString())
+        )
 
-        }
-*/
     }
 
     override fun onAssigneeLockBoxSelected(detail: CareTeamModel) {

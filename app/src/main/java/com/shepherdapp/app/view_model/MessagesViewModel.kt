@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.*
 import com.google.gson.Gson
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.ShepherdApp.Companion.db
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.Resource
@@ -23,6 +24,8 @@ import com.shepherdapp.app.data.remote.care_teams.CareTeamsRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.TableName
 import com.shepherdapp.app.utils.extensions.createDate
@@ -79,6 +82,9 @@ class MessagesViewModel @Inject constructor(
 
     private var _responseLiveData = MutableLiveData<Event<DataResult<ChatUserListing>>>()
     fun getChatList(): LiveData<Event<DataResult<ChatUserListing>>> = _responseLiveData
+
+    fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID, "")
 
     fun getCurrentUser(): UserProfile? {
         return userRepository.getCurrentUser()

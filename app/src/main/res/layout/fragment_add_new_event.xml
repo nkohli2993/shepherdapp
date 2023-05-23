@@ -273,7 +273,7 @@
                     app:fontFamily="@font/gotham_medium" />
 
                 <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/tvRepeat"
+                    android:id="@+id/repeatCB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
@@ -286,6 +286,44 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/repeatCB" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:textColor="@color/_399282"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtType" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtEndDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_book"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/txtValue" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"

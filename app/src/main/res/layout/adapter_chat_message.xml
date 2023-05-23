@@ -225,7 +225,7 @@
                     android:layout_margin="@dimen/_1sdp"
                     android:padding="1dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_defalut_profile_pic"
+                    android:src="@drawable/background_splash"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize37Percent." />
             </LinearLayout>
 
