@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
+import com.shepherdapp.app.data.dto.dashboard.LoveUser
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.databinding.FragmentLovedOnesBinding
 import com.shepherdapp.app.network.retrofit.DataResult
@@ -310,26 +311,6 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                     }
                 }
-
-
-                /*  Log.d(TAG, "onClick:${careTeams.size} ")
-                  if (careTeams.size < 3) {
-                      findNavController().navigate(
-                          LovedOnesFragmentDirections.actionNavLovedOneToNavAddLovedOne(
-                              source = Const.ADD_LOVE_ONE
-                          )
-                      )
-                  } else {
-                      val builder = AlertDialog.Builder(requireContext())
-                      val dialog = builder.apply {
-                          setTitle(getString(R.string.app_name))
-                          setMessage(getString(R.string.you_can_add_up_to_3_loved_one))
-                          setPositiveButton(getString(R.string.ok)) { _, _ ->
-                          }
-                      }.create()
-                      dialog.show()
-                      dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                  }*/
             }
             R.id.btnDone -> {
                 selectedCare?.let { careTeams ->
@@ -347,7 +328,7 @@ class LovedOnesFragment : BaseFragment<FragmentLovedOnesBinding>(), View.OnClick
                             profilePic = it.profilePhoto
                         )
                         lovedOneViewModel.saveLovedOneUserDetail(lovedOneDetail)
-
+                        lovedOneViewModel.saveLovedUser(LoveUser(it.firstname,it.lastname,it.profilePhoto,it.id))
                         // Get the care role name and saved into shared preferences
                         val roleName = careTeams.careRoles?.name
                         roleName?.let { it1 -> lovedOneViewModel.saveUserRole(it1) }

@@ -12,6 +12,6 @@ data class LoveUser(
 
     @SerializedName("firstname") var firstname: String? = null,
     @SerializedName("lastname") var lastname: String? = null,
-    @SerializedName("profile_photo") var profilePhoto: String? = null
-
+    @SerializedName("profile_photo") var profilePhoto: String? = null,
+    @SerializedName("id") var id: Int? = null,
 ):Parcelable

@@ -67,7 +67,7 @@ class HomeViewModel @Inject constructor(
     var homeResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
         _homeResponseLiveData
 
-  private var _loginUserResponseLiveData =
+    private var _loginUserResponseLiveData =
         MutableLiveData<Event<DataResult<HomeResponseModel>>>()
     var loginUserResponseLiveData: LiveData<Event<DataResult<HomeResponseModel>>> =
         _loginUserResponseLiveData
@@ -202,6 +202,13 @@ class HomeViewModel @Inject constructor(
     fun saveLovedUser(user: LoveUser?) {
         Prefs.with(ShepherdApp.appContext)!!.save(Const.LOVED_USER_DETAILS, user)
     }
+
+    fun getLovedUser(): LoveUser? {
+        return Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.LOVED_USER_DETAILS,
+            LoveUser::class.java
+        )
+    }
     // Get User Details
     /* fun getLovedOneDetails(lovedOneUserId: Int): LiveData<Event<DataResult<UserDetailsResponseModel>>> {
          //val userID = getLovedOneUserId()
@@ -237,6 +244,7 @@ class HomeViewModel @Inject constructor(
         }
         return homeResponseLiveData
     }
+
     fun getLoginUserData(): LiveData<Event<DataResult<HomeResponseModel>>> {
         val lovedOneUUID = getUUID()
         val status = 1
@@ -281,6 +289,10 @@ class HomeViewModel @Inject constructor(
 
     fun saveLovedOneDetail(userLovedOne: UserLovedOne) {
         userRepository.saveLovedOneUserDetail(userLovedOne)
+    }
+
+    fun getLovedOneDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
     }
 
     // Clear Firebase Token on logout

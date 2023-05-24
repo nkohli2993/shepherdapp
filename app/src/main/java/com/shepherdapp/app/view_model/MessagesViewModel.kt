@@ -17,7 +17,9 @@ import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.chat.ChatListData
 import com.shepherdapp.app.data.dto.chat.ChatListResponse
 import com.shepherdapp.app.data.dto.chat.ChatUserListing
+import com.shepherdapp.app.data.dto.dashboard.LoveUser
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
+import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.local.UserRepository
 import com.shepherdapp.app.data.remote.care_teams.CareTeamsRepository
@@ -77,14 +79,29 @@ class MessagesViewModel @Inject constructor(
     private var lastDocument: DocumentSnapshot? = null
     private val messageList = ArrayList<ChatUserListing?>()
     var oldMsgList = ArrayList<ChatListData>()
-    var scrollType: Boolean = false
 
+//    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID)
+    fun getLovedUserDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
+    }
+
+    fun getLovedUser(): LoveUser? {
+        return Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.LOVED_USER_DETAILS,
+            LoveUser::class.java
+        )
+    }
+
+
+    private var _searchCareTeamsResponseLiveData =
+        MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
+    var searchCareTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
+        _searchCareTeamsResponseLiveData
 
     private var _responseLiveData = MutableLiveData<Event<DataResult<ChatUserListing>>>()
     fun getChatList(): LiveData<Event<DataResult<ChatUserListing>>> = _responseLiveData
 
     fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
-    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID, "")
 
     fun getCurrentUser(): UserProfile? {
         return userRepository.getCurrentUser()
@@ -277,6 +294,27 @@ class MessagesViewModel @Inject constructor(
     }
 //*************************************
 
+    fun searchCareTeamsByLovedOneId(
+        pageNumber: Int,
+        limit: Int,
+        status: Int,
+        search: String
+    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response =
+                lovedOneUUID?.let {
+                    careTeamsRepository.searchCareTeamsByLovedOneId(
+                        pageNumber, limit, status,
+                        it, search
+                    )
+                }
+            withContext(Dispatchers.Main) {
+                response?.collect { _searchCareTeamsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return searchCareTeamsResponseLiveData
+    }
 
 
 }

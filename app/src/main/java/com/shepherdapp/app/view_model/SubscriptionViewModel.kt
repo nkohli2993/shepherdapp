@@ -11,6 +11,7 @@ import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.shepherdapp.app.billing.BillingClientWrapper
 import com.shepherdapp.app.data.DataRepository
+import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
 import com.shepherdapp.app.data.dto.subscription.SubscriptionResponseModel
 import com.shepherdapp.app.data.dto.subscription.validate_subscription.ValidateSubscriptionRequestModel
@@ -62,6 +63,14 @@ class SubscriptionViewModel @Inject constructor(
         _openSubscriptionPlanLiveData.value = SingleEvent(productDetails)
     }
 
+
+    fun getCurrentUserDetail(): UserProfile? {
+        return userRepository.getCurrentUser()
+    }
+
+    fun isUserAttachedToEnterprise(): Boolean? {
+        return userRepository.isUserAttachedToEnterprise()
+    }
     // Create Subscription
     fun createSubscription(subscriptionRequestModel: SubscriptionRequestModel): LiveData<Event<DataResult<SubscriptionResponseModel>>> {
         viewModelScope.launch {

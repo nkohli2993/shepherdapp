@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.DeleteChat
@@ -45,12 +44,9 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
     private var lastMessageSenderId = ""
     var deleteChatUserIdListing: ArrayList<DeleteChat> = ArrayList()
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        fragmentChatBinding =
-            FragmentChatBinding.inflate(inflater, container, false)
+        fragmentChatBinding = FragmentChatBinding.inflate(inflater, container, false)
         if (arguments?.containsKey("assignee_user") == true) {
             userAssignes =
                 @Suppress("DEPRECATION") requireArguments().getParcelable("assignee_user")
@@ -60,10 +56,10 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
 
     override fun initViewBinding() {
         fragmentChatBinding.listener = this
-        roomId = if (chatViewModel.getLovedOneId()!!.toInt() > userAssignes!!.id!!)
-            chatViewModel.getLovedOneId() + "-" + userAssignes!!.id!!
-        else
-            userAssignes!!.id!!.toString() + "-" + chatViewModel.getLovedOneId()!!.toInt()
+        roomId = if (chatViewModel.getLovedUser()!!.id!!
+                .toInt() > userAssignes!!.id!!
+        ) chatViewModel.getLovedUser()!!.id!!.toString() + "-" + userAssignes!!.id!!
+        else userAssignes!!.id!!.toString() + "-" + chatViewModel.getLovedUser()!!.id!!.toInt()
         chatViewModel.roomId = roomId
 
         chatViewModel.tableName =
@@ -74,9 +70,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             }
         if (userAssignes != null) {
             fragmentChatBinding.imgChatUser.setImageFromUrl(
-                userAssignes!!.profilePhoto,
-                userAssignes!!.firstname,
-                userAssignes!!.lastname
+                userAssignes!!.profilePhoto, userAssignes!!.firstname, userAssignes!!.lastname
             )
             fragmentChatBinding.txtName.text =
                 userAssignes!!.firstname.plus(" ${userAssignes!!.lastname}")
@@ -85,44 +79,40 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
         // Load Chat
         chatViewModel.initChatListener()
         chatViewModel.listenUnreadUpdates()
-
-//        initScrollListener()
         setMessageAdapter()
     }
 
     private fun loadChat() {
-        showLoading("")
-        chatViewModel.getChatMessages()
-            .observe(viewLifecycleOwner) { event ->
-                event.getContentIfNotHandled()?.let {
+        chatViewModel.getChatMessages().observe(viewLifecycleOwner) { event ->
+            event.getContentIfNotHandled()?.let {
+                when (it) {
+                    is DataResult.Loading -> {
+                    }
 
-                    when (it) {
-                        is DataResult.Loading -> {
-//                            showLoading("")
-                        }
-                        is DataResult.Failure -> {
-                            hideLoading()
-                            allMsgLoaded = true
-                            showError(requireContext(), it.exception?.message ?: "")
-                        }
-                        is DataResult.Success -> {
-                            hideLoading()
-                            msgGroupList.clear()
-                            msgGroupList.addAll(it.data.groupList)
-                            msgGroupList.reverse()
-                            Log.d(TAG, "loadChat: $msgGroupList")
-                            getChatList()
-                        }
+                    is DataResult.Failure -> {
+                        hideLoading()
+                        allMsgLoaded = true
+                        showError(requireContext(), it.exception?.message ?: "")
+                    }
+
+                    is DataResult.Success -> {
+                        hideLoading()
+                        msgGroupList.clear()
+                        msgGroupList.addAll(it.data.groupList)
+                        msgGroupList.reverse()
+                        Log.d(TAG, "loadChat: $msgGroupList")
+                        getChatList()
                     }
                 }
             }
+        }
     }
 
     private fun getChatList() {
         var chatMessages: ArrayList<MessageGroupData> = ArrayList()
         var isChatDeleted = false
         deleteChatUserIdListing.forEach { deleteChatListData ->
-            if (deleteChatListData.userId?.toInt() == chatViewModel.getLovedOneId()!!.toInt()) {
+            if (deleteChatListData.userId?.toInt() == chatViewModel.getLovedUser()!!.id!!.toInt()) {
                 val deletedTimeStamp = deleteChatListData.deletedAt
                 isChatDeleted = true
                 if (deletedTimeStamp != null) {
@@ -152,8 +142,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             }
         }
 
-        if (!isChatDeleted)
-            chatMessages = msgGroupList
+        if (!isChatDeleted) chatMessages = msgGroupList
         hideLoading()
         chatAdapter?.addData(chatMessages)
     }
@@ -167,27 +156,6 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
 
     }
 
-
-    private fun initScrollListener() {
-
-        fragmentChatBinding.rvMsg.addOnScrollListener(object :
-            RecyclerView.OnScrollListener() {
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                // !recyclerView.canScrollVertically(-1) returns true if top is reached
-                if (!recyclerView.canScrollVertically(-1) && !allMsgLoaded) {
-                    loadPreviousChat()
-                }
-            }
-        })
-
-    }
-
-    private fun loadPreviousChat() {
-        chatViewModel.getPreviousMessages()
-    }
-
     override fun observeViewModel() {
         // Observe Push Notification Response
         chatViewModel.fcmResponseLiveData.observeEvent(this) {
@@ -195,9 +163,11 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                 is DataResult.Failure -> {
                     hideLoading()
                 }
+
                 is DataResult.Loading -> {
 
                 }
+
                 is DataResult.Success -> {
                     Log.d(TAG, "observeViewModel: Push Notification sent successfully...")
                 }
@@ -209,6 +179,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             deleteChatUserIdListing.clear()
             deleteChatUserIdListing.addAll(it.deletedChatUserIds)
             Log.e("catch_deleted_user", "deleteChatUserIdListing $deleteChatUserIdListing")
+            showLoading("")
             loadChat()
             updateUnseenCount()
         }
@@ -220,6 +191,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
+
             R.id.ivSend -> {
                 val message = fragmentChatBinding.editTextMessage.text.toString().trim()
                 if (message.isEmpty()) {
@@ -232,12 +204,17 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                         roomId,
                         Chat.MESSAGE_TEXT,
                         message = message,
-                        unReadCount = unReadCount, deleteChatUserIdListing
+                        unReadCount = unReadCount,
+                        deleteChatUserIdListing
                     )
                     fragmentChatBinding.editTextMessage.text?.clear()
                     fragmentChatBinding.rvMsg.scrollToPosition(msgGroupList.size - 1)
-                    lastMessageSenderId = chatViewModel.getLovedOneId()!!
+                    lastMessageSenderId = chatViewModel.getLovedUser()!!.id!!.toString()
                     updateUnseenCount()
+                    if (chatAdapter != null && chatAdapter?.messageList?.size!! <= 0) {
+                        loadChat()
+                    }
+
                 }
             }
         }
@@ -245,11 +222,9 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
 
     private fun updateUnseenCount() {
         //clear unseen count
-        if (chatAdapter != null &&
-            chatAdapter?.messageList?.size!! > 0
-        ) {
+        if (chatAdapter != null && chatAdapter?.messageList?.size!! > 0) {
 
-            if (lastMessageSenderId.toInt() != chatViewModel.getLovedOneId()!!.toInt()) {
+            if (lastMessageSenderId.toInt() != chatViewModel.getLovedUser()!!.id!!.toInt()) {
                 //clear unseen count because the last message is from other user
                 chatViewModel.updateUnseenCount(roomId, 0)
             } else {

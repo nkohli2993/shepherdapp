@@ -15,6 +15,8 @@ import com.shepherdapp.app.ShepherdApp.Companion.db
 import com.shepherdapp.app.data.dto.DeleteChat
 import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
 import com.shepherdapp.app.data.dto.chat.*
+import com.shepherdapp.app.data.dto.dashboard.LoveUser
+import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.data.local.UserRepository
@@ -46,9 +48,6 @@ class ChatViewModel @Inject constructor(
     BaseViewModel() {
 
     private val TAG = "CarePointsViewModel"
-    var chatModel: ChatModel? = null
-
-    //    var chatListData: CareTeamChatListData? = null
     var isListenerInitialized: Boolean = false
     private var lastDocument: DocumentSnapshot? = null
     private var allMsgList: ArrayList<MessageData> = ArrayList()
@@ -77,7 +76,7 @@ class ChatViewModel @Inject constructor(
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
-
+    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID)
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val openChatItemsPrivate = MutableLiveData<SingleEvent<Int>>()
     val openMemberDetails: LiveData<SingleEvent<Int>> get() = addedCarePointLiveData
@@ -86,18 +85,19 @@ class ChatViewModel @Inject constructor(
         val error = errorManager.getError(errorCode)
         showToastPrivate.value = SingleEvent(error.description)
     }
-
-    fun openEventChat(item: Int) {
-        openChatItemsPrivate.value = SingleEvent(item)
-    }
-
     fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
-    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID, "")
+//    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID, "")
 
-    fun getCurrentUser(): UserProfile? {
-        return userRepository.getCurrentUser()
+    fun getLovedUserDetail(): UserLovedOne? {
+        return userRepository.getLovedOneUserDetail()
     }
 
+    fun getLovedUser(): LoveUser? {
+        return Prefs.with(ShepherdApp.appContext)!!.getObject(
+            Const.LOVED_USER_DETAILS,
+            LoveUser::class.java
+        )
+    }
 
     fun getRoomDetails(
         roomId: String,
@@ -209,7 +209,7 @@ class ChatViewModel @Inject constructor(
     private fun updateReadByData() {
         ShepherdApp.db.runTransaction { transaction ->
             allMsgList.forEach { message ->
-                if (!message.readIds.contains(userRepository.getCurrentUser()?.userId.toString())) {
+                if (!message.readIds.contains(userRepository.getLovedOneId().toString())) {
                     val docRef =
                         db.collection(tableName!!).document(roomId ?: "")
                             .collection(TableName.MESSAGES).document(message.id ?: "")
@@ -218,7 +218,7 @@ class ChatViewModel @Inject constructor(
                             JSONObject(it).toString(),
                             MessageData::class.java
                         )
-                        val loggedInUserID = userRepository.getCurrentUser()?.userId.toString()
+                        val loggedInUserID = userRepository.getLovedOneId().toString()
                         messageModel.readIds.add(loggedInUserID)
                         transaction.update(docRef, "readIds", messageModel.readIds)
                         /*  if (messageModel.readIds.size >= chatListData?.userIDs?.size ?: 0) {
@@ -291,14 +291,14 @@ class ChatViewModel @Inject constructor(
         val data = MessageData().apply {
             content = message
             isRead = false
-            senderID = userRepository.getCurrentUser()?.userId.toString()
+            senderID = userRepository.getLovedUser()?.id.toString()
             messageType = msgType
             readIds = ArrayList<String>().apply {
-                add(userRepository.getCurrentUser()?.userId.toString())
+                add(userRepository.getLovedUser()?.id.toString())
             }
             senderName =
-                userRepository.getCurrentUser()?.firstname + " " + userRepository.getCurrentUser()?.lastname
-            senderProfilePic = userRepository.getCurrentUser()?.profilePhoto
+                userRepository.getLovedUser()?.firstname + " " + userRepository.getLovedUser()?.lastname
+            senderProfilePic = userRepository.getLovedUser()?.profilePhoto
         }
         sendMessage(data, roomId, unReadCount)
     }
@@ -362,7 +362,7 @@ class ChatViewModel @Inject constructor(
                     }
                 }
                 Log.d(TAG, "in : firebase Tokens are: $firebaseTokensList")
-                val loggedInUser = userRepository.getCurrentUser()
+                val loggedInUser = userRepository.getLovedUser()
 
 
                 val notificationObject = JSONObject().apply {
@@ -395,7 +395,7 @@ class ChatViewModel @Inject constructor(
                     put("data", notificationObject)
                     put("notification", notificationObject)
                     put("chat_type", Chat.CHAT_SINGLE)
-                    put("user_id", loggedInUser?.userId)
+                    put("user_id", getLovedUserDetail()!!.id.toString())
                     put("registration_ids", jsArray)
                 }
 
@@ -426,11 +426,11 @@ class ChatViewModel @Inject constructor(
             messageData.content!!,
             roomId!!,
             UserDataMessages(
-                getCurrentUser()?.id,
-                getCurrentUser()?.userId,
-                getCurrentUser()?.firstname!!,
-                getCurrentUser()?.lastname,
-                getCurrentUser()?.profilePhoto?:""
+                userRepository.getLovedUser()?.id!!,
+                userRepository.getLovedUser()?.id!!,
+                userRepository.getLovedUser()?.firstname!!,
+                userRepository.getLovedUser()?.lastname,
+                userRepository.getLovedUser()?.profilePhoto?:""
             ),
             UserDataMessages(
                 userAssignes!!.id,
@@ -442,7 +442,7 @@ class ChatViewModel @Inject constructor(
             arrayListOf(roomArray[0].toLong(), roomArray[1].toLong()),
             Timestamp(Calendar.getInstance().time),
             unReadCount,
-            getCurrentUser()?.userId.toString()
+            userRepository.getLovedUser()?.id!!.toString()
         )
 
         db.collection(tableName!!).document(id!!)

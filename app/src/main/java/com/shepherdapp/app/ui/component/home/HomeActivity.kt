@@ -23,6 +23,7 @@ import androidx.navigation.ui.NavigationUI
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.dashboard.LoveUser
 import com.shepherdapp.app.data.dto.login.CareRoles
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.user.UserProfiles
@@ -336,7 +337,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     is DataResult.Success -> {
                         val payload = it.data.payload
-
+                        Log.e(TAG, "initHomeViews: payload :${payload}")
 
                         // Set the notification icon
                         if (payload?.unreadNotificationsCount!! > 0) {
@@ -362,7 +363,8 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
 
                         //save data
-                        viewModel.saveLovedUser(it.data.payload!!.careTeamProfiles[0].loveUser)
+
+                        viewModel.saveLovedUser(LoveUser(it.data.payload?.firstname,it.data.payload?.lastname,it.data.payload?.lovedOneUserProfile,it.data.payload?.user_id))
                         viewModel.saveLovedOneDetail(
                             UserLovedOne(
                                 it.data.payload!!.careTeamProfiles[0].id,
@@ -388,7 +390,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                                 it.data.payload!!.careTeamProfiles[0].user?.profilePhoto
                             )
                         )
-
+                        Log.e(TAG, "initHomeViews: saveLovedOneDetail :${viewModel.getLovedUser()}")
                         // Get loved one user uuid
                         val lovedOneUUID = viewModel.getLovedOneUUID()
                         Log.d(TAG, "initHomeViews: lovedOneUUID :$lovedOneUUID")

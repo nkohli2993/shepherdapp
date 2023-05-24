@@ -9,6 +9,7 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class Payload(
+    @SerializedName("user_id") var user_id: Int? = null,
     @SerializedName("carePoints") var carePoints: Int? = null,
     @SerializedName("medLists") var medLists: Int? = null,
     @SerializedName("lockBoxs") var lockBoxs: Int? = null,

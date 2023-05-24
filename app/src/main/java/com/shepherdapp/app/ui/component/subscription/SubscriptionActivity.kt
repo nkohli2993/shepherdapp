@@ -231,13 +231,14 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                     Const.SubscriptionPlan.Yearly -> {
                         nameOfPlan = "Yearly"
                     }
+
                     Const.SubscriptionPlan.Monthly -> {
                         nameOfPlan = "Monthly"
                     }
                 }
                 expiryDate = planName?.let { getDate(it) }
 
-                if(BuildConfig.DEBUG){
+                if (BuildConfig.DEBUG) {
                     Log.d(TAG, "transactionId : $orderID")
                     Log.d(TAG, "plan : $nameOfPlan")
                     Log.d(TAG, "amount : $amount")
@@ -307,9 +308,11 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Failure -> {
                     hideLoading()
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(this, it.data.message.toString())
@@ -338,10 +341,9 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                                 if (source == "My Subscription") {
                                     onBackPressedDispatcher.onBackPressed()
                                 } else {
-                                    if(source == "Login Screen"){
+                                    if (source == "Login Screen") {
                                         navigateToHomeScreen()
-                                    }
-                                    else{
+                                    } else {
                                         val intent =
                                             Intent(
                                                 this@SubscriptionActivity,
@@ -373,18 +375,20 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                     hideLoading()
                     showError(this, it.message.toString())
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
-                    hideLoading()
+
                     showSuccess(this, "Subscription Validated Successfully")
                     if (isItemAlreadyPurchased) {
+                        hideLoading()
                         // Redirect to AddLovedOneActivity
-                        if(source == "Login Screen"){
+                        if (source == "Login Screen") {
                             navigateToHomeScreen()
-                        }
-                        else{
+                        } else {
                             val intent =
                                 Intent(
                                     this@SubscriptionActivity,
@@ -399,6 +403,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                         }
 
                     } else {
+                        expiryDate = planName?.let { getDate(it) }
                         // Create Subscription
                         if (isFreeTrial) {
                             subscriptionViewModel.createSubscription(
@@ -429,6 +434,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
         }
 
     }
+
     // Navigate to Home Screen with loved one array
     private fun navigateToHomeScreen() {
         Prefs.with(this)?.save(Const.ON_BOARD, true)
@@ -528,14 +534,18 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                             val purchaseToken = map["purchaseToken"] as String?
                             Log.d(TAG, "onBillingSetupFinished: purchaseToken : $purchaseToken")
 
-
+                            orderID = orderId
+                            nameOfPlan = clickedProduct.name
                             // If product ID of clicked item matches with the id of subscription item
                             if (clickedProduct.productId == productId) {
                                 Log.d(
                                     TAG,
                                     "checkIfProductAlreadyPurchased: Subscription already purchased"
                                 )
-                                isItemAlreadyPurchased = true
+                                isItemAlreadyPurchased = false
+                                if (subscriptionViewModel.isUserAttachedToEnterprise() == true) {
+                                    isItemAlreadyPurchased = true
+                                }
                                 //Validate Subscription
                                 subscriptionViewModel.validateSubscription(
                                     ValidateSubscriptionRequestModel(
@@ -569,8 +579,8 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("SimpleDateFormat")
     fun getDate(planName: String): String {
-//        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm s")
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+//        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a")
         val currentCal: Calendar = Calendar.getInstance()
         val currentDate: String = dateFormat.format(currentCal.time)
         Log.d(TAG, "current date : $currentDate")
@@ -578,9 +588,11 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
             Const.SubscriptionPlan.ONE_WEEK -> {
                 currentCal.add(Calendar.DATE, 7)
             }
+
             Const.SubscriptionPlan.ONE_MONTH -> {
                 currentCal.add(Calendar.MONTH, 1)
             }
+
             Const.SubscriptionPlan.ONE_YEAR -> {
                 currentCal.add(Calendar.YEAR, 1)
             }

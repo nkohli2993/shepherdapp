@@ -3,7 +3,9 @@ package com.shepherdapp.app.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
+import com.shepherdapp.app.data.dto.dashboard.LoveUser
 import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.subscription.check_subscription_status.CheckSubscriptionStatusResponseModel
@@ -14,6 +16,8 @@ import com.shepherdapp.app.data.remote.subscription.SubscriptionRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -102,6 +106,9 @@ class LovedOneViewModel @Inject constructor(
         userRepository.saveLovedOneUserDetail(userLovedOne)
     }
 
+    fun saveLovedUser(user: LoveUser?) {
+        Prefs.with(ShepherdApp.appContext)!!.save(Const.LOVED_USER_DETAILS, user)
+    }
     fun isLoggedInUserLovedOne(): Boolean? {
         return userRepository.isLoggedInUserLovedOne()
     }

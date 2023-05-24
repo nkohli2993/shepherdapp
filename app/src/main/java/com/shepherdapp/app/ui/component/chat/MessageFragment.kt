@@ -58,7 +58,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
             } else {
                 TableName.CARE_TEAM_CHATS_DEV
             }
-        loggedInUserId = messagesViewModel.getLovedOneId()?.toLong()
+        loggedInUserId = messagesViewModel.getLovedUser()!!.id!!.toLong()
         return fragmentMessageBinding.root
     }
 
@@ -80,7 +80,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
                 when (viewID) {
                     R.id.delete_task -> {
                         showDeleteChatDialog(
-                            messagesViewModel.getLovedOneId()!!.toLong(),
+                            messagesViewModel.getLovedUser()!!.id!!.toLong(),
                             roomChatList[position].room_id!!
                         )
                     }
@@ -92,13 +92,13 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
 
     override fun observeViewModel() {
         showLoading("")
-        messagesViewModel.getChatRooms(messagesViewModel.getLovedOneId()!!.toInt()) {
+        messagesViewModel.getChatRooms(messagesViewModel.getLovedUser()!!.id!!.toInt()) {
             var isChatDeleted = false
             var chatMessages: java.util.ArrayList<ChatUserListing> = java.util.ArrayList()
             it.forEach { deleteChatListData ->
                 if(deleteChatListData.deletedChatUserIds.size>0){
                     deleteChatListData.deletedChatUserIds.forEach{
-                        if (it.userId?.toInt() == messagesViewModel.getLovedOneId()!!.toInt()){
+                        if (it.userId?.toInt() == messagesViewModel.getLovedUser()!!.id!!.toInt()){
                             val deletedTimeStamp = it.deletedAt
                             isChatDeleted = true
                             if (deletedTimeStamp != null) {
@@ -157,7 +157,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
             messagesListingAdapter =
                 MessagesListingAdapter(
                     roomChatList,
-                    messagesViewModel.getLovedOneId()!!.toInt(),
+                    messagesViewModel.getLovedUser()!!.id!!.toInt(),
                     this
                 )
             fragmentMessageBinding.rvChatListing.apply {
@@ -184,7 +184,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
 
     override fun onItemClick(chatUserListing: ChatUserListing) {
         val detail =
-            if (chatUserListing.user1?.userId?.toInt() == messagesViewModel.getLovedOneId()!!.toInt()) {
+            if (chatUserListing.user1?.userId?.toInt() == messagesViewModel.getLovedUser()!!.id!!.toInt()) {
                 UserAssigneDetail(
                     chatUserListing.user2!!.userId!!.toInt(),
                     chatUserListing.user2.userId!!.toInt(),

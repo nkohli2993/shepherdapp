@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.chat.MessageData
+import com.shepherdapp.app.data.dto.dashboard.LoveUser
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.databinding.AdapterChatMessageBinding
 import com.shepherdapp.app.ui.base.listeners.RecyclerItemListener
@@ -56,10 +57,10 @@ class CareTeamChatAdapter (
         fun bind(messageData: MessageData, recyclerItemListener: RecyclerItemListener) {
             itemBinding.messageData = messageData
             val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
-                Const.USER_DETAILS,
-                UserProfile::class.java
+                Const.LOVED_USER_DETAILS,
+                LoveUser::class.java
             )
-            val loggedInUserId = loggedInUser?.userId
+            val loggedInUserId = loggedInUser!!.id
 
             itemBinding.userId = loggedInUserId.toString()
 

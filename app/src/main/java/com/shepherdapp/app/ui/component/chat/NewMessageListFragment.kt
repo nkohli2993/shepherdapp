@@ -1,5 +1,7 @@
 package com.shepherdapp.app.ui.component.chat
 
+import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import androidx.fragment.app.Fragment
@@ -13,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.databinding.FragmentMessageBinding
@@ -25,6 +28,7 @@ import com.shepherdapp.app.ui.component.careTeamMembers.adapter.CareTeamMembersA
 import com.shepherdapp.app.ui.component.chat.adapter.AdapterMemberCareTeam
 import com.shepherdapp.app.ui.component.chat.adapter.MessagesListingAdapter
 import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.TableName
 import com.shepherdapp.app.view_model.MessagesViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -42,6 +46,9 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
     private var pageNumber: Int = 1
     private var limit: Int = 20
     private var status: Int = 1
+    var currentPage: Int = 0
+    var totalPage: Int = 0
+    var total: Int = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -81,6 +88,33 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
                         it.textViewNoMessages.visibility = View.VISIBLE
                     }
 
+                }
+            }
+        }
+        messagesViewModel.searchCareTeamsResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Failure -> {
+                    hideLoading()
+                    careTeams.clear()
+
+                }
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+                is DataResult.Success -> {
+                    hideLoading()
+                    careTeams = it.data.payload.data
+                    total = it.data.payload.total!!
+                    currentPage = it.data.payload.currentPage!!
+                    totalPage = it.data.payload.totalPages!!
+                    if (careTeams.isNullOrEmpty()) return@observeEvent
+                    val loggedInUserUUID =
+                        Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
+                    // User list should not contain loggedIn User
+                    val careTeamList = careTeams.filterNot { careTeamModel ->
+                        careTeamModel.user_id_details?.uid == loggedInUserUUID
+                    } as ArrayList
+                    careTeamAdapter?.updateCareTeams(careTeamList)
                 }
             }
         }
@@ -133,7 +167,15 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
     override fun onResume() {
         super.onResume()
         fragmentNewMessageBinding.editTextSearch.doAfterTextChanged { search ->
-            searchUserList(search)
+            if (!search.isNullOrEmpty()) {
+                messagesViewModel.searchCareTeamsByLovedOneId(
+                    pageNumber,
+                    limit,
+                    status,
+                    search.toString()
+                )
+            }
+
         }
     }
 
