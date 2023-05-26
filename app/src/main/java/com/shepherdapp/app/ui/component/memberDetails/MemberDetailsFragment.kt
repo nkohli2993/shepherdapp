@@ -319,7 +319,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 )
                 findNavController().navigate(
                     R.id.action_new_message_to_chat,
-                    bundleOf("assignee_user" to detail)
+                    bundleOf("assignee_user" to detail,"room_id" to "")
                 )
             }
             R.id.btnDelete -> {

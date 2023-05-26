@@ -10,6 +10,7 @@ import android.view.*
 import android.view.animation.RotateAnimation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
 import androidx.navigation.fragment.findNavController
@@ -17,6 +18,9 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.Resource
+import com.shepherdapp.app.data.dto.WeekDataModel
+import com.shepherdapp.app.data.dto.added_events.AddedEventModel
+import com.shepherdapp.app.data.dto.added_events.EventRecurringModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.edit_event.EditEventRequestModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
@@ -47,6 +51,7 @@ import kotlin.collections.ArrayList
 class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     View.OnClickListener, AssignToEventAdapter.selectedTeamMember,
     DatePickerDialog.OnDateSetListener {
+    private var carePoint: AddedEventModel? = null
     private lateinit var fragmentEditCarePointBinding: FragmentEditCarePointBinding
     private var assigneeAdapter: AssigneAdapter? = null
     private val editEventViewModel: EditEventViewModel by viewModels()
@@ -66,7 +71,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     private var oldAssigneeUUIDList: ArrayList<String> = arrayListOf()
     private var list: ArrayList<String> = arrayListOf()
     private var deletedAssigneeUUIDList: ArrayList<String> = arrayListOf()
-
+    private var recurringValue: EventRecurringModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,7 +88,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     override fun initViewBinding() {
         fragmentEditCarePointBinding.listener = this
 
-        val carePoint = args.carePoint
+        carePoint = args.carePoint
 
         //Set EventName
         if (!carePoint?.name.isNullOrEmpty()) {
@@ -137,16 +142,19 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
         // Set Time
         if (carePoint?.time != null) {
-            val carePointDate = if(carePoint?.time!!.contains("am") || carePoint?.time!!.contains("AM") || carePoint?.time!!.contains("pm") || carePoint?.time!!.contains("PM")){
-                SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(
-                    carePoint.date.plus(" ").plus(carePoint.time)
-                )
-            }
-            else{
-                SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
-                    carePoint.date.plus(" ").plus(carePoint.time)
-                )
-            }
+            val carePointDate =
+                if (carePoint!!.time!!.contains("am") || carePoint!!.time!!.contains("AM") || carePoint!!.time!!.contains(
+                        "pm"
+                    ) || carePoint?.time!!.contains("PM")
+                ) {
+                    SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(
+                        carePoint!!.date.plus(" ").plus(carePoint!!.time)
+                    )
+                } else {
+                    SimpleDateFormat("yyyy-MM-dd HH:mm").parse(
+                        carePoint!!.date.plus(" ").plus(carePoint!!.time)
+                    )
+                }
 
             val time = SimpleDateFormat("hh:mm a").format(carePointDate!!)
             Log.d(TAG, "initViewBinding: time is $time")
@@ -179,22 +187,75 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             false
         }
         assigneeAdapter?.setHasStableIds(true)
+        fragmentEditCarePointBinding.repeatCB.isChecked = false
+        if (carePoint!!.repeat_flag != null) {
+            fragmentEditCarePointBinding.repeatCB.isChecked = true
+            fragmentEditCarePointBinding.txtType.isVisible = true
+            fragmentEditCarePointBinding.txtValue.isVisible = true
+            fragmentEditCarePointBinding.txtEndDate.isVisible = true
 
-        /*fragmentAddNewEventBinding.etNote.setOnFocusChangeListener { view, hasFocus ->
+            when (carePoint!!.repeat_flag) {
+                RecurringFlag.Daily.value -> {
+                    fragmentEditCarePointBinding.txtType.text = getString(R.string.every_day)
+                }
+
+                RecurringFlag.Weekly.value -> {
+                    fragmentEditCarePointBinding.txtType.text = getString(R.string.every_week)
+                    if (carePoint!!.week_days != null) {
+                        val daysList: java.util.ArrayList<String> = arrayListOf()
+                        val weekArray = resources.getStringArray(R.array.week_array)
+                        val weekAry: java.util.ArrayList<WeekDataModel> = arrayListOf()
+                        for (i in weekArray.indices) {
+                            weekAry.add(WeekDataModel((i + 1), weekArray[i]))
+                        }
+                        for (i in weekAry) {
+                            for (weekId in carePoint!!.week_days!!) {
+                                if ((i.id) == weekId) {
+                                    daysList.add(i.name!!)
+                                }
+                            }
+                        }
+                        fragmentEditCarePointBinding.txtValue.text = daysList.joinToString()
+                    }
+                }
+
+                RecurringFlag.Monthly.value -> {
+                    fragmentEditCarePointBinding.txtType.text = getString(R.string.every_month)
+                    fragmentEditCarePointBinding.txtValue.text =
+                        carePoint!!.month_dates?.joinToString()
+                }
+
+                else -> {
+
+                }
+            }
+            val dateSelected =
+                SimpleDateFormat("yyyy-MM-dd").parse(carePoint!!.repeat_end_date!!)
+            val endDate =
+                dateSelected?.let { SimpleDateFormat("EEE, MMM dd, yyyy").format(it) }
+            fragmentEditCarePointBinding.txtEndDate.text = "Ends on - $endDate"
+
+        }
+
+        /*fragmentEditCarePointBinding.etNote.setOnFocusChangeListener { view, hasFocus ->
             if (hasFocus) {
-                fragmentAddNewEventBinding.scrollView.postDelayed(Runnable {
+                fragmentEditCarePointBinding.scrollView.postDelayed(Runnable {
                     val lastChild: View =
-                        fragmentAddNewEventBinding.scrollView.getChildAt(fragmentAddNewEventBinding.scrollView.getChildCount() - 1)
+                        fragmentEditCarePointBinding.scrollView.getChildAt(fragmentEditCarePointBinding.scrollView.getChildCount() - 1)
                     val bottom: Int =
-                        lastChild.bottom + fragmentAddNewEventBinding.scrollView.getPaddingBottom()
-                    val sy: Int = fragmentAddNewEventBinding.scrollView.getScrollY()
-                    val sh: Int = fragmentAddNewEventBinding.scrollView.getHeight()
+                        lastChild.bottom + fragmentEditCarePointBinding.scrollView.getPaddingBottom()
+                    val sy: Int = fragmentEditCarePointBinding.scrollView.getScrollY()
+                    val sh: Int = fragmentEditCarePointBinding.scrollView.getHeight()
                     val delta = bottom - (sy + sh)
-                    fragmentAddNewEventBinding.scrollView.smoothScrollBy(0, delta)
+                    fragmentEditCarePointBinding.scrollView.smoothScrollBy(0, delta)
                 }, 200)
             }
 
         }*/
+
+        fragmentEditCarePointBinding.repeatCB.setOnClickListener {
+            showRepeatDialog(carePoint!!)
+        }
 
         selectAllAssigneeCheckBoxListener()
     }
@@ -202,7 +263,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     private fun selectAllAssigneeCheckBoxListener() {
         fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isPressed) {
-                careteams.forEachIndexed { position, careTeamModel ->
+                careteams.forEachIndexed { position, _ ->
                     careteams[position].isSelected = isChecked
                     val assignee: ArrayList<String> = arrayListOf()
                     assignee.clear()
@@ -257,6 +318,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
 //                    fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener(null)
@@ -320,9 +382,11 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     hideLoading()
                     showError(requireContext(), it.message.toString())
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
 //                    showSuccess(requireContext(), it.data.message.toString())
@@ -340,6 +404,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                 }
@@ -359,6 +424,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             is Resource.Success -> status.data?.let {
 
             }
+
             is Resource.DataError -> {
                 status.errorCode?.let { editEventViewModel.showToastMessage(it) }
             }
@@ -402,9 +468,11 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 intent.putExtra("search_type", "event")
                 navLauncher.launch(intent)
             }
+
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
+
             R.id.assigneET -> {
                 if (fragmentEditCarePointBinding.assigneRV.visibility == View.VISIBLE) {
                     fragmentEditCarePointBinding.assigneRV.visibility = View.GONE
@@ -416,6 +484,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     rotate(180f)
                 }
             }
+
             R.id.btnSaveChanges -> {
                 // assignTo contains UUID of total assignees
                 assignTo.clear()
@@ -451,29 +520,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
                 Log.d(TAG, "Deleted Assignees: $deletedAssigneeUUIDList")
 
-
-                // Get new assignees
-                // To get need to removed old assignees from newAssigneesUUIDList
-//                newAssigneesUUIDList.removeAll(oldAssigneeUUIDList)
-
-//                Log.d(TAG, "New assignee : $newAssigneesUUIDList")
-
-                // Remove the new assignee from old assignees to get deleted assignees
-                // list contains the uuid of deleted assignees
-                /*    if (newAssigneesUUIDList.isEmpty() && (assignTo.size == oldAssigneeUUIDList.size)) {
-                        list.clear()
-                    } else if (oldAssigneeUUIDList.size > assignTo.size) {
-                        list.removeAll(assignTo)
-                    } else {
-                        if (list.containsAll(newAssigneesUUIDList)) {
-                            list.removeAll(newAssigneesUUIDList)
-                        } else {
-                            list.clear()
-                        }
-                    }
-                    Log.d(TAG, "del : Deleted Assignee List : $list")*/
-
-
                 if (isValid) {
                     editEvent()
                 }
@@ -482,12 +528,15 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             R.id.clTimeWrapper, R.id.tvTime -> {
                 timePicker()
             }
+
             R.id.tvam -> {
                 changeTimeAmPm("am")
             }
+
             R.id.tvpm -> {
                 changeTimeAmPm("pm")
             }
+
             R.id.tvDate -> {
                 datePicker()
             }
@@ -591,8 +640,9 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         getString(R.string.please_enter_event_name)
                     fragmentEditCarePointBinding.etEventName.requestFocus()
                 }
+
                 assignTo.size <= 0 -> {
-                    if (oldAssigneeUUIDList.isNullOrEmpty()) {
+                    if (oldAssigneeUUIDList.isEmpty()) {
                         showInfo(
                             requireContext(),
                             getString(R.string.please_select_whome_to_assign_event)
@@ -601,14 +651,17 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         return true
                     }
                 }
+
                 fragmentEditCarePointBinding.tvDate.text.toString().trim() == "DD/MM/YY" -> {
                     showInfo(requireContext(), getString(R.string.please_enter_date_of_event))
                     fragmentEditCarePointBinding.tvDate.requestFocus()
                 }
+
                 fragmentEditCarePointBinding.tvDate.text.toString().trim().isEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_enter_date_of_event))
                     fragmentEditCarePointBinding.tvDate.requestFocus()
                 }
+
                 fragmentEditCarePointBinding.tvTime.text.toString().trim().isEmpty() -> {
                     showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
                     fragmentEditCarePointBinding.tvTime.requestFocus()
@@ -619,12 +672,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     fragmentEditCarePointBinding.tvDate.requestFocus()
                 }
 
-                /* fragmentAddNewEventBinding.etNote.text.toString().trim().isEmpty() -> {
+                /* fragmentEditCarePointBinding.etNote.text.toString().trim().isEmpty() -> {
                      showInfo(
                          requireContext(),
                          getString(R.string.please_enter_notes_for_care_point)
                      )
-                     fragmentAddNewEventBinding.etNote.requestFocus()
+                     fragmentEditCarePointBinding.etNote.requestFocus()
                  }*/
                 else -> {
                     return true
@@ -648,38 +701,69 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         dateFormat = SimpleDateFormat("hh:mm a")
         val selectedTime = dateFormat.format(formattedDate)
 
-        val note = if (fragmentEditCarePointBinding.etNote.text.toString().isNullOrEmpty()) {
+        val note = if (fragmentEditCarePointBinding.etNote.text.toString().isEmpty()) {
             null
         } else {
             fragmentEditCarePointBinding.etNote.text.toString().trim()
         }
 
         val location =
-            if (fragmentEditCarePointBinding.edtAddress.text.toString().trim().isNullOrEmpty()) {
+            if (fragmentEditCarePointBinding.edtAddress.text.toString().trim().isEmpty()) {
                 null
             } else {
                 fragmentEditCarePointBinding.edtAddress.text.toString().trim()
             }
 
-        Log.d(TAG, "Old Assignees : $oldAssigneeUUIDList")
-        Log.d(TAG, "Total Selected Assignees : $assignTo")
-        Log.d(TAG, "Deleted Assignees : $deletedAssigneeUUIDList")
-        Log.d(TAG, "New Assignees : $newAssigneesUUIDList")
 
-        args.carePoint?.id?.let {
-            editEventViewModel.editCarePoint(
-                EditEventRequestModel(
-                    name = fragmentEditCarePointBinding.etEventName.text.toString().trim(),
-                    location = location,
-                    date = selectedDate,
-                    time = selectedTime,
-                    notes = note,
-                    deletedAssignee = deletedAssigneeUUIDList,
-                    newAssignee = newAssigneesUUIDList
-                ),
-                it
-            )
+        if (fragmentEditCarePointBinding.repeatCB.isChecked) {
+            var dateWeekValue: ArrayList<Int>? = null
+            var dateMonthValue: ArrayList<Int>? = null
+            if (carePoint != null && carePoint!!.repeat_flag == RecurringFlag.Weekly.value) {
+                dateWeekValue = carePoint!!.week_days
+            } else if (carePoint != null && carePoint!!.repeat_flag == RecurringFlag.Monthly.value) {
+                dateMonthValue = carePoint!!.month_dates
+            }
+            val endDate = SimpleDateFormat("MM-dd-yyyy").parse(carePoint!!.repeat_end_date)
+            val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate)
+
+            args.carePoint?.id?.let {
+                editEventViewModel.editCarePoint(
+                    EditEventRequestModel(
+                        name = fragmentEditCarePointBinding.etEventName.text.toString().trim(),
+                        location = location,
+                        date = selectedDate,
+                        time = selectedTime,
+                        notes = note,
+                        deletedAssignee = deletedAssigneeUUIDList,
+                        newAssignee = newAssigneesUUIDList,
+                        repeat_flag = carePoint!!.repeat_flag,
+                        repeat_end_date = selectedEndDate,
+                        week_days = dateWeekValue,
+                        month_dates = dateMonthValue
+                    ),
+                    it
+                )
+            }
+
+        } else {
+            args.carePoint?.id?.let {
+                editEventViewModel.editCarePoint(
+                    EditEventRequestModel(
+                        name = fragmentEditCarePointBinding.etEventName.text.toString().trim(),
+                        location = location,
+                        date = selectedDate,
+                        time = selectedTime,
+                        notes = note,
+                        deletedAssignee = deletedAssigneeUUIDList,
+                        newAssignee = newAssigneesUUIDList
+                    ),
+                    it
+                )
+            }
+
+
         }
+
     }
 
     override fun getLayoutRes(): Int {
@@ -777,15 +861,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                             setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
                         }
 
-                        var min: String? = ""
-                        var hours: String? = ""
-
-                        min =
+                        val min: String =
                             if (minute.toString().length < 2) "0$minute" else java.lang.String.valueOf(
                                 minute
                             )
 
-                        hours =
+                        val hours: String =
                             if (hour.toString().length < 2) "0$hour" else java.lang.String.valueOf(
                                 hour
                             )
@@ -835,5 +916,83 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         fragmentEditCarePointBinding.tvDate.text = selectedDate
     }
 
+
+    fun showEventEndDate(value: EventRecurringModel, days: String? = null) {
+        recurringValue = value
+        fragmentEditCarePointBinding.repeatCB.isChecked = true
+        fragmentEditCarePointBinding.txtType.isVisible = false
+        fragmentEditCarePointBinding.txtValue.isVisible = false
+        fragmentEditCarePointBinding.txtEndDate.isVisible = false
+        when (value.type) {
+            RecurringEvent.None.value -> {
+                fragmentEditCarePointBinding.repeatCB.isChecked = false
+            }
+
+            RecurringEvent.Daily.value -> {
+                visibleRecurringView(valueBoolean = false, value)
+            }
+
+            RecurringEvent.Weekly.value -> {
+                visibleRecurringView(valueBoolean = true, value, days)
+            }
+
+            RecurringEvent.Monthly.value -> {
+                visibleRecurringView(valueBoolean = true, value)
+            }
+        }
+    }
+
+    private fun visibleRecurringView(
+        valueBoolean: Boolean,
+        value: EventRecurringModel,
+        days: String? = null
+    ) {
+        fragmentEditCarePointBinding.txtType.isVisible = true
+        fragmentEditCarePointBinding.txtValue.isVisible = valueBoolean
+        fragmentEditCarePointBinding.txtEndDate.isVisible = true
+        fragmentEditCarePointBinding.repeatCB.isChecked = true
+        val dateSelected = SimpleDateFormat("MM-dd-yyyy").parse(value.endDate!!)
+        val endDate = dateSelected?.let { SimpleDateFormat("EEE, MMM dd, yyyy").format(it) }
+        fragmentEditCarePointBinding.txtEndDate.text = "Ends on - $endDate"
+        if (value.value != null) {
+            value.value!!.sort()
+        }
+        fragmentEditCarePointBinding.txtValue.text = value.value?.joinToString()
+        val endDateSelected = SimpleDateFormat("MM-dd-yyyy").parse(recurringValue?.endDate!!)
+        val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDateSelected!!)
+        carePoint!!.repeat_end_date = selectedEndDate
+        when (value.type) {
+            RecurringEvent.None.value -> {
+                fragmentEditCarePointBinding.txtType.text = "None"
+                fragmentEditCarePointBinding.repeatCB.isChecked = false
+            }
+
+            RecurringEvent.Daily.value -> {
+                fragmentEditCarePointBinding.txtType.text = "Every Day"
+                carePoint!!.repeat_flag = "day"
+            }
+
+            RecurringEvent.Weekly.value -> {
+                fragmentEditCarePointBinding.txtType.text = "Every Week"
+                fragmentEditCarePointBinding.txtValue.text = days
+                carePoint!!.repeat_flag = "week"
+                carePoint!!.week_days?.clear()
+                carePoint!!.week_days!!.addAll(value.value!!)
+            }
+
+            RecurringEvent.Monthly.value -> {
+                fragmentEditCarePointBinding.txtType.text = "Every Month"
+                carePoint!!.repeat_flag = "month"
+                carePoint!!.month_dates?.clear()
+                carePoint!!.month_dates!!.addAll(value.value!!)
+            }
+
+            else -> {
+                fragmentEditCarePointBinding.txtType.text = "None"
+                fragmentEditCarePointBinding.repeatCB.isChecked = false
+            }
+        }
+
+    }
 }
 

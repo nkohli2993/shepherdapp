@@ -14,6 +14,7 @@ import android.view.*
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.WeekDataModel
 import com.shepherdapp.app.data.dto.added_events.AddedEventModel
 import com.shepherdapp.app.data.dto.added_events.EventCommentUserDetailModel
 import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
@@ -38,6 +40,8 @@ import com.shepherdapp.app.ui.component.carePoints.adapter.CarePointsEventAdapte
 import com.shepherdapp.app.utils.Chat
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.RecurringEvent
+import com.shepherdapp.app.utils.RecurringFlag
 import com.shepherdapp.app.utils.extensions.hideKeyboard
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
@@ -90,10 +94,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         fragmentCarePointDetailBinding.listener = this
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         eventId = args.eventId
-        Log.d(TAG, "EventId : $eventId")
         val source = args.source
-        Log.d(TAG, "Source :$source ")
-
         // Get Event Detail according to event ID
         eventId?.let { carePointsViewModel.getCarePointsDetailId(it) }
     }
@@ -127,6 +128,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     isChatOff = true
                 }
             }
+
             else -> {
                 // Check the possibility of chat
                 // editTextMessage and sendCommentIV is visible if the loggedIn user is one of the assignee of the event or loggedIn user is the assigner
@@ -260,11 +262,13 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                         is DataResult.Loading -> {
                             showLoading("")
                         }
+
                         is DataResult.Failure -> {
                             hideLoading()
                             allMsgLoaded = true
                             showError(requireContext(), it.exception?.message ?: "")
                         }
+
                         is DataResult.Success -> {
                             hideLoading()
                             msgGroupList.clear()
@@ -313,6 +317,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     Log.d(
@@ -325,6 +330,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
 
                 }
+
                 is DataResult.Failure -> {
                     hideLoading()
                 }
@@ -335,6 +341,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     commentList.add(
@@ -362,6 +369,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
 
                 }
+
                 is DataResult.Failure -> {
                     hideLoading()
                     showToast("Unable to add comment, please try again later!")
@@ -375,9 +383,11 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 is DataResult.Failure -> {
                     hideLoading()
                 }
+
                 is DataResult.Loading -> {
 
                 }
+
                 is DataResult.Success -> {
                     Log.d(TAG, "observeViewModel: Push Notification sent successfully...")
                 }
@@ -386,7 +396,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     }
 
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun initCarePointDetailViews(payload: AddedEventModel) {
         fragmentCarePointDetailBinding.let {
             it.llImageWrapper.visibility = View.VISIBLE
@@ -395,10 +405,10 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             val carePointDate = SimpleDateFormat("yyyy-MM-dd").parse(payload.date!!)!!
             it.tvDate.text = SimpleDateFormat("EEE, MMM dd, yyyy").format(carePointDate)
             if (payload.time != null) {
-                val carePointDate =
-                    if (payload?.time!!.contains("am") || payload?.time!!.contains("AM") || payload?.time!!.contains(
+                val carePointDateCheck =
+                    if (payload.time!!.contains("am") || payload.time!!.contains("AM") || payload.time!!.contains(
                             "pm"
-                        ) || payload?.time!!.contains("PM")
+                        ) || payload.time!!.contains("PM")
                     ) {
                         SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(
                             payload.date.plus(" ").plus(payload.time)
@@ -408,7 +418,54 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                             payload.date.plus(" ").plus(payload.time)
                         )
                     }
-                it.tvTime.text = SimpleDateFormat("hh:mm a").format(carePointDate!!)
+                it.tvTime.text = SimpleDateFormat("hh:mm a").format(carePointDateCheck!!)
+
+                if (payload.repeat_flag != null) {
+                    it.txtType.isVisible = true
+                    it.txtValue.isVisible = true
+                    it.txtEndDate.isVisible = true
+
+                    when (payload.repeat_flag) {
+                        RecurringFlag.Daily.value -> {
+                            it.txtType.text = getString(R.string.every_day)
+                        }
+
+                        RecurringFlag.Weekly.value -> {
+                            it.txtType.text = getString(R.string.every_week)
+                            if (payload.week_days != null) {
+                                val daysList: ArrayList<String> = arrayListOf()
+                                val weekArray = resources.getStringArray(R.array.week_array)
+                                val weekAry: ArrayList<WeekDataModel> = arrayListOf()
+                                for (i in weekArray.indices) {
+                                    weekAry.add(WeekDataModel((i + 1), weekArray[i]))
+                                }
+                                for (i in weekAry) {
+                                    for (weekId in payload.week_days!!) {
+                                        if ((i.id) == weekId) {
+                                            daysList.add(i.name!!)
+                                        }
+                                    }
+                                }
+                                it.txtValue.text = daysList.joinToString()
+                            }
+                        }
+
+                        RecurringFlag.Monthly.value -> {
+                            it.txtType.text = getString(R.string.every_month)
+                            it.txtValue.text = payload.month_dates?.joinToString()
+                        }
+
+                        else -> {
+
+                        }
+                    }
+                    val dateSelected =
+                        SimpleDateFormat("MM-dd-yyyy").parse(payload.repeat_end_date!!)
+                    val endDate =
+                        dateSelected?.let { SimpleDateFormat("EEE, MMM dd, yyyy").format(it) }
+                    it.txtEndDate.text = "Ends on - $endDate"
+
+                }
             }
 
 
@@ -509,9 +566,14 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             R.id.ivBack -> {
                 backPress()
             }
-            R.id.txtMoreAssignee ->{
-                findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user" to eventDetail?.user_assignes))
+
+            R.id.txtMoreAssignee -> {
+                findNavController().navigate(
+                    R.id.action_to_assigneeUsersFragment,
+                    bundleOf("assignee_user" to eventDetail?.user_assignes)
+                )
             }
+
             R.id.sendCommentIV -> {
                 val message = fragmentCarePointDetailBinding.editTextMessage.text.toString().trim()
                 if (message.isNullOrEmpty()) {

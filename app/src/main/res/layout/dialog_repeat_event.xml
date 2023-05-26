@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#66000000">
 
     <androidx.cardview.widget.CardView
@@ -95,7 +96,12 @@
                     android:id="@+id/weekdaysRV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone" />
+                    android:orientation="vertical"
+                    tools:itemCount="7"
+                    android:visibility="gone"
+                    tools:listitem="@layout/adapter_weekdays"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="3" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/calenderCL"
@@ -110,12 +116,13 @@
                         android:background="@color/colorWhite"
                         android:isScrollContainer="false"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:mcv_calendarMode="month"
                         app:mcv_firstDayOfWeek="sunday"
                         app:mcv_headerTextAppearance="@style/TextViewGothamMedium"
                         app:mcv_leftArrowMask="@drawable/ic_arrow_left_trasparent"
                         app:mcv_rightArrowMask="@drawable/ic_arrow_left_trasparent"
                         app:mcv_selectionColor="@color/_399282"
-                        app:mcv_showOtherDates="all"
+                        app:mcv_showOtherDates="none"
                         app:mcv_weekDayTextAppearance="@style/TextViewGothamBook" />
 
                     <View
@@ -139,7 +146,7 @@
                     android:textSize="@dimen/_13sdp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvEndDate"
+                    android:id="@+id/txtEndDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"

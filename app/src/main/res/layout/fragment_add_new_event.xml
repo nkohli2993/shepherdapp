@@ -278,6 +278,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12sdp"
                     android:button="@drawable/checkbox_selector"
+                    android:clickable="false"
                     android:fontFamily="@font/gotham_medium"
                     android:paddingHorizontal="@dimen/_16sdp"
                     android:text="@string/repeat"

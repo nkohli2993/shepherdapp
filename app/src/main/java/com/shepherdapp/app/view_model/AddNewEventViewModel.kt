@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.gson.annotations.SerializedName
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.Resource
@@ -72,7 +73,7 @@ class AddNewEventViewModel @Inject constructor(
         viewModelScope.launch {
             val response = dataRepository.getMembers(pageNumber, limit, status, lovedOneId)
             withContext(Dispatchers.Main) {
-                response?.collect {
+                response.collect {
                     _eventMemberLiveData.postValue(Event(it))
                 }
             }
@@ -93,7 +94,11 @@ class AddNewEventViewModel @Inject constructor(
         date: String,
         time: String,
         notes: String?,
-        assign_to: ArrayList<String>
+        assign_to: ArrayList<String>,
+        repeat_flag: String?,
+        repeat_end_date: String?,
+        week_days: ArrayList<Int>?,
+        month_dates: ArrayList<Int>?,
     ): LiveData<Event<DataResult<CreateEventResponseModel>>> {
         createEventData.value.let {
             it?.loved_one_user_id = loved_one_user_id
@@ -103,6 +108,11 @@ class AddNewEventViewModel @Inject constructor(
             it?.time = time
             it?.notes = notes
             it?.assign_to = assign_to
+            it?.repeat_flag= repeat_flag
+            it?.repeat_end_date= repeat_end_date
+            it?.week_days = week_days
+            it?.month_dates = month_dates
+
         }
 
 

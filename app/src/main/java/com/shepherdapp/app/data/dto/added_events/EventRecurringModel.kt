@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class EventRecurringModel(
     @SerializedName("type") var type: String? = null,
-    @SerializedName("value") var value: String? = null,
+    @SerializedName("value") var value: ArrayList<Int>? = null,
     @SerializedName("end_date") var endDate: String? = null,
+    @SerializedName("type_value") var typeValue:String? = null
 ): Parcelable

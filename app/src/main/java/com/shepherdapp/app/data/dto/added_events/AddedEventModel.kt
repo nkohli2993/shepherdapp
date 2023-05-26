@@ -24,4 +24,8 @@ data class AddedEventModel(
     @SerializedName("loved_one_user_id_details") var loved_one_user_id_details: LoveUser = LoveUser(),
     @SerializedName("created_by_details") var createdByDetails: CreatedByDetails? = CreatedByDetails(),
     @SerializedName("click_type") var clickType: Int? = null,
+    @SerializedName("repeat_flag") var repeat_flag: String? = null,
+    @SerializedName("repeat_end_date") var repeat_end_date: String? = null,
+    @SerializedName("week_days") var week_days: ArrayList<Int>? = null,
+    @SerializedName("month_dates") var month_dates: ArrayList<Int>?  = null,
 ) : Parcelable

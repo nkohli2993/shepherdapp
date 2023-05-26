@@ -20,6 +20,7 @@ import com.shepherdapp.app.data.dto.login.UserLovedOne
 import com.shepherdapp.app.data.dto.login.UserProfile
 import com.shepherdapp.app.data.dto.push_notification.FCMResponseModel
 import com.shepherdapp.app.data.local.UserRepository
+import com.shepherdapp.app.data.remote.care_point.CarePointRepository
 import com.shepherdapp.app.data.remote.chat_repository.ChatRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
@@ -42,6 +43,7 @@ import kotlin.collections.HashMap
  */
 @HiltViewModel
 class ChatViewModel @Inject constructor(
+    private val carePointRepository: CarePointRepository,
     private val userRepository: UserRepository,
     private val chatRepository: ChatRepository
 ) :
@@ -97,6 +99,11 @@ class ChatViewModel @Inject constructor(
             Const.LOVED_USER_DETAILS,
             LoveUser::class.java
         )
+    }
+
+
+    fun getCurrentUser(): UserProfile? {
+        return userRepository.getCurrentUser()
     }
 
     fun getRoomDetails(
@@ -398,7 +405,19 @@ class ChatViewModel @Inject constructor(
                     put("user_id", getLovedUserDetail()!!.id.toString())
                     put("registration_ids", jsArray)
                 }
-
+                viewModelScope.launch {
+                    val notificationModel = Gson().fromJson(
+                        msgObject.toString(),
+                        ChatNotificationModel::class.java
+                    )
+                    val response = carePointRepository.sendPushNotifications(notificationModel)
+                    withContext(Dispatchers.Main) {
+                        response.collect {
+                            fcmResponseLiveData.postValue(Event(it))
+                        }
+                    }
+                }
+/*
                 viewModelScope.launch {
                     val notificationModel = Gson().fromJson(
                         msgObject.toString(),
@@ -411,6 +430,7 @@ class ChatViewModel @Inject constructor(
                         }
                     }
                 }
+*/
             }
 //        Log.d(TAG, "firebase Tokens are: $firebaseTokensList")
     }

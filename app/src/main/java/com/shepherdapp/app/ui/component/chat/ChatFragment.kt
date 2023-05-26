@@ -51,15 +51,32 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             userAssignes =
                 @Suppress("DEPRECATION") requireArguments().getParcelable("assignee_user")
         }
+
+        if(arguments?.containsKey("room_id") ==  true){
+            roomId = requireArguments().getString("room_id")!!
+        }
+
         return fragmentChatBinding.root
     }
 
     override fun initViewBinding() {
         fragmentChatBinding.listener = this
-        roomId = if (chatViewModel.getLovedUser()!!.id!!
-                .toInt() > userAssignes!!.id!!
-        ) chatViewModel.getLovedUser()!!.id!!.toString() + "-" + userAssignes!!.id!!
-        else userAssignes!!.id!!.toString() + "-" + chatViewModel.getLovedUser()!!.id!!.toInt()
+
+
+        if(roomId==""){
+            val users:ArrayList<Int> = arrayListOf()
+            users.add(chatViewModel.getLovedUser()!!.id!!)
+            users.add(userAssignes!!.id!!)
+            users.add(chatViewModel.getCurrentUser()!!.userId!!)
+            users.sort()
+//        roomId = if (chatViewModel.getLovedUser()!!.id!!
+//                .toInt() > userAssignes!!.id!!
+//        ) chatViewModel.getLovedUser()!!.id!!.toString() + "-" + userAssignes!!.id!!
+//        else userAssignes!!.id!!.toString() + "-" + chatViewModel.getLovedUser()!!.id!!.toInt()
+            roomId = users.joinToString().replace(" ","").replace(",","-")
+        }
+
+        Log.e("catch_room_id","roomId: $roomId")
         chatViewModel.roomId = roomId
 
         chatViewModel.tableName =
@@ -179,7 +196,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
             deleteChatUserIdListing.clear()
             deleteChatUserIdListing.addAll(it.deletedChatUserIds)
             Log.e("catch_deleted_user", "deleteChatUserIdListing $deleteChatUserIdListing")
-            showLoading("")
+//            showLoading("")
             loadChat()
             updateUnseenCount()
         }

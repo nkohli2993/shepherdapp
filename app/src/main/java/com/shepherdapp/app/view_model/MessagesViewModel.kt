@@ -171,6 +171,7 @@ class MessagesViewModel @Inject constructor(
                 opponentUserIdList = ArrayList()
                 querySnapshot?.documents?.forEach {
                     val userIds = it.id.split("-")
+                    Log.e("catch_dat","value: "+userIds+" "+userId)
                     userIds.forEachIndexed { index, s ->
                         if (s == userId.toString()) {
                             val users = it.toObject(ChatUserListing::class.java)

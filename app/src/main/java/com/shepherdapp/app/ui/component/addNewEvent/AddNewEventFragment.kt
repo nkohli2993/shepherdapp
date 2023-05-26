@@ -26,7 +26,6 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
-import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
@@ -39,6 +38,7 @@ import com.shepherdapp.app.view_model.AddNewEventViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -60,6 +60,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private var isAmPm: String? = null
     private var placeAddress: String? = null
     private var placeId: String? = null
+    private var recurringValue: EventRecurringModel? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -88,9 +89,17 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         assigneeAdapter?.setHasStableIds(true)
         selectAllAssigneeCheckBoxListener()
 
-        fragmentAddNewEventBinding.repeatCB.setOnCheckedChangeListener { _, isChecked ->
+        fragmentAddNewEventBinding.repeatCB.setOnClickListener {
             showRepeatDialog()
         }
+
+/*
+        fragmentAddNewEventBinding.repeatCB.setOnCheckedChangeListener { viewPressed, isChecked ->
+            if (viewPressed.isPressed) {
+                showRepeatDialog()
+            }
+        }
+*/
 
     }
 
@@ -457,15 +466,42 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             fragmentAddNewEventBinding.etNote.text.toString().trim()
         }
 
-        addNewEventViewModel.createEvent(
-            addNewEventViewModel.getLovedOneUUId(),
-            fragmentAddNewEventBinding.etEventName.text.toString().trim(),
-            fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
-            selectedDate,
-            selectedTime,
-            note,
-            assignTo
-        )
+
+        if (fragmentAddNewEventBinding.repeatCB.isChecked) {
+            var dateWeekValue: ArrayList<Int>? = null
+            var dateMonthValue: ArrayList<Int>? = null
+            if (recurringValue != null && recurringValue!!.type == RecurringEvent.Weekly.value) {
+                dateWeekValue = recurringValue!!.value
+            } else if (recurringValue != null && recurringValue!!.type == RecurringEvent.Monthly.value) {
+                dateMonthValue = recurringValue!!.value
+            }
+            val endDate = SimpleDateFormat("MM-dd-yyyy").parse(recurringValue?.endDate!!)
+            val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate)
+            addNewEventViewModel.createEvent(
+                addNewEventViewModel.getLovedOneUUId(),
+                fragmentAddNewEventBinding.etEventName.text.toString().trim(),
+                fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
+                selectedDate,
+                selectedTime,
+                note,
+                assignTo,
+                recurringValue?.typeValue!!,
+                selectedEndDate,
+                dateWeekValue,
+                dateMonthValue
+            )
+        } else {
+            addNewEventViewModel.createEvent(
+                addNewEventViewModel.getLovedOneUUId(),
+                fragmentAddNewEventBinding.etEventName.text.toString().trim(),
+                fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
+                selectedDate,
+                selectedTime,
+                note,
+                assignTo, null, null, null, null
+            )
+
+        }
     }
 
     override fun getLayoutRes(): Int {
@@ -607,7 +643,8 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         fragmentAddNewEventBinding.tvDate.text = selectedDate
     }
 
-    fun showEventEndDate(value: EventRecurringModel) {
+    fun showEventEndDate(value: EventRecurringModel, days: String? = null) {
+        recurringValue = value
         fragmentAddNewEventBinding.repeatCB.isChecked = true
         fragmentAddNewEventBinding.txtType.isVisible = false
         fragmentAddNewEventBinding.txtValue.isVisible = false
@@ -622,7 +659,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
 
             RecurringEvent.Weekly.value -> {
-                visibleRecurringView(valueBoolean = true, value)
+                visibleRecurringView(valueBoolean = true, value, days)
             }
 
             RecurringEvent.Monthly.value -> {
@@ -631,13 +668,47 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         }
     }
 
-    private fun visibleRecurringView(valueBoolean: Boolean, value: EventRecurringModel) {
+    private fun visibleRecurringView(
+        valueBoolean: Boolean,
+        value: EventRecurringModel,
+        days: String? = null
+    ) {
         fragmentAddNewEventBinding.txtType.isVisible = true
         fragmentAddNewEventBinding.txtValue.isVisible = valueBoolean
         fragmentAddNewEventBinding.txtEndDate.isVisible = true
-        fragmentAddNewEventBinding.txtEndDate.text = value.endDate
-        fragmentAddNewEventBinding.txtType.text = value.type
-        fragmentAddNewEventBinding.txtValue.text = value.value
+        fragmentAddNewEventBinding.repeatCB.isChecked = true
+        val dateSelected = SimpleDateFormat("MM-dd-yyyy").parse(value.endDate!!)
+        val endDate = dateSelected?.let { SimpleDateFormat("EEE, MMM dd, yyyy").format(it) }
+        fragmentAddNewEventBinding.txtEndDate.text = "Ends on - $endDate"
+        if (value.value != null) {
+            value.value!!.sort()
+        }
+        fragmentAddNewEventBinding.txtValue.text = value.value?.joinToString()
+        when (value.type) {
+            RecurringEvent.None.value -> {
+                fragmentAddNewEventBinding.txtType.text = "None"
+                fragmentAddNewEventBinding.repeatCB.isChecked = false
+            }
+
+            RecurringEvent.Daily.value -> {
+                fragmentAddNewEventBinding.txtType.text = "Every Day"
+            }
+
+            RecurringEvent.Weekly.value -> {
+                fragmentAddNewEventBinding.txtType.text = "Every Week"
+                fragmentAddNewEventBinding.txtValue.text = days
+            }
+
+            RecurringEvent.Monthly.value -> {
+                fragmentAddNewEventBinding.txtType.text = "Every Month"
+            }
+
+            else -> {
+                fragmentAddNewEventBinding.txtType.text = "None"
+                fragmentAddNewEventBinding.repeatCB.isChecked = false
+            }
+        }
+
     }
 }
 

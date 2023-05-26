@@ -8,6 +8,7 @@ object Const {
 
     const val USER_DETAILS = "USER DETAILS"
     const val USER_TOKEN = "USER Token"
+    const val NOTIFICATION_TOKEN = "Notification Token"
     const val USER_INACTIVE_LOGOUT = "user_logout"
     const val ON_BOARD = "on_board"
     const val USER_ID = "USER ID"
@@ -123,6 +124,12 @@ enum class RecurringEvent(val value: String) {
     Daily("2"),
     Weekly("3"),
     Monthly("4")
+}
+
+enum class RecurringFlag(val value: String) {
+    Daily("day"),
+    Weekly("week"),
+    Monthly("month")
 }
 
 enum class Role(val id: String) {

@@ -551,6 +551,7 @@
     <string name="about_us">À propos de nous</string>
     <string name="loved_one_not_available">Nom de LovedOne non disponible</string>
     <string name="no_address_avaialble">Aucune adresse disponible</string>
+    <string name="no_custom_address_avaialble">Aucune autre adresse disponible</string>
     <string name="edit_medical_conditions">Modifier les conditions médicales</string>
     <string name="no_medical_condition_found">Aucune condition médicale trouvée…</string>
     <string name="everyday">Tous les jours</string>
@@ -558,6 +559,7 @@
     <string name="selected_recommended_document_type">Sélectionnez le type de document recommandé</string>
     <string name="select_document_type">Sélectionnez le type de document</string>
     <!--    <string name="are_you_an_enterprise_user">Êtes-vous un \n Utilisateur d'entreprise?</string>-->
+    <string name="are_you_an_enterprise_user">Êtes-vous un \\n utilisateur d\'entreprise ?</string>
     <string name="enter_enterprise_code">Entrer dans l\'entreprise \n Code</string>
     <!--    <string name="enterprise_code">Code d\'entreprise</string>-->
     <!--    <string name="are_you_enterprise_user">Êtes-vous un utilisateur d\'entreprise?</string>-->
@@ -574,6 +576,7 @@
     <string name="enter_email">Entrez l\'e-mail</string>
     <string name="send_invitation_to_loved_one">Send an Invitation to the \nloved one.</string>
     <string name="current_medications">Médicaments actuels</string>
+    <string name="todays_medications">Les médicaments d\'aujourd\'hui</string>
     <string name="did_not_received_mail_yet">Je n\'ai pas encore reçu d\'e-mail? <font color="#A26DCB">Renvoyer</font></string>
     <string name="recent_content">Contenu récent</string>
     <string name="join_our_family">Rejoignez notre communauté d\'aidants familiaux</string>
@@ -586,6 +589,7 @@
     <string name="no_note_available">Aucune note disponible</string>
     <string name="choose_your_subscription">Choisissez un plan d\'abonnement pour ajouter votre bien-aimé.</string>
     <string name="buy_subscription_plan">Acheter un plan d\'abonnement</string>
+    <string name="subscription_plan_desc">Essai gratuit de 30 jours.\\nVous ne serez pas facturé pendant les 30 premiers jours.\\nVous pouvez annuler à tout moment. Contactez-nous simplement.\\n\\nChaque abonnement vous permet d\'ajouter jusqu\'à trois proches</string>
     <string name="user_limit_exceeded">Limite d\'utilisateurs dépassée</string>
     <string name="your_subscription_has_been_expired">Votre abonnement a expiré</string>
     <string name="ok">D\'accord</string>
@@ -648,4 +652,6 @@
     <string name="no_address_available">No address available</string>
     <string name="phone_number_not_available">Phone Number Not Available</string>
     <string name="please_select_end_date">Please select end date.</string>
+    <string name="please_atleast_one_weekday">Please atleast one weekday.</string>
+    <string name="please_select_atleast_one_date">Please select atleast one date.</string>
 </resources>

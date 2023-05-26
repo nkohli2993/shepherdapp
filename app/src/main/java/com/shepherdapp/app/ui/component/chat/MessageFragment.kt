@@ -2,6 +2,7 @@ package com.shepherdapp.app.ui.component.chat
 
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,7 +59,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
             } else {
                 TableName.CARE_TEAM_CHATS_DEV
             }
-        loggedInUserId = messagesViewModel.getLovedUser()!!.id!!.toLong()
+        loggedInUserId = messagesViewModel.getCurrentUser()!!.id!!.toLong()
         return fragmentMessageBinding.root
     }
 
@@ -92,9 +93,10 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
 
     override fun observeViewModel() {
         showLoading("")
-        messagesViewModel.getChatRooms(messagesViewModel.getLovedUser()!!.id!!.toInt()) {
+        messagesViewModel.getChatRooms(messagesViewModel.getCurrentUser()!!.userId!!) {
             var isChatDeleted = false
             var chatMessages: java.util.ArrayList<ChatUserListing> = java.util.ArrayList()
+            Log.e("catch_dat","it: "+it)
             it.forEach { deleteChatListData ->
                 if(deleteChatListData.deletedChatUserIds.size>0){
                     deleteChatListData.deletedChatUserIds.forEach{
@@ -205,7 +207,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
 
         findNavController().navigate(
             R.id.action_new_message_to_chat,
-            bundleOf("assignee_user" to detail)
+            bundleOf("assignee_user" to detail,"room_id" to chatUserListing.room_id)
         )
     }
 

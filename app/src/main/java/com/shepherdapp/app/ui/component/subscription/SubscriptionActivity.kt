@@ -336,6 +336,7 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
                     if (alertDialog == null) {
                         alertDialog = builder.apply {
                             setTitle("Hi, $fullName")
+                            setCancelable(false)
                             setMessage("You have successfully bought your $nameOfPlan plan")
                             setPositiveButton("OK") { _, _ ->
                                 if (source == "My Subscription") {
@@ -382,9 +383,10 @@ class SubscriptionActivity : BaseActivity(), View.OnClickListener {
 
                 is DataResult.Success -> {
 
-                    showSuccess(this, "Subscription Validated Successfully")
+
                     if (isItemAlreadyPurchased) {
                         hideLoading()
+                        showSuccess(this, "Subscription Validated Successfully")
                         // Redirect to AddLovedOneActivity
                         if (source == "Login Screen") {
                             navigateToHomeScreen()
