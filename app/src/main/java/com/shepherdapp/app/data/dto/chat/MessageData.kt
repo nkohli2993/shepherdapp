@@ -78,13 +78,13 @@ data class ChatNotificationModel(
 @Parcelize
 data class CareTeamChatNotificationModel(
     @SerializedName("data")
-    var data: ChatNotificationData? = null,
+    var data: CareTeamChatNotificationData? = null,
     @SerializedName("user_id")
     var userId: String? = null,
     @SerializedName("chat_type")
     var chatType: Int? = null,
     @SerializedName("notification")
-    var notification: ChatNotificationData?,
+    var notification: CareTeamChatNotificationData?,
     @SerializedName("to")
     var to: String? = null,
     @SerializedName("registration_ids")
@@ -117,6 +117,43 @@ data class ChatNotificationData(
     var fromImage: String? = null,
     @SerializedName("from_name", alternate = ["sender_name"])
     var senderName: String? = null,
+    @SerializedName("title")
+    var title: String? = null,
+    @SerializedName("group_id")
+    var groupId: String? = null
+) : Parcelable
+
+@SuppressLint("ParcelCreator")
+@Parcelize
+data class CareTeamChatNotificationData(
+    @SerializedName("body")
+    var body: String? = null,
+    @SerializedName("chat_id")
+    var chatId: String? = null,
+    @SerializedName("sound")
+    var sound: String? = null,
+    @SerializedName("user_id", alternate = ["sender_id"])
+    var senderId: String? = null,
+    @SerializedName("to_id")
+    var toId: String? = null,
+    @SerializedName("room_id")
+    var roomId: String? = null,
+    @SerializedName("image-url")
+    var imageUrl: String? = null,
+    @SerializedName("id")
+    var id: String? = null,
+    @SerializedName("type")
+    var type: String? = null,
+    @SerializedName("to_name")
+    var toName: String? = null,
+    @SerializedName("from_image")
+    var fromImage: String? = null,
+    @SerializedName("from_name", alternate = ["sender_name"])
+    var senderName: String? = null,
+    @SerializedName("first_name")
+    var firstName: String? = null,
+    @SerializedName("last_name")
+    var last_name: String? = null,
     @SerializedName("title")
     var title: String? = null,
     @SerializedName("group_id")

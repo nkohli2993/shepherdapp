@@ -66,14 +66,15 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgClose"
-            android:layout_width="@dimen/_26sdp"
-            android:layout_height="@dimen/_26sdp"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="@dimen/_36sdp"
             android:elevation="@dimen/_4sdp"
             app:civ_circle_background_color="@color/colorWhite"
             android:src="@drawable/ic_close"
             app:civ_border_width="@dimen/_2sdp"
             app:civ_border_color="@color/colorWhite"
-            android:padding="@dimen/_4sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:layout_gravity="end|top" />
 
 <!--        <androidx.appcompat.widget.AppCompatImageView

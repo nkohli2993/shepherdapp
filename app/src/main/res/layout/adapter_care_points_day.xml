@@ -112,34 +112,33 @@
                     app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="3"
                     tools:listitem="@layout/adapter_events_members" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/assigneCountTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gotham_mediumitalic"
+                    android:textColor="@color/_A26DCB"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="@+id/recyclerViewEvents"
+                    app:layout_constraintStart_toEndOf="@+id/recyclerViewEvents"
+                    app:layout_constraintTop_toTopOf="@+id/recyclerViewEvents"  />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtMoreAssignee"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/_7sdp"
                     android:fontFamily="@font/gotham_mediumitalic"
                     android:gravity="center_vertical"
                     android:text="@string/more"
+                    android:layout_marginStart="@dimen/_2sdp"
                     android:textColor="@color/_A26DCB"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="@+id/recyclerViewEvents"
-                    app:layout_constraintStart_toEndOf="@+id/recyclerViewEvents"
+                    app:layout_constraintStart_toEndOf="@+id/assigneCountTV"
                     app:layout_constraintTop_toTopOf="@+id/recyclerViewEvents" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/assigneCountTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_2sdp"
-                android:fontFamily="@font/gotham_medium"
-                android:textColor="@color/_A26DCB"
-                android:textSize="@dimen/_8ssp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/assigneeCLL"
-                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/timeTV"

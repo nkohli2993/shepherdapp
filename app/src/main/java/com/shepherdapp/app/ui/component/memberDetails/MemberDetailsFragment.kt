@@ -1,5 +1,6 @@
 package com.shepherdapp.app.ui.component.memberDetails
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -71,12 +73,15 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         }
 
         // Get Care Teams by lovedOne Id
+        fragmentMemberDetailsBinding.scrollView.isVisible = false
         memberDetailsViewModel.getCareTeamsDetail(id!!)
 
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setDataValue() {
+        fragmentMemberDetailsBinding.scrollView.isVisible = true
         // Set Email ID
         fragmentMemberDetailsBinding.txtRelationCare.text = careTeam?.relation_name ?: getString(R.string.relationship_not_available)
         careTeam?.user_id_details.let {
@@ -103,14 +108,13 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             Log.d(logTag, "phoneArr: $phoneArr $phone")
             val phoneCode = phoneArr?.get(0)
             val phoneNumber = phoneArr?.get(1)
-            //val phoneWithHyphen = phoneNumber?.let { it1 -> getStringWithHyphen(it1) }
             if(!phoneNumber.toString().lowercase().contains("null")) {
                 val phoneWithHyphen = phoneNumber?.getStringWithHyphen(phoneNumber)
                 val phoneNo = "$phoneCode $phoneWithHyphen"
                 Log.d(logTag, "initView: $phoneNo")
 
 
-                if (phoneNo.toString().contains("+")) {
+                if (phoneNo.contains("+")) {
                     fragmentMemberDetailsBinding.txtPhoneCare.text =
                         phoneNo ?: "Phone Number Not Available"
 
@@ -200,7 +204,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     private fun hideButtons() {
         fragmentMemberDetailsBinding.btnDelete.visibility = View.GONE
         fragmentMemberDetailsBinding.btnUpdate.visibility = View.GONE
-        fragmentMemberDetailsBinding.chatG.visibility = View.GONE
+        fragmentMemberDetailsBinding.ivEdit.visibility = View.GONE
 //         hide cards according to permission
         fragmentMemberDetailsBinding.carPointCD.visibility = View.GONE
         fragmentMemberDetailsBinding.lockBoxCD.visibility = View.GONE

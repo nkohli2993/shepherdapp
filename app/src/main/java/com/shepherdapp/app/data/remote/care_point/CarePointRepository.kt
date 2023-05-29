@@ -94,7 +94,7 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
     suspend fun sendPushNotifications(chatNotificationModel: ChatNotificationModel): Flow<DataResult<FCMResponseModel>> {
         return object : NetworkOnlineDataRepo<FCMResponseModel, FCMResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<FCMResponseModel> {
-                return apiService.sendPushNotification(Const.FIREBASE_TOKEN,chatNotificationModel)
+                return apiService.sendPushNotification(Const.FIREBASE_SERVER_KEY,chatNotificationModel)
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }

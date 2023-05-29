@@ -90,16 +90,25 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         selectAllAssigneeCheckBoxListener()
 
         fragmentAddNewEventBinding.repeatCB.setOnClickListener {
-            showRepeatDialog()
-        }
-
-/*
-        fragmentAddNewEventBinding.repeatCB.setOnCheckedChangeListener { viewPressed, isChecked ->
-            if (viewPressed.isPressed) {
-                showRepeatDialog()
+            if (fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty()) {
+                showError(
+                    requireContext(),
+                    getString(R.string.please_select_new_care_point_date_firts)
+                )
+                fragmentAddNewEventBinding.tvDate.requestFocus()
+                fragmentAddNewEventBinding.repeatCB.isChecked = false
+            } else {
+                showRepeatDialog(fragmentAddNewEventBinding.tvDate.text.toString())
             }
         }
-*/
+
+        /*
+                fragmentAddNewEventBinding.repeatCB.setOnCheckedChangeListener { viewPressed, isChecked ->
+                    if (viewPressed.isPressed) {
+                        showRepeatDialog()
+                    }
+                }
+        */
 
     }
 
@@ -295,7 +304,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 findNavController().popBackStack()
             }
 
-            R.id.assigneET -> {
+            R.id.assigneET, R.id.spinner_down_arrow_image -> {
                 if (fragmentAddNewEventBinding.assigneRV.visibility == View.VISIBLE) {
                     fragmentAddNewEventBinding.assigneRV.visibility = View.GONE
                     fragmentAddNewEventBinding.tvSelect.visibility = View.GONE
@@ -401,6 +410,26 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 fragmentAddNewEventBinding.tvTime.text = ""
                 isAmPm = null
                 setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50)
+
+                // check for end date with recurring
+                if (recurringValue!= null && recurringValue!!.endDate != null) {
+                    val recurringEndDate =
+                        SimpleDateFormat("yyyy-MM-dd").parse(recurringValue!!.endDate!!)
+                    val selectedDate =
+                        SimpleDateFormat("MM-dd-yyyy").parse(fragmentAddNewEventBinding.tvDate.text.toString())
+                    if (selectedDate!!.after(recurringEndDate)) {
+                        fragmentAddNewEventBinding.repeatCB.isChecked = false
+                        recurringValue!!.type = null
+                        recurringValue!!.endDate = null
+                        recurringValue!!.value = null
+                        recurringValue!!.typeValue = null
+
+                        fragmentAddNewEventBinding.txtType.isVisible = false
+                        fragmentAddNewEventBinding.txtValue.isVisible = false
+                        fragmentAddNewEventBinding.txtEndDate.isVisible = false
+                    }
+                }
+
             }, mYear, mMonth, mDay
         )
         datePickerDialog.datePicker.minDate = c.timeInMillis

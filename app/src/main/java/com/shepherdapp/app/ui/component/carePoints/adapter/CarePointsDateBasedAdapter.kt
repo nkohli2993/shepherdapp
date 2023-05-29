@@ -75,7 +75,7 @@ class CarePointsDateBasedAdapter(
 
             if (carePoints.time != null) {
                 val carePointDate =
-                    if (carePoints?.time!!.contains("am") || carePoints?.time!!.contains("AM") || carePoints?.time!!.contains("pm") || carePoints?.time!!.contains("PM")) {
+                    if (carePoints.time!!.contains("am") || carePoints.time!!.contains("AM") || carePoints.time!!.contains("pm") || carePoints.time!!.contains("PM")) {
                         SimpleDateFormat("yyyy-MM-dd hh:mm a").parse(
                             carePoints.date.plus(" ").plus(carePoints.time)
                         )
@@ -124,19 +124,13 @@ class CarePointsDateBasedAdapter(
 
             when (carePoints.user_assignes.size) {
                 1 -> {
-                    // Check if the loggedIn user is the only assignee of the event
-                    // Make the visibility of chat icon gone
                     if (isListContainMethod(carePoints.user_assignes)) {
                         if (viewModel.getUserDetail()?.userId == carePoints.createdByDetails?.id) {
                             itemBinding.ivMessage.visibility = View.GONE
                         } else {
                             itemBinding.ivMessage.visibility = View.VISIBLE
                         }
-//                        itemBinding.ivMessage.visibility = View.VISIBLE
                     } else if (viewModel.getUserDetail()?.userId == carePoints.createdByDetails?.id) {
-                        // Check if the loggedIn user is the assigner
-                        // It means two user are there for the care point(event) ,one is assignee and other is the assigner,
-                        // make the visibility of chat icon Visible
                         itemBinding.ivMessage.visibility = View.VISIBLE
                     } else {
                         // If the loggedIn User is neither the assigner nor assignee
@@ -144,9 +138,6 @@ class CarePointsDateBasedAdapter(
                     }
                 }
                 else -> {
-//                    itemBinding.ivMessage.visibility = View.VISIBLE
-
-                    // Chat icon is visible if the loggedIn user is one of the assignee of the event or loggedIn user is the assigner
                     if (isListContainMethod(carePoints.user_assignes) || (viewModel.getUserDetail()?.userId == carePoints.createdByDetails?.id)) {
                         itemBinding.ivMessage.visibility = View.VISIBLE
                     } else {

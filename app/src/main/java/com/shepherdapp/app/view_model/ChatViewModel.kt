@@ -79,6 +79,7 @@ class ChatViewModel @Inject constructor(
     private val showToastPrivate = MutableLiveData<SingleEvent<Any>>()
     val showToast: LiveData<SingleEvent<Any>> get() = showToastPrivate
     fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID)
+
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     private val openChatItemsPrivate = MutableLiveData<SingleEvent<Int>>()
     val openMemberDetails: LiveData<SingleEvent<Int>> get() = addedCarePointLiveData
@@ -87,6 +88,7 @@ class ChatViewModel @Inject constructor(
         val error = errorManager.getError(errorCode)
         showToastPrivate.value = SingleEvent(error.description)
     }
+
     fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
 //    fun getLovedOneId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_ID, "")
 
@@ -167,10 +169,12 @@ class ChatViewModel @Inject constructor(
                             document.document
                         )
                     }
+
                     DocumentChange.Type.REMOVED -> {
                         showLog("MSG_TIME", "removed message${document.document.data}")
 
                     }
+
                     DocumentChange.Type.ADDED -> {
                         showLog("MSG_TIME", "new message${document.document.data}")
 
@@ -292,7 +296,7 @@ class ChatViewModel @Inject constructor(
         roomId: String,
         msgType: Int,
         message: String? = "",
-        unReadCount: Long, deleteChatUserIdListing:ArrayList<DeleteChat>
+        unReadCount: Long, deleteChatUserIdListing: ArrayList<DeleteChat>
     ) {
         this.deleteChatUserIdListing = deleteChatUserIdListing
         val data = MessageData().apply {
@@ -369,31 +373,18 @@ class ChatViewModel @Inject constructor(
                     }
                 }
                 Log.d(TAG, "in : firebase Tokens are: $firebaseTokensList")
-                val loggedInUser = userRepository.getLovedUser()
-
 
                 val notificationObject = JSONObject().apply {
-                    val notifyBody = when (messageData.messageType) {
-                        Chat.MESSAGE_IMAGE -> {
-                            "Sent Image"
-                        }
-                        Chat.MESSAGE_VIDEO -> {
-                            "Sent Video"
-                        }
-                        else -> {
-                            messageData.content
-                        }
-
-                    }
                     put("title", messageData.senderName)
-                    put("body", notifyBody)
-                    put("from_name", messageData.senderName)
-                    put("from_image", loggedInUser?.profilePhoto ?: "")
-                    put("user_id", messageData.senderID)
+                    put("body", messageData.content)
+                    put("first_name", getLovedUser()!!.firstname)
+                    put("last_name", getLovedUser()!!.lastname)
+                    put("from_image", getLovedUser()!!.profilePhoto ?: "")
+                    put("user_id", getLovedUser()!!.id)
                     put("room_id", roomId)
                     put("chat_type", Chat.CHAT_SINGLE)
                     put("sound", "default")
-                    put("type", Const.NotificationAction.MESSAGE)
+                    put("type", Const.NotificationAction.CHAT)
                 }
 
                 val jsArray = JSONArray()
@@ -402,27 +393,19 @@ class ChatViewModel @Inject constructor(
                     put("data", notificationObject)
                     put("notification", notificationObject)
                     put("chat_type", Chat.CHAT_SINGLE)
-                    put("user_id", getLovedUserDetail()!!.id.toString())
+                    put("first_name", getLovedUser()!!.firstname)
+                    put("last_name", getLovedUser()!!.lastname)
+                    put("from_image", getLovedUser()!!.profilePhoto ?: "")
+                    put("user_id", getLovedUser()!!.id.toString())
                     put("registration_ids", jsArray)
                 }
-                viewModelScope.launch {
-                    val notificationModel = Gson().fromJson(
-                        msgObject.toString(),
-                        ChatNotificationModel::class.java
-                    )
-                    val response = carePointRepository.sendPushNotifications(notificationModel)
-                    withContext(Dispatchers.Main) {
-                        response.collect {
-                            fcmResponseLiveData.postValue(Event(it))
-                        }
-                    }
-                }
-/*
+
                 viewModelScope.launch {
                     val notificationModel = Gson().fromJson(
                         msgObject.toString(),
                         CareTeamChatNotificationModel::class.java
                     )
+                    Log.e("catch_exception","obj: $notificationModel")
                     val response = chatRepository.sendPushNotifications(notificationModel)
                     withContext(Dispatchers.Main) {
                         response.collect {
@@ -430,7 +413,20 @@ class ChatViewModel @Inject constructor(
                         }
                     }
                 }
-*/
+                /*
+                                viewModelScope.launch {
+                                    val notificationModel = Gson().fromJson(
+                                        msgObject.toString(),
+                                        CareTeamChatNotificationModel::class.java
+                                    )
+                                    val response = chatRepository.sendPushNotifications(notificationModel)
+                                    withContext(Dispatchers.Main) {
+                                        response.collect {
+                                            fcmResponseLiveData.postValue(Event(it))
+                                        }
+                                    }
+                                }
+                */
             }
 //        Log.d(TAG, "firebase Tokens are: $firebaseTokensList")
     }
@@ -450,14 +446,14 @@ class ChatViewModel @Inject constructor(
                 userRepository.getLovedUser()?.id!!,
                 userRepository.getLovedUser()?.firstname!!,
                 userRepository.getLovedUser()?.lastname,
-                userRepository.getLovedUser()?.profilePhoto?:""
+                userRepository.getLovedUser()?.profilePhoto ?: ""
             ),
             UserDataMessages(
                 userAssignes!!.id,
                 userAssignes!!.userId,
                 userAssignes!!.firstname,
                 userAssignes!!.lastname,
-                userAssignes!!.profilePhoto?:"",
+                userAssignes!!.profilePhoto ?: "",
             ),
             arrayListOf(roomArray[0].toLong(), roomArray[1].toLong()),
             Timestamp(Calendar.getInstance().time),

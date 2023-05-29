@@ -96,6 +96,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                         getString(R.string.enter_file_name)
                     fragmentAddNewLockBoxBinding.edtFileName.requestFocus()
                 }
+
                 selectedDocumentId == null || selectedDocumentId == "-1" -> {
                     showInfo(requireContext(), getString(R.string.please_select_document_type))
                 }
@@ -171,10 +172,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
             }
         }
     }
+
     private fun openMemberDetails(navigateEvent: SingleEvent<String>) {
-        navigateEvent.getContentIfNotHandled()?.let {
-            findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user_lockBox" to usersList))
-        }
+        /* navigateEvent.getContentIfNotHandled()?.let {
+             findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user_lockBox" to usersList))
+         }*/
     }
 
 
@@ -190,9 +192,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     dialog?.dismiss()
                     it.message?.let { showError(requireContext(), it) }
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     dialog?.dismiss()
@@ -225,9 +229,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     hideLoading()
                     result.message?.let { showError(requireContext(), it) }
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(requireContext(), getString(R.string.document_added_successfully))
@@ -244,9 +250,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     hideLoading()
                     result.message?.let { showError(requireContext(), it) }
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(requireContext(), result.data.message.toString())
@@ -267,9 +275,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     hideLoading()
                     showError(requireContext(), it.message.toString())
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
 
@@ -363,7 +373,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     }
 
     private fun setLockBoxUsersAdapter() {
-        lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it,addNewLockBoxViewModel) }
+        lockBoxUsersAdapter = usersList?.let { LockBoxUsersAdapter(it, addNewLockBoxViewModel) }
         fragmentAddNewLockBoxBinding.rvUsers.adapter = lockBoxUsersAdapter
 
         if (usersList?.size!! > 5) {
@@ -430,7 +440,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                                 getString(R.string.please_select_at_least_one_user)
                             )
 
-                            
+
                         } else {
                             selectedFileList?.let {
                                 addNewLockBoxViewModel.uploadMultipleLockBoxDoc(
@@ -441,9 +451,11 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     }
                 }
             }
+
             R.id.ivBack -> {
                 backPress()
             }
+
             R.id.imgSelectUsers -> {
                 Log.d(TAG, "Select Users : clicked")
                 findNavController().navigate(R.id.action_addNewLockBoxFragment_to_selectUsersFragment)
@@ -556,6 +568,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
                     )
                 }
             }
+
             REQUEST_CODE_OPEN_DOCUMENT -> if (resultCode == AppCompatActivity.RESULT_OK && resultData != null) {
                 val uri = resultData.data
                 uri?.let {

@@ -40,14 +40,12 @@ import com.shepherdapp.app.ui.component.carePoints.adapter.CarePointsEventAdapte
 import com.shepherdapp.app.utils.Chat
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
-import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.RecurringFlag
 import com.shepherdapp.app.utils.extensions.hideKeyboard
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.setImageFromUrl
 import com.shepherdapp.app.view_model.CreatedCarePointsViewModel
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*

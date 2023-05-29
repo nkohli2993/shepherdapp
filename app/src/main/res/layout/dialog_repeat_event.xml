@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="#66000000">
 
     <androidx.cardview.widget.CardView
@@ -97,16 +97,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    tools:itemCount="7"
                     android:visibility="gone"
-                    tools:listitem="@layout/adapter_weekdays"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3" />
+                    app:spanCount="3"
+                    tools:itemCount="7"
+                    tools:listitem="@layout/adapter_weekdays" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/calenderCL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorWhite"
                     android:visibility="gone">
 
                     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
@@ -118,12 +119,34 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:mcv_calendarMode="month"
                         app:mcv_firstDayOfWeek="sunday"
+                        app:mcv_allowClickDaysOutsideCurrentMonth="false"
                         app:mcv_headerTextAppearance="@style/TextViewGothamMedium"
                         app:mcv_leftArrowMask="@drawable/ic_arrow_left_trasparent"
                         app:mcv_rightArrowMask="@drawable/ic_arrow_left_trasparent"
                         app:mcv_selectionColor="@color/_399282"
                         app:mcv_showOtherDates="none"
                         app:mcv_weekDayTextAppearance="@style/TextViewGothamBook" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/leftV"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@color/colorWhite"
+                        android:clickable="false"
+                        android:enabled="false"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/calendarPView" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/rightV"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@color/colorWhite"
+                        android:clickable="false"
+                        android:enabled="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/calendarPView" />
 
                     <View
                         android:layout_width="0dp"

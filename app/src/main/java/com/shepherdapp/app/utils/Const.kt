@@ -52,7 +52,7 @@ object Const {
     const val END_DATE_EVENT = "end_date"
     const val LOGIN = "login"
     const val LOVED_ONE ="loved_one"
-
+    const val CHAT_PAGE = "chat_fragment"
     const val PLAY_STORE_SUBSCRIPTION_URL = "https://play.google.com/store/account/subscriptions"
     const val PLAY_STORE_SUBSCRIPTION_DEEPLINK_URL =
         "https://play.google.com/store/account/subscriptions?sku=%s&package=%s"
@@ -68,6 +68,7 @@ object Const {
         const val LIKE_COMMENT = "comment_like"
         const val LIKE_POST = "post_like"
         const val MESSAGE = "message"
+        const val CHAT = "chat"
         const val AUDIO_CALL = "Audio_call"
         const val VIDEO_CALL = "Video_call"
         const val CARE_POINT_CREATED = "carepoint_created"

@@ -62,7 +62,10 @@ class FCMService : FirebaseMessagingService() {
         for ((key, value) in message.data) {
             bundle.putString(key, value)
         }
-        generateNotification(this, bundle)
+
+        if (Prefs.with(this)!!.getString(Const.CHAT_PAGE) != "chat page") {
+            generateNotification(this, bundle)
+        }
     }
 
 
@@ -158,7 +161,7 @@ class FCMService : FirebaseMessagingService() {
             mBuilder.setStyle(
                 NotificationCompat.BigPictureStyle()
                     .bigPicture(bitmap)
-                   // .bigLargeIcon(null)
+                // .bigLargeIcon(null)
             ).setLargeIcon(bitmap)
         }
 

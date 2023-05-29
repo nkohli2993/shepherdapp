@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
+import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.DeleteChat
 import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
 import com.shepherdapp.app.data.dto.chat.MessageData
@@ -52,7 +53,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                 @Suppress("DEPRECATION") requireArguments().getParcelable("assignee_user")
         }
 
-        if(arguments?.containsKey("room_id") ==  true){
+        if (arguments?.containsKey("room_id") == true) {
             roomId = requireArguments().getString("room_id")!!
         }
 
@@ -63,20 +64,16 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
         fragmentChatBinding.listener = this
 
 
-        if(roomId==""){
-            val users:ArrayList<Int> = arrayListOf()
+        if (roomId == "") {
+            val users: ArrayList<Int> = arrayListOf()
             users.add(chatViewModel.getLovedUser()!!.id!!)
             users.add(userAssignes!!.id!!)
             users.add(chatViewModel.getCurrentUser()!!.userId!!)
             users.sort()
-//        roomId = if (chatViewModel.getLovedUser()!!.id!!
-//                .toInt() > userAssignes!!.id!!
-//        ) chatViewModel.getLovedUser()!!.id!!.toString() + "-" + userAssignes!!.id!!
-//        else userAssignes!!.id!!.toString() + "-" + chatViewModel.getLovedUser()!!.id!!.toInt()
-            roomId = users.joinToString().replace(" ","").replace(",","-")
+            roomId = users.joinToString().replace(" ", "").replace(",", "-")
         }
 
-        Log.e("catch_room_id","roomId: $roomId")
+        Log.e("catch_room_id", "roomId: $roomId")
         chatViewModel.roomId = roomId
 
         chatViewModel.tableName =
@@ -129,7 +126,9 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
         var chatMessages: ArrayList<MessageGroupData> = ArrayList()
         var isChatDeleted = false
         deleteChatUserIdListing.forEach { deleteChatListData ->
-            if (deleteChatListData.userId?.toInt() == chatViewModel.getLovedUser()!!.id!!.toInt()) {
+            if ((deleteChatListData.userId?.toInt() == chatViewModel.getCurrentUser()!!.id!!.toInt())
+                && (deleteChatListData.lovedOneId?.toInt() == chatViewModel.getLovedUser()?.id!!.toInt())
+            ) {
                 val deletedTimeStamp = deleteChatListData.deletedAt
                 isChatDeleted = true
                 if (deletedTimeStamp != null) {
@@ -253,11 +252,23 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        Prefs.with(context)?.save(Const.CHAT_PAGE, "")
         updateUnseenCount()
     }
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_chat
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        Prefs.with(context)?.save(Const.CHAT_PAGE, "chat page")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Prefs.with(context)?.save(Const.CHAT_PAGE, "")
     }
 
 }

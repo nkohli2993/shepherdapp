@@ -10,7 +10,7 @@ import java.util.ArrayList
 import com.google.firebase.Timestamp
 import java.util.Calendar
 
-fun MessageFragment.showDeleteChatDialog(userId:Long, roomID:String) {
+fun MessageFragment.showDeleteChatDialog(userId:Long, lovedOneId:Long,roomID:String) {
     val dialog = Dialog(requireContext(), android.R.style.Theme_Translucent_NoTitleBar)
     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
     dialog.setContentView(R.layout.dialog_delete_chat)
@@ -21,7 +21,7 @@ fun MessageFragment.showDeleteChatDialog(userId:Long, roomID:String) {
 
     btnYes.setOnClickListener {
         val deleteChatUserIdListing: ArrayList<DeleteChat> = ArrayList()
-        deleteChatUserIdListing.add(DeleteChat(userId,Calendar.getInstance().timeInMillis))
+        deleteChatUserIdListing.add(DeleteChat(userId,lovedOneId,Calendar.getInstance().timeInMillis))
         messagesViewModel.deleteChat(roomID, deleteChatUserIdListing)
         updateRecyclerView()
         dialog.dismiss()

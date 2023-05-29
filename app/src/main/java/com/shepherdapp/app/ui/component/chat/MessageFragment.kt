@@ -81,6 +81,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
                 when (viewID) {
                     R.id.delete_task -> {
                         showDeleteChatDialog(
+                            messagesViewModel.getCurrentUser()!!.id!!.toLong(),
                             messagesViewModel.getLovedUser()!!.id!!.toLong(),
                             roomChatList[position].room_id!!
                         )
@@ -93,14 +94,18 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
 
     override fun observeViewModel() {
         showLoading("")
-        messagesViewModel.getChatRooms(messagesViewModel.getCurrentUser()!!.userId!!) {
+        messagesViewModel.getChatRooms(
+            messagesViewModel.getCurrentUser()!!.userId!!,
+            messagesViewModel.getLovedUser()?.id!!
+        ) {
             var isChatDeleted = false
             var chatMessages: java.util.ArrayList<ChatUserListing> = java.util.ArrayList()
-            Log.e("catch_dat","it: "+it)
+            Log.e("catch_dat", "it: " + it)
             it.forEach { deleteChatListData ->
-                if(deleteChatListData.deletedChatUserIds.size>0){
-                    deleteChatListData.deletedChatUserIds.forEach{
-                        if (it.userId?.toInt() == messagesViewModel.getLovedUser()!!.id!!.toInt()){
+                if (deleteChatListData.deletedChatUserIds.size > 0) {
+                    deleteChatListData.deletedChatUserIds.forEach {
+                        if ((it.userId?.toInt() == messagesViewModel.getCurrentUser()!!.id!!.toInt())
+                            && (it.lovedOneId?.toInt() == messagesViewModel.getLovedUser()?.id!!.toInt())) {
                             val deletedTimeStamp = it.deletedAt
                             isChatDeleted = true
                             if (deletedTimeStamp != null) {
@@ -119,12 +124,12 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
                         }
                     }
 
-                }else{
+                } else {
                     chatMessages.add(deleteChatListData)
                 }
             }
 
-            if(!isChatDeleted)
+            if (!isChatDeleted)
                 chatMessages = it
 
             roomChatList = chatMessages
@@ -207,7 +212,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
 
         findNavController().navigate(
             R.id.action_new_message_to_chat,
-            bundleOf("assignee_user" to detail,"room_id" to chatUserListing.room_id)
+            bundleOf("assignee_user" to detail, "room_id" to chatUserListing.room_id)
         )
     }
 

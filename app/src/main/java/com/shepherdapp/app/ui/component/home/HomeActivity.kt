@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -18,11 +19,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
+import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
 import com.shepherdapp.app.data.dto.dashboard.LoveUser
 import com.shepherdapp.app.data.dto.login.CareRoles
 import com.shepherdapp.app.data.dto.login.UserLovedOne
@@ -105,24 +108,6 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         })
         setOnClickListeners()
 
-//        permissionShowHide(View.VISIBLE)
-        // show accessed cards only to users
-        /* if (!viewModel.getUUID().isNullOrEmpty() && viewModel.getLovedUserDetail() != null) {
-             if (viewModel.getUUID() == viewModel.getLovedUserDetail()?.userId)
-                 if (viewModel.getLovedUserDetail() != null) {
-                     val perList =
-                         viewModel.getLovedUserDetail()?.permission?.split(',')?.map { it.trim() }
-                     permissionShowHide(View.GONE)
-                     for (i in perList?.indices!!) {
-                         checkPermission(perList[i].toInt())
-                     }
-                 } else {
-                     permissionShowHide(View.VISIBLE)
-                 }
-         } else {
-             permissionShowHide(View.VISIBLE)
-         }*/
-
         binding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
 
     }
@@ -132,23 +117,23 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
         when (type) {
             // Handle Chat Message Notification
-            Const.NotificationAction.MESSAGE -> {
-                val chatId = (bundle?.get("chat_id") as String)
-                /* val chatData = ChatListData().apply {
-                     chatType = (bundle.get("chat_type") as String?)?.toIntOrNull()
-                     if (chatType == Chat.CHAT_GROUP) {
-                         toUser = ChatUserDetail(
-                             id = (bundle.get("user_id") as String?) ?: "",
-                             imageUrl = (bundle.get("from_image") as String?) ?: "",
-                             name = (bundle.get("from_name") as String?) ?: ""
-                         )
-                     } else {
-                         groupName = bundle.get("from_name") as String?
-                     }
+            Const.NotificationAction.CHAT -> {
+                val detail = UserAssigneDetail(
+                    bundle?.getString("user_id")!!.toInt(),
+                    bundle.getString("user_id")!!.toInt(),
+                    bundle.getString("first_name"),
+                    bundle.getString("last_name"), "", "", "", "",
+                    bundle.getString("from_image"),
+                )
+                navController.navigate(
+                    R.id.nav_chat,
+                    bundleOf("assignee_user" to detail, "room_id" to bundle.getString("room_id"))
+                )
+                clearNotification()
+            }
 
-                     id = chatId
-                 }*/
-                val eventId = bundle.getString("group_id")
+            Const.NotificationAction.MESSAGE -> {
+                val eventId = bundle?.getString("group_id")
                 Log.d(TAG, "checkNotificationAction: eventId :$eventId")
 
                 val navDirection = eventId?.toInt()?.let {
@@ -245,9 +230,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     is DataResult.Failure -> {
                         hideLoading()
                     }
+
                     is DataResult.Loading -> {
                         showLoading("")
                     }
+
                     is DataResult.Success -> {
                         hideLoading()
                         val userProfile = it.data.payload?.userProfiles
@@ -289,9 +276,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         hideLoading()
                         it.message?.let { showError(this, it.toString()) }
                     }
+
                     is DataResult.Loading -> {
                         showLoading("")
                     }
+
                     is DataResult.Success -> {
                         Prefs.with(applicationContext)?.save(Const.USER_TOKEN, "")
                         navigateToLoginScreen("home")
@@ -308,9 +297,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         hideLoading()
                         showError(this, it.message.toString())
                     }
+
                     is DataResult.Loading -> {
                         showLoading("")
                     }
+
                     is DataResult.Success -> {
                         val payload = it.data.payload
                         Log.d(TAG, "datas: " + payload)
@@ -332,9 +323,11 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         hideLoading()
                         showError(this, it.message.toString())
                     }
+
                     is DataResult.Loading -> {
                         showLoading("")
                     }
+
                     is DataResult.Success -> {
                         val payload = it.data.payload
                         Log.e(TAG, "initHomeViews: payload :${payload}")
@@ -364,7 +357,14 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
 
                         //save data
 
-                        viewModel.saveLovedUser(LoveUser(it.data.payload?.firstname,it.data.payload?.lastname,it.data.payload?.lovedOneUserProfile,it.data.payload?.user_id))
+                        viewModel.saveLovedUser(
+                            LoveUser(
+                                it.data.payload?.firstname,
+                                it.data.payload?.lastname,
+                                it.data.payload?.lovedOneUserProfile,
+                                it.data.payload?.user_id
+                            )
+                        )
                         viewModel.saveLovedOneDetail(
                             UserLovedOne(
                                 it.data.payload!!.careTeamProfiles[0].id,
@@ -428,13 +428,13 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         }
 
 
-/*
-                        if (!careTeam.isNullOrEmpty()) {
-                            if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
-                                viewModel.saveLoggedInUserCareTeamLead(true)
-                            }
-                        }
-*/
+                        /*
+                                                if (!careTeam.isNullOrEmpty()) {
+                                                    if (careTeam[0].careRoles?.slug == CareRole.CareTeamLead.slug) {
+                                                        viewModel.saveLoggedInUserCareTeamLead(true)
+                                                    }
+                                                }
+                        */
 
 
                         // find permission for loved one user
@@ -519,6 +519,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
+
                 R.id.messageFragment -> {
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.messages)
@@ -541,6 +542,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
+
                 R.id.nav_my_medlist -> {
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.medlist_header)
@@ -584,6 +586,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
+
                 R.id.nav_profile -> {
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.my_profile)
@@ -601,6 +604,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
+
                 R.id.nav_vital_stats -> {
                     binding.appBarDashboard.apply {
                         tvTitle.text = getString(R.string.vital_stats)
@@ -622,6 +626,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
+
                 R.id.nav_resources -> {
                     cardViewUser.isVisible = true
                     imgClose.setOnClickListener {
@@ -635,6 +640,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
+
                 R.id.nav_care_points -> {
                     cardViewUser.isVisible = true
                     imgClose.setOnClickListener {
@@ -675,6 +681,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     }
                     lockUnlockDrawer(false)
                 }
+
                 R.id.nav_care_team -> {
                     cardViewUser.isVisible = true
 
@@ -699,6 +706,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                         }
                     }
                 }
+
                 else -> {
                     lockUnlockDrawer(true)
                     cardViewUser.isVisible = false
@@ -801,34 +809,44 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             R.id.clProfileWrapper -> {
                 navController.navigate(R.id.nav_profile)
             }
+
             R.id.llHome -> {
                 navController.navigate(R.id.nav_dashboard)
             }
+
             R.id.llCarePoint -> {
                 navController.navigate(R.id.nav_care_points)
             }
+
             R.id.llDiscussions -> {
                 navController.navigate(R.id.nav_messages)
             }
+
             R.id.llMedList -> {
                 navController.navigate(R.id.nav_my_medlist)
             }
+
             R.id.llResources -> {
                 navController.navigate(R.id.nav_resources)
             }
+
             R.id.llLockBox -> {
                 navController.navigate(R.id.nav_lock_box)
             }
+
             R.id.llVitalStats -> {
 //                showError(this, "Not implemented.")
                 navController.navigate(R.id.nav_vital_stats)
             }
+
             R.id.llCareTeam -> {
                 navController.navigate(R.id.nav_care_team)
             }
+
             R.id.llMessage -> {
                 navController.navigate(R.id.messageFragment)
             }
+
             R.id.tvLogout -> {
                 viewModel.logOut()
             }
@@ -888,11 +906,13 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                     R.anim.slide_out_right
                 )
             }
+
             is SettingFragment -> {
                 findNavController(R.id.nav_host_fragment_content_dashboard).navigate(
                     R.id.nav_profile
                 )
             }
+
             is DashboardFragment -> {
                 if (backPressed + 2000 > System.currentTimeMillis()) {
                     // Finish this activity as well as all activities immediately below it in the current task that have the same affinity.
@@ -905,6 +925,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
                 ).show()
                 backPressed = System.currentTimeMillis()
             }
+
             else -> {
                 super.onBackPressed()
                 overridePendingTransition(
@@ -921,12 +942,15 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             Modules.CarePoints.value == permission -> {
                 binding.llCarePoint.visibility = View.VISIBLE
             }
+
             Modules.LockBox.value == permission -> {
                 binding.llLockBox.visibility = View.VISIBLE
             }
+
             Modules.MedList.value == permission -> {
                 binding.llMedList.visibility = View.VISIBLE
             }
+
             Modules.Resources.value == permission -> {
                 binding.llResources.visibility = View.VISIBLE
             }

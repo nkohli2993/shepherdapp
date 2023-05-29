@@ -612,6 +612,7 @@ interface ApiService {
     ): Response<FCMResponseModel>
   @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)
     suspend fun sendPushCareTeamNotification(
+      @Header("Authorization") token: String,
         @Body chatNotificationModel: CareTeamChatNotificationModel
     ): Response<FCMResponseModel>
 

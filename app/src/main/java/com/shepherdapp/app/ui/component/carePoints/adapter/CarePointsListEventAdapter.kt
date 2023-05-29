@@ -71,7 +71,11 @@ class CarePointsListEventAdapter(
                     this.marginEnd = 0
                 }
             }
-
+            if(commentList.size>3 && position == 2){
+                itemBinding.layout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    this.marginEnd = 0
+                }
+            }
             val imageUrl = commentList[position].user_details.profilePhoto ?: ""
 
             itemBinding.imageView.setImageFromUrl(

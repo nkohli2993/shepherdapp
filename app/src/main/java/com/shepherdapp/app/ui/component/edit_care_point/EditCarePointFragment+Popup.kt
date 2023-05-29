@@ -39,9 +39,16 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     val btnYes = dialog.findViewById(R.id.btnYes) as AppCompatButton
     val radioGroup = dialog.findViewById(R.id.repeatOptionRG) as RadioGroup
     val tvEndDate = dialog.findViewById(R.id.txtEndDate) as AppCompatTextView
+    val leftV = dialog.findViewById(R.id.leftV) as AppCompatTextView
+    val rightV = dialog.findViewById(R.id.rightV) as AppCompatTextView
+
     val weekdaysRV = dialog.findViewById(R.id.weekdaysRV) as RecyclerView
     val calenderCL = dialog.findViewById(R.id.calenderCL) as ConstraintLayout
     val calendarPView = dialog.findViewById(R.id.calendarPView) as MaterialCalendarView
+    calendarPView.arrowColor = ContextCompat.getColor(requireContext(), R.color.transparent)
+    calendarPView.isScrollContainer = false
+    calendarPView.selectionMode = MaterialCalendarView.SELECTION_MODE_MULTIPLE
+    calendarPView.isPagingEnabled = false
 
     val dayRB = dialog.findViewById(R.id.dayRB) as RadioButton
     val weekRB = dialog.findViewById(R.id.weekRB) as RadioButton
@@ -109,9 +116,14 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
 
     }
     tvEndDate.setOnClickListener {
-        datePicker(tvEndDate)
+        datePicker(tvEndDate,carePoint)
     }
+    leftV.setOnClickListener {
 
+    }
+    rightV.setOnClickListener {
+
+    }
     radioGroup.setOnCheckedChangeListener { viewButton, _ ->
         when (radioGroup.checkedRadioButtonId) {
             R.id.noneRB -> {
@@ -181,11 +193,11 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     }
 
 
-    if(carePoint.month_dates!=null){
+    if (carePoint.month_dates != null) {
         val date = SimpleDateFormat("MM-yyyy").format(Calendar.getInstance().time)
         for (i in carePoint.month_dates!!) {
             val monthDate = i.toString().plus("-$date")
-            val dateShow:Date = SimpleDateFormat("dd-MM-yyyy").parse(monthDate)
+            val dateShow: Date = SimpleDateFormat("dd-MM-yyyy").parse(monthDate) as Date
             val calendar = Calendar.getInstance()
             calendar.time = dateShow
             calendarPView.setDateSelected(calendar, true)
@@ -273,12 +285,18 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     dialog.show()
 }
 
-@SuppressLint("SetTextI18n")
-fun datePicker(tvEndDate: AppCompatTextView) {
+@SuppressLint("SetTextI18n", "SimpleDateFormat")
+fun datePicker(tvEndDate: AppCompatTextView,carePoint: AddedEventModel) {
     val c = Calendar.getInstance()
     val mYear = c[Calendar.YEAR]
     val mMonth = c[Calendar.MONTH]
     val mDay = c[Calendar.DAY_OF_MONTH]
+
+    if(carePoint.repeat_end_date!=null){
+        val endDate =
+            SimpleDateFormat("yyyy-MM-dd").parse(carePoint.repeat_end_date!!)
+        c.time = endDate!!
+    }
 
     val datePickerDialog = DatePickerDialog(
         tvEndDate.context, R.style.datepicker, { _, year, monthOfYear, dayOfMonth ->
