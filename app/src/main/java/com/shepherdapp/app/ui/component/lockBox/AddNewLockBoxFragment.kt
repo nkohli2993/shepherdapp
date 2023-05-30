@@ -174,9 +174,15 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
     }
 
     private fun openMemberDetails(navigateEvent: SingleEvent<String>) {
-        /* navigateEvent.getContentIfNotHandled()?.let {
-             findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user_lockBox" to usersList))
-         }*/
+        navigateEvent.getContentIfNotHandled()?.let {
+            findNavController().navigate(
+                R.id.action_to_assigneeUsersFragment,
+                bundleOf(
+                    "assignee_user_lockBox" to usersList,
+                    "loved_one_id" to addNewLockBoxViewModel.getLovedOneUUId()
+                )
+            )
+        }
     }
 
 

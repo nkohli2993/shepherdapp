@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
+import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AllowedUsers
 import com.shepherdapp.app.databinding.FragmentCareAssigneeListBinding
 import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.carePoints.adapter.AssigneeUserAdapter
@@ -24,6 +25,7 @@ class CareAssigneeListFragment : BaseFragment<FragmentCareAssigneeListBinding>()
     private lateinit var fragmentCareAssigneeListBinding: FragmentCareAssigneeListBinding
     private var userAssignees: ArrayList<UserAssigneeModel> = arrayListOf()
     private var usersList: ArrayList<CareTeamModel> = arrayListOf()
+    private var allowedUsersList: ArrayList<AllowedUsers> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,6 +52,15 @@ class CareAssigneeListFragment : BaseFragment<FragmentCareAssigneeListBinding>()
                 fragmentCareAssigneeListBinding.titleTV.text = getString(R.string.selected_users)
                 usersList.addAll(list)
             }
+            if (arguments?.containsKey("assignee_allowed_lockBox") == true) {
+                usersList.clear()
+                val list =
+                    @Suppress("DEPRECATION") requireArguments().getParcelableArrayList<AllowedUsers>(
+                        "assignee_allowed_lockBox"
+                    ) as ArrayList<AllowedUsers>
+                fragmentCareAssigneeListBinding.titleTV.text = getString(R.string.selected_users)
+                allowedUsersList.addAll(list)
+            }
             setUserAdapter()
         }
         return fragmentCareAssigneeListBinding.root
@@ -69,7 +80,7 @@ class CareAssigneeListFragment : BaseFragment<FragmentCareAssigneeListBinding>()
         userAssignees.filter { listAssinee ->
             listAssinee.user_details.id != carePointsViewModel.getUserDetail()!!.userId
         } as ArrayList
-        val commentAdapter = AssigneeUserAdapter(userAssignees, usersList, this)
+        val commentAdapter = AssigneeUserAdapter(userAssignees, usersList, allowedUsersList,this)
         fragmentCareAssigneeListBinding.recyclerViewCareTeam.adapter = commentAdapter
 
 
@@ -89,15 +100,35 @@ class CareAssigneeListFragment : BaseFragment<FragmentCareAssigneeListBinding>()
     }
 
     override fun onAssigneeSelected(detail: UserAssigneeModel) {
-        Log.e("catch_exception", "assignee: $detail")
         findNavController().navigate(
             R.id.action_assignee_to_member_details,
-            bundleOf("id" to detail.user_details.userProfileId.toString())
+            bundleOf(
+                "user_id" to detail.user_id.toString(),
+                "loved_one_id" to arguments?.getString("loved_one_id")
+            )
         )
+    }
 
+    override fun onAllowedAssigneeSelected(detail: AllowedUsers) {
+        Log.e("catch_exception", "assignee_lockbox: $detail")
+        findNavController().navigate(
+            R.id.action_assignee_to_member_details,
+            bundleOf(
+                "user_id" to detail.userProfiles!!.userId.toString(),
+                "loved_one_id" to arguments?.getString("loved_one_id")
+            )
+        )
     }
 
     override fun onAssigneeLockBoxSelected(detail: CareTeamModel) {
         Log.e("catch_exception", "assignee_lockbox: $detail")
+        findNavController().navigate(
+            R.id.action_assignee_to_member_details,
+            bundleOf(
+                "user_id" to detail.user_id.toString(),
+                "loved_one_id" to arguments?.getString("loved_one_id")
+            )
+        )
+
     }
 }

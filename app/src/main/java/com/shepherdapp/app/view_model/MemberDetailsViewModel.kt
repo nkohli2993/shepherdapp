@@ -72,13 +72,14 @@ class MemberDetailsViewModel @Inject constructor(
     }
 
     fun getCareTeamsDetail(
-        id: String
+        lovedOneId: String,
+        userId: String
     ): LiveData<Event<DataResult<CareMemberDetailResponseModel>>> {
         //val lovedOneId = userRepository.getLovedOneId()
         viewModelScope.launch {
             val response =
                 careTeamsRepository.getCareTeamsDetail(
-                    id
+                    lovedOneId,userId
                 )
             withContext(Dispatchers.Main) {
                 response?.collect { _careTeamsResponseLiveData.postValue(Event(it)) }

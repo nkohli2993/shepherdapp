@@ -211,7 +211,7 @@
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_date"
             app:layout_constraintTop_toBottomOf="@id/tv_notes" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -224,7 +224,7 @@
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_date"
             app:layout_constraintTop_toBottomOf="@id/txtType" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -237,7 +237,7 @@
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
             android:visibility="gone"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_date"
             app:layout_constraintTop_toBottomOf="@id/txtValue" />
 
 

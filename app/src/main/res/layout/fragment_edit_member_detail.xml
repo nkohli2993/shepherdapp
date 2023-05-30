@@ -66,6 +66,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:elevation="5dp"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/_5sdp"
                 android:paddingVertical="@dimen/_8sdp"
@@ -159,8 +161,8 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:hint="@string/enter_relationship"
                     android:inputType="textCapSentences"
-                    android:padding="@dimen/_12ssp"
                     android:maxLines="1"
+                    android:padding="@dimen/_12ssp"
                     android:textColor="@color/_192032"
                     android:textSize="14sp"
                     bind:getRelationError="@{@string/relationship_member}" />
@@ -171,7 +173,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginHorizontal="@dimen/_50sdp"
-                    android:layout_marginVertical="@dimen/_40sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
                     android:background="@drawable/button_primary"
                     android:backgroundTint="@color/_399282"
                     android:fontFamily="@font/gotham_medium"

@@ -55,17 +55,22 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                         getString(R.string.enter_email)
                     fragmentAddMemberBinding.edtEmail.requestFocus()
                 }
+
                 selectedCareRole?.id == null -> {
                     showError(requireContext(), "Please select any role...")
                 }
+
                 selectedModule.isEmpty() -> {
                     showError(requireContext(), "Please select atleast one permission")
                 }
-                fragmentAddMemberBinding.edtRelationShip.text.toString().isEmpty() ->{
+
+                fragmentAddMemberBinding.edtRelationShip.text.toString().trim().isEmpty() -> {
+                    fragmentAddMemberBinding.edtRelationShip.setText("")
                     fragmentAddMemberBinding.edtRelationShip.error =
                         getString(R.string.enter_relationship)
                     fragmentAddMemberBinding.edtRelationShip.requestFocus()
                 }
+
                 else -> {
                     return true
                 }
@@ -110,6 +115,7 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     val careRoleList = it.data.payload.careRoles
@@ -147,9 +153,11 @@ class AddMemberFragment : BaseFragment<FragmentAddMemberBinding>(),
                     hideLoading()
                     it.message?.let { it1 -> showError(requireContext(), it1) }
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     val builder = AlertDialog.Builder(requireContext())

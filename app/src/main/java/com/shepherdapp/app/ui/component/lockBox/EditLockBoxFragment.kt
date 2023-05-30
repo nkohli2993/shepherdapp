@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -160,12 +161,22 @@ class EditLockBoxFragment : BaseFragment<FragmentEditLockBoxBinding>(),
     override fun observeViewModel() {}
 
 
-
+    private fun openMemberDetails(navigateEvent: SingleEvent<String>) {
+        navigateEvent.getContentIfNotHandled()?.let {
+            findNavController().navigate(
+                R.id.action_to_assigneeUsersFragment,
+                bundleOf(
+                    "assignee_user_lockBox" to usersList,
+                    "loved_one_id" to addNewLockBoxViewModel.getLovedOneUUId()
+                )
+            )
+        }
+    }
 
     fun observeLifecycle() {
         observe(selectedFile, ::handleSelectedImage)
         observe(selectedFiles, ::handleSelectedFiles)
-
+        observe(addNewLockBoxViewModel.selectedUserLiveData, ::openMemberDetails)
         // Observe the response of upload multiple images api
         addNewLockBoxViewModel.uploadMultipleLockBoxDocResponseLiveData.observeEvent(this) {
             when (it) {

@@ -36,9 +36,6 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
     private var isActive: Boolean = false
     private var productId: String? = null
     private var url: String? = null
-    private var page = 1
-    private var limit = 10
-
 
     @SuppressLint("SetTextI18n")
     override fun observeViewModel() {
@@ -103,52 +100,6 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
             }
         }
 
-        // Get Previous Subscriptions
-        /* mySubscriptionViewModel.getPreviousSubscriptionResponseLiveData.observeEvent(this) {
-             when (it) {
-                 is DataResult.Failure -> {
-                     hideLoading()
-                     showError(requireContext(), it.message.toString())
-                 }
-                 is DataResult.Loading -> {
-                     showLoading("")
-                 }
-                 is DataResult.Success -> {
-                     hideLoading()
-                     val subscriptionData = it.data.payload?.users?.get(0)
-
-                     fragmentMySubscriptionBinding?.txtPlan?.visibility = View.VISIBLE
-                     fragmentMySubscriptionBinding?.cv?.visibility = View.VISIBLE
-                     fragmentMySubscriptionBinding?.txtExpirePlan?.visibility = View.VISIBLE
-                     fragmentMySubscriptionBinding?.txtPlanExpireDate?.visibility = View.VISIBLE
-                     fragmentMySubscriptionBinding?.txtRenew?.visibility = View.VISIBLE
-                     fragmentMySubscriptionBinding?.btnChangePlan?.visibility = View.VISIBLE
-
-                     // Hide No Subscription found
-                     fragmentMySubscriptionBinding?.txtNoSubscriptionFound?.visibility = View.GONE
-
-                     it.data.payload.let { payload ->
-                         fragmentMySubscriptionBinding?.txtPlanExpireDate?.text =
-                             subscriptionData?.expiryDate.changeDatesFormat(
-                                 sourceFormat = "yyyy-MM-dd",
-                                 targetFormat = "dd MMM, yyyy"
-                             )
-                         fragmentMySubscriptionBinding?.txtLovedOne?.text =
-                             "Max ${subscriptionData?.allowedLovedOnesCount} lovedOne can be added"
-                         fragmentMySubscriptionBinding?.txtPrice?.text =
-                             subscriptionData?.amount.toString()
-                         fragmentMySubscriptionBinding?.txtPriceUnit?.text =
-                             "$/${subscriptionData?.plan}"
-                         fragmentMySubscriptionBinding?.txtTitle?.text = "${subscriptionData?.plan}"
-                         fragmentMySubscriptionBinding?.txtPlan?.text =
-                             "You have chosen ${subscriptionData?.plan} plan"
-
-                         transactionId = subscriptionData?.transactionId
-                     }
-                     establishConnection()
-                 }
-             }
-         }*/
     }
 
     override fun onCreateView(
@@ -163,8 +114,7 @@ class MySubscriptionFragment : BaseFragment<FragmentMySubscriptionBinding>(), Vi
 
     override fun initViewBinding() {
         fragmentMySubscriptionBinding?.listener = this
-
-//        mySubscriptionViewModel.getActiveSubscriptions()
+        fragmentMySubscriptionBinding?.cv?.visibility = View.GONE
 
         //Step 2. Initialize a BillingClient with PurchasesUpdatedListener
         billingClient = BillingClient.newBuilder(requireContext())

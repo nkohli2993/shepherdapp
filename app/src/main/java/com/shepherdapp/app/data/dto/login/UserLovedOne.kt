@@ -21,5 +21,6 @@ data class UserLovedOne(
     @SerializedName("care_roles") var careRoles: CareRoles? = CareRoles(),
     @SerializedName("first_name") var firstName: String? = null,
     @SerializedName("last_name") var lastName: String? = null,
-    @SerializedName("profile_pic") var profilePic: String? = null
+    @SerializedName("profile_pic") var profilePic: String? = null,
+    @SerializedName("enterprise") var enterprise :EnterPrisedata? = EnterPrisedata()
 ) : Parcelable

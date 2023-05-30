@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.ShepherdApp
 
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
@@ -23,6 +24,8 @@ import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -224,13 +227,17 @@ class AddNewLockBoxViewModel @Inject constructor(
         return getDetailLockBoxResponseLiveData
     }
 
+    fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
+
+
+
     // Get All Uploaded Lock Box Documents by Loved One UUID
     fun getAllLockBoxUploadedDocumentsByLovedOneUUID(
         pageNumber: Int,
         limit: Int
     ): LiveData<Event<DataResult<UploadedLockBoxDocumentsResponseModel>>> {
         //get lovedOne UUID from shared Pref
-        val lovedOneUUId = userRepository.getLovedOneUUId()
+        val lovedOneUUId = getLovedOneUUId()
         viewModelScope.launch {
             val response = lovedOneUUId?.let {
                 lockBoxRepository.getAllUploadedDocumentsByLovedOneUUID(

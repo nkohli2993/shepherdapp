@@ -3,10 +3,12 @@ package com.shepherdapp.app.ui.component.profile
 import android.content.Context
 import android.os.Bundle
 import android.text.Spannable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -73,18 +75,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
             FragmentProfileBinding.inflate(inflater, container, false)
 
         profileViewModel.getUserDetailByUUID()
-
-        if (profileViewModel.isLoggedInUserLovedOne() == true) {
-            profileViewModel.getCareTeamsByLovedOneId(page, limit, status)
-        } else {
-            profileViewModel.getCareTeamsForLoggedInUser(page, limit, status)
-        }
-
         return fragmentProfileBinding.root
     }
 
     override fun initViewBinding() {
         fragmentProfileBinding.listener = this
+        fragmentProfileBinding.nestedScrollView.isVisible = false
         setLovedOnesAdapter()
     }
 
@@ -184,7 +180,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
         try {
             (fragmentProfileBinding.txtEmail.text as Spannable).stripUnderlines()
             (fragmentProfileBinding.txtPhone.text as Spannable).stripUnderlines()
-        }catch (e:Exception){ e.printStackTrace() }
+        }catch (e:Exception){
+            Log.e("catch_exception","exception: ${e.message}")
+        }
 
 
         //Get user's role
@@ -215,6 +213,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                 is DataResult.Success -> {
                     hideLoading()
                     payload = it.data.payload
+
+                    if (profileViewModel.isLoggedInUserLovedOne() == true) {
+                        profileViewModel.getCareTeamsByLovedOneId(page, limit, status)
+                    } else {
+                        profileViewModel.getCareTeamsForLoggedInUser(page, limit, status)
+                    }
+
                     initView()
                 }
             }
@@ -230,26 +235,21 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                     fragmentProfileBinding.tvYourLovedOnes.visibility = View.GONE
                 }
                 is DataResult.Loading -> {
-                    showLoading("")
+//                    showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    fragmentProfileBinding.nestedScrollView.isVisible = true
                     careTeams.clear()
                     if (page == 1) {
                         lovedOnesAdapter = null
                         setLovedOnesAdapter()
                     }
-
-                    //To fix : Duplicate LovedOne names in LovedOne Listing
-                    // If LoggedIn user is loved one, get first object and add to careTeams
-
                     if (profileViewModel.isLoggedInUserLovedOne() == true) {
                         careTeams.add(it.data.payload.data.first())
                         lovedOnesAdapter?.addData(careTeams)
                     } else {
                         val data = it.data.payload.data
-                        // To fix : Duplicate loved One Issue
-                        // If love_user_id at index 0 matches with the love_user_id at index, pick first object only
                         if (data.size == 1) {
                             careTeams = data
                             lovedOnesAdapter?.addData(careTeams)
@@ -268,14 +268,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(), View.OnClickList
                             }
                         }
                     }
-
-                    /* it.data.payload.let { payload ->
-                         careTeams = payload.data
-                         total = payload.total!!
-                         currentPage = payload.currentPage!!
-                         totalPage = payload.totalPages!!
-                     }
-                     lovedOnesAdapter?.addData(careTeams)*/
 
                 }
             }

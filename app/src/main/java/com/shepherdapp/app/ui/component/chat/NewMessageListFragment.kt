@@ -13,20 +13,15 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.shepherdapp.app.BuildConfig
 import com.shepherdapp.app.R
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.added_events.UserAssigneDetail
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
-import com.shepherdapp.app.databinding.FragmentMessageBinding
-import com.shepherdapp.app.databinding.FragmentNewMessageBinding
 import com.shepherdapp.app.databinding.FragmentNewMessageListBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
-import com.shepherdapp.app.ui.component.careTeamMembers.adapter.CareTeamMembersAdapter
 import com.shepherdapp.app.ui.component.chat.adapter.AdapterMemberCareTeam
-import com.shepherdapp.app.ui.component.chat.adapter.MessagesListingAdapter
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Prefs
 import com.shepherdapp.app.utils.TableName
@@ -69,14 +64,14 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
     }
 
     override fun observeViewModel() {
-        messagesViewModel.careTeamsResponseLiveData.observeEvent(this) {
-            when (it) {
+        messagesViewModel.careTeamsResponseLiveData.observeEvent(this) { result ->
+            when (result) {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
-                    careTeams = it.data.payload.data
+                    careTeams = result.data.payload.data
                     setCareTeamAdapters()
                 }
                 is DataResult.Failure -> {
@@ -96,10 +91,14 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
                 is DataResult.Failure -> {
                     hideLoading()
                     careTeams.clear()
+                    fragmentNewMessageBinding.let {
+                        it.rvUserListing.visibility = View.GONE
+                        it.textViewNoMessages.visibility = View.VISIBLE
+                    }
 
                 }
                 is DataResult.Loading -> {
-                    showLoading("")
+                  //  showLoading("")
                 }
                 is DataResult.Success -> {
                     hideLoading()
@@ -168,6 +167,7 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
         super.onResume()
         fragmentNewMessageBinding.editTextSearch.doAfterTextChanged { search ->
             if (!search.isNullOrEmpty()) {
+                fragmentNewMessageBinding.imgCancel.isVisible = true
                 messagesViewModel.searchCareTeamsByLovedOneId(
                     pageNumber,
                     limit,
@@ -175,40 +175,12 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
                     search.toString()
                 )
             }
+            else{
+                fragmentNewMessageBinding.imgCancel.isVisible = false
+                careTeams.clear()
+                messagesViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
+            }
 
         }
     }
-
-
-    private fun searchUserList(search: Editable?) {
-        if (!fragmentNewMessageBinding.editTextSearch.text.isNullOrEmpty()) {
-            fragmentNewMessageBinding.imgCancel.isVisible = true
-            searchedChatList.clear()
-            careTeams.forEach {
-                if (it.user_id_details?.firstname.plus(" ${it.user_id_details?.lastname}")
-                        .contains(search.toString(), true)
-                ) {
-                    searchedChatList.add(it)
-                }
-            }
-            if (searchedChatList.isNotEmpty()) {
-                fragmentNewMessageBinding.textViewNoMessages.visibility = View.GONE
-                fragmentNewMessageBinding.rvUserListing.visibility = View.VISIBLE
-
-                careTeamAdapter?.updateCareTeams(searchedChatList)
-            } else {
-                // No Search Result found
-                fragmentNewMessageBinding.textViewNoMessages.visibility = View.VISIBLE
-                fragmentNewMessageBinding.rvUserListing.visibility = View.GONE
-            }
-
-        } else {
-            // if search list is empty
-            fragmentNewMessageBinding.imgCancel.isVisible = false
-            fragmentNewMessageBinding.textViewNoMessages.visibility = View.GONE
-            fragmentNewMessageBinding.rvUserListing.visibility = View.VISIBLE
-            careTeamAdapter?.updateCareTeams(careTeams)
-        }
-    }
-
 }

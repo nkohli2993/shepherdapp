@@ -254,6 +254,9 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         }*/
 
         fragmentEditCarePointBinding.repeatCB.setOnClickListener {
+            if (carePoint!!.repeat_flag != null) {
+                fragmentEditCarePointBinding.repeatCB.isChecked = true
+            }
             showRepeatDialog(carePoint!!)
         }
 
@@ -676,6 +679,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     showInfo(requireContext(), getString(R.string.please_select_fututre_date))
                     fragmentEditCarePointBinding.tvDate.requestFocus()
                 }
+
                 else -> {
                     return true
                 }
@@ -921,6 +925,9 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         fragmentEditCarePointBinding.txtEndDate.isVisible = false
         when (value.type) {
             RecurringEvent.None.value -> {
+                fragmentEditCarePointBinding.repeatCB.isChecked = false
+                fragmentEditCarePointBinding.txtType.isVisible = false
+                fragmentEditCarePointBinding.txtEndDate.isVisible = false
                 fragmentEditCarePointBinding.repeatCB.isChecked = false
             }
 

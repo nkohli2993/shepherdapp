@@ -42,6 +42,10 @@ fun getRelationError(view: EditText, data: String) {
             view.error = view.context.getString(R.string.enter_relationship)
             view.requestFocus()
         }
+        else if (view.getLength() < 3) {
+            view.error = "$data ${view.context.getString(R.string.should_be_minimum_characters)}"
+            view.requestFocus()
+        }
     }
 }
 

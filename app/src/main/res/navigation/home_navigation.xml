@@ -344,6 +344,10 @@
         <action
             android:id="@+id/action_nav_edit_lockbox"
             app:destination="@id/nav_edit_lockbox" />
+
+        <action
+            android:id="@+id/action_assignee_to_member_details"
+            app:destination="@+id/nav_team_member_details" />
     </fragment>
 
     <fragment
@@ -390,9 +394,9 @@
 
     <fragment
         android:id="@+id/nav_new_message"
-        android:name="com.shepherdapp.app.ui.component.newMessage.NewMessageFragment"
+        android:name="com.shepherdapp.app.ui.component.new_discussion.NewDiscussionFragment"
         android:label="@string/menu_new_message"
-        tools:layout="@layout/fragment_new_message">
+        tools:layout="@layout/fragment_new_discussion">
 
         <action
             android:id="@+id/action_new_message_to_chat"
@@ -530,6 +534,10 @@
         <action
             android:id="@+id/action_nav_edit_lockbox_to_selectUsersFragment"
             app:destination="@id/selectUsersFragment" />
+        <action
+            android:id="@+id/action_to_assigneeUsersFragment"
+            app:destination="@+id/assigneeUsersFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/mySubscriptionFragment"

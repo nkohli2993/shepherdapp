@@ -550,7 +550,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             }
             ClickType.ASSIGNEE.value -> {
 
-                findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user" to detail.user_assignes))
+                findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user" to detail.user_assignes,"loved_one_id" to detail.loved_one_user_id))
             }
         }
     }

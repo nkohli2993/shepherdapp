@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.data.dto.added_events.UserAssigneeModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
+import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AllowedUsers
 import com.shepherdapp.app.databinding.AdapterAssigneeUsersBinding
 import com.shepherdapp.app.utils.setImageFromUrl
 import kotlin.collections.ArrayList
@@ -14,6 +15,7 @@ import kotlin.collections.ArrayList
 class AssigneeUserAdapter(
     var assigneeList: ArrayList<UserAssigneeModel> = ArrayList(),
     var usersList: ArrayList<CareTeamModel>,
+    var allowedUsersList: ArrayList<AllowedUsers>,
     val listener: AssigneeSelected,
 ) :
     RecyclerView.Adapter<AssigneeUserAdapter.CarePointsAssigneeViewHolder>() {
@@ -38,6 +40,8 @@ class AssigneeUserAdapter(
         //  return requestList.size
         return if(assigneeList.size>0){
             assigneeList.size
+        }else if(allowedUsersList.size>0){
+            allowedUsersList.size
         }
         else{
             usersList.size
@@ -66,6 +70,17 @@ class AssigneeUserAdapter(
                 itemBinding.textViewCareTeamName.text = userDetail.user_details.firstname+ " "+userDetail.user_details.lastname
                 itemBinding.root.setOnClickListener { listener.onAssigneeSelected(userDetail) }
             }
+            else if(allowedUsersList.size>0)
+            {
+                val userDetail = allowedUsersList[position]
+                itemBinding.imageViewCareTeam.setImageFromUrl(
+                    userDetail.userProfiles!!.profilePhoto,
+                    userDetail.userProfiles!!.firstname,
+                    userDetail.userProfiles!!.lastname
+                )
+                itemBinding.textViewCareTeamName.text = userDetail.userProfiles!!.firstname+ " "+userDetail.userProfiles!!.lastname
+                itemBinding.root.setOnClickListener { listener.onAllowedAssigneeSelected(userDetail) }
+            }
             else{
                 val userDetail = usersList[position]
                 itemBinding.imageViewCareTeam.setImageFromUrl(
@@ -91,6 +106,7 @@ class AssigneeUserAdapter(
 
     interface  AssigneeSelected{
         fun onAssigneeSelected(detail: UserAssigneeModel)
+        fun onAllowedAssigneeSelected(detail: AllowedUsers)
         fun onAssigneeLockBoxSelected(detail: CareTeamModel)
     }
 

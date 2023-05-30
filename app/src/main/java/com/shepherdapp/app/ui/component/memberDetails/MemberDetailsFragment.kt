@@ -27,6 +27,7 @@ import com.shepherdapp.app.databinding.FragmentMemberDetailsBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
+import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.Const
 import com.shepherdapp.app.utils.Modules
 import com.shepherdapp.app.utils.Prefs
@@ -49,7 +50,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     private var careTeam: CareTeamModel? = null
     private var selectedModule: String = ""
     private val logTag = "MemberDetailsFragment"
-    private var id:String? = null
+    private var id: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,25 +66,21 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     override fun initViewBinding() {
         fragmentMemberDetailsBinding.listener = this
         id = arguments?.getString("id")
-        try {
-            (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
-            (fragmentMemberDetailsBinding.txtPhoneCare.text as Spannable).stripUnderlines()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
 
         // Get Care Teams by lovedOne Id
         fragmentMemberDetailsBinding.scrollView.isVisible = false
-        memberDetailsViewModel.getCareTeamsDetail(id!!)
-
-
+        memberDetailsViewModel.getCareTeamsDetail(
+            arguments?.getString("loved_one_id")!!,
+            arguments?.getString("user_id")!!
+        )
     }
 
     @SuppressLint("SetTextI18n")
     private fun setDataValue() {
         fragmentMemberDetailsBinding.scrollView.isVisible = true
         // Set Email ID
-        fragmentMemberDetailsBinding.txtRelationCare.text = careTeam?.relation_name ?: getString(R.string.relationship_not_available)
+        fragmentMemberDetailsBinding.txtRelationCare.text =
+            careTeam?.relation_name ?: getString(R.string.relationship_not_available)
         careTeam?.user_id_details.let {
             // Set profile pic
             fragmentMemberDetailsBinding.imgCareTeamMember.setImageFromUrl(
@@ -108,7 +105,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             Log.d(logTag, "phoneArr: $phoneArr $phone")
             val phoneCode = phoneArr?.get(0)
             val phoneNumber = phoneArr?.get(1)
-            if(!phoneNumber.toString().lowercase().contains("null")) {
+            if (!phoneNumber.toString().lowercase().contains("null")) {
                 val phoneWithHyphen = phoneNumber?.getStringWithHyphen(phoneNumber)
                 val phoneNo = "$phoneCode $phoneWithHyphen"
                 Log.d(logTag, "initView: $phoneNo")
@@ -123,8 +120,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                         "+" + phoneNo ?: getString(R.string.phone_number_not_available)
 
                 }
-            }
-            else{
+            } else {
                 fragmentMemberDetailsBinding.txtPhoneCare.text =
                     getString(R.string.phone_number_not_available)
             }
@@ -191,6 +187,19 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 checkPermission(perList[i])
             }
         }
+
+        if(careTeam?.careRoles!!.slug == CareRole.CareTeamLead.slug){
+            fragmentMemberDetailsBinding.txtRelationCare.isVisible = false
+        }
+
+        try {
+            (fragmentMemberDetailsBinding.txtEmailCare.text as Spannable).stripUnderlines()
+            (fragmentMemberDetailsBinding.txtPhoneCare.text as Spannable).stripUnderlines()
+        } catch (e: Exception) {
+            Log.e("catch_exception","error: ${e.message}")
+            e.printStackTrace()
+        }
+
     }
 
     private fun makeSwitchesNonClickable() {
@@ -225,14 +234,17 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 fragmentMemberDetailsBinding.switchCarePoints.isChecked = true
                 fragmentMemberDetailsBinding.carPointCD.visibility = View.VISIBLE
             }
+
             Modules.LockBox.value == s -> {
                 fragmentMemberDetailsBinding.switchLockBox.isChecked = true
                 fragmentMemberDetailsBinding.lockBoxCD.visibility = View.VISIBLE
             }
+
             Modules.MedList.value == s -> {
                 fragmentMemberDetailsBinding.switchMyMedList.isChecked = true
                 fragmentMemberDetailsBinding.medlistCD.visibility = View.VISIBLE
             }
+
             Modules.Resources.value == s -> {
                 fragmentMemberDetailsBinding.switchResources.isChecked = true
                 fragmentMemberDetailsBinding.resourcesCD.visibility = View.VISIBLE
@@ -248,9 +260,11 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                     hideLoading()
                     showError(requireContext(), it.message.toString())
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(requireContext(), it.data.message.toString())
@@ -265,9 +279,11 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                     hideLoading()
                     showError(requireContext(), it.message.toString())
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     //showSuccess(requireContext(), it.data.message.toString())
@@ -282,15 +298,20 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     // Get Pending Invites
-                    careTeam =  it.data.payload
+                    careTeam = it.data.payload
+
+                    if (it.data.payload.user_id == memberDetailsViewModel.getLoggedInUserUUID()) {
+                        fragmentMemberDetailsBinding.ivChat.isVisible = false
+                    }
                     setDataValue()
                 }
+
                 is DataResult.Failure -> {
                     hideLoading()
-
                 }
             }
         }
@@ -303,11 +324,13 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             R.id.ivBack -> {
                 backPress()
             }
+
             R.id.ivEdit -> {
                 val action =
                     MemberDetailsFragmentDirections.actionNavEditTeamMemberDetails(careTeam!!)
                 findNavController().navigate(action)
             }
+
             R.id.ivChat -> {
                 val detail = UserAssigneDetail(
                     careTeam!!.user_id_details!!.id,
@@ -323,9 +346,10 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 )
                 findNavController().navigate(
                     R.id.action_new_message_to_chat,
-                    bundleOf("assignee_user" to detail,"room_id" to "")
+                    bundleOf("assignee_user" to detail, "room_id" to "")
                 )
             }
+
             R.id.btnDelete -> {
                 val builder = AlertDialog.Builder(requireContext())
                 val dialog = builder.apply {
@@ -352,6 +376,7 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                 dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
 
             }
+
             R.id.btnUpdate -> {
                 // Checked the selected state of Care Team
                 val isCarePointsEnabled = fragmentMemberDetailsBinding.switchCarePoints.isChecked
@@ -391,7 +416,10 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
                     careTeam?.id?.let {
                         memberDetailsViewModel.updateCareTeamMember(
                             it,
-                            UpdateCareTeamMemberRequestModel(selectedModule,careTeam?.relation_name)
+                            UpdateCareTeamMemberRequestModel(
+                                selectedModule,
+                                careTeam?.relation_name
+                            )
                         )
                     }
                 }

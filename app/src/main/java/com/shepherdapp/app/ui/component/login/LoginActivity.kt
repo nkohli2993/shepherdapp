@@ -84,14 +84,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     binding.edtEmail.error = getString(R.string.enter_email)
                     binding.edtEmail.requestFocus()
                 }
+
                 loginViewModel.loginData.value?.email?.isValidEmail() == false -> {
                     binding.edtEmail.error = getString(R.string.please_enter_valid_email_id)
                     binding.edtEmail.requestFocus()
                 }
+
                 loginViewModel.loginData.value?.password.isNullOrEmpty() -> {
                     binding.edtPasswd.error = getString(R.string.please_enter_your_password)
                     binding.edtPasswd.requestFocus()
                 }
+
                 else -> {
                     return true
                 }
@@ -105,8 +108,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
         terminateApp()
-        loginViewModel.loginData.value!!.email = "nikita@yopmail.com"
-        loginViewModel.loginData.value!!.password = "1234"
+//        loginViewModel.loginData.value!!.email = "nikita@yopmail.com"
+//        loginViewModel.loginData.value!!.password = "1234"
 
 
         binding.viewModel = loginViewModel
@@ -241,12 +244,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
 //                    loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser()
-                    it.data.let { it ->
+                    it.data.let {
                         saveUserInfo(it)
-                        if (it.payload?.activeSubscription?.id == null) {
+                        if (it.payload!!.userLovedOne.size <= 0 && (it.payload?.activeSubscription?.id == null)) {
+                            navigateToScreen()
+                        } else if ((it.payload!!.userLovedOne.size > 0) && (it.payload!!.userLovedOne[0].enterprise == null)
+                            && (it.payload!!.userLovedOne.size <= 0 || it.payload!!.userLovedOne[0].careRoles?.slug == CareRole.CareTeamLead.slug)) {
                             showSubscriptionDialog()
                         } else {
                             it.message?.let { it1 -> showSuccess(this, it1) }
@@ -286,10 +293,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.message?.let { showError(this, it.toString()) }
 
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
 
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     it.data.let { it1 ->
@@ -568,19 +577,23 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             R.id.txtForgotPassword -> {
                 navigateToForgotPasswordScreen()
             }
+
             R.id.btnLogin -> {
                 if (isValid) {
                     doLogin(false)
                 }
 
             }
+
             R.id.txtCreateAccount -> {
                 navigateToCreateNewAccountScreen()
             }
+
             R.id.ivBack -> {
 //                onBackPressed()
                 terminateApp()
             }
+
             R.id.imgBiometric -> {
                 fingerPrintExecute()
             }

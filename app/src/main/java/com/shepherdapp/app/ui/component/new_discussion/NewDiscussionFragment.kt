@@ -1,4 +1,4 @@
-package com.shepherdapp.app.ui.component.newMessage
+package com.shepherdapp.app.ui.component.new_discussion
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -26,11 +26,11 @@ import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.chat.ChatModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.login.UserProfile
-import com.shepherdapp.app.databinding.FragmentNewMessageBinding
+import com.shepherdapp.app.databinding.FragmentNewDiscussionBinding
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.observeEvent
 import com.shepherdapp.app.ui.base.BaseFragment
-import com.shepherdapp.app.ui.component.newMessage.adapter.UsersAdapter
+import com.shepherdapp.app.ui.component.new_discussion.adapter.UsersAdapter
 import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.view_model.NewMessageViewModel
@@ -41,12 +41,12 @@ import dagger.hilt.android.AndroidEntryPoint
  * Created by Sumit Kumar on 26-04-22
  */
 @AndroidEntryPoint
-class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
+class NewDiscussionFragment : BaseFragment<FragmentNewDiscussionBinding>(),
     View.OnClickListener {
 
     private val newMessageViewModel: NewMessageViewModel by viewModels()
 
-    private lateinit var fragmentNewMessageBinding: FragmentNewMessageBinding
+    private lateinit var fragmentNewMessageBinding: FragmentNewDiscussionBinding
     private var pageNumber: Int = 1
     private var limit: Int = 10
     private var status: Int = 1
@@ -69,7 +69,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         savedInstanceState: Bundle?
     ): View {
         fragmentNewMessageBinding =
-            FragmentNewMessageBinding.inflate(inflater, container, false)
+            FragmentNewDiscussionBinding.inflate(inflater, container, false)
 
         return fragmentNewMessageBinding.root
     }
@@ -204,27 +204,6 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
         singleEvent.getContentIfNotHandled()?.let {
             val careTeam = it
             selectedCareTeams?.add(careTeam)
-            /*   val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
-               val loggedInUserId = loggedInUser?.id
-               for (i in selectedCareTeams?.indices!!) {
-                   val selectedCareTeam = selectedCareTeams!![i]
-                   val receiverName =
-                       selectedCareTeam.user_id_details.firstname + " " + selectedCareTeam.user_id_details.lastname
-                   val receiverID = selectedCareTeam.user_id_details.id
-                   val receiverPicUrl = selectedCareTeam.user_id_details.profilePhoto
-                   // Create Chat Model
-                   val chatModel = ChatModel(
-                       null,
-                       loggedInUserId,
-                       loggedInUserName,
-                       receiverID,
-                       receiverName,
-                       receiverPicUrl,
-                       null,
-                       Chat.CHAT_GROUP
-                   )
-                   chatModelList?.add(chatModel)
-               }*/
         }
 
 
@@ -232,10 +211,6 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
 
     private fun navigateToChat(singleEvent: SingleEvent<CareTeamModel>) {
         // Get Login User's detail
-        /* val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
-             Const.USER_DETAILS,
-             UserProfile::class.java
-         )*/
         chatModelList?.clear()
         val loggedInUserName = loggedInUser?.firstname + " " + loggedInUser?.lastname
         val loggedInUserId = loggedInUser?.id
@@ -257,14 +232,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
             )
             chatModelList?.add(chatModel)
             Log.d(TAG, "ChatModel : $chatModel ")
-/*
-            findNavController().navigate(
-                NewMessageFragmentDirections.actionNewMessageToChat(
-                    "NewMessageFragment",
-                    chatModelList?.toTypedArray()
-                )
-            )
-*/
+
         }
     }
 
@@ -434,7 +402,7 @@ class NewMessageFragment : BaseFragment<FragmentNewMessageBinding>(),
 
 
     override fun getLayoutRes(): Int {
-        return R.layout.fragment_new_message
+        return R.layout.fragment_new_discussion
     }
 
     override fun onResume() {

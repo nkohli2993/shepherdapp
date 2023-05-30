@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fontFamily="@font/gotham_bold"
-    android:padding="@dimen/_10sdp"
+    android:paddingVertical="@dimen/_10sdp"
+    android:paddingHorizontal="@dimen/_30sdp"
     android:text="@string/hint_select_one"
     android:textColor="@color/_192032">
 

@@ -3,9 +3,11 @@ package com.shepherdapp.app.view_model
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.shepherdapp.app.ShepherdApp
 
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AddNewLockBoxResponseModel
+import com.shepherdapp.app.data.dto.lock_box.create_lock_box.AllowedUsers
 import com.shepherdapp.app.data.dto.lock_box.share_lock_box.ShareLockBoxResponseModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxRequestModel
 import com.shepherdapp.app.data.dto.lock_box.update_lock_box.UpdateLockBoxResponseModel
@@ -15,6 +17,9 @@ import com.shepherdapp.app.data.remote.lock_box.LockBoxRepository
 import com.shepherdapp.app.network.retrofit.DataResult
 import com.shepherdapp.app.network.retrofit.Event
 import com.shepherdapp.app.ui.base.BaseViewModel
+import com.shepherdapp.app.utils.Const
+import com.shepherdapp.app.utils.Prefs
+import com.shepherdapp.app.utils.SingleEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -47,6 +52,16 @@ class LockBoxDocInfoViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<AddNewLockBoxResponseModel>>>()
     var getDetailLockBoxResponseLiveData: LiveData<Event<DataResult<AddNewLockBoxResponseModel>>> =
         _getDetailLockBoxResponseLiveData
+
+
+    private val _selectedUserLiveData =
+        MutableLiveData<SingleEvent<AllowedUsers>>()
+    val selectedUserLiveData: LiveData<SingleEvent<AllowedUsers>> get() = _selectedUserLiveData
+
+    fun openUserListMedication(value: AllowedUsers) {
+        _selectedUserLiveData.value = SingleEvent(value)
+    }
+    fun getLovedOneUUId() = Prefs.with(ShepherdApp.appContext)!!.getString(Const.LOVED_ONE_UUID, "")
 
     // Update Lock Box Doc
     fun updateLockBoxDoc(

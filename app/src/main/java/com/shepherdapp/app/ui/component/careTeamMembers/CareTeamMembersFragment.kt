@@ -193,7 +193,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
 
                 }
                 is DataResult.Loading -> {
-                    showLoading("")
+                  //  showLoading("")
 
                 }
                 is DataResult.Success -> {
@@ -246,7 +246,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     showLoading("")
                 }
                 is DataResult.Success -> {
-                    hideLoading()
+                    //hideLoading()
                     // Get Pending Invites
                     careTeamViewModel.getPendingInvites()
                     careTeams = it.data.payload.data
@@ -295,7 +295,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
             // Sending CareTeam object through safeArgs
 //            val action = CareTeamMembersFragmentDirections.actionCareTeamMembersToMemberDetails(it)
             //findNavController().navigate(R.id.action_care_team_members_to_member_details)
-            findNavController().navigate(R.id.nav_team_member_details, bundleOf("id" to (it.id).toString()))
+            findNavController().navigate(R.id.nav_team_member_details, bundleOf("user_id" to it.user_id.toString(),"loved_one_id" to it.love_user_id))
         }
     }
 

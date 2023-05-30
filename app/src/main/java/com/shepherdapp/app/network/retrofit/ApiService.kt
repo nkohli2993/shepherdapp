@@ -244,7 +244,7 @@ interface ApiService {
 
     @GET(ApiConstants.CareTeams.DETAIL_CARE_TEAM_MEMBER)
     suspend fun getCareTeamsDetail(
-        @Path("id") id: String,
+        @Query("love_user_id") love_user_id: String,@Query("user_id") user_id: String,
     ): Response<CareMemberDetailResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)

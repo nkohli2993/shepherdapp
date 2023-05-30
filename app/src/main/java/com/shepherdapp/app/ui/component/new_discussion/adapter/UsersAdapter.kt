@@ -1,4 +1,4 @@
-package com.shepherdapp.app.ui.component.newMessage.adapter
+package com.shepherdapp.app.ui.component.new_discussion.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

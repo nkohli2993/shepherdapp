@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -25,8 +26,10 @@ import com.shepherdapp.app.ui.component.lockBox.adapter.SelectUsersAdapter
 import com.shepherdapp.app.ui.component.lockBoxDocInfo.adapter.SelectedUsersAdapter
 import com.shepherdapp.app.ui.component.lockBoxDocInfo.adapter.UploadedDocumentImagesAdapter
 import com.shepherdapp.app.utils.CareRole
+import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showSuccess
+import com.shepherdapp.app.utils.observe
 import com.shepherdapp.app.view_model.LockBoxDocInfoViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_uploaded_lock_box_doc_detail.*
@@ -58,9 +61,10 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentUploadedLockBoxDocDetailBinding =
-            FragmentUploadedLockBoxDocDetailBinding.inflate(inflater, container, false)
-
+        if(!::fragmentUploadedLockBoxDocDetailBinding.isInitialized){
+            fragmentUploadedLockBoxDocDetailBinding =
+                FragmentUploadedLockBoxDocDetailBinding.inflate(inflater, container, false)
+        }
         return fragmentUploadedLockBoxDocDetailBinding.root
     }
 
@@ -93,6 +97,8 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
         }
 
     }
+
+
 
     override fun observeViewModel() {
         lockBoxDocInfoViewModel.updateLockBoxDocResponseLiveData.observeEvent(this) {
@@ -245,7 +251,21 @@ class LockBoxDocInfoFragment : BaseFragment<FragmentUploadedLockBoxDocDetailBind
     }
 
     private fun setUsersAdapters() {
-        selectedUsersAdapter = SelectedUsersAdapter(lockBoxDocInfoViewModel)
+        selectedUsersAdapter = SelectedUsersAdapter(lockBoxDocInfoViewModel,object:SelectedUsersAdapter.SelectedUser{
+            override fun onSelectedUserClick(user: AllowedUsers) {
+                user.let {
+                    findNavController().navigate(
+                        R.id.action_assignee_to_member_details,
+                        bundleOf(
+                            "user_id" to it.uniqueUuid.toString(),
+                            "loved_one_id" to lockBoxDocInfoViewModel.getLovedOneUUId()
+                        )
+                    )
+                }
+
+            }
+
+        })
         fragmentUploadedLockBoxDocDetailBinding.rvAllowedUsers.adapter = selectedUsersAdapter
     }
 }
