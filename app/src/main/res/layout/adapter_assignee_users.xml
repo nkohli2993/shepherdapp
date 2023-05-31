@@ -9,8 +9,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_3sdp"
+        android:layout_margin="@dimen/_5sdp"
         android:elevation="@dimen/_5sdp"
+        android:translationZ="@dimen/_5sdp"
         app:cardCornerRadius="@dimen/_10sdp">
 
 
@@ -38,7 +39,7 @@
                     android:layout_margin="@dimen/_1sdp"
                     android:padding="@dimen/_2sdp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_defalut_profile_pic"
+                    android:src="@drawable/background_splash"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize1Percent" />
             </LinearLayout>
 

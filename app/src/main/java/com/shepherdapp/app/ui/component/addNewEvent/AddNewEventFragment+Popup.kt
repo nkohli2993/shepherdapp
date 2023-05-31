@@ -219,7 +219,7 @@ fun datePicker(tvEndDate: AppCompatTextView, startDate: String) {
     val mMonth = c[Calendar.MONTH]
     val mDay = c[Calendar.DAY_OF_MONTH]
 
-    c.time = SimpleDateFormat("MM-dd-yyyy").parse(startDate)!!
+    c.time = SimpleDateFormat("MM/dd/yyyy").parse(startDate)!!
 
 
     val datePickerDialog = DatePickerDialog(
@@ -230,13 +230,13 @@ fun datePicker(tvEndDate: AppCompatTextView, startDate: String) {
                 } else {
                     (monthOfYear + 1)
                 }
-            }-${
+            }/${
                 if (dayOfMonth + 1 < 10) {
                     "0$dayOfMonth"
                 } else {
                     dayOfMonth
                 }
-            }-$year"
+            }/$year"
         }, mYear, mMonth, mDay
     )
     datePickerDialog.datePicker.minDate = c.timeInMillis

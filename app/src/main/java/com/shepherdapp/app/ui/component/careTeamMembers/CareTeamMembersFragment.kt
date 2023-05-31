@@ -45,7 +45,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     private lateinit var fragmentCareTeamMembersBinding: FragmentCareTeamMembersBinding
 
     private var pageNumber: Int = 1
-    private var limit: Int = 20
+    private var limit: Int = 30
     private var status: Int = 1
 
     private var careTeams: ArrayList<CareTeamModel>? = ArrayList()

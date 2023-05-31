@@ -381,7 +381,7 @@
     <string name="wed_18_jul">wed, 18 jul</string>
     <string name="no_care_points_found">Aucun CarePoint trouvé</string>
     <string name="menu_care_point_detail">Détail du point de soins</string>
-    <string name="dd_mm_year">MM-DD-YYYY</string>
+    <string name="dd_mm_year">MM/DD/YYYY</string>
     <string name="_12_00">12:00</string>
     <string name="lock_box_desc">Stockez et récupérez les documents et informations importants en toute sécurité.</string>
     <string name="choose_file">Choisir le fichier</string>
@@ -625,7 +625,7 @@
     <string name="assigned_by">Attribué par</string>
     <string name="please_select_at_least_one_user">Veuillez sélectionner au moins un utilisateur</string>
     <string name="relationship_member">Relation</string>
-    <string name="enter_relationship">Entrer la relation</string>
+    <string name="enter_relationship">Entrer la votre relation</string>
     <string name="edit_member_details">Modifier les détails du membre</string>
     <string name="more">Plus</string>
     <string name="assignees">Cessionnaires</string>

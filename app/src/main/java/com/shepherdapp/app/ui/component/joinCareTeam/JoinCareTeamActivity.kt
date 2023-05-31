@@ -41,7 +41,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
     private var joinCareTeamAdapter: JoinCareTeamAdapter? = null
     private var pageNumber: Int = 1
     private var limit: Int = 10
-
+    private var accepted = 0
     //    private var status: Int = 1
     private var sendType: String = Invitations.Receiver.sendType
     private var status = Status.Zero.status
@@ -112,26 +112,26 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     results?.clear()
                     results?.let { it1 -> joinCareTeamAdapter?.updateCareTeams(it1) }
 
-//                    noInvitationFound()
+                    noInvitationFound()
 
-                    val builder = AlertDialog.Builder(this)
-                    val dialog = builder.apply {
-                        setTitle("Join CareTeam Invitations")
-                        setMessage("No Invitations Found")
-                        setPositiveButton("OK") { _, _ ->
-                            // navigateToDashboardScreen()
-                            // Check if SharedPref contains lovedOne UUID
-                            val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
-                                .getString(Const.LOVED_ONE_UUID, "")
-                            if (lovedOneUUID.isNullOrEmpty()) {
-                                onBackPressed()
-                            } else {
-                                navigateToDashboardScreen()
-                            }
-                        }
-                    }.create()
-                    dialog.show()
-                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
+//                    val builder = AlertDialog.Builder(this)
+//                    val dialog = builder.apply {
+//                        setTitle("Join CareTeam Invitations")
+//                        setMessage("No Invitations Found")
+//                        setPositiveButton("OK") { _, _ ->
+//                            // navigateToDashboardScreen()
+//                            // Check if SharedPref contains lovedOne UUID
+//                            val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
+//                                .getString(Const.LOVED_ONE_UUID, "")
+//                            if (lovedOneUUID.isNullOrEmpty()) {
+//                                onBackPressed()
+//                            } else {
+//                                navigateToDashboardScreen()
+//                            }
+//                        }
+//                    }.create()
+//                    dialog.show()
+//                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -160,11 +160,16 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    accepted++
                     careTeamsViewModel.saveSignUp(false)
                     showSuccess(this, "Invitation Accepted Successfully...")
                     // Save LovedOne UUID
-                    val lovedOneUUID = it.data.payload?.loveoneUserId
-                    lovedOneUUID?.let { it1 -> careTeamsViewModel.saveLovedOneUUID(it1) }
+
+                    if (accepted == 0) {
+                        val lovedOneUUID = it.data.payload?.loveoneUserId
+                        lovedOneUUID?.let { it1 -> careTeamsViewModel.saveLovedOneUUID(it1) }
+                    }
+
                     // Refresh the invitations
                     careTeamsViewModel.getJoinCareTeamInvitations(sendType, status)
                 }
@@ -187,9 +192,9 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
             }
             R.id.buttonJoin -> {
                 //navigateToDashboardScreen()
-                val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
-                    .getString(Const.LOVED_ONE_UUID, "")
-                if (lovedOneUUID.isNullOrEmpty()) {
+//                val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
+//                    .getString(Const.LOVED_ONE_UUID, "")
+                if (accepted == 0) {
                     showInfo(this, "Please accept any one invitation to join...")
                 } else {
                     navigateToDashboardScreen()
@@ -226,7 +231,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
 
     fun noInvitationFound() {
         binding.txtNoCareTeamFound.visibility = View.VISIBLE
-        binding.buttonJoin.visibility = View.GONE
+//        binding.buttonJoin.visibility = View.GONE
     }
 }
 

@@ -258,7 +258,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
                     when (it) {
                         is DataResult.Loading -> {
-                            showLoading("")
+                          //  showLoading("")
                         }
 
                         is DataResult.Failure -> {
@@ -317,7 +317,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }
 
                 is DataResult.Success -> {
-                    hideLoading()
+                    //hideLoading()
                     Log.d(
                         TAG,
                         "observeViewModel: Event Detail according to id : ${it.data.payload}"
@@ -426,6 +426,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     when (payload.repeat_flag) {
                         RecurringFlag.Daily.value -> {
                             it.txtType.text = getString(R.string.every_day)
+                            it.txtValue.isVisible = false
                         }
 
                         RecurringFlag.Weekly.value -> {
@@ -458,7 +459,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                         }
                     }
                     val dateSelected =
-                        SimpleDateFormat("MM-dd-yyyy").parse(payload.repeat_end_date!!)
+                        SimpleDateFormat("yyyy-MM-dd").parse(payload.repeat_end_date!!)
                     val endDate =
                         dateSelected?.let { SimpleDateFormat("EEE, MMM dd, yyyy").format(it) }
                     it.txtEndDate.text = "Ends on - $endDate"

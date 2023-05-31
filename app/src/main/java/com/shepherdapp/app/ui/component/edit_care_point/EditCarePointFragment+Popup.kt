@@ -110,7 +110,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
         val dateSelected =
             SimpleDateFormat("yyyy-MM-dd").parse(carePoint.repeat_end_date!!)
         val endDate =
-            dateSelected?.let { SimpleDateFormat("MM-dd-yyyy").format(it) }
+            dateSelected?.let { SimpleDateFormat("MM/dd/yyyy").format(it) }
         tvEndDate.text = endDate
 
 
@@ -306,13 +306,13 @@ fun datePicker(tvEndDate: AppCompatTextView,carePoint: AddedEventModel) {
                 } else {
                     (monthOfYear + 1)
                 }
-            }-${
+            }/${
                 if (dayOfMonth + 1 < 10) {
                     "0$dayOfMonth"
                 } else {
                     dayOfMonth
                 }
-            }-$year"
+            }/$year"
         }, mYear, mMonth, mDay
     )
     datePickerDialog.datePicker.minDate = c.timeInMillis

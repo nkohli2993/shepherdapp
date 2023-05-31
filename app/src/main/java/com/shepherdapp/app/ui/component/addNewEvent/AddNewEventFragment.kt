@@ -28,6 +28,7 @@ import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
 import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.extensions.hideKeyboard
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
@@ -305,6 +306,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
 
             R.id.assigneET, R.id.spinner_down_arrow_image -> {
+                hideKeyboard()
                 if (fragmentAddNewEventBinding.assigneRV.visibility == View.VISIBLE) {
                     fragmentAddNewEventBinding.assigneRV.visibility = View.GONE
                     fragmentAddNewEventBinding.tvSelect.visibility = View.GONE
@@ -399,24 +401,24 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         } else {
                             (monthOfYear + 1)
                         }
-                    }-${
+                    }/${
                         if (dayOfMonth + 1 < 10) {
                             "0$dayOfMonth"
                         } else {
                             dayOfMonth
                         }
-                    }-$year"
+                    }/$year"
 
                 fragmentAddNewEventBinding.tvTime.text = ""
                 isAmPm = null
                 setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50)
 
                 // check for end date with recurring
-                if (recurringValue!= null && recurringValue!!.endDate != null) {
+                if (recurringValue != null && recurringValue!!.endDate != null) {
                     val recurringEndDate =
                         SimpleDateFormat("yyyy-MM-dd").parse(recurringValue!!.endDate!!)
                     val selectedDate =
-                        SimpleDateFormat("MM-dd-yyyy").parse(fragmentAddNewEventBinding.tvDate.text.toString())
+                        SimpleDateFormat("MM/dd/yyyy").parse(fragmentAddNewEventBinding.tvDate.text.toString())
                     if (selectedDate!!.after(recurringEndDate)) {
                         fragmentAddNewEventBinding.repeatCB.isChecked = false
                         recurringValue!!.type = null
@@ -476,7 +478,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     private fun createEvent() {
         var selectedDate = fragmentAddNewEventBinding.tvDate.text.toString().trim()
-        var dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
+        var dateFormat = SimpleDateFormat("MM/dd/yyyy hh:mm a")
         val formattedDate: Date = dateFormat.parse(
             selectedDate.plus(
                 " ${
@@ -504,7 +506,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             } else if (recurringValue != null && recurringValue!!.type == RecurringEvent.Monthly.value) {
                 dateMonthValue = recurringValue!!.value
             }
-            val endDate = SimpleDateFormat("MM-dd-yyyy").parse(recurringValue?.endDate!!)
+            val endDate = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue?.endDate!!)
             val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate)
             addNewEventViewModel.createEvent(
                 addNewEventViewModel.getLovedOneUUId(),
@@ -596,9 +598,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ")
                             .plus(String.format("%02d:%02d", hourOfDay, selectedMinutes))
                     val currentDateTime =
-                        SimpleDateFormat("MM-dd-yyyy HH:mm").format(Calendar.getInstance().time)
+                        SimpleDateFormat("MM/dd/yyyy HH:mm").format(Calendar.getInstance().time)
 
-                    val dateFormat = SimpleDateFormat("MM-dd-yyyy HH:mm")
+                    val dateFormat = SimpleDateFormat("MM/dd/yyyy HH:mm")
                     if (dateFormat.parse(selectedDateTime)!!
                             .after(dateFormat.parse(currentDateTime))
                     ) {
@@ -706,7 +708,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         fragmentAddNewEventBinding.txtValue.isVisible = valueBoolean
         fragmentAddNewEventBinding.txtEndDate.isVisible = true
         fragmentAddNewEventBinding.repeatCB.isChecked = true
-        val dateSelected = SimpleDateFormat("MM-dd-yyyy").parse(value.endDate!!)
+        val dateSelected = SimpleDateFormat("MM/dd/yyyy").parse(value.endDate!!)
         val endDate = dateSelected?.let { SimpleDateFormat("EEE, MMM dd, yyyy").format(it) }
         fragmentAddNewEventBinding.txtEndDate.text = "Ends on - $endDate"
         if (value.value != null) {
@@ -721,6 +723,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
             RecurringEvent.Daily.value -> {
                 fragmentAddNewEventBinding.txtType.text = "Every Day"
+                fragmentAddNewEventBinding.txtValue.isVisible = false
             }
 
             RecurringEvent.Weekly.value -> {
