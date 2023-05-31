@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.R
@@ -118,6 +119,10 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(),
 
             if (payload.careTeamProfiles.isNotEmpty()) {
                 careTeamMembersDashBoardAdapter?.addData(payload.careTeamProfiles)
+                fragmentDashboardBinding.tvCareMore.isVisible = false
+                if(payload.careTeamProfiles.size>3){
+                    fragmentDashboardBinding.tvCareMore.isVisible = true
+                }
             }
         }
 

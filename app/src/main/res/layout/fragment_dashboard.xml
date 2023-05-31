@@ -30,8 +30,8 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_7sdp"
                 android:onClick="@{listener::onClick}"
-                app:cardBackgroundColor="@color/_5F6AB2"
                 android:visibility="gone"
+                app:cardBackgroundColor="@color/_5F6AB2"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -40,17 +40,17 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_15sdp"
-                    android:background="@drawable/ic_care_points">
+                    android:background="@drawable/ic_care_points"
+                    android:padding="@dimen/_15sdp">
 
-<!--
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_care_points"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
--->
+                    <!--
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:src="@drawable/ic_care_points"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent" />
+                    -->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -97,10 +97,10 @@
                             android:id="@+id/tvTaskCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_12sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:fontFamily="@font/gotham_bold"
                             android:text="@string/hyphen"
-                            android:layout_marginTop="@dimen/_12sdp"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             app:layout_constraintBottom_toTopOf="@+id/tvTask"
@@ -267,11 +267,11 @@
                 android:id="@+id/cvMedList"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_8sdp"
+                android:onClick="@{listener::onClick}"
                 android:visibility="gone"
                 app:cardBackgroundColor="@color/_187AB6"
-                android:onClick="@{listener::onClick}"
                 app:cardCornerRadius="@dimen/_18ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -280,9 +280,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_15sdp"
-                    android:background="@drawable/ic_med_list">
-
+                    android:background="@drawable/ic_med_list"
+                    android:padding="@dimen/_15sdp">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -317,9 +316,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:text="@string/create_and_maintain_a_list_of_loved_one_medication"
                             android:textColor="@color/colorWhite"
-                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvMedList"
@@ -342,10 +341,10 @@
                             android:id="@+id/tvMedListMessage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:fontFamily="@font/gotham_medium"
                             android:text="@string/medications_for_today"
                             android:textColor="@color/colorWhite"
-                            android:layout_marginTop="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tvMedListMessageCount" />
@@ -360,12 +359,12 @@
                 android:id="@+id/cvResources"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:onClick="@{listener::onClick}"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:visibility="gone"
-                app:cardCornerRadius="@dimen/_18ssp"
                 app:cardBackgroundColor="@color/_0086AC"
+                app:cardCornerRadius="@dimen/_18ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cvMedList">
@@ -375,14 +374,14 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_home_resources">
 
-<!--
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_resources"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
--->
+                    <!--
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:src="@drawable/ic_home_resources"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent" />
+                    -->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -417,9 +416,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:text="@string/discover_health_and_well_being_resources_for_caregivers_and_loved_ones"
                             android:textColor="@color/colorWhite"
-                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvResource"
@@ -429,16 +428,16 @@
                             android:id="@+id/tvResourceListMessageCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_25sdp"
                             android:layout_marginTop="@dimen/_12sdp"
                             android:fontFamily="@font/gotham_bold"
                             android:text="@string/hyphen"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_20ssp"
                             android:visibility="invisible"
-                            app:layout_constraintTop_toBottomOf="@+id/tvResourceListDescription"
-                            android:layout_marginStart="@dimen/_25sdp"
                             app:layout_constraintBottom_toTopOf="@+id/tvResourceListMessage"
-                            app:layout_constraintStart_toStartOf="parent" />
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tvResourceListDescription" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvResourceListMessage"
@@ -463,9 +462,9 @@
                 android:id="@+id/cvLockBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:onClick="@{listener::onClick}"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:visibility="gone"
                 app:cardBackgroundColor="@color/_008D98"
                 app:cardCornerRadius="@dimen/_18ssp"
@@ -478,14 +477,14 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/ic_home_lockbox_bg">
 
-<!--
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_home_lockbox_bg"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
--->
+                    <!--
+                                        <androidx.appcompat.widget.AppCompatImageView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:src="@drawable/ic_home_lockbox_bg"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent" />
+                    -->
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -520,9 +519,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:text="@string/lock_box_desc"
                             android:textColor="@color/colorWhite"
-                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvLockBox"
@@ -549,8 +548,8 @@
                             android:text="@string/files_in_your_lockbox"
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/_10ssp"
-                            app:layout_constraintTop_toBottomOf="@+id/tvLockBoxCount"
-                            app:layout_constraintStart_toStartOf="@+id/ivLockBox" />
+                            app:layout_constraintStart_toStartOf="@+id/ivLockBox"
+                            app:layout_constraintTop_toBottomOf="@+id/tvLockBoxCount" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -562,12 +561,12 @@
                 android:id="@+id/cvVitalStats"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:onClick="@{listener::onClick}"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:visibility="gone"
-                app:cardCornerRadius="@dimen/_18ssp"
                 app:cardBackgroundColor="@color/_41A1DA"
+                app:cardCornerRadius="@dimen/_18ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cvLockBox">
@@ -612,9 +611,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:text="@string/remotely_monitor_your_loved_one_s_vitals_statistics_via_wearables"
                             android:textColor="@color/colorWhite"
-                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvVitalStats"
@@ -665,10 +664,10 @@
                 android:id="@+id/cvCareTeam"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:onClick="@{listener::onClick}"
-                android:layout_marginHorizontal="@dimen/_10sdp"
                 android:visibility="gone"
                 app:cardBackgroundColor="@color/_71C8B7"
                 app:cardCornerRadius="@dimen/_18ssp"
@@ -680,9 +679,8 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_15sdp"
-                    android:background="@drawable/ic_care_teams">
-
+                    android:background="@drawable/ic_care_teams"
+                    android:padding="@dimen/_15sdp">
 
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -717,9 +715,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_2sdp"
                             android:fontFamily="@font/gotham_medium"
+                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:text="@string/create_care_team"
                             android:textColor="@color/colorWhite"
-                            android:lineSpacingExtra="@dimen/_5sdp"
                             android:textSize="@dimen/_10ssp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="@+id/tvCareTeam"
@@ -727,7 +725,7 @@
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvCareTeam"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/_12sdp"
                             android:orientation="horizontal"
@@ -738,6 +736,19 @@
                             tools:itemCount="5"
                             tools:listitem="@layout/adapter_care_team_members_dashboard" />
 
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvCareMore"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:fontFamily="@font/gotham_medium"
+                            android:text="@string/more"
+                            android:visibility="gone"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/_10ssp"
+                            app:layout_constraintBottom_toBottomOf="@+id/rvCareTeam"
+                            app:layout_constraintStart_toEndOf="@+id/rvCareTeam"
+                            app:layout_constraintTop_toTopOf="@+id/rvCareTeam" />
 
 
                     </androidx.constraintlayout.widget.ConstraintLayout>

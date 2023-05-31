@@ -114,9 +114,9 @@ class CarePointsDateBasedAdapter(
                 itemBinding.view.visibility = View.GONE
             }
             //show assigns in event
-            itemBinding.assigneCountTV.visibility = View.VISIBLE
+            itemBinding.assigneCountTV.visibility = View.GONE
             if (carePoints.user_assignes.size > 3) {
-                itemBinding.assigneCountTV.visibility = View.VISIBLE
+                itemBinding.assigneCountTV.visibility = View.GONE
                 itemBinding.assigneCountTV.text = "+${carePoints.user_assignes.size - 3}"
             }
             //check assignee and remove chat multiple

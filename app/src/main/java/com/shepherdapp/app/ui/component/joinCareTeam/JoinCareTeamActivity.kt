@@ -160,15 +160,15 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                 }
                 is DataResult.Success -> {
                     hideLoading()
+                    if (accepted == 0) {
+                        val lovedOneUUID = it.data.payload?.loveoneUserId
+                        lovedOneUUID?.let { it1 -> careTeamsViewModel.saveLovedOneUUID(it1) }
+                    }
                     accepted++
                     careTeamsViewModel.saveSignUp(false)
                     showSuccess(this, "Invitation Accepted Successfully...")
                     // Save LovedOne UUID
 
-                    if (accepted == 0) {
-                        val lovedOneUUID = it.data.payload?.loveoneUserId
-                        lovedOneUUID?.let { it1 -> careTeamsViewModel.saveLovedOneUUID(it1) }
-                    }
 
                     // Refresh the invitations
                     careTeamsViewModel.getJoinCareTeamInvitations(sendType, status)

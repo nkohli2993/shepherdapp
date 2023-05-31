@@ -30,7 +30,7 @@ class CarePointsEventAdapter(
 
     override fun getItemCount(): Int {
         //  return requestList.size
-        return commentList.size
+        return if(commentList.size>3) 3 else commentList.size
     }
 
     override fun onBindViewHolder(holder: CarePointsEventsViewHolder, position: Int) {
@@ -48,7 +48,11 @@ class CarePointsEventAdapter(
                     this.marginEnd = 0
                 }
             }
-
+            if(commentList.size>3 && position == 2){
+                itemBinding.layout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    this.marginEnd = 0
+                }
+            }
             val imageUrl = commentList[position].user_details.profilePhoto ?: ""
             val firstName = commentList[position].user_details.firstname
             val lastName = commentList[position].user_details.lastname

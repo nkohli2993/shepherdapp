@@ -3,6 +3,7 @@ package com.shepherdapp.app.ui.component.dashboard.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.data.dto.dashboard.CareTeamProfiles
 import com.shepherdapp.app.databinding.AdapterCareTeamMembersDashboardBinding
@@ -38,7 +39,7 @@ class CareTeamMembersDashBoardAdapter(
     }
 
     override fun getItemCount(): Int {
-        return careTeams.size
+        return if(careTeams.size>3) 3 else careTeams.size
     }
 
     override fun onBindViewHolder(holder: CareTeamViewHolder, position: Int) {
@@ -50,6 +51,17 @@ class CareTeamMembersDashBoardAdapter(
         RecyclerView.ViewHolder(itemBinding.root) {
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
+
+            if (position == careTeams.size - 1) {
+                itemBinding.layout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    this.marginEnd = 0
+                }
+            }
+            if(careTeams.size>3 && position == 2){
+                itemBinding.layout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    this.marginEnd = 0
+                }
+            }
             val careTeam = careTeams[position]
             //itemBinding.data = careTeam
             //val imageUrl = careTeam.user?.userProfiles?.profilePhoto
