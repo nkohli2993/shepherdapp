@@ -244,7 +244,7 @@ interface ApiService {
 
     @GET(ApiConstants.CareTeams.DETAIL_CARE_TEAM_MEMBER)
     suspend fun getCareTeamsDetail(
-        @Query("love_user_id") love_user_id: String,@Query("user_id") user_id: String,
+        @Query("love_user_id") love_user_id: String, @Query("user_id") user_id: String,
     ): Response<CareMemberDetailResponseModel>
 
     @GET(ApiConstants.CareTeams.GET_CARE_TEAMS)
@@ -309,6 +309,9 @@ interface ApiService {
 
     @PUT(ApiConstants.Invitations.ACCEPT_INVITATIONS)
     suspend fun acceptInvitation(@Path("id") id: Int): Response<AcceptInvitationResponseModel>
+
+    @GET(ApiConstants.Event.SET_EVENT_PREFERENCE)
+    suspend fun eventSetPrefernce(@Path("id") id: Int,@Query("denied") denied:Int): Response<EventDetailResponseModel>
 
 
     @POST(ApiConstants.Event.ADD_EVENT_COMMENT)
@@ -610,9 +613,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Body chatNotificationModel: ChatNotificationModel
     ): Response<FCMResponseModel>
-  @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)
+
+    @POST(ApiConstants.Notification.SEND_PUSH_NOTIFICATIONS)
     suspend fun sendPushCareTeamNotification(
-      @Header("Authorization") token: String,
+        @Header("Authorization") token: String,
         @Body chatNotificationModel: CareTeamChatNotificationModel
     ): Response<FCMResponseModel>
 

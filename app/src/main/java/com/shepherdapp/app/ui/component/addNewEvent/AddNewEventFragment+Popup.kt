@@ -54,6 +54,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String) {
     for (i in weekArray.indices) {
         weekAry.add(WeekDataModel((i + 1), weekArray[i]))
     }
+    weekAry.add(WeekDataModel(weekAry.size,"Sun"))
     val selectedDays: ArrayList<WeekDataModel> = arrayListOf()
     val adapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
         override fun onDaySelected(detail: ArrayList<WeekDataModel>) {

@@ -77,6 +77,16 @@ class CarePointRepository @Inject constructor(private val apiService: ApiService
             }
         }.asFlow().flowOn(Dispatchers.IO)
     }
+    suspend fun eventSetPrefernce(
+     id: Int,denied:Int
+    ): Flow<DataResult<EventDetailResponseModel>> {
+        return object :
+            NetworkOnlineDataRepo<EventDetailResponseModel, EventDetailResponseModel>() {
+            override suspend fun fetchDataFromRemoteSource(): Response<EventDetailResponseModel> {
+                return apiService.eventSetPrefernce(id,denied)
+            }
+        }.asFlow().flowOn(Dispatchers.IO)
+    }
 
     // Update Care Team Member
     suspend fun addEventComment(

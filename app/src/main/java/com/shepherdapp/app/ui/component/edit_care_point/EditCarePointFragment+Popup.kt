@@ -73,7 +73,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     for (i in weekArray.indices) {
         weekAry.add(WeekDataModel((i + 1), weekArray[i]))
     }
-
+    weekAry.add(WeekDataModel(weekAry.size, "Sun"))
 
     if (carePoint.week_days != null) {
         for (i in weekAry) {
@@ -116,7 +116,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
 
     }
     tvEndDate.setOnClickListener {
-        datePicker(tvEndDate,carePoint)
+        datePicker(tvEndDate, carePoint)
     }
     leftV.setOnClickListener {
 
@@ -286,15 +286,15 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
 }
 
 @SuppressLint("SetTextI18n", "SimpleDateFormat")
-fun datePicker(tvEndDate: AppCompatTextView,carePoint: AddedEventModel) {
+fun datePicker(tvEndDate: AppCompatTextView, carePoint: AddedEventModel) {
     val c = Calendar.getInstance()
     val mYear = c[Calendar.YEAR]
     val mMonth = c[Calendar.MONTH]
     val mDay = c[Calendar.DAY_OF_MONTH]
 
-    if(carePoint.repeat_end_date!=null){
+    if (carePoint.date != null) {
         val endDate =
-            SimpleDateFormat("yyyy-MM-dd").parse(carePoint.repeat_end_date!!)
+            SimpleDateFormat("yyyy-MM-dd").parse(carePoint.date!!)
         c.time = endDate!!
     }
 

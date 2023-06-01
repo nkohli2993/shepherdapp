@@ -658,7 +658,7 @@
     <string name="please_select_atleast_one_date">Please select atleast one date.</string>
 
     <string-array name="week_array">
-        <item>Sun</item>
+<!--        <item>Sun</item>-->
         <item>Mon</item>
         <item>Tue</item>
         <item>Wed</item>

@@ -100,6 +100,10 @@ class CreatedCarePointsViewModel @Inject constructor(
     var addedCarePointCommentLiveData: LiveData<Event<DataResult<EventCommentResponseModel>>> =
         _addedCarePointCommentLiveData
 
+    private var _eventPreferncePointResponseLiveData =
+        MutableLiveData<Event<DataResult<EventDetailResponseModel>>>()
+    var eventPreferncePointResponseLiveData: LiveData<Event<DataResult<EventDetailResponseModel>>> =
+        _eventPreferncePointResponseLiveData
 
     fun getCarePointsByLovedOneId(
         pageNumber: Int,
@@ -136,6 +140,19 @@ class CreatedCarePointsViewModel @Inject constructor(
             }
         }
         return carePointsDetailResponseLiveData
+    }
+    fun eventSetPrefernce(
+        id: Int,denied:Int
+    ): LiveData<Event<DataResult<EventDetailResponseModel>>> {
+        viewModelScope.launch {
+            val response = carePointRepository.eventSetPrefernce( id,denied)
+            withContext(Dispatchers.Main) {
+                response.collect {
+                    _eventPreferncePointResponseLiveData.postValue(Event(it))
+                }
+            }
+        }
+        return eventPreferncePointResponseLiveData
     }
 
     fun getCarePointsEventCommentsId(

@@ -28,4 +28,6 @@ data class AddedEventModel(
     @SerializedName("repeat_end_date") var repeat_end_date: String? = null,
     @SerializedName("week_days") var week_days: ArrayList<Int>? = null,
     @SerializedName("month_dates") var month_dates: ArrayList<Int>?  = null,
+    @SerializedName("not_available_ids") var not_available_ids: ArrayList<Int>?  = null,
+    @SerializedName("available_ids") var available_ids: ArrayList<Int>?  = null,
 ) : Parcelable

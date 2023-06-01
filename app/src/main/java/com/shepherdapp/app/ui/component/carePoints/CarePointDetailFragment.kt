@@ -218,6 +218,10 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             }
             false
         }
+
+
+//        check event prefernce is saved or not
+//        if()
     }
 
     private fun chatOn() {
@@ -258,7 +262,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
                     when (it) {
                         is DataResult.Loading -> {
-                          //  showLoading("")
+                            //  showLoading("")
                         }
 
                         is DataResult.Failure -> {
@@ -326,6 +330,26 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     // initCarePointDetailViews(it.data.payload)
                     initView()
 
+
+                }
+
+                is DataResult.Failure -> {
+                    hideLoading()
+                }
+            }
+        }
+        carePointsViewModel.eventPreferncePointResponseLiveData.observeEvent(this) {
+            when (it) {
+                is DataResult.Loading -> {
+                    showLoading("")
+                }
+
+                is DataResult.Success -> {
+                    //hideLoading()
+                    Log.d(
+                        TAG,
+                        "observeViewModel: eventPreferncePointResponseLiveData : ${it.data.payload}"
+                    )
 
                 }
 
@@ -494,10 +518,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             fragmentCarePointDetailBinding.tvUsername.text = name
 
-            /*fragmentCarePointDetailBinding.tvUsername.text =
-                payload.createdByDetails?.firstname.plus(" ")
-                    .plus(if (payload.createdByDetails?.lastname == null) "" else payload.createdByDetails?.lastname)*/
-
             // show created on time
             val dateTime = (payload.created_at ?: "").replace(".000Z", "").replace("T", " ")
             val commentTime = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(
@@ -527,22 +547,6 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 it.editTextMessage.visibility = View.VISIBLE
                 it.sendCommentIV.visibility = View.VISIBLE
             }
-
-
-            /* when (payload.user_assignes.size) {
-                 1 -> {
-                     it.editTextMessage.visibility = View.GONE
-                     it.sendCommentIV.visibility = View.GONE
-                 }
-                 else -> {
-                     it.editTextMessage.visibility = View.VISIBLE
-                     it.sendCommentIV.visibility = View.VISIBLE
-                     if (!isListContainMethod(payload.user_assignes)) {
-                         it.editTextMessage.visibility = View.GONE
-                         it.sendCommentIV.visibility = View.GONE
-                     }
-                 }
-             }*/
         }
     }
 
@@ -575,7 +579,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             R.id.sendCommentIV -> {
                 val message = fragmentCarePointDetailBinding.editTextMessage.text.toString().trim()
-                if (message.isNullOrEmpty()) {
+                if (message.isEmpty()) {
                     showInfo(requireContext(), "Please enter message...")
                 } else {
                     chatModel?.chatType = Chat.CHAT_GROUP
@@ -586,6 +590,16 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                     fragmentCarePointDetailBinding.editTextMessage.text?.clear()
                     hideKeyboard()
                 }
+            }
+
+            R.id.btnYesCanDo -> {
+                chatOn()
+                carePointsViewModel.eventSetPrefernce(eventDetail?.id!!,1)
+            }
+
+            R.id.btnNoCant -> {
+                chatOff()
+                carePointsViewModel.eventSetPrefernce(eventDetail?.id!!,1)
             }
 
         }

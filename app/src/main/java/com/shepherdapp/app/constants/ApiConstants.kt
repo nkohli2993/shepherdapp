@@ -81,6 +81,7 @@ object ApiConstants {
         const val EDIT_EVENT = "$BASE_URL${API_VERSION}events/{id}"
         const val ADD_EVENT_COMMENT = "$BASE_URL${API_VERSION}event_comments"
         const val GET_ALL_EVENT_COMMENT = "$BASE_URL${API_VERSION}event_comments/"
+        const val SET_EVENT_PREFERENCE = "$BASE_URL${API_VERSION}events/denied-event/{id}"
     }
 
     object Home {

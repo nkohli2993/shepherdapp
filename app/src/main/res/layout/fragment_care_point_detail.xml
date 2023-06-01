@@ -23,13 +23,14 @@
             android:id="@+id/topViewCl"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            android:elevation="@dimen/_5sdp"
             android:background="@color/colorWhite"
+            android:elevation="@dimen/_5sdp"
             android:paddingBottom="@dimen/_10sdp"
             android:translationZ="@dimen/_5sdp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivBack"
                 android:layout_width="wrap_content"
@@ -273,7 +274,6 @@
             android:id="@+id/eventButtonsG"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             app:constraint_referenced_ids="btnYesCanDo,btnNoCant" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -284,6 +284,7 @@
             android:layout_marginEnd="@dimen/_5sdp"
             android:background="@drawable/shape_black_border"
             android:fontFamily="@font/gotham_medium"
+            android:onClick="@{listener::onClick}"
             android:paddingHorizontal="@dimen/_20sdp"
             android:paddingVertical="@dimen/_10sdp"
             android:text="@string/yes_i_can_do_this"
@@ -306,6 +307,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:background="@drawable/shape_black_border"
             android:fontFamily="@font/gotham_medium"
+            android:onClick="@{listener::onClick}"
             android:paddingHorizontal="@dimen/_20sdp"
             android:paddingVertical="@dimen/_10sdp"
             android:text="@string/no_i_cannot_do_this"

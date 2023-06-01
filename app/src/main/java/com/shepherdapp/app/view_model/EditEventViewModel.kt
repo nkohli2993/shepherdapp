@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.DataRepository
 import com.shepherdapp.app.data.Resource
+import com.shepherdapp.app.data.dto.added_events.EventDetailResponseModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamsResponseModel
 import com.shepherdapp.app.data.dto.edit_event.EditEventRequestModel
 import com.shepherdapp.app.data.dto.edit_event.EditEventResponseModel
@@ -61,6 +62,7 @@ class EditEventViewModel @Inject constructor(
         MutableLiveData<Event<DataResult<EditEventResponseModel>>>()
     var editCarePointResponseLiveData: LiveData<Event<DataResult<EditEventResponseModel>>> =
         _editCarePointResponseLiveData
+
 
     private var _createEventLiveData =
         MutableLiveData<Event<DataResult<CreateEventResponseModel>>>()
