@@ -27,6 +27,7 @@ import com.shepherdapp.app.utils.extensions.showError
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
+import java.util.concurrent.TimeUnit
 
 @SuppressLint("SimpleDateFormat")
 fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
@@ -232,20 +233,64 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
                 } else if (tvEndDate.text.toString().isEmpty()) {
                     showError(requireContext(), getString(R.string.please_select_end_date))
                 } else {
-                    dialog.dismiss()
+
                     val date: ArrayList<Int> = arrayListOf()
                     val days: ArrayList<String> = arrayListOf()
                     for (i in selectedDays) {
                         date.add(i.id!!)
                         days.add(i.name!!)
                     }
-                    showEventEndDate(
-                        EventRecurringModel(
-                            RecurringEvent.Weekly.value,
-                            date,
-                            tvEndDate.text.toString(), "week"
-                        ), days.joinToString()
-                    )
+
+                    val startDateValue = SimpleDateFormat("yyyy-MM-dd").parse(carePoint.date!!)
+                    val endDateValue =
+                        SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
+
+                    val diff: Long = endDateValue!!.time - startDateValue!!.time
+                    val day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
+                    val weekDays: ArrayList<String> = arrayListOf()
+                    if (day <= 7) {
+                        val cal = Calendar.getInstance()
+                        for (i in 0 until day.toInt()) {
+                            cal.add(Calendar.DATE, 1)
+                            weekDays.add(SimpleDateFormat("EEE").format(cal.time))
+                        }
+                        var exist = false
+                        for (i in days) {
+                            for (j in weekDays) {
+                                if (i == j) {
+                                    exist = true
+                                    break
+                                }
+                            }
+                        }
+                        if (exist) {
+                            dialog.dismiss()
+                            tvEndDate.text = ""
+                            showEventEndDate(
+                                EventRecurringModel(
+                                    RecurringEvent.Weekly.value,
+                                    date,
+                                    tvEndDate.text.toString(), "week"
+                                ), days.joinToString()
+                            )
+
+                        } else {
+                            showError(
+                                requireContext(),
+                                getString(R.string.please_select_other_date_no_event_recurring_occurs_in_between_these_dates)
+                            )
+                        }
+                    } else {
+                        dialog.dismiss()
+                        showEventEndDate(
+                            EventRecurringModel(
+                                RecurringEvent.Weekly.value,
+                                date,
+                                tvEndDate.text.toString(), "week"
+                            ), days.joinToString()
+                        )
+
+                    }
 
                 }
             }
@@ -257,20 +302,48 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
                 } else if (tvEndDate.text.toString().isEmpty()) {
                     showError(requireContext(), getString(R.string.please_select_end_date))
                 } else {
-                    dialog.dismiss()
+
                     val date: ArrayList<Int> = arrayListOf()
                     for (i in selectedDates) {
                         val currentDateCalendar = Calendar.getInstance()
                         currentDateCalendar.time = i.date
                         date.add(SimpleDateFormat("dd").format(currentDateCalendar.time).toInt())
                     }
-                    showEventEndDate(
-                        EventRecurringModel(
-                            RecurringEvent.Monthly.value,
-                            date,
-                            tvEndDate.text.toString(), "month"
+                    date.sort()
+                    val lastDate = SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
+                    val startDateDate = SimpleDateFormat("yyyy-MM-dd").parse(carePoint.date!!)
+                    val lastSelectedDate = SimpleDateFormat("dd").format(lastDate!!)
+                    val lastSelectedMonth = SimpleDateFormat("MM").format(lastDate)
+                    val startSelectedMonth = SimpleDateFormat("MM").format(startDateDate!!)
+                    if (lastSelectedMonth == startSelectedMonth) {
+                        if (lastSelectedDate.toInt() < date[0]) {
+                            showError(
+                                requireContext(),
+                                getString(R.string.please_select_other_date_no_event_recurring_occurs_in_between_these_dates)
+                            )
+                        } else {
+                            dialog.dismiss()
+                            showEventEndDate(
+                                EventRecurringModel(
+                                    RecurringEvent.Monthly.value,
+                                    date,
+                                    tvEndDate.text.toString(), "month"
+                                )
+                            )
+
+                        }
+                    } else {
+                        dialog.dismiss()
+                        showEventEndDate(
+                            EventRecurringModel(
+                                RecurringEvent.Monthly.value,
+                                date,
+                                tvEndDate.text.toString(), "month"
+                            )
                         )
-                    )
+
+                    }
+
 
                 }
             }

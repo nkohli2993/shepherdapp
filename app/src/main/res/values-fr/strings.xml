@@ -655,4 +655,5 @@
     <string name="please_select_end_date">Veuillez sélectionner la date de fin.</string>
     <string name="please_atleast_one_weekday">Veuillez au moins un jour de semaine.</string>
     <string name="please_select_atleast_one_date">Veuillez sélectionner au moins une date.</string>
+    <string name="please_select_other_date_no_event_recurring_occurs_in_between_these_dates">Please select other date, No event recurring occurs in between these dates.</string>
 </resources>

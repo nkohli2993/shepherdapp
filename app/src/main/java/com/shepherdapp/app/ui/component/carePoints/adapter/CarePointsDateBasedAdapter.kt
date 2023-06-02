@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.ShepherdApp
 import com.shepherdapp.app.data.dto.added_events.AddedEventModel
@@ -127,6 +128,9 @@ class CarePointsDateBasedAdapter(
                     if (isListContainMethod(carePoints.user_assignes)) {
                         if (viewModel.getUserDetail()?.userId == carePoints.createdByDetails?.id) {
                             itemBinding.ivMessage.visibility = View.GONE
+                            itemBinding.assigneeCLL.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                                this.marginEnd = 0
+                            }
                         } else {
                             itemBinding.ivMessage.visibility = View.VISIBLE
                         }
@@ -135,6 +139,9 @@ class CarePointsDateBasedAdapter(
                     } else {
                         // If the loggedIn User is neither the assigner nor assignee
                         itemBinding.ivMessage.visibility = View.GONE
+                        itemBinding.assigneeCLL.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                            this.marginEnd = 0
+                        }
                     }
                 }
                 else -> {
@@ -143,6 +150,9 @@ class CarePointsDateBasedAdapter(
                     } else {
                         // If the loggedIn User is neither the assigner nor assignee
                         itemBinding.ivMessage.visibility = View.GONE
+                        itemBinding.assigneeCLL.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                            this.marginEnd = 0
+                        }
                     }
                 }
             }

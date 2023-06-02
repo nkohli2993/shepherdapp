@@ -90,6 +90,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
     override fun initViewBinding() {
         fragmentCarePointDetailBinding.listener = this
+        fragmentCarePointDetailBinding.container.isVisible = false
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         eventId = args.eventId
         val source = args.source
@@ -203,6 +204,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             // Load Chat
             loadChat()
             initScrollListener()
+        }else{
+            hideLoading()
         }
 
         setCommentAdapter()
@@ -220,8 +223,24 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         }
 
 
-//        check event prefernce is saved or not
-//        if()
+//        check event preference is saved or not
+//        fragmentCarePointDetailBinding.eventButtonsG.isVisible = true
+        fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
+        if (eventDetail != null && eventDetail!!.available_ids != null) {
+            if (eventDetail!!.available_ids!!.size>0 && eventDetail!!.available_ids!!.contains(carePointsViewModel.getUserDetail()!!.userId)){
+                fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
+                if(isChatOff){
+                    chatOn()
+                }
+
+            }
+        }
+        else if (eventDetail != null && eventDetail!!.not_available_ids != null) {
+            if (eventDetail!!.not_available_ids!!.size>0 && eventDetail!!.not_available_ids!!.contains(carePointsViewModel.getUserDetail()!!.userId)){
+                fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
+                chatOff()
+            }
+        }
     }
 
     private fun chatOn() {
@@ -327,6 +346,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                         "observeViewModel: Event Detail according to id : ${it.data.payload}"
                     )
                     eventDetail = it.data.payload
+                    fragmentCarePointDetailBinding.container.isVisible = true
                     // initCarePointDetailViews(it.data.payload)
                     initView()
 
@@ -345,12 +365,12 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 }
 
                 is DataResult.Success -> {
-                    //hideLoading()
+                    hideLoading()
+                    fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
                     Log.d(
                         TAG,
                         "observeViewModel: eventPreferncePointResponseLiveData : ${it.data.payload}"
                     )
-
                 }
 
                 is DataResult.Failure -> {
@@ -594,12 +614,12 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
             R.id.btnYesCanDo -> {
                 chatOn()
-                carePointsViewModel.eventSetPrefernce(eventDetail?.id!!,1)
+                carePointsViewModel.eventSetPrefernce(eventDetail?.id!!, 0)
             }
 
             R.id.btnNoCant -> {
                 chatOff()
-                carePointsViewModel.eventSetPrefernce(eventDetail?.id!!,1)
+                carePointsViewModel.eventSetPrefernce(eventDetail?.id!!, 1)
             }
 
         }

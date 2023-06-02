@@ -506,6 +506,18 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             } else if (recurringValue != null && recurringValue!!.type == RecurringEvent.Monthly.value) {
                 dateMonthValue = recurringValue!!.value
             }
+            if(dateWeekValue!=null){
+                val hset: HashSet<Int> = HashSet<Int>(dateWeekValue)
+                dateWeekValue.clear()
+                dateWeekValue = arrayListOf()
+                dateWeekValue.addAll(hset)
+            }
+            if(dateMonthValue!=null){
+                val hset: HashSet<Int> = HashSet<Int>(dateMonthValue)
+                dateMonthValue.clear()
+                dateMonthValue = arrayListOf()
+                dateMonthValue.addAll(hset)
+            }
             val endDate = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue?.endDate!!)
             val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate)
             addNewEventViewModel.createEvent(

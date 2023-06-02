@@ -66,6 +66,11 @@ class CarePointsListEventAdapter(
 
         fun bind(position: Int, recyclerItemListener: RecyclerItemListener) {
             // Set the margin end as zero for the last item
+            if (commentList.size == 1) {
+                itemBinding.layout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    this.marginEnd = 0
+                }
+            }
             if (position == commentList.size - 1) {
                 itemBinding.layout.updateLayoutParams<ViewGroup.MarginLayoutParams> {
                     this.marginEnd = 0

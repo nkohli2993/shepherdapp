@@ -656,6 +656,7 @@
     <string name="please_select_end_date">Please select end date.</string>
     <string name="please_atleast_one_weekday">Please atleast one weekday.</string>
     <string name="please_select_atleast_one_date">Please select atleast one date.</string>
+    <string name="please_select_other_date_no_event_recurring_occurs_in_between_these_dates">Please select other date, No event recurring occurs in between these dates.</string>
 
     <string-array name="week_array">
 <!--        <item>Sun</item>-->

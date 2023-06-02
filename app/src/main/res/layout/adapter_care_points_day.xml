@@ -5,7 +5,8 @@
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
+
         <variable
             name="data"
             type="com.shepherdapp.app.data.dto.added_events.AddedEventModel" />
@@ -31,10 +32,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_5sdp"
-            android:fontFamily="@font/gotham_bold"
-            android:maxLines="2"
             android:ellipsize="end"
+            android:fontFamily="@font/gotham_bold"
             android:lineSpacingExtra="@dimen/_5sdp"
+            android:maxLines="2"
             android:text="@{data.name}"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_16ssp"
@@ -62,10 +63,10 @@
             android:fontFamily="@font/gotham_book"
             android:lineSpacingExtra="@dimen/_5sdp"
             android:maxLines="1"
-            android:visibility="@{data.location==null||data.location==``?View.GONE:View.VISIBLE,default=gone}"
             android:text="@{data.location}"
             android:textColor="@color/_192032"
             android:textSize="@dimen/_14ssp"
+            android:visibility="@{data.location==null||data.location==``?View.GONE:View.VISIBLE,default=gone}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
@@ -95,7 +96,6 @@
                 android:id="@+id/assigneeCLL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="-15sp"
                 app:layout_constraintStart_toEndOf="@+id/ivMessage"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -106,31 +106,32 @@
                     android:layout_marginTop="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="@dimen/_10sdp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="3"
                     tools:listitem="@layout/adapter_events_members" />
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/assigneCountTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_mediumitalic"
                     android:textColor="@color/_A26DCB"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="@+id/recyclerViewEvents"
                     app:layout_constraintStart_toEndOf="@+id/recyclerViewEvents"
-                    app:layout_constraintTop_toTopOf="@+id/recyclerViewEvents"  />
+                    app:layout_constraintTop_toTopOf="@+id/recyclerViewEvents" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txtMoreAssignee"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_marginStart="@dimen/_2sdp"
                     android:fontFamily="@font/gotham_mediumitalic"
                     android:gravity="center_vertical"
                     android:text="@string/more"
-                    android:layout_marginStart="@dimen/_2sdp"
                     android:textColor="@color/_A26DCB"
                     android:textSize="@dimen/_12ssp"
                     app:layout_constraintBottom_toBottomOf="@+id/recyclerViewEvents"
