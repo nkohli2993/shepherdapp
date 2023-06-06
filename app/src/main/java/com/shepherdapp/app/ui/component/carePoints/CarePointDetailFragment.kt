@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -204,7 +205,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             // Load Chat
             loadChat()
             initScrollListener()
-        }else{
+        } else {
             hideLoading()
         }
 
@@ -224,19 +225,24 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
 
 //        check event preference is saved or not
-//        fragmentCarePointDetailBinding.eventButtonsG.isVisible = true
-        fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
+        fragmentCarePointDetailBinding.eventButtonsG.isVisible = true
+//        fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
         if (eventDetail != null && eventDetail!!.available_ids != null) {
-            if (eventDetail!!.available_ids!!.size>0 && eventDetail!!.available_ids!!.contains(carePointsViewModel.getUserDetail()!!.userId)){
+            if (eventDetail!!.available_ids!!.size > 0 && eventDetail!!.available_ids!!.contains(
+                    carePointsViewModel.getUserDetail()!!.userId
+                )
+            ) {
                 fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
-                if(isChatOff){
+                if (!isChatOff) {
                     chatOn()
                 }
 
             }
-        }
-        else if (eventDetail != null && eventDetail!!.not_available_ids != null) {
-            if (eventDetail!!.not_available_ids!!.size>0 && eventDetail!!.not_available_ids!!.contains(carePointsViewModel.getUserDetail()!!.userId)){
+        } else if (eventDetail != null && eventDetail!!.not_available_ids != null) {
+            if (eventDetail!!.not_available_ids!!.size > 0 && eventDetail!!.not_available_ids!!.contains(
+                    carePointsViewModel.getUserDetail()!!.userId
+                )
+            ) {
                 fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
                 chatOff()
             }
@@ -306,7 +312,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         commentAdapter?.addData(msgGroupList)
 
         if (scrollToBottom) {
-            Handler().postDelayed({
+            Handler(Looper.myLooper()!!).postDelayed({
                 (fragmentCarePointDetailBinding.recyclerViewChat.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
                     0,
                     0
@@ -613,7 +619,9 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             }
 
             R.id.btnYesCanDo -> {
-                chatOn()
+                if (!isChatOff) {
+                    chatOn()
+                }
                 carePointsViewModel.eventSetPrefernce(eventDetail?.id!!, 0)
             }
 

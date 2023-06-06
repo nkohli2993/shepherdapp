@@ -251,9 +251,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     it.data.let {
                         saveUserInfo(it)
                         if (it.payload!!.userLovedOne.size <= 0 && (it.payload?.activeSubscription?.id == null)) {
+                            loginViewModel.saveSubscriptionPurchased(
+                                isSubscriptionPurchased = false
+                            )
                             navigateToScreen()
                         } else if ((it.payload!!.userLovedOne.size > 0) && (it.payload!!.userLovedOne[0].enterprise == null)
-                            && (it.payload!!.userLovedOne.size <= 0 || it.payload!!.userLovedOne[0].careRoles?.slug == CareRole.CareTeamLead.slug)) {
+                            && (it.payload!!.userLovedOne.size <= 0 || it.payload!!.userLovedOne[0].careRoles?.slug == CareRole.CareTeamLead.slug)
+                        ) {
+                            loginViewModel.saveSubscriptionPurchased(
+                                isSubscriptionPurchased = false
+                            )
                             showSubscriptionDialog()
                         } else {
                             it.message?.let { it1 -> showSuccess(this, it1) }

@@ -182,9 +182,11 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             CalendarState.Week.value -> {
                 fragmentCarePointsBinding.tvWeek.performClick()
             }
+
             CalendarState.Month.value -> {
                 fragmentCarePointsBinding.tvMonth.performClick()
             }
+
             else -> fragmentCarePointsBinding.tvToday.performClick()
         }
         calendarChangeListener()
@@ -250,9 +252,11 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
             "1", "3", "5", "7", "8", "10", "12", "01", "03", "05", "07", "08" -> {
                 31
             }
+
             "4", "6", "9", "11", "04", "06", "09" -> {
                 30
             }
+
             else -> {
                 when {
                     year.toInt() % 400 == 0 || year.toInt() % 4 == 0 -> 29
@@ -269,6 +273,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     fragmentCarePointsBinding.noCareFoundTV.visibility = View.GONE
@@ -287,8 +292,15 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                         }
                     })
 
-                    if (carePoints.isEmpty()) return@observeEvent
-                    carePointsAdapter?.updateCarePoints(carePoints)
+                    if (carePoints.isEmpty()) {
+                        carePoints.clear()
+                        carePoints.let { it1 -> carePointsAdapter?.updateCarePoints(it1) }
+                        fragmentCarePointsBinding.noCareFoundTV.visibility = View.VISIBLE
+                        fragmentCarePointsBinding.noCareFoundTV.text =
+                            getString(R.string.no_care_points_found)
+                    } else {
+                        carePointsAdapter?.updateCarePoints(carePoints)
+                    }
 
                     when (eventClickType) {
                         CalendarState.Month.value, CalendarState.Week.value -> {
@@ -315,12 +327,14 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                                 )
                             )
                         }
+
                         else -> {
 
                         }
                     }
                     setCarePointsAdapter()
                 }
+
                 is DataResult.Failure -> {
                     hideLoading()
                     carePoints.clear()
@@ -363,11 +377,13 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 getCarePointList(startDate, endDate)
                 fragmentCarePointsBinding.textViewSelectGroup.text = getString(R.string.today)
             }
+
             R.id.tv_week -> {
                 onWeekSelected(Calendar.getInstance())
                 fragmentCarePointsBinding.calendarPView.setCurrentDate(Calendar.getInstance())
 
             }
+
             R.id.tv_month -> {
 
                 val calendar = Calendar.getInstance()
@@ -548,9 +564,16 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                     )
                 findNavController().navigate(action)
             }
+
             ClickType.ASSIGNEE.value -> {
 
-                findNavController().navigate(R.id.action_to_assigneeUsersFragment, bundleOf("assignee_user" to detail.user_assignes,"loved_one_id" to detail.loved_one_user_id))
+                findNavController().navigate(
+                    R.id.action_to_assigneeUsersFragment,
+                    bundleOf(
+                        "assignee_user" to detail.user_assignes,
+                        "loved_one_id" to detail.loved_one_user_id
+                    )
+                )
             }
         }
     }
@@ -569,6 +592,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                 endDate = sdf.format(selectedDate)
                 getCarePointList(startDate, endDate)
             }
+
             CalendarState.Week.value -> {
                 fragmentCarePointsBinding.calendarPView.selectionMode =
                     MaterialCalendarView.SELECTION_MODE_SINGLE
@@ -590,6 +614,7 @@ class CarePointsFragment : BaseFragment<FragmentCarePointsBinding>(),
                     fragmentCarePointsBinding.calendarPView.setDateSelected(cal, true)
                 }
             }
+
             else -> {
                 fragmentCarePointsBinding.calendarPView.selectionMode =
                     MaterialCalendarView.SELECTION_MODE_SINGLE
