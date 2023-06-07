@@ -226,6 +226,9 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
 
 //        check event preference is saved or not
         fragmentCarePointDetailBinding.eventButtonsG.isVisible = true
+        if (carePointsViewModel.isLoggedInUserCareTeamLeader() == true) {
+            fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
+        }
 //        fragmentCarePointDetailBinding.eventButtonsG.isVisible = false
         if (eventDetail != null && eventDetail!!.available_ids != null) {
             if (eventDetail!!.available_ids!!.size > 0 && eventDetail!!.available_ids!!.contains(
@@ -247,6 +250,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                 chatOff()
             }
         }
+
     }
 
     private fun chatOn() {
@@ -599,7 +603,8 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             R.id.txtMoreAssignee -> {
                 findNavController().navigate(
                     R.id.action_to_assigneeUsersFragment,
-                    bundleOf("assignee_user" to eventDetail?.user_assignes)
+                    bundleOf("assignee_user" to eventDetail?.user_assignes,
+                        "loved_one_id" to eventDetail?.loved_one_user_id)
                 )
             }
 

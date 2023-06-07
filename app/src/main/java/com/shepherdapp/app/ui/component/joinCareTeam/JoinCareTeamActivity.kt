@@ -46,7 +46,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
     private var sendType: String = Invitations.Receiver.sendType
     private var status = Status.Zero.status
     private var results: ArrayList<Results>? = ArrayList()
-
+    private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,42 +67,6 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
     }
 
     override fun observeViewModel() {
-        /* careTeamsViewModel.careTeamsResponseLiveData.observeEvent(this) {
-             when (it) {
-                 is DataResult.Loading -> {
-                     showLoading("")
-                 }
-                 is DataResult.Success -> {
-                     hideLoading()
-                     careTeams = it.data.payload.careTeams
-                     if (careTeams.isNullOrEmpty()) return@observeEvent
-                     joinCareTeamAdapter?.updateCareTeams(careTeams!!)
-
-                     binding.layoutCareTeam.visibility = View.VISIBLE
-                     binding.txtNoCareTeamFound.visibility = View.GONE
-                 }
-
-                 is DataResult.Failure -> {
-                     //handleAPIFailure(it.message, it.errorCode)
-
-                     hideLoading()
-                     // it.message?.let { showError(this, it.toString()) }
-                     //binding.layoutCareTeam.visibility = View.GONE
-                     //binding.txtNoCareTeamFound.visibility = View.VISIBLE
-                     val builder = AlertDialog.Builder(this)
-                     val dialog = builder.apply {
-                         setTitle("Care Teams")
-                         setMessage("No Care Team Found")
-                         setPositiveButton("OK") { _, _ ->
-                             navigateToDashboardScreen()
-                         }
-                     }.create()
-                     dialog.show()
-                     dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
-                 }
-             }
-         }*/
-
         careTeamsViewModel.invitationsResponseLiveData.observeEvent(this) {
             when (it) {
                 is DataResult.Failure -> {
@@ -111,27 +75,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
 
                     results?.clear()
                     results?.let { it1 -> joinCareTeamAdapter?.updateCareTeams(it1) }
-
                     noInvitationFound()
-
-//                    val builder = AlertDialog.Builder(this)
-//                    val dialog = builder.apply {
-//                        setTitle("Join CareTeam Invitations")
-//                        setMessage("No Invitations Found")
-//                        setPositiveButton("OK") { _, _ ->
-//                            // navigateToDashboardScreen()
-//                            // Check if SharedPref contains lovedOne UUID
-//                            val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
-//                                .getString(Const.LOVED_ONE_UUID, "")
-//                            if (lovedOneUUID.isNullOrEmpty()) {
-//                                onBackPressed()
-//                            } else {
-//                                navigateToDashboardScreen()
-//                            }
-//                        }
-//                    }.create()
-//                    dialog.show()
-//                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 }
                 is DataResult.Loading -> {
                     showLoading("")
@@ -170,8 +114,15 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     // Save LovedOne UUID
 
 
+                    if (accepted == 0) {
+                        showInfo(this, "Please accept any one invitation to join...")
+                    } else {
+                        navigateToDashboardScreen()
+                    }
+//                    results!![position].isSelected = true
+//                    joinCareTeamAdapter?.updateCareTeams(results!!)
                     // Refresh the invitations
-                    careTeamsViewModel.getJoinCareTeamInvitations(sendType, status)
+//                    careTeamsViewModel.getJoinCareTeamInvitations(sendType, status)
                 }
             }
         }
@@ -207,9 +158,10 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
         startActivityWithFinish<HomeActivity>()
     }
 
-    override fun onItemClick(result: Results?) {
+    override fun onItemClick(result: Results?,position:Int) {
         if (result?.id != null) {
             Prefs.with(ShepherdApp.appContext)!!.save(Const.USER_ROLE, result.careRoles?.name)
+            this.position = position
             // Accept the invitation request
             careTeamsViewModel.acceptCareTeamInvitations(result.id!!)
         }

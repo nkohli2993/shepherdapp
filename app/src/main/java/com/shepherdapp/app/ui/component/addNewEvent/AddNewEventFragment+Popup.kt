@@ -295,7 +295,7 @@ fun datePicker(tvEndDate: AppCompatTextView, startDate: String) {
     val mDay = c[Calendar.DAY_OF_MONTH]
 
     c.time = SimpleDateFormat("MM/dd/yyyy").parse(startDate)!!
-
+    c.add(Calendar.DATE,1)
 
     val datePickerDialog = DatePickerDialog(
         tvEndDate.context, R.style.datepicker, { _, year, monthOfYear, dayOfMonth ->

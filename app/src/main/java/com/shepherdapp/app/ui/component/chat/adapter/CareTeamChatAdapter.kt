@@ -57,9 +57,13 @@ class CareTeamChatAdapter (
         fun bind(messageData: MessageData, recyclerItemListener: RecyclerItemListener) {
             itemBinding.messageData = messageData
             val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
-                Const.LOVED_USER_DETAILS,
-                LoveUser::class.java
+                Const.USER_DETAILS,
+                UserProfile::class.java
             )
+//            val loggedInUser = Prefs.with(ShepherdApp.appContext)!!.getObject(
+//                Const.LOVED_USER_DETAILS,
+//                LoveUser::class.java
+//            )
             val loggedInUserId = loggedInUser!!.id
 
             itemBinding.userId = loggedInUserId.toString()

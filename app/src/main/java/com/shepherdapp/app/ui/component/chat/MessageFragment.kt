@@ -164,7 +164,7 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
             messagesListingAdapter =
                 MessagesListingAdapter(
                     roomChatList,
-                    messagesViewModel.getLovedUser()!!.id!!.toInt(),
+                    messagesViewModel.getCurrentUser()!!.id!!.toInt(),
                     this
                 )
             fragmentMessageBinding.rvChatListing.apply {

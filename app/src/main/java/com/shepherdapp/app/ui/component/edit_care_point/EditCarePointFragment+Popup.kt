@@ -369,6 +369,7 @@ fun datePicker(tvEndDate: AppCompatTextView, carePoint: AddedEventModel) {
         val endDate =
             SimpleDateFormat("yyyy-MM-dd").parse(carePoint.date!!)
         c.time = endDate!!
+        c.add(Calendar.DATE, 1)
     }
 
     val datePickerDialog = DatePickerDialog(

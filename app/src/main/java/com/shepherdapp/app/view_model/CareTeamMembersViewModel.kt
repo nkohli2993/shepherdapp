@@ -46,6 +46,11 @@ class CareTeamMembersViewModel @Inject constructor(
     val deletePendingInviteLiveData: LiveData<SingleEvent<CareTeamModel>> get() = _deletePendingInviteLiveData
 
 
+    private var _searchCareTeamsResponseLiveData =
+        MutableLiveData<Event<DataResult<CareTeamsResponseModel>>>()
+    var searchCareTeamsResponseLiveData: LiveData<Event<DataResult<CareTeamsResponseModel>>> =
+        _searchCareTeamsResponseLiveData
+
     fun openMemberDetails(careTeam: CareTeamModel, clickTypeValue: Int) {
         when (clickTypeValue) {
             ClickType.View.value -> {
@@ -184,4 +189,29 @@ class CareTeamMembersViewModel @Inject constructor(
     fun isCareTeamPermission(): Boolean? {
         return userRepository.isCareTeamPermission()
     }
+
+
+    fun searchCareTeamsByLovedOneId(
+        pageNumber: Int,
+        limit: Int,
+        status: Int,
+        search: String
+    ): LiveData<Event<DataResult<CareTeamsResponseModel>>> {
+        val lovedOneUUID = userRepository.getLovedOneUUId()
+        viewModelScope.launch {
+            val response =
+                lovedOneUUID?.let {
+                    careTeamsRepository.searchCareTeamsByLovedOneId(
+                        pageNumber, limit, status,
+                        it, search
+                    )
+                }
+            withContext(Dispatchers.Main) {
+                response?.collect { _searchCareTeamsResponseLiveData.postValue(Event(it)) }
+            }
+        }
+        return searchCareTeamsResponseLiveData
+    }
+
+
 }

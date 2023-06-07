@@ -3,6 +3,7 @@ package com.shepherdapp.app.ui.component.careTeamMembers.adapter
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -117,7 +118,7 @@ class CareTeamMembersAdapter(
 
                 itemBinding.let {
                     //it.textViewCareTeamName.text = fullName
-                    it.textViewCareTeamName.text = firstName + " " + lastName
+                    it.textViewCareTeamName.text = "$firstName $lastName"
 
                     it.imageViewCareTeam.setImageFromUrl(
                         imageUrl,
@@ -148,6 +149,8 @@ class CareTeamMembersAdapter(
     }
 
     fun updateCareTeams(careTeams: ArrayList<CareTeamModel>) {
+        Log.e("catch_exception","size: ${careTeams.size}")
+        this.careTeams.clear()
         this.careTeams = careTeams
         notifyDataSetChanged()
     }

@@ -302,14 +302,14 @@ class ChatViewModel @Inject constructor(
         val data = MessageData().apply {
             content = message
             isRead = false
-            senderID = userRepository.getLovedUser()?.id.toString()
+            senderID = userRepository.getCurrentUser()?.id.toString()
             messageType = msgType
             readIds = ArrayList<String>().apply {
-                add(userRepository.getLovedUser()?.id.toString())
+                add(userRepository.getCurrentUser()?.id.toString())
             }
             senderName =
-                userRepository.getLovedUser()?.firstname + " " + userRepository.getLovedUser()?.lastname
-            senderProfilePic = userRepository.getLovedUser()?.profilePhoto
+                userRepository.getCurrentUser()?.firstname + " " + userRepository.getCurrentUser()?.lastname
+            senderProfilePic = userRepository.getCurrentUser()?.profilePhoto
         }
         sendMessage(data, roomId, unReadCount)
     }
@@ -377,10 +377,10 @@ class ChatViewModel @Inject constructor(
                 val notificationObject = JSONObject().apply {
                     put("title", messageData.senderName)
                     put("body", messageData.content)
-                    put("first_name", getLovedUser()!!.firstname)
-                    put("last_name", getLovedUser()!!.lastname)
-                    put("from_image", getLovedUser()!!.profilePhoto ?: "")
-                    put("user_id", getLovedUser()!!.id)
+                    put("first_name", getCurrentUser()!!.firstname)
+                    put("last_name", getCurrentUser()!!.lastname)
+                    put("from_image", getCurrentUser()!!.profilePhoto ?: "")
+                    put("user_id", getCurrentUser()!!.id)
                     put("room_id", roomId)
                     put("chat_type", Chat.CHAT_SINGLE)
                     put("sound", "default")
@@ -393,10 +393,10 @@ class ChatViewModel @Inject constructor(
                     put("data", notificationObject)
                     put("notification", notificationObject)
                     put("chat_type", Chat.CHAT_SINGLE)
-                    put("first_name", getLovedUser()!!.firstname)
-                    put("last_name", getLovedUser()!!.lastname)
-                    put("from_image", getLovedUser()!!.profilePhoto ?: "")
-                    put("user_id", getLovedUser()!!.id.toString())
+                    put("first_name", getCurrentUser()!!.firstname)
+                    put("last_name", getCurrentUser()!!.lastname)
+                    put("from_image", getCurrentUser()!!.profilePhoto ?: "")
+                    put("user_id", getCurrentUser()!!.id.toString())
                     put("registration_ids", jsArray)
                 }
 
@@ -442,11 +442,11 @@ class ChatViewModel @Inject constructor(
             messageData.content!!,
             roomId!!,
             UserDataMessages(
-                userRepository.getLovedUser()?.id!!,
-                userRepository.getLovedUser()?.id!!,
-                userRepository.getLovedUser()?.firstname!!,
-                userRepository.getLovedUser()?.lastname,
-                userRepository.getLovedUser()?.profilePhoto ?: ""
+                userRepository.getCurrentUser()?.id!!,
+                userRepository.getCurrentUser()?.id!!,
+                userRepository.getCurrentUser()?.firstname!!,
+                userRepository.getCurrentUser()?.lastname,
+                userRepository.getCurrentUser()?.profilePhoto ?: ""
             ),
             UserDataMessages(
                 userAssignes!!.id,
@@ -458,7 +458,7 @@ class ChatViewModel @Inject constructor(
             arrayListOf(roomArray[0].toLong(), roomArray[1].toLong()),
             Timestamp(Calendar.getInstance().time),
             unReadCount,
-            userRepository.getLovedUser()?.id!!.toString()
+            userRepository.getCurrentUser()?.id!!.toString()
         )
 
         db.collection(tableName!!).document(id!!)

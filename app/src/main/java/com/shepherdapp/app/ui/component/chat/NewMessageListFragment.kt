@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -69,11 +70,23 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     careTeams = result.data.payload.data
-                    setCareTeamAdapters()
+                    val listSameUser = careTeams.filter {
+                        Log.e("catch_exception","list: ${it.user_id} ${messagesViewModel.getUUID()}")
+                        it.user_id == messagesViewModel.getUUID()
+                    }
+
+                    careTeams.removeAll(listSameUser.toSet())
+                    if (careTeams.size <= 0) {
+                        fragmentNewMessageBinding.rvUserListing.visibility = View.GONE
+                        fragmentNewMessageBinding.textViewNoMessages.visibility = View.VISIBLE
+                    }else
+                        setCareTeamAdapters()
                 }
+
                 is DataResult.Failure -> {
                     hideLoading()
                     careTeams.clear()
@@ -97,15 +110,19 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
                     }
 
                 }
+
                 is DataResult.Loading -> {
-                  //  showLoading("")
+                    //  showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     careTeams = it.data.payload.data
                     total = it.data.payload.total!!
                     currentPage = it.data.payload.currentPage!!
                     totalPage = it.data.payload.totalPages!!
+                    fragmentNewMessageBinding.rvUserListing.visibility = View.VISIBLE
+                    fragmentNewMessageBinding.textViewNoMessages.visibility = View.GONE
                     if (careTeams.isNullOrEmpty()) return@observeEvent
                     val loggedInUserUUID =
                         Prefs.with(ShepherdApp.appContext)!!.getString(Const.UUID, "")
@@ -113,6 +130,15 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
                     val careTeamList = careTeams.filterNot { careTeamModel ->
                         careTeamModel.user_id_details?.uid == loggedInUserUUID
                     } as ArrayList
+
+                    careTeamList.filter {
+                        it.user_id != messagesViewModel.getUUID()
+                    }
+
+                    if (careTeamList.size <= 0) {
+                        fragmentNewMessageBinding.rvUserListing.visibility = View.GONE
+                        fragmentNewMessageBinding.textViewNoMessages.visibility = View.VISIBLE
+                    }
                     careTeamAdapter?.updateCareTeams(careTeamList)
                 }
             }
@@ -135,6 +161,7 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
                 fragmentNewMessageBinding.rvUserListing.visibility = View.VISIBLE
                 careTeamAdapter?.updateCareTeams(careTeams)
             }
+
             R.id.ivBack -> {
                 findNavController().popBackStack()
             }
@@ -174,8 +201,7 @@ class NewMessageListFragment : BaseFragment<FragmentNewMessageListBinding>(), Vi
                     status,
                     search.toString()
                 )
-            }
-            else{
+            } else {
                 fragmentNewMessageBinding.imgCancel.isVisible = false
                 careTeams.clear()
                 messagesViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)

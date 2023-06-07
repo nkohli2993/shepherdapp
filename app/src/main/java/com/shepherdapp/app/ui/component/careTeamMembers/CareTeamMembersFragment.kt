@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.shepherdapp.app.R
@@ -84,72 +85,58 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         fragmentCareTeamMembersBinding.listener = this
         setCareTeamAdapters()
 
-        //careTeamViewModel.getHomeData()
-        val lovedOneUUID = careTeamViewModel.getLovedOneUUID()
-        Log.d(TAG, "lovedOneUUID : $lovedOneUUID")
 
-        // Get Care Teams by lovedOne Id
-        careTeamViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
 
         fragmentCareTeamMembersBinding.imgCancel.setOnClickListener {
             fragmentCareTeamMembersBinding.editTextSearch.setText("")
+            getCareTeamMember()
         }
 
         // Search Care Team Members
-        fragmentCareTeamMembersBinding.editTextSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+        fragmentCareTeamMembersBinding.editTextSearch.addTextChangedListener { s ->
+            if (s.toString().isEmpty()) {
+//                careTeams.let {
+//                    it?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
+//                }
+//                fragmentCareTeamMembersBinding.imgCancel.visibility = View.GONE
+//                fragmentCareTeamMembersBinding.recyclerViewCareTeam.visibility =
+//                    View.VISIBLE
 
+                getCareTeamMember()
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
+            if (s.toString().isNotEmpty()) {
+                fragmentCareTeamMembersBinding.imgCancel.visibility = View.VISIBLE
+                searchedCareTeams?.clear()
+                searchedCareTeams = careTeams?.filter {
+                    it.user_id_details?.firstname?.contains(
+                        s.toString(),
+                        true
+                    ) == true
+                } as ArrayList<CareTeamModel>
 
-            override fun afterTextChanged(s: Editable?) {
-                if (s != null) {
-                    if (s.isEmpty()) {
-                        careTeams.let {
-                            it?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
-                        }
-                        fragmentCareTeamMembersBinding.imgCancel.visibility = View.GONE
-                        fragmentCareTeamMembersBinding.recyclerViewCareTeam.visibility =
-                            View.VISIBLE
+                // Show No Care Team Found when no care team is available during search
+                if (searchedCareTeams.isNullOrEmpty()) {
+                    fragmentCareTeamMembersBinding.let {
+                        it.recyclerViewCareTeam.visibility = View.GONE
+                        it.txtNoCareTeamFound.visibility = View.VISIBLE
                     }
-
-                    if (s.isNotEmpty()) {
-                        fragmentCareTeamMembersBinding.imgCancel.visibility = View.VISIBLE
-                        searchedCareTeams?.clear()
-                        searchedCareTeams = careTeams?.filter {
-                            it.user_id_details?.firstname?.contains(
-                                s,
-                                true
-                            ) == true
-                        } as ArrayList<CareTeamModel>
-
-                        // Show No Care Team Found when no care team is available during search
-                        if (searchedCareTeams.isNullOrEmpty()) {
-                            fragmentCareTeamMembersBinding.let {
-                                it.recyclerViewCareTeam.visibility = View.GONE
-                                it.txtNoCareTeamFound.visibility = View.VISIBLE
-                            }
-                        } else {
-                            fragmentCareTeamMembersBinding.let {
-                                it.recyclerViewCareTeam.visibility = View.VISIBLE
-                                it.txtNoCareTeamFound.visibility = View.GONE
-                            }
-                        }
-
-                        searchedCareTeams.let {
-                            it?.let { it1 ->
-                                careTeamAdapter?.updateCareTeams(
-                                    it1
-                                )
-                            }
-                        }
+                } else {
+                    fragmentCareTeamMembersBinding.let {
+                        it.recyclerViewCareTeam.visibility = View.VISIBLE
+                        it.txtNoCareTeamFound.visibility = View.GONE
                     }
                 }
 
+                searchedCareTeams.let {
+                    it?.let { it1 ->
+                        careTeamAdapter?.updateCareTeams(
+                            it1
+                        )
+                    }
+                }
             }
-        })
+        }
 
 
         // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
@@ -159,6 +146,16 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
             updateViewOfParentListenerListener?.updateViewVisibility(false)
         }
 
+    }
+
+    private fun getCareTeamMember() {
+        //careTeamViewModel.getHomeData()
+        fragmentCareTeamMembersBinding.imgCancel.visibility  = View.GONE
+        val lovedOneUUID = careTeamViewModel.getLovedOneUUID()
+        Log.d(TAG, "lovedOneUUID : $lovedOneUUID")
+
+        // Get Care Teams by lovedOne Id
+        careTeamViewModel.getCareTeamsByLovedOneId(pageNumber, limit, status)
     }
 
     override fun observeViewModel() {
@@ -192,10 +189,12 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
 
                 }
+
                 is DataResult.Loading -> {
-                  //  showLoading("")
+                    //  showLoading("")
 
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     val results = it.data.payload?.results
@@ -245,12 +244,14 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     //hideLoading()
                     // Get Pending Invites
                     careTeamViewModel.getPendingInvites()
                     careTeams = it.data.payload.data
                 }
+
                 is DataResult.Failure -> {
                     hideLoading()
                     careTeams?.clear()
@@ -271,9 +272,11 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     hideLoading()
                     showError(requireContext(), it.message.toString())
                 }
+
                 is DataResult.Loading -> {
                     showLoading("")
                 }
+
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(requireContext(), it.data.message.toString())
@@ -295,7 +298,10 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
             // Sending CareTeam object through safeArgs
 //            val action = CareTeamMembersFragmentDirections.actionCareTeamMembersToMemberDetails(it)
             //findNavController().navigate(R.id.action_care_team_members_to_member_details)
-            findNavController().navigate(R.id.nav_team_member_details, bundleOf("user_id" to it.user_id.toString(),"loved_one_id" to it.love_user_id))
+            findNavController().navigate(
+                R.id.nav_team_member_details,
+                bundleOf("user_id" to it.user_id.toString(), "loved_one_id" to it.love_user_id)
+            )
         }
     }
 
@@ -318,7 +324,10 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(Color.BLACK)
                 dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(Color.BLACK)
             } else {
-                showInfo(requireContext(), getString(R.string.only_care_team_leader_delete_pening_invites))
+                showInfo(
+                    requireContext(),
+                    getString(R.string.only_care_team_leader_delete_pening_invites)
+                )
             }
         }
     }
@@ -339,6 +348,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun onResume() {
         parentActivityListener?.msgFromChildFragmentToActivity()
         super.onResume()
+        getCareTeamMember()
     }
 
     // Move CareTeam Leader to first position

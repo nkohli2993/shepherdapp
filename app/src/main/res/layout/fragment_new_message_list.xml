@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center"
-            android:text="@string/no_user_found"
+            android:text="@string/no_member_found"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_22ssp"

@@ -225,7 +225,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
                     )
                     fragmentChatBinding.editTextMessage.text?.clear()
                     fragmentChatBinding.rvMsg.scrollToPosition(msgGroupList.size - 1)
-                    lastMessageSenderId = chatViewModel.getLovedUser()!!.id!!.toString()
+                    lastMessageSenderId = chatViewModel.getCurrentUser()!!.id!!.toString()
                     updateUnseenCount()
                     if (chatAdapter != null && chatAdapter?.messageList?.size!! <= 0) {
                         loadChat()
@@ -240,7 +240,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
         //clear unseen count
         if (chatAdapter != null && chatAdapter?.messageList?.size!! > 0) {
 
-            if (lastMessageSenderId.toInt() != chatViewModel.getLovedUser()!!.id!!.toInt()) {
+            if (lastMessageSenderId.toInt() != chatViewModel.getCurrentUser()!!.id!!.toInt()) {
                 //clear unseen count because the last message is from other user
                 chatViewModel.updateUnseenCount(roomId, 0)
             } else {
