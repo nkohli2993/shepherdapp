@@ -45,7 +45,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
     //    private var status: Int = 1
     private var sendType: String = Invitations.Receiver.sendType
     private var status = Status.Zero.status
-    private var results: ArrayList<Results>? = ArrayList()
+    private var results: ArrayList<Results> = ArrayList()
     private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +53,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
         //binding.ivBack.listener = this
         binding.listener = this
         binding.recyclerViewMembers.layoutManager = LinearLayoutManager(this)
-        setJoinCareTeamAdapter()
+//        setJoinCareTeamAdapter()
 //        careTeamsViewModel.getCareTeamsForLoggedInUser(pageNumber, limit, status)
         //Get Invitations for Joining Care Team
         careTeamsViewModel.getJoinCareTeamInvitations(sendType, status)
@@ -73,8 +73,8 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     hideLoading()
                     //showError(requireContext(), it.message.toString())
 
-                    results?.clear()
-                    results?.let { it1 -> joinCareTeamAdapter?.updateCareTeams(it1) }
+                    results.clear()
+                    results.let { it1 -> joinCareTeamAdapter?.updateCareTeams(it1) }
                     noInvitationFound()
                 }
                 is DataResult.Loading -> {
@@ -83,12 +83,16 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                 is DataResult.Success -> {
                     hideLoading()
                     careTeamsViewModel.saveSignUp(false)
-                    results = it.data.payload?.results
-                    if (results.isNullOrEmpty()) return@observeEvent
-                    joinCareTeamAdapter?.updateCareTeams(results!!)
+                    if(!it.data.payload?.results.isNullOrEmpty()) {
+                        results = it.data.payload?.results!!
+                    }
+//                    if (results.isNullOrEmpty()) return@observeEvent
+//                    joinCareTeamAdapter?.updateCareTeams(results!!)
 
                     binding.layoutCareTeam.visibility = View.VISIBLE
                     binding.txtNoCareTeamFound.visibility = View.GONE
+
+                    setJoinCareTeamAdapter()
                 }
             }
         }
@@ -113,16 +117,8 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
                     showSuccess(this, "Invitation Accepted Successfully...")
                     // Save LovedOne UUID
 
-
-                    if (accepted == 0) {
-                        showInfo(this, "Please accept any one invitation to join...")
-                    } else {
-                        navigateToDashboardScreen()
-                    }
-//                    results!![position].isSelected = true
-//                    joinCareTeamAdapter?.updateCareTeams(results!!)
-                    // Refresh the invitations
-//                    careTeamsViewModel.getJoinCareTeamInvitations(sendType, status)
+                    results[position].isSelected = !results[position].isSelected
+                    joinCareTeamAdapter!!.notifyItemChanged(position)
                 }
             }
         }
@@ -130,7 +126,7 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
     }
 
     private fun setJoinCareTeamAdapter() {
-        joinCareTeamAdapter = JoinCareTeamAdapter(careTeamsViewModel)
+        joinCareTeamAdapter = JoinCareTeamAdapter(applicationContext,results)
         joinCareTeamAdapter?.setClickListener(this)
         recyclerViewMembers.adapter = joinCareTeamAdapter
     }
@@ -138,13 +134,9 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.ivBack -> {
-                //finishActivity()
                 onBackPressed()
             }
             R.id.buttonJoin -> {
-                //navigateToDashboardScreen()
-//                val lovedOneUUID = Prefs.with(ShepherdApp.appContext)!!
-//                    .getString(Const.LOVED_ONE_UUID, "")
                 if (accepted == 0) {
                     showInfo(this, "Please accept any one invitation to join...")
                 } else {
@@ -162,28 +154,14 @@ class JoinCareTeamActivity : BaseActivity(), View.OnClickListener,
         if (result?.id != null) {
             Prefs.with(ShepherdApp.appContext)!!.save(Const.USER_ROLE, result.careRoles?.name)
             this.position = position
+
             // Accept the invitation request
             careTeamsViewModel.acceptCareTeamInvitations(result.id!!)
         }
-
-        /* if (selectedCareTeams?.isEmpty() == true)
-             result.let { it?.let { it1 -> selectedCareTeams?.add(it1) } }
-         else if (result?.isSelected == true) selectedCareTeams?.add(result)
-         else if (result?.isSelected == false && selectedCareTeams?.contains(result) == true)
-             selectedCareTeams?.remove(result)*/
     }
 
-    /*override fun onItemClick(careTeam: CareTeam) {
-        if (selectedCareTeams?.isEmpty() == true)
-            careTeam.let { selectedCareTeams?.add(it) }
-        else if (careTeam.isSelected == true) selectedCareTeams?.add(careTeam)
-        else if (careTeam.isSelected == false && selectedCareTeams?.contains(careTeam) == true)
-            selectedCareTeams?.remove(careTeam)
-    }*/
-
-    fun noInvitationFound() {
+    private fun noInvitationFound() {
         binding.txtNoCareTeamFound.visibility = View.VISIBLE
-//        binding.buttonJoin.visibility = View.GONE
     }
 }
 

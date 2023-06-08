@@ -1,8 +1,11 @@
 package com.shepherdapp.app.ui.component.joinCareTeam.adapter
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
@@ -13,8 +16,8 @@ import com.shepherdapp.app.view_model.CareTeamsViewModel
 
 
 class JoinCareTeamAdapter(
-    private val viewModel: CareTeamsViewModel,
-    var results: MutableList<Results> = ArrayList()
+    val context: Context,
+    var results: ArrayList<Results> = ArrayList()
 ) :
     RecyclerView.Adapter<JoinCareTeamAdapter.ContentViewHolder>() {
     lateinit var binding: AdapterJoinCareTeamBinding
@@ -31,7 +34,7 @@ class JoinCareTeamAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(id: Results?,position: Int)
+        fun onItemClick(id: Results?, position: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentViewHolder {
@@ -47,6 +50,7 @@ class JoinCareTeamAdapter(
     }
 
     override fun getItemCount(): Int {
+//        return 5
         return results.size
     }
 
@@ -54,13 +58,17 @@ class JoinCareTeamAdapter(
     override fun onBindViewHolder(holder: ContentViewHolder, position: Int) {
         //holder.bind(results[position],position)
         val result = results[position]
-        holder.binding.let  {
+
+        holder.binding.let {
             // Set Name  of loved One
             it.textViewCareTeamName.text = result.name
 
-            it.toggleSwitch.isChecked = false
-            if(result.isSelected){
-                it.toggleSwitch.isChecked = true
+            //it.toggleSwitch.isChecked = false
+            binding.statusIV.setImageResource(R.drawable.ic_switch_off)
+            Log.e("catch_exception","result: $result $position")
+            if (result.isSelected) {
+                binding.statusIV.setImageResource(R.drawable.ic_switch_on)
+                // it.toggleSwitch.isChecked = true
             }
             // Set Profile Pic of loved One
             it.imageViewCareTeam.setImageFromUrl(
@@ -73,20 +81,11 @@ class JoinCareTeamAdapter(
 
         }
 
-        /*binding.toggleSwitch.setOnCheckedChangeListener { _, isChecked ->
-            result.isSelected = isChecked
-            if (isChecked && binding.toggleSwitch.isChecked) {
-                binding.toggleSwitch.isChecked = true
-                onItemClickListener?.onItemClick(result,position)
-            }
-            else{
-                binding.toggleSwitch.isChecked = false
-            }
-        }*/
+
         binding.cardView.setOnClickListener {
-            if (!result.isSelected) {
-//                binding.toggleSwitch.isChecked = true
-                onItemClickListener?.onItemClick(result,position)
+            if(!result.isSelected){
+                onItemClickListener!!.onItemClick(result, position)
+                Log.e("catch_exception", "position: $position")
             }
         }
     }

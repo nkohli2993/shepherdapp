@@ -108,7 +108,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding.listener = this
         terminateApp()
-//        loginViewModel.loginData.value!!.email = "clark@yopmail.com"
+//        loginViewModel.loginData.value!!.email = "grey@yopmail.com"
 //        loginViewModel.loginData.value!!.password = "1234"
 
 
@@ -247,7 +247,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
                 is DataResult.Success -> {
                     hideLoading()
-//                    loginViewModel.checkIfFirebaseTokenMatchesWithOtherUser()
                     it.data.let {
                         saveUserInfo(it)
                         if (it.payload!!.userLovedOne.size <= 0 && (it.payload?.activeSubscription?.id == null)) {
