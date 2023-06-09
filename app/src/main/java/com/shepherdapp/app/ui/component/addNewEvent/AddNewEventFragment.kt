@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.view.animation.RotateAnimation
 import androidx.activity.result.contract.ActivityResultContracts
@@ -99,18 +100,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 fragmentAddNewEventBinding.tvDate.requestFocus()
                 fragmentAddNewEventBinding.repeatCB.isChecked = false
             } else {
-                showRepeatDialog(fragmentAddNewEventBinding.tvDate.text.toString())
+                showRepeatDialog(fragmentAddNewEventBinding.tvDate.text.toString(),recurringValue)
             }
         }
-
-        /*
-                fragmentAddNewEventBinding.repeatCB.setOnCheckedChangeListener { viewPressed, isChecked ->
-                    if (viewPressed.isPressed) {
-                        showRepeatDialog()
-                    }
-                }
-        */
-
     }
 
     private fun selectAllAssigneeCheckBoxListener() {
@@ -703,7 +695,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     }
 
     fun showEventEndDate(value: EventRecurringModel, days: String? = null) {
+        recurringValue = null
         recurringValue = value
+        Log.e("catch_exception","value: $recurringValue")
         fragmentAddNewEventBinding.repeatCB.isChecked = true
         fragmentAddNewEventBinding.txtType.isVisible = false
         fragmentAddNewEventBinding.txtValue.isVisible = false

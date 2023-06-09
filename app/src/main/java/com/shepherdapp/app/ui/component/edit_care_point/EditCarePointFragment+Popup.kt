@@ -90,9 +90,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
         }
 
     }
-    if (addedWeekDays.size > 0) {
-        weekAry = addedWeekDays
-    }
+    if (addedWeekDays.size > 0) weekAry = addedWeekDays
 
     val adapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
         override fun onDaySelected(detail: ArrayList<WeekDataModel>) {

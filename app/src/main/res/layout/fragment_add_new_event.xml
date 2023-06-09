@@ -308,6 +308,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:fontFamily="@font/gotham_book"
+                    android:lineSpacingExtra="@dimen/_5sdp"
                     android:textColor="@color/_399282"
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold"

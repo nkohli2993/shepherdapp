@@ -203,7 +203,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 RecurringFlag.Weekly.value -> {
                     fragmentEditCarePointBinding.txtType.text = getString(R.string.every_week)
                     if (carePoint!!.week_days != null) {
-                        Log.e("catch_exception", "week: ${carePoint!!.week_days}")
                         val daysList: ArrayList<String> = arrayListOf()
                         val weekArray = resources.getStringArray(R.array.week_array)
                         val weekAry: ArrayList<WeekDataModel> = arrayListOf()
