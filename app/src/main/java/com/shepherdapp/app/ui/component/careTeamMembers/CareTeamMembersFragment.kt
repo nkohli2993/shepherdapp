@@ -26,6 +26,7 @@ import com.shepherdapp.app.ui.component.careTeamMembers.adapter.CareTeamMembersA
 import com.shepherdapp.app.ui.component.home.HomeActivity
 import com.shepherdapp.app.utils.CareRole
 import com.shepherdapp.app.utils.SingleEvent
+import com.shepherdapp.app.utils.afterTextChanged
 import com.shepherdapp.app.utils.extensions.showError
 import com.shepherdapp.app.utils.extensions.showInfo
 import com.shepherdapp.app.utils.extensions.showSuccess
@@ -75,8 +76,12 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        fragmentCareTeamMembersBinding =
-            FragmentCareTeamMembersBinding.inflate(inflater, container, false)
+       // if(!::fragmentCareTeamMembersBinding.isInitialized){
+            fragmentCareTeamMembersBinding =
+                FragmentCareTeamMembersBinding.inflate(inflater, container, false)
+//            careTeams?.clear()
+//            getCareTeamMember()
+      //  }
 
         return fragmentCareTeamMembersBinding.root
     }
@@ -93,7 +98,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
         }
 
         // Search Care Team Members
-        fragmentCareTeamMembersBinding.editTextSearch.addTextChangedListener { s ->
+        fragmentCareTeamMembersBinding.editTextSearch.afterTextChanged { s ->
             if (s.toString().isEmpty()) {
 //                careTeams.let {
 //                    it?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
@@ -228,13 +233,6 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     // Move CareTeam Leader to first position
                     val careTeamList = moveCareTeamLeaderToFirstPosition(careTeams)
                     careTeamList?.let { it1 -> careTeamAdapter?.updateCareTeams(it1) }
-
-                    // Update the visibility of New Button if LoggedIn User is the CareTeam Leader
-//                    if (careTeamViewModel.isLoggedInUserCareTeamLead() == true) {
-//                        updateViewOfParentListenerListener?.updateViewVisibility(true)
-//                    } else {
-//                        updateViewOfParentListenerListener?.updateViewVisibility(false)
-//                    }
                 }
             }
         }
@@ -249,7 +247,8 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
                     //hideLoading()
                     // Get Pending Invites
                     careTeamViewModel.getPendingInvites()
-                    careTeams = it.data.payload.data
+                    careTeams?.clear()
+                    careTeams?.addAll(it.data.payload.data)
                 }
 
                 is DataResult.Failure -> {
@@ -348,6 +347,7 @@ class CareTeamMembersFragment : BaseFragment<FragmentCareTeamMembersBinding>(),
     override fun onResume() {
         parentActivityListener?.msgFromChildFragmentToActivity()
         super.onResume()
+        careTeams?.clear()
         getCareTeamMember()
     }
 

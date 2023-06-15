@@ -6,6 +6,7 @@ import com.shepherdapp.app.data.dto.change_password.ChangePasswordModel
 import com.shepherdapp.app.data.dto.forgot_password.ForgotPasswordModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
 import com.shepherdapp.app.data.dto.roles.RolesResponseModel
+import com.shepherdapp.app.data.dto.signup.BioMatricData
 import com.shepherdapp.app.data.dto.signup.BioMetricData
 import com.shepherdapp.app.data.dto.signup.UserSignupData
 import com.shepherdapp.app.data.dto.user.UserDetailsResponseModel
@@ -40,7 +41,8 @@ class AuthRepository @Inject constructor(private val apiService: ApiService) {
         return object : NetworkOnlineDataRepo<LoginResponseModel, LoginResponseModel>() {
             override suspend fun fetchDataFromRemoteSource(): Response<LoginResponseModel> {
                 if (isBioMetric) {
-                    return apiService.loginWithDevice(value)
+
+                    return apiService.loginWithDevice(BioMatricData(value.device))
                 }
                 return apiService.login(value)
             }

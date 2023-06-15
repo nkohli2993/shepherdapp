@@ -65,6 +65,7 @@ import com.shepherdapp.app.data.dto.roles.RolesResponseModel
 import com.shepherdapp.app.data.dto.security_code.SecurityCodeResponseModel
 import com.shepherdapp.app.data.dto.security_code.SendSecurityCodeRequestModel
 import com.shepherdapp.app.data.dto.settings_pages.StaticPageResponseModel
+import com.shepherdapp.app.data.dto.signup.BioMatricData
 import com.shepherdapp.app.data.dto.signup.BioMetricData
 import com.shepherdapp.app.data.dto.signup.UserSignupData
 import com.shepherdapp.app.data.dto.subscription.SubscriptionRequestModel
@@ -91,8 +92,11 @@ interface ApiService {
     @POST(ApiConstants.Authentication.LOGIN)
     suspend fun login(@Body value: UserSignupData): Response<LoginResponseModel>
 
+//    @POST(ApiConstants.Authentication.LOGIN_WITH_DEVICE)
+//    suspend fun loginWithDevice(@Body value: UserSignupData): Response<LoginResponseModel>
+
     @POST(ApiConstants.Authentication.LOGIN_WITH_DEVICE)
-    suspend fun loginWithDevice(@Body value: UserSignupData): Response<LoginResponseModel>
+    suspend fun loginWithDevice(@Body value: BioMatricData): Response<LoginResponseModel>
 
     @POST(ApiConstants.Authentication.SIGN_UP)
     suspend fun signUp(@Body value: UserSignupData): Response<LoginResponseModel>

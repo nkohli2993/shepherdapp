@@ -219,12 +219,14 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
         fragmentMemberDetailsBinding.lockBoxCD.visibility = View.GONE
         fragmentMemberDetailsBinding.medlistCD.visibility = View.GONE
         fragmentMemberDetailsBinding.resourcesCD.visibility = View.GONE
+        fragmentMemberDetailsBinding.chkUploadFiles.isClickable = false
     }
 
     private fun showButtons() {
         fragmentMemberDetailsBinding.btnDelete.visibility = View.VISIBLE
         fragmentMemberDetailsBinding.btnUpdate.visibility = View.VISIBLE
         fragmentMemberDetailsBinding.chatG.visibility = View.VISIBLE
+        fragmentMemberDetailsBinding.chkUploadFiles.isClickable = true
     }
 
 
@@ -248,6 +250,11 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
             Modules.Resources.value == s -> {
                 fragmentMemberDetailsBinding.switchResources.isChecked = true
                 fragmentMemberDetailsBinding.resourcesCD.visibility = View.VISIBLE
+            }
+            Modules.UploadLockBoxFiles.value == s -> {
+                fragmentMemberDetailsBinding.switchLockBox.isChecked = true
+                fragmentMemberDetailsBinding.line.visibility = View.VISIBLE
+                fragmentMemberDetailsBinding.layoutUploadFiles.visibility = View.VISIBLE
             }
         }
 

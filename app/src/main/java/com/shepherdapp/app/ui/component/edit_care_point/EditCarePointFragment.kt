@@ -209,7 +209,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         for (i in weekArray.indices) {
                             weekAry.add(WeekDataModel((i + 1), weekArray[i]))
                         }
-                        weekAry.add(WeekDataModel(weekAry.size, "Sun"))
+                        Log.e("catch_exception","list: ${weekAry.size}")
+                        weekAry.add(WeekDataModel(weekAry.size + 1, "Sun"))
 
                         for (i in carePoint!!.week_days!!) {
                             for (weekId in weekAry) {

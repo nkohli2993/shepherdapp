@@ -187,7 +187,7 @@ class AddNewLockBoxFragment : BaseFragment<FragmentAddNewLockBoxBinding>(),
 
 
     override fun observeViewModel() {
-        observeEvent(selectedFile, ::handleSelectedImage)
+        observeEvent(selectedFiles, ::handleSelectedFiles)
 
         observe(addNewLockBoxViewModel.selectedUserLiveData, ::openMemberDetails)
         // Observe the response of upload multiple images api

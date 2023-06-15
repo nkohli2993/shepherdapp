@@ -63,7 +63,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     for (i in weekArray.indices) {
         weekAry.add(WeekDataModel((i + 1), weekArray[i]))
     }
-    weekAry.add(WeekDataModel(weekAry.size, "Sun"))
+    weekAry.add(WeekDataModel(weekAry.size+1, "Sun"))
 
     if (recurringValue != null && recurringValue.type == RecurringEvent.Weekly.value && recurringValue.value != null) {
         for (i in weekAry) {

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Window
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -74,7 +75,8 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     for (i in weekArray.indices) {
         weekAry.add(WeekDataModel((i + 1), weekArray[i]))
     }
-    weekAry.add(WeekDataModel(weekAry.size, "Sun"))
+    weekAry.add(WeekDataModel(weekAry.size+1, "Sun"))
+
 
     if (carePoint.week_days != null) {
         for (i in weekAry) {
