@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-  >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -10,6 +9,7 @@
             type="com.shepherdapp.app.data.dto.chat.ChatListData" />
 
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,23 +21,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_margin="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:gravity="end|center_vertical"
             android:orientation="horizontal"
             android:padding="@dimen/_3sdp"
-        >
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
                 android:id="@+id/delete_task"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
                 android:background="@drawable/delete_card_bg"
                 android:clickable="true"
                 android:elevation="@dimen/_2sdp"
                 android:focusable="true"
-                android:layout_marginStart="@dimen/_10sdp"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -63,12 +62,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingHorizontal="@dimen/_8sdp"
                 android:paddingVertical="@dimen/_8ssp">
+
                 <LinearLayout
                     android:id="@+id/llImageWrapper"
                     android:layout_width="@dimen/_62sdp"
@@ -131,6 +132,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/gotham_medium"
                         android:text="@string/test_time"
+                        android:textAllCaps="true"
                         android:textColor="@color/_399282"
                         android:textSize="@dimen/_10ssp" />
 

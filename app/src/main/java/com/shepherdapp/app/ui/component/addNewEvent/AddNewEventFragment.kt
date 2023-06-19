@@ -504,10 +504,61 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         if (fragmentAddNewEventBinding.repeatCB.isChecked) {
             var dateWeekValue: ArrayList<Int>? = null
             var dateMonthValue: ArrayList<Int>? = null
+            var selectedMonthListString: ArrayList<Int>? = null
             if (recurringValue != null && recurringValue!!.type == RecurringEvent.Weekly.value) {
                 dateWeekValue = recurringValue!!.value
+                Log.e("catch_exception", "dateWeekValue: $dateWeekValue")
+                // add check for start date
+                if (dateWeekValue != null) {
+                    dateWeekValue.sort()
+                    val now = Calendar.getInstance()
+                    val weekday = now[Calendar.DAY_OF_WEEK]
+                    if (weekday != (dateWeekValue[0] + 1)) {
+                        val days = (Calendar.SATURDAY - weekday + dateWeekValue[0] + 1) % 7
+                        now.add(Calendar.DAY_OF_YEAR, days)
+                    }
+                    val dateStart = now.time
+                    val format = SimpleDateFormat("yyyy-MM-dd").format(dateStart)
+                    Log.e("catch_exception", "date: $format $selectedDate")
+                    val getstartDate = SimpleDateFormat("yyyy-MM-dd").parse(format)
+                    val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
+
+                    if (selectedStartDate.before(getstartDate)) {
+                        selectedDate = format
+                    }
+
+                    Log.e("catch_exception", "startDate: $selectedDate")
+                }
+
+
             } else if (recurringValue != null && recurringValue!!.type == RecurringEvent.Monthly.value) {
                 dateMonthValue = recurringValue!!.value
+                selectedMonthListString = arrayListOf()
+                selectedMonthDates.forEach {
+                    selectedMonthListString.add(it.monthDate.toInt())
+                }
+
+                selectedMonthListString.sort()
+                // add check for start date
+                if (selectedMonthListString != null) {
+                    selectedMonthListString.sort()
+                    val now = Calendar.getInstance()
+                    val dateStart = now.time
+                    val format = SimpleDateFormat("yyyy-MM").format(dateStart)
+                    Log.e("catch_exception", "date: ${format.plus("-${selectedMonthListString[0]}")} $selectedDate")
+                    val getstartDate = SimpleDateFormat("yyyy-MM-dd").parse(format.plus("-${selectedMonthListString[0]}"))
+                    val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
+                    selectedDate = format.plus("-${selectedMonthListString[0]}")
+/*
+                    if (selectedStartDate.before(getstartDate)) {
+                        selectedDate = format.plus("-${selectedMonthListString[0]}")
+                    }
+*/
+
+                    Log.e("catch_exception", "startDate: $selectedDate")
+                }
+
+
             }
             if (dateWeekValue != null) {
                 val hset: HashSet<Int> = HashSet<Int>(dateWeekValue)
@@ -524,12 +575,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             val endDate = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue?.endDate!!)
             val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate)
 
-            val selectedMonthListString: ArrayList<Int> = arrayListOf()
-            selectedMonthDates.forEach {
-                selectedMonthListString.add(it.monthDate.toInt())
-            }
 
-            selectedMonthListString.sort()
 
             addNewEventViewModel.createEvent(
                 addNewEventViewModel.getLovedOneUUId(),

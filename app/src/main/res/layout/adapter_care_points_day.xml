@@ -148,6 +148,7 @@
                 android:fontFamily="@font/gotham_medium"
                 android:textColor="@color/_399282"
                 android:textSize="@dimen/_10ssp"
+                android:textAllCaps="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

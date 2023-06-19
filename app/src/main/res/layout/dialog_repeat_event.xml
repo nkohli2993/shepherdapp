@@ -84,19 +84,19 @@
                         android:fontFamily="@font/gotham_medium"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:text="@string/none"
-                        android:visibility="gone"
                         android:textColor="@color/_192032"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_12sdp"
+                        android:visibility="gone" />
 
                     <androidx.appcompat.widget.AppCompatRadioButton
                         android:id="@+id/dayRB"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:button="@drawable/radio_button"
                         android:fontFamily="@font/gotham_medium"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:text="@string/every_day"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12sdp" />
 
@@ -136,14 +136,14 @@
 
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewMonth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    tools:itemCount="31"
+                    android:visibility="gone"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                     app:spanCount="7"
-                    android:visibility="gone"
-                    android:id="@+id/recyclerViewMonth"
-                    tools:listitem="@layout/adapter_month"/>
+                    tools:itemCount="31"
+                    tools:listitem="@layout/adapter_month" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/calenderCL"
@@ -158,11 +158,11 @@
                         android:layout_height="wrap_content"
                         android:background="@color/colorWhite"
                         android:isScrollContainer="false"
+                        android:visibility="gone"
                         app:layout_constraintTop_toTopOf="parent"
+                        app:mcv_allowClickDaysOutsideCurrentMonth="false"
                         app:mcv_calendarMode="month"
                         app:mcv_firstDayOfWeek="sunday"
-                        android:visibility="gone"
-                        app:mcv_allowClickDaysOutsideCurrentMonth="false"
                         app:mcv_headerTextAppearance="@style/TextViewGothamMedium"
                         app:mcv_leftArrowMask="@drawable/ic_arrow_left_trasparent"
                         app:mcv_rightArrowMask="@drawable/ic_arrow_left_trasparent"
@@ -178,6 +178,7 @@
                         android:background="@color/colorWhite"
                         android:clickable="false"
                         android:enabled="false"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/calendarPView" />
 
@@ -188,6 +189,7 @@
                         android:background="@color/colorWhite"
                         android:clickable="false"
                         android:enabled="false"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/calendarPView" />
 
@@ -196,12 +198,12 @@
                         android:layout_height="@dimen/_25sdp"
                         android:layout_marginTop="@dimen/_43sdp"
                         android:background="#80C3C3C3"
+                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/calendarPView"
                         app:layout_constraintStart_toStartOf="@+id/calendarPView"
                         app:layout_constraintTop_toTopOf="@+id/calendarPView" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
                 <LinearLayout

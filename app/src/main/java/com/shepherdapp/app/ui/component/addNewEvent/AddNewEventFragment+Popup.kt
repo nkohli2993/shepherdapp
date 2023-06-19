@@ -6,9 +6,11 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Window
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -24,10 +26,10 @@ import com.shepherdapp.app.ui.component.addNewEvent.adapter.MonthAdapter
 import com.shepherdapp.app.ui.component.carePoints.adapter.WeekAdapter
 import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.extensions.showError
+import okhttp3.internal.format
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.concurrent.TimeUnit
 
 @SuppressLint("SimpleDateFormat")
 fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: EventRecurringModel?) {
@@ -61,7 +63,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     }
 
     var weekAry: ArrayList<WeekDataModel> = arrayListOf()
-    selectedMonthDates.clear()
+
     selectedDays.clear()
     val addedWeekDays: ArrayList<WeekDataModel> = arrayListOf()
 
@@ -101,11 +103,32 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     })
     weekdaysRV.adapter = weekAdapter
 
-    val monthArrayList: ArrayList<MonthModel> = ArrayList()
+    var monthArrayList: ArrayList<MonthModel> = ArrayList()
     for (i in 1..31) {
         val monthModel = MonthModel()
         monthModel.monthDate = i.toString()
         monthArrayList.add(monthModel)
+    }
+
+    // show selected month
+
+    if (recurringValue != null && recurringValue.type == RecurringEvent.Monthly.value && recurringValue.value != null) {
+        val selectedMonthArrayList: ArrayList<MonthModel> = ArrayList()
+        for (i in monthArrayList) {
+            for (j in selectedMonthDates) {
+                i.isSelected = false
+                if (i.monthDate == j.monthDate) {
+                    i.isSelected = true
+                    break
+                }
+            }
+            selectedMonthArrayList.add(i)
+        }
+        if(selectedMonthArrayList.size>0){
+            monthArrayList= selectedMonthArrayList
+        }
+    }else{
+        selectedMonthDates.clear()
     }
 
 
@@ -318,18 +341,16 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                         date.add(i.id!!)
                         days.add(i.name!!)
                     }
-                    dialog.dismiss()
+                    date.sort()
                     showEventEndDate(
                         EventRecurringModel(
                             RecurringEvent.Weekly.value,
-                            date,
+                                date,
                             tvEndDate.text.toString(), "week"
                         ), days.joinToString()
                     )
-
+                    dialog.dismiss()
                 }
-
-
             }
 
             RecurringEvent.Monthly.value -> {
@@ -341,7 +362,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                     val date: ArrayList<Int> = arrayListOf()
                     for (i in selectedMonthDates) {
                         val currentDateCalendar = Calendar.getInstance()
-                        currentDateCalendar.set(Calendar.DAY_OF_MONTH, i.monthDate.toInt());
+                        currentDateCalendar.set(Calendar.DAY_OF_MONTH, i.monthDate.toInt())
                         date.add(SimpleDateFormat("dd").format(currentDateCalendar.time).toInt())
                     }
                     date.sort()
@@ -365,7 +386,6 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                                     tvEndDate.text.toString(), "month"
                                 )
                             )
-
                         }
                     } else {
                         dialog.dismiss()
@@ -376,14 +396,10 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                                 tvEndDate.text.toString(), "month"
                             )
                         )
-
                     }
-
-
                 }
             }
         }
-
     }
 
     btnNo.setOnClickListener {
@@ -418,7 +434,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     dialog.show()
 }
 
-@SuppressLint("SetTextI18n", "SimpleDateFormat")
+@SuppressLint("SetTextI18n", "SimpleDateFormat", "NotifyDataSetChanged")
 fun AddNewEventFragment.datePicker(tvEndDate: AppCompatTextView, startDate: String) {
     val c = Calendar.getInstance()
     if (tvEndDate.text.toString().isNotEmpty()) {

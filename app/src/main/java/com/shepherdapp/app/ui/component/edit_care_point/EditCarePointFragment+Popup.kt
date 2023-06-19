@@ -113,8 +113,10 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     for (i in 1..31) {
         val monthModel = MonthModel()
         monthModel.monthDate = i.toString()
-        if (!carePoint.month_dates.isNullOrEmpty())
+        if (!carePoint.month_dates.isNullOrEmpty()) {
             monthModel.isSelected = carePoint.month_dates?.contains(i)!!
+            selectedMonthDates.add(monthModel)
+        }
 
         monthArrayList.add(monthModel)
     }
@@ -370,10 +372,14 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
             }
 
             RecurringEvent.Monthly.value -> {
-                val selectedDates = calendarPView.selectedDates
+                /*val selectedDates = calendarPView.selectedDates
                 if (selectedDates.isEmpty()) {
                     showError(requireContext(), getString(R.string.please_select_atleast_one_date))
-                } else {
+                } */
+                if(selectedMonthDates==null || selectedMonthDates.size<=0){
+                    showError(requireContext(), getString(R.string.please_select_atleast_one_date))
+                }
+                else {
 
                     val date: ArrayList<Int> = arrayListOf()
                     for (i in selectedMonthDates) {
