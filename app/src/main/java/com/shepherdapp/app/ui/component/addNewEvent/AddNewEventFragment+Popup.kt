@@ -1,5 +1,6 @@
 package com.shepherdapp.app.ui.component.addNewEvent
 
+import CommonFunctions
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -16,8 +17,10 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.MonthModel
 import com.shepherdapp.app.data.dto.WeekDataModel
 import com.shepherdapp.app.data.dto.added_events.EventRecurringModel
+import com.shepherdapp.app.ui.component.addNewEvent.adapter.MonthAdapter
 import com.shepherdapp.app.ui.component.carePoints.adapter.WeekAdapter
 import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.extensions.showError
@@ -43,19 +46,23 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     val leftV = dialog.findViewById(R.id.leftV) as AppCompatTextView
     val rightV = dialog.findViewById(R.id.rightV) as AppCompatTextView
     val weekdaysRV = dialog.findViewById(R.id.weekdaysRV) as RecyclerView
+    val monthRV = dialog.findViewById(R.id.recyclerViewMonth) as RecyclerView
     val calenderCL = dialog.findViewById(R.id.calenderCL) as ConstraintLayout
+
     val calendarPView = dialog.findViewById(R.id.calendarPView) as MaterialCalendarView
     calendarPView.arrowColor = ContextCompat.getColor(requireContext(), R.color.transparent)
     calendarPView.isScrollContainer = false
     calendarPView.selectionMode = MaterialCalendarView.SELECTION_MODE_MULTIPLE
     calendarPView.isPagingEnabled = false
+
     calendarPView.setOnDateChangedListener { _, date, _ ->
         val calendar = Calendar.getInstance()
         calendar.time = date.date
     }
 
     var weekAry: ArrayList<WeekDataModel> = arrayListOf()
-    val selectedDays: ArrayList<WeekDataModel> = arrayListOf()
+    selectedMonthDates.clear()
+    selectedDays.clear()
     val addedWeekDays: ArrayList<WeekDataModel> = arrayListOf()
 
 
@@ -63,7 +70,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     for (i in weekArray.indices) {
         weekAry.add(WeekDataModel((i + 1), weekArray[i]))
     }
-    weekAry.add(WeekDataModel(weekAry.size+1, "Sun"))
+    weekAry.add(WeekDataModel(weekAry.size + 1, "Sun"))
 
     if (recurringValue != null && recurringValue.type == RecurringEvent.Weekly.value && recurringValue.value != null) {
         for (i in weekAry) {
@@ -81,7 +88,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
 
     if (addedWeekDays.size > 0) weekAry = addedWeekDays
 
-    val adapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
+    weekAdapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
         override fun onDaySelected(detail: ArrayList<WeekDataModel>) {
             selectedDays.clear()
             for (i in detail) {
@@ -92,8 +99,28 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
             selectedDays.sortBy { it.id }
         }
     })
-    weekdaysRV.adapter = adapter
+    weekdaysRV.adapter = weekAdapter
 
+    val monthArrayList: ArrayList<MonthModel> = ArrayList()
+    for (i in 1..31) {
+        val monthModel = MonthModel()
+        monthModel.monthDate = i.toString()
+        monthArrayList.add(monthModel)
+    }
+
+
+    monthAdapter =
+        MonthAdapter(dialog.context, monthArrayList, object : MonthAdapter.selectedMonth {
+            override fun onMonthSelected(monthModel: MonthModel,position:Int) {
+                if (selectedMonthDates.contains(monthModel))
+                    selectedMonthDates.remove(monthModel)
+                else
+                    selectedMonthDates.add(monthModel)
+            }
+        })
+
+
+    monthRV.adapter = monthAdapter
 
     if (recurringValue?.endDate != null) {
         val dateSelected =
@@ -116,39 +143,90 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     val value = EventRecurringModel()
     radioGroup.setOnCheckedChangeListener { _, _ ->
         when (radioGroup.checkedRadioButtonId) {
-            R.id.noneRB -> {
-                dialog.dismiss()
-                showEventEndDate(
-                    EventRecurringModel(
-                        RecurringEvent.None.value,
-                        null,
-                        null
-                    )
-                )
-
-            }
-
             R.id.dayRB -> {
-                value.type = RecurringEvent.Daily.value
-                weekdaysRV.isVisible = false
-                calenderCL.isVisible = false
+                if (radioGroupCheckId != R.id.dayRB) {
+                    selectedMonthDates.clear()
+                    monthAdapter.clearSelectedList()
+
+                    selectedDays.clear()
+                    weekAdapter.clearSelectedList()
+                }
+                if (tvEndDate.text.toString().isEmpty()) {
+                    showToast(getString(R.string.please_select_end_date_proceed))
+                    radioGroup.clearCheck()
+                } else {
+                    value.type = RecurringEvent.Daily.value
+                    weekdaysRV.isVisible = false
+                    calenderCL.isVisible = false
+                    monthRV.isVisible = false
+                }
+                radioGroupCheckId = R.id.dayRB
+
             }
 
             R.id.weekRB -> {
-                value.type = RecurringEvent.Weekly.value
-                Handler(Looper.getMainLooper()).postDelayed({
-                    calenderCL.isVisible = false
-                    weekdaysRV.isVisible = true
-                }, 100)
+
+                if (radioGroupCheckId != R.id.weekRB) {
+                    selectedMonthDates.clear()
+                    monthAdapter.clearSelectedList()
+
+                    selectedDays.clear()
+                    weekAdapter.clearSelectedList()
+                }
+
+                if (tvEndDate.text.toString().isEmpty()) {
+                    showToast(getString(R.string.please_select_end_date_proceed))
+                    radioGroup.clearCheck()
+                } else {
+                    val startDateDate = SimpleDateFormat("MM/dd/yyyy").parse(startDate)
+                    val lastDate = SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
+
+                    weekAdapter.setDayNameList(
+                        CommonFunctions.getWeekDayNameList(
+                            startDateDate,
+                            lastDate
+                        )
+                    )
+
+                    value.type = RecurringEvent.Weekly.value
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        monthRV.isVisible = false
+                        calenderCL.isVisible = false
+                        weekdaysRV.isVisible = true
+                    }, 100)
+                }
+
+                radioGroupCheckId = R.id.weekRB
+
             }
 
             R.id.monthRB -> {
-                value.type = RecurringEvent.Monthly.value
-                Handler(Looper.getMainLooper()).postDelayed({
-                    calenderCL.isVisible = true
-                    weekdaysRV.isVisible = false
-                }, 100)
 
+                if (radioGroupCheckId != R.id.monthRB) {
+                    selectedMonthDates.clear()
+                    monthAdapter.clearSelectedList()
+
+                    selectedDays.clear()
+                    weekAdapter.clearSelectedList()
+                }
+
+                if (tvEndDate.text.toString().isEmpty()) {
+                    showToast(getString(R.string.please_select_end_date_proceed))
+                    radioGroup.clearCheck()
+                } else {
+                    val startDateDate = SimpleDateFormat("MM/dd/yyyy").parse(startDate)
+                    val lastDate = SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
+
+                    monthAdapter.startEndDate(startDateDate!!, lastDate!!)
+
+                    value.type = RecurringEvent.Monthly.value
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        monthRV.isVisible = true
+                        calenderCL.isVisible = false
+                        weekdaysRV.isVisible = false
+                    }, 100)
+                }
+                radioGroupCheckId = R.id.monthRB
             }
 
         }
@@ -220,23 +298,18 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
             }
 
             RecurringEvent.Daily.value -> {
-                if (tvEndDate.text.toString().isEmpty()) {
-                    showError(requireContext(), getString(R.string.please_select_end_date))
-                } else {
-                    dialog.dismiss()
-                    showEventEndDate(
-                        EventRecurringModel(
-                            RecurringEvent.Daily.value, null, tvEndDate.text.toString(), "day"
-                        )
+                dialog.dismiss()
+                showEventEndDate(
+                    EventRecurringModel(
+                        RecurringEvent.Daily.value, null, tvEndDate.text.toString(), "day"
                     )
-                }
+                )
+
             }
 
             RecurringEvent.Weekly.value -> {
                 if (selectedDays.size <= 0) {
                     showError(requireContext(), getString(R.string.please_atleast_one_weekday))
-                } else if (tvEndDate.text.toString().isEmpty()) {
-                    showError(requireContext(), getString(R.string.please_select_end_date))
                 } else {
 
                     val date: ArrayList<Int> = arrayListOf()
@@ -245,73 +318,30 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                         date.add(i.id!!)
                         days.add(i.name!!)
                     }
-
-                    val startDateValue = SimpleDateFormat("MM/dd/yyyy").parse(startDate)
-                    val endDateValue =
-                        SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
-
-                    val diff: Long = endDateValue!!.time - startDateValue!!.time
-                    val day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
-                    val weekDays: ArrayList<String> = arrayListOf()
-                    if (day <= 7) {
-                        val cal = Calendar.getInstance()
-                        for (i in 0 until day.toInt()) {
-                            cal.add(Calendar.DATE, 1)
-                            weekDays.add(SimpleDateFormat("EEE").format(cal.time))
-                        }
-                        var exist = false
-                        for (i in days) {
-                            for (j in weekDays) {
-                                if (i == j) {
-                                    exist = true
-                                    break
-                                }
-                            }
-                        }
-                        if (exist) {
-                            dialog.dismiss()
-                            tvEndDate.text = ""
-                            showEventEndDate(
-                                EventRecurringModel(
-                                    RecurringEvent.Weekly.value,
-                                    date,
-                                    tvEndDate.text.toString(), "week"
-                                ), days.joinToString()
-                            )
-
-                        } else {
-                            showError(
-                                requireContext(),
-                                getString(R.string.please_select_other_date_no_event_recurring_occurs_in_between_these_dates)
-                            )
-                        }
-                    } else {
-                        dialog.dismiss()
-                        showEventEndDate(
-                            EventRecurringModel(
-                                RecurringEvent.Weekly.value,
-                                date,
-                                tvEndDate.text.toString(), "week"
-                            ), days.joinToString()
-                        )
-
-                    }
+                    dialog.dismiss()
+                    showEventEndDate(
+                        EventRecurringModel(
+                            RecurringEvent.Weekly.value,
+                            date,
+                            tvEndDate.text.toString(), "week"
+                        ), days.joinToString()
+                    )
 
                 }
+
+
             }
 
             RecurringEvent.Monthly.value -> {
-                val selectedDates = calendarPView.selectedDates
-                if (selectedDates.isEmpty()) {
+                // val selectedDates = calendarPView.selectedDates
+                if (selectedMonthDates.isEmpty()) {
                     showError(requireContext(), getString(R.string.please_select_atleast_one_date))
-                } else if (tvEndDate.text.toString().isEmpty()) {
-                    showError(requireContext(), getString(R.string.please_select_end_date))
                 } else {
 
                     val date: ArrayList<Int> = arrayListOf()
-                    for (i in selectedDates) {
+                    for (i in selectedMonthDates) {
                         val currentDateCalendar = Calendar.getInstance()
-                        currentDateCalendar.time = i.date
+                        currentDateCalendar.set(Calendar.DAY_OF_MONTH, i.monthDate.toInt());
                         date.add(SimpleDateFormat("dd").format(currentDateCalendar.time).toInt())
                     }
                     date.sort()
@@ -364,7 +394,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                     days.add(i.name!!)
                 }
                 showEventEndDate(
-                    recurringValue,days.joinToString()
+                    recurringValue, days.joinToString()
                 )
             } else {
                 showEventEndDate(
@@ -381,6 +411,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
             )
         }
 
+        radioGroup.clearCheck()
         dialog.dismiss()
     }
 
@@ -388,7 +419,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
 }
 
 @SuppressLint("SetTextI18n", "SimpleDateFormat")
-fun datePicker(tvEndDate: AppCompatTextView, startDate: String) {
+fun AddNewEventFragment.datePicker(tvEndDate: AppCompatTextView, startDate: String) {
     val c = Calendar.getInstance()
     if (tvEndDate.text.toString().isNotEmpty()) {
         val dateSelected =
@@ -406,7 +437,30 @@ fun datePicker(tvEndDate: AppCompatTextView, startDate: String) {
 
     val datePickerDialog = DatePickerDialog(
         tvEndDate.context, R.style.datepicker, { _, year, monthOfYear, dayOfMonth ->
-            tvEndDate.text = "${
+
+            if (selectedDatePickerDate != "${
+                    if (monthOfYear + 1 < 10) {
+                        "0${(monthOfYear + 1)}"
+                    } else {
+                        (monthOfYear + 1)
+                    }
+                }/${
+                    if (dayOfMonth + 1 < 10) {
+                        "0$dayOfMonth"
+                    } else {
+                        dayOfMonth
+                    }
+                }/$year"
+            ) {
+
+                selectedMonthDates.clear()
+                monthAdapter.notifyDataSetChanged()
+
+                selectedDays.clear()
+                weekAdapter.notifyDataSetChanged()
+            }
+
+            selectedDatePickerDate = "${
                 if (monthOfYear + 1 < 10) {
                     "0${(monthOfYear + 1)}"
                 } else {
@@ -419,6 +473,9 @@ fun datePicker(tvEndDate: AppCompatTextView, startDate: String) {
                     dayOfMonth
                 }
             }/$year"
+
+            tvEndDate.text = selectedDatePickerDate
+
         }, mYear, mMonth, mDay
     )
     datePickerDialog.datePicker.minDate = minCalendar.timeInMillis

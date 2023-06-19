@@ -14,5 +14,5 @@ data class ChatMessageDetails(
     val users: ArrayList<Long>,
     @ServerTimestamp val createdAt: Timestamp,
     val unseenMessageCount:Long,
-    val lastSenderId:String? = null
+    val lastSenderId:Long? = null
 )

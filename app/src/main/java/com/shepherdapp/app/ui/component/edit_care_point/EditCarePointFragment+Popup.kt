@@ -5,7 +5,6 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Window
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -15,12 +14,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.crashlytics.buildtools.ndk.internal.dwarf.DWTag
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import com.shepherdapp.app.R
+import com.shepherdapp.app.data.dto.MonthModel
 import com.shepherdapp.app.data.dto.WeekDataModel
 import com.shepherdapp.app.data.dto.added_events.AddedEventModel
 import com.shepherdapp.app.data.dto.added_events.EventRecurringModel
+import com.shepherdapp.app.ui.component.addNewEvent.adapter.MonthAdapter
 import com.shepherdapp.app.ui.component.carePoints.adapter.WeekAdapter
 import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.RecurringFlag
@@ -28,7 +28,6 @@ import com.shepherdapp.app.utils.extensions.showError
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.concurrent.TimeUnit
 
 @SuppressLint("SimpleDateFormat")
 fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
@@ -45,6 +44,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     val rightV = dialog.findViewById(R.id.rightV) as AppCompatTextView
 
     val weekdaysRV = dialog.findViewById(R.id.weekdaysRV) as RecyclerView
+    val monthRV = dialog.findViewById(R.id.recyclerViewMonth) as RecyclerView
     val calenderCL = dialog.findViewById(R.id.calenderCL) as ConstraintLayout
     val calendarPView = dialog.findViewById(R.id.calendarPView) as MaterialCalendarView
     calendarPView.arrowColor = ContextCompat.getColor(requireContext(), R.color.transparent)
@@ -58,7 +58,8 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
 
 
     val addedWeekDays: ArrayList<WeekDataModel> = arrayListOf()
-    val selectedDays: ArrayList<WeekDataModel> = arrayListOf()
+    selectedWeekDays = arrayListOf()
+    selectedMonthDates = arrayListOf()
     val value = EventRecurringModel()
     var weekAry: ArrayList<WeekDataModel> = arrayListOf()
     val weekArray = resources.getStringArray(R.array.week_array)
@@ -72,10 +73,11 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
         calendar.time = date.date
     }
 
+
     for (i in weekArray.indices) {
         weekAry.add(WeekDataModel((i + 1), weekArray[i]))
     }
-    weekAry.add(WeekDataModel(weekAry.size+1, "Sun"))
+    weekAry.add(WeekDataModel(weekAry.size + 1, "Sun"))
 
 
     if (carePoint.week_days != null) {
@@ -83,7 +85,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
             for (j in carePoint.week_days!!) {
                 i.isSelected = false
                 if (i.id == j) {
-                    selectedDays.add(i)
+                    selectedWeekDays.add(i)
                     i.isSelected = true
                     break
                 }
@@ -94,18 +96,55 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     }
     if (addedWeekDays.size > 0) weekAry = addedWeekDays
 
-    val adapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
+    weekAdapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
         override fun onDaySelected(detail: ArrayList<WeekDataModel>) {
-            selectedDays.clear()
+            selectedWeekDays.clear()
             for (i in detail) {
                 if (i.isSelected) {
-                    selectedDays.add(i)
+                    selectedWeekDays.add(i)
                 }
             }
-            selectedDays.sortBy { it.id }
+            selectedWeekDays.sortBy { it.id }
         }
     })
-    weekdaysRV.adapter = adapter
+    weekdaysRV.adapter = weekAdapter
+
+    val monthArrayList: ArrayList<MonthModel> = ArrayList()
+    for (i in 1..31) {
+        val monthModel = MonthModel()
+        monthModel.monthDate = i.toString()
+        if (!carePoint.month_dates.isNullOrEmpty())
+            monthModel.isSelected = carePoint.month_dates?.contains(i)!!
+
+        monthArrayList.add(monthModel)
+    }
+
+
+    monthAdapter =
+        MonthAdapter(dialog.context, monthArrayList, object : MonthAdapter.selectedMonth {
+            override fun onMonthSelected(monthModel: MonthModel, position: Int) {
+                val listOfStringMonthDate: ArrayList<String> = ArrayList()
+                selectedMonthDates.forEach {
+                    listOfStringMonthDate.add(it.monthDate)
+                }
+                var selectedPosition = 0
+
+                listOfStringMonthDate.forEachIndexed { index, s ->
+                    if (s == monthModel.monthDate) {
+                        selectedPosition = index
+                        return@forEachIndexed
+                    }
+                }
+
+                if (listOfStringMonthDate.contains(monthModel.monthDate)) {
+                    selectedMonthDates.removeAt(selectedPosition)
+                } else
+                    selectedMonthDates.add(monthModel)
+            }
+        })
+
+
+    monthRV.adapter = monthAdapter
 
     if (carePoint.repeat_end_date != null) {
         val dateSelected =
@@ -125,32 +164,104 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     rightV.setOnClickListener {
 
     }
+
+    radioGroupCheckId = if (!carePoint.month_dates.isNullOrEmpty())
+        R.id.monthRB
+    else if (!carePoint.week_days.isNullOrEmpty())
+        R.id.weekRB
+    else
+        R.id.dayRB
+
     radioGroup.setOnCheckedChangeListener { viewButton, _ ->
         when (radioGroup.checkedRadioButtonId) {
-            R.id.noneRB -> {
-                dialog.dismiss()
-            }
-
             R.id.dayRB -> {
-                value.type = RecurringEvent.Daily.value
-                weekdaysRV.isVisible = false
-                calenderCL.isVisible = false
+                if (radioGroupCheckId != R.id.dayRB) {
+                    selectedMonthDates.clear()
+                    monthAdapter.clearSelectedList()
+
+                    selectedWeekDays.clear()
+                    weekAdapter.clearSelectedList()
+                }
+
+                if (tvEndDate.text.toString().isEmpty()) {
+                    showToast(getString(R.string.please_select_end_date_proceed))
+                    radioGroup.clearCheck()
+                } else {
+                    value.type = RecurringEvent.Daily.value
+                    weekdaysRV.isVisible = false
+                    calenderCL.isVisible = false
+                    monthRV.isVisible = false
+                }
+
+                radioGroupCheckId = R.id.dayRB
             }
 
             R.id.weekRB -> {
-                value.type = RecurringEvent.Weekly.value
-                Handler(Looper.getMainLooper()).postDelayed({
-                    calenderCL.isVisible = false
-                    weekdaysRV.isVisible = true
-                }, 100)
+                if (radioGroupCheckId != R.id.weekRB) {
+                    selectedMonthDates.clear()
+                    monthAdapter.clearSelectedList()
+
+                    selectedWeekDays.clear()
+                    weekAdapter.clearSelectedList()
+                }
+
+                if (tvEndDate.text.toString().isEmpty()) {
+                    showToast(getString(R.string.please_select_end_date_proceed))
+                    radioGroup.clearCheck()
+                } else {
+
+                    val startDateDate = SimpleDateFormat("yyyy-MM-dd").parse(carePoint.date!!)
+                    val lastDate = SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
+
+                    weekAdapter.setDayNameList(
+                        CommonFunctions.getWeekDayNameList(
+                            startDateDate,
+                            lastDate
+                        )
+                    )
+
+
+                    value.type = RecurringEvent.Weekly.value
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        monthRV.isVisible = false
+                        calenderCL.isVisible = false
+                        weekdaysRV.isVisible = true
+                    }, 100)
+                }
+                radioGroupCheckId = R.id.weekRB
+
             }
 
             R.id.monthRB -> {
-                value.type = RecurringEvent.Monthly.value
-                Handler(Looper.getMainLooper()).postDelayed({
-                    calenderCL.isVisible = true
-                    weekdaysRV.isVisible = false
-                }, 100)
+                if (radioGroupCheckId != R.id.monthRB) {
+                    selectedMonthDates.clear()
+                    monthAdapter.clearSelectedList()
+
+                    selectedWeekDays.clear()
+                    weekAdapter.clearSelectedList()
+                }
+
+                if (tvEndDate.text.toString().isEmpty()) {
+                    showToast(getString(R.string.please_select_end_date_proceed))
+                    radioGroup.clearCheck()
+                } else {
+                    if (carePoint.date != null) {
+                        val startDateDate = SimpleDateFormat("yyyy-MM-dd").parse(carePoint.date!!)
+                        val lastDate =
+                            SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
+
+                        monthAdapter.startEndDate(startDateDate!!, lastDate!!)
+                    }
+
+                    value.type = RecurringEvent.Monthly.value
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        monthRV.isVisible = true
+                        calenderCL.isVisible = false
+                        weekdaysRV.isVisible = false
+                    }, 100)
+
+                }
+                radioGroupCheckId = R.id.monthRB
 
             }
 
@@ -172,6 +283,8 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
                 value.type = RecurringEvent.Weekly.value
                 weekRB.isChecked = true
                 Handler(Looper.getMainLooper()).postDelayed({
+
+                    monthRV.isVisible = false
                     calenderCL.isVisible = false
                     weekdaysRV.isVisible = true
                 }, 100)
@@ -181,7 +294,8 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
                 value.type = RecurringEvent.Monthly.value
                 monthRB.isChecked = true
                 Handler(Looper.getMainLooper()).postDelayed({
-                    calenderCL.isVisible = true
+                    monthRV.isVisible = true
+                    calenderCL.isVisible = false
                     weekdaysRV.isVisible = false
                 }, 100)
             }
@@ -202,8 +316,12 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
             val calendar = Calendar.getInstance()
             calendar.time = dateShow
             calendarPView.setDateSelected(calendar, true)
+            val monthModel = MonthModel()
+            monthModel.monthDate = i.toString()
+            monthModel.isSelected = true
+            selectedMonthDates.add(monthModel)
         }
-        calenderCL.isVisible = true
+        calenderCL.isVisible = false
         weekdaysRV.isVisible = false
     }
 
@@ -228,69 +346,25 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
             }
 
             RecurringEvent.Weekly.value -> {
-                if (selectedDays.size <= 0) {
+                if (selectedWeekDays.size <= 0) {
                     showError(requireContext(), getString(R.string.please_atleast_one_weekday))
-                } else if (tvEndDate.text.toString().isEmpty()) {
-                    showError(requireContext(), getString(R.string.please_select_end_date))
                 } else {
 
                     val date: ArrayList<Int> = arrayListOf()
                     val days: ArrayList<String> = arrayListOf()
-                    for (i in selectedDays) {
+                    for (i in selectedWeekDays) {
                         date.add(i.id!!)
                         days.add(i.name!!)
                     }
 
-                    val startDateValue = SimpleDateFormat("yyyy-MM-dd").parse(carePoint.date!!)
-                    val endDateValue =
-                        SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
-
-                    val diff: Long = endDateValue!!.time - startDateValue!!.time
-                    val day = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)
-                    val weekDays: ArrayList<String> = arrayListOf()
-                    if (day <= 7) {
-                        val cal = Calendar.getInstance()
-                        for (i in 0 until day.toInt()) {
-                            cal.add(Calendar.DATE, 1)
-                            weekDays.add(SimpleDateFormat("EEE").format(cal.time))
-                        }
-                        var exist = false
-                        for (i in days) {
-                            for (j in weekDays) {
-                                if (i == j) {
-                                    exist = true
-                                    break
-                                }
-                            }
-                        }
-                        if (exist) {
-                            dialog.dismiss()
-                            tvEndDate.text = ""
-                            showEventEndDate(
-                                EventRecurringModel(
-                                    RecurringEvent.Weekly.value,
-                                    date,
-                                    tvEndDate.text.toString(), "week"
-                                ), days.joinToString()
-                            )
-
-                        } else {
-                            showError(
-                                requireContext(),
-                                getString(R.string.please_select_other_date_no_event_recurring_occurs_in_between_these_dates)
-                            )
-                        }
-                    } else {
-                        dialog.dismiss()
-                        showEventEndDate(
-                            EventRecurringModel(
-                                RecurringEvent.Weekly.value,
-                                date,
-                                tvEndDate.text.toString(), "week"
-                            ), days.joinToString()
-                        )
-
-                    }
+                    dialog.dismiss()
+                    showEventEndDate(
+                        EventRecurringModel(
+                            RecurringEvent.Weekly.value,
+                            date,
+                            tvEndDate.text.toString(), "week"
+                        ), days.joinToString()
+                    )
 
                 }
             }
@@ -299,14 +373,12 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
                 val selectedDates = calendarPView.selectedDates
                 if (selectedDates.isEmpty()) {
                     showError(requireContext(), getString(R.string.please_select_atleast_one_date))
-                } else if (tvEndDate.text.toString().isEmpty()) {
-                    showError(requireContext(), getString(R.string.please_select_end_date))
                 } else {
 
                     val date: ArrayList<Int> = arrayListOf()
-                    for (i in selectedDates) {
+                    for (i in selectedMonthDates) {
                         val currentDateCalendar = Calendar.getInstance()
-                        currentDateCalendar.time = i.date
+                        currentDateCalendar.set(Calendar.DAY_OF_MONTH, i.monthDate.toInt());
                         date.add(SimpleDateFormat("dd").format(currentDateCalendar.time).toInt())
                     }
                     date.sort()
@@ -359,7 +431,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
 }
 
 @SuppressLint("SetTextI18n", "SimpleDateFormat")
-fun datePicker(tvEndDate: AppCompatTextView, carePoint: AddedEventModel) {
+fun EditCarePointFragment.datePicker(tvEndDate: AppCompatTextView, carePoint: AddedEventModel) {
     val c = Calendar.getInstance()
     val mYear = c[Calendar.YEAR]
     val mMonth = c[Calendar.MONTH]
@@ -374,7 +446,29 @@ fun datePicker(tvEndDate: AppCompatTextView, carePoint: AddedEventModel) {
 
     val datePickerDialog = DatePickerDialog(
         tvEndDate.context, R.style.datepicker, { _, year, monthOfYear, dayOfMonth ->
-            tvEndDate.text = "${
+            if (selectedDatePickerDate != "${
+                    if (monthOfYear + 1 < 10) {
+                        "0${(monthOfYear + 1)}"
+                    } else {
+                        (monthOfYear + 1)
+                    }
+                }/${
+                    if (dayOfMonth + 1 < 10) {
+                        "0$dayOfMonth"
+                    } else {
+                        dayOfMonth
+                    }
+                }/$year"
+            ) {
+
+                selectedMonthDates.clear()
+                monthAdapter.notifyDataSetChanged()
+
+                selectedWeekDays.clear()
+                weekAdapter.notifyDataSetChanged()
+            }
+
+            selectedDatePickerDate = "${
                 if (monthOfYear + 1 < 10) {
                     "0${(monthOfYear + 1)}"
                 } else {
@@ -387,6 +481,8 @@ fun datePicker(tvEndDate: AppCompatTextView, carePoint: AddedEventModel) {
                     dayOfMonth
                 }
             }/$year"
+
+            tvEndDate.text = selectedDatePickerDate
         }, mYear, mMonth, mDay
     )
     datePickerDialog.datePicker.minDate = c.timeInMillis

@@ -14,5 +14,5 @@ class ChatUserListing : java.io.Serializable {
     val user1: ChatUsers? = null
     val user2: ChatUsers? = null
     val users: ArrayList<Long>? = null
-    val lastSenderId :String? = null
+    val lastSenderId :Long? = null
 }

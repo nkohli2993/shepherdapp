@@ -18,6 +18,7 @@ class WeekAdapter (
 ) : RecyclerView.Adapter<WeekAdapter.WeekViewHolder>() {
     lateinit var binding: AdapterWeekdaysBinding
     lateinit var context: Context
+    var weekDayNameList: List<String>? = ArrayList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -43,14 +44,18 @@ class WeekAdapter (
         holder.itemView.nameTV.text = data.name
         holder.itemView.nameTV.setBackgroundResource(R.drawable.button_grey)
         holder.itemView.nameTV.setTextColor(ContextCompat.getColor(context,R.color._192032))
+
         if(data.isSelected){
             holder.itemView.nameTV.setBackgroundResource(R.drawable.button_green)
             holder.itemView.nameTV.setTextColor(ContextCompat.getColor(context,R.color.colorWhite))
         }
+
         holder.itemView.rootView.setOnClickListener {
-            data.isSelected = !data.isSelected
-            listener.onDaySelected(weekList)
-            notifyDataSetChanged()
+            if (weekDayNameList?.contains(data.name!!)!!) {
+                data.isSelected = !data.isSelected
+                listener.onDaySelected(weekList)
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -69,6 +74,16 @@ class WeekAdapter (
         return position
     }
 
+    fun setDayNameList(weekDayNameList: List<String>?) {
+        this.weekDayNameList = weekDayNameList
+    }
+    fun clearSelectedList() {
+        weekList.forEach {
+            it.isSelected = false
+        }
+
+        notifyDataSetChanged()
+    }
 
 
     interface  WeekDaySelected{

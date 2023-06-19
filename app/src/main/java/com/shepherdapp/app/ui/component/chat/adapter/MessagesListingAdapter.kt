@@ -83,9 +83,10 @@ class MessagesListingAdapter(
         holder.binding.txtMessage.text = data.lastMessages
 
         val cal = Calendar.getInstance()
-        cal.time = data.createdAt!!.toDate()
+        Log.d("TAG", "onBindViewHolder: "+data.createdAt+"    "+ data.room_id)
+//        cal.time = data.createdAt?.toDate()
         holder.binding.txtTime.text = timeStampToDateFromUTC(cal.timeInMillis)
-        if (((data.lastSenderId ?: "0").toInt()) != userId) {
+        if (((data.lastSenderId ?: "0")) != userId) {
             Log.e("catch_id", "if")
             holder.binding.txtUnreadCount.text = data.unseenMessageCount.toString()
             if (data.unseenMessageCount!! > 0)

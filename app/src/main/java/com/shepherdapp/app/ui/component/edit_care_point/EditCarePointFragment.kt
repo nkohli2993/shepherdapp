@@ -18,6 +18,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.Resource
+import com.shepherdapp.app.data.dto.MonthModel
 import com.shepherdapp.app.data.dto.WeekDataModel
 import com.shepherdapp.app.data.dto.added_events.AddedEventModel
 import com.shepherdapp.app.data.dto.added_events.EventRecurringModel
@@ -31,6 +32,8 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
+import com.shepherdapp.app.ui.component.addNewEvent.adapter.MonthAdapter
+import com.shepherdapp.app.ui.component.carePoints.adapter.WeekAdapter
 import com.shepherdapp.app.utils.*
 import com.shepherdapp.app.utils.extensions.changeDatesFormat
 import com.shepherdapp.app.utils.extensions.hideKeyboard
@@ -72,6 +75,13 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     private var list: ArrayList<String> = arrayListOf()
     private var deletedAssigneeUUIDList: ArrayList<String> = arrayListOf()
     private var recurringValue: EventRecurringModel? = null
+
+    lateinit var monthAdapter: MonthAdapter
+    lateinit var weekAdapter: WeekAdapter
+    var selectedDatePickerDate = ""
+    var radioGroupCheckId = 0
+    var selectedMonthDates: ArrayList<MonthModel> = ArrayList()
+    var selectedWeekDays: ArrayList<WeekDataModel> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -225,9 +235,30 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 }
 
                 RecurringFlag.Monthly.value -> {
+
+                    var selectedDates = ""
+                    val selectedMonthListName: ArrayList<Int> = arrayListOf()
+
+                    selectedMonthDates.forEach {
+                        selectedMonthListName.add(it.monthDate.toInt())
+                    }
+
+                    selectedMonthListName.sort()
+                    selectedMonthListName.forEach {
+                        selectedDates = if (selectedDates.isNotEmpty())
+                            "$selectedDates,$it"
+                        else
+                            it.toString()
+                    }
+
                     fragmentEditCarePointBinding.txtType.text = getString(R.string.every_month)
+
+                    if (selectedDates.isNullOrEmpty())
+                        fragmentEditCarePointBinding.txtValue.text =
+                            carePoint!!.month_dates?.joinToString()
+                    else
                     fragmentEditCarePointBinding.txtValue.text =
-                        carePoint!!.month_dates?.joinToString()
+                        selectedDates
                 }
 
                 else -> {
@@ -538,9 +569,9 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     fragmentEditCarePointBinding.tvTime.text.toString().trim().plus(" $amPm")
                 )
             val currentDateTime =
-                SimpleDateFormat("MM-dd-yyyy hh:mm a").format(Calendar.getInstance().time)
+                SimpleDateFormat("MM/dd/yyyy hh:mm a").format(Calendar.getInstance().time)
 
-            val dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
+            val dateFormat = SimpleDateFormat("MM/dd/yyyy hh:mm a")
             if (dateFormat.parse(selectedDateTime)!!
                     .after(dateFormat.parse(currentDateTime))
             ) {
@@ -731,6 +762,15 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             }
             val endDate = SimpleDateFormat("yyyy-MM-dd").parse(carePoint!!.repeat_end_date!!)
             val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate!!)
+
+            val selectedMonthListString: ArrayList<Int> = arrayListOf()
+            selectedMonthDates.forEach {
+                selectedMonthListString.add(it.monthDate.toInt())
+            }
+
+            selectedMonthListString.sort()
+
+
             carePoint?.id?.let {
                 editEventViewModel.editCarePoint(
                     EditEventRequestModel(
@@ -744,7 +784,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         repeat_flag = carePoint!!.repeat_flag,
                         repeat_end_date = selectedEndDate,
                         week_days = dateWeekValue,
-                        month_dates = dateMonthValue
+                        month_dates = selectedMonthListString
                     ),
                     it
                 )
@@ -965,7 +1005,27 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         if (value.value != null) {
             value.value!!.sort()
         }
+        var selectedDates = ""
+        val selectedMonthListName: ArrayList<Int> = arrayListOf()
+
+        selectedMonthDates.forEach {
+            selectedMonthListName.add(it.monthDate.toInt())
+        }
+
+        selectedMonthListName.sort()
+        selectedMonthListName.forEach {
+            selectedDates = if (selectedDates.isNotEmpty())
+                selectedDates + "," + it
+            else
+                it.toString()
+        }
+
+        if (selectedDates.isNullOrEmpty())
         fragmentEditCarePointBinding.txtValue.text = value.value?.joinToString()
+        else
+            fragmentEditCarePointBinding.txtValue.text = selectedDates
+
+
         val endDateSelected = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue?.endDate!!)
         val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDateSelected!!)
         carePoint!!.repeat_end_date = selectedEndDate

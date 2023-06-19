@@ -93,49 +93,54 @@ class MessageFragment : BaseFragment<FragmentMessageBinding>(), View.OnClickList
 
 
     override fun observeViewModel() {
-        showLoading("")
-        messagesViewModel.getChatRooms(
-            messagesViewModel.getCurrentUser()!!.userId!!,
-            messagesViewModel.getLovedUser()?.id!!
-        ) {
-            var isChatDeleted = false
-            var chatMessages: java.util.ArrayList<ChatUserListing> = java.util.ArrayList()
-            Log.e("catch_dat", "it: " + it)
-            it.forEach { deleteChatListData ->
-                if (deleteChatListData.deletedChatUserIds.size > 0) {
-                    deleteChatListData.deletedChatUserIds.forEach {
-                        if ((it.userId?.toInt() == messagesViewModel.getCurrentUser()!!.id!!.toInt())
-                            && (it.lovedOneId?.toInt() == messagesViewModel.getLovedUser()?.id!!.toInt())) {
-                            val deletedTimeStamp = it.deletedAt
-                            isChatDeleted = true
-                            if (deletedTimeStamp != null) {
-                                val cal = Calendar.getInstance()
-                                cal.timeInMillis = deletedTimeStamp
-                                if (deleteChatListData.createdAt != null) {
-                                    val msgCal = Calendar.getInstance()
-                                    msgCal.time = deleteChatListData.createdAt.toDate()
-                                    if (msgCal.time.after(cal.time)) {
-                                        chatMessages.add(deleteChatListData)
+        if (messagesViewModel.getCurrentUser()?.userId != null && messagesViewModel.getLovedUser()?.id != null) {
+            showLoading("")
+            messagesViewModel.getChatRooms(
+                messagesViewModel.getCurrentUser()?.userId!!,
+                messagesViewModel.getLovedUser()?.id!!
+            ) {
+                var isChatDeleted = false
+                var chatMessages: java.util.ArrayList<ChatUserListing> = java.util.ArrayList()
+                Log.e("catch_dat", "it: " + it)
+                it.forEach { deleteChatListData ->
+                    if (deleteChatListData.deletedChatUserIds.size > 0) {
+                        deleteChatListData.deletedChatUserIds.forEach {
+                            if ((it.userId?.toInt() == messagesViewModel.getCurrentUser()!!.id!!.toInt())
+                                && (it.lovedOneId?.toInt() == messagesViewModel.getLovedUser()?.id!!.toInt())
+                            ) {
+                                val deletedTimeStamp = it.deletedAt
+                                isChatDeleted = true
+                                if (deletedTimeStamp != null) {
+                                    val cal = Calendar.getInstance()
+                                    cal.timeInMillis = deletedTimeStamp
+                                    if (deleteChatListData.createdAt != null) {
+                                        val msgCal = Calendar.getInstance()
+                                        msgCal.time = deleteChatListData.createdAt.toDate()
+                                        if (msgCal.time.after(cal.time)) {
+                                            chatMessages.add(deleteChatListData)
+                                        }
                                     }
+
                                 }
-
+                                return@forEach
                             }
-                            return@forEach
                         }
+
+                    } else {
+                        chatMessages.add(deleteChatListData)
                     }
-
-                } else {
-                    chatMessages.add(deleteChatListData)
                 }
+
+                if (!isChatDeleted)
+                    chatMessages = it
+
+                roomChatList = chatMessages
+                hideLoading()
+                updateRecyclerView()
+
             }
+        } else updateRecyclerView()
 
-            if (!isChatDeleted)
-                chatMessages = it
-
-            roomChatList = chatMessages
-            hideLoading()
-            updateRecyclerView()
-        }
     }
 
     fun updateRecyclerView() {

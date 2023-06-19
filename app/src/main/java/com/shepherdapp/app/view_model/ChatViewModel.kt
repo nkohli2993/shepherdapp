@@ -458,7 +458,7 @@ class ChatViewModel @Inject constructor(
             arrayListOf(roomArray[0].toLong(), roomArray[1].toLong()),
             Timestamp(Calendar.getInstance().time),
             unReadCount,
-            userRepository.getCurrentUser()?.id!!.toString()
+            userRepository.getCurrentUser()?.id?.toLong()
         )
 
         db.collection(tableName!!).document(id!!)

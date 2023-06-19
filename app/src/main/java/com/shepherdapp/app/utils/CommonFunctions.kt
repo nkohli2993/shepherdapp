@@ -358,4 +358,41 @@ object CommonFunctions {
             else -> 31
         }
     }
+
+    fun formatDate(date: String, inputFormat: String, outputFormat: String): Date? {
+        val newDate: String
+        val inputDateFormat: DateFormat = SimpleDateFormat(inputFormat)
+        inputDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+        val outputDateFormat: DateFormat = SimpleDateFormat(outputFormat)
+        newDate = try {
+            outputDateFormat.format(inputDateFormat.parse(date))
+        } catch (e: java.lang.Exception) {
+            ""
+        }
+        return  outputDateFormat.parse(newDate)
+    }
+
+    fun isDateInBetweenIncludingEndPoints(min: Date?, max: Date?, date: Date): Boolean {
+        return !(date.before(min) || date.after(max))
+    }
+
+    fun between(variable: Int, minValueInclusive: Int, maxValueInclusive: Int): Boolean {
+        return variable >= minValueInclusive && variable <= maxValueInclusive
+    }
+
+    fun getWeekDayNameList(startDate: Date?, endDate: Date?): List<String>? {
+        val datesInRange: MutableList<String> = ArrayList()
+        val startCalendar: Calendar = GregorianCalendar()
+        startCalendar.time = startDate
+        val endCalendar: Calendar = GregorianCalendar()
+        endCalendar.time = endDate
+        val selectedDateString = SimpleDateFormat("EEE").format(endDate?.time)
+        datesInRange.add(selectedDateString)
+        while (startCalendar.before(endCalendar)) {
+            val selectedDateString = SimpleDateFormat("EEE").format(startCalendar.time)
+            datesInRange.add(selectedDateString)
+            startCalendar.add(Calendar.DATE, 1)
+        }
+        return datesInRange
+    }
 }

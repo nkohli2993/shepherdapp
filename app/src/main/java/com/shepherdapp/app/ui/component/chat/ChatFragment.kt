@@ -191,7 +191,7 @@ class ChatFragment : BaseFragment<FragmentChatBinding>(), View.OnClickListener {
         }
         chatViewModel.lastChatDetail.observeEvent(this) {
             unReadCount = it.unseenMessageCount ?: 0
-            lastMessageSenderId = it.lastSenderId!!
+            lastMessageSenderId = it.lastSenderId.toString()
             deleteChatUserIdListing.clear()
             deleteChatUserIdListing.addAll(it.deletedChatUserIds)
             Log.e("catch_deleted_user", "deleteChatUserIdListing $deleteChatUserIdListing")

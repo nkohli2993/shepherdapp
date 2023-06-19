@@ -654,10 +654,12 @@
     <string name="no_address_available">No address available</string>
     <string name="phone_number_not_available">Phone Number Not Available</string>
     <string name="please_select_end_date">Please select end date.</string>
+    <string name="please_select_end_date_proceed">Please select end date to proceed.</string>
     <string name="please_atleast_one_weekday">Please atleast one weekday.</string>
     <string name="please_select_atleast_one_date">Please select atleast one date.</string>
     <string name="please_select_other_date_no_event_recurring_occurs_in_between_these_dates">Please select other date, No event recurring occurs in between these dates.</string>
     <string name="no_member_found">No member found</string>
+    <string name="selected_date_s_should_lie_in_between_start_end_date">Selected date\'s should lie in between start date and end date</string>
 
     <string-array name="week_array">
 <!--        <item>Sun</item>-->
@@ -667,6 +669,16 @@
         <item>Thu</item>
         <item>Fri</item>
         <item>Sat</item>
+    </string-array>
+
+    <string-array name="full_week_array">
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
     </string-array>
 
 </resources>

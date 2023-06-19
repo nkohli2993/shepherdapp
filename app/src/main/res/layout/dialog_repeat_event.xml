@@ -42,6 +42,35 @@
                     android:text="@string/repeat"
                     android:textSize="@dimen/_18sdp" />
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:text="@string/end_date_"
+                    android:textColor="@color/_192032"
+                    android:textSize="@dimen/_13sdp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txtEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:drawableStart="@drawable/ic_calendar_care_event"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:fontFamily="@font/gotham_medium"
+                    android:gravity="center_vertical"
+                    android:hint="@string/dd_mm_year"
+                    android:onClick="@{listener::onClick}"
+                    android:paddingHorizontal="@dimen/_8sdp"
+                    android:paddingVertical="@dimen/_20sdp"
+                    android:textColor="@color/_192032"
+                    android:textColorHint="@color/_192032"
+                    android:textSize="@dimen/_12ssp"
+                    app:fontFamily="@font/gotham_medium" />
+
                 <RadioGroup
                     android:id="@+id/repeatOptionRG"
                     android:layout_width="match_parent"
@@ -67,6 +96,7 @@
                         android:fontFamily="@font/gotham_medium"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:text="@string/every_day"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12sdp" />
 
@@ -104,6 +134,17 @@
                     tools:itemCount="7"
                     tools:listitem="@layout/adapter_weekdays" />
 
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:itemCount="31"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="7"
+                    android:visibility="gone"
+                    android:id="@+id/recyclerViewMonth"
+                    tools:listitem="@layout/adapter_month"/>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/calenderCL"
                     android:layout_width="match_parent"
@@ -120,6 +161,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:mcv_calendarMode="month"
                         app:mcv_firstDayOfWeek="sunday"
+                        android:visibility="gone"
                         app:mcv_allowClickDaysOutsideCurrentMonth="false"
                         app:mcv_headerTextAppearance="@style/TextViewGothamMedium"
                         app:mcv_leftArrowMask="@drawable/ic_arrow_left_trasparent"
@@ -160,34 +202,7 @@
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_medium"
-                    android:text="@string/end_date_"
-                    android:textColor="@color/_192032"
-                    android:textSize="@dimen/_13sdp" />
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/txtEndDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:background="@drawable/shape_rectangle_circular_corner_border_grey"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:drawableStart="@drawable/ic_calendar_care_event"
-                    android:drawablePadding="@dimen/_10sdp"
-                    android:fontFamily="@font/gotham_medium"
-                    android:gravity="center_vertical"
-                    android:hint="@string/dd_mm_year"
-                    android:onClick="@{listener::onClick}"
-                    android:paddingHorizontal="@dimen/_8sdp"
-                    android:paddingVertical="@dimen/_20sdp"
-                    android:textColor="@color/_192032"
-                    android:textColorHint="@color/_192032"
-                    android:textSize="@dimen/_12ssp"
-                    app:fontFamily="@font/gotham_medium" />
 
                 <LinearLayout
                     android:id="@+id/llYesNo"

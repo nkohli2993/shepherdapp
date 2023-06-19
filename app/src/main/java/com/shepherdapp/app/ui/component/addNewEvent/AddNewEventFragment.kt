@@ -17,6 +17,8 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.Resource
+import com.shepherdapp.app.data.dto.MonthModel
+import com.shepherdapp.app.data.dto.WeekDataModel
 import com.shepherdapp.app.data.dto.added_events.EventRecurringModel
 import com.shepherdapp.app.data.dto.care_team.CareTeamModel
 import com.shepherdapp.app.data.dto.login.LoginResponseModel
@@ -27,6 +29,8 @@ import com.shepherdapp.app.ui.base.BaseFragment
 import com.shepherdapp.app.ui.component.addLovedOne.SearchPlacesActivity
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssignToEventAdapter
 import com.shepherdapp.app.ui.component.addNewEvent.adapter.AssigneAdapter
+import com.shepherdapp.app.ui.component.addNewEvent.adapter.MonthAdapter
+import com.shepherdapp.app.ui.component.carePoints.adapter.WeekAdapter
 import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.SingleEvent
 import com.shepherdapp.app.utils.extensions.hideKeyboard
@@ -63,6 +67,13 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private var placeAddress: String? = null
     private var placeId: String? = null
     private var recurringValue: EventRecurringModel? = null
+    var selectedDatePickerDate = ""
+    var selectedMonthDates: ArrayList<MonthModel> = ArrayList()
+    var selectedDays: ArrayList<WeekDataModel> = arrayListOf()
+    lateinit var monthAdapter: MonthAdapter
+    lateinit var weekAdapter: WeekAdapter
+    var radioGroupCheckId = 0
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -100,7 +111,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 fragmentAddNewEventBinding.tvDate.requestFocus()
                 fragmentAddNewEventBinding.repeatCB.isChecked = false
             } else {
-                showRepeatDialog(fragmentAddNewEventBinding.tvDate.text.toString(),recurringValue)
+                showRepeatDialog(fragmentAddNewEventBinding.tvDate.text.toString(), recurringValue)
             }
         }
     }
@@ -356,9 +367,9 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     fragmentAddNewEventBinding.tvTime.text.toString().trim().plus(" $amPm")
                 )
             val currentDateTime =
-                SimpleDateFormat("MM-dd-yyyy hh:mm a").format(Calendar.getInstance().time)
+                SimpleDateFormat("MM/dd/yyyy hh:mm a").format(Calendar.getInstance().time)
 
-            val dateFormat = SimpleDateFormat("MM-dd-yyyy hh:mm a")
+            val dateFormat = SimpleDateFormat("MM/dd/yyyy hh:mm a")
             if (dateFormat.parse(selectedDateTime)!!
                     .after(dateFormat.parse(currentDateTime))
             ) {
@@ -498,13 +509,13 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             } else if (recurringValue != null && recurringValue!!.type == RecurringEvent.Monthly.value) {
                 dateMonthValue = recurringValue!!.value
             }
-            if(dateWeekValue!=null){
+            if (dateWeekValue != null) {
                 val hset: HashSet<Int> = HashSet<Int>(dateWeekValue)
                 dateWeekValue.clear()
                 dateWeekValue = arrayListOf()
                 dateWeekValue.addAll(hset)
             }
-            if(dateMonthValue!=null){
+            if (dateMonthValue != null) {
                 val hset: HashSet<Int> = HashSet<Int>(dateMonthValue)
                 dateMonthValue.clear()
                 dateMonthValue = arrayListOf()
@@ -512,6 +523,14 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             }
             val endDate = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue?.endDate!!)
             val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate)
+
+            val selectedMonthListString: ArrayList<Int> = arrayListOf()
+            selectedMonthDates.forEach {
+                selectedMonthListString.add(it.monthDate.toInt())
+            }
+
+            selectedMonthListString.sort()
+
             addNewEventViewModel.createEvent(
                 addNewEventViewModel.getLovedOneUUId(),
                 fragmentAddNewEventBinding.etEventName.text.toString().trim(),
@@ -523,7 +542,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 recurringValue?.typeValue!!,
                 selectedEndDate,
                 dateWeekValue,
-                dateMonthValue
+                selectedMonthListString
             )
         } else {
             addNewEventViewModel.createEvent(
@@ -604,16 +623,19 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                     val currentDateTime =
                         SimpleDateFormat("MM/dd/yyyy HH:mm").format(Calendar.getInstance().time)
 
-                    if(fragmentAddNewEventBinding.repeatCB.isChecked){
+                    if (fragmentAddNewEventBinding.repeatCB.isChecked) {
                         setAndCheckSelectedTime(hour, hourOfDay, minute, selectedMinutes)
-                    }else{
+                    } else {
                         val dateFormat = SimpleDateFormat("MM/dd/yyyy HH:mm")
                         if (dateFormat.parse(selectedDateTime)!!
                                 .after(dateFormat.parse(currentDateTime))
                         ) {
                             setAndCheckSelectedTime(hour, hourOfDay, minute, selectedMinutes)
                         } else {
-                            showError(requireContext(), getString(R.string.please_select_future_time))
+                            showError(
+                                requireContext(),
+                                getString(R.string.please_select_future_time)
+                            )
                         }
 
                     }
@@ -697,7 +719,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     fun showEventEndDate(value: EventRecurringModel, days: String? = null) {
         recurringValue = null
         recurringValue = value
-        Log.e("catch_exception","value: $recurringValue")
+        Log.e("catch_exception", "value: $recurringValue")
         fragmentAddNewEventBinding.repeatCB.isChecked = true
         fragmentAddNewEventBinding.txtType.isVisible = false
         fragmentAddNewEventBinding.txtValue.isVisible = false
@@ -736,7 +758,24 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         if (value.value != null) {
             value.value!!.sort()
         }
-        fragmentAddNewEventBinding.txtValue.text = value.value?.joinToString()
+        var selectedDates = ""
+        val selectedMonthListName: ArrayList<Int> = arrayListOf()
+
+        selectedMonthDates.forEach {
+            selectedMonthListName.add(it.monthDate.toInt())
+        }
+
+        selectedMonthListName.sort()
+        selectedMonthListName.forEach {
+            selectedDates = if (selectedDates.isNotEmpty())
+                selectedDates + "," + it
+            else
+                it.toString()
+        }
+
+        fragmentAddNewEventBinding.txtValue.text = selectedDates
+
+
         when (value.type) {
             RecurringEvent.None.value -> {
                 fragmentAddNewEventBinding.txtType.text = "None"

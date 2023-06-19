@@ -487,7 +487,7 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                             it.txtType.text = getString(R.string.every_week)
                             if (payload.week_days != null) {
                                 val daysList: ArrayList<String> = arrayListOf()
-                                val weekArray = resources.getStringArray(R.array.week_array)
+                                val weekArray = resources.getStringArray(R.array.full_week_array)
                                 val weekAry: ArrayList<WeekDataModel> = arrayListOf()
                                 for (i in weekArray.indices) {
                                     weekAry.add(WeekDataModel((i + 1), weekArray[i]))
