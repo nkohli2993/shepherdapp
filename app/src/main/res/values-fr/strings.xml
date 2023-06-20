@@ -659,5 +659,6 @@
     <string name="please_select_other_date_no_event_recurring_occurs_in_between_these_dates">Please select other date, No event recurring occurs in between these dates.</string>
     <string name="no_member_found">No member found</string>
     <string name="selected_date_s_should_lie_in_between_start_end_date">Les dates sélectionnées doivent se situer entre la date de début et la date de fin</string>
+    <string name="every_year">Every Year</string>
 
 </resources>

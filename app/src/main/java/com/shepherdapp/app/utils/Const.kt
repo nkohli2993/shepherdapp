@@ -124,13 +124,15 @@ enum class RecurringEvent(val value: String) {
     None("1"),
     Daily("2"),
     Weekly("3"),
-    Monthly("4")
+    Monthly("4"),
+    Yearly("5")
 }
 
 enum class RecurringFlag(val value: String) {
     Daily("day"),
     Weekly("week"),
-    Monthly("month")
+    Monthly("month"),
+    Yearly("year")
 }
 
 enum class Role(val id: String) {

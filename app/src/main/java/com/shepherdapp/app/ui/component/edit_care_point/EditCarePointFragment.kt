@@ -219,7 +219,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         for (i in weekArray.indices) {
                             weekAry.add(WeekDataModel((i + 1), weekArray[i]))
                         }
-                        Log.e("catch_exception","list: ${weekAry.size}")
+                        Log.e("catch_exception", "list: ${weekAry.size}")
                         weekAry.add(WeekDataModel(weekAry.size + 1, "Sun"))
 
                         for (i in carePoint!!.week_days!!) {
@@ -257,8 +257,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         fragmentEditCarePointBinding.txtValue.text =
                             carePoint!!.month_dates?.joinToString()
                     else
-                    fragmentEditCarePointBinding.txtValue.text =
-                        selectedDates
+                        fragmentEditCarePointBinding.txtValue.text =
+                            selectedDates
                 }
 
                 else -> {
@@ -751,46 +751,76 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     dateWeekValue.sort()
                     val now = Calendar.getInstance()
                     val weekday = now[Calendar.DAY_OF_WEEK]
-                    if (weekday != (dateWeekValue[0] + 1)) {
-                        val days = (Calendar.SATURDAY - weekday + dateWeekValue[0] + 1) % 7
+                    var nextDayValue = -1
+                    for (i in dateWeekValue) {
+                        if ((i + 1) >= weekday) {
+                            nextDayValue = i + 1
+                            break
+
+                        }
+                    }
+                    if (weekday != (nextDayValue)) {
+                        val days = (Calendar.SATURDAY - weekday + nextDayValue) % 7
                         now.add(Calendar.DAY_OF_YEAR, days)
                     }
                     val dateStart = now.time
                     val format = SimpleDateFormat("yyyy-MM-dd").format(dateStart)
-                    Log.e("catch_exception", "date: $format $selectedDate")
-                    val getstartDate = SimpleDateFormat("yyyy-MM-dd").parse(format)
-                    val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
-
-                    if (selectedStartDate.before(getstartDate)) {
-                        selectedDate = format
-                    }
-
+//                    val getstartDate = SimpleDateFormat("yyyy-MM-dd").parse(format)
+//                    val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
+                    selectedDate = format
+                    /* if (selectedStartDate.before(getstartDate)) {
+                         selectedDate = format
+                     }
+ */
                     Log.e("catch_exception", "startDate: $selectedDate")
                 }
 
 
-
             } else if (carePoint != null && carePoint!!.repeat_flag == RecurringFlag.Monthly.value) {
-                dateMonthValue = recurringValue!!.value
+//                dateMonthValue = recurringValue!!.value
                 selectedMonthListString = arrayListOf()
                 selectedMonthDates.forEach {
-                    selectedMonthListString.add(it.monthDate.toInt())
+                    selectedMonthListString!!.add(it.monthDate.toInt())
                 }
 
                 selectedMonthListString.sort()
+                if (!selectedMonthListString.isNullOrEmpty()) {
+                    val hset: HashSet<Int> = HashSet<Int>(selectedMonthListString)
+                    selectedMonthListString.clear()
+                    selectedMonthListString = arrayListOf()
+                    selectedMonthListString.addAll(hset)
+                }
+
+                val now = Calendar.getInstance()
+                val dateStart = now.time
+                val currentDate = SimpleDateFormat("dd").format(dateStart)
                 // add check for start date
                 if (selectedMonthListString != null) {
                     selectedMonthListString.sort()
-                    val now = Calendar.getInstance()
-                    val dateStart = now.time
+
+                    var nextDayValue = -1
+                    for (i in selectedMonthListString) {
+                        if (i >= currentDate.toInt()) {
+                            nextDayValue = i
+                            break
+
+                        }
+                    }
+
                     val format = SimpleDateFormat("yyyy-MM").format(dateStart)
-                    Log.e("catch_exception", "date: ${format.plus("-${selectedMonthListString[0]}")} $selectedDate")
-                    val getstartDate = SimpleDateFormat("yyyy-MM-dd").parse(format.plus("-${selectedMonthListString[0]}"))
+                    Log.e(
+                        "catch_exception",
+                        "date: ${format.plus("-${nextDayValue}")} $selectedDate"
+                    )
+                    val getstartDate =
+                        SimpleDateFormat("yyyy-MM-dd").parse(format.plus("-${nextDayValue}"))
                     val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
-                    selectedDate = format.plus("-${selectedMonthListString[0]}")
-//                    if (selectedStartDate.before(getstartDate)) {
-//                        selectedDate = format.plus("-${selectedMonthListString[0]}")
-//                    }
+                    selectedDate = format.plus("-${nextDayValue}")
+                    /*
+                                        if (selectedStartDate.before(getstartDate)) {
+                                            selectedDate = format.plus("-${nextDayValue}")
+                                        }
+                    */
 
                     Log.e("catch_exception", "startDate: $selectedDate")
                 }
@@ -1051,12 +1081,20 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             value.value!!.sort()
         }
         var selectedDates = ""
-        val selectedMonthListName: ArrayList<Int> = arrayListOf()
-
+        var selectedMonthListName: ArrayList<Int> = arrayListOf()
+        Log.e("catch_exception", " visibleRecurringView : selectedMonthDates: $selectedMonthDates")
         selectedMonthDates.forEach {
             selectedMonthListName.add(it.monthDate.toInt())
         }
 
+        selectedMonthListName.sort()
+
+        if (!selectedMonthListName.isNullOrEmpty()) {
+            val hset: HashSet<Int> = HashSet<Int>(selectedMonthListName)
+            selectedMonthListName.clear()
+            selectedMonthListName = arrayListOf()
+            selectedMonthListName.addAll(hset)
+        }
         selectedMonthListName.sort()
         selectedMonthListName.forEach {
             selectedDates = if (selectedDates.isNotEmpty())
@@ -1066,9 +1104,12 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         }
 
         if (selectedDates.isNullOrEmpty())
-        fragmentEditCarePointBinding.txtValue.text = value.value?.joinToString()
-        else
+            fragmentEditCarePointBinding.txtValue.text = value.value?.joinToString()
+        else{
+
+
             fragmentEditCarePointBinding.txtValue.text = selectedDates
+        }
 
 
         val endDateSelected = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue?.endDate!!)

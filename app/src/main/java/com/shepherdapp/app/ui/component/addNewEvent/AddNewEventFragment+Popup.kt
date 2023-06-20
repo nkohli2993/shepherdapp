@@ -1,6 +1,5 @@
 package com.shepherdapp.app.ui.component.addNewEvent
 
-import CommonFunctions
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -10,7 +9,6 @@ import android.util.Log
 import android.view.Window
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +24,6 @@ import com.shepherdapp.app.ui.component.addNewEvent.adapter.MonthAdapter
 import com.shepherdapp.app.ui.component.carePoints.adapter.WeekAdapter
 import com.shepherdapp.app.utils.RecurringEvent
 import com.shepherdapp.app.utils.extensions.showError
-import okhttp3.internal.format
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -45,8 +42,6 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     val weekRB = dialog.findViewById(R.id.weekRB) as RadioButton
     val monthRB = dialog.findViewById(R.id.monthRB) as RadioButton
     val tvEndDate = dialog.findViewById(R.id.txtEndDate) as AppCompatTextView
-    val leftV = dialog.findViewById(R.id.leftV) as AppCompatTextView
-    val rightV = dialog.findViewById(R.id.rightV) as AppCompatTextView
     val weekdaysRV = dialog.findViewById(R.id.weekdaysRV) as RecyclerView
     val monthRV = dialog.findViewById(R.id.recyclerViewMonth) as RecyclerView
     val calenderCL = dialog.findViewById(R.id.calenderCL) as ConstraintLayout
@@ -85,13 +80,11 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
             }
             addedWeekDays.add(i)
         }
-
-        val startDateDate = SimpleDateFormat("MM/dd/yyyy").parse(startDate)
-        val lastDate = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue.endDate.toString())
-
     }
 
     if (addedWeekDays.size > 0) weekAry = addedWeekDays
+
+    Log.e("catch_exception","value: $weekAry ${recurringValue?.value}")
     Handler(Looper.getMainLooper()).postDelayed({
         weekAdapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
             override fun onDaySelected(detail: ArrayList<WeekDataModel>) {
@@ -173,12 +166,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     tvEndDate.setOnClickListener {
         datePicker(tvEndDate, startDate)
     }
-    leftV.setOnClickListener {
 
-    }
-    rightV.setOnClickListener {
-
-    }
     val value = EventRecurringModel()
     radioGroup.setOnCheckedChangeListener { _, _ ->
         when (radioGroup.checkedRadioButtonId) {
@@ -217,10 +205,6 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                     showToast(getString(R.string.please_select_end_date_proceed))
                     radioGroup.clearCheck()
                 } else {
-                    val startDateDate = SimpleDateFormat("MM/dd/yyyy").parse(startDate)
-                    val lastDate = SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
-
-
                     value.type = RecurringEvent.Weekly.value
                     Handler(Looper.getMainLooper()).postDelayed({
                         monthRV.isVisible = false

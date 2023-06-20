@@ -121,6 +121,17 @@
                         android:text="@string/every_month"
                         android:textColor="@color/_192032"
                         android:textSize="@dimen/_12sdp" />
+                    <androidx.appcompat.widget.AppCompatRadioButton
+                        android:id="@+id/yearRB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:button="@drawable/radio_button"
+                        android:fontFamily="@font/gotham_medium"
+                        android:visibility="gone"
+                        android:paddingHorizontal="@dimen/_10sdp"
+                        android:text="@string/every_year"
+                        android:textColor="@color/_192032"
+                        android:textSize="@dimen/_12sdp" />
                 </RadioGroup>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -158,40 +169,18 @@
                         android:layout_height="wrap_content"
                         android:background="@color/colorWhite"
                         android:isScrollContainer="false"
-                        android:visibility="gone"
                         app:layout_constraintTop_toTopOf="parent"
                         app:mcv_allowClickDaysOutsideCurrentMonth="false"
                         app:mcv_calendarMode="month"
+                        android:visibility="gone"
                         app:mcv_firstDayOfWeek="sunday"
                         app:mcv_headerTextAppearance="@style/TextViewGothamMedium"
-                        app:mcv_leftArrowMask="@drawable/ic_arrow_left_trasparent"
-                        app:mcv_rightArrowMask="@drawable/ic_arrow_left_trasparent"
+                        app:mcv_leftArrowMask="@drawable/ic_left_arrow_calendar"
+                        app:mcv_rightArrowMask="@drawable/ic_right_arrow_calendar"
                         app:mcv_selectionColor="@color/_399282"
                         app:mcv_showOtherDates="none"
                         app:mcv_weekDayTextAppearance="@style/TextViewGothamBook" />
 
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/leftV"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:background="@color/colorWhite"
-                        android:clickable="false"
-                        android:enabled="false"
-                        android:visibility="gone"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/calendarPView" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/rightV"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:background="@color/colorWhite"
-                        android:clickable="false"
-                        android:enabled="false"
-                        android:visibility="gone"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/calendarPView" />
 
                     <View
                         android:layout_width="0dp"

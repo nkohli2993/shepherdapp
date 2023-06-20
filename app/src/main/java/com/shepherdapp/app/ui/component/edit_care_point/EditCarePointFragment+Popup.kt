@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Window
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -40,9 +41,6 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     val btnYes = dialog.findViewById(R.id.btnYes) as AppCompatButton
     val radioGroup = dialog.findViewById(R.id.repeatOptionRG) as RadioGroup
     val tvEndDate = dialog.findViewById(R.id.txtEndDate) as AppCompatTextView
-    val leftV = dialog.findViewById(R.id.leftV) as AppCompatTextView
-    val rightV = dialog.findViewById(R.id.rightV) as AppCompatTextView
-
     val weekdaysRV = dialog.findViewById(R.id.weekdaysRV) as RecyclerView
     val monthRV = dialog.findViewById(R.id.recyclerViewMonth) as RecyclerView
     val calenderCL = dialog.findViewById(R.id.calenderCL) as ConstraintLayout
@@ -122,12 +120,6 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     }
     tvEndDate.setOnClickListener {
         datePicker(tvEndDate, carePoint, dialog, monthRV)
-    }
-    leftV.setOnClickListener {
-
-    }
-    rightV.setOnClickListener {
-
     }
 
     radioGroupCheckId = if (!carePoint.month_dates.isNullOrEmpty())
@@ -406,12 +398,17 @@ private fun EditCarePointFragment.monthAdapter(
         monthModel.monthDate = i.toString()
         if (!carePoint.month_dates.isNullOrEmpty()) {
             monthModel.isSelected = carePoint.month_dates?.contains(i)!!
-            selectedMonthDates.add(monthModel)
+            if(monthModel.isSelected){
+                selectedMonthDates.add(monthModel)
+            }
         }
 
         monthArrayList.add(monthModel)
     }
 
+    for(i in selectedMonthDates){
+        Log.e("catch_exception","dates: ${i.monthDate}")
+    }
 
     monthAdapter =
         MonthAdapter(dialog.context, monthArrayList, object : MonthAdapter.selectedMonth {
@@ -433,6 +430,10 @@ private fun EditCarePointFragment.monthAdapter(
                     selectedMonthDates.removeAt(selectedPosition)
                 } else
                     selectedMonthDates.add(monthModel)
+
+                for(i in selectedMonthDates){
+                    Log.e("catch_exception","selectedMonthDates: ${i.monthDate}")
+                }
             }
         })
 

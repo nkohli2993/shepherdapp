@@ -74,7 +74,11 @@ class MonthAdapter(
                 )
             }
 
-            itemBinding.appCompatTextViewMonth.setOnClickListener {
+            itemBinding.appCompatTextViewMonth.setOnClickListener{
+                addDateIntoList(position)
+            }
+/*
+            {
 
                 val selectedDayMonth = if (monthList[position].monthDate.length == 1)
                     "0" + monthList[position].monthDate
@@ -155,6 +159,7 @@ class MonthAdapter(
                     addDateIntoList(position)
                 }
             }
+*/
         }
     }
 
