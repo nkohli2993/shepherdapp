@@ -1,6 +1,5 @@
 package com.shepherdapp.app.ui.component.addNewEvent.adapter
 
-import CommonFunctions
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.shepherdapp.app.R
 import com.shepherdapp.app.data.dto.MonthModel
 import com.shepherdapp.app.databinding.AdapterMonthBinding
-import com.shepherdapp.app.utils.extensions.showError
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 
@@ -75,7 +72,7 @@ class MonthAdapter(
             }
 
             itemBinding.appCompatTextViewMonth.setOnClickListener{
-                addDateIntoList(position)
+                addDateIntoList(position,monthList)
             }
 /*
             {
@@ -163,9 +160,9 @@ class MonthAdapter(
         }
     }
 
-    private fun addDateIntoList(position: Int) {
-        onListener.onMonthSelected(monthList[position],position)
-        monthList[position].isSelected = !monthList[position].isSelected
+    private fun addDateIntoList(position: Int, monthList: ArrayList<MonthModel>) {
+        this.monthList[position].isSelected = !this.monthList[position].isSelected
+        onListener.onMonthSelected(this.monthList[position],position,monthList)
         notifyDataSetChanged()
     }
 
@@ -209,6 +206,6 @@ class MonthAdapter(
 
 
     interface selectedMonth {
-        fun onMonthSelected(monthModel: MonthModel,position: Int)
+        fun onMonthSelected(monthModel: MonthModel,position: Int,monthList: ArrayList<MonthModel>)
     }
 }

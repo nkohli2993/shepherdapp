@@ -140,11 +140,34 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     Handler(Looper.getMainLooper()).postDelayed({
         monthAdapter =
             MonthAdapter(dialog.context, monthArrayList, object : MonthAdapter.selectedMonth {
-                override fun onMonthSelected(monthModel: MonthModel, position: Int) {
-                    if (selectedMonthDates.contains(monthModel))
-                        selectedMonthDates.remove(monthModel)
-                    else
-                        selectedMonthDates.add(monthModel)
+                override fun onMonthSelected(monthModel: MonthModel, position: Int,monthList: ArrayList<MonthModel>) {
+                    selectedMonthDates.clear()
+                    monthList.forEach{
+                        if(it.isSelected){
+                            selectedMonthDates.add(it)
+                        }
+                    }
+                    /*  val listOfStringMonthDate: ArrayList<String> = ArrayList()
+                     selectedMonthDates.forEach {
+                         listOfStringMonthDate.add(it.monthDate)
+                     }
+                     var selectedPosition = -1
+
+                     listOfStringMonthDate.forEachIndexed { index, s ->
+                         if (s == monthModel.monthDate) {
+                             selectedPosition = index
+                             return@forEachIndexed
+                         }
+                     }
+
+                     if (listOfStringMonthDate.contains(monthModel.monthDate)) {
+                         selectedMonthDates.removeAt(selectedPosition)
+                     } else
+                         selectedMonthDates.add(monthModel)
+     */
+                    for(i in selectedMonthDates){
+                        Log.e("catch_exception","selectedMonthDates: ${i.monthDate}")
+                    }
                 }
             })
 
