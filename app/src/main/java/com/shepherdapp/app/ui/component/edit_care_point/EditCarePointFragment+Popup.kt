@@ -109,44 +109,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     })
     weekdaysRV.adapter = weekAdapter
 
-    val monthArrayList: ArrayList<MonthModel> = ArrayList()
-    for (i in 1..31) {
-        val monthModel = MonthModel()
-        monthModel.monthDate = i.toString()
-        if (!carePoint.month_dates.isNullOrEmpty()) {
-            monthModel.isSelected = carePoint.month_dates?.contains(i)!!
-            selectedMonthDates.add(monthModel)
-        }
-
-        monthArrayList.add(monthModel)
-    }
-
-
-    monthAdapter =
-        MonthAdapter(dialog.context, monthArrayList, object : MonthAdapter.selectedMonth {
-            override fun onMonthSelected(monthModel: MonthModel, position: Int) {
-                val listOfStringMonthDate: ArrayList<String> = ArrayList()
-                selectedMonthDates.forEach {
-                    listOfStringMonthDate.add(it.monthDate)
-                }
-                var selectedPosition = 0
-
-                listOfStringMonthDate.forEachIndexed { index, s ->
-                    if (s == monthModel.monthDate) {
-                        selectedPosition = index
-                        return@forEachIndexed
-                    }
-                }
-
-                if (listOfStringMonthDate.contains(monthModel.monthDate)) {
-                    selectedMonthDates.removeAt(selectedPosition)
-                } else
-                    selectedMonthDates.add(monthModel)
-            }
-        })
-
-
-    monthRV.adapter = monthAdapter
+    monthAdapter(carePoint, dialog, monthRV)
 
     if (carePoint.repeat_end_date != null) {
         val dateSelected =
@@ -158,7 +121,7 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
 
     }
     tvEndDate.setOnClickListener {
-        datePicker(tvEndDate, carePoint)
+        datePicker(tvEndDate, carePoint, dialog, monthRV)
     }
     leftV.setOnClickListener {
 
@@ -372,14 +335,10 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
             }
 
             RecurringEvent.Monthly.value -> {
-                /*val selectedDates = calendarPView.selectedDates
-                if (selectedDates.isEmpty()) {
+
+                if (selectedMonthDates == null || selectedMonthDates.size <= 0) {
                     showError(requireContext(), getString(R.string.please_select_atleast_one_date))
-                } */
-                if(selectedMonthDates==null || selectedMonthDates.size<=0){
-                    showError(requireContext(), getString(R.string.please_select_atleast_one_date))
-                }
-                else {
+                } else {
 
                     val date: ArrayList<Int> = arrayListOf()
                     for (i in selectedMonthDates) {
@@ -436,8 +395,56 @@ fun EditCarePointFragment.showRepeatDialog(carePoint: AddedEventModel) {
     dialog.show()
 }
 
-@SuppressLint("SetTextI18n", "SimpleDateFormat")
-fun EditCarePointFragment.datePicker(tvEndDate: AppCompatTextView, carePoint: AddedEventModel) {
+private fun EditCarePointFragment.monthAdapter(
+    carePoint: AddedEventModel,
+    dialog: Dialog,
+    monthRV: RecyclerView
+) {
+    val monthArrayList: ArrayList<MonthModel> = ArrayList()
+    for (i in 1..31) {
+        val monthModel = MonthModel()
+        monthModel.monthDate = i.toString()
+        if (!carePoint.month_dates.isNullOrEmpty()) {
+            monthModel.isSelected = carePoint.month_dates?.contains(i)!!
+            selectedMonthDates.add(monthModel)
+        }
+
+        monthArrayList.add(monthModel)
+    }
+
+
+    monthAdapter =
+        MonthAdapter(dialog.context, monthArrayList, object : MonthAdapter.selectedMonth {
+            override fun onMonthSelected(monthModel: MonthModel, position: Int) {
+                val listOfStringMonthDate: ArrayList<String> = ArrayList()
+                selectedMonthDates.forEach {
+                    listOfStringMonthDate.add(it.monthDate)
+                }
+                var selectedPosition = 0
+
+                listOfStringMonthDate.forEachIndexed { index, s ->
+                    if (s == monthModel.monthDate) {
+                        selectedPosition = index
+                        return@forEachIndexed
+                    }
+                }
+
+                if (listOfStringMonthDate.contains(monthModel.monthDate)) {
+                    selectedMonthDates.removeAt(selectedPosition)
+                } else
+                    selectedMonthDates.add(monthModel)
+            }
+        })
+
+
+    monthRV.adapter = monthAdapter
+}
+
+@SuppressLint("SetTextI18n", "SimpleDateFormat", "NotifyDataSetChanged")
+fun EditCarePointFragment.datePicker(
+    tvEndDate: AppCompatTextView, carePoint: AddedEventModel, dialog: Dialog,
+    monthRV: RecyclerView
+) {
     val c = Calendar.getInstance()
     val mYear = c[Calendar.YEAR]
     val mMonth = c[Calendar.MONTH]
@@ -468,9 +475,11 @@ fun EditCarePointFragment.datePicker(tvEndDate: AppCompatTextView, carePoint: Ad
             ) {
 
                 selectedMonthDates.clear()
-                monthAdapter.notifyDataSetChanged()
+                monthAdapter.clearSelectedList()
+//                monthAdapter(carePoint, dialog, monthRV)
 
                 selectedWeekDays.clear()
+                weekAdapter.clearSelectedList()
                 weekAdapter.notifyDataSetChanged()
             }
 

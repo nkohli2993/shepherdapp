@@ -51,11 +51,9 @@ class WeekAdapter (
         }
 
         holder.itemView.rootView.setOnClickListener {
-            if (weekDayNameList?.contains(data.name!!)!!) {
                 data.isSelected = !data.isSelected
                 listener.onDaySelected(weekList)
                 notifyDataSetChanged()
-            }
         }
     }
 
@@ -77,6 +75,7 @@ class WeekAdapter (
     fun setDayNameList(weekDayNameList: List<String>?) {
         this.weekDayNameList = weekDayNameList
     }
+    @SuppressLint("NotifyDataSetChanged")
     fun clearSelectedList() {
         weekList.forEach {
             it.isSelected = false
@@ -84,7 +83,6 @@ class WeekAdapter (
 
         notifyDataSetChanged()
     }
-
 
     interface  WeekDaySelected{
         fun onDaySelected(detail: ArrayList<WeekDataModel>)

@@ -329,7 +329,9 @@ class MemberDetailsFragment : BaseFragment<FragmentMemberDetailsBinding>(),
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.ivBack -> {
-                backPress()
+//                backPress()
+                findNavController().navigate(R.id.action_dashboard_to_care_team_members)
+
             }
 
             R.id.ivEdit -> {

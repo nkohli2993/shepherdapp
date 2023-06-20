@@ -94,7 +94,9 @@
         <action
             android:id="@+id/action_nav_edit_team_member_details"
             app:destination="@+id/nav_edit_team_member_details" />
-
+        <action
+            android:id="@+id/action_dashboard_to_care_team_members"
+            app:destination="@+id/nav_care_team" />
     </fragment>
 
     <fragment

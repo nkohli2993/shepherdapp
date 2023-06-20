@@ -64,7 +64,7 @@ class CareTeamChatAdapter (
 //                Const.LOVED_USER_DETAILS,
 //                LoveUser::class.java
 //            )
-            val loggedInUserId = loggedInUser!!.id
+            val loggedInUserId = loggedInUser!!.userId
 
             itemBinding.userId = loggedInUserId.toString()
 

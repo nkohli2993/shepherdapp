@@ -63,7 +63,6 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     }
 
     var weekAry: ArrayList<WeekDataModel> = arrayListOf()
-
     selectedDays.clear()
     val addedWeekDays: ArrayList<WeekDataModel> = arrayListOf()
 
@@ -86,22 +85,28 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
             }
             addedWeekDays.add(i)
         }
+
+        val startDateDate = SimpleDateFormat("MM/dd/yyyy").parse(startDate)
+        val lastDate = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue.endDate.toString())
+
     }
 
     if (addedWeekDays.size > 0) weekAry = addedWeekDays
-
-    weekAdapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
-        override fun onDaySelected(detail: ArrayList<WeekDataModel>) {
-            selectedDays.clear()
-            for (i in detail) {
-                if (i.isSelected) {
-                    selectedDays.add(i)
+    Handler(Looper.getMainLooper()).postDelayed({
+        weekAdapter = WeekAdapter(weekAry, object : WeekAdapter.WeekDaySelected {
+            override fun onDaySelected(detail: ArrayList<WeekDataModel>) {
+                selectedDays.clear()
+                for (i in detail) {
+                    if (i.isSelected) {
+                        selectedDays.add(i)
+                    }
                 }
+                selectedDays.sortBy { it.id }
             }
-            selectedDays.sortBy { it.id }
-        }
-    })
-    weekdaysRV.adapter = weekAdapter
+        })
+        weekdaysRV.adapter = weekAdapter
+    }, 100)
+
 
     var monthArrayList: ArrayList<MonthModel> = ArrayList()
     for (i in 1..31) {
@@ -113,6 +118,14 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
     // show selected month
 
     if (recurringValue != null && recurringValue.type == RecurringEvent.Monthly.value && recurringValue.value != null) {
+        selectedMonthDates.clear()
+        for (j in recurringValue.value!!) {
+            val monthValue = MonthModel()
+            monthValue.monthDate = j.toString()
+            monthValue.isSelected = true
+            selectedMonthDates.add(monthValue)
+        }
+
         val selectedMonthArrayList: ArrayList<MonthModel> = ArrayList()
         for (i in monthArrayList) {
             for (j in selectedMonthDates) {
@@ -124,26 +137,29 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
             }
             selectedMonthArrayList.add(i)
         }
-        if(selectedMonthArrayList.size>0){
-            monthArrayList= selectedMonthArrayList
+        if (selectedMonthArrayList.size > 0) {
+            monthArrayList = selectedMonthArrayList
         }
-    }else{
+    } else {
         selectedMonthDates.clear()
     }
 
+    Handler(Looper.getMainLooper()).postDelayed({
+        monthAdapter =
+            MonthAdapter(dialog.context, monthArrayList, object : MonthAdapter.selectedMonth {
+                override fun onMonthSelected(monthModel: MonthModel, position: Int) {
+                    if (selectedMonthDates.contains(monthModel))
+                        selectedMonthDates.remove(monthModel)
+                    else
+                        selectedMonthDates.add(monthModel)
+                }
+            })
 
-    monthAdapter =
-        MonthAdapter(dialog.context, monthArrayList, object : MonthAdapter.selectedMonth {
-            override fun onMonthSelected(monthModel: MonthModel,position:Int) {
-                if (selectedMonthDates.contains(monthModel))
-                    selectedMonthDates.remove(monthModel)
-                else
-                    selectedMonthDates.add(monthModel)
-            }
-        })
 
+        monthRV.adapter = monthAdapter
 
-    monthRV.adapter = monthAdapter
+    }, 100)
+
 
     if (recurringValue?.endDate != null) {
         val dateSelected =
@@ -204,12 +220,6 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                     val startDateDate = SimpleDateFormat("MM/dd/yyyy").parse(startDate)
                     val lastDate = SimpleDateFormat("MM/dd/yyyy").parse(tvEndDate.text.toString())
 
-                    weekAdapter.setDayNameList(
-                        CommonFunctions.getWeekDayNameList(
-                            startDateDate,
-                            lastDate
-                        )
-                    )
 
                     value.type = RecurringEvent.Weekly.value
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -345,7 +355,7 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                     showEventEndDate(
                         EventRecurringModel(
                             RecurringEvent.Weekly.value,
-                                date,
+                            date,
                             tvEndDate.text.toString(), "week"
                         ), days.joinToString()
                     )
@@ -406,6 +416,15 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
         if (recurringValue != null) {
             if (recurringValue.type == RecurringEvent.Weekly.value && recurringValue.value != null) {
                 val days: ArrayList<String> = arrayListOf()
+                selectedDays.clear()
+                for (i in weekAry) {
+                    for (j in recurringValue.value!!) {
+                        if (i.id == j) {
+                            selectedDays.add(i)
+                            break
+                        }
+                    }
+                }
                 for (i in selectedDays) {
                     days.add(i.name!!)
                 }
@@ -425,9 +444,10 @@ fun AddNewEventFragment.showRepeatDialog(startDate: String, recurringValue: Even
                     null
                 )
             )
+            radioGroup.clearCheck()
         }
 
-        radioGroup.clearCheck()
+
         dialog.dismiss()
     }
 
@@ -470,9 +490,11 @@ fun AddNewEventFragment.datePicker(tvEndDate: AppCompatTextView, startDate: Stri
             ) {
 
                 selectedMonthDates.clear()
-                monthAdapter.notifyDataSetChanged()
+                monthAdapter.clearSelectedList()
+//                monthAdapter(carePoint, dialog, monthRV)
 
                 selectedDays.clear()
+                weekAdapter.clearSelectedList()
                 weekAdapter.notifyDataSetChanged()
             }
 

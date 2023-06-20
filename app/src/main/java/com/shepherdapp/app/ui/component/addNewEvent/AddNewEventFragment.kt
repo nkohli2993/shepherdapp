@@ -807,19 +807,24 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         var selectedDates = ""
         val selectedMonthListName: ArrayList<Int> = arrayListOf()
 
-        selectedMonthDates.forEach {
-            selectedMonthListName.add(it.monthDate.toInt())
+        if(selectedMonthDates.size>0){
+            selectedMonthDates.forEach {
+                selectedMonthListName.add(it.monthDate.toInt())
+            }
+
+            selectedMonthListName.sort()
+            selectedMonthListName.forEach {
+                selectedDates = if (selectedDates.isNotEmpty())
+                    "$selectedDates,$it"
+                else
+                    it.toString()
+            }
+
+            fragmentAddNewEventBinding.txtValue.text = selectedMonthListName.joinToString()
+        }else{
+            fragmentAddNewEventBinding.txtValue.text = value.value!!.joinToString()
         }
 
-        selectedMonthListName.sort()
-        selectedMonthListName.forEach {
-            selectedDates = if (selectedDates.isNotEmpty())
-                selectedDates + "," + it
-            else
-                it.toString()
-        }
-
-        fragmentAddNewEventBinding.txtValue.text = selectedDates
 
 
         when (value.type) {

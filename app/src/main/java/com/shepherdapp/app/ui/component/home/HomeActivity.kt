@@ -927,7 +927,13 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
             }
 
             else -> {
-                super.onBackPressed()
+
+                val destArray = listOf<Int>(R.id.nav_team_member_details)
+                if (destArray.contains(navController.currentDestination?.id)) {
+                    navController.navigate(R.id.action_dashboard_to_care_team_members)
+                } else {
+                    super.onBackPressed()
+                }
                 overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right

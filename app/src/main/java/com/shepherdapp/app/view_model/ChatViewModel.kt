@@ -302,10 +302,10 @@ class ChatViewModel @Inject constructor(
         val data = MessageData().apply {
             content = message
             isRead = false
-            senderID = userRepository.getCurrentUser()?.id.toString()
+            senderID = userRepository.getCurrentUser()?.userId.toString()
             messageType = msgType
             readIds = ArrayList<String>().apply {
-                add(userRepository.getCurrentUser()?.id.toString())
+                add(userRepository.getCurrentUser()?.userId.toString())
             }
             senderName =
                 userRepository.getCurrentUser()?.firstname + " " + userRepository.getCurrentUser()?.lastname
@@ -442,8 +442,8 @@ class ChatViewModel @Inject constructor(
             messageData.content!!,
             roomId!!,
             UserDataMessages(
-                userRepository.getCurrentUser()?.id!!,
-                userRepository.getCurrentUser()?.id!!,
+                userRepository.getCurrentUser()?.userId!!,
+                userRepository.getCurrentUser()?.userId!!,
                 userRepository.getCurrentUser()?.firstname!!,
                 userRepository.getCurrentUser()?.lastname,
                 userRepository.getCurrentUser()?.profilePhoto ?: ""
@@ -458,7 +458,7 @@ class ChatViewModel @Inject constructor(
             arrayListOf(roomArray[0].toLong(), roomArray[1].toLong()),
             Timestamp(Calendar.getInstance().time),
             unReadCount,
-            userRepository.getCurrentUser()?.id?.toLong()
+            userRepository.getCurrentUser()?.userId?.toLong()
         )
 
         db.collection(tableName!!).document(id!!)
