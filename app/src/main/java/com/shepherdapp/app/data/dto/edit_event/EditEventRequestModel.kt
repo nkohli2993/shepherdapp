@@ -17,4 +17,5 @@ data class EditEventRequestModel(
     @SerializedName("repeat_end_date") var repeat_end_date: String? = null,
     @SerializedName("week_days") var week_days: ArrayList<Int>? = null,
     @SerializedName("month_dates") var month_dates: ArrayList<Int>?  = null,
+    @SerializedName("year_dates") var year_dates: ArrayList<String>?  = null,
 )

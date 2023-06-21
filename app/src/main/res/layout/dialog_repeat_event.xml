@@ -63,7 +63,6 @@
                     android:fontFamily="@font/gotham_medium"
                     android:gravity="center_vertical"
                     android:hint="@string/dd_mm_year"
-                    android:onClick="@{listener::onClick}"
                     android:paddingHorizontal="@dimen/_8sdp"
                     android:paddingVertical="@dimen/_20sdp"
                     android:textColor="@color/_192032"
@@ -127,7 +126,6 @@
                         android:layout_height="wrap_content"
                         android:button="@drawable/radio_button"
                         android:fontFamily="@font/gotham_medium"
-                        android:visibility="gone"
                         android:paddingHorizontal="@dimen/_10sdp"
                         android:text="@string/every_year"
                         android:textColor="@color/_192032"
@@ -172,7 +170,6 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:mcv_allowClickDaysOutsideCurrentMonth="false"
                         app:mcv_calendarMode="month"
-                        android:visibility="gone"
                         app:mcv_firstDayOfWeek="sunday"
                         app:mcv_headerTextAppearance="@style/TextViewGothamMedium"
                         app:mcv_leftArrowMask="@drawable/ic_left_arrow_calendar"
@@ -185,9 +182,8 @@
                     <View
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_25sdp"
-                        android:layout_marginTop="@dimen/_43sdp"
+                        android:layout_marginTop="@dimen/_40sdp"
                         android:background="#80C3C3C3"
-                        android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="@+id/calendarPView"
                         app:layout_constraintStart_toStartOf="@+id/calendarPView"
                         app:layout_constraintTop_toTopOf="@+id/calendarPView" />
@@ -243,7 +239,6 @@
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
-
 
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

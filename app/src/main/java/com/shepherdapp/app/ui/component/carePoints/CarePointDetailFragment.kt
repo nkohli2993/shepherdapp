@@ -508,6 +508,19 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
                             it.txtValue.text = payload.month_dates?.joinToString()
                         }
 
+                        RecurringFlag.Yearly.value -> {
+                            it.txtType.text = getString(R.string.every_year)
+                            if (payload.year_dates != null) {
+                                val calendarYear =
+                                    SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+                                val date = SimpleDateFormat("dd-MM-yyyy").parse(
+                                    payload.year_dates!![0].plus("-$calendarYear")
+                                )
+                                it.txtValue.text = SimpleDateFormat("dd MMM").format(date!!)
+                            }
+
+                        }
+
                         else -> {
 
                         }
@@ -603,8 +616,10 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
             R.id.txtMoreAssignee -> {
                 findNavController().navigate(
                     R.id.action_to_assigneeUsersFragment,
-                    bundleOf("assignee_user" to eventDetail?.user_assignes,
-                        "loved_one_id" to eventDetail?.loved_one_user_id)
+                    bundleOf(
+                        "assignee_user" to eventDetail?.user_assignes,
+                        "loved_one_id" to eventDetail?.loved_one_user_id
+                    )
                 )
             }
 

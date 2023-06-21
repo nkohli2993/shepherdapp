@@ -82,7 +82,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
     var radioGroupCheckId = 0
     var selectedMonthDates: ArrayList<MonthModel> = ArrayList()
     var selectedWeekDays: ArrayList<WeekDataModel> = arrayListOf()
-
+    val formate = SimpleDateFormat("MM/dd/yyyy")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -260,6 +260,19 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         fragmentEditCarePointBinding.txtValue.text =
                             selectedDates
                 }
+                RecurringFlag.Yearly.value -> {
+
+                    fragmentEditCarePointBinding.txtType.text = getString(R.string.every_year)
+                    if (carePoint!!.year_dates != null) {
+                        val calendarYear =
+                            SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+                        val date = SimpleDateFormat("dd-MM-yyyy").parse(
+                            carePoint!!.year_dates!![0].plus("-$calendarYear")
+                        )
+                        fragmentEditCarePointBinding.txtValue.text = SimpleDateFormat("dd MMM").format(date!!)
+                    }
+
+                }
 
                 else -> {
 
@@ -345,8 +358,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
                 is DataResult.Success -> {
                     hideLoading()
-//                    fragmentEditCarePointBinding.tvSelect.setOnCheckedChangeListener(null)
-
                     val payload = result.data.payload
                     careteams.addAll(payload.data)
 
@@ -413,7 +424,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
                 is DataResult.Success -> {
                     hideLoading()
-//                    showSuccess(requireContext(), it.data.message.toString())
                     showSuccess(requireContext(), "CarePoint updated successfully")
                     backPress()
                 }
@@ -646,26 +656,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         get() {
             var eventDate: Date? = null
             var currentDate: Date? = null
-            /*
-                        if (fragmentEditCarePointBinding.tvDate.text.toString().trim()
-                                .isNotEmpty() && fragmentEditCarePointBinding.tvTime.text.toString().trim()
-                                .isNotEmpty()
-                        ) {
-                            val df = SimpleDateFormat(
-                                "MM-dd-yyyy hh:mm a",
-                                Locale.getDefault()
-                            ) // pass the format pattern that you like and done.
-                            eventDate = df.parse(
-                                fragmentEditCarePointBinding.tvDate.text.toString().trim() + " " +
-                                        fragmentEditCarePointBinding.tvTime.text.toString()
-                                            .trim() + " " + isAmPm
-                            )
-                            currentDate = df.parse(df.format(Date()))
-
-
-                        }
-            */
-
             when {
                 fragmentEditCarePointBinding.etEventName.text.toString().trim().isEmpty() -> {
                     fragmentEditCarePointBinding.etEventName.error =
@@ -698,11 +688,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     showInfo(requireContext(), getString(R.string.please_enter_time_of_birth))
                     fragmentEditCarePointBinding.tvTime.requestFocus()
                 }
-
-                /* eventDate?.before(currentDate)!! -> {
-                     showInfo(requireContext(), getString(R.string.please_select_fututre_date))
-                     fragmentEditCarePointBinding.tvDate.requestFocus()
-                 }*/
 
                 else -> {
                     return true
@@ -744,6 +729,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             var dateWeekValue: ArrayList<Int>? = null
             var dateMonthValue: ArrayList<Int>? = null
             var selectedMonthListString: ArrayList<Int>? = null
+            var selectedYearListString: ArrayList<String>? = null
             if (carePoint != null && carePoint!!.repeat_flag == RecurringFlag.Weekly.value) {
                 dateWeekValue = carePoint!!.week_days
                 // add check for start date
@@ -765,19 +751,11 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     }
                     val dateStart = now.time
                     val format = SimpleDateFormat("yyyy-MM-dd").format(dateStart)
-//                    val getstartDate = SimpleDateFormat("yyyy-MM-dd").parse(format)
-//                    val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
                     selectedDate = format
-                    /* if (selectedStartDate.before(getstartDate)) {
-                         selectedDate = format
-                     }
- */
-                    Log.e("catch_exception", "startDate: $selectedDate")
                 }
 
 
             } else if (carePoint != null && carePoint!!.repeat_flag == RecurringFlag.Monthly.value) {
-//                dateMonthValue = recurringValue!!.value
                 selectedMonthListString = arrayListOf()
                 selectedMonthDates.forEach {
                     selectedMonthListString!!.add(it.monthDate.toInt())
@@ -806,26 +784,19 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
 
                         }
                     }
-
                     val format = SimpleDateFormat("yyyy-MM").format(dateStart)
-                    Log.e(
-                        "catch_exception",
-                        "date: ${format.plus("-${nextDayValue}")} $selectedDate"
-                    )
-                    val getstartDate =
-                        SimpleDateFormat("yyyy-MM-dd").parse(format.plus("-${nextDayValue}"))
-                    val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
                     selectedDate = format.plus("-${nextDayValue}")
-                    /*
-                                        if (selectedStartDate.before(getstartDate)) {
-                                            selectedDate = format.plus("-${nextDayValue}")
-                                        }
-                    */
 
-                    Log.e("catch_exception", "startDate: $selectedDate")
                 }
+            }
+            else if (carePoint != null && carePoint!!.repeat_flag == RecurringFlag.Yearly.value) {
+                selectedYearListString = arrayListOf()
+                selectedYearListString.clear()
+                selectedYearListString.addAll(recurringValue!!.value_year!!)
 
-
+                val calendarYear  = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+                val date = SimpleDateFormat("dd-MM-yyyy").parse(recurringValue!!.value_year!![0].plus("-$calendarYear"))
+                selectedDate =  SimpleDateFormat("yyyy-MM-dd").format(date!!)
             }
             if (dateWeekValue != null) {
                 val hset: HashSet<Int> = HashSet<Int>(dateWeekValue)
@@ -843,9 +814,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate!!)
 
 
-
-
-
             carePoint?.id?.let {
                 editEventViewModel.editCarePoint(
                     EditEventRequestModel(
@@ -859,7 +827,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         repeat_flag = carePoint!!.repeat_flag,
                         repeat_end_date = selectedEndDate,
                         week_days = dateWeekValue,
-                        month_dates = selectedMonthListString
+                        month_dates = selectedMonthListString,
+                        year_dates = selectedYearListString
                     ),
                     it
                 )
@@ -1062,6 +1031,9 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             RecurringEvent.Monthly.value -> {
                 visibleRecurringView(valueBoolean = true, value)
             }
+            RecurringEvent.Yearly.value -> {
+                visibleRecurringView(valueBoolean = true, value,days)
+            }
         }
     }
 
@@ -1079,36 +1051,6 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
         fragmentEditCarePointBinding.txtEndDate.text = "Ends on - $endDate"
         if (value.value != null) {
             value.value!!.sort()
-        }
-        var selectedDates = ""
-        var selectedMonthListName: ArrayList<Int> = arrayListOf()
-        Log.e("catch_exception", " visibleRecurringView : selectedMonthDates: $selectedMonthDates")
-        selectedMonthDates.forEach {
-            selectedMonthListName.add(it.monthDate.toInt())
-        }
-
-        selectedMonthListName.sort()
-
-        if (!selectedMonthListName.isNullOrEmpty()) {
-            val hset: HashSet<Int> = HashSet<Int>(selectedMonthListName)
-            selectedMonthListName.clear()
-            selectedMonthListName = arrayListOf()
-            selectedMonthListName.addAll(hset)
-        }
-        selectedMonthListName.sort()
-        selectedMonthListName.forEach {
-            selectedDates = if (selectedDates.isNotEmpty())
-                selectedDates + "," + it
-            else
-                it.toString()
-        }
-
-        if (selectedDates.isNullOrEmpty())
-            fragmentEditCarePointBinding.txtValue.text = value.value?.joinToString()
-        else{
-
-
-            fragmentEditCarePointBinding.txtValue.text = selectedDates
         }
 
 
@@ -1145,9 +1087,56 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 carePoint!!.week_days = arrayListOf()
                 carePoint!!.month_dates?.clear()
                 carePoint!!.month_dates = arrayListOf()
-                carePoint!!.month_dates?.addAll(value.value!!)
-            }
+                var selectedDates = ""
+                var selectedMonthListName: ArrayList<Int> = arrayListOf()
+                selectedMonthDates.forEach {
+                    selectedMonthListName.add(it.monthDate.toInt())
+                }
 
+                selectedMonthListName.sort()
+
+                if (!selectedMonthListName.isEmpty()) {
+                    val hset: HashSet<Int> = HashSet<Int>(selectedMonthListName)
+                    selectedMonthListName.clear()
+                    selectedMonthListName = arrayListOf()
+                    selectedMonthListName.addAll(hset)
+                }
+                selectedMonthListName.sort()
+
+
+                selectedMonthListName.forEach {
+                    selectedDates = if (selectedDates.isNotEmpty())
+                        "$selectedDates,$it"
+                    else
+                        it.toString()
+                }
+
+                if (selectedDates.isEmpty())
+                    fragmentEditCarePointBinding.txtValue.text = value.value?.joinToString()
+                else {
+                    fragmentEditCarePointBinding.txtValue.text = selectedDates
+                }
+
+                if (selectedMonthListName.isNotEmpty()) {
+                    carePoint!!.month_dates?.clear()
+                    carePoint!!.month_dates?.addAll(selectedMonthListName)
+                }
+
+            }
+            RecurringEvent.Yearly.value -> {
+                carePoint!!.repeat_flag = "year"
+                fragmentEditCarePointBinding.txtType.text = "Every year"
+                fragmentEditCarePointBinding.txtValue.text = days
+
+                carePoint!!.week_days?.clear()
+                carePoint!!.week_days = arrayListOf()
+                carePoint!!.month_dates?.clear()
+                carePoint!!.month_dates = arrayListOf()
+
+                carePoint!!.year_dates?.clear()
+                carePoint!!.year_dates = arrayListOf()
+                carePoint!!.year_dates!!.addAll(value.value_year!!)
+            }
             else -> {
                 fragmentEditCarePointBinding.txtType.text = "None"
                 fragmentEditCarePointBinding.repeatCB.isChecked = false

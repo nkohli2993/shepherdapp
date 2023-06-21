@@ -161,7 +161,6 @@ class MessagesViewModel @Inject constructor(
     ): ListenerRegistration {
         var opponentUserIdList: ArrayList<ChatUserListing> = ArrayList()
         return db.collection(tableName!!)
-            //.whereArrayContains("userIds", FirebaseAuth.getInstance().currentUser?.uid!!)
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 if (firebaseFirestoreException != null) {
                     Log.e("FIRESTORE", "Users listener error.", firebaseFirestoreException)
@@ -170,12 +169,7 @@ class MessagesViewModel @Inject constructor(
                 opponentUserIdList = ArrayList()
                 querySnapshot?.documents?.forEach {
                     val userIds = it.id.split("-")
-                    Log.e("catch_dat", "value: $userIds $userId $loveOneId")
-//                    userIds.forEachIndexed { index, s ->
-//
-//                    }
                     if (it.id.contains(userId.toString()) && it.id.contains(loveOneId.toString())) {
-//                        if (s.contains(usersList.joinToString().replace(" ","").replace(",","-"))) {
                         val users = it.toObject(ChatUserListing::class.java)
                         opponentUserIdList.add(users!!)
                     }

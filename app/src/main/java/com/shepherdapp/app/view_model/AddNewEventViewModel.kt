@@ -99,6 +99,7 @@ class AddNewEventViewModel @Inject constructor(
         repeat_end_date: String?,
         week_days: ArrayList<Int>?,
         month_dates: ArrayList<Int>?,
+        year_dates: ArrayList<String>?,
     ): LiveData<Event<DataResult<CreateEventResponseModel>>> {
         createEventData.value.let {
             it?.loved_one_user_id = loved_one_user_id
@@ -112,6 +113,7 @@ class AddNewEventViewModel @Inject constructor(
             it?.repeat_end_date= repeat_end_date
             it?.week_days = week_days
             it?.month_dates = month_dates
+            it?.year_dates = year_dates
 
         }
 

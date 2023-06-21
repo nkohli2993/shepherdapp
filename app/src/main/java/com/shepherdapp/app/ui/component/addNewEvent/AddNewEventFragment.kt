@@ -52,9 +52,8 @@ import kotlin.collections.ArrayList
  */
 @AndroidEntryPoint
 @SuppressLint("SimpleDateFormat", "SetTextI18n", "NotifyDataSetChanged")
-class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
-    View.OnClickListener, AssignToEventAdapter.selectedTeamMember,
-    DatePickerDialog.OnDateSetListener {
+class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(), View.OnClickListener,
+    AssignToEventAdapter.selectedTeamMember, DatePickerDialog.OnDateSetListener {
     private lateinit var fragmentAddNewEventBinding: FragmentAddNewEventBinding
     private var assigneeAdapter: AssigneAdapter? = null
     private val addNewEventViewModel: AddNewEventViewModel by viewModels()
@@ -73,14 +72,11 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     lateinit var monthAdapter: MonthAdapter
     lateinit var weekAdapter: WeekAdapter
     var radioGroupCheckId = 0
-
+    val formate = SimpleDateFormat("MM/dd/yyyy")
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        fragmentAddNewEventBinding =
-            FragmentAddNewEventBinding.inflate(inflater, container, false)
+        fragmentAddNewEventBinding = FragmentAddNewEventBinding.inflate(inflater, container, false)
 
         return fragmentAddNewEventBinding.root
     }
@@ -105,8 +101,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         fragmentAddNewEventBinding.repeatCB.setOnClickListener {
             if (fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty()) {
                 showError(
-                    requireContext(),
-                    getString(R.string.please_select_new_care_point_date_firts)
+                    requireContext(), getString(R.string.please_select_new_care_point_date_firts)
                 )
                 fragmentAddNewEventBinding.tvDate.requestFocus()
                 fragmentAddNewEventBinding.repeatCB.isChecked = false
@@ -148,10 +143,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     private fun getAssignedToMembers() {
         addNewEventViewModel.getMembers(
-            pageNumber,
-            limit,
-            status,
-            addNewEventViewModel.getLovedOneUUId()
+            pageNumber, limit, status, addNewEventViewModel.getLovedOneUUId()
         )
     }
 
@@ -174,8 +166,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Success -> {
                     hideLoading()
                     showSuccess(
-                        requireContext(),
-                        getString(R.string.new_care_point_added_successfully)
+                        requireContext(), getString(R.string.new_care_point_added_successfully)
                     )
                     backPress()
                 }
@@ -207,9 +198,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         it.permission?.contains("1")!!
                     }.toMutableList()
                     assigneeAdapter = AssigneAdapter(
-                        this,
-                        requireContext(),
-                        careTeams
+                        this, requireContext(), careTeams
                     )
                     fragmentAddNewEventBinding.assigneRV.adapter = assigneeAdapter
 
@@ -219,9 +208,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 is DataResult.Failure -> {
                     careTeams.add(CareTeamModel())
                     assigneeAdapter = AssigneAdapter(
-                        this,
-                        requireContext(),
-                        careTeams
+                        this, requireContext(), careTeams
                     )
                     fragmentAddNewEventBinding.assigneRV.adapter = assigneeAdapter
                     hideLoading()
@@ -276,9 +263,12 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
     private fun rotate(degree: Float) {
         val rotateAnim = RotateAnimation(
-            0.0f, degree,
-            RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-            RotateAnimation.RELATIVE_TO_SELF, 0.5f
+            0.0f,
+            degree,
+            RotateAnimation.RELATIVE_TO_SELF,
+            0.5f,
+            RotateAnimation.RELATIVE_TO_SELF,
+            0.5f
         )
         rotateAnim.duration = 0
         rotateAnim.fillAfter = true
@@ -355,8 +345,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
     private fun changeTimeAmPm(amPm: String) {
         if (fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty()) {
             showError(
-                requireContext(),
-                getString(R.string.please_select_new_care_point_date_firts)
+                requireContext(), getString(R.string.please_select_new_care_point_date_firts)
             )
             fragmentAddNewEventBinding.tvDate.requestFocus()
         } else if (fragmentAddNewEventBinding.tvTime.text.toString().trim().isEmpty()) {
@@ -370,9 +359,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                 SimpleDateFormat("MM/dd/yyyy hh:mm a").format(Calendar.getInstance().time)
 
             val dateFormat = SimpleDateFormat("MM/dd/yyyy hh:mm a")
-            if (dateFormat.parse(selectedDateTime)!!
-                    .after(dateFormat.parse(currentDateTime))
-            ) {
+            if (dateFormat.parse(selectedDateTime)!!.after(dateFormat.parse(currentDateTime))) {
                 if (amPm == "am") {
                     isAmPm = "am"
                     setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
@@ -395,22 +382,20 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
         val mDay = c[Calendar.DAY_OF_MONTH]
 
         val datePickerDialog = DatePickerDialog(
-            requireActivity(), R.style.datepicker,
-            { _, year, monthOfYear, dayOfMonth ->
-                fragmentAddNewEventBinding.tvDate.text =
-                    "${
-                        if (monthOfYear + 1 < 10) {
-                            "0${(monthOfYear + 1)}"
-                        } else {
-                            (monthOfYear + 1)
-                        }
-                    }/${
-                        if (dayOfMonth + 1 < 10) {
-                            "0$dayOfMonth"
-                        } else {
-                            dayOfMonth
-                        }
-                    }/$year"
+            requireActivity(), R.style.datepicker, { _, year, monthOfYear, dayOfMonth ->
+                fragmentAddNewEventBinding.tvDate.text = "${
+                    if (monthOfYear + 1 < 10) {
+                        "0${(monthOfYear + 1)}"
+                    } else {
+                        (monthOfYear + 1)
+                    }
+                }/${
+                    if (dayOfMonth + 1 < 10) {
+                        "0$dayOfMonth"
+                    } else {
+                        dayOfMonth
+                    }
+                }/$year"
 
                 fragmentAddNewEventBinding.tvTime.text = ""
                 isAmPm = null
@@ -452,8 +437,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
                 assignTo.size <= 0 -> {
                     showInfo(
-                        requireContext(),
-                        getString(R.string.please_select_whome_to_assign_event)
+                        requireContext(), getString(R.string.please_select_whome_to_assign_event)
                     )
                 }
 
@@ -505,6 +489,7 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
             var dateWeekValue: ArrayList<Int>? = null
             var dateMonthValue: ArrayList<Int>? = null
             var selectedMonthListString: ArrayList<Int>? = null
+            var selectedYearListString: ArrayList<String>? = null
             if (recurringValue != null && recurringValue!!.type == RecurringEvent.Weekly.value) {
                 dateWeekValue = recurringValue!!.value
                 // add check for start date
@@ -525,28 +510,18 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
                         now.add(Calendar.DAY_OF_YEAR, days)
                     }
                     val dateStart = now.time
-                    val format = SimpleDateFormat("yyyy-MM-dd").format(dateStart)
-//                    val getstartDate = SimpleDateFormat("yyyy-MM-dd").parse(format)
-//                    val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
-                    selectedDate = format
-                    /* if (selectedStartDate.before(getstartDate)) {
-                         selectedDate = format
-                     }
- */
-                    Log.e("catch_exception", "startDate: $selectedDate")
+                    selectedDate =  SimpleDateFormat("yyyy-MM-dd").format(dateStart)
                 }
 
 
-            }
-            else if (recurringValue != null && recurringValue!!.type == RecurringEvent.Monthly.value) {
-//                dateMonthValue = recurringValue!!.value
+            } else if (recurringValue != null && recurringValue!!.type == RecurringEvent.Monthly.value) {
                 selectedMonthListString = arrayListOf()
                 selectedMonthDates.forEach {
                     selectedMonthListString!!.add(it.monthDate.toInt())
                 }
 
                 selectedMonthListString.sort()
-                if (!selectedMonthListString.isNullOrEmpty()) {
+                if (!selectedMonthListString.isEmpty()) {
                     val hset: HashSet<Int> = HashSet<Int>(selectedMonthListString)
                     selectedMonthListString.clear()
                     selectedMonthListString = arrayListOf()
@@ -555,343 +530,330 @@ class AddNewEventFragment : BaseFragment<FragmentAddNewEventBinding>(),
 
                 val now = Calendar.getInstance()
                 val dateStart = now.time
-                val currentDate =  SimpleDateFormat("dd").format(dateStart)
+                val currentDate = SimpleDateFormat("dd").format(dateStart)
                 // add check for start date
-                if (selectedMonthListString != null) {
-                    selectedMonthListString.sort()
+                selectedMonthListString.sort()
 
-                    var nextDayValue = -1
-                    for (i in selectedMonthListString) {
-                        if (i >= currentDate.toInt()) {
-                            nextDayValue = i
-                            break
+                var nextDayValue = -1
+                for (i in selectedMonthListString) {
+                    if (i >= currentDate.toInt()) {
+                        nextDayValue = i
+                        break
 
-                        }
                     }
-
-                    val format = SimpleDateFormat("yyyy-MM").format(dateStart)
-                    Log.e(
-                        "catch_exception",
-                        "date: ${format.plus("-${nextDayValue}")} $selectedDate"
-                    )
-                    val getstartDate =
-                        SimpleDateFormat("yyyy-MM-dd").parse(format.plus("-${nextDayValue}"))
-                    val selectedStartDate = SimpleDateFormat("yyyy-MM-dd").parse(selectedDate)
-                    selectedDate = format.plus("-${nextDayValue}")
-                    /*
-                                        if (selectedStartDate.before(getstartDate)) {
-                                            selectedDate = format.plus("-${nextDayValue}")
-                                        }
-                    */
-
-                    Log.e("catch_exception", "startDate: $selectedDate")
                 }
+                val format = SimpleDateFormat("yyyy-MM").format(dateStart)
+                selectedDate = format.plus("-${nextDayValue}")
 
 
             }
-            if (dateWeekValue != null) {
-                val hset: HashSet<Int> = HashSet<Int>(dateWeekValue)
-                dateWeekValue.clear()
-                dateWeekValue = arrayListOf()
-                dateWeekValue.addAll(hset)
+            else if (recurringValue != null && recurringValue!!.type == RecurringEvent.Yearly.value) {
+                selectedYearListString = arrayListOf()
+                selectedYearListString.clear()
+                selectedYearListString.addAll(recurringValue!!.value_year!!)
+
+                val calendarYear  = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+                val date = SimpleDateFormat("dd-MM-yyyy").parse(recurringValue!!.value_year!![0].plus("-$calendarYear"))
+                selectedDate =  SimpleDateFormat("yyyy-MM-dd").format(date!!)
             }
-            if (dateMonthValue != null) {
-                val hset: HashSet<Int> = HashSet<Int>(dateMonthValue)
-                dateMonthValue.clear()
-                dateMonthValue = arrayListOf()
-                dateMonthValue.addAll(hset)
-            }
-            val endDate = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue?.endDate!!)
-            val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate)
+        if (dateWeekValue != null) {
+            val hset: HashSet<Int> = HashSet<Int>(dateWeekValue)
+            dateWeekValue.clear()
+            dateWeekValue = arrayListOf()
+            dateWeekValue.addAll(hset)
+        }
+        if (dateMonthValue != null) {
+            val hset: HashSet<Int> = HashSet<Int>(dateMonthValue)
+            dateMonthValue.clear()
+            dateMonthValue = arrayListOf()
+            dateMonthValue.addAll(hset)
+        }
+        val endDate = SimpleDateFormat("MM/dd/yyyy").parse(recurringValue?.endDate!!)
+        val selectedEndDate = SimpleDateFormat("yyyy-MM-dd").format(endDate)
 
 
-            addNewEventViewModel.createEvent(
-                addNewEventViewModel.getLovedOneUUId(),
-                fragmentAddNewEventBinding.etEventName.text.toString().trim(),
-                fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
-                selectedDate,
-                selectedTime,
-                note,
-                assignTo,
-                recurringValue?.typeValue!!,
-                selectedEndDate,
-                dateWeekValue,
-                selectedMonthListString
+        addNewEventViewModel.createEvent(
+            addNewEventViewModel.getLovedOneUUId(),
+            fragmentAddNewEventBinding.etEventName.text.toString().trim(),
+            fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
+            selectedDate,
+            selectedTime,
+            note,
+            assignTo,
+            recurringValue?.typeValue!!,
+            selectedEndDate,
+            dateWeekValue,
+            selectedMonthListString,
+            selectedYearListString
+        )
+    } else
+    {
+        addNewEventViewModel.createEvent(
+            addNewEventViewModel.getLovedOneUUId(),
+            fragmentAddNewEventBinding.etEventName.text.toString().trim(),
+            fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
+            selectedDate,
+            selectedTime,
+            note,
+            assignTo,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+
+    }
+}
+
+override fun getLayoutRes(): Int {
+    return R.layout.fragment_add_new_event
+}
+
+override fun onSelected(position: Int) {
+    fragmentAddNewEventBinding.tvSelect.setOnCheckedChangeListener(null)
+    careTeams[position].isSelected = !careTeams[position].isSelected!!
+    fragmentAddNewEventBinding.assigneRV.postDelayed({
+        assigneeAdapter!!.notifyDataSetChanged()
+    }, 100)
+
+    val assignee: ArrayList<String> = arrayListOf()
+    assignee.clear()
+    for (i in careTeams) {
+        if (i.isSelected == true) {
+            assignee.add(
+                i.user_id_details?.firstname!!.plus(" ")
+                    .plus(i.user_id_details?.lastname?.ifEmpty { null })
             )
-        } else {
-            addNewEventViewModel.createEvent(
-                addNewEventViewModel.getLovedOneUUId(),
-                fragmentAddNewEventBinding.etEventName.text.toString().trim(),
-                fragmentAddNewEventBinding.edtAddress.text.toString().trim(),
-                selectedDate,
-                selectedTime,
-                note,
-                assignTo, null, null, null, null
-            )
-
         }
     }
 
-    override fun getLayoutRes(): Int {
-        return R.layout.fragment_add_new_event
+    if (assignee.size > 0) {
+        fragmentAddNewEventBinding.assigneET.setText(assignee.joinToString())
+    } else {
+        fragmentAddNewEventBinding.assigneET.setText("")
     }
 
-    override fun onSelected(position: Int) {
-        fragmentAddNewEventBinding.tvSelect.setOnCheckedChangeListener(null)
-        careTeams[position].isSelected = !careTeams[position].isSelected!!
-        fragmentAddNewEventBinding.assigneRV.postDelayed({
-            assigneeAdapter!!.notifyDataSetChanged()
-        }, 100)
-
-        val assignee: ArrayList<String> = arrayListOf()
-        assignee.clear()
-        for (i in careTeams) {
-            if (i.isSelected == true) {
-                assignee.add(
-                    i.user_id_details?.firstname!!.plus(" ")
-                        .plus(i.user_id_details?.lastname?.ifEmpty { null })
-                )
-            }
+    var isAllChecked = true
+    careTeams.forEach {
+        if (it.isSelected == false) {
+            isAllChecked = false
+            return@forEach
         }
-
-        if (assignee.size > 0) {
-            fragmentAddNewEventBinding.assigneET.setText(assignee.joinToString())
-        } else {
-            fragmentAddNewEventBinding.assigneET.setText("")
-        }
-
-        var isAllChecked = true
-        careTeams.forEach {
-            if (it.isSelected == false) {
-                isAllChecked = false
-                return@forEach
-            }
-        }
-
-        fragmentAddNewEventBinding.tvSelect.isChecked = isAllChecked
-
-        selectAllAssigneeCheckBoxListener()
     }
 
-    private fun timePicker() {
-        if (fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty()) {
-            showError(requireContext(), getString(R.string.please_select_new_care_point_date_firts))
-            fragmentAddNewEventBinding.tvDate.requestFocus()
-        } else {
-            val mCurrentTime = Calendar.getInstance()
-            if (fragmentAddNewEventBinding.tvTime.text.isNotEmpty()) {
-                val dateTime = fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ")
-                    .plus(fragmentAddNewEventBinding.tvTime.text.toString().plus(" $isAmPm"))
-                mCurrentTime.time = SimpleDateFormat("MM/dd/yyyy hh:mm a").parse(dateTime)!!
-            }
-            var hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
-            var minute = mCurrentTime.get(Calendar.MINUTE)
+    fragmentAddNewEventBinding.tvSelect.isChecked = isAllChecked
 
-            val mTimePicker = TimePickerDialog(
-                context, R.style.datepicker,
-                { _, hourOfDay, selectedMinutes ->
-                    //check event time for future events  only
-                    val selectedDateTime =
-                        fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ")
-                            .plus(String.format("%02d:%02d", hourOfDay, selectedMinutes))
-                    val currentDateTime =
-                        SimpleDateFormat("MM/dd/yyyy HH:mm").format(Calendar.getInstance().time)
+    selectAllAssigneeCheckBoxListener()
+}
 
-                    if (fragmentAddNewEventBinding.repeatCB.isChecked) {
+private fun timePicker() {
+    if (fragmentAddNewEventBinding.tvDate.text.toString().trim().isEmpty()) {
+        showError(requireContext(), getString(R.string.please_select_new_care_point_date_firts))
+        fragmentAddNewEventBinding.tvDate.requestFocus()
+    } else {
+        val mCurrentTime = Calendar.getInstance()
+        if (fragmentAddNewEventBinding.tvTime.text.isNotEmpty()) {
+            val dateTime = fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ")
+                .plus(fragmentAddNewEventBinding.tvTime.text.toString().plus(" $isAmPm"))
+            mCurrentTime.time = SimpleDateFormat("MM/dd/yyyy hh:mm a").parse(dateTime)!!
+        }
+        val hour = mCurrentTime.get(Calendar.HOUR_OF_DAY)
+        val minute = mCurrentTime.get(Calendar.MINUTE)
+
+        val mTimePicker = TimePickerDialog(
+            context, R.style.datepicker, { _, hourOfDay, selectedMinutes ->
+                //check event time for future events  only
+                val selectedDateTime =
+                    fragmentAddNewEventBinding.tvDate.text.toString().trim().plus(" ")
+                        .plus(String.format("%02d:%02d", hourOfDay, selectedMinutes))
+                val currentDateTime =
+                    SimpleDateFormat("MM/dd/yyyy HH:mm").format(Calendar.getInstance().time)
+
+                if (fragmentAddNewEventBinding.repeatCB.isChecked) {
+                    setAndCheckSelectedTime(hour, hourOfDay, minute, selectedMinutes)
+                } else {
+                    val dateFormat = SimpleDateFormat("MM/dd/yyyy HH:mm")
+                    if (dateFormat.parse(selectedDateTime)!!
+                            .after(dateFormat.parse(currentDateTime))
+                    ) {
                         setAndCheckSelectedTime(hour, hourOfDay, minute, selectedMinutes)
                     } else {
-                        val dateFormat = SimpleDateFormat("MM/dd/yyyy HH:mm")
-                        if (dateFormat.parse(selectedDateTime)!!
-                                .after(dateFormat.parse(currentDateTime))
-                        ) {
-                            setAndCheckSelectedTime(hour, hourOfDay, minute, selectedMinutes)
-                        } else {
-                            showError(
-                                requireContext(),
-                                getString(R.string.please_select_future_time)
-                            )
-                        }
-
+                        showError(
+                            requireContext(), getString(R.string.please_select_future_time)
+                        )
                     }
 
-                }, hour,
-                minute, false
-            )
-            mTimePicker.show()
-        }
-    }
+                }
 
-    private fun setAndCheckSelectedTime(
-        hour: Int,
-        hourOfDay: Int,
-        minute: Int,
-        selectedMinutes: Int
-    ) {
-        var hour1 = hour
-        var minute1 = minute
-        hour1 = hourOfDay
-        minute1 = selectedMinutes
-        isAmPm = ""
-        if (hour1 > 12) {
-            hour1 -= 12
-            isAmPm = "pm"
-            setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
-        } else if (hour1 == 0) {
-            hour1 += 12
-            isAmPm = "am"
-            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
-        } else if (hour1 == 12) {
-            setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
-            isAmPm = "pm"
-        } else {
-            isAmPm = "am"
-            setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
-        }
-
-        val min =
-            if (minute1.toString().length < 2) "0$minute1" else java.lang.String.valueOf(
-                minute1
-            )
-
-        val hours =
-            if (hour1.toString().length < 2) "0$hour1" else java.lang.String.valueOf(
-                hour1
-            )
-
-        val mTime = StringBuilder().append(hours).append(':')
-            .append(min)
-
-        fragmentAddNewEventBinding.tvTime.text = mTime
-    }
-
-    private fun setColorTimePicked(selected: Int, unselected: Int) {
-        fragmentAddNewEventBinding.tvam.setTextColor(
-            ContextCompat.getColor(
-                requireContext().applicationContext,
-                selected
-            )
+            }, hour, minute, false
         )
-        fragmentAddNewEventBinding.tvpm.setTextColor(
-            ContextCompat.getColor(
-                requireContext().applicationContext,
-                unselected
-            )
+        mTimePicker.show()
+    }
+}
+
+private fun setAndCheckSelectedTime(
+    hour: Int, hourOfDay: Int, minute: Int, selectedMinutes: Int
+) {
+    var hour1 = hour
+    var minute1 = minute
+    hour1 = hourOfDay
+    minute1 = selectedMinutes
+    isAmPm = ""
+    if (hour1 > 12) {
+        hour1 -= 12
+        isAmPm = "pm"
+        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+    } else if (hour1 == 0) {
+        hour1 += 12
+        isAmPm = "am"
+        setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+    } else if (hour1 == 12) {
+        setColorTimePicked(R.color.colorBlackTrans50, R.color._192032)
+        isAmPm = "pm"
+    } else {
+        isAmPm = "am"
+        setColorTimePicked(R.color._192032, R.color.colorBlackTrans50)
+    }
+
+    val min = if (minute1.toString().length < 2) "0$minute1" else java.lang.String.valueOf(
+        minute1
+    )
+
+    val hours = if (hour1.toString().length < 2) "0$hour1" else java.lang.String.valueOf(
+        hour1
+    )
+
+    val mTime = StringBuilder().append(hours).append(':').append(min)
+
+    fragmentAddNewEventBinding.tvTime.text = mTime
+}
+
+private fun setColorTimePicked(selected: Int, unselected: Int) {
+    fragmentAddNewEventBinding.tvam.setTextColor(
+        ContextCompat.getColor(
+            requireContext().applicationContext, selected
         )
-    }
+    )
+    fragmentAddNewEventBinding.tvpm.setTextColor(
+        ContextCompat.getColor(
+            requireContext().applicationContext, unselected
+        )
+    )
+}
 
 
-    override fun onDateSet(p0: android.widget.DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        val mCalendar = Calendar.getInstance()
-        mCalendar[Calendar.YEAR] = year
-        mCalendar[Calendar.MONTH] = month
-        mCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
-        val selectedDate: String =
-            SimpleDateFormat("dd/MMM/yyyy").format(mCalendar.time)
-        fragmentAddNewEventBinding.tvDate.text = selectedDate
-    }
+override fun onDateSet(p0: android.widget.DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+    val mCalendar = Calendar.getInstance()
+    mCalendar[Calendar.YEAR] = year
+    mCalendar[Calendar.MONTH] = month
+    mCalendar[Calendar.DAY_OF_MONTH] = dayOfMonth
+    val selectedDate: String = SimpleDateFormat("dd/MMM/yyyy").format(mCalendar.time)
+    fragmentAddNewEventBinding.tvDate.text = selectedDate
+}
 
-    fun showEventEndDate(value: EventRecurringModel, days: String? = null) {
-        recurringValue = null
-        recurringValue = value
-        Log.e("catch_exception", "value: $recurringValue")
-        fragmentAddNewEventBinding.repeatCB.isChecked = true
-        fragmentAddNewEventBinding.txtType.isVisible = false
-        fragmentAddNewEventBinding.txtValue.isVisible = false
-        fragmentAddNewEventBinding.txtEndDate.isVisible = false
-        when (value.type) {
-            RecurringEvent.None.value -> {
-                fragmentAddNewEventBinding.repeatCB.isChecked = false
-            }
-
-            RecurringEvent.Daily.value -> {
-                visibleRecurringView(valueBoolean = false, value)
-            }
-
-            RecurringEvent.Weekly.value -> {
-                visibleRecurringView(valueBoolean = true, value, days)
-            }
-
-            RecurringEvent.Monthly.value -> {
-                visibleRecurringView(valueBoolean = true, value)
-            }
-        }
-    }
-
-    private fun visibleRecurringView(
-        valueBoolean: Boolean,
-        value: EventRecurringModel,
-        days: String? = null
-    ) {
-        fragmentAddNewEventBinding.txtType.isVisible = true
-        fragmentAddNewEventBinding.txtValue.isVisible = valueBoolean
-        fragmentAddNewEventBinding.txtEndDate.isVisible = true
-        fragmentAddNewEventBinding.repeatCB.isChecked = true
-        val dateSelected = SimpleDateFormat("MM/dd/yyyy").parse(value.endDate!!)
-        val endDate = dateSelected?.let { SimpleDateFormat("EEE, MMM dd, yyyy").format(it) }
-        fragmentAddNewEventBinding.txtEndDate.text = "Ends on - $endDate"
-        if (value.value != null) {
-            value.value!!.sort()
-        }
-        var selectedDates = ""
-        var selectedMonthListName: ArrayList<Int> = arrayListOf()
-
-
-        if (selectedMonthDates.size > 0) {
-            selectedMonthDates.forEach {
-                selectedMonthListName.add(it.monthDate.toInt())
-            }
-
-            selectedMonthListName.sort()
-            if (!selectedMonthListName.isNullOrEmpty()) {
-                val hset: HashSet<Int> = HashSet<Int>(selectedMonthListName)
-                selectedMonthListName.clear()
-                selectedMonthListName = arrayListOf()
-                selectedMonthListName.addAll(hset)
-            }
-            selectedMonthListName.sort()
-            selectedMonthListName.forEach {
-                selectedDates = if (selectedDates.isNotEmpty())
-                    "$selectedDates,$it"
-                else
-                    it.toString()
-            }
-
-            fragmentAddNewEventBinding.txtValue.text = selectedMonthListName.joinToString()
-        } else {
-            if (value.value != null) {
-                fragmentAddNewEventBinding.txtValue.text = value.value!!.joinToString()
-            }
+fun showEventEndDate(value: EventRecurringModel, days: String? = null) {
+    recurringValue = null
+    recurringValue = value
+    fragmentAddNewEventBinding.repeatCB.isChecked = true
+    fragmentAddNewEventBinding.txtType.isVisible = false
+    fragmentAddNewEventBinding.txtValue.isVisible = false
+    fragmentAddNewEventBinding.txtEndDate.isVisible = false
+    when (value.type) {
+        RecurringEvent.None.value -> {
+            fragmentAddNewEventBinding.repeatCB.isChecked = false
         }
 
+        RecurringEvent.Daily.value -> {
+            visibleRecurringView(valueBoolean = false, value)
+        }
 
+        RecurringEvent.Weekly.value -> {
+            visibleRecurringView(valueBoolean = true, value, days)
+        }
 
-        when (value.type) {
-            RecurringEvent.None.value -> {
-                fragmentAddNewEventBinding.txtType.text = "None"
-                fragmentAddNewEventBinding.repeatCB.isChecked = false
-            }
+        RecurringEvent.Monthly.value -> {
+            visibleRecurringView(valueBoolean = true, value)
+        }
 
-            RecurringEvent.Daily.value -> {
-                fragmentAddNewEventBinding.txtType.text = "Every Day"
-                fragmentAddNewEventBinding.txtValue.isVisible = false
-            }
+        RecurringEvent.Yearly.value -> {
+            visibleRecurringView(valueBoolean = true, value, days)
+        }
+    }
+}
 
-            RecurringEvent.Weekly.value -> {
-                fragmentAddNewEventBinding.txtType.text = "Every Week"
-                fragmentAddNewEventBinding.txtValue.text = days
-            }
+private fun visibleRecurringView(
+    valueBoolean: Boolean, value: EventRecurringModel, days: String? = null
+) {
+    fragmentAddNewEventBinding.txtType.isVisible = true
+    fragmentAddNewEventBinding.txtValue.isVisible = valueBoolean
+    fragmentAddNewEventBinding.txtEndDate.isVisible = true
+    fragmentAddNewEventBinding.repeatCB.isChecked = true
+    val dateSelected = SimpleDateFormat("MM/dd/yyyy").parse(value.endDate!!)
+    val endDate = dateSelected?.let { SimpleDateFormat("EEE, MMM dd, yyyy").format(it) }
+    fragmentAddNewEventBinding.txtEndDate.text = "Ends on - $endDate"
+    if (value.value != null) {
+        value.value!!.sort()
+    }
 
-            RecurringEvent.Monthly.value -> {
-                fragmentAddNewEventBinding.txtType.text = "Every Month"
-            }
+    when (value.type) {
+        RecurringEvent.None.value -> {
+            fragmentAddNewEventBinding.txtType.text = "None"
+            fragmentAddNewEventBinding.repeatCB.isChecked = false
+        }
 
-            else -> {
-                fragmentAddNewEventBinding.txtType.text = "None"
-                fragmentAddNewEventBinding.repeatCB.isChecked = false
+        RecurringEvent.Daily.value -> {
+            fragmentAddNewEventBinding.txtType.text = "Every Day"
+            fragmentAddNewEventBinding.txtValue.isVisible = false
+        }
+
+        RecurringEvent.Weekly.value -> {
+            fragmentAddNewEventBinding.txtType.text = "Every Week"
+            fragmentAddNewEventBinding.txtValue.text = days
+        }
+
+        RecurringEvent.Monthly.value -> {
+            fragmentAddNewEventBinding.txtType.text = "Every Month"
+            var selectedDates = ""
+            var selectedMonthListName: ArrayList<Int> = arrayListOf()
+            if (selectedMonthDates.size > 0) {
+                selectedMonthDates.forEach {
+                    selectedMonthListName.add(it.monthDate.toInt())
+                }
+
+                selectedMonthListName.sort()
+                if (!selectedMonthListName.isNullOrEmpty()) {
+                    val hset: HashSet<Int> = HashSet<Int>(selectedMonthListName)
+                    selectedMonthListName.clear()
+                    selectedMonthListName = arrayListOf()
+                    selectedMonthListName.addAll(hset)
+                }
+                selectedMonthListName.sort()
+                selectedMonthListName.forEach {
+                    selectedDates = if (selectedDates.isNotEmpty()) "$selectedDates,$it"
+                    else it.toString()
+                }
+
+                fragmentAddNewEventBinding.txtValue.text = selectedMonthListName.joinToString()
+            } else {
+                if (value.value != null) {
+                    fragmentAddNewEventBinding.txtValue.text = value.value!!.joinToString()
+                }
             }
         }
 
+        RecurringEvent.Yearly.value -> {
+            fragmentAddNewEventBinding.txtType.text = "Every year"
+            fragmentAddNewEventBinding.txtValue.text = days
+        }
+
+        else -> {
+            fragmentAddNewEventBinding.txtType.text = "None"
+            fragmentAddNewEventBinding.repeatCB.isChecked = false
+        }
     }
+
+}
 }
 
 

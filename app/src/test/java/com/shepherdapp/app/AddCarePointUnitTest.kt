@@ -100,7 +100,7 @@ class AddCarePointUnitTest {
             createEventModel.date!!,
             createEventModel.time!!,
             createEventModel.notes!!,
-            createEventModel.assign_to!!,null,null,null,null
+            createEventModel.assign_to!!,null,null,null,null,null
         )
 
         Thread.sleep(3000)

@@ -9,5 +9,6 @@ data class EventRecurringModel(
     @SerializedName("type") var type: String? = null,
     @SerializedName("value") var value: ArrayList<Int>? = null,
     @SerializedName("end_date") var endDate: String? = null,
-    @SerializedName("type_value") var typeValue:String? = null
+    @SerializedName("type_value") var typeValue:String? = null,
+    @SerializedName("value_year") var value_year: ArrayList<String>? = null,
 ): Parcelable
