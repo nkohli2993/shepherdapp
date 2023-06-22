@@ -55,6 +55,8 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.app_bar_dashboard.*
 import kotlinx.android.synthetic.main.content_dashboard.*
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
@@ -109,7 +111,7 @@ class HomeActivity : BaseActivity(), ChildFragmentToActivityListener,
         setOnClickListeners()
 
         binding.tvVersion.text = "V: ${BuildConfig.VERSION_NAME}"
-
+        binding.tvCopyRight.text = "©${SimpleDateFormat("yyyy").format(Calendar.getInstance().time)} ${getString(R.string._2022_the_shepherd_company_llc_all_rights_reserved)}"
     }
 
     private fun checkNotificationAction(bundle: Bundle?) {

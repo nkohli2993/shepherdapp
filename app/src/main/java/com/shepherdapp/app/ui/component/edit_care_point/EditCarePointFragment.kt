@@ -260,6 +260,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         fragmentEditCarePointBinding.txtValue.text =
                             selectedDates
                 }
+
                 RecurringFlag.Yearly.value -> {
 
                     fragmentEditCarePointBinding.txtType.text = getString(R.string.every_year)
@@ -269,7 +270,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                         val date = SimpleDateFormat("dd-MM-yyyy").parse(
                             carePoint!!.year_dates!![0].plus("-$calendarYear")
                         )
-                        fragmentEditCarePointBinding.txtValue.text = SimpleDateFormat("dd MMM").format(date!!)
+                        fragmentEditCarePointBinding.txtValue.text =
+                            SimpleDateFormat("dd MMM").format(date!!)
                     }
 
                 }
@@ -627,7 +629,8 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 fragmentEditCarePointBinding.tvTime.text = ""
                 isAmPm = null
                 setColorTimePicked(R.color.colorBlackTrans50, R.color.colorBlackTrans50)
-
+                val startDateSelected = SimpleDateFormat("MM/dd/yyyy").parse(fragmentEditCarePointBinding.tvDate.text.toString())
+                carePoint!!.date = SimpleDateFormat("yyyy-MM-dd").format(startDateSelected!!)
                 // check for end date with recurring
                 if (carePoint!!.repeat_end_date != null) {
                     val recurringEndDate =
@@ -788,15 +791,15 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                     selectedDate = format.plus("-${nextDayValue}")
 
                 }
-            }
-            else if (carePoint != null && carePoint!!.repeat_flag == RecurringFlag.Yearly.value) {
+            } else if (carePoint != null && carePoint!!.repeat_flag == RecurringFlag.Yearly.value) {
                 selectedYearListString = arrayListOf()
                 selectedYearListString.clear()
                 selectedYearListString.addAll(recurringValue!!.value_year!!)
 
-                val calendarYear  = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
-                val date = SimpleDateFormat("dd-MM-yyyy").parse(recurringValue!!.value_year!![0].plus("-$calendarYear"))
-                selectedDate =  SimpleDateFormat("yyyy-MM-dd").format(date!!)
+                val calendarYear = SimpleDateFormat("yyyy").format(Calendar.getInstance().time)
+                val date =
+                    SimpleDateFormat("dd-MM-yyyy").parse(recurringValue!!.value_year!![0].plus("-$calendarYear"))
+                selectedDate = SimpleDateFormat("yyyy-MM-dd").format(date!!)
             }
             if (dateWeekValue != null) {
                 val hset: HashSet<Int> = HashSet<Int>(dateWeekValue)
@@ -1031,8 +1034,9 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
             RecurringEvent.Monthly.value -> {
                 visibleRecurringView(valueBoolean = true, value)
             }
+
             RecurringEvent.Yearly.value -> {
-                visibleRecurringView(valueBoolean = true, value,days)
+                visibleRecurringView(valueBoolean = true, value, days)
             }
         }
     }
@@ -1123,6 +1127,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 }
 
             }
+
             RecurringEvent.Yearly.value -> {
                 carePoint!!.repeat_flag = "year"
                 fragmentEditCarePointBinding.txtType.text = "Every year"
@@ -1137,6 +1142,7 @@ class EditCarePointFragment : BaseFragment<FragmentEditCarePointBinding>(),
                 carePoint!!.year_dates = arrayListOf()
                 carePoint!!.year_dates!!.addAll(value.value_year!!)
             }
+
             else -> {
                 fragmentEditCarePointBinding.txtType.text = "None"
                 fragmentEditCarePointBinding.repeatCB.isChecked = false
