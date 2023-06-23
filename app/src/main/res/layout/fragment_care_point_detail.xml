@@ -51,7 +51,7 @@
                     android:id="@+id/tvTitleCarePoint"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7sdp"
+                    android:layout_marginTop="@dimen/_3sdp"
                     android:fontFamily="@font/gotham_bold"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:textColor="@color/_192032"

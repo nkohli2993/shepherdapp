@@ -453,7 +453,11 @@ class CarePointDetailFragment : BaseFragment<FragmentCarePointDetailBinding>(),
         fragmentCarePointDetailBinding.let {
             it.llImageWrapper.visibility = View.VISIBLE
             it.tvTitleCarePoint.text = payload.name
-            it.tvLocation.text = payload.location
+            it.tvLocation.isVisible = false
+            if(!payload.location.isNullOrEmpty()){
+                it.tvLocation.isVisible = true
+                it.tvLocation.text = payload.location
+            }
             val carePointDate = SimpleDateFormat("yyyy-MM-dd").parse(payload.date!!)!!
             it.tvDate.text = SimpleDateFormat("EEE, MMM dd, yyyy").format(carePointDate)
             if (payload.time != null) {
